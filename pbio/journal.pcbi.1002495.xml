@@ -1,0 +1,984 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="3.0" xml:lang="EN">
+  <front>
+    <journal-meta><journal-id journal-id-type="publisher-id">plos</journal-id><journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id><journal-id journal-id-type="pmc">ploscomp</journal-id><!--===== Grouping journal title elements =====--><journal-title-group><journal-title>PLoS Computational Biology</journal-title></journal-title-group><issn pub-type="ppub">1553-734X</issn><issn pub-type="epub">1553-7358</issn><publisher>
+        <publisher-name>Public Library of Science</publisher-name>
+        <publisher-loc>San Francisco, USA</publisher-loc>
+      </publisher></journal-meta>
+    <article-meta><article-id pub-id-type="publisher-id">PCOMPBIOL-D-11-01664</article-id><article-id pub-id-type="doi">10.1371/journal.pcbi.1002495</article-id><article-categories>
+        <subj-group subj-group-type="heading">
+          <subject>Education</subject>
+        </subj-group>
+        <subj-group subj-group-type="Discipline-v2">
+          <subject>Biology</subject>
+          <subj-group>
+            <subject>Computational biology</subject>
+            <subj-group>
+              <subject>Evolutionary modeling</subject>
+              <subject>Population genetics</subject>
+            </subj-group>
+          </subj-group>
+          <subj-group>
+            <subject>Evolutionary biology</subject>
+            <subj-group>
+              <subject>Evolutionary systematics</subject>
+              <subj-group>
+                <subject>Phylogenetics</subject>
+              </subj-group>
+            </subj-group>
+          </subj-group>
+          <subj-group>
+            <subject>Genetics</subject>
+          </subj-group>
+        </subj-group>
+        <subj-group subj-group-type="Discipline">
+          <subject>Genetics and Genomics</subject>
+          <subject>Computational Biology</subject>
+          <subject>Evolutionary Biology</subject>
+        </subj-group>
+      </article-categories><title-group><article-title>Simulation of Molecular Data under Diverse Evolutionary Scenarios</article-title></title-group><contrib-group>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Arenas</surname>
+            <given-names>Miguel</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+          <xref ref-type="aff" rid="aff2">
+            <sup>2</sup>
+          </xref>
+          <xref ref-type="corresp" rid="cor1">
+            <sup>*</sup>
+          </xref>
+        </contrib>
+      </contrib-group><aff id="aff1"><label>1</label><addr-line>Computational and Molecular Population Genetics Lab (CMPG), Institute of Ecology and Evolution, University of Bern, Bern, Switzerland</addr-line>       </aff><aff id="aff2"><label>2</label><addr-line>Swiss Institute of Bioinformatics, Lausanne, Switzerland</addr-line>       </aff><contrib-group>
+        <contrib contrib-type="editor" xlink:type="simple">
+          <name name-style="western">
+            <surname>Lewitter</surname>
+            <given-names>Fran</given-names>
+          </name>
+          <role>Editor</role>
+          <xref ref-type="aff" rid="edit1"/>
+        </contrib>
+      </contrib-group><aff id="edit1">Whitehead Institute, United States of America</aff><author-notes>
+        <corresp id="cor1">* E-mail: <email xlink:type="simple">miguel.arenasbusto@iee.unibe.ch</email></corresp>
+      <fn fn-type="conflict">
+        <p>The author has declared that no competing interests exist.</p>
+      </fn></author-notes><pub-date pub-type="collection">
+        <month>5</month>
+        <year>2012</year>
+      </pub-date><pub-date pub-type="epub">
+        <day>31</day>
+        <month>5</month>
+        <year>2012</year>
+      </pub-date><volume>8</volume><issue>5</issue><elocation-id>e1002495</elocation-id><!--===== Grouping copyright info into permissions =====--><permissions><copyright-year>2012</copyright-year><copyright-holder>Miguel Arenas</copyright-holder><license><license-p>This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license></permissions><funding-group><funding-statement>The author received no specific funding for this article.</funding-statement></funding-group><counts>
+        <page-count count="8"/>
+      </counts></article-meta>
+  </front>
+  <body>
+    <sec id="s1">
+      <title/>
+      <disp-quote>
+        <p>This is an original <italic>PLoS Computational Biology</italic> tutorial.</p>
+      </disp-quote>
+    </sec>
+    <sec id="s2">
+      <title>Introduction</title>
+      <p>This study is intended for evolutionary biologists interested in strategies for the simulation of molecular data under diverse evolutionary scenarios. It begins with a brief background on simulation approaches and describes some of the most important simulators developed to date. Then, several practical examples for simulating particular scenarios are presented, and finally, details are given on a variety of relevant applications of simulated data. Overall, this study provides a practical guide for applying simulation techniques to real world problems in molecular evolution.</p>
+    </sec>
+    <sec id="s3">
+      <title>The Importance of Computer Simulations in Molecular Evolution</title>
+      <p>A commonly used methodology to mimic the processes that occur in the real world is to perform computer simulations <xref ref-type="bibr" rid="pcbi.1002495-Peck1">[1]</xref>. Computer simulations allow us to understand which patterns may dramatically alter a particular system and can be used to study complex processes, including those that are analytically intractable. Furthermore, the simulation of multiple replicates with stochasticity may provide the variability required to study numerous processes, such as those often found in evolution. In molecular evolution, the simulation of genetic data has been commonly used for hypothesis testing (e.g., <xref ref-type="bibr" rid="pcbi.1002495-DeChaine1">[2]</xref>), to compare and verify analytical methods or tools (e.g., <xref ref-type="bibr" rid="pcbi.1002495-CarvajalRodriguez1">[3]</xref>–<xref ref-type="bibr" rid="pcbi.1002495-Westesson1">[5]</xref>), to analyze interactions among evolutionary processes (e.g., <xref ref-type="bibr" rid="pcbi.1002495-Hill1">[6]</xref>), and even to estimate evolutionary parameters (e.g., <xref ref-type="bibr" rid="pcbi.1002495-Beaumont1">[7]</xref>). Consequently, a wide variety of tools have been developed to simulate sequence data under different substitution models of evolution, but also under different evolutionary processes such as selection, recombination, demographics, population structure, and migration. In recent years, new programs have been developed to handle very complex scenarios (e.g., <xref ref-type="bibr" rid="pcbi.1002495-Arenas2">[8]</xref>, <xref ref-type="bibr" rid="pcbi.1002495-Ray1">[9]</xref>) and efficient algorithms have been incorporated in order to accommodate large datasets in response to the increasing amount of genome-wide data (e.g., <xref ref-type="bibr" rid="pcbi.1002495-Excoffier1">[10]</xref>). Thus, the importance of simulations continues to grow in order to deal with these new challenges.</p>
+    </sec>
+    <sec id="s4">
+      <title>Approaches for the Simulation of Molecular Data</title>
+      <p>After the simulation of evolutionary histories (see <xref ref-type="boxed-text" rid="pcbi-1002495-box001">Box 1</xref>), or when just a rooted tree or network is given, a sequence assigned to the most recent common ancestor (MRCA, or grand MRCA [GMRCA] in the case of networks) can be evolved along branches according to a substitution model of evolution, in order to simulate sequences for all internal and terminal nodes (see an example in <xref ref-type="fig" rid="pcbi-1002495-g001">Figure 1</xref>). A common procedure consists of applying continuous-time Markov models defined by 4×4, 20×20, and 61×61 matrices of substitution rates for nucleotide, amino acid, and codon (note that stop codons are ignored) data, respectively (details in <xref ref-type="bibr" rid="pcbi.1002495-Yang1">[11]</xref>). This methodology is very flexible and allows for heterogeneous evolution where different sites and branches can be evolved under different substitution models (e.g., <xref ref-type="bibr" rid="pcbi.1002495-Fletcher1">[12]</xref>). These aspects suggest in practice two important considerations. Firstly, simulations of nucleotide sequences are much faster than simulations of coding or amino acid sequences due to the dimension of the substitution matrices. Secondly, a large number of branches (derived from a large number of taxa or recombination events) leads to slower simulations due to the need to re-calculate the matrix for each branch.</p>
+      <fig id="pcbi-1002495-g001" position="float">
+        <object-id pub-id-type="doi">10.1371/journal.pcbi.1002495.g001</object-id>
+        <label>Figure 1</label>
+        <caption>
+          <title>Example of nucleotide evolution on the ancestral recombination graph.</title>
+          <p>Note that this ARG contains a recombination event with breakpoint at position 6. Starting from a sequence assigned to the GMRCA, substitutions (marked with black circles) occur forward in time. Non-ancestral material (material that does not reach the sample) and its substitution events are shown in grey.</p>
+        </caption>
+        <graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002495.g001" xlink:type="simple"/>
+      </fig>
+      <boxed-text id="pcbi-1002495-box001" position="float">
+        <sec id="s4a1">
+          <title>Box 1. Simulation of Evolutionary Histories</title>
+          <p>There are two main approaches commonly used to simulate evolutionary histories in population genetics: the forward in time (forward-time) and the coalescent (backward-time). Here I describe the main particularities of these approaches, considering goals and limitations for the simulation of diverse evolutionary scenarios.</p>
+          <p>The forward-time approach simulates the evolutionary history of an entire population from the past to the present and allows the success of a lineage to be a function of the genotype (see reviews, <xref ref-type="bibr" rid="pcbi.1002495-CarvajalRodriguez2">[13]</xref>, <xref ref-type="bibr" rid="pcbi.1002495-CarvajalRodriguez3">[14]</xref>, <xref ref-type="bibr" rid="pcbi.1002495-Epperson1">[80]</xref>). Thus, these simulations consider all ancestral information and therefore can be useful to fully study the subsequent evolutionary process of the population, including gene–gene interactions, mating systems, complex migration models (such as sex biased dispersal or long-distance dispersal), or complex selection (e.g., <xref ref-type="bibr" rid="pcbi.1002495-Ray2">[42]</xref>, <xref ref-type="bibr" rid="pcbi.1002495-Peng2">[81]</xref>, <xref ref-type="bibr" rid="pcbi.1002495-Calafell1">[82]</xref>); beginners may explore these basic concepts using educational simulations <xref ref-type="bibr" rid="pcbi.1002495-Jones1">[83]</xref>, <xref ref-type="bibr" rid="pcbi.1002495-Coombs1">[84]</xref>. Unfortunately, because the whole population history is simulated, forward simulations require generally extensive computational cost, although recently significant improvements have been achieved in this concern (e.g., <xref ref-type="bibr" rid="pcbi.1002495-Padhukasahasram1">[85]</xref>).</p>
+          <p>On the other hand, the coalescent approach describes a backwards in time genealogical process of a sample of genes to a single ancestral copy (see reviews <xref ref-type="bibr" rid="pcbi.1002495-Nordborg1">[86]</xref>, <xref ref-type="bibr" rid="pcbi.1002495-Wakeley1">[87]</xref>). The coalescent allows the simulation of a limited set of scenarios, namely population size changes (e.g., <xref ref-type="bibr" rid="pcbi.1002495-Slatkin1">[88]</xref>), population structure and migration (e.g., <xref ref-type="bibr" rid="pcbi.1002495-Hudson1">[89]</xref>), recombination (e.g., <xref ref-type="bibr" rid="pcbi.1002495-Hudson2">[90]</xref>), and selection (e.g., <xref ref-type="bibr" rid="pcbi.1002495-Hudson3">[91]</xref>). A key aspect of the coalescent is that the history of the whole population is not required (so it is not actually simulated) and, consequently, it is generally computationally faster than the forward-time approach. It is important to remember, however, that the efficiency of forward-time simulations is irrespective of the amount of recombination or selection, in contrast to coalescent simulations that are highly sensitive to such processes.</p>
+          <p>Coalescent and forward-time approaches can be considered complementary <xref ref-type="bibr" rid="pcbi.1002495-CarvajalRodriguez2">[13]</xref>. In fact, recently two new methods have incorporated both approaches for fast simulations of complex scenarios <xref ref-type="bibr" rid="pcbi.1002495-Ray1">[9]</xref>, <xref ref-type="bibr" rid="pcbi.1002495-Ewing1">[33]</xref>. In conclusion, one should keep in mind that the choice of the simulation approach may depend on the complexity of the target scenario, as well as on the required computational cost for the simulation.</p>
+        </sec>
+      </boxed-text>
+    </sec>
+    <sec id="s5">
+      <title>Main Software Implementations</title>
+      <p>A number of programs have been developed to simulate nucleotide, codon, and amino acid sequences evolution. Although several studies have already reviewed these software tools (e.g., <xref ref-type="bibr" rid="pcbi.1002495-CarvajalRodriguez2">[13]</xref>–<xref ref-type="bibr" rid="pcbi.1002495-Arenas3">[17]</xref>), such revisions quickly become obsolete due to the emergence of new simulators, as noted in <xref ref-type="bibr" rid="pcbi.1002495-CarvajalRodriguez3">[14]</xref>. <xref ref-type="table" rid="pcbi-1002495-t001">Table 1</xref> shows an updated list of user-friendly and commonly used programs available to date. Next, the most interesting software from a practical perspective is briefly described.</p>
+      <table-wrap id="pcbi-1002495-t001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1002495.t001</object-id><label>Table 1</label><caption>
+          <title>The main software used to simulate genetic sequences under nucleotide, codon, and amino acid substitution models.</title>
+        </caption><!--===== Grouping alternate versions of objects =====--><alternatives><graphic id="pcbi-1002495-t001-1" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002495.t001" xlink:type="simple"/><table>
+          <colgroup span="1">
+            <col align="left" span="1"/>
+            <col align="center" span="1"/>
+            <col align="center" span="1"/>
+            <col align="center" span="1"/>
+            <col align="center" span="1"/>
+            <col align="center" span="1"/>
+            <col align="center" span="1"/>
+            <col align="center" span="1"/>
+          </colgroup>
+          <thead>
+            <tr>
+              <td align="left" colspan="1" rowspan="1">Program</td>
+              <td align="left" colspan="1" rowspan="1">Class</td>
+              <td align="left" colspan="1" rowspan="1">Process</td>
+              <td align="left" colspan="1" rowspan="1">Substitution Model</td>
+              <td align="left" colspan="1" rowspan="1">Rate Variation</td>
+              <td align="left" colspan="1" rowspan="1">Indels</td>
+              <td align="left" colspan="1" rowspan="1">OS</td>
+              <td align="left" colspan="1" rowspan="1">Ref.</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td align="left" colspan="1" rowspan="1">SIMCOAL2</td>
+              <td align="left" colspan="1" rowspan="1">Coalescent</td>
+              <td align="left" colspan="1" rowspan="1">D, Pm, R</td>
+              <td align="left" colspan="1" rowspan="1">Nt: JC, K2P</td>
+              <td align="left" colspan="1" rowspan="1">No</td>
+              <td align="left" colspan="1" rowspan="1">No</td>
+              <td align="left" colspan="1" rowspan="1">Linux, Win</td>
+              <td align="left" colspan="1" rowspan="1">
+                <xref ref-type="bibr" rid="pcbi.1002495-Excoffier4">[65]</xref>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" colspan="1" rowspan="1">Fastsimcoal</td>
+              <td align="left" colspan="1" rowspan="1">Coalescent</td>
+              <td align="left" colspan="1" rowspan="1">D, Pm, R</td>
+              <td align="left" colspan="1" rowspan="1">Nt: JC, K2P</td>
+              <td align="left" colspan="1" rowspan="1">No</td>
+              <td align="left" colspan="1" rowspan="1">No</td>
+              <td align="left" colspan="1" rowspan="1">Linux, Mac, Win</td>
+              <td align="left" colspan="1" rowspan="1">
+                <xref ref-type="bibr" rid="pcbi.1002495-Excoffier1">[10]</xref>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" colspan="1" rowspan="1">Serial Simcoal</td>
+              <td align="left" colspan="1" rowspan="1">Coalescent</td>
+              <td align="left" colspan="1" rowspan="1">D, Pm</td>
+              <td align="left" colspan="1" rowspan="1">Nt: JC, K2P</td>
+              <td align="left" colspan="1" rowspan="1">No</td>
+              <td align="left" colspan="1" rowspan="1">No</td>
+              <td align="left" colspan="1" rowspan="1">SC, Mac, Win</td>
+              <td align="left" colspan="1" rowspan="1">
+                <xref ref-type="bibr" rid="pcbi.1002495-Anderson1">[66]</xref>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" colspan="1" rowspan="1">mlcoalsim</td>
+              <td align="left" colspan="1" rowspan="1">Coalescent</td>
+              <td align="left" colspan="1" rowspan="1">D, Pm, R</td>
+              <td align="left" colspan="1" rowspan="1">Nt: JC, K2P</td>
+              <td align="left" colspan="1" rowspan="1">G, I</td>
+              <td align="left" colspan="1" rowspan="1">No</td>
+              <td align="left" colspan="1" rowspan="1">All</td>
+              <td align="left" colspan="1" rowspan="1">
+                <xref ref-type="bibr" rid="pcbi.1002495-RamosOnsins1">[67]</xref>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" colspan="1" rowspan="1">TREEEVOLVE</td>
+              <td align="left" colspan="1" rowspan="1">Coalescent</td>
+              <td align="left" colspan="1" rowspan="1">D, Pm, R</td>
+              <td align="left" colspan="1" rowspan="1">Nt: All</td>
+              <td align="left" colspan="1" rowspan="1">G</td>
+              <td align="left" colspan="1" rowspan="1">No</td>
+              <td align="left" colspan="1" rowspan="1">SC, Mac</td>
+              <td align="left" colspan="1" rowspan="1">
+                <xref ref-type="bibr" rid="pcbi.1002495-Grassly1">[68]</xref>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" colspan="1" rowspan="1">CodonRecSim</td>
+              <td align="left" colspan="1" rowspan="1">Coalescent</td>
+              <td align="left" colspan="1" rowspan="1">R</td>
+              <td align="left" colspan="1" rowspan="1">Cod<xref ref-type="table-fn" rid="nt104">c</xref>: GY94</td>
+              <td align="left" colspan="1" rowspan="1">No</td>
+              <td align="left" colspan="1" rowspan="1">No</td>
+              <td align="left" colspan="1" rowspan="1">SC, Win</td>
+              <td align="left" colspan="1" rowspan="1">
+                <xref ref-type="bibr" rid="pcbi.1002495-Anisimova1">[23]</xref>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" colspan="1" rowspan="1">Recodon/NetRecodon<xref ref-type="table-fn" rid="nt102">a</xref><sup>,</sup><xref ref-type="table-fn" rid="nt103">b</xref></td>
+              <td align="left" colspan="1" rowspan="1">Coalescent</td>
+              <td align="left" colspan="1" rowspan="1">D, Pm, R</td>
+              <td align="left" colspan="1" rowspan="1">Nt: All; Cod<xref ref-type="table-fn" rid="nt104">c</xref>: GY94</td>
+              <td align="left" colspan="1" rowspan="1">G, I</td>
+              <td align="left" colspan="1" rowspan="1">No</td>
+              <td align="left" colspan="1" rowspan="1">All</td>
+              <td align="left" colspan="1" rowspan="1"><xref ref-type="bibr" rid="pcbi.1002495-Arenas2">[8]</xref>, <xref ref-type="bibr" rid="pcbi.1002495-Arenas4">[24]</xref></td>
+            </tr>
+            <tr>
+              <td align="left" colspan="1" rowspan="1">SPLATCHE2</td>
+              <td align="left" colspan="1" rowspan="1">Forward, Coalescent</td>
+              <td align="left" colspan="1" rowspan="1">D, Pm, R</td>
+              <td align="left" colspan="1" rowspan="1">Nt: JC, K2P</td>
+              <td align="left" colspan="1" rowspan="1">No</td>
+              <td align="left" colspan="1" rowspan="1">No</td>
+              <td align="left" colspan="1" rowspan="1">Linux, Win</td>
+              <td align="left" colspan="1" rowspan="1">
+                <xref ref-type="bibr" rid="pcbi.1002495-Ray1">[9]</xref>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" colspan="1" rowspan="1">AQUASPLATCHE</td>
+              <td align="left" colspan="1" rowspan="1">Forward, Coalescent</td>
+              <td align="left" colspan="1" rowspan="1">D, Pm</td>
+              <td align="left" colspan="1" rowspan="1">Nt: JC, K2P</td>
+              <td align="left" colspan="1" rowspan="1">No</td>
+              <td align="left" colspan="1" rowspan="1">No</td>
+              <td align="left" colspan="1" rowspan="1">Linux, Win</td>
+              <td align="left" colspan="1" rowspan="1">
+                <xref ref-type="bibr" rid="pcbi.1002495-Neuenschwander1">[20]</xref>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" colspan="1" rowspan="1">GenomePop</td>
+              <td align="left" colspan="1" rowspan="1">Forward</td>
+              <td align="left" colspan="1" rowspan="1">D, Pm, R<xref ref-type="table-fn" rid="nt102">a</xref>, S</td>
+              <td align="left" colspan="1" rowspan="1">Nt: JC, GTR; Cod: MG94</td>
+              <td align="left" colspan="1" rowspan="1">No</td>
+              <td align="left" colspan="1" rowspan="1">No</td>
+              <td align="left" colspan="1" rowspan="1">SC, Linux, Win</td>
+              <td align="left" colspan="1" rowspan="1">
+                <xref ref-type="bibr" rid="pcbi.1002495-CarvajalRodriguez4">[18]</xref>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" colspan="1" rowspan="1">SFS_CODE</td>
+              <td align="left" colspan="1" rowspan="1">Forward</td>
+              <td align="left" colspan="1" rowspan="1">D, Pm, R, S</td>
+              <td align="left" colspan="1" rowspan="1">Nt: All; Cod: Nt<xref ref-type="table-fn" rid="nt105">d</xref></td>
+              <td align="left" colspan="1" rowspan="1">G</td>
+              <td align="left" colspan="1" rowspan="1">Yes</td>
+              <td align="left" colspan="1" rowspan="1">All</td>
+              <td align="left" colspan="1" rowspan="1">
+                <xref ref-type="bibr" rid="pcbi.1002495-Hernandez1">[19]</xref>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" colspan="1" rowspan="1">SimuPop</td>
+              <td align="left" colspan="1" rowspan="1">Forward</td>
+              <td align="left" colspan="1" rowspan="1">D, Pm, R, S</td>
+              <td align="left" colspan="1" rowspan="1">Nt: All</td>
+              <td align="left" colspan="1" rowspan="1">No</td>
+              <td align="left" colspan="1" rowspan="1">Yes</td>
+              <td align="left" colspan="1" rowspan="1">All</td>
+              <td align="left" colspan="1" rowspan="1">
+                <xref ref-type="bibr" rid="pcbi.1002495-Peng1">[21]</xref>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" colspan="1" rowspan="1">EvolSimulator</td>
+              <td align="left" colspan="1" rowspan="1">Birth-death process<xref ref-type="table-fn" rid="nt106">e</xref></td>
+              <td align="left" colspan="1" rowspan="1">D, Pm, S</td>
+              <td align="left" colspan="1" rowspan="1">Nt: All; Cod: Nt<xref ref-type="table-fn" rid="nt105">d</xref>; Aa: user defined</td>
+              <td align="left" colspan="1" rowspan="1">User defined<xref ref-type="table-fn" rid="nt112">k</xref></td>
+              <td align="left" colspan="1" rowspan="1">No</td>
+              <td align="left" colspan="1" rowspan="1">SC</td>
+              <td align="left" colspan="1" rowspan="1">
+                <xref ref-type="bibr" rid="pcbi.1002495-Beiko1">[69]</xref>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" colspan="1" rowspan="1">INDELible</td>
+              <td align="left" colspan="1" rowspan="1">Phylogenetic</td>
+              <td align="left" colspan="1" rowspan="1">-</td>
+              <td align="left" colspan="1" rowspan="1">Nt: All; Cod: GY94<xref ref-type="table-fn" rid="nt107">f</xref>, EM; Aa: 15 EM<xref ref-type="table-fn" rid="nt108">g</xref></td>
+              <td align="left" colspan="1" rowspan="1">G, I</td>
+              <td align="left" colspan="1" rowspan="1">Yes</td>
+              <td align="left" colspan="1" rowspan="1">All</td>
+              <td align="left" colspan="1" rowspan="1">
+                <xref ref-type="bibr" rid="pcbi.1002495-Fletcher1">[12]</xref>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" colspan="1" rowspan="1">EVOLVER</td>
+              <td align="left" colspan="1" rowspan="1">Phylogenetic</td>
+              <td align="left" colspan="1" rowspan="1">-</td>
+              <td align="left" colspan="1" rowspan="1">Nt: All; Cod: GY94; Aa: 14 EM<xref ref-type="table-fn" rid="nt109">h</xref></td>
+              <td align="left" colspan="1" rowspan="1">G, I</td>
+              <td align="left" colspan="1" rowspan="1">No</td>
+              <td align="left" colspan="1" rowspan="1">All</td>
+              <td align="left" colspan="1" rowspan="1">
+                <xref ref-type="bibr" rid="pcbi.1002495-Yang2">[28]</xref>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" colspan="1" rowspan="1">indel-Seq-Gen vs 2.0</td>
+              <td align="left" colspan="1" rowspan="1">Phylogenetic</td>
+              <td align="left" colspan="1" rowspan="1">-</td>
+              <td align="left" colspan="1" rowspan="1">Nt: All; Cod: Nt<xref ref-type="table-fn" rid="nt105">d</xref>; Aa: 6 EM</td>
+              <td align="left" colspan="1" rowspan="1">G, I</td>
+              <td align="left" colspan="1" rowspan="1">Yes</td>
+              <td align="left" colspan="1" rowspan="1">All</td>
+              <td align="left" colspan="1" rowspan="1">
+                <xref ref-type="bibr" rid="pcbi.1002495-Strope1">[27]</xref>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" colspan="1" rowspan="1">Seq-Gen</td>
+              <td align="left" colspan="1" rowspan="1">Phylogenetic</td>
+              <td align="left" colspan="1" rowspan="1">-</td>
+              <td align="left" colspan="1" rowspan="1">Nt: All; Cod: Nt<xref ref-type="table-fn" rid="nt105">d</xref>, Aa: 6 EM<xref ref-type="table-fn" rid="nt110">i</xref></td>
+              <td align="left" colspan="1" rowspan="1">G, I</td>
+              <td align="left" colspan="1" rowspan="1">No</td>
+              <td align="left" colspan="1" rowspan="1">All</td>
+              <td align="left" colspan="1" rowspan="1">
+                <xref ref-type="bibr" rid="pcbi.1002495-Rambaut1">[26]</xref>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" colspan="1" rowspan="1">EvolveAGene 3</td>
+              <td align="left" colspan="1" rowspan="1">Phylogenetic</td>
+              <td align="left" colspan="1" rowspan="1">-</td>
+              <td align="left" colspan="1" rowspan="1">Cod: <italic>E. coli</italic> spectra</td>
+              <td align="left" colspan="1" rowspan="1">No</td>
+              <td align="left" colspan="1" rowspan="1">Yes</td>
+              <td align="left" colspan="1" rowspan="1">All</td>
+              <td align="left" colspan="1" rowspan="1">
+                <xref ref-type="bibr" rid="pcbi.1002495-Hall1">[70]</xref>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" colspan="1" rowspan="1">DAWG</td>
+              <td align="left" colspan="1" rowspan="1">Phylogenetic</td>
+              <td align="left" colspan="1" rowspan="1">-</td>
+              <td align="left" colspan="1" rowspan="1">Nt: All</td>
+              <td align="left" colspan="1" rowspan="1">G, I</td>
+              <td align="left" colspan="1" rowspan="1">Yes</td>
+              <td align="left" colspan="1" rowspan="1">All</td>
+              <td align="left" colspan="1" rowspan="1">
+                <xref ref-type="bibr" rid="pcbi.1002495-Cartwright1">[71]</xref>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" colspan="1" rowspan="1">MySSP</td>
+              <td align="left" colspan="1" rowspan="1">Phylogenetic</td>
+              <td align="left" colspan="1" rowspan="1">-</td>
+              <td align="left" colspan="1" rowspan="1">Nt: All</td>
+              <td align="left" colspan="1" rowspan="1">G</td>
+              <td align="left" colspan="1" rowspan="1">Yes</td>
+              <td align="left" colspan="1" rowspan="1">Win</td>
+              <td align="left" colspan="1" rowspan="1">
+                <xref ref-type="bibr" rid="pcbi.1002495-Rosenberg1">[72]</xref>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" colspan="1" rowspan="1">SISSI</td>
+              <td align="left" colspan="1" rowspan="1">Phylogenetic</td>
+              <td align="left" colspan="1" rowspan="1">-</td>
+              <td align="left" colspan="1" rowspan="1">Nt: All; Cod: Nt<xref ref-type="table-fn" rid="nt105">d</xref><sup>,</sup><xref ref-type="table-fn" rid="nt111">j</xref></td>
+              <td align="left" colspan="1" rowspan="1">User defined<xref ref-type="table-fn" rid="nt112">k</xref></td>
+              <td align="left" colspan="1" rowspan="1">No</td>
+              <td align="left" colspan="1" rowspan="1">All</td>
+              <td align="left" colspan="1" rowspan="1">
+                <xref ref-type="bibr" rid="pcbi.1002495-Gesell1">[73]</xref>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" colspan="1" rowspan="1">ROSE</td>
+              <td align="left" colspan="1" rowspan="1">Phylogenetic</td>
+              <td align="left" colspan="1" rowspan="1">-</td>
+              <td align="left" colspan="1" rowspan="1">Nt: All; Aa: PAM</td>
+              <td align="left" colspan="1" rowspan="1">G</td>
+              <td align="left" colspan="1" rowspan="1">Yes</td>
+              <td align="left" colspan="1" rowspan="1">SC</td>
+              <td align="left" colspan="1" rowspan="1">
+                <xref ref-type="bibr" rid="pcbi.1002495-Stoye1">[74]</xref>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" colspan="1" rowspan="1">SIMGRAM/SIMGENOME/GSIMULATOR</td>
+              <td align="left" colspan="1" rowspan="1">Phylogenetic</td>
+              <td align="left" colspan="1" rowspan="1">-</td>
+              <td align="left" colspan="1" rowspan="1">Nt: All; Cod: EM; Aa: Secondary structure</td>
+              <td align="left" colspan="1" rowspan="1">No</td>
+              <td align="left" colspan="1" rowspan="1">Yes</td>
+              <td align="left" colspan="1" rowspan="1">SC</td>
+              <td align="left" colspan="1" rowspan="1">
+                <xref ref-type="bibr" rid="pcbi.1002495-Varadarajan1">[75]</xref>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" colspan="1" rowspan="1">ALF</td>
+              <td align="left" colspan="1" rowspan="1">Phylogenetic</td>
+              <td align="left" colspan="1" rowspan="1">-</td>
+              <td align="left" colspan="1" rowspan="1">Nt: F84, HKY, TN93, GTR; Cod: GY94 and EM; Aa: 6 EM<xref ref-type="table-fn" rid="nt113">l</xref></td>
+              <td align="left" colspan="1" rowspan="1">G, I</td>
+              <td align="left" colspan="1" rowspan="1">Yes</td>
+              <td align="left" colspan="1" rowspan="1">All</td>
+              <td align="left" colspan="1" rowspan="1">
+                <xref ref-type="bibr" rid="pcbi.1002495-Dalquen1">[76]</xref>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" colspan="1" rowspan="1">SIMPROT</td>
+              <td align="left" colspan="1" rowspan="1">Phylogenetic</td>
+              <td align="left" colspan="1" rowspan="1">-</td>
+              <td align="left" colspan="1" rowspan="1">Aa: PAM, JTT, PMB</td>
+              <td align="left" colspan="1" rowspan="1">G</td>
+              <td align="left" colspan="1" rowspan="1">Yes</td>
+              <td align="left" colspan="1" rowspan="1">Linux, Win</td>
+              <td align="left" colspan="1" rowspan="1">
+                <xref ref-type="bibr" rid="pcbi.1002495-Pang1">[77]</xref>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" colspan="1" rowspan="1">PhyloSim</td>
+              <td align="left" colspan="1" rowspan="1">Phylogenetic</td>
+              <td align="left" colspan="1" rowspan="1">-</td>
+              <td align="left" colspan="1" rowspan="1">Nt: All; Cod: GY94<xref ref-type="table-fn" rid="nt107">f</xref>, EM; Aa: 9 EM<xref ref-type="table-fn" rid="nt114">m</xref></td>
+              <td align="left" colspan="1" rowspan="1">G, I</td>
+              <td align="left" colspan="1" rowspan="1">Yes</td>
+              <td align="left" colspan="1" rowspan="1">R</td>
+              <td align="left" colspan="1" rowspan="1">
+                <xref ref-type="bibr" rid="pcbi.1002495-Sipos1">[29]</xref>
+              </td>
+            </tr>
+          </tbody>
+        </table></alternatives><table-wrap-foot>
+          <fn id="nt101">
+            <label/>
+            <p>“Class” includes phylogenetic (where a genealogy is already given from the user), forward, birth-death, and coalescent approaches. “Process” shows the implemented evolutionary scenarios: “D”, “Pm”, “R”, and “S” indicate demographics, population structure and migration, recombination, and selection, respectively. “Substitution model” refers to substitution models based on nucleotide “Nt”, codon “Cod”, and amino acid “Aa” sequences; indeed, “Nt: All” indicates all nucleotide substitution models developed so far (JC, …, GTR) and “EM” indicates empirical model. “Rate variation” indicates whether different sites can be evolved under different rates (G: gamma distribution; I: proportion of invariable sites). “Indels” indicates the consideration of insertion and deletion events. “OS” shows the availability of executable files and/or source code “SC” for different operative systems (“All” means that Macintosh, Windows, and Linux executables are available), and “R” means the R language for statistical computing. “Ref” indicates the reference of publication. Although many more software packages exist, here I have selected, from my point of view, those programs most commonly used, most user-friendly, and which implement the most diverse range of evolutionary scenarios.</p>
+          </fn>
+          <fn id="nt102">
+            <label>a</label>
+            <p>Intracodon recombination is also allowed in <italic>NetRecodon</italic> and <italic>GenomePop</italic>.</p>
+          </fn>
+          <fn id="nt103">
+            <label>b</label>
+            <p>The ARG can be exported from <italic>NetRecodon</italic> and can be then visualized and analyzed using <italic>NetTest</italic> <xref ref-type="bibr" rid="pcbi.1002495-Arenas9">[78]</xref>.</p>
+          </fn>
+          <fn id="nt104">
+            <label>c</label>
+            <p>Under codon models, <italic>ω</italic> can change across codons.</p>
+          </fn>
+          <fn id="nt105">
+            <label>d</label>
+            <p>Coding sequences are simulated by nucleotide substitution models, avoiding stop codons.</p>
+          </fn>
+          <fn id="nt106">
+            <label>e</label>
+            <p>EvolSimulator simulates phylogenetic histories under the birth-death model of speciation and extinction <xref ref-type="bibr" rid="pcbi.1002495-Raup1">[79]</xref>.</p>
+          </fn>
+          <fn id="nt107">
+            <label>f</label>
+            <p>Under codon models, <italic>ω</italic> can change across codons and branches.</p>
+          </fn>
+          <fn id="nt108">
+            <label>g</label>
+            <p>Amino acid models implemented in <italic>INDELible</italic>: BLOSUM62, CpREV, DAYHOFF, DAYHOFF (DCMUT), HIVb, HIVw, JTT, JTT (DCMUT), LG, mtArt, MTMAM, mtREV, RtREV, VT, and WAG.</p>
+          </fn>
+          <fn id="nt109">
+            <label>h</label>
+            <p>Amino acid models implemented in <italic>EVOLVER</italic>: CpREV, CpREV64, DAYHOFF (DCMUT), DAYHOFF, GRANTHAM, JTT (DCMUT), JTT, LG, miyata, mtArt, MTMAM, mtREV24, mtZoa, WAG.</p>
+          </fn>
+          <fn id="nt110">
+            <label>i</label>
+            <p>Amino acid models implemented in <italic>Seq-Gen</italic>: BLOSUM62, CpREV24, JTT, mtREV, PAM, and WAG.</p>
+          </fn>
+          <fn id="nt111">
+            <label>j</label>
+            <p>Simulation of codons with structural dependency among sites.</p>
+          </fn>
+          <fn id="nt112">
+            <label>k</label>
+            <p>The rate of variation among sites can be introduced from the user.</p>
+          </fn>
+          <fn id="nt113">
+            <label>l</label>
+            <p>Amino acid models implemented in <italic>ALF</italic>: PAM, JTT, WAG, LG, CustomP, GCB.</p>
+          </fn>
+          <fn id="nt114">
+            <label>m</label>
+            <p>Amino acid models implemented in <italic>PhyloSim</italic>: CpREV, JTT, JTT (DCMUT), LG, mtArt, mtMam, mtREV24, mtZoa, WAG.</p>
+          </fn>
+        </table-wrap-foot></table-wrap>
+      <p>When attempting to simulate a complex evolutionary scenario, several programs developed under the forward-time approach may be useful (see <xref ref-type="table" rid="pcbi-1002495-t001">Table 1</xref>). <italic>GenomePop</italic> <xref ref-type="bibr" rid="pcbi.1002495-CarvajalRodriguez4">[18]</xref> and <italic>SFS_CODE</italic> <xref ref-type="bibr" rid="pcbi.1002495-Hernandez1">[19]</xref> seem the most comprehensive tools with implementations of population structure, demographic particularities, recombination, and selection, but they do not allow simulations under amino acid substitution models. The programs <italic>SPLATCHE2</italic> <xref ref-type="bibr" rid="pcbi.1002495-Ray1">[9]</xref> and <italic>AQUASPLATCHE</italic> <xref ref-type="bibr" rid="pcbi.1002495-Neuenschwander1">[20]</xref> are able to simulate nucleotide data under spatially (using land or freshwater maps, respectively) and temporally explicit demographic models. A disadvantage of these programs is that only two DNA substitution models are available, note that other programs such as <italic>SFS_CODE</italic> or <italic>SimuPop</italic> <xref ref-type="bibr" rid="pcbi.1002495-Peng1">[21]</xref> implement all DNA substitution models (see <xref ref-type="table" rid="pcbi-1002495-t001">Table 1</xref>), which may be problematic when trying to mimic genome-wide data (see <xref ref-type="bibr" rid="pcbi.1002495-Arbiza1">[22]</xref>).</p>
+      <p>If our target scenario can be represented by the coalescent, a variety of coalescent-based programs are able to simulate nucleotide data (see <xref ref-type="table" rid="pcbi-1002495-t001">Table 1</xref>). Nevertheless, only <italic>CodonRecSim</italic> <xref ref-type="bibr" rid="pcbi.1002495-Anisimova1">[23]</xref>, <italic>Recodon</italic> <xref ref-type="bibr" rid="pcbi.1002495-Arenas4">[24]</xref>, and <italic>NetRecodon</italic> <xref ref-type="bibr" rid="pcbi.1002495-Arenas2">[8]</xref> can simulate coding sequences in the presence of recombination. The first two of these programs force recombination breakpoints to occur between codons while <italic>NetRecodon</italic> does not (see <xref ref-type="bibr" rid="pcbi.1002495-Arenas2">[8]</xref>). On the other hand, <italic>fastsimcoal</italic> <xref ref-type="bibr" rid="pcbi.1002495-Excoffier1">[10]</xref>, <italic>Recodon</italic>, and <italic>NetRecodon</italic> allow simulations with sampling at different times, which can be very interesting for the joint analysis of ancient and modern DNA <xref ref-type="bibr" rid="pcbi.1002495-Navascues1">[25]</xref>.</p>
+      <p>When a phylogenetic history (one or several trees) is given, numerous programs exist to directly simulate sequences along such history (see <xref ref-type="table" rid="pcbi-1002495-t001">Table 1</xref>, phylogenetic class). One of the most applied programs is <italic>Seq-Gen</italic> <xref ref-type="bibr" rid="pcbi.1002495-Rambaut1">[26]</xref>, which implements several nucleotide and amino acid substitution models. The program <italic>indel-Seq-Gen 2.0</italic> <xref ref-type="bibr" rid="pcbi.1002495-Strope1">[27]</xref> extended <italic>Seq-Gen</italic> to include diverse indel (insertion and deletion) models. Almost at the same time as <italic>Seq-Gen</italic>, the program <italic>EVOLVER</italic> (from the <italic>PAML</italic> package <xref ref-type="bibr" rid="pcbi.1002495-Yang2">[28]</xref>) was released, which additionally allowed the simulation of coding data. Recently, <italic>INDELible</italic> <xref ref-type="bibr" rid="pcbi.1002495-Fletcher1">[12]</xref> and <italic>PhyloSim</italic> <xref ref-type="bibr" rid="pcbi.1002495-Sipos1">[29]</xref> implemented all those capabilities, and in addition they included codon models where dN/dS (nonsynonymous/synonymous rate ratio) may vary across sites and/or branches. <italic>INDELible</italic> is very user-friendly but <italic>PhyloSim</italic> was implemented in R (language for statistical computing, <xref ref-type="bibr" rid="pcbi.1002495-Ihaka1">[30]</xref>) and requires some programming knowledge.</p>
+    </sec>
+    <sec id="s6">
+      <title>Practical Examples</title>
+      <p>In this section I outline five hypothetical practical examples, of the fast simulation of genetic sequences under particular evolutionary scenarios, which will be of general interest. The reader may notice that some scenarios can be solved using more than one approach, but I base my suggestions here on how appropriate, flexible, and user-friendly I think the simulators are.</p>
+      <sec id="s6a">
+        <title>I) Nucleotide Data under Natural Selection</title>
+        <p>This scenario is commonly applied to identifying targets of positive selection in real datasets (e.g., <xref ref-type="bibr" rid="pcbi.1002495-Biswas1">[31]</xref>, <xref ref-type="bibr" rid="pcbi.1002495-Kelley1">[32]</xref>). To my knowledge, there is no coalescent framework available to simulate data under natural selection whilst using Markov DNA substitution models, which may bring realistic information because not necessarily every mutation occurs at a different site in the sequence. However, two programs can be combined to quickly perform this task. First, we can simulate coalescent trees using the programs <italic>msms</italic> <xref ref-type="bibr" rid="pcbi.1002495-Ewing1">[33]</xref> or <italic>SelSim</italic> <xref ref-type="bibr" rid="pcbi.1002495-Spencer1">[34]</xref>, although both tools are limited to simulation of a single locus under selection. Then, nucleotide sequences can be evolved along those trees using <italic>Seq-Gen</italic>. Another possibility is to apply a forward-time simulator that implements complex selection and all DNA substitution models (e.g., <italic>SFS_CODE</italic>).</p>
+      </sec>
+      <sec id="s6b">
+        <title>II) Coding Data with Intracodon Recombination</title>
+        <p>Simulations with recombination breakpoints that occur within codons are more realistic since these particular events occur 2/3 of the time that a recombination happens, assuming a spatially uniform distribution. Therefore, these events might exert undue influence on other parameter estimates since current analytical phylogenetic methods using codon models and recombination assume intercodon recombination. However, such effects have not been observed; in particular, dN/dS estimations were not altered (see <xref ref-type="bibr" rid="pcbi.1002495-Arenas2">[8]</xref>), so this should be studied further. The fastest procedure for the simulation of intracodon recombination is to directly apply the program <italic>NetRecodon</italic>. Alternatively, <italic>GenomePop</italic> can also perform this simulation under the forward approach. This scenario was applied in <xref ref-type="bibr" rid="pcbi.1002495-Arenas5">[35]</xref>.</p>
+      </sec>
+      <sec id="s6c">
+        <title>III) Amino Acid Data with Indels and Under Recombination</title>
+        <p>This is a very specific scenario, but one that can also be very interesting for readers due to its complexity and the multiple possible options for its simulation. For instance, this scenario could be useful for testing phylogenetic tree reconstruction (or recombination detection) methods from amino acid datasets that evolved under recombination (e.g., <xref ref-type="bibr" rid="pcbi.1002495-Lemey1">[36]</xref>). As far as I know, there is no single tool available that can simulate this scenario. My suggestion is to first simulate coalescent trees (a tree for each recombinant fragment) by the program <italic>ms</italic>, and then amino acid sequences with indels can be evolved on the respective trees using <italic>INDELible</italic>.</p>
+      </sec>
+      <sec id="s6d">
+        <title>IV) Long Genomic DNA Regions under Recombination</title>
+        <p>The amount of genomic data available increases rapidly and as a consequence, plenty of genetic studies focusing on large genomic regions have appeared (e.g., <xref ref-type="bibr" rid="pcbi.1002495-Durbin1">[37]</xref>). As expected, such studies require robust and memory-efficient simulators <xref ref-type="bibr" rid="pcbi.1002495-Excoffier1">[10]</xref>, <xref ref-type="bibr" rid="pcbi.1002495-Marjoram1">[38]</xref>. One of them is <italic>fastsimcoal</italic>, which allows for efficient simulations because it is based on a simplification of the standard coalescent with recombination (the sequential Markovian coalescent [SMC] algorithm <xref ref-type="bibr" rid="pcbi.1002495-McVean1">[39]</xref>). Therefore, it seems to be an appropriate framework to simulate this scenario.</p>
+      </sec>
+      <sec id="s6e">
+        <title>V) Coding Data under a Spatial and Temporal Range Expansion</title>
+        <p>Spatial and temporal range expansions have occurred repeatedly in the history of most species and promote genetic consequences that are different than those produced by pure demographic expansions <xref ref-type="bibr" rid="pcbi.1002495-Excoffier2">[40]</xref>. In addition, other spatiotemporal processes, such as range contractions and range shifts (usually produced during climate changes) or long-distance dispersal events, can also affect molecular diversity <xref ref-type="bibr" rid="pcbi.1002495-Arenas6">[41]</xref>, <xref ref-type="bibr" rid="pcbi.1002495-Ray2">[42]</xref>. Using <italic>SPLATCHE2</italic>, trees can be simulated under spatial and temporal range expansion in a straightforward manner. Then, coding data can be simulated over those trees by <italic>INDELible</italic>.</p>
+      </sec>
+    </sec>
+    <sec id="s7">
+      <title>Applications of Simulated Genetic Data</title>
+      <p>Computer simulation is a powerful tool in population genetics with a rich variety of applications. Here I show some interesting published applications.</p>
+      <sec id="s7a">
+        <title>I. Hypothesis Testing</title>
+        <list list-type="order">
+          <list-item>
+            <p>The effect of recombination on ancestral sequence reconstruction.</p>
+            <p>Recently, Arenas and Posada <xref ref-type="bibr" rid="pcbi.1002495-Arenas5">[35]</xref> tested if recombination can affect ancestral sequence reconstruction (ASR). They simulated nucleotide, codon, and amino acid data with <italic>NetRecodon</italic> and they observed that recombination biases the reconstruction of ancestral sequences, regardless of the method or software used. This effect was shown as a consequence of incorrect phylogenetic tree reconstructions when recombination is ignored <xref ref-type="bibr" rid="pcbi.1002495-Schierup1">[43]</xref>. Note that this effect is crucial for numerous ASR-based studies (e.g., <xref ref-type="bibr" rid="pcbi.1002495-Arenas7">[44]</xref>).</p>
+          </list-item>
+          <list-item>
+            <p>The effect of recombination on selection tests.</p>
+            <p>Tests for identifying selection (based on dN/dS) are frequently used in different species, including highly recombining viruses and bacteria (e.g., <xref ref-type="bibr" rid="pcbi.1002495-Bozek1">[45]</xref>). There is, however, an important pitfall of such tests in the presence of recombination. In the studies <xref ref-type="bibr" rid="pcbi.1002495-Arenas2">[8]</xref>, <xref ref-type="bibr" rid="pcbi.1002495-Anisimova1">[23]</xref> authors simulated coding data under several heterogeneous codon models <xref ref-type="bibr" rid="pcbi.1002495-Yang3">[46]</xref> and different levels of recombination. Then, they applied likelihood ratio tests (LRTs) for model choice. Results showed a weak impact of recombination on the estimation of global dN/dS but a strong effect at the local level by inflating the number of positively selected sites. Simulations were carried out using <italic>CodonRecSim</italic> and <italic>NetRecodon</italic>.</p>
+          </list-item>
+          <list-item>
+            <p>Testing criteria for substitution model selection.</p>
+            <p>A common step in phylogenetics consists of the statistical selection of a DNA substitution model that best fits the data <xref ref-type="bibr" rid="pcbi.1002495-Posada1">[47]</xref>, <xref ref-type="bibr" rid="pcbi.1002495-Sullivan1">[48]</xref>. Currently, this model selection can be performed using several criteria, namely hierarchical and dynamic LRTs, Akaike and Bayesian information criterion (AIC and BIC, respectively), and the decision-theoretic approach (DT). Although AIC and BIC showed advantages over LRTs <xref ref-type="bibr" rid="pcbi.1002495-Posada1">[47]</xref>, the best criterion among all other options remained unclear. Recently, Luo et al. <xref ref-type="bibr" rid="pcbi.1002495-Luo1">[49]</xref> addressed this point by extensive simulations of nucleotide data (using <italic>PAML</italic> <xref ref-type="bibr" rid="pcbi.1002495-Yang2">[28]</xref> to simulate four tree topologies and <italic>Seq-Gen</italic> to evolve DNA sequences under a wide set of substitution models) and coding data (using <italic>Recodon</italic>). Then, by statistical analysis they concluded that BIC and DT approaches favor accurate model selection.</p>
+          </list-item>
+        </list>
+      </sec>
+      <sec id="s7b">
+        <title>II. Verification of Analytical Methods</title>
+        <list list-type="order">
+          <list-item>
+            <p>Validation of a method for large phylogenetic tree reconstruction.</p>
+            <p>One of the most well-established programs for phylogenetic tree reconstruction is <italic>PHYML</italic> <xref ref-type="bibr" rid="pcbi.1002495-Guindon1">[50]</xref>. As with most analytical tools, <italic>PHYML</italic> required thorough validation through computer simulations. In particular, 5,000 random phylogenies were simulated according to the standard speciation process (see <xref ref-type="bibr" rid="pcbi.1002495-Kuhner1">[51]</xref>), and then DNA sequences were evolved on those phylogenies using <italic>Seq-Gen</italic>. The program showed a topological accuracy similar to that from other maximum likelihood programs, but it strongly reduced computing time.</p>
+          </list-item>
+          <list-item>
+            <p>Validation of a method for the detection of recombinant breakpoints.</p>
+            <p>Recombination detection methods are fundamental for the analysis of genome dynamics, genetic mapping, and phylogenetic methods. As a result, a variety of methods for recombination detection exist (see <xref ref-type="bibr" rid="pcbi.1002495-Posada2">[52]</xref>). One of them was recently developed by Westesson and Holmes <xref ref-type="bibr" rid="pcbi.1002495-Westesson1">[5]</xref> for the analysis of whole-genome alignments. For its validation, ancestral recombination graphs (ARGs) were simulated using <italic>Recodon</italic>, then marginal trees with identical topologies were excluded and DNA sequences were simulated on the remaining trees using <italic>Seq-Gen</italic>. The method accurately detected recombinant breakpoints even for genome-size datasets.</p>
+          </list-item>
+        </list>
+      </sec>
+      <sec id="s7c">
+        <title>III. Study of Complex Evolutionary Processes</title>
+        <list list-type="order">
+          <list-item>
+            <p>Principal component analysis of human genetic diversity across Europe.</p>
+            <p>A controversial topic that sparked debate in recent years was the interpretation of gradients of population genetic variation across Europe derived from principal component analysis (PCA) <xref ref-type="bibr" rid="pcbi.1002495-Novembre1">[53]</xref>–<xref ref-type="bibr" rid="pcbi.1002495-CavalliSforza1">[56]</xref>. Briefly, while initially Cavalli-Sforza et al. <xref ref-type="bibr" rid="pcbi.1002495-CavalliSforza1">[56]</xref> interpreted principal component (PC) gradients only as a consequence of human ancestral expansions, Novembre and Stephens <xref ref-type="bibr" rid="pcbi.1002495-Novembre1">[53]</xref> showed that similar PC gradients may arise from diverse spatial genetic patterns under equilibrium isolation-by-distance models. Recently, François et al. <xref ref-type="bibr" rid="pcbi.1002495-Franois1">[55]</xref> carried out simulations of DNA data using <italic>SPLATCHE2</italic> in order to mimic the Neolithic farmer expansion across Europe taking into account various levels of interbreeding between farmer and resident hunter-gatherer populations (see <xref ref-type="fig" rid="pcbi-1002495-g002">Figure 2</xref>). They concluded that demographic and spatial population expansions often lead to PC gradients that are perpendicular to the direction of the expansion as a consequence of the allele surfing phenomenon <xref ref-type="bibr" rid="pcbi.1002495-Excoffier3">[57]</xref>.</p>
+          </list-item>
+        </list>
+        <fig id="pcbi-1002495-g002" position="float">
+          <object-id pub-id-type="doi">10.1371/journal.pcbi.1002495.g002</object-id>
+          <label>Figure 2</label>
+          <caption>
+            <title>Example of a simulated modern human range expansion over Europe.</title>
+            <p>(A) Snapshots of the program <italic>SPLATCHE2</italic> for an example of simulation of a Neolithic farmer expansion over Europe. Settings (demographic parameter values) used for this example are similar to those used in François et al. <xref ref-type="bibr" rid="pcbi.1002495-Franois1">[55]</xref>. Note that the range expansion starts from the bottom-right corner of Europe. Snapshots are taken every 40 generations. White demes are empty and dark colors indicate low population densities (in particular at the front of the expansion). (B) Scheme of sampling locations used for this simulation. (C) Spatial distribution of coalescent events during the range expansion.</p>
+          </caption>
+          <graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002495.g002" xlink:type="simple"/>
+        </fig>
+      </sec>
+      <sec id="s7d">
+        <title>IV. Estimation of Evolutionary Parameters</title>
+        <list list-type="order">
+          <list-item>
+            <p>Coestimation of evolutionary parameters using approximate Bayesian computation.</p>
+            <p>Approximate Bayesian computation (ABC) is a recent and useful approach for the inference in evolutionary genetics (see <xref ref-type="bibr" rid="pcbi.1002495-Beaumont2">[58]</xref>), based on computer simulations. It provides a robust alternative for those analyses where the likelihood function cannot be evaluated or is computationally too expensive. An interesting example studied by Wilson et al. <xref ref-type="bibr" rid="pcbi.1002495-Wilson1">[59]</xref> applied ABC to coestimate several evolutionary parameters (such as mutation, dN/dS, and recombination rates) from coding data of the bacteria <italic>Campylobacter jejuni</italic>. Although the simulator used was not published, such a scenario could be simulated using e.g., <italic>Recodon</italic>. In addition, Laval et al. <xref ref-type="bibr" rid="pcbi.1002495-Laval1">[60]</xref> also applied an ABC-based approach to coestimate, assuming a particular model of human evolution, important historical and demographic parameters like the onset of the African expansions and the out-of-Africa migration, as well as the current and ancestral effective population sizes of Africans and non-Africans. Here the simulation of DNA data was performed using <italic>SIMCOAL2</italic>.</p>
+          </list-item>
+        </list>
+      </sec>
+    </sec>
+    <sec id="s8">
+      <title>The Future of Computer Simulations</title>
+      <p>Although current software available can simulate a wide set of evolutionary scenarios, some limitations still remain concerning computational costs and particular complex models. In some cases the computational time is crucial (e.g., ABC studies that require millions of simulations to cover a wide range of parameter space), and running simulations in parallel on a cluster can help alleviate the computational time. On the other hand, several complex scenarios that interest evolutionary biologists are still difficult to simulate. An example is the simulation of molecular evolution with dependence among sites (coevolving sites, e.g., <xref ref-type="bibr" rid="pcbi.1002495-Wang1">[61]</xref>). Here, although some models were already developed (see <xref ref-type="bibr" rid="pcbi.1002495-Bastolla1">[62]</xref>), they could not be extensively applied in simulations due to intractable computational costs derived from the calculation of diverse structural energies (like those used in <xref ref-type="bibr" rid="pcbi.1002495-Arenas8">[63]</xref>). Another challenging scenario is the simulation of coding data under natural selection, but where the signatures of natural selection directly influence the synonymous and nonsynonymous substitutions (see <xref ref-type="bibr" rid="pcbi.1002495-Kryazhimskiy1">[64]</xref>).</p>
+      <p>There is a permanent need of software for the simulation of molecular data due to the emergence of complex scenarios and the requirement of fast simulations. Thus, I expect a fruitful future for this basic and applied area of research.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <p>I want to thank Vicky Schneider and the Editor of <italic>PLoS Computational Biology</italic>'s Education section for their invitation to contribute with this education article. I also want to thank Isabel Alves, Yang Liu, Rebecca Krebs-Wheaton, and William Fletcher for helpful comments. I thank three anonymous reviewers for their efforts in reviewing this study.</p>
+    </ack>
+    <ref-list>
+      <title>References</title>
+      <ref id="pcbi.1002495-Peck1">
+        <label>1</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Peck</surname><given-names>SL</given-names></name></person-group>             <year>2004</year>             <article-title>Simulation as experiment: a philosophical reassessment for biological modeling.</article-title>             <source>Trends Ecol Evol</source>             <volume>19</volume>             <fpage>530</fpage>             <lpage>534</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-DeChaine1">
+        <label>2</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>DeChaine</surname><given-names>EG</given-names></name><name name-style="western"><surname>Martin</surname><given-names>AP</given-names></name></person-group>             <year>2006</year>             <article-title>Using coalescent simulations to test the impact of quaternary climate cycles on divergence in an alpine plant-insect association.</article-title>             <source>Evolution</source>             <volume>60</volume>             <fpage>1004</fpage>             <lpage>1013</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-CarvajalRodriguez1">
+        <label>3</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Carvajal-Rodriguez</surname><given-names>A</given-names></name><name name-style="western"><surname>Crandall</surname><given-names>KA</given-names></name><name name-style="western"><surname>Posada</surname><given-names>D</given-names></name></person-group>             <year>2006</year>             <article-title>Recombination estimation under complex evolutionary models with the coalescent composite-likelihood method.</article-title>             <source>Mol Biol Evol</source>             <volume>23</volume>             <fpage>817</fpage>             <lpage>827</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Arenas1">
+        <label>4</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Arenas</surname><given-names>M</given-names></name><name name-style="western"><surname>Valiente</surname><given-names>G</given-names></name><name name-style="western"><surname>Posada</surname><given-names>D</given-names></name></person-group>             <year>2008</year>             <article-title>Characterization of reticulate networks based on the coalescent with recombination.</article-title>             <source>Mol Biol Evol</source>             <volume>25</volume>             <fpage>2517</fpage>             <lpage>2520</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Westesson1">
+        <label>5</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Westesson</surname><given-names>O</given-names></name><name name-style="western"><surname>Holmes</surname><given-names>I</given-names></name></person-group>             <year>2009</year>             <article-title>Accurate detection of recombinant breakpoints in whole-genome alignments.</article-title>             <source>PLoS Comput Biol</source>             <volume>5</volume>             <fpage>e1000318</fpage>             <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.1000318" xlink:type="simple">10.1371/journal.pcbi.1000318</ext-link></comment>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Hill1">
+        <label>6</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Hill</surname><given-names>WG</given-names></name><name name-style="western"><surname>Robertson</surname><given-names>A</given-names></name></person-group>             <year>1966</year>             <article-title>The effect of linkage on limits to artificial selection.</article-title>             <source>Genet Res</source>             <volume>8</volume>             <fpage>269</fpage>             <lpage>294</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Beaumont1">
+        <label>7</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Beaumont</surname><given-names>MA</given-names></name><name name-style="western"><surname>Zhang</surname><given-names>W</given-names></name><name name-style="western"><surname>Balding</surname><given-names>DJ</given-names></name></person-group>             <year>2002</year>             <article-title>Approximate Bayesian computation in population genetics.</article-title>             <source>Genetics</source>             <volume>162</volume>             <fpage>2025</fpage>             <lpage>2035</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Arenas2">
+        <label>8</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Arenas</surname><given-names>M</given-names></name><name name-style="western"><surname>Posada</surname><given-names>D</given-names></name></person-group>             <year>2010</year>             <article-title>Coalescent simulation of intracodon recombination.</article-title>             <source>Genetics</source>             <volume>184</volume>             <fpage>429</fpage>             <lpage>437</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Ray1">
+        <label>9</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Ray</surname><given-names>N</given-names></name><name name-style="western"><surname>Currat</surname><given-names>M</given-names></name><name name-style="western"><surname>Foll</surname><given-names>M</given-names></name><name name-style="western"><surname>Excoffier</surname><given-names>L</given-names></name></person-group>             <year>2010</year>             <article-title>SPLATCHE2: a spatially explicit simulation framework for complex demography, genetic admixture and recombination.</article-title>             <source>Bioinformatics</source>             <volume>26</volume>             <fpage>2993</fpage>             <lpage>2994</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Excoffier1">
+        <label>10</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Excoffier</surname><given-names>L</given-names></name><name name-style="western"><surname>Foll</surname><given-names>M</given-names></name></person-group>             <year>2011</year>             <article-title>fastsimcoal: a continuous-time coalescent simulator of genomic diversity under arbitrarily complex evolutionary scenarios.</article-title>             <source>Bioinformatics</source>             <volume>27</volume>             <fpage>1332</fpage>             <lpage>1334</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Yang1">
+        <label>11</label>
+        <element-citation publication-type="other" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Yang</surname><given-names>Z</given-names></name></person-group>             <year>2006</year>             <source>Computational molecular evolution</source>             <publisher-name>Oxford University Press</publisher-name>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Fletcher1">
+        <label>12</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Fletcher</surname><given-names>W</given-names></name><name name-style="western"><surname>Yang</surname><given-names>Z</given-names></name></person-group>             <year>2009</year>             <article-title>INDELible: a flexible simulator of biological sequence evolution.</article-title>             <source>Mol Biol Evol</source>             <volume>26</volume>             <fpage>1879</fpage>             <lpage>1888</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-CarvajalRodriguez2">
+        <label>13</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Carvajal-Rodriguez</surname><given-names>A</given-names></name></person-group>             <year>2008</year>             <article-title>Simulation of genomes: a review.</article-title>             <source>Curr Genomics</source>             <volume>9</volume>             <fpage>155</fpage>             <lpage>159</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-CarvajalRodriguez3">
+        <label>14</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Carvajal-Rodriguez</surname><given-names>A</given-names></name></person-group>             <year>2010</year>             <article-title>Simulation of genes and genomes forward in time.</article-title>             <source>Curr Genomics</source>             <volume>11</volume>             <fpage>58</fpage>             <lpage>61</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Liu1">
+        <label>15</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Liu</surname><given-names>Y</given-names></name><name name-style="western"><surname>Athanasiadis</surname><given-names>G</given-names></name><name name-style="western"><surname>Weale</surname><given-names>ME</given-names></name></person-group>             <year>2008</year>             <article-title>A survey of genetic simulation software for population and epidemiological studies.</article-title>             <source>Hum Genomics</source>             <volume>3</volume>             <fpage>79</fpage>             <lpage>86</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Hoban1">
+        <label>16</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Hoban</surname><given-names>S</given-names></name><name name-style="western"><surname>Bertorelle</surname><given-names>G</given-names></name><name name-style="western"><surname>Gaggiotti</surname><given-names>OE</given-names></name></person-group>             <year>2012</year>             <article-title>Computer simulations: tools for population and evolutionary genetics.</article-title>             <source>Nat Rev Genet</source>             <volume>13</volume>             <fpage>110</fpage>             <lpage>122</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Arenas3">
+        <label>17</label>
+        <element-citation publication-type="other" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Arenas</surname><given-names>M</given-names></name><name name-style="western"><surname>Posada</surname><given-names>D</given-names></name></person-group>             <year>2012</year>             <article-title>Simulation of coding sequence evolution.</article-title>             <person-group person-group-type="editor"><name name-style="western"><surname>Cannarozzi</surname><given-names>GM</given-names></name><name name-style="western"><surname>Schneider</surname><given-names>A</given-names></name></person-group>             <source>Codon evolution</source>             <publisher-loc>Oxford</publisher-loc>             <publisher-name>Oxford University Press</publisher-name>             <fpage>126</fpage>             <lpage>132</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-CarvajalRodriguez4">
+        <label>18</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Carvajal-Rodriguez</surname><given-names>A</given-names></name></person-group>             <year>2008</year>             <article-title>GENOMEPOP: a program to simulate genomes in populations.</article-title>             <source>BMC Bioinformatics</source>             <volume>9</volume>             <fpage>223</fpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Hernandez1">
+        <label>19</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Hernandez</surname><given-names>RD</given-names></name></person-group>             <year>2008</year>             <article-title>A flexible forward simulator for populations subject to selection and demography.</article-title>             <source>Bioinformatics</source>             <volume>24</volume>             <fpage>2786</fpage>             <lpage>2787</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Neuenschwander1">
+        <label>20</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Neuenschwander</surname><given-names>S</given-names></name></person-group>             <year>2006</year>             <article-title>AQUASPLATCHE: a program to simulate genetic diversity in populations living in linear habitats.</article-title>             <source>Mol Ecol Notes</source>             <volume>6</volume>             <fpage>583</fpage>             <lpage>585</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Peng1">
+        <label>21</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Peng</surname><given-names>B</given-names></name><name name-style="western"><surname>Kimmel</surname><given-names>M</given-names></name></person-group>             <year>2005</year>             <article-title>simuPOP: a forward-time population genetics simulation environment.</article-title>             <source>Bioinformatics</source>             <volume>21</volume>             <fpage>3686</fpage>             <lpage>3687</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Arbiza1">
+        <label>22</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Arbiza</surname><given-names>L</given-names></name><name name-style="western"><surname>Patricio</surname><given-names>M</given-names></name><name name-style="western"><surname>Dopazo</surname><given-names>H</given-names></name><name name-style="western"><surname>Posada</surname><given-names>D</given-names></name></person-group>             <year>2011</year>             <article-title>Genome-wide heterogeneity of nucleotide substitution model fit.</article-title>             <source>Genome Biol Evol</source>             <volume>3</volume>             <fpage>896</fpage>             <lpage>908</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Anisimova1">
+        <label>23</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Anisimova</surname><given-names>M</given-names></name><name name-style="western"><surname>Nielsen</surname><given-names>R</given-names></name><name name-style="western"><surname>Yang</surname><given-names>Z</given-names></name></person-group>             <year>2003</year>             <article-title>Effect of recombination on the accuracy of the likelihood method for detecting positive selection at amino acid sites.</article-title>             <source>Genetics</source>             <volume>164</volume>             <fpage>1229</fpage>             <lpage>1236</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Arenas4">
+        <label>24</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Arenas</surname><given-names>M</given-names></name><name name-style="western"><surname>Posada</surname><given-names>D</given-names></name></person-group>             <year>2007</year>             <article-title>Recodon: coalescent simulation of coding DNA sequences with recombination, migration and demography.</article-title>             <source>BMC Bioinformatics</source>             <volume>8</volume>             <fpage>458</fpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Navascues1">
+        <label>25</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Navascues</surname><given-names>M</given-names></name><name name-style="western"><surname>Depaulis</surname><given-names>F</given-names></name><name name-style="western"><surname>Emerson</surname><given-names>BC</given-names></name></person-group>             <year>2010</year>             <article-title>Combining contemporary and ancient DNA in population genetic and phylogeographical studies.</article-title>             <source>Mol Ecol Resour</source>             <volume>10</volume>             <fpage>760</fpage>             <lpage>772</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Rambaut1">
+        <label>26</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Rambaut</surname><given-names>A</given-names></name><name name-style="western"><surname>Grassly</surname><given-names>NC</given-names></name></person-group>             <year>1997</year>             <article-title>Seq-Gen: an application for the Monte Carlo simulation of DNA sequence evolution along phylogenetic trees.</article-title>             <source>Comput Appl Biosciences</source>             <volume>13</volume>             <fpage>235</fpage>             <lpage>238</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Strope1">
+        <label>27</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Strope</surname><given-names>CL</given-names></name><name name-style="western"><surname>Abel</surname><given-names>K</given-names></name><name name-style="western"><surname>Scott</surname><given-names>SD</given-names></name><name name-style="western"><surname>Moriyama</surname><given-names>EN</given-names></name></person-group>             <year>2009</year>             <article-title>Biological sequence simulation for testing complex evolutionary hypotheses: indel-Seq-Gen version 2.0.</article-title>             <source>Mol Biol Evol</source>             <volume>26</volume>             <fpage>2581</fpage>             <lpage>2593</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Yang2">
+        <label>28</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Yang</surname><given-names>Z</given-names></name></person-group>             <year>1997</year>             <article-title>PAML: a program package for phylogenetic analysis by maximum likelihood.</article-title>             <source>Computer Applications in the Biosciences</source>             <volume>13</volume>             <fpage>555</fpage>             <lpage>556</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Sipos1">
+        <label>29</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Sipos</surname><given-names>B</given-names></name><name name-style="western"><surname>Massingham</surname><given-names>T</given-names></name><name name-style="western"><surname>Jordan</surname><given-names>GE</given-names></name><name name-style="western"><surname>Goldman</surname><given-names>N</given-names></name></person-group>             <year>2011</year>             <article-title>PhyloSim - Monte Carlo simulation of sequence evolution in the R statistical computing environment.</article-title>             <source>BMC Bioinformatics</source>             <volume>12</volume>             <fpage>104</fpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Ihaka1">
+        <label>30</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Ihaka</surname><given-names>R</given-names></name><name name-style="western"><surname>Gentleman</surname><given-names>R</given-names></name></person-group>             <year>1996</year>             <article-title>R: a language for data analysis and graphics.</article-title>             <source>J Comput Graph Stat</source>             <volume>169</volume>             <fpage>299</fpage>             <lpage>314</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Biswas1">
+        <label>31</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Biswas</surname><given-names>S</given-names></name><name name-style="western"><surname>Akey</surname><given-names>J</given-names></name></person-group>             <year>2006</year>             <article-title>Genomic insights into positive selection.</article-title>             <source>Trends Genet</source>             <volume>22</volume>             <fpage>437</fpage>             <lpage>446</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Kelley1">
+        <label>32</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Kelley</surname><given-names>JL</given-names></name><name name-style="western"><surname>Madeoy</surname><given-names>J</given-names></name><name name-style="western"><surname>Calhoun</surname><given-names>JC</given-names></name><name name-style="western"><surname>Swanson</surname><given-names>W</given-names></name><name name-style="western"><surname>Akey</surname><given-names>JM</given-names></name></person-group>             <year>2006</year>             <article-title>Genomic signatures of positive selection in humans and the limits of outlier approaches.</article-title>             <source>Genome Res</source>             <volume>16</volume>             <fpage>980</fpage>             <lpage>989</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Ewing1">
+        <label>33</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Ewing</surname><given-names>G</given-names></name><name name-style="western"><surname>Hermisson</surname><given-names>J</given-names></name></person-group>             <year>2010</year>             <article-title>MSMS: a coalescent simulation program including recombination, demographic structure and selection at a single locus.</article-title>             <source>Bioinformatics</source>             <volume>26</volume>             <fpage>2064</fpage>             <lpage>2065</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Spencer1">
+        <label>34</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Spencer</surname><given-names>CC</given-names></name><name name-style="western"><surname>Coop</surname><given-names>G</given-names></name></person-group>             <year>2004</year>             <article-title>SelSim: a program to simulate population genetic data with natural selection and recombination.</article-title>             <source>Bioinformatics</source>             <volume>20</volume>             <fpage>3673</fpage>             <lpage>3675</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Arenas5">
+        <label>35</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Arenas</surname><given-names>M</given-names></name><name name-style="western"><surname>Posada</surname><given-names>D</given-names></name></person-group>             <year>2010</year>             <article-title>The effect of recombination on the reconstruction of ancestral sequences.</article-title>             <source>Genetics</source>             <volume>184</volume>             <fpage>1133</fpage>             <lpage>1139</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Lemey1">
+        <label>36</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Lemey</surname><given-names>P</given-names></name><name name-style="western"><surname>Lott</surname><given-names>M</given-names></name><name name-style="western"><surname>Martin</surname><given-names>DP</given-names></name><name name-style="western"><surname>Moulton</surname><given-names>V</given-names></name></person-group>             <year>2009</year>             <article-title>Identifying recombinants in human and primate immunodeficiency virus sequence alignments using quartet scanning.</article-title>             <source>BMC Bioinformatics</source>             <volume>10</volume>             <fpage>126</fpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Durbin1">
+        <label>37</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Durbin</surname><given-names>RM</given-names></name><name name-style="western"><surname>Altshuler</surname><given-names>DL</given-names></name><name name-style="western"><surname>Abecasis</surname><given-names>GR</given-names></name><name name-style="western"><surname>Bentley</surname><given-names>DR</given-names></name><name name-style="western"><surname>Chakravarti</surname><given-names>A</given-names></name><etal/></person-group>             <year>2010</year>             <article-title>A map of human genome variation from population-scale sequencing.</article-title>             <source>Nature</source>             <volume>467</volume>             <fpage>1061</fpage>             <lpage>1073</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Marjoram1">
+        <label>38</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Marjoram</surname><given-names>P</given-names></name><name name-style="western"><surname>Wall</surname><given-names>JD</given-names></name></person-group>             <year>2006</year>             <article-title>Fast “coalescent” simulation.</article-title>             <source>BMC Genet</source>             <volume>7</volume>             <fpage>16</fpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-McVean1">
+        <label>39</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>McVean</surname><given-names>GA</given-names></name><name name-style="western"><surname>Cardin</surname><given-names>NJ</given-names></name></person-group>             <year>2005</year>             <article-title>Approximating the coalescent with recombination.</article-title>             <source>Philos Trans R Soc Lond B Biol Sci</source>             <volume>360</volume>             <fpage>1387</fpage>             <lpage>1393</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Excoffier2">
+        <label>40</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Excoffier</surname><given-names>L</given-names></name><name name-style="western"><surname>Foll</surname><given-names>M</given-names></name><name name-style="western"><surname>Petit</surname><given-names>RJ</given-names></name></person-group>             <year>2009</year>             <article-title>Genetic consequences of range expansions.</article-title>             <source>Annu Rev Ecol Evol Syst</source>             <volume>40</volume>             <fpage>481</fpage>             <lpage>501</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Arenas6">
+        <label>41</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Arenas</surname><given-names>M</given-names></name><name name-style="western"><surname>Ray</surname><given-names>N</given-names></name><name name-style="western"><surname>Currat</surname><given-names>M</given-names></name><name name-style="western"><surname>Excoffier</surname><given-names>L</given-names></name></person-group>             <year>2012</year>             <article-title>Consequences of range contractions and range shifts on molecular diversity.</article-title>             <source>Mol Biol Evol</source>             <volume>29</volume>             <fpage>207</fpage>             <lpage>218</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Ray2">
+        <label>42</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Ray</surname><given-names>N</given-names></name><name name-style="western"><surname>Excoffier</surname><given-names>L</given-names></name></person-group>             <year>2010</year>             <article-title>A first step towards inferring levels of long-distance dispersal during past expansions.</article-title>             <source>Mol Ecol Resour</source>             <volume>10</volume>             <fpage>902</fpage>             <lpage>914</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Schierup1">
+        <label>43</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Schierup</surname><given-names>MH</given-names></name><name name-style="western"><surname>Hein</surname><given-names>J</given-names></name></person-group>             <year>2000</year>             <article-title>Consequences of recombination on traditional phylogenetic analysis.</article-title>             <source>Genetics</source>             <volume>156</volume>             <fpage>879</fpage>             <lpage>891</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Arenas7">
+        <label>44</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Arenas</surname><given-names>M</given-names></name><name name-style="western"><surname>Posada</surname><given-names>D</given-names></name></person-group>             <year>2010</year>             <article-title>Computational design of centralized HIV-1 genes.</article-title>             <source>Curr HIV Res</source>             <volume>8</volume>             <fpage>613</fpage>             <lpage>621</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Bozek1">
+        <label>45</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Bozek</surname><given-names>K</given-names></name><name name-style="western"><surname>Lengauer</surname><given-names>T</given-names></name></person-group>             <year>2010</year>             <article-title>Positive selection of HIV host factors and the evolution of lentivirus genes.</article-title>             <source>BMC Evol Biol</source>             <volume>10</volume>             <fpage>186</fpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Yang3">
+        <label>46</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Yang</surname><given-names>Z</given-names></name><name name-style="western"><surname>Nielsen</surname><given-names>R</given-names></name><name name-style="western"><surname>Goldman</surname><given-names>N</given-names></name><name name-style="western"><surname>Pedersen</surname><given-names>A-MK</given-names></name></person-group>             <year>2000</year>             <article-title>Codon-substitution models for heterogeneous selection pressure at amino acid sites.</article-title>             <source>Genetics</source>             <volume>155</volume>             <fpage>431</fpage>             <lpage>449</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Posada1">
+        <label>47</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Posada</surname><given-names>D</given-names></name><name name-style="western"><surname>Buckley</surname><given-names>TR</given-names></name></person-group>             <year>2004</year>             <article-title>Model selection and model averaging in phylogenetics: advantages of Akaike Information Criterion and Bayesian approaches over likelihood ratio tests.</article-title>             <source>Syst Biol</source>             <volume>53</volume>             <fpage>793</fpage>             <lpage>808</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Sullivan1">
+        <label>48</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Sullivan</surname><given-names>J</given-names></name><name name-style="western"><surname>Joyce</surname><given-names>P</given-names></name></person-group>             <year>2005</year>             <article-title>Model selection in phylogenetics.</article-title>             <source>Annu Rev Ecol Evol Syst</source>             <volume>36</volume>             <fpage>445</fpage>             <lpage>466</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Luo1">
+        <label>49</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Luo</surname><given-names>A</given-names></name><name name-style="western"><surname>Qiao</surname><given-names>H</given-names></name><name name-style="western"><surname>Zhang</surname><given-names>Y</given-names></name><name name-style="western"><surname>Shi</surname><given-names>W</given-names></name><name name-style="western"><surname>Ho</surname><given-names>SY</given-names></name><etal/></person-group>             <year>2010</year>             <article-title>Performance of criteria for selecting evolutionary models in phylogenetics: a comprehensive study based on simulated datasets.</article-title>             <source>BMC Evol Biol</source>             <volume>10</volume>             <fpage>242</fpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Guindon1">
+        <label>50</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Guindon</surname><given-names>S</given-names></name><name name-style="western"><surname>Gascuel</surname><given-names>O</given-names></name></person-group>             <year>2003</year>             <article-title>A simple, fast, and accurate algorithm to estimate large phylogenies by maximum likelihood.</article-title>             <source>Syst Biol</source>             <volume>52</volume>             <fpage>696</fpage>             <lpage>704</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Kuhner1">
+        <label>51</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Kuhner</surname><given-names>MK</given-names></name><name name-style="western"><surname>Felsenstein</surname><given-names>J</given-names></name></person-group>             <year>1994</year>             <article-title>A simulation comparison of phylogeny algorithms under equal and unequal evolutionary rates.</article-title>             <source>Molecular Biol Evol</source>             <volume>11</volume>             <fpage>459</fpage>             <lpage>468</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Posada2">
+        <label>52</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Posada</surname><given-names>D</given-names></name></person-group>             <year>2002</year>             <article-title>Evaluation of methods for detecting recombination from DNA sequences: empirical data.</article-title>             <source>Mol Biol Evol</source>             <volume>19</volume>             <fpage>708</fpage>             <lpage>717</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Novembre1">
+        <label>53</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Novembre</surname><given-names>J</given-names></name><name name-style="western"><surname>Stephens</surname><given-names>M</given-names></name></person-group>             <year>2008</year>             <article-title>Interpreting principal component analyses of spatial population genetic variation.</article-title>             <source>Nat Genet</source>             <volume>40</volume>             <fpage>646</fpage>             <lpage>649</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Novembre2">
+        <label>54</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Novembre</surname><given-names>J</given-names></name><name name-style="western"><surname>Stephens</surname><given-names>M</given-names></name></person-group>             <year>2010</year>             <article-title>Response to Cavalli-Sforza interview [Human Biology 82(3):245–266 (June 2010)].</article-title>             <source>Hum Biol</source>             <volume>82</volume>             <fpage>469</fpage>             <lpage>470</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Franois1">
+        <label>55</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>François</surname><given-names>O</given-names></name><name name-style="western"><surname>Currat</surname><given-names>M</given-names></name><name name-style="western"><surname>Ray</surname><given-names>N</given-names></name><name name-style="western"><surname>Han</surname><given-names>E</given-names></name><name name-style="western"><surname>Excoffier</surname><given-names>L</given-names></name><etal/></person-group>             <year>2010</year>             <article-title>Principal component analysis under population genetic models of range expansion and admixture.</article-title>             <source>Mol Biol Evol</source>             <volume>27</volume>             <fpage>1257</fpage>             <lpage>1268</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-CavalliSforza1">
+        <label>56</label>
+        <element-citation publication-type="other" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Cavalli-Sforza</surname><given-names>LL</given-names></name><name name-style="western"><surname>Menozzi</surname><given-names>P</given-names></name><name name-style="western"><surname>Piazza</surname><given-names>A</given-names></name></person-group>             <year>1994</year>             <source>The history and geography of human genes</source>             <publisher-loc>Princeton, New Jersey</publisher-loc>             <publisher-name>Princeton University Press</publisher-name>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Excoffier3">
+        <label>57</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Excoffier</surname><given-names>L</given-names></name><name name-style="western"><surname>Ray</surname><given-names>N</given-names></name></person-group>             <year>2008</year>             <article-title>Surfing during population expansions promotes genetic revolutions and structuration.</article-title>             <source>Trends Ecol Evol</source>             <volume>23</volume>             <fpage>347</fpage>             <lpage>351</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Beaumont2">
+        <label>58</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Beaumont</surname><given-names>MA</given-names></name></person-group>             <year>2010</year>             <article-title>Approximate Bayesian computation in evolution and ecology.</article-title>             <source>Annu Rev Ecol Evol Syst</source>             <volume>41</volume>             <fpage>379</fpage>             <lpage>405</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Wilson1">
+        <label>59</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Wilson</surname><given-names>DJ</given-names></name><name name-style="western"><surname>Gabriel</surname><given-names>E</given-names></name><name name-style="western"><surname>Leatherbarrow</surname><given-names>AJ</given-names></name><name name-style="western"><surname>Cheesbrough</surname><given-names>J</given-names></name><name name-style="western"><surname>Gee</surname><given-names>S</given-names></name><etal/></person-group>             <year>2009</year>             <article-title>Rapid evolution and the importance of recombination to the gastroenteric pathogen Campylobacter jejuni.</article-title>             <source>Mol Biol Evol</source>             <volume>26</volume>             <fpage>385</fpage>             <lpage>397</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Laval1">
+        <label>60</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Laval</surname><given-names>G</given-names></name><name name-style="western"><surname>Patin</surname><given-names>E</given-names></name><name name-style="western"><surname>Barreiro</surname><given-names>LB</given-names></name><name name-style="western"><surname>Quintana-Murci</surname><given-names>L</given-names></name></person-group>             <year>2010</year>             <article-title>Formulating a historical and demographic model of recent human evolution based on resequencing data from noncoding regions.</article-title>             <source>PLoS ONE</source>             <volume>5</volume>             <fpage>e10284</fpage>             <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pone.0010284" xlink:type="simple">10.1371/journal.pone.0010284</ext-link></comment>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Wang1">
+        <label>61</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Wang</surname><given-names>M</given-names></name><name name-style="western"><surname>Kapralov</surname><given-names>MV</given-names></name><name name-style="western"><surname>Anisimova</surname><given-names>M</given-names></name></person-group>             <year>2011</year>             <article-title>Coevolution of amino acid residues in the key photosynthetic enzyme Rubisco.</article-title>             <source>BMC Evol Biol</source>             <volume>11</volume>             <fpage>266</fpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Bastolla1">
+        <label>62</label>
+        <element-citation publication-type="other" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Bastolla</surname><given-names>U</given-names></name><name name-style="western"><surname>Porto</surname><given-names>M</given-names></name><name name-style="western"><surname>Roman</surname><given-names>HE</given-names></name><name name-style="western"><surname>Vendruscolo</surname><given-names>M</given-names></name></person-group>             <year>2007</year>             <source>Structural approaches to sequence evolution</source>             <publisher-loc>Berlin, Heidelberg</publisher-loc>             <publisher-name>Springer</publisher-name>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Arenas8">
+        <label>63</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Arenas</surname><given-names>M</given-names></name><name name-style="western"><surname>Villaverde</surname><given-names>MC</given-names></name><name name-style="western"><surname>Sussman</surname><given-names>F</given-names></name></person-group>             <year>2009</year>             <article-title>Prediction and analysis of binding affinities for chemically diverse HIV-1 PR inhibitors by the modified SAFE_p approach.</article-title>             <source>J Comput Chem</source>             <volume>30</volume>             <fpage>1229</fpage>             <lpage>1240</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Kryazhimskiy1">
+        <label>64</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Kryazhimskiy</surname><given-names>S</given-names></name><name name-style="western"><surname>Plotkin</surname><given-names>JB</given-names></name></person-group>             <year>2008</year>             <article-title>The population genetics of dN/dS.</article-title>             <source>PLoS Genet</source>             <volume>4</volume>             <fpage>e1000304</fpage>             <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pgen.1000304" xlink:type="simple">10.1371/journal.pgen.1000304</ext-link></comment>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Excoffier4">
+        <label>65</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Excoffier</surname><given-names>L</given-names></name><name name-style="western"><surname>Novembre</surname><given-names>J</given-names></name><name name-style="western"><surname>Schneider</surname><given-names>S</given-names></name></person-group>             <year>2000</year>             <article-title>SIMCOAL: a general coalescent program for the simulation of molecular data in interconnected populations with arbitrary demography.</article-title>             <source>J Heredity</source>             <volume>91</volume>             <fpage>506</fpage>             <lpage>509</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Anderson1">
+        <label>66</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Anderson</surname><given-names>CN</given-names></name><name name-style="western"><surname>Ramakrishnan</surname><given-names>U</given-names></name><name name-style="western"><surname>Chan</surname><given-names>YL</given-names></name><name name-style="western"><surname>Hadly</surname><given-names>EA</given-names></name></person-group>             <year>2005</year>             <article-title>Serial SimCoal: a population genetics model for data from multiple populations and points in time.</article-title>             <source>Bioinformatics</source>             <volume>21</volume>             <fpage>1733</fpage>             <lpage>1734</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-RamosOnsins1">
+        <label>67</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Ramos-Onsins</surname><given-names>SE</given-names></name><name name-style="western"><surname>Mitchell-Olds</surname><given-names>T</given-names></name></person-group>             <year>2007</year>             <article-title>Mlcoalsim: multilocus coalescent simulations.</article-title>             <source>Evol Bioinform Online</source>             <volume>3</volume>             <fpage>41</fpage>             <lpage>44</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Grassly1">
+        <label>68</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Grassly</surname><given-names>NC</given-names></name><name name-style="western"><surname>Harvey</surname><given-names>PH</given-names></name><name name-style="western"><surname>Holmes</surname><given-names>EC</given-names></name></person-group>             <year>1999</year>             <article-title>Population dynamics of HIV-1 inferred from gene sequences.</article-title>             <source>Genetics</source>             <volume>151</volume>             <fpage>427</fpage>             <lpage>438</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Beiko1">
+        <label>69</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Beiko</surname><given-names>RG</given-names></name><name name-style="western"><surname>Charlebois</surname><given-names>RL</given-names></name></person-group>             <year>2007</year>             <article-title>A simulation test bed for hypotheses of genome evolution.</article-title>             <source>Bioinformatics</source>             <volume>23</volume>             <fpage>825</fpage>             <lpage>831</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Hall1">
+        <label>70</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Hall</surname><given-names>BG</given-names></name></person-group>             <year>2008</year>             <article-title>Simulating DNA coding sequence evolution with EvolveAGene 3.</article-title>             <source>Mol Biol Evol</source>             <volume>25</volume>             <fpage>688</fpage>             <lpage>695</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Cartwright1">
+        <label>71</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Cartwright</surname><given-names>RA</given-names></name></person-group>             <year>2005</year>             <article-title>DNA assembly with gaps (Dawg): simulating sequence evolution.</article-title>             <source>Bioinformatics</source>             <volume>21</volume>             <supplement>Suppl 3</supplement>             <fpage>iii31</fpage>             <lpage>38</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Rosenberg1">
+        <label>72</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Rosenberg</surname><given-names>MS</given-names></name></person-group>             <year>2005</year>             <article-title>MySSP: Non-stationary evolutionary sequence simulation, including indels.</article-title>             <source>Evol Bioinform Online</source>             <volume>1</volume>             <fpage>81</fpage>             <lpage>83</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Gesell1">
+        <label>73</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Gesell</surname><given-names>T</given-names></name><name name-style="western"><surname>von Haeseler</surname><given-names>A</given-names></name></person-group>             <year>2006</year>             <article-title>In silico sequence evolution with site-specific interactions along phylogenetic trees.</article-title>             <source>Bioinformatics</source>             <volume>22</volume>             <fpage>716</fpage>             <lpage>722</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Stoye1">
+        <label>74</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Stoye</surname><given-names>J</given-names></name><name name-style="western"><surname>Evers</surname><given-names>D</given-names></name><name name-style="western"><surname>Meyer</surname><given-names>F</given-names></name></person-group>             <year>1998</year>             <article-title>Rose: generating sequence families.</article-title>             <source>Bioinformatics</source>             <volume>14</volume>             <fpage>157</fpage>             <lpage>163</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Varadarajan1">
+        <label>75</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Varadarajan</surname><given-names>A</given-names></name><name name-style="western"><surname>Bradley</surname><given-names>RK</given-names></name><name name-style="western"><surname>Holmes</surname><given-names>IH</given-names></name></person-group>             <year>2008</year>             <article-title>Tools for simulating evolution of aligned genomic regions with integrated parameter estimation.</article-title>             <source>Genome Biol</source>             <volume>9</volume>             <fpage>R147</fpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Dalquen1">
+        <label>76</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Dalquen</surname><given-names>DA</given-names></name><name name-style="western"><surname>Anisimova</surname><given-names>M</given-names></name><name name-style="western"><surname>Gonnet</surname><given-names>GH</given-names></name><name name-style="western"><surname>Dessimoz</surname><given-names>C</given-names></name></person-group>             <year>2012</year>             <article-title>ALF–a simulation framework for genome evolution.</article-title>             <source>Mol Biol Evol</source>             <volume>29</volume>             <fpage>1115</fpage>             <lpage>1123</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Pang1">
+        <label>77</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Pang</surname><given-names>A</given-names></name><name name-style="western"><surname>Smith</surname><given-names>AD</given-names></name><name name-style="western"><surname>Nuin</surname><given-names>PA</given-names></name><name name-style="western"><surname>Tillier</surname><given-names>ER</given-names></name></person-group>             <year>2005</year>             <article-title>SIMPROT: using an empirically determined indel distribution in simulations of protein evolution.</article-title>             <source>BMC Bioinformatics</source>             <volume>6</volume>             <fpage>236</fpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Arenas9">
+        <label>78</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Arenas</surname><given-names>M</given-names></name><name name-style="western"><surname>Patricio</surname><given-names>M</given-names></name><name name-style="western"><surname>Posada</surname><given-names>D</given-names></name><name name-style="western"><surname>Valiente</surname><given-names>G</given-names></name></person-group>             <year>2010</year>             <article-title>Characterization of phylogenetic networks with NetTest.</article-title>             <source>BMC Bioinformatics</source>             <volume>11</volume>             <fpage>268</fpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Raup1">
+        <label>79</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Raup</surname><given-names>DM</given-names></name><name name-style="western"><surname>Gould</surname><given-names>SJ</given-names></name><name name-style="western"><surname>Schopf</surname><given-names>TJM</given-names></name><name name-style="western"><surname>Simberloff</surname><given-names>DS</given-names></name></person-group>             <year>1973</year>             <article-title>Stochastic models of phylogeny and the evolution of diversity.</article-title>             <source>J Geol</source>             <volume>81</volume>             <fpage>525</fpage>             <lpage>542</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Epperson1">
+        <label>80</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Epperson</surname><given-names>BK</given-names></name><name name-style="western"><surname>McRae</surname><given-names>BH</given-names></name><name name-style="western"><surname>Scribner</surname><given-names>K</given-names></name><name name-style="western"><surname>Cushman</surname><given-names>SA</given-names></name><name name-style="western"><surname>Rosenberg</surname><given-names>MS</given-names></name><etal/></person-group>             <year>2010</year>             <article-title>Utility of computer simulations in landscape genetics.</article-title>             <source>Mol Ecol</source>             <volume>19</volume>             <fpage>3549</fpage>             <lpage>3564</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Peng2">
+        <label>81</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Peng</surname><given-names>B</given-names></name><name name-style="western"><surname>Amos</surname><given-names>CI</given-names></name><name name-style="western"><surname>Kimmel</surname><given-names>M</given-names></name></person-group>             <year>2007</year>             <article-title>Forward-time simulations of human populations with complex diseases.</article-title>             <source>PLoS Genet</source>             <volume>3</volume>             <fpage>e47</fpage>             <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pgen.0030047" xlink:type="simple">10.1371/journal.pgen.0030047</ext-link></comment>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Calafell1">
+        <label>82</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Calafell</surname><given-names>F</given-names></name><name name-style="western"><surname>Grigorenko</surname><given-names>EL</given-names></name><name name-style="western"><surname>Chikanian</surname><given-names>AA</given-names></name><name name-style="western"><surname>Kidd</surname><given-names>KK</given-names></name></person-group>             <year>2001</year>             <article-title>Haplotype evolution and linkage disequilibrium: a simulation study.</article-title>             <source>Hum Hered</source>             <volume>51</volume>             <fpage>85</fpage>             <lpage>96</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Jones1">
+        <label>83</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Jones</surname><given-names>TC</given-names></name><name name-style="western"><surname>Laughlin</surname><given-names>TF</given-names></name></person-group>             <year>2010</year>             <article-title>PopGen fishbowl: a free online simulation model of microevolutionary processes.</article-title>             <source>Am Biol Teach</source>             <volume>72</volume>             <fpage>100</fpage>             <lpage>103</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Coombs1">
+        <label>84</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Coombs</surname><given-names>JA</given-names></name><name name-style="western"><surname>Letcher</surname><given-names>BH</given-names></name><name name-style="western"><surname>Nislow</surname><given-names>KH</given-names></name></person-group>             <year>2010</year>             <article-title>Pedagog: software for simulating eco-evolutionary population dynamics.</article-title>             <source>Mol Ecol Resour</source>             <volume>10</volume>             <fpage>558</fpage>             <lpage>563</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Padhukasahasram1">
+        <label>85</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Padhukasahasram</surname><given-names>B</given-names></name><name name-style="western"><surname>Marjoram</surname><given-names>P</given-names></name><name name-style="western"><surname>Wall</surname><given-names>JD</given-names></name><name name-style="western"><surname>Bustamante</surname><given-names>CD</given-names></name><name name-style="western"><surname>Nordborg</surname><given-names>M</given-names></name></person-group>             <year>2008</year>             <article-title>Exploring population genetic models with recombination using efficient forward-time simulations.</article-title>             <source>Genetics</source>             <volume>178</volume>             <fpage>2417</fpage>             <lpage>2427</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Nordborg1">
+        <label>86</label>
+        <element-citation publication-type="other" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Nordborg</surname><given-names>M</given-names></name></person-group>             <year>2007</year>             <article-title>Coalescent theory.</article-title>             <person-group person-group-type="editor"><name name-style="western"><surname>Balding</surname><given-names>DJ</given-names></name><name name-style="western"><surname>Bishop</surname><given-names>M</given-names></name><name name-style="western"><surname>Cannings</surname><given-names>C</given-names></name></person-group>             <source>Handbook of statistical genetics. Third edition</source>             <publisher-loc>Chichester, UK</publisher-loc>             <publisher-name>John Wiley &amp; Sons, Ltd</publisher-name>             <fpage>843</fpage>             <lpage>877</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Wakeley1">
+        <label>87</label>
+        <element-citation publication-type="other" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Wakeley</surname><given-names>J</given-names></name></person-group>             <year>2008</year>             <source>Coalescent Theory: An Introduction</source>             <publisher-loc>Greenwood Village, Colorado</publisher-loc>             <publisher-name>Roberts and Company Publishers</publisher-name>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Slatkin1">
+        <label>88</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Slatkin</surname><given-names>M</given-names></name></person-group>             <year>2001</year>             <article-title>Simulating genealogies of selected alleles in a population of variable size.</article-title>             <source>Genet Res</source>             <volume>78</volume>             <fpage>49</fpage>             <lpage>57</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Hudson1">
+        <label>89</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Hudson</surname><given-names>RR</given-names></name></person-group>             <year>1998</year>             <article-title>Island models and the coalescent process.</article-title>             <source>Mol Ecol</source>             <volume>7</volume>             <fpage>413</fpage>             <lpage>418</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Hudson2">
+        <label>90</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Hudson</surname><given-names>RR</given-names></name></person-group>             <year>1983</year>             <article-title>Properties of a neutral allele model with intragenic recombination.</article-title>             <source>Theor Popul Biol</source>             <volume>23</volume>             <fpage>183</fpage>             <lpage>201</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002495-Hudson3">
+        <label>91</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Hudson</surname><given-names>RR</given-names></name><name name-style="western"><surname>Kaplan</surname><given-names>NL</given-names></name></person-group>             <year>1988</year>             <article-title>The coalescent process in models with selection and recombination.</article-title>             <source>Genetics</source>             <volume>120</volume>             <fpage>831</fpage>             <lpage>840</lpage>          </element-citation>
+      </ref>
+    </ref-list>
+    
+  </back>
+</article>

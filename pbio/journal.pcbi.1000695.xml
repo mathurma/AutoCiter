@@ -1,0 +1,853 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="3.0" xml:lang="EN">
+<front>
+<journal-meta><journal-id journal-id-type="publisher-id">plos</journal-id><journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id><journal-id journal-id-type="pmc">ploscomp</journal-id><!--===== Grouping journal title elements =====--><journal-title-group><journal-title>PLoS Computational Biology</journal-title></journal-title-group><issn pub-type="ppub">1553-734X</issn><issn pub-type="epub">1553-7358</issn><publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, USA</publisher-loc></publisher></journal-meta>
+<article-meta><article-id pub-id-type="publisher-id">09-PLCB-RA-1248R3</article-id><article-id pub-id-type="doi">10.1371/journal.pcbi.1000695</article-id><article-categories><subj-group subj-group-type="heading"><subject>Research Article</subject></subj-group><subj-group subj-group-type="Discipline"><subject>Biochemistry/Bioinformatics</subject><subject>Biochemistry/Drug Discovery</subject><subject>Biochemistry/Small Molecule Chemistry</subject><subject>Chemical Biology/Small Molecule Chemistry</subject></subj-group></article-categories><title-group><article-title>Designing Focused Chemical Libraries Enriched in Protein-Protein Interaction Inhibitors using Machine-Learning Methods</article-title><alt-title alt-title-type="running-head">Understanding Chemical Space of PPI Inhibitors</alt-title></title-group><contrib-group>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Reynès</surname><given-names>Christelle</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Host</surname><given-names>Hélène</given-names></name><xref ref-type="aff" rid="aff2"><sup>2</sup></xref><xref ref-type="aff" rid="aff3"><sup>3</sup></xref><xref ref-type="aff" rid="aff4"><sup>4</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Camproux</surname><given-names>Anne-Claude</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Laconde</surname><given-names>Guillaume</given-names></name><xref ref-type="aff" rid="aff2"><sup>2</sup></xref><xref ref-type="aff" rid="aff3"><sup>3</sup></xref><xref ref-type="aff" rid="aff4"><sup>4</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Leroux</surname><given-names>Florence</given-names></name><xref ref-type="aff" rid="aff2"><sup>2</sup></xref><xref ref-type="aff" rid="aff3"><sup>3</sup></xref><xref ref-type="aff" rid="aff4"><sup>4</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Mazars</surname><given-names>Anne</given-names></name><xref ref-type="aff" rid="aff2"><sup>2</sup></xref><xref ref-type="aff" rid="aff5"><sup>5</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Deprez</surname><given-names>Benoit</given-names></name><xref ref-type="aff" rid="aff2"><sup>2</sup></xref><xref ref-type="aff" rid="aff3"><sup>3</sup></xref><xref ref-type="aff" rid="aff4"><sup>4</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Fahraeus</surname><given-names>Robin</given-names></name><xref ref-type="aff" rid="aff2"><sup>2</sup></xref><xref ref-type="aff" rid="aff5"><sup>5</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Villoutreix</surname><given-names>Bruno O.</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff2"><sup>2</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Sperandio</surname><given-names>Olivier</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff2"><sup>2</sup></xref><xref ref-type="corresp" rid="cor1"><sup>*</sup></xref></contrib>
+</contrib-group><aff id="aff1"><label>1</label><addr-line>Inserm UMR-S 973/MTi, University Paris Diderot, Paris, France</addr-line>       </aff><aff id="aff2"><label>2</label><addr-line>CDithem Platform/IGM, Paris, France</addr-line>       </aff><aff id="aff3"><label>3</label><addr-line>Inserm UMR-S 761, Institut Pasteur de Lille, Lille, France</addr-line>       </aff><aff id="aff4"><label>4</label><addr-line>Université Lille 2, Faculté des Sciences Pharmaceutiques et Biologiques, Lille, France</addr-line>       </aff><aff id="aff5"><label>5</label><addr-line>UMR-S940, Hôpital St Louis, Paris, France</addr-line>       </aff><contrib-group>
+<contrib contrib-type="editor" xlink:type="simple"><name name-style="western"><surname>Bourne</surname><given-names>Philip E.</given-names></name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/></contrib>
+</contrib-group><aff id="edit1">University of California San Diego, United States of America</aff><author-notes>
+<corresp id="cor1">* E-mail: <email xlink:type="simple">olivier.sperandio@univ-paris-diderot.fr</email></corresp>
+<fn fn-type="con"><p>Conceived and designed the experiments: HH ACC GL FL AM BD RF BOV OS. Performed the experiments: CR HH AM OS. Analyzed the data: CR HH ACC GL FL BD RF BOV OS. Contributed reagents/materials/analysis tools: CR OS. Wrote the paper: BOV OS.</p></fn>
+<fn fn-type="conflict"><p>The authors have declared that no competing interests exist.</p></fn></author-notes><pub-date pub-type="collection"><month>3</month><year>2010</year></pub-date><pub-date pub-type="epub"><day>5</day><month>3</month><year>2010</year></pub-date><volume>6</volume><issue>3</issue><elocation-id>e1000695</elocation-id><history>
+<date date-type="received"><day>15</day><month>10</month><year>2009</year></date>
+<date date-type="accepted"><day>30</day><month>1</month><year>2010</year></date>
+</history><!--===== Grouping copyright info into permissions =====--><permissions><copyright-year>2010</copyright-year><copyright-holder>Reynès et al</copyright-holder><license><license-p>This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license></permissions><abstract>
+<p>Protein-protein interactions (PPIs) may represent one of the next major classes of therapeutic targets. So far, only a minute fraction of the estimated 650,000 PPIs that comprise the human interactome are known with a tiny number of complexes being drugged. Such intricate biological systems cannot be cost-efficiently tackled using conventional high-throughput screening methods. Rather, time has come for designing new strategies that will maximize the chance for hit identification through a rationalization of the PPI inhibitor chemical space and the design of PPI-focused compound libraries (global or target-specific). Here, we train machine-learning-based models, mainly decision trees, using a dataset of known PPI inhibitors and of regular drugs in order to determine a global physico-chemical profile for putative PPI inhibitors. This statistical analysis unravels two important molecular descriptors for PPI inhibitors characterizing specific molecular shapes and the presence of a privileged number of aromatic bonds. The best model has been transposed into a computer program, PPI-HitProfiler, that can output from any drug-like compound collection a focused chemical library enriched in putative PPI inhibitors. Our PPI inhibitor profiler is challenged on the experimental screening results of 11 different PPIs among which the p53/MDM2 interaction screened within our own CDithem platform, that in addition to the validation of our concept led to the identification of 4 novel p53/MDM2 inhibitors. Collectively, our tool shows a robust behavior on the 11 experimental datasets by correctly profiling 70% of the experimentally identified hits while removing 52% of the inactive compounds from the initial compound collections. We strongly believe that this new tool can be used as a global PPI inhibitor profiler prior to screening assays to reduce the size of the compound collections to be experimentally screened while keeping most of the true PPI inhibitors. PPI-HitProfiler is freely available on request from our CDithem platform website, <ext-link ext-link-type="uri" xlink:href="http://www.CDithem.com" xlink:type="simple">www.CDithem.com</ext-link>.</p>
+</abstract><abstract abstract-type="summary"><title>Author Summary</title>
+<p>Protein-protein interactions (PPIs) are essential to life and various diseases states are associated with aberrant PPIs. Therefore significant efforts are dedicated to this new class of therapeutic targets. Even though it might not be possible to modulate the estimated 650,000 PPIs that regulate human life with drug-like compounds, a sizeable number of PPI should be druggable. Only 10-15% of the human genome is thought to be druggable with around 1000-3000 druggable protein targets. A hypothetical similar ratio for PPIs would bring the number of druggable PPIs to about 65,000, although no data can yet support such a hypothesis. PPI have been historically intricate to tackle with standard experimental and virtual screening techniques, possibly because of the shift in the chemical space between today's chemical libraries and PPI physico-chemical requirements. Therefore, one possible avenue to circumvent this conundrum is to design focused libraries enriched in putative PPI inhibitors. Here, we show how chemoinformatics can assist library design by learning physico-chemical rules from a data set of known PPI inhibitors and their comparison with regular drugs. Our study shows the importance of specific molecular shapes and a privileged number of aromatic bonds.</p>
+</abstract><funding-group><funding-statement>This project is funded by the French National Institute of Medical Research. Inserm - <ext-link ext-link-type="uri" xlink:href="http://www.inserm.fr" xlink:type="simple">www.inserm.fr</ext-link>. The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement></funding-group><counts><page-count count="15"/></counts></article-meta>
+</front>
+<body><sec id="s1">
+<title>Introduction</title>
+<p>Protein-protein interactions regulate most aspects of Life and mapping these networks is nowadays one of the most difficult challenges in molecular medicine and biology. Aberrant PPIs contribute to most disease states and therefore represents a highly populated class of essentially untouched targets for drug discovery. While all PPIs may not be modulated by small drug-like compounds, among the about 650,000 interactions that regulate human life <xref ref-type="bibr" rid="pcbi.1000695-Stumpf1">[1]</xref>, a sizable number should be druggable <xref ref-type="bibr" rid="pcbi.1000695-Berg1">[2]</xref>–<xref ref-type="bibr" rid="pcbi.1000695-Fuller1">[7]</xref>, as suggested by the growing number of PPI systems successfully targeted by drug-like compounds, and the recent progress of two PPI drugs to clinical testing in humans<xref ref-type="bibr" rid="pcbi.1000695-Arkin1">[8]</xref>. Although a vast array of high-throughput, fragment-based and in vitro/in silico screening technologies have been developed over the last 15 years <xref ref-type="bibr" rid="pcbi.1000695-Shoichet1">[9]</xref>, the time and cost to chart PPI networks using these approaches frighten any corporate decision board or government funding body. Identification of PPI modulators is definitively challenging <xref ref-type="bibr" rid="pcbi.1000695-Fry1">[3]</xref>, <xref ref-type="bibr" rid="pcbi.1000695-Wells1">[5]</xref>–<xref ref-type="bibr" rid="pcbi.1000695-Whitty1">[6]</xref>, <xref ref-type="bibr" rid="pcbi.1000695-Chene1">[10]</xref>–<xref ref-type="bibr" rid="pcbi.1000695-Eyrisch1">[11]</xref> due to the plasticity of some interfaces but most importantly to the unbalance between today's screening libraries and PPI inhibitors' chemical spaces <xref ref-type="bibr" rid="pcbi.1000695-Villoutreix1">[4]</xref>, <xref ref-type="bibr" rid="pcbi.1000695-Clark1">[12]</xref>–<xref ref-type="bibr" rid="pcbi.1000695-Thanos1">[18]</xref>. Hence, a possible avenue to minimize the biomolecular or in silico screening burden that is required to successfully target PPIs, is to design focused libraries enriched in PPI inhibitors to realign the chemical space window of compound collections with the chemical requirements of PPI inhibitors. This approach should not only reduce wastes by eliminating a priori compounds that are unlikely to impede/modulate protein-protein complex formations but also lead to enhanced potency or specificity of the binders. The focused library concept <xref ref-type="bibr" rid="pcbi.1000695-Orry1">[19]</xref> used on regular targets (e.g enzymes, GPCRs) has however to be tailored to the singularity of PPIs. We advocate that a possible solution to this conundrum is to mine relevant drug-like PPI inhibitors and define a dedicated profile through the use of appropriate chemoinformatics and machine learning tools. Indeed, previous reports <xref ref-type="bibr" rid="pcbi.1000695-Fry1">[3]</xref>, <xref ref-type="bibr" rid="pcbi.1000695-Arkin2">[20]</xref>–<xref ref-type="bibr" rid="pcbi.1000695-Yin1">[23]</xref> have highlighted certain “universal” physico-chemical features of PPI inhibitors, i.e., our present understanding is that the molecules tend to be larger than regular catalytic site inhibitors, they tend to be relatively hydrophobic and rigid while often containing aromatic groups <xref ref-type="bibr" rid="pcbi.1000695-Fry1">[3]</xref>, <xref ref-type="bibr" rid="pcbi.1000695-Keskin2">[21]</xref>–<xref ref-type="bibr" rid="pcbi.1000695-Fry2">[24]</xref>, suggesting that it should be possible to apply machine-learning and chemoinformatics methodologies on these molecules together with key molecular descriptors to design a PPI inhibitor profile and some PPI-inhibitor focused libraries <xref ref-type="bibr" rid="pcbi.1000695-Kingsford1">[25]</xref>–<xref ref-type="bibr" rid="pcbi.1000695-Vert1">[27]</xref>. Nevertheless, there is still some debate about whether such profile could or should be global (i.e PPI-independent) or target-specific (like for GPCRs or kinases). While it is clear that a global filter can not reduce the size of the initial collection as much as a target-specific filter, it has important advantages in the early discovery stages on this difficult target class (i.e., for many PPIs there are neither known small molecule inhibitors nor 3D structures to focus the collection in a conventional target-specific manner).</p>
+<p>In the present study, we selected appropriate Dragon's molecular descriptors<xref ref-type="bibr" rid="pcbi.1000695-Todeschini1">[28]</xref> on a learning data set composed of true PPI inhibitors and non-PPI inhibitors. We then ventured to build machine learning-based computer models able to predict a global and target-independent PPI inhibitor profile and transposed it into a computer program, PPI-HitProfiler. We applied our tool to focus several commercial compound collections to probe the concept and assess the level of size reduction of those databases. Most importantly, our program was further challenged on the experimental screening results of 10 PPIs downloaded from the PubChem Bioassay server. In addition, we carried out the in vitro screening of two chemical library subsets on the p53/MDM2 interaction within our CDithem drug discovery platform. Collectively, these experimental results confirm the robustness of our tool, which managed to discard more than half of the non-PPI inhibitors while identifying 70% of the true PPI inhibitors on those systems.</p>
+</sec><sec id="s2">
+<title>Results/Discussion</title>
+<sec id="s2a">
+<title>Construction of a machine-learning model to profile PPI inhibitors</title>
+<p>We used a chemical fingerprint-based clustering approach to construct a chemically diversified learning data set ultimately composed of 66 validated drug-like PPI inhibitors (<xref ref-type="supplementary-material" rid="pcbi.1000695.s001">Figure S1</xref>) selected from the literature and of 557 non-PPI inhibitors obtained from the “small molecule” subset of the DrugBank <xref ref-type="bibr" rid="pcbi.1000695-Wishart1">[29]</xref>. This latter subset was chosen because historically it contains very few (if any) PPI inhibitors, and therefore represents a valuable pool of non-PPI inhibitors. Indeed, only 7 compounds on the whole DrugBank small subset (4857 compounds) had a Tanimoto index above 0.8 with one of the 66 PPI inhibitors. Further, to evaluate the level of physico-chemical overlap between PPI and non-PPI inhibitors, we ran a Principal Component Analysis (PCA) using key descriptors (referred to as physico-chemical PCA), namely molecular weight, octanol/water partition coefficient, topological polar surface area, number of Hydrogen-bond donors and acceptors, number of rotatable bonds and number of rigid bonds (<xref ref-type="fig" rid="pcbi-1000695-g001">Figure 1</xref>). The subspace spanned by the first two principal components (which account for more than 60% of the total variance of the global physico-chemical space) are comparable for PPI and non-PPI inhibitors on the learning data set (comparable range and variability). The coverage of the protein space corresponding to the 66 PPI inhibitors was also evaluated by considering the SCOP fold classes of the associated PPIs. The 66 PPI inhibitors span over 27 different PPIs and 21 different SCOP fold classes including various topological properties: mainly helix-based domain; mainly beta-strand domain; mix folding (helix + beta strand); and loop-binding groove domains (<xref ref-type="supplementary-material" rid="pcbi.1000695.s002">Figure S2</xref>).</p>
+<fig id="pcbi-1000695-g001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000695.g001</object-id><label>Figure 1</label><caption>
+<title>Principal Component Analysis (PCA) on the learning and validation data sets.</title>
+<p>The calculations were run using 7 physico-chemical, molecular weight, octanol/water partition coefficient, topological polar surface area, number of Hydrogen bond donors and acceptors, the number of rotatable bonds and the number of rigid bonds. PPI inhibitors are represented as red disks, and non-PPI inhibitors are represented as black circles.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000695.g001" xlink:type="simple"/></fig>
+<p>On this learning data set, we initially computed the 1,666 Dragon molecular descriptors of E-Dragon (Dragon web version, <ext-link ext-link-type="uri" xlink:href="http://www.vcclab.org/lab/edragon/" xlink:type="simple">http://www.vcclab.org/lab/edragon/</ext-link>), but eventually kept only the 357 most informative descriptors, were tested to construct several machine-learning methods, such as, Decision Trees (DT) and Support Vector Machines (SVM). The parameters of the learning models were optimized using a cross validation protocol such as to provide the best balance between enrichment (EF), sensitivity (Se) and specificity (Sp) on the learning data set. We then assessed these models on an independent validation data set (<xref ref-type="supplementary-material" rid="pcbi.1000695.s003">Figure S3</xref>), composed of 26 other PPI inhibitors (that were not present in the learning data set of 66 PPI inhibitors) and 2,000 decoys taken from the ChemBridge diversity set (<ext-link ext-link-type="uri" xlink:href="http://www.chembridge.com" xlink:type="simple">www.chembridge.com</ext-link>). The 26 PPI inhibitors span over 5 different PPI and 5 different SCOP fold classes (<xref ref-type="supplementary-material" rid="pcbi.1000695.s004">Figure S4</xref>). Similarly to the analysis performed on the learning data set, the physico-chemical PCA ran on the PPI- and non-PPI inhibitors showed a fair overlap of the physico-chemical subspaces associated to the two first principal components (<xref ref-type="fig" rid="pcbi-1000695-g001">Figure 1</xref>).</p>
+<p>From a methodological standpoint, we first observed that the selected machine learning techniques could be successfully applied to define/confirm a PPI inhibitor profile on the learning data set (<xref ref-type="table" rid="pcbi-1000695-t001">Table 1</xref>). Clearly, all SVM kernels were very efficient at predicting the PPI inhibitor profile on the learning data set, with a sensitivity of 92% and a specificity of 100% in the case of the optimized sigmoid kernel. The two best DTs (1 and 2) also performed well on the learning data set with sensitivities of 85 and 76% and specificities of 70 and 77%, respectively.</p>
+<table-wrap id="pcbi-1000695-t001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000695.t001</object-id><label>Table 1</label><caption>
+<title>Prediction results of the five best machine-learning models.</title>
+</caption><!--===== Grouping alternate versions of objects =====--><alternatives><graphic id="pcbi-1000695-t001-1" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000695.t001" xlink:type="simple"/><table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" colspan="1" rowspan="1">Parameters</td>
+<td align="left" colspan="1" rowspan="1">Data set</td>
+<td align="left" colspan="1" rowspan="1">Se (%)</td>
+<td align="left" colspan="1" rowspan="1">Sp (%)</td>
+<td align="left" colspan="1" rowspan="1">EF</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" colspan="1" rowspan="1">D.T.1</td>
+<td align="left" colspan="1" rowspan="1">Learning</td>
+<td align="left" colspan="1" rowspan="1">85</td>
+<td align="left" colspan="1" rowspan="1">70</td>
+<td align="left" colspan="1" rowspan="1">2.38</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">D.T.1</td>
+<td align="left" colspan="1" rowspan="1">Validation</td>
+<td align="left" colspan="1" rowspan="1">81</td>
+<td align="left" colspan="1" rowspan="1">66</td>
+<td align="left" colspan="1" rowspan="1">2.53</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">D.T.2</td>
+<td align="left" colspan="1" rowspan="1">Learning</td>
+<td align="left" colspan="1" rowspan="1">76</td>
+<td align="left" colspan="1" rowspan="1">77</td>
+<td align="left" colspan="1" rowspan="1">2.61</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">D.T.2</td>
+<td align="left" colspan="1" rowspan="1">Validation</td>
+<td align="left" colspan="1" rowspan="1">70</td>
+<td align="left" colspan="1" rowspan="1">80</td>
+<td align="left" colspan="1" rowspan="1">3.39</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">SVM Gaussian Kernel</td>
+<td align="left" colspan="1" rowspan="1">Learning</td>
+<td align="left" colspan="1" rowspan="1">89</td>
+<td align="left" colspan="1" rowspan="1">100</td>
+<td align="left" colspan="1" rowspan="1">9.44</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">SVM Gaussian Kernel</td>
+<td align="left" colspan="1" rowspan="1">10-FCV</td>
+<td align="left" colspan="1" rowspan="1">39</td>
+<td align="left" colspan="1" rowspan="1">97</td>
+<td align="left" colspan="1" rowspan="1">5.71</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">SVM Gaussian Kernel</td>
+<td align="left" colspan="1" rowspan="1">Validation</td>
+<td align="left" colspan="1" rowspan="1">33</td>
+<td align="left" colspan="1" rowspan="1">85</td>
+<td align="left" colspan="1" rowspan="1">2.23</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">SVM Sigmoid Kernel</td>
+<td align="left" colspan="1" rowspan="1">Learning</td>
+<td align="left" colspan="1" rowspan="1">92</td>
+<td align="left" colspan="1" rowspan="1">100</td>
+<td align="left" colspan="1" rowspan="1">9.29</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">SVM Sigmoid Kernel</td>
+<td align="left" colspan="1" rowspan="1">10-FCV</td>
+<td align="left" colspan="1" rowspan="1">42</td>
+<td align="left" colspan="1" rowspan="1">93</td>
+<td align="left" colspan="1" rowspan="1">3.83</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">SVM Sigmoid Kernel</td>
+<td align="left" colspan="1" rowspan="1">Validation</td>
+<td align="left" colspan="1" rowspan="1">33</td>
+<td align="left" colspan="1" rowspan="1">81</td>
+<td align="left" colspan="1" rowspan="1">1.77</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">SVM Polynomial Kernel</td>
+<td align="left" colspan="1" rowspan="1">Learning</td>
+<td align="left" colspan="1" rowspan="1">89</td>
+<td align="left" colspan="1" rowspan="1">100</td>
+<td align="left" colspan="1" rowspan="1">9.44</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">SVM Polynomial Kernel</td>
+<td align="left" colspan="1" rowspan="1">10-FCV</td>
+<td align="left" colspan="1" rowspan="1">33</td>
+<td align="left" colspan="1" rowspan="1">98</td>
+<td align="left" colspan="1" rowspan="1">5.77</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">SVM Polynomial Kernel</td>
+<td align="left" colspan="1" rowspan="1">Validation</td>
+<td align="left" colspan="1" rowspan="1">27</td>
+<td align="left" colspan="1" rowspan="1">84</td>
+<td align="left" colspan="1" rowspan="1">1.67</td>
+</tr>
+</tbody>
+</table></alternatives><table-wrap-foot><fn id="nt101"><label/><p>Representation of the different optimized machine learning models, two decision trees, and three SVM models. Se (sensitivity), Sp (specificity) and EF (Enrichment) values are given for both, the learning data set (66 PPI inhibitors +557 non-PPI inhibitors) and the validation data set (26 PPI inhibitors +2,000 non-PPI inhibitors). (10-FCV = 10-Fold Cross Validation).</p></fn></table-wrap-foot></table-wrap>
+<p>Nonetheless, we have mostly considered the performances of the models on the validation data set (26 PPI inhibitors +2000 decoys), which conceptually represents a real-life assessment of the models. As seen on <xref ref-type="table" rid="pcbi-1000695-t001">Table 1</xref>, the quality of the SVM-model predictions could not be maintained neither during the 10-fold cross validation (10-FCV) on the learning data set nor with the validation data set as shown by the obtained sensitivity, specificity and enrichment values. This clearly demonstrates an over training of the SVM models on the learning data set, regardless of the kernel used, and despite the cross validation-based optimization of the SVM parameters. On the contrary, D.T.1 and D.T.2 display more robust performances on the validation data set, with D.T.1 showing a sensitivity of 81% and a specificity of 70%, and D.T. N°2 showing a lower Se (70%) but a higher Sp (80.1%). These results show that in this application decision trees outperform support vector machines in predicting a PPI inhibitor profile on our independent validation data set. This behavior also brings the net advantage to provide the medicinal chemists with a comprehensive description of the relevant physico-chemical features required in the design or selection of PPI inhibitors. Indeed, decision trees can offer a significant advantage over SVM models, which result from the combination and transformation of all the descriptors and usually lack interpretability. In the present case, two decision trees were constructed in order to propose two ways of balancing specificity and sensitivity. The two best DTs were constructed with the two same Dragon descriptors, RDF070m and UI, though with different thresholds for Ui (≥3.95 and ≥4.13) (<xref ref-type="fig" rid="pcbi-1000695-g002">Figure 2</xref>). We observed a poor correlation between RDF070m and Ui (r<sup>2</sup><sub>RDF070m:UI</sub> = 0.34), which confirms that they provide low redundancy and good complementarities in discriminating PPI- from non-PPI inhibitors (<xref ref-type="fig" rid="pcbi-1000695-g003">Figure 3</xref>). RDF070m is a Radial Distribution Function (RDF(<italic>r</italic>)) descriptor weighted by the atomic masses using a sphere radius <italic>r</italic> of 7 Å as the associated probability distribution function, and Ui is the unsaturation index, directly correlated to the number of multiple bonds (double, triple and aromatic bonds).</p>
+<fig id="pcbi-1000695-g002" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000695.g002</object-id><label>Figure 2</label><caption>
+<title>Representation of the two decision trees D.T.1 (panel a) and D.T.2 (panel b) on the learning data set (66 PPI inhibitors + 557 non-PPI inhibitors).</title>
+<p>The two decision trees share the same two descriptors RDF070m and UI. The two thresholds for RDF070m are identical (≥13.31) for D.T.1 and D.T.2 while the UI thresholds are different, ≥3.95 and ≥4.13 respectively for D.T.1 and D.T.2. The values for the corresponding sensitivity (Se) and specificity (Sp) are indicated for each DT.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000695.g002" xlink:type="simple"/></fig><fig id="pcbi-1000695-g003" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000695.g003</object-id><label>Figure 3</label><caption>
+<title>Correlation Plot between RDF070m and UI descriptors.</title>
+<p>Plot calculated on the 623 molecules of the learning data set: 66 PPI-inhibitors (dark filled triangles) +557 non-PPI inhibitors (dark circles). The two thresholds of the decision tree N°1 are RDF070m&gt;13.31 and UI&gt;3.95. This plot first highlights the poor correlation between RDF070m and UI (r<sup>2</sup> = 0.34). Secondly, this shows that most of the PPI-inhibitors are either above the RDF070m threshold (13.31) or above the UI threshold (3.95).</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000695.g003" xlink:type="simple"/></fig>
+<p>RDF(<italic>r</italic>) descriptors are known as shape descriptors. They represent a radial distribution function of an ensemble of N atoms and can be interpreted as the probability distribution to find an atom in a spherical volume radius <italic>r</italic>:<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000695.e001" xlink:type="simple"/></disp-formula>where <italic>f</italic> is a scaling factor, <italic>N</italic> is the total number of atoms, <italic>A<sub>i</sub></italic> and <italic>A<sub>j</sub></italic> are atomic properties associated with the atom <italic>i</italic> and <italic>j</italic> whose distance is defined by <italic>r<sub>ij</sub></italic>. <italic>B</italic> is a smoothing factor. <italic>f</italic> and <italic>B</italic> were set to 0.007 and 100 Å<sup>−2</sup> respectively. <italic>A<sub>i</sub></italic> and <italic>A<sub>j</sub></italic>, are in the case of RDF070m, the atomic weight of atom <italic>i</italic> and <italic>j</italic>, respectively. This family of descriptors is usually used as a multiple-value code calculated at different discrete distances (here we just use <italic>r</italic> = 7 Å) and can be weighted by various atomic properties, here the atomic weight, but it can be partial charges, polarizability, etc. These descriptors were successfully used to study active compounds on Vitamin D receptor <xref ref-type="bibr" rid="pcbi.1000695-Gonzalez1">[30]</xref>, flavonoid compounds as inhibitors of aldose reductase <xref ref-type="bibr" rid="pcbi.1000695-Fernandez1">[31]</xref> but more interestingly to predict 3D structures from their infra red spectra in which specific substructures are by definition associated to a specific signal, like the presence or absence of multiple bonds in a given region of the compounds <xref ref-type="bibr" rid="pcbi.1000695-Hemmer1">[32]</xref>–<xref ref-type="bibr" rid="pcbi.1000695-Hemmer2">[33]</xref>.</p>
+<p>To illustrate the connection between the RDF070m descriptor and the molecular shape, we calculated the RDF070m values for 4 co-crystallized synthetic inhibitors taken from 4 different PPI complexes (1 protein of the PPI+1 synthetic inhibitor), namely ICAM1/LFA, IL-2/IL-2Rα, p53/MDM2, and Xiap-BIR3/smac complexes. We further calculated the values of RDF070m on 4 experimentally identified PPI inhibitors and 4 inactive compounds, all 8 taken from the screening of the PPI CBFb/CBFa interaction (PubChem Bioassay AID1434) (<xref ref-type="fig" rid="pcbi-1000695-g004">Figure 4</xref>). It is clear on <xref ref-type="fig" rid="pcbi-1000695-g004">Figure 4</xref> that RDF070m tends to have higher values when the molecules have more ramifications and/or are star-, L-, or T-shaped. Conversely, I-shaped molecules have lower values. To further stress the prevalence of specific shapes observed within PPI inhibitors structures, we noticed that several of the p53/MDM2 inhibitors satisfying the “thumb-index-middle” finger-pharmacophore<xref ref-type="bibr" rid="pcbi.1000695-Domling1">[34]</xref> that were present in our validation data set (26 PPI inhibitors) have also high values for RDF070m. It must be noted that even though RDF070m correlated partially with the molecular weight (MW), it is only true at lower MW (MW&lt;400) (<xref ref-type="fig" rid="pcbi-1000695-g005">Figure 5</xref>). But, the combined descriptor obtained by dividing RDF070m by MW is still capable of significantly discriminating PPI inhibitors (p-value<sub>RDF070m/MW</sub> = 5.74e-08). This is particularly important because RDF070m stands at the top of the DTs and therefore operates on the full data set. This demonstrates the information added by RDF070m to significantly separate the two populations (PPI inhibitors and non-PPI inhibitors) even at equivalent MW. Indeed, it can be seen on <xref ref-type="fig" rid="pcbi-1000695-g004">Figure 4</xref> that even smaller compounds can have relatively high RDF070m values.</p>
+<fig id="pcbi-1000695-g004" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000695.g004</object-id><label>Figure 4</label><caption>
+<title>Effect of molecular shape on descriptor RDF070m.</title>
+<p>The RDF070m values have been calculated on 4 cocrystallized PPI inhibitors of the following PPIs: ICAM1/LFA, IL-2/IL-2Rα, p53/MDM2, and BIR3-Xiap/Smac. All 4 values are above the DTs threshold 13.31. The UI values are also indicated, as well as the planarity of the binding pocket (calculated from the PROTORP server, <ext-link ext-link-type="uri" xlink:href="http://www.bioinformatics.sussex.ac.uk/protorp/" xlink:type="simple">http://www.bioinformatics.sussex.ac.uk/protorp/</ext-link>). Also, on the panel below the calculated RDF070m values for 4 experimentally identified inhibitors (cyan) and 4 inactive compounds (green) of the CBFb/CBFa interaction taken from PubChemBioassay AID1434.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000695.g004" xlink:type="simple"/></fig><fig id="pcbi-1000695-g005" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000695.g005</object-id><label>Figure 5</label><caption>
+<title>Correlation plot between RDF070m and MW on the learning data set (66 PPI inhibitors (Red disks) +557 non-PPI inhibitors (black circles)).</title>
+<p>This figure shows that correlations between RDF070m and MW are significant only for compounds below 400. At higher MW, RDF070m performs better than MW.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000695.g005" xlink:type="simple"/></fig>
+<p>The second yet unraveled descriptor, UI, depends exclusively on the number of multiple bonds:<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000695.e002" xlink:type="simple"/></disp-formula>where, <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000695.e003" xlink:type="simple"/></inline-formula> is the multiple bond count, and <italic>π</italic><sub>ij</sub><sup>*</sup> is the conventional bond order of the bond between atom <italic>i</italic> and atom <italic>j</italic> (<italic>π</italic><sub>ij</sub><sup>*</sup> = 1 for single bonds, <italic>π</italic><sub>ij</sub><sup>*</sup> = 2 for double and aromatic bonds, <italic>π</italic><sub>ij</sub><sup>*</sup> = 3 for triple bonds), the summation being run over all B bonds. One can see that for single bonds, the <italic>π</italic><sub>ij</sub><sup>*</sup> contribution cancels out with the term <italic>B</italic>, therefore making Ui relying exclusively on the <italic>π</italic><sub>ij</sub><sup>*</sup> contribution of the multiple bonds. An example of the Ui calculation is given on <xref ref-type="fig" rid="pcbi-1000695-g006">Figure 6</xref> with Aspirin. With such definition, one notices that the two above optimized thresholds associated with the two DTs (D.T.1<sub>UI-threshold</sub>≥3.95, D.T.2<sub>UI-threshold</sub>≥4.13), although being float values, can be traced back to a discrete number of privileged multiple bonds. Indeed, if one considers the number of triple bonds as negligible, which is the case with 0.1-0.6% of triple bonds on average on any given database, the two Ui thresholds correspond to a number of 15 and 17 multiple bonds (double or aromatic) respectively. This can be confirmed by the strong correlation observed between Ui and more explicit descriptors such as the number of multiple bonds (r<sup>2</sup><sub>UI:nBM</sub> = 0.95), the number of aromatic bonds (r<sup>2</sup><sub>UI:nAB</sub> = 0.92) and to a minor extent to the number of benzene-like ring (r<sup>2</sup> <sub>UI:nBnz</sub> = 0.75), highlighting the importance of double and aromatic bonds. This is also coherent with previous observations<xref ref-type="bibr" rid="pcbi.1000695-Fry1">[3]</xref>,<xref ref-type="bibr" rid="pcbi.1000695-Whitty1">[6]</xref>,<xref ref-type="bibr" rid="pcbi.1000695-Fry2">[24]</xref>,<xref ref-type="bibr" rid="pcbi.1000695-Domling1">[34]</xref> about the more pronounced aromatic, hydrophobic and rigid character of PPI inhibitors.</p>
+<fig id="pcbi-1000695-g006" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000695.g006</object-id><label>Figure 6</label><caption>
+<title>Calculation of UI on Aspirin.</title>
+<p>Ui<sub>Aspirin</sub> = 3.17: aspirin has a total of 21 bonds, such that B = 21, 13 single bonds that have a contribution of 1 to b, and 8 double and aromatic bonds that have a contribution of 2 to b, such that the multiple bond count b is equal to b = 13x1+8x2 - 21 = 8. Thus Ui = log<sub>2</sub>(1+b) = log<sub>2</sub>(1+8) = 3.17.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000695.g006" xlink:type="simple"/></fig>
+<p>By analyzing these results, we suggest that the two models (D.T.1 and D.T.2) we built bring complementary performances in terms of sensitivity and specificity. D.T.1 has a stronger ability to identify true PPI inhibitors (Se<sub>D.T.1</sub> = 81%, Se<sub>D.T.2</sub> = 70%) while D.T.2 has a higher level of discrimination towards non-PPI inhibitors (Sp<sub>D.T.1</sub> = 66%, Sp<sub>D.T.2</sub> = 80.1%). Therefore, the first tree would be more suited to operate on relatively small libraries (1,000 – 50,000 compounds) to maximize the chance of keeping a higher number of true PPI inhibitors, while the second tree will be useful to shrink large compound collections (over 50,000 compounds) with a higher efficacy, while keeping up to 70% of true PPI inhibitors.</p>
+<p>Lastly, during the 20-fold cross validation (20-FCV) procedure used to choose the best descriptors involved in the DTs, other descriptors emerged, although much less frequenty than RDF070m and Ui. The first descriptor, ATS8m, could be used instead of RDF070m at the top of the tree (EF = 2.65, Se = 72.7%, Sp = 77.9%) in a very small minority of the 20-FCV configurations (2 times over 20). This descriptor is a Broto-Moreau's autocorrelation coefficient weighted by the molecular weight like RDF070m. It is based on a Dirac delta function center at an inter-atomic distance of 8 Å as opposed to RDF070m that is constructed in reference to an inter-atomic distance of 7 Å. Interestingly, RDF080m was found interesting for one case in the 20-FCV configurations (EF = 2.53, Se = 78.8%, Sp = 74.5%), highlighting also an inter-atomic distance of 8 Å. Concerning the second node of the tree, the descriptor PCR, could be used instead of Ui only on a minority of the 20-FCV configurations (2 over of 20)(EF = 2.33, Se = 77.3%, Sp = 72.0%), and correlated with Ui (r<sup>2</sup> = 0.802). This descriptor is a walk and path count descriptor and more specifically the ratio of multiple path count over path count descriptor. This descriptor is, as Ui, linked to the ratio of multiple bonds with respect to the total number of bonds, but was found poorly efficient to discriminate true PPI inhibitors as compared to Ui.</p>
+<p>Those results highlight the relevance and robustness of the chosen descriptors, RDF070m and Ui. Indeed, even when these descriptors were not retained as the very best ones (due to the unavoidably subsampling bias of the 20-FCV procedure), the alternative descriptors chosen brought a similar rather than orthogonal description.</p>
+</sec><sec id="s2b">
+<title>Implementation of the DTs into a computer program: PPI-HitProfiler</title>
+<p>We then developed a computer program, named PPI-HitProfiler, to transpose our best DTs into a user-friendly command line package that takes as input any drug-like chemical library, calculates for each compound the two aforementioned descriptors, determines whether the compound satisfies the corresponding thresholds and generates a focused chemical library enriched in putative PPI inhibitors. As seen above, RDF070m and Ui are relatively simple descriptors to implement. This has been done using the Python-Pybel package<xref ref-type="bibr" rid="pcbi.1000695-OBoyle1">[35]</xref> which is an object-oriented programming package allowing an easy manipulation of small compounds and of their main atomic properties.</p>
+</sec><sec id="s2c">
+<title>Assessment of PPI-HitProfiler on size reduction with commercial compound collections</title>
+<p>To illustrate the benefit of using PPI-HitProfiler in terms of reducing the chemical collection size, we applied it on a drug-like version of the MayBridge Screening Collection (<ext-link ext-link-type="uri" xlink:href="http://www.maybridge.com" xlink:type="simple">www.maybridge.com</ext-link>) filtered with our ADMET tool FAF-Drugs2<xref ref-type="bibr" rid="pcbi.1000695-Lagorce1">[36]</xref>. From the 57,200 molecules initially present in this library, 31,107 molecules passed the soft ADMET filtering protocol. Subsequently, 17,162 molecules passed PPI-HitProfiler when using model D.T.1 and 13,799 for the model D.T.2 (<xref ref-type="table" rid="pcbi-1000695-t002">Table 2</xref>). A similar evaluation carried out on the diversity set of the ChemBridge database that initially contained 50,000 compounds led to an intermediate library of 39,623 satisfying the ADMET filters and ultimately 12,866 compounds with PPI-HitProfiler-D.T.1 and 9,622 compounds with PPI-HitProfiler-D.T.2 (<xref ref-type="table" rid="pcbi-1000695-t002">Table 2</xref>). In this latter case, the use of D.T.2 represents a size reduction of 76% from the ADMET version of the ChemBridge diversity set, and of 81% from the initial ChemBridge diversity set.</p>
+<table-wrap id="pcbi-1000695-t002" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000695.t002</object-id><label>Table 2</label><caption>
+<title>Effect of PPI-HitProfiler on the size of two commercial collections.</title>
+</caption><!--===== Grouping alternate versions of objects =====--><alternatives><graphic id="pcbi-1000695-t002-2" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000695.t002" xlink:type="simple"/><table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" colspan="2" rowspan="1">MayBridge Screening Collection 57,200 Compounds</td>
+<td align="left" colspan="2" rowspan="1">ChemBridge Diversity Set 50,000 Compounds</td>
+</tr>
+<tr>
+<td align="left" colspan="2" rowspan="1">ADMET filter 31,107 Compounds</td>
+<td align="left" colspan="2" rowspan="1">ADMET filter 39,623 Compounds</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" colspan="1" rowspan="1">PPI-HitProfiler-D.T.117,162 Compounds</td>
+<td align="left" colspan="1" rowspan="1">PPI-HitProfiler-D.T.213,799 Compounds</td>
+<td align="left" colspan="1" rowspan="1">PPI-HitProfiler-D.T.112,866 Compounds</td>
+<td align="left" colspan="1" rowspan="1">PPI-HitProfiler-D.T.29,622 Compounds</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">45%</td>
+<td align="left" colspan="1" rowspan="1">56%</td>
+<td align="left" colspan="1" rowspan="1">68%</td>
+<td align="left" colspan="1" rowspan="1">76%</td>
+</tr>
+</tbody>
+</table></alternatives><table-wrap-foot><fn id="nt102"><label/><p>The two collections were filtered with FAFDrugs2 for ADMET properties, and the resulting drug-like databases were profiled using PPI-HitProfiler (D.T.1 and D.T.2 versions) to estimate the size reduction. The percentage of reduction within the table is calculated with respect to the drug-like version of the collections.</p></fn></table-wrap-foot></table-wrap></sec><sec id="s2d">
+<title>Assessment of PPI-HitProfiler using HTS results from PubChem BioAssay</title>
+<p>We then evaluated the performance of our PPI-HitProfiler on the HTS results of 10 different PPIs taken from the PubChem BioAssay server: BFL-1/Bid (AID432), CBFb/CBFa (AID1434), EphA4/ephrin-A (AID689), Xiap/Bir1-2 (AID1018), MCL-1/NOXA (AID1417) CD11b-CD18/Fibrinogen (AID1499), Hsp90/TPR2A (AID595), BRCT/Phosphoprotein (AID875), TLR4/MyD88 (AID811), Multiplex Bcl-2 family/Bim (AID1330). The results show a robust behavior of our tool with an average of 81% and 70% of correctly predicted PPI inhibitors and 42% and 52% of the inactive compounds removed from the initial collections when using PPI-HitProfiler-D.T.1 and –D.T.2, respectively. One can see that the D.T.2 version of PPI-HitProfiler which has a higher specificity and is therefore more appropriate for larger chemical collection shows a robust behavior for the 3 PubChem BioAssays having more than 50,000 compounds (AID1434, AID1018, and AID1499) by predicting correctly from 70 to 84% of the true PPI inhibitors while steadily removing more than half of the inactive compounds. On the other hand, for the screening assays where the total number of compounds screened is significantly below 50,000 i.e AID689, AID1417, AID811, AID1330 and for the p53/MDM2 CDithem screening (see below), one can see that the sensitivity is on average about 87% even though the average specificity on these results (38.2%) is slightly below the global average (42%). Interestingly, we noticed that true PPI inhibitors being correctly selected were flagged by the two descriptors RDF070m and UI in a 20:80 ratio highlighting the importance of multiple bonds and especially aromatic bonds in the specificity of PPI inhibitors. This further illustrates that PPI inhibitors must have a specific molecular shape, or that they tend to have a higher number of multiple bonds to compensate.</p>
+<p>Similarly to what was done for the learning and validation data set, the physico-chemical PCA that was carried out on each of the AID data sets using the same 7 descriptors (<xref ref-type="fig" rid="pcbi-1000695-g007">Figure 7</xref> and <xref ref-type="fig" rid="pcbi-1000695-g008">8</xref>), shows that the physico-chemical subspaces spanned by the first two principal components (which account for about 60% of the variance of the global physico-chemical space) are equivalent for PPI and non-PPI inhibitors. This also means, mainly for the AIDs having a large number of active compounds (AID1434, AID689, AID1417, and AID595) for which it is easier to evaluate the level of physico-chemical space overlap (<xref ref-type="fig" rid="pcbi-1000695-g007">Figure 7</xref> and <xref ref-type="fig" rid="pcbi-1000695-g008">8</xref>), that classical descriptors (e.g higher MW and higher hydrophobicity, higher rigidity) may be not be always sufficient to distinguish them from inactive compounds. Rather, another way to embrace their key properties without counteracting known facts may be the further consideration of their molecular shape and aromaticity.</p>
+<fig id="pcbi-1000695-g007" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000695.g007</object-id><label>Figure 7</label><caption>
+<title>Principal Component Analysis (PCA) on the various screening results (AID1434, AID689, AID1018, AID1417, AID432).</title>
+<p>The calculations were run using 7 physico-chemical, molecular weight, octanol/water partition coefficient, topological polar surface area, number of Hydrogen bond donors and acceptors, the number of rotatable bonds and the number of rigid bonds. PPI inhibitors are represented as red disks, and non-PPI inhibitors are represented as black circles.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000695.g007" xlink:type="simple"/></fig><fig id="pcbi-1000695-g008" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000695.g008</object-id><label>Figure 8</label><caption>
+<title>Principal Component Analysis (PCA) on the various screening results (AID1499, AID595, AID875, AID811, AID1330, CDithem).</title>
+<p>The calculations were run using 7 physico-chemical, molecular weight, octanol/water partition coefficient, topological polar surface area, number of Hydrogen bond donors and acceptors, the number of rotatable bonds and the number of rigid bonds. PPI inhibitors are represented as red disks, and non-PPI inhibitors are represented as black circles.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000695.g008" xlink:type="simple"/></fig>
+<p>Finally, we also evaluated the coverage of protein space corresponding to the validation data set and the various screening results (AIDs). All combined, the validation of our tool spanned over 15 different PPIs, 5 for the validation data set and 10 for the different AID screening results. These correspond to 13 different SCOP fold classes. As it can be seen on <xref ref-type="table" rid="pcbi-1000695-t003">Table 3</xref> those classes include various types of folding including: mainly helix-based folding; mainly-beta sheet-based folding; mix-folding (helix+beta strand); and loop-binding groove systems.</p>
+<table-wrap id="pcbi-1000695-t003" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000695.t003</object-id><label>Table 3</label><caption>
+<title>PPI-HitProfiler evaluation on HTS results.</title>
+</caption><!--===== Grouping alternate versions of objects =====--><alternatives><graphic id="pcbi-1000695-t003-3" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000695.t003" xlink:type="simple"/><table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" colspan="1" rowspan="1">Experiments</td>
+<td align="left" colspan="1" rowspan="1">Scop fold</td>
+<td align="left" colspan="1" rowspan="1">Nb of inatives TN + FP</td>
+<td align="left" colspan="1" rowspan="1">Total Nb Hits TP + FN</td>
+<td align="left" colspan="1" rowspan="1">PPI-HitProfiler</td>
+<td align="left" colspan="1" rowspan="1">TN</td>
+<td align="left" colspan="1" rowspan="1">TP</td>
+<td align="left" colspan="1" rowspan="1">Sp (%)</td>
+<td align="left" colspan="1" rowspan="1">Se (%)</td>
+<td align="left" colspan="1" rowspan="1">EF</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" colspan="1" rowspan="1">AID432 BFL-1/Bid</td>
+<td align="left" colspan="1" rowspan="1">Toxins' membrane translocation domains. Multi-helical domains</td>
+<td align="left" colspan="1" rowspan="1">46 466</td>
+<td align="left" colspan="1" rowspan="1">10</td>
+<td align="left" colspan="1" rowspan="1">D.T 1</td>
+<td align="left" colspan="1" rowspan="1">20045</td>
+<td align="left" colspan="1" rowspan="1">8</td>
+<td align="left" colspan="1" rowspan="1">43</td>
+<td align="left" colspan="1" rowspan="1">80</td>
+<td align="left" colspan="1" rowspan="1">1.41</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">AID432 BFL-1/Bid</td>
+<td align="left" colspan="1" rowspan="1">Toxins' membrane translocation domains. Multi-helical domains</td>
+<td align="left" colspan="1" rowspan="1">46 466</td>
+<td align="left" colspan="1" rowspan="1">10</td>
+<td align="left" colspan="1" rowspan="1">D.T 2</td>
+<td align="left" colspan="1" rowspan="1">25073</td>
+<td align="left" colspan="1" rowspan="1">7</td>
+<td align="left" colspan="1" rowspan="1">54</td>
+<td align="left" colspan="1" rowspan="1">70</td>
+<td align="left" colspan="1" rowspan="1">1.52</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">AID1434 CBFb/CBFa</td>
+<td align="left" colspan="1" rowspan="1">Core binding factor beta. Barrel; capped at both ends by alpha-helices</td>
+<td align="left" colspan="1" rowspan="1">117 533</td>
+<td align="left" colspan="1" rowspan="1">894</td>
+<td align="left" colspan="1" rowspan="1">D.T 1</td>
+<td align="left" colspan="1" rowspan="1">48620</td>
+<td align="left" colspan="1" rowspan="1">722</td>
+<td align="left" colspan="1" rowspan="1">41</td>
+<td align="left" colspan="1" rowspan="1">81</td>
+<td align="left" colspan="1" rowspan="1">1.39</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">AID1434 CBFb/CBFa</td>
+<td align="left" colspan="1" rowspan="1">Core binding factor beta. Barrel; capped at both ends by alpha-helices</td>
+<td align="left" colspan="1" rowspan="1">117 533</td>
+<td align="left" colspan="1" rowspan="1">894</td>
+<td align="left" colspan="1" rowspan="1">D.T 2</td>
+<td align="left" colspan="1" rowspan="1">61889</td>
+<td align="left" colspan="1" rowspan="1">621</td>
+<td align="left" colspan="1" rowspan="1">53</td>
+<td align="left" colspan="1" rowspan="1">70</td>
+<td align="left" colspan="1" rowspan="1">1.48</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">AID689 EphA4/ephrin-A</td>
+<td align="left" colspan="1" rowspan="1">N/A Loop-binding groove</td>
+<td align="left" colspan="1" rowspan="1">37 114</td>
+<td align="left" colspan="1" rowspan="1">38</td>
+<td align="left" colspan="1" rowspan="1">D.T 1</td>
+<td align="left" colspan="1" rowspan="1">14684</td>
+<td align="left" colspan="1" rowspan="1">33</td>
+<td align="left" colspan="1" rowspan="1">40</td>
+<td align="left" colspan="1" rowspan="1">87</td>
+<td align="left" colspan="1" rowspan="1">1.44</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">AID689 EphA4/ephrin-A</td>
+<td align="left" colspan="1" rowspan="1">N/A Loop-binding groove</td>
+<td align="left" colspan="1" rowspan="1">37 114</td>
+<td align="left" colspan="1" rowspan="1">38</td>
+<td align="left" colspan="1" rowspan="1">D.T 2</td>
+<td align="left" colspan="1" rowspan="1">18481</td>
+<td align="left" colspan="1" rowspan="1">27</td>
+<td align="left" colspan="1" rowspan="1">50</td>
+<td align="left" colspan="1" rowspan="1">71</td>
+<td align="left" colspan="1" rowspan="1">1.42</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">AID1018 Xiap/Bir1-2</td>
+<td align="left" colspan="1" rowspan="1">Inhibitor of apoptosis (IAP) repeat. Metal(zinc)-bound alpha+beta fold</td>
+<td align="left" colspan="1" rowspan="1">112 346</td>
+<td align="left" colspan="1" rowspan="1">6</td>
+<td align="left" colspan="1" rowspan="1">D.T 1</td>
+<td align="left" colspan="1" rowspan="1">47084</td>
+<td align="left" colspan="1" rowspan="1">5</td>
+<td align="left" colspan="1" rowspan="1">42</td>
+<td align="left" colspan="1" rowspan="1">84</td>
+<td align="left" colspan="1" rowspan="1">1.43</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">AID1018 Xiap/Bir1-2</td>
+<td align="left" colspan="1" rowspan="1">Inhibitor of apoptosis (IAP) repeat. Metal(zinc)-bound alpha+beta fold</td>
+<td align="left" colspan="1" rowspan="1">112 346</td>
+<td align="left" colspan="1" rowspan="1">6</td>
+<td align="left" colspan="1" rowspan="1">D.T 2</td>
+<td align="left" colspan="1" rowspan="1">58187</td>
+<td align="left" colspan="1" rowspan="1">5</td>
+<td align="left" colspan="1" rowspan="1">52</td>
+<td align="left" colspan="1" rowspan="1">84</td>
+<td align="left" colspan="1" rowspan="1">1.73</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">AID1417 MCL-1/NOXA</td>
+<td align="left" colspan="1" rowspan="1">Toxins' membrane translocation domains. Multi-helical domains</td>
+<td align="left" colspan="1" rowspan="1">134</td>
+<td align="left" colspan="1" rowspan="1">347</td>
+<td align="left" colspan="1" rowspan="1">D.T 1</td>
+<td align="left" colspan="1" rowspan="1">58</td>
+<td align="left" colspan="1" rowspan="1">296</td>
+<td align="left" colspan="1" rowspan="1">43</td>
+<td align="left" colspan="1" rowspan="1">85</td>
+<td align="left" colspan="1" rowspan="1">5.40</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">AID1417 MCL-1/NOXA</td>
+<td align="left" colspan="1" rowspan="1">Toxins' membrane translocation domains. Multi-helical domains</td>
+<td align="left" colspan="1" rowspan="1">134</td>
+<td align="left" colspan="1" rowspan="1">347</td>
+<td align="left" colspan="1" rowspan="1">D.T 2</td>
+<td align="left" colspan="1" rowspan="1">71</td>
+<td align="left" colspan="1" rowspan="1">243</td>
+<td align="left" colspan="1" rowspan="1">53</td>
+<td align="left" colspan="1" rowspan="1">70</td>
+<td align="left" colspan="1" rowspan="1">5.35</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">AID1499 CD11b-CD18/Fibrinogen</td>
+<td align="left" colspan="1" rowspan="1">vWA-like. Mixed beta-sheet of 6 strands</td>
+<td align="left" colspan="1" rowspan="1">58 790</td>
+<td align="left" colspan="1" rowspan="1">34</td>
+<td align="left" colspan="1" rowspan="1">D.T 1</td>
+<td align="left" colspan="1" rowspan="1">23924</td>
+<td align="left" colspan="1" rowspan="1">28</td>
+<td align="left" colspan="1" rowspan="1">41</td>
+<td align="left" colspan="1" rowspan="1">82</td>
+<td align="left" colspan="1" rowspan="1">1.39</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">AID1499 CD11b-CD18/Fibrinogen</td>
+<td align="left" colspan="1" rowspan="1">vWA-like. Mixed beta-sheet of 6 strands</td>
+<td align="left" colspan="1" rowspan="1">58 790</td>
+<td align="left" colspan="1" rowspan="1">34</td>
+<td align="left" colspan="1" rowspan="1">D.T 2</td>
+<td align="left" colspan="1" rowspan="1">29694</td>
+<td align="left" colspan="1" rowspan="1">28</td>
+<td align="left" colspan="1" rowspan="1">51</td>
+<td align="left" colspan="1" rowspan="1">82</td>
+<td align="left" colspan="1" rowspan="1">1.66</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">AID595 Hsp90/TPR2A</td>
+<td align="left" colspan="1" rowspan="1">alpha-alpha superhelix. Right-handed superhelix</td>
+<td align="left" colspan="1" rowspan="1">46 519</td>
+<td align="left" colspan="1" rowspan="1">174</td>
+<td align="left" colspan="1" rowspan="1">D.T 1</td>
+<td align="left" colspan="1" rowspan="1">19309</td>
+<td align="left" colspan="1" rowspan="1">124</td>
+<td align="left" colspan="1" rowspan="1">42</td>
+<td align="left" colspan="1" rowspan="1">71</td>
+<td align="left" colspan="1" rowspan="1">1.22</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">AID595 Hsp90/TPR2A</td>
+<td align="left" colspan="1" rowspan="1">alpha-alpha superhelix. Right-handed superhelix</td>
+<td align="left" colspan="1" rowspan="1">46 519</td>
+<td align="left" colspan="1" rowspan="1">174</td>
+<td align="left" colspan="1" rowspan="1">D.T 2</td>
+<td align="left" colspan="1" rowspan="1">23613</td>
+<td align="left" colspan="1" rowspan="1">112</td>
+<td align="left" colspan="1" rowspan="1">51</td>
+<td align="left" colspan="1" rowspan="1">64</td>
+<td align="left" colspan="1" rowspan="1">1.31</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">AID875 BRCT/Phosphoprotein</td>
+<td align="left" colspan="1" rowspan="1">BRCT domain. Parallel. beta-sheet of 4 strands</td>
+<td align="left" colspan="1" rowspan="1">48 183</td>
+<td align="left" colspan="1" rowspan="1">17</td>
+<td align="left" colspan="1" rowspan="1">D.T 1</td>
+<td align="left" colspan="1" rowspan="1">20259</td>
+<td align="left" colspan="1" rowspan="1">15</td>
+<td align="left" colspan="1" rowspan="1">42</td>
+<td align="left" colspan="1" rowspan="1">88</td>
+<td align="left" colspan="1" rowspan="1">1.52</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">AID875 BRCT/Phosphoprotein</td>
+<td align="left" colspan="1" rowspan="1">BRCT domain. Parallel. beta-sheet of 4 strands</td>
+<td align="left" colspan="1" rowspan="1">48 183</td>
+<td align="left" colspan="1" rowspan="1">17</td>
+<td align="left" colspan="1" rowspan="1">D.T 2</td>
+<td align="left" colspan="1" rowspan="1">24709</td>
+<td align="left" colspan="1" rowspan="1">11</td>
+<td align="left" colspan="1" rowspan="1">51</td>
+<td align="left" colspan="1" rowspan="1">65</td>
+<td align="left" colspan="1" rowspan="1">1.33</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">AID811 TLR4/MyD88</td>
+<td align="left" colspan="1" rowspan="1">Flavodoxin-like. parallel beta-sheet of 5 strand</td>
+<td align="left" colspan="1" rowspan="1">7 116</td>
+<td align="left" colspan="1" rowspan="1">3</td>
+<td align="left" colspan="1" rowspan="1">D.T 1</td>
+<td align="left" colspan="1" rowspan="1">3502</td>
+<td align="left" colspan="1" rowspan="1">3</td>
+<td align="left" colspan="1" rowspan="1">49</td>
+<td align="left" colspan="1" rowspan="1">100</td>
+<td align="left" colspan="1" rowspan="1">1.97</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">AID811 TLR4/MyD88</td>
+<td align="left" colspan="1" rowspan="1">Flavodoxin-like. parallel beta-sheet of 5 strand</td>
+<td align="left" colspan="1" rowspan="1">7 116</td>
+<td align="left" colspan="1" rowspan="1">3</td>
+<td align="left" colspan="1" rowspan="1">D.T 2</td>
+<td align="left" colspan="1" rowspan="1">4295</td>
+<td align="left" colspan="1" rowspan="1">3</td>
+<td align="left" colspan="1" rowspan="1">60</td>
+<td align="left" colspan="1" rowspan="1">100</td>
+<td align="left" colspan="1" rowspan="1">2.52</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">AID1330 Multiplex Bcl-2 family/Bim</td>
+<td align="left" colspan="1" rowspan="1">Toxins' membrane translocation domains. Multi-helical domains</td>
+<td align="left" colspan="1" rowspan="1">461</td>
+<td align="left" colspan="1" rowspan="1">14</td>
+<td align="left" colspan="1" rowspan="1">D.T 1</td>
+<td align="left" colspan="1" rowspan="1">125</td>
+<td align="left" colspan="1" rowspan="1">13</td>
+<td align="left" colspan="1" rowspan="1">27</td>
+<td align="left" colspan="1" rowspan="1">92</td>
+<td align="left" colspan="1" rowspan="1">1.31</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">AID1330 Multiplex Bcl-2 family/Bim</td>
+<td align="left" colspan="1" rowspan="1">Toxins' membrane translocation domains. Multi-helical domains</td>
+<td align="left" colspan="1" rowspan="1">461</td>
+<td align="left" colspan="1" rowspan="1">14</td>
+<td align="left" colspan="1" rowspan="1">D.T 2</td>
+<td align="left" colspan="1" rowspan="1">181</td>
+<td align="left" colspan="1" rowspan="1">11</td>
+<td align="left" colspan="1" rowspan="1">39</td>
+<td align="left" colspan="1" rowspan="1">79</td>
+<td align="left" colspan="1" rowspan="1">1.33</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">CDithem Screening p53/MDM2</td>
+<td align="left" colspan="1" rowspan="1">SWIB/MDM2 domain. 4 helices; capped by two small 3-stranded beta-sheets</td>
+<td align="left" colspan="1" rowspan="1">4 705</td>
+<td align="left" colspan="1" rowspan="1">4</td>
+<td align="left" colspan="1" rowspan="1">D.T 1</td>
+<td align="left" colspan="1" rowspan="1">1508</td>
+<td align="left" colspan="1" rowspan="1">3</td>
+<td align="left" colspan="1" rowspan="1">32</td>
+<td align="left" colspan="1" rowspan="1">75</td>
+<td align="left" colspan="1" rowspan="1">1.10</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">CDithem Screening p53/MDM2</td>
+<td align="left" colspan="1" rowspan="1">SWIB/MDM2 domain. 4 helices; capped by two small 3-stranded beta-sheets</td>
+<td align="left" colspan="1" rowspan="1">4 705</td>
+<td align="left" colspan="1" rowspan="1">4</td>
+<td align="left" colspan="1" rowspan="1">D.T 2</td>
+<td align="left" colspan="1" rowspan="1">2003</td>
+<td align="left" colspan="1" rowspan="1">3</td>
+<td align="left" colspan="1" rowspan="1">43</td>
+<td align="left" colspan="1" rowspan="1">75</td>
+<td align="left" colspan="1" rowspan="1">1.31</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">All HTS cumulated</td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">D.T 1</td>
+<td align="left" colspan="1" rowspan="1">199118</td>
+<td align="left" colspan="1" rowspan="1">1 250</td>
+<td align="left" colspan="1" rowspan="1">42</td>
+<td align="left" colspan="1" rowspan="1">81</td>
+<td align="left" colspan="1" rowspan="1">1.39</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">All HTS cumulated</td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">D.T 2</td>
+<td align="left" colspan="1" rowspan="1">248196</td>
+<td align="left" colspan="1" rowspan="1">1 071</td>
+<td align="left" colspan="1" rowspan="1">52</td>
+<td align="left" colspan="1" rowspan="1">70</td>
+<td align="left" colspan="1" rowspan="1">1.45</td>
+</tr>
+</tbody>
+</table></alternatives><table-wrap-foot><fn id="nt103"><label/><p>Results of the application of PPI-HitProfiler on topologically diverse PubChem BioAssay results and on the CDithem screening of the p53/MDM2 interaction. All data sets were previously filtered with FAF-Drugs2 using the same parameters as for the learning data set. The total number of inactive compounds (TN + FP). active compounds (TP + FN). remaining inactives (TN). and remaining actives (TP). are used to calculate the sensitivity and specificity of PPI-HitProfiler on each data set.</p></fn><fn id="nt104"><label/><p>TP: number of PPI inhibitors correctly classified.</p></fn><fn id="nt105"><label/><p>FP: number of non-PPI inhibitors classified as PPI-inhibitors.</p></fn><fn id="nt106"><label/><p>TN: number of non-PPI inhibitors correctly classified.</p></fn><fn id="nt107"><label/><p>FN: number of PPI inhibitors classified as non-PPI inhibitors.</p></fn><fn id="nt108"><label/><p>Sensitivity = TP/(TP + FN).</p></fn><fn id="nt109"><label/><p>Specificity = TN/(TN + FP).</p></fn></table-wrap-foot></table-wrap></sec><sec id="s2e">
+<title>Assessment of PPI-HitProfiler through the in vitro screening of p53/MDM2</title>
+<p>We then challenged our PPI-HitProfiler through the in vitro screening of the p53/MDM2 complex. The p53 tumor suppressor is vital in cell cycle regulation DNA repair, and apoptosis<xref ref-type="bibr" rid="pcbi.1000695-Candeias1">[37]</xref>–<xref ref-type="bibr" rid="pcbi.1000695-Naski1">[38]</xref>. Its implication has been observed in all human cancers either with mutations or through a pure inhibition due to an overexpression of its native partner, murine double minute 2 oncoprotein (MDM2). This PPI has therefore been the subject of numerous experimental screening studies yielding to the development of several synthetic PPI inhibitors <xref ref-type="bibr" rid="pcbi.1000695-Patel1">[39]</xref>–<xref ref-type="bibr" rid="pcbi.1000695-Ding2">[43]</xref>. Using a fluorescence polarization assay within our CDithem platform to monitor the p53/MDM2 interaction, we screened a total of 4,705 drug-like compounds filtered from Asinex (3,400 cpmds) (<ext-link ext-link-type="uri" xlink:href="http://www.asinex.com" xlink:type="simple">www.asinex.com</ext-link>) and ChemDiv (2,400 cpmds) (<ext-link ext-link-type="uri" xlink:href="http://www.chemdiv.com" xlink:type="simple">www.chemdiv.com</ext-link>) subsets using FAF-Drugs2. The experimental screening led to the identification of 4 new inhibitors of the p53/MDM2 interaction with pIC<sub>50</sub> ranging from 4.6 to 5.5 (<xref ref-type="fig" rid="pcbi-1000695-g009">Figure 9</xref>). Interestingly, 3 out of those 4 new inhibitors (Se = 75%) passed our two filters (PPI-HitProfiler-D.T.1 and PPI-HitProfiler-D.T.2). Compound BDM_4605 (pIC<sub>50</sub> = 4.6) was missed by both our filters because it has a low RDF070m value (3.11) far from the threshold (set at 13.31) at the top of the trees, and a low Ui value as well (3.907) when a minimal of 3.95 is required to pass at least the threshold of D.T.1. Interestingly, this represents only 14 multiple bonds (double and aromatic) when 15 are required for D.T.1. Among the three correctly detected compounds all passed by the most stringent threshold for Ui (4.13), which represents the presence of at least 17 multiple bonds. Compound BDM_26 also passed the RDF070m threshold with a value of 20.31. In this case again, one can see the star-like structure of the compound, which contributes to most of the high value of RDF070m in a similar manner to the well known structure of the Nutlin compounds (e.g compound 2 in <xref ref-type="supplementary-material" rid="pcbi.1000695.s001">Figure S1</xref>) that are also active on p53/MDM2. Conversely, from the 4,705 compounds tested, PPI-HitProfiler-D.T.1 managed to remove 32% of the inactive compounds (Sp = 32%) on this PPI system whereas PPI-HitProfiler-D.T.2 removed 43% (Sp = 43%) of the initial screened collection (<xref ref-type="table" rid="pcbi-1000695-t003">Table 3</xref>). These results showed that used prior to experimental screening PPI-HitProfiler-D.T.2 would manage to identify 75% of the true PPI inhibitors on p53/MDM2 while nearly dividing in half the initial compound collection. As for the learning data set, the results of a physico-chemical PCA carried out on these screening results using the 7 descriptors cited above showed a fair overlap of the physico-chemical subspaces of the two subpopulations (actives and inactives). We then used the p53/MDM2 data set to assess the applicability domain of PPI-HitProfiler. We ran another principal component analysis (PCA) on the 623 molecules of the learning data set and the 357 E-Dragon descriptors that remained for the construction and optimization of the decision trees. The 3 first axis of the PCA were used to plot the molecules of the two subsets screened (Asinex + ChemDiv) in the flurorescence polarization assay (<xref ref-type="fig" rid="pcbi-1000695-g010">Figure 10</xref>). Even though the 3 first axis of the PCA represent only 40% of the global variance, these results tend to show that the screened collection stood within the domain of applicability of PPI-HitProfiler.</p>
+<fig id="pcbi-1000695-g009" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000695.g009</object-id><label>Figure 9</label><caption>
+<title>2D sketch of the 4 new inhibitors of the p53/MDM2 interaction identified by our CDithem fluorescence polarization assay along with their potency (pIC<sub>50</sub>) and their RDF070m and UI values.</title>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000695.g009" xlink:type="simple"/></fig><fig id="pcbi-1000695-g010" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000695.g010</object-id><label>Figure 10</label><caption>
+<title>Applicability domain of PPI-HitProfiler.</title>
+<p>The application domain of PPI-HitProfiler has been evaluated using a Principal Component Analysis (PCA) on the 623 molecules of the learning data (red) set and the 357 initial E-Dragon descriptors that were used to construct the decision trees. The graph represents the 3 first axis of the PCA (40% of the variance) which have been used to calculate the coordinates of the 1,645 molecules of the ChemDiv subset (green) and the 3,060 molecules of the Asinex Subset (blue). A good overlap between the three subsets (Red, Green, and Blue) can be observed which indicates that the molecules from the Asinex and ChemDiv subsets stand within the applicability domain of PPI-HitProfiler and that the focused library resulting from the two subsets is meaningful.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000695.g010" xlink:type="simple"/></fig></sec><sec id="s2f">
+<title>Conclusion</title>
+<p>In summary, we suggest that it may be possible to determine a global PPI inhibitor profile having appropriate ADMET properties using machine-learning techniques. Descriptor-based decision trees managed to positively discriminate PPI inhibitors combining only two molecular descriptors, RDF070m and Ui, which respectively describe specific ramified molecular shape and the presence of 15–17 multiple bonds in the compound. The development of a new computer package named PPI-HitProfiler allows the design of focused libraries enriched in PPI inhibitors starting from any drug-like compound collection. Its applications on two commercial compound collections, and its assessment on the experimental screening results of 11 different PPI systems shows a robust behavior in identifying true PPI inhibitors, from 70 to 81%, and its capacity to discard putative non-PPI inhibitors, from 42 to 52%, depending on the version of PPI-HitProfiler used. Although, removing 52% of inactive compounds from a chemical collection might seem rather low when designing focused chemical libraries, it has to be kept in mind that PPIs are a large and very diverse family. Futhermore, lead discovery in the pharmaceutical environment is at an industrial scale in which it is typical to screen 1–5 million compounds in few weeks using HTS. Yet the financial cost of an HTS campaign of 1 million compounds is anywhere between $500 000 to $1000 000<xref ref-type="bibr" rid="pcbi.1000695-Davies1">[13]</xref>. This means in this case a cost saving from $260 000 to $2 600 000 pet target. Clearly, some potentially interesting compounds could be lost after any type of filtering but the next blockbuster can also be missed by any kind of experimental high-throughput methods. Moreover, at present no one can foresee to what extent one can reduce the initial size of screening collections using a global and target-independent PPI inhibitor profiler like the one presented herein. This really depends on the quality of the initial collection as suggests the difference in specificity between PubChem BioAssay databases, and the ChemBridge and MayBridge collections.</p>
+<p>One avenue to circumvent this problem should be to design PPI-specific profiler that would take into account topology and types of interactions, e.g α-helix bound to a groove (p53/MDM2), or inter-protein beta-sheet (Xiap-BIR3/Smac), etc. This way, more specificity could be brought to the statistical models. One can imagine to design focused libraries by applying successive filters from the most global, like PPI-HitProfiler, to the more specific that could represent only a precise type of protein-protein interaction.</p>
+<p>At this stage of development and present knowledge, we strongly believe that “target-independent” PPI inhibitor profiler can be successfully applied prior to in silico or in vitro screening experiments not only for drug discovery projects to avoid a full-scale screening but also for chemical biology projects. Because it is known that target selection is a major bottleneck in today's drug discovery endeavors and that targets are nowadays less validated than in the nineties <xref ref-type="bibr" rid="pcbi.1000695-Booth1">[44]</xref>, time and cost-effective in silico technologies could here assist achieving systematic success in spite of the present global economic downturn.</p>
+</sec></sec><sec id="s3" sec-type="methods">
+<title>Methods</title>
+<sec id="s3a">
+<title>Data set preparation: learning and validation data sets</title>
+<p>145 PPI inhibitors identified by both in vitro and in vivo experiments were taken from the literature and ADMET filtered with our program FAF-Drugs2<xref ref-type="bibr" rid="pcbi.1000695-Lagorce1">[36]</xref> using very soft parameters for both physico-chemical properties and presence of toxic/reactive groups.</p>
+<p>(100&lt;MW&lt;900; 0&lt;HBD&lt;8; 0&lt;HBA = 12; -5&lt;XLogP&lt;6; 0&lt;nROT&lt;20; 0&lt;TPSA&lt;160; +one allowed Lipinski's rule violation). The remaining 81 PPI inhibitors were clustered with the program LigandInfo<xref ref-type="bibr" rid="pcbi.1000695-vonGrotthuss1">[45]</xref> using a hierarchical normal ascending classification with a diversity criterion of 0.8. From this classification one representative molecule from each cluster was taken such as having ultimately 66 structurally diverse PPI inhibitors (<xref ref-type="supplementary-material" rid="pcbi.1000695.s001">Figure S1</xref>). These compounds were used as the positive learning data set. A similar protocol was applied to define a negative learning data set. To do so, the 4,857 molecules from the “small molecules” subset of the DrugBank database were used. The small subset of the DrugBank contained for example 5% of compounds with a MW higher than 900. Moreover, not all the drugs from this subset have an orally bioavailable profile. All those molecules were therefore filtered using the same ADMET parameters. For historical reasons the small subset of the Drugbank contains very few PPI inhibitors. There are only 7 compounds from the whole “small subset” of the Drugbank that have a Tanimoto index above 0.8 with one of the 66 PPI inhibitors.</p>
+<p>The ADME/tox filtering step selected 942 molecules that were clustered as above leading to a diversity set of 557 drug-like molecules. Ultimately, the learning data set contained 66 true PPI inhibitors, 557 non-PPI inhibitors and 623 molecules in total. An independent validation set was constructed to assess the robustness of the model. It contained 26 different PPI inhibitors (<xref ref-type="supplementary-material" rid="pcbi.1000695.s002">Figure S2</xref>) and 2,000 molecules from the ChemBridge diversity set filtered as above. More specifically, only two compounds from the 26 PPI inhibitors of the validation dataset had a Tanimoto indice with one of the 66 (learning dataset) PPI inhibitors comprised between 0.8 and 0.9. Very few of them came from the initial pool of 145 PPI inhibitors (3 of them). Two compounds had a Tanimoto index between 0.8 and 1.0 with of the 145 PPI inhibitors but the vast majority were some different extra compounds.</p>
+</sec><sec id="s3b">
+<title>Data set preparation: remaining data sets</title>
+<p>The ADMET parameters used above for the filtering of the learning and validating data sets have also been used on the MayBridge and ChemBridge screening collections, as well as on the collections that were experimentally screened in the 10 PubChem BioAssays and in our fluorescence polarization assay on the p53/MDM2 interaction.</p>
+</sec><sec id="s3c">
+<title>Definition of enrichment, sensitivity and specificity</title>
+<p>TP: number of PPI inhibitors correctly classified</p>
+<p>FP: number of non-PPI inhibitors uncorrectly classified as PPI-inhibitors</p>
+<p>TN: number of non-PPI inhibitors correctly classified</p>
+<p>FN: number of PPI inhibitors uncorrectly classified as non-PPI inhibitors</p>
+<p>EF: Enrichment factor<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000695.e004" xlink:type="simple"/></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000695.e005" xlink:type="simple"/></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000695.e006" xlink:type="simple"/></disp-formula></p>
+</sec><sec id="s3d">
+<title>Statistical analysis: molecular descriptor calculation and preprocessing</title>
+<p>Descriptors were calculated by the program E-DRAGON, a web-server based version of DRAGON<xref ref-type="bibr" rid="pcbi.1000695-Todeschini1">[28]</xref> (version 5.4) containing 1,666 descriptors.</p>
+<p>The protocol described herein was used to eliminate non-relevant descriptors on the learning data set. Descriptors whose variance was zero (discard 108 descriptors), gathered descriptors according to correlation coefficient above 0.9 (discard 936 descriptors), descriptors whose Student T-test p-value was above 0.2 between the positive and negative learning data sets (discard 265 descriptors), such that 357 descriptors were initially retained to perform our computations.</p>
+</sec><sec id="s3e">
+<title>Learning methods</title>
+<sec id="s3e1">
+<title>Support vector machines</title>
+<p>Support vector machines belong to the class of machine learning algorithms that has recently become prominent in both computational biology and chemistry. This method implicitly embeds the data of interest in a high-dimensional feature space where classification or regression can be more easily performed with linear rules than in the original descriptor space. In SVM, a hyperplane maximizing its distance to the nearest observations (in the new space) is chosen. The optimization of parameters was processed by 10-fold cross validation (10-FCV) and factorial design. Three well-established and diverse kernels were tested: gaussian, sigmoid and polynomial. The best combination of parameters was chosen by monitoring enrichment, sensitivity and specificity from 10-FCV results (<xref ref-type="table" rid="pcbi-1000695-t004">Table 4</xref>).</p>
+<table-wrap id="pcbi-1000695-t004" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000695.t004</object-id><label>Table 4</label><caption>
+<title>SVM optimized parameters.</title>
+</caption><!--===== Grouping alternate versions of objects =====--><alternatives><graphic id="pcbi-1000695-t004-4" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000695.t004" xlink:type="simple"/><table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" colspan="1" rowspan="1">Kernel</td>
+<td align="left" colspan="1" rowspan="1">C</td>
+<td align="left" colspan="1" rowspan="1">Kernel Scale</td>
+<td align="left" colspan="1" rowspan="1">Kernel offset</td>
+<td align="left" colspan="1" rowspan="1">Kernel degree</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" colspan="1" rowspan="1">Gaussian</td>
+<td align="left" colspan="1" rowspan="1">10</td>
+<td align="left" colspan="1" rowspan="1">10<sup>−3</sup></td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">Sigmoid</td>
+<td align="left" colspan="1" rowspan="1">10<sup>3</sup></td>
+<td align="left" colspan="1" rowspan="1">10<sup>−4</sup></td>
+<td align="left" colspan="1" rowspan="1">10<sup>−3</sup></td>
+<td align="left" colspan="1" rowspan="1"/>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">Polynomial</td>
+<td align="left" colspan="1" rowspan="1">10</td>
+<td align="left" colspan="1" rowspan="1">10<sup>−3</sup></td>
+<td align="left" colspan="1" rowspan="1">1</td>
+<td align="left" colspan="1" rowspan="1">2</td>
+</tr>
+</tbody>
+</table></alternatives></table-wrap></sec><sec id="s3e2">
+<title>Decision trees</title>
+<p>Decision trees were constructed by analyzing a set of training samples for which the class labels were known. At each node, they recursively binary partition the data according to a threshold applied on one descriptor value. If trained on high-quality data, decision trees can make very accurate predictions. In this study, the decision tree was optimized with a cross validation protocol and manually edited. Instead of the classical indexes usually used for evaluating the quality of decision trees (such as entropy or Gini index), the trees were optimized such as providing the best global enrichment, which in this specific case provides a more suitable evaluation. The decision tree was built as follow. At each node, the descriptor whose best threshold value led to the best enrichment was chosen to become the local node. The construction was stopped when less than five observations were found in a leaf. Twenty trees were constructed by 20-fold cross validation. The choice of the final trees was motivated by only keeping nodes using the same descriptor for most of the trees. The final corresponding threshold was assigned to the modal value.</p>
+</sec></sec><sec id="s3f">
+<title>p53/MDM2 interaction: Fluorescence Polarization Assay (FPA)</title>
+<p>We chose a 9-mer peptide from p53, a fragment known to be sufficient to assess the p53/MDM2 interaction. The 9-mer p53 sequence-derived 5-carboxyfluorescein-labeled peptide (5FAM-RFMDYWEGL, Parks et <italic>al.</italic>, 2005) was synthesized by AnaSpec (San Jose, CA, USA).</p>
+<p>Full length MDM2 was subcloned into the expression plasmid pET28a (Novagen, Darmstadt, Germany) using standard methods. Following protein expression in <italic>Escherichia coli</italic> BL21 (DE3) (Invitrogen, Carlsbad, CA, USA), bacterial cells were harvested by centrifugation followed by resuspension in 50 mM Tris-HCl (pH 8.0), 200 mM NaCl, 5 mM Imidazole, 0.1% triton X-100, protease inhibitor mixture EDTA-free (Roche Applied Science, Rotkreuz, Switzerland) at 4°C, and lysed by sonication. After centrifugation at 13000 rpm 10 min at 4°C, soluble His-tagged proteins were purified using Ni-NTA agarose beads according to the manufacturer procedures (Qiagen, Valencia, CA).</p>
+<p>Fractions containing MDM2 proteins were pooled, dialysed into 20 mM Tris-HCl (pH 8.0), 100 mM KCl, 1 mM DTT, 0.2 mM EDTA, 0.05% triton X-100, 20% glycerol, frozen in liquid nitrogen, and kept at -80°C for further experiments.</p>
+<p>FP assays were performed in black low-binding surface 96-well plates (Corning, NY), in a total volume of 75 µL PBS, containing 10 nM of the 5FAM-labeled peptide, 18 nM of purified MDM2, 30 µM of compound to be tested, and 3% DMSO. MDM2 was allowed to incubate with the compounds 10 min prior to adding the 5FAM-labeled peptide. After 5 minutes, FP measurements were performed on a Victor 3V plate reader (Wallac, Turku, Finland) using a 485 nm excitation filter, a 535 nm emission filter, and a 0.2 s per well reading time.</p>
+</sec></sec><sec id="s4">
+<title>Supporting Information</title>
+<supplementary-material id="pcbi.1000695.s001" mimetype="image/tiff" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000695.s001" xlink:type="simple"><label>Figure S1</label><caption>
+<p>Chemical structures of the 66 selected PPI inhibitors used as the positive learning data set.</p>
+<p>(1.86 MB TIF)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1000695.s002" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000695.s002" xlink:type="simple"><label>Figure S2</label><caption>
+<p>Description of the protein space coverage of the 66 PPI inhibitors of the learning data set in term SCOP fold classes. The validation data set covers 27 different PPI and 21 pairs of SCOP fold classes.</p>
+<p>(0.04 MB PDF)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1000695.s003" mimetype="image/tiff" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000695.s003" xlink:type="simple"><label>Figure S3</label><caption>
+<p>Chemical structures of the 26 selected PPI inhibitors used as the positive validation data set.</p>
+<p>(0.21 MB TIF)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1000695.s004" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000695.s004" xlink:type="simple"><label>Figure S4</label><caption>
+<p>Description of the protein space coverage of the 26 PPI inhibitors of the learning data set in term SCOP fold classes. The validation data set covers 5 different PPI and 5 pairs of SCOP fold classes.</p>
+<p>(0.02 MB PDF)</p>
+</caption></supplementary-material></sec></body>
+<back><ref-list>
+<title>References</title>
+<ref id="pcbi.1000695-Stumpf1"><label>1</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Stumpf</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Thorne</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>de Silva</surname><given-names>E</given-names></name>
+<name name-style="western"><surname>R. S</surname></name>
+<name name-style="western"><surname>An</surname><given-names>H</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>Estimating the size of the human interactome.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>105</volume>             <fpage>6959</fpage>             <lpage>6964</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Berg1"><label>2</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Berg</surname><given-names>T</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Small-molecule inhibitors of protein-protein interactions.</article-title>             <source>Curr Opin Drug Discov Devel</source>             <volume>11</volume>             <fpage>666</fpage>             <lpage>674</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Fry1"><label>3</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Fry</surname><given-names>DC</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Drug-like inhibitors of protein-protein interactions: a structural examination of effective protein mimicry.</article-title>             <source>Curr Protein Pept Sci</source>             <volume>9</volume>             <fpage>240</fpage>             <lpage>247</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Villoutreix1"><label>4</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Villoutreix</surname><given-names>BO</given-names></name>
+<name name-style="western"><surname>Bastard</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Sperandio</surname><given-names>O</given-names></name>
+<name name-style="western"><surname>Fahraeus</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Poyet</surname><given-names>JL</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>In silico-in vitro screening of protein-protein interactions: towards the next generation of therapeutics.</article-title>             <source>Curr Pharm Biotechnol</source>             <volume>9</volume>             <fpage>103</fpage>             <lpage>122</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Wells1"><label>5</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Wells</surname><given-names>JA</given-names></name>
+<name name-style="western"><surname>McClendon</surname><given-names>CL</given-names></name>
+</person-group>             <year>2007</year>             <article-title>Reaching for high-hanging fruit in drug discovery at protein-protein interfaces.</article-title>             <source>Nature</source>             <volume>450</volume>             <fpage>1001</fpage>             <lpage>1009</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Whitty1"><label>6</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Whitty</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Kumaravel</surname><given-names>G</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Between a rock and a hard place?</article-title>             <source>Nat Chem Biol</source>             <volume>2</volume>             <fpage>112</fpage>             <lpage>118</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Fuller1"><label>7</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Fuller</surname><given-names>JC</given-names></name>
+<name name-style="western"><surname>Burgoyne</surname><given-names>NJ</given-names></name>
+<name name-style="western"><surname>Jackson</surname><given-names>RM</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Predicting druggable binding sites at the protein-protein interface.</article-title>             <source>Drug Discov Today</source>             <volume>14</volume>             <fpage>155</fpage>             <lpage>161</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Arkin1"><label>8</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Arkin</surname><given-names>MR</given-names></name>
+<name name-style="western"><surname>Whitty</surname><given-names>A</given-names></name>
+</person-group>             <year>2009</year>             <article-title>The road less traveled: modulating signal transduction enzymes by inhibiting their protein-protein interactions.</article-title>             <source>Curr Opin Chem Biol</source>             <volume>13</volume>             <fpage>284</fpage>             <lpage>290</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Shoichet1"><label>9</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Shoichet</surname><given-names>BK</given-names></name>
+</person-group>             <year>2004</year>             <article-title>Virtual screening of chemical libraries.</article-title>             <source>Nature</source>             <volume>432</volume>             <fpage>862</fpage>             <lpage>865</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Chene1"><label>10</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Chene</surname><given-names>P</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Drugs targeting protein-protein interactions.</article-title>             <source>ChemMedChem</source>             <volume>1</volume>             <fpage>400</fpage>             <lpage>411</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Eyrisch1"><label>11</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Eyrisch</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Helms</surname><given-names>V</given-names></name>
+</person-group>             <year>2007</year>             <article-title>Transient pockets on protein surfaces involved in protein-protein interaction.</article-title>             <source>J Med Chem</source>             <volume>50</volume>             <fpage>3457</fpage>             <lpage>3464</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Clark1"><label>12</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Clark</surname><given-names>DE</given-names></name>
+</person-group>             <year>2008</year>             <article-title>What has virtual screening ever done for drug discovery?</article-title>             <source>Expert Opinion on Drug Discovery</source>             <volume>3</volume>             <fpage>841</fpage>             <lpage>851</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Davies1"><label>13</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Davies</surname><given-names>JW</given-names></name>
+<name name-style="western"><surname>Glick</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Jenkins</surname><given-names>JL</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Streamlining lead discovery by aligning in silico and high-throughput screening.</article-title>             <source>Curr Opin Chem Biol</source>             <volume>10</volume>             <fpage>343</fpage>             <lpage>351</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Keskin1"><label>14</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Keskin</surname><given-names>O</given-names></name>
+<name name-style="western"><surname>Tuncbag</surname><given-names>N</given-names></name>
+<name name-style="western"><surname>Gursoy</surname><given-names>A</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Characterization and prediction of protein interfaces to infer protein-protein interaction networks.</article-title>             <source>Curr Pharm Biotechnol</source>             <volume>9</volume>             <fpage>67</fpage>             <lpage>76</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Kitchen1"><label>15</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Kitchen</surname><given-names>DB</given-names></name>
+<name name-style="western"><surname>Decornez</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Furr</surname><given-names>JR</given-names></name>
+<name name-style="western"><surname>Bajorath</surname><given-names>J</given-names></name>
+</person-group>             <year>2004</year>             <article-title>Docking and scoring in virtual screening for drug discovery: methods and applications.</article-title>             <source>Nat Rev Drug Discov</source>             <volume>3</volume>             <fpage>935</fpage>             <lpage>949</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Rochet1"><label>16</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Rochet</surname><given-names>JC</given-names></name>
+</person-group>             <year>2007</year>             <article-title>Novel therapeutic strategies for the treatment of protein-misfolding diseases.</article-title>             <source>Expert Rev Mol Med</source>             <volume>9</volume>             <fpage>1</fpage>             <lpage>34</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Stockwell1"><label>17</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Stockwell</surname><given-names>BR</given-names></name>
+</person-group>             <year>2004</year>             <article-title>Exploring biology with small organic molecules.</article-title>             <source>Nature</source>             <volume>432</volume>             <fpage>846</fpage>             <lpage>854</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Thanos1"><label>18</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Thanos</surname><given-names>CD</given-names></name>
+<name name-style="western"><surname>DeLano</surname><given-names>WL</given-names></name>
+<name name-style="western"><surname>Wells</surname><given-names>JA</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Hot-spot mimicry of a cytokine receptor by a small molecule.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>103</volume>             <fpage>15422</fpage>             <lpage>15427</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Orry1"><label>19</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Orry</surname><given-names>AJ</given-names></name>
+<name name-style="western"><surname>Abagyan</surname><given-names>RA</given-names></name>
+<name name-style="western"><surname>Cavasotto</surname><given-names>CN</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Structure-based development of target-specific compound libraries.</article-title>             <source>Drug Discov Today</source>             <volume>11</volume>             <fpage>261</fpage>             <lpage>266</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Arkin2"><label>20</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Arkin</surname><given-names>M</given-names></name>
+</person-group>             <year>2005</year>             <article-title>Protein-protein interactions and cancer: small molecules going in for the kill.</article-title>             <source>Curr Opin Chem Biol</source>             <volume>9</volume>             <fpage>317</fpage>             <lpage>324</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Keskin2"><label>21</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Keskin</surname><given-names>O</given-names></name>
+<name name-style="western"><surname>Gursoy</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Ma</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Nussinov</surname><given-names>R</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Principles of protein-protein interactions: what are the preferred ways for proteins to interact?</article-title>             <source>Chem Rev</source>             <volume>108</volume>             <fpage>1225</fpage>             <lpage>1244</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Pagliaro1"><label>22</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Pagliaro</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Felding</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Audouze</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Nielsen</surname><given-names>SJ</given-names></name>
+<name name-style="western"><surname>Terry</surname><given-names>RB</given-names></name>
+<etal/></person-group>             <year>2004</year>             <article-title>Emerging classes of protein-protein interaction inhibitors and new tools for their development.</article-title>             <source>Curr Opin Chem Biol</source>             <volume>8</volume>             <fpage>442</fpage>             <lpage>449</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Yin1"><label>23</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Yin</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Hamilton</surname><given-names>AD</given-names></name>
+</person-group>             <year>2005</year>             <article-title>Strategies for targeting protein-protein interactions with synthetic agents.</article-title>             <source>Angew Chem Int Ed Engl</source>             <volume>44</volume>             <fpage>4130</fpage>             <lpage>4163</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Fry2"><label>24</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Fry</surname><given-names>DC</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Protein-protein interactions as targets for small molecule drug discovery.</article-title>             <source>Biopolymers</source>             <volume>84</volume>             <fpage>535</fpage>             <lpage>552</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Kingsford1"><label>25</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Kingsford</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Salzberg</surname><given-names>SL</given-names></name>
+</person-group>             <year>2008</year>             <article-title>What are decision trees?</article-title>             <source>Nat Biotechnol</source>             <volume>26</volume>             <fpage>1011</fpage>             <lpage>1013</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Neugebauer1"><label>26</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Neugebauer</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Hartmann</surname><given-names>RW</given-names></name>
+<name name-style="western"><surname>Klein</surname><given-names>CD</given-names></name>
+</person-group>             <year>2007</year>             <article-title>Prediction of protein-protein interaction inhibitors by chemoinformatics and machine learning methods.</article-title>             <source>J Med Chem</source>             <volume>50</volume>             <fpage>4665</fpage>             <lpage>4668</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Vert1"><label>27</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Vert</surname><given-names>JP</given-names></name>
+<name name-style="western"><surname>Jacob</surname><given-names>L</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Machine learning for in silico virtual screening and chemical genomics: new strategies.</article-title>             <source>Comb Chem High Throughput Screen</source>             <volume>11</volume>             <fpage>677</fpage>             <lpage>685</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Todeschini1"><label>28</label><element-citation publication-type="other" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Todeschini</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Conconni</surname><given-names>V</given-names></name>
+</person-group>             <year>2000</year>             <article-title>Handbook of molecular descriptors.</article-title>             <publisher-loc>New York</publisher-loc>             <publisher-name>Wiley-VCH</publisher-name>          </element-citation></ref>
+<ref id="pcbi.1000695-Wishart1"><label>29</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Wishart</surname><given-names>DS</given-names></name>
+<name name-style="western"><surname>Knox</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Guo</surname><given-names>AC</given-names></name>
+<name name-style="western"><surname>Shrivastava</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Hassanali</surname><given-names>M</given-names></name>
+<etal/></person-group>             <year>2006</year>             <article-title>DrugBank: a comprehensive resource for in silico drug discovery and exploration.</article-title>             <source>Nucleic Acids Res</source>             <volume>34</volume>             <fpage>D668</fpage>             <lpage>672</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Gonzalez1"><label>30</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Gonzalez</surname><given-names>MP</given-names></name>
+<name name-style="western"><surname>Puente</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Fall</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Gomez</surname><given-names>G</given-names></name>
+</person-group>             <year>2006</year>             <article-title>In silico studies using Radial Distribution Function approach for predicting affinity of 1 alpha,25-dihydroxyvitamin D(3) analogues for Vitamin D receptor.</article-title>             <source>Steroids</source>             <volume>71</volume>             <fpage>510</fpage>             <lpage>527</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Fernandez1"><label>31</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Fernandez</surname><given-names>M</given-names></name>
+</person-group>             <year>2005</year>             <article-title>Quantitative structure-activity relationship to predict differential inhibition of aldose reductase by flavonoid compounds.</article-title>             <source>Bioorganic and medicinal chemistry</source>             <volume>13</volume>             <fpage>3269</fpage>             <lpage>3277</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Hemmer1"><label>32</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Hemmer</surname><given-names>M</given-names></name>
+</person-group>             <year>2000</year>             <article-title>Prediction of three-dimensional molecular structures using information from infrared spectra.</article-title>             <source>Analytica Chimica Acta</source>             <volume>420</volume>             <fpage>145</fpage>             <lpage>154</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Hemmer2"><label>33</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Hemmer</surname><given-names>M</given-names></name>
+</person-group>             <year>1999</year>             <article-title>Deriving the 3D structure of organic molecules from their infrared spectra.</article-title>             <source>Vibrational spectroscopy</source>             <volume>19</volume>             <fpage>151</fpage>             <lpage>164</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Domling1"><label>34</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Domling</surname><given-names>A</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Small molecular weight protein-protein interaction antagonists: an insurmountable challenge?</article-title>             <source>Curr Opin Chem Biol</source>             <volume>12</volume>             <fpage>281</fpage>             <lpage>291</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-OBoyle1"><label>35</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>O'Boyle</surname><given-names>NM</given-names></name>
+<name name-style="western"><surname>Morley</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Hutchison</surname><given-names>GR</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Pybel: a Python wrapper for the OpenBabel cheminformatics toolkit.</article-title>             <source>Chem Cent J</source>             <volume>2</volume>             <fpage>5</fpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Lagorce1"><label>36</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Lagorce</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Sperandio</surname><given-names>O</given-names></name>
+<name name-style="western"><surname>Galons</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Miteva</surname><given-names>MA</given-names></name>
+<name name-style="western"><surname>Villoutreix</surname><given-names>BO</given-names></name>
+</person-group>             <year>2008</year>             <article-title>FAF-Drugs2: free ADME/tox filtering tool to assist drug discovery and chemical biology projects.</article-title>             <source>BMC Bioinformatics</source>             <volume>9</volume>             <fpage>396</fpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Candeias1"><label>37</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Candeias</surname><given-names>MM</given-names></name>
+<name name-style="western"><surname>Malbert-Colas</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Powell</surname><given-names>DJ</given-names></name>
+<name name-style="western"><surname>Daskalogianni</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Maslon</surname><given-names>MM</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>P53 mRNA controls p53 activity by managing Mdm2 functions.</article-title>             <source>Nat Cell Biol</source>             <volume>10</volume>             <fpage>1098</fpage>             <lpage>1105</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Naski1"><label>38</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Naski</surname><given-names>N</given-names></name>
+<name name-style="western"><surname>Gajjar</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Bourougaa</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Malbert-Colas</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Fahraeus</surname><given-names>R</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>The p53 mRNA-Mdm2 interaction.</article-title>             <source>Cell Cycle</source>             <volume>8</volume>             <fpage>31</fpage>             <lpage>34</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Patel1"><label>39</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Patel</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Player</surname><given-names>MR</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Small-molecule inhibitors of the p53-HDM2 interaction for the treatment of cancer.</article-title>             <source>Expert Opin Investig Drugs</source>             <volume>17</volume>             <fpage>1865</fpage>             <lpage>1882</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Vassilev1"><label>40</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Vassilev</surname><given-names>LT</given-names></name>
+<name name-style="western"><surname>Vu</surname><given-names>BT</given-names></name>
+<name name-style="western"><surname>Graves</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Carvajal</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Podlaski</surname><given-names>F</given-names></name>
+<etal/></person-group>             <year>2004</year>             <article-title>In vivo activation of the p53 pathway by small-molecule antagonists of MDM2.</article-title>             <source>Science</source>             <volume>303</volume>             <fpage>844</fpage>             <lpage>848</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Raboisson1"><label>41</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Raboisson</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Marugan</surname><given-names>JJ</given-names></name>
+<name name-style="western"><surname>Schubert</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Koblish</surname><given-names>HK</given-names></name>
+<name name-style="western"><surname>Lu</surname><given-names>T</given-names></name>
+<etal/></person-group>             <year>2005</year>             <article-title>Structure-based design, synthesis, and biological evaluation of novel 1,4-diazepines as HDM2 antagonists.</article-title>             <source>Bioorg Med Chem Lett</source>             <volume>15</volume>             <fpage>1857</fpage>             <lpage>1861</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Ding1"><label>42</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Ding</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Lu</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Nikolovska-Coleska</surname><given-names>Z</given-names></name>
+<name name-style="western"><surname>Qiu</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Ding</surname><given-names>Y</given-names></name>
+<etal/></person-group>             <year>2005</year>             <article-title>Structure-based design of potent non-peptide MDM2 inhibitors.</article-title>             <source>J Am Chem Soc</source>             <volume>127</volume>             <fpage>10130</fpage>             <lpage>10131</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Ding2"><label>43</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Ding</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Lu</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Nikolovska-Coleska</surname><given-names>Z</given-names></name>
+<name name-style="western"><surname>Wang</surname><given-names>G</given-names></name>
+<name name-style="western"><surname>Qiu</surname><given-names>S</given-names></name>
+<etal/></person-group>             <year>2006</year>             <article-title>Structure-based design of spiro-oxindoles as potent, specific small-molecule inhibitors of the MDM2-p53 interaction.</article-title>             <source>J Med Chem</source>             <volume>49</volume>             <fpage>3432</fpage>             <lpage>3435</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-Booth1"><label>44</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Booth</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Zemmel</surname><given-names>R</given-names></name>
+</person-group>             <year>2004</year>             <article-title>Prospects for productivity.</article-title>             <source>Nat Rev Drug Discov</source>             <volume>3</volume>             <fpage>451</fpage>             <lpage>456</lpage>          </element-citation></ref>
+<ref id="pcbi.1000695-vonGrotthuss1"><label>45</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>von Grotthuss</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Koczyk</surname><given-names>G</given-names></name>
+<name name-style="western"><surname>Pas</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Wyrwicz</surname><given-names>LS</given-names></name>
+<name name-style="western"><surname>Rychlewski</surname><given-names>L</given-names></name>
+</person-group>             <year>2004</year>             <article-title>Ligand.Info small-molecule Meta-Database.</article-title>             <source>Comb Chem High Throughput Screen</source>             <volume>7</volume>             <fpage>757</fpage>             <lpage>761</lpage>          </element-citation></ref>
+</ref-list>
+
+</back>
+</article>

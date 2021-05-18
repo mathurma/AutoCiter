@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="3.0" xml:lang="EN">
+  <front>
+    <journal-meta><journal-id journal-id-type="publisher-id">plos</journal-id><journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id><journal-id journal-id-type="pmc">ploscomp</journal-id><!--===== Grouping journal title elements =====--><journal-title-group><journal-title>PLoS Computational Biology</journal-title></journal-title-group><issn pub-type="ppub">1553-734X</issn><issn pub-type="epub">1553-7358</issn><publisher>
+        <publisher-name>Public Library of Science</publisher-name>
+        <publisher-loc>San Francisco, USA</publisher-loc>
+      </publisher></journal-meta>
+    <article-meta><article-id pub-id-type="publisher-id">PCOMPBIOL-D-11-00156</article-id><article-id pub-id-type="doi">10.1371/journal.pcbi.1002083</article-id><article-categories>
+        <subj-group subj-group-type="heading">
+          <subject>Research Article</subject>
+        </subj-group>
+        <subj-group subj-group-type="Discipline-v2">
+          <subject>Biology</subject>
+          <subj-group>
+            <subject>Biochemistry</subject>
+            <subj-group>
+              <subject>Biomacromolecule-ligand interactions</subject>
+              <subject>Drug discovery</subject>
+            </subj-group>
+          </subj-group>
+          <subj-group>
+            <subject>Computational biology</subject>
+          </subj-group>
+        </subj-group>
+        <subj-group subj-group-type="Discipline">
+          <subject>Computational Biology</subject>
+          <subject>Biochemistry</subject>
+        </subj-group>
+      </article-categories><title-group><article-title>Predicting Binding to P-Glycoprotein by Flexible Receptor Docking</article-title><alt-title alt-title-type="running-head">Predicting Binding to P-Glycoprotein</alt-title></title-group><contrib-group>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Dolghih</surname>
+            <given-names>Elena</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+          <xref ref-type="corresp" rid="cor1">
+            <sup>*</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Bryant</surname>
+            <given-names>Clifford</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff2">
+            <sup>2</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Renslo</surname>
+            <given-names>Adam R.</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+          <xref ref-type="aff" rid="aff2">
+            <sup>2</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Jacobson</surname>
+            <given-names>Matthew P.</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+        </contrib>
+      </contrib-group><aff id="aff1"><label>1</label><addr-line>Department of Pharmaceutical Chemistry, University of California, San Francisco, San Francisco, California, United States of America</addr-line>       </aff><aff id="aff2"><label>2</label><addr-line>Small Molecule Discovery Center, University of California, San Francisco, San Francisco, California, United States of America</addr-line>       </aff><contrib-group>
+        <contrib contrib-type="editor" xlink:type="simple">
+          <name name-style="western">
+            <surname>Briggs</surname>
+            <given-names>James M.</given-names>
+          </name>
+          <role>Editor</role>
+          <xref ref-type="aff" rid="edit1"/>
+        </contrib>
+      </contrib-group><aff id="edit1">University of Houston, United States of America</aff><author-notes>
+        <corresp id="cor1">* E-mail: <email xlink:type="simple">lena.dolgikh@ucsf.edu</email></corresp>
+        <fn fn-type="con">
+          <p>Conceived and designed the experiments: ED CB ARR MPJ. Performed the experiments: ED CB. Analyzed the data: ED CB ARR MPJ. Contributed reagents/materials/analysis tools: ARR MPJ. Wrote the paper: ED CB ARR MPJ.</p>
+        </fn>
+      <fn fn-type="conflict">
+        <p>I have read the journal's policy and have the following conflicts: MPJ is a consultant to Schrodinger LLC.</p>
+      </fn></author-notes><pub-date pub-type="collection">
+        <month>6</month>
+        <year>2011</year>
+      </pub-date><pub-date pub-type="epub">
+        <day>23</day>
+        <month>6</month>
+        <year>2011</year>
+      </pub-date><volume>7</volume><issue>6</issue><elocation-id>e1002083</elocation-id><history>
+        <date date-type="received">
+          <day>4</day>
+          <month>2</month>
+          <year>2011</year>
+        </date>
+        <date date-type="accepted">
+          <day>22</day>
+          <month>4</month>
+          <year>2011</year>
+        </date>
+      </history><!--===== Grouping copyright info into permissions =====--><permissions><copyright-year>2011</copyright-year><copyright-holder>Dolghih et al</copyright-holder><license><license-p>This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license></permissions><abstract>
+        <p>P-glycoprotein (P-gp) is an ATP-dependent transport protein that is selectively expressed at entry points of xenobiotics where, acting as an efflux pump, it prevents their entering sensitive organs. The protein also plays a key role in the absorption and blood-brain barrier penetration of many drugs, while its overexpression in cancer cells has been linked to multidrug resistance in tumors. The recent publication of the mouse P-gp crystal structure revealed a large and hydrophobic binding cavity with no clearly defined sub-sites that supports an “induced-fit” ligand binding model. We employed flexible receptor docking to develop a new prediction algorithm for P-gp binding specificity. We tested the ability of this method to differentiate between binders and nonbinders of P-gp using consistently measured experimental data from P-gp efflux and calcein-inhibition assays. We also subjected the model to a blind test on a series of peptidic cysteine protease inhibitors, confirming the ability to predict compounds more likely to be P-gp substrates. Finally, we used the method to predict cellular metabolites that may be P-gp substrates. Overall, our results suggest that many P-gp substrates bind deeper in the cavity than the cyclic peptide in the crystal structure and that specificity in P-gp is better understood in terms of physicochemical properties of the ligands (and the binding site), rather than being defined by specific sub-sites.</p>
+      </abstract><abstract abstract-type="summary">
+        <title>Author Summary</title>
+        <p>With many drugs failing in the preclinical stages of drug discovery due to undesirable ADMETox (absorption, distribution, metabolism, excretion and toxicity) properties, improvement of these properties early on in the process, alongside the optimization of the compound activity, is emerging as a new focus in the pharmaceutical field. One of the key players affecting pharmacokinetic profiles of many clinically relevant compounds is an active efflux transporter, P-glycoprotein. Expressed predominantly at various physiological barriers, it can influence drug absorption (intestinal epithelium, colon), drug elimination (kidney proximal tubules) and drug penetration of the blood-brain barrier (endothelial brain cells). Moreover, its increased expression in cancer cells has been linked to resistance to multiple drugs in tumors. In this study we describe a computational approach that allows prediction of which compounds are more likely to interact with P-gp. We have tested the ability of this method to differentiate between binders and nonbinders of P-gp by using consistently measured <italic>in vitro</italic> experimental data. We also implemented a blind test on a series of peptidic cysteine protease inhibitors with encouraging outcome. Overall, our results suggest that this method provides a qualitative, quick, and inexpensive way of evaluating potential drug efflux problem at the early stages of drug development.</p>
+      </abstract><funding-group><funding-statement>This work was supported by NIH grant AG021601 (to MPJ) and by research support from the Sandler Foundation (to ARR). The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement></funding-group><counts>
+        <page-count count="11"/>
+      </counts></article-meta>
+  </front>
+  <body>
+    <sec id="s1">
+      <title>Introduction</title>
+      <p>P-glycoprotein (P-gp) is an ATP-dependent transport protein that is selectively expressed at entry points of xenobiotics in tissues such as the intestinal epithelium, capillary brain endothelium, and kidney proximal tubules among others <xref ref-type="bibr" rid="pcbi.1002083-Thiebaut1">[1]</xref>. Acting as an efflux pump, it prevents exogenous substances from entering sensitive organs and, as such, plays a key role in the absorption and blood-brain barrier penetration of many drugs, affecting their distribution and elimination <xref ref-type="bibr" rid="pcbi.1002083-Szakacs1">[2]</xref>, <xref ref-type="bibr" rid="pcbi.1002083-Schinkel1">[3]</xref>. Moreover, overexpression of this protein, also known as MDR1, has been linked to multidrug resistance (MDR) in cancer tumor cells where higher levels of the protein result in increased efflux of chemotherapeutic compounds <xref ref-type="bibr" rid="pcbi.1002083-Ambudkar1">[4]</xref>. Finally, there is also accumulating evidence that P-gp, in addition to its role in drug transport, may transport endogenous molecules such as signaling lipids, and play a role in tumor biology and cancer progression <xref ref-type="bibr" rid="pcbi.1002083-Fletcher1">[5]</xref>.</p>
+      <p>A major hurdle in the drug discovery process <xref ref-type="bibr" rid="pcbi.1002083-Ayrton1">[6]</xref>, <xref ref-type="bibr" rid="pcbi.1002083-Hochman1">[7]</xref>, P-gp has inspired the development of several assays aimed at identifying its substrates <xref ref-type="bibr" rid="pcbi.1002083-Polli1">[8]</xref>, <xref ref-type="bibr" rid="pcbi.1002083-Feng1">[9]</xref>. One widely used assay, the monolayer efflux ratio (ER) assay, measures transport rates of molecules in different directions across a single layer of specialized cells. The ratio or difference of the two rates, basal-to-apical and apical-to-basal, is used to identify P-gp substrates. Another commonly used assay, aimed at identifying P-gp inhibitors as well as substrates, is the calcein-AM (CAM) inhibition assay, in which accumulation of the fluorescent calcein molecule inside the cells indicates an interaction between P-gp and the molecule being tested.</p>
+      <p>Despite being widely used, both assays have limitations <xref ref-type="bibr" rid="pcbi.1002083-Li1">[10]</xref>. For example, the monolayer efflux assay may fail to identify P-gp substrates with high passive permeability (&gt;300 nm/s) because efflux by P-gp can be masked by the high diffusion rate of the compounds through the membrane. There is also no standard value of the efflux ratio used to distinguish substrates from nonsubstrates, with cutoff values from 1.5 to 3 being used <xref ref-type="bibr" rid="pcbi.1002083-MaharDoan1">[11]</xref>, <xref ref-type="bibr" rid="pcbi.1002083-Wang1">[12]</xref>, <xref ref-type="bibr" rid="pcbi.1002083-Gombar1">[13]</xref>, <xref ref-type="bibr" rid="pcbi.1002083-Crivori1">[14]</xref>. Because the CAM assay is based on the competitive inhibition of calcein transport by compounds that interact with P-gp, the assay may not detect P-gp substrates with low passive membrane diffusion rates that reach the P-gp binding site at a much slower rate than the fluorescent compound. Both assays are also expensive and time consuming, and results in different labs can vary significantly. For example, midazolam has been identified as a nonsubstrate <xref ref-type="bibr" rid="pcbi.1002083-Gombar1">[13]</xref>, an inhibitor <xref ref-type="bibr" rid="pcbi.1002083-Polli1">[8]</xref>, <xref ref-type="bibr" rid="pcbi.1002083-MaharDoan1">[11]</xref>, a substrate <xref ref-type="bibr" rid="pcbi.1002083-Summerfield1">[15]</xref> and an inducer <xref ref-type="bibr" rid="pcbi.1002083-Seelig1">[16]</xref> in different studies. Doxorubicin, resistance to which has been linked to P-gp overexpression, is another example <xref ref-type="bibr" rid="pcbi.1002083-Ueda1">[17]</xref>. The drug has been cited repeatedly as a classical P-gp substrate <xref ref-type="bibr" rid="pcbi.1002083-Loo1">[18]</xref>, <xref ref-type="bibr" rid="pcbi.1002083-Shapiro1">[19]</xref>; however, it has also been classified as a nonsubstrate by several <italic>in vitro</italic> studies <xref ref-type="bibr" rid="pcbi.1002083-Polli1">[8]</xref>, <xref ref-type="bibr" rid="pcbi.1002083-Gombar1">[13]</xref>.</p>
+      <p>To complement experimental assays, several <italic>in silico</italic> methods have been developed to predict P-gp binding. Among them, pharmacophore models based on anywhere from two <xref ref-type="bibr" rid="pcbi.1002083-Garrigues1">[20]</xref> to nine <xref ref-type="bibr" rid="pcbi.1002083-Li1">[10]</xref> features to an ensemble of 100 pharmacophores <xref ref-type="bibr" rid="pcbi.1002083-Penzotti1">[21]</xref> have been generated. Other approaches have included quantitative structure-activity relationship (QSAR) models and machine-learning algorithms, some of them incorporating up to 70 descriptors <xref ref-type="bibr" rid="pcbi.1002083-deCerqueiraLima1">[22]</xref>, <xref ref-type="bibr" rid="pcbi.1002083-Huang1">[23]</xref>, <xref ref-type="bibr" rid="pcbi.1002083-Cabrera1">[24]</xref>. Even though several of the methods report sensitivity of 80% or higher, the extraordinary chemical diversity of the P-gp substrates, reflected by the large numbers of pharmacophores and descriptors, have frustrated efforts to make sense of the chemical data. A multitude of theories about the number, sizes, and locations of the binding sites has further complicated the issue <xref ref-type="bibr" rid="pcbi.1002083-Dey1">[25]</xref>, <xref ref-type="bibr" rid="pcbi.1002083-Loo2">[26]</xref>, <xref ref-type="bibr" rid="pcbi.1002083-Martin1">[27]</xref>, <xref ref-type="bibr" rid="pcbi.1002083-Ayesh1">[28]</xref>.</p>
+      <p>The recent publication of the mouse P-gp crystal structure <xref ref-type="bibr" rid="pcbi.1002083-Aller1">[29]</xref> (87% identical amino acid sequence to human P-gp) presents an opportunity to develop new prediction methods that take advantage of the receptor structural information to not only identify molecules that bind to P-gp but also to guide chemical optimization, e.g., to attempt to modify interactions with the protein. Among the three published structures, two were crystallized with stereoisomers of a cyclic inhibitor, QZ59, that defines the drug-binding cavity. All structures are in an inward-facing conformation that is believed to be relevant for initial substrate recognition.</p>
+      <p>Located in the transmembrane region, the large and hydrophobic drug-binding pocket is lined with various aromatic side chains and has no clearly defined sub-sites. Taking into account the well-known ability of the protein to accommodate ligands of various shapes and sizes, such an arrangement strongly supports the “induced fit” ligand binding model proposed by Loo <italic>et al.</italic> <xref ref-type="bibr" rid="pcbi.1002083-Loo3">[30]</xref>. This, combined with the relatively low resolution of the structure, suggests that it is essential to treat the binding site as flexible while modeling binding site interactions, which we demonstrate explicitly in our results here. In this study, we employ a flexible receptor docking method <xref ref-type="bibr" rid="pcbi.1002083-Sherman1">[31]</xref>, together with scoring methods that include the Glide XP scoring function <xref ref-type="bibr" rid="pcbi.1002083-Friesner1">[32]</xref> and a molecular mechanics scoring function with generalized Born implicit solvent (MM-GB/SA) <xref ref-type="bibr" rid="pcbi.1002083-Ghosh1">[33]</xref>, <xref ref-type="bibr" rid="pcbi.1002083-Huang2">[34]</xref>, to develop a new prediction algorithm for P-gp binding specificity. We benchmark the method in several ways, including a blind test on a series of peptidic cysteine protease inhibitors, confirming the ability to predict compounds more likely to be P-gp substrates. We also apply this approach to evaluate the ability of P-gp to discriminate endogenous vs. exogenous compounds, and to predict that several endogenous metabolites may be P-gp substrates. Overall, our results suggest that specificity in P-gp is better understood in terms of physicochemical properties of the ligands (and the binding site), rather than being defined by specific sub-sites. We also suggest that many P-gp substrates bind deeper in the cavity than the cyclic peptide in the crystal structure.</p>
+    </sec>
+    <sec id="s2" sec-type="methods">
+      <title>Methods</title>
+      <sec id="s2a">
+        <title>Computational Methods</title>
+        <p>All molecular docking calculations were performed using the mouse P-glycoprotein crystal structure (Protein Data bank [PDB] code 3G60). BLAST <xref ref-type="bibr" rid="pcbi.1002083-Altschul1">[35]</xref> sequence alignment with human P-gp revealed 87% overall sequence identity and ∼100% identity within the binding cavity with the exception of mSer725/hAla729 directly facing the binding cavity. The docking calculations were performed using Glide (version 5.6) <xref ref-type="bibr" rid="pcbi.1002083-Friesner2">[36]</xref> with the OPLS2005 force field <xref ref-type="bibr" rid="pcbi.1002083-Kaminski1">[37]</xref>, <xref ref-type="bibr" rid="pcbi.1002083-Jorgensen1">[38]</xref>. The receptor structure was prepared and minimized within the Protein Preparation Wizard.</p>
+        <p>For rigid docking, a rigid receptor grid defined by a 10×10×10 Å inner box was generated. The docking site was either defined by the centroid of the co-crystallized ligand, QZ59-RRR, with a center at (19.1, 52.3, −0.3) Å or defined higher than the original ligand with the center at (19.0, 46.0, −6.0) Å (same as in induced fit docking, see below). All ligands were docked in both standard precision (SP) Glide and extra precision (XP) Glide modes (<xref ref-type="supplementary-material" rid="pcbi.1002083.s001">Figure S1</xref>).</p>
+        <p>Flexible receptor docking was performed using a multi-stage induced fit docking protocol (IFD) <xref ref-type="bibr" rid="pcbi.1002083-Sherman1">[31]</xref> as implemented in Schrödinger Suite 2010. Briefly, in the first stage, the van der Waals radii of protein and ligand are scaled by a factor of 0.5 and ligands are docked into the receptor using the default Glide SP mode. Next, Prime is used to predict and optimize selected protein side chains (details below). Finally, the poses are scored and filtered, after which ligands are redocked using Glide XP mode and scored. Final scoring in this work was implemented using the extra precision (XP) Glide <xref ref-type="bibr" rid="pcbi.1002083-Friesner1">[32]</xref> scoring function and an MM-GB/SA <xref ref-type="bibr" rid="pcbi.1002083-Ghosh1">[33]</xref>, <xref ref-type="bibr" rid="pcbi.1002083-Huang2">[34]</xref>rescoring function.</p>
+        <p>The specific protocol was developed and refined using well-known P-gp substrates and inhibitors from <xref ref-type="supplementary-material" rid="pcbi.1002083.s008">Table S1</xref>. Since no binding modes are known for any compounds (with the exception of QZ59), optimal parameters were selected based on binding scores and the ability to distinguish binders from non-binders (as described below). The parameters we varied included the inner box coordinates, van der Waals radii scaling, the number of poses saved, and the number and identity of ‘trimmed’ (mutated temporarily to Ala) residues in the initial docking stage. Specifically, we chose to delete the side chains of Phe71, Phe332, and Phe728 in the 1<sup>st</sup> docking stage. These three residues are located in the center of the cavity, and were most responsible for preventing potent inhibitors from achieving good scores, by binding deeper in the cavity.</p>
+        <p>In the primary IFD round, a 10×10×10 Å inner box with coordinates (19.0, 47.0, −6.0) Å was used, which is centered deeper in the binding cavity than the cyclic peptide in the crystal structure, and roughly centered on the docked poses of the initial test set. At this stage, all residues lining the cavity were optimized by Prime <xref ref-type="bibr" rid="pcbi.1002083-Jacobson1">[39]</xref>(<xref ref-type="supplementary-material" rid="pcbi.1002083.s009">Table S2</xref>), whereas in the following IFD round, only residues within 5 Å of each ligand were minimized. The number of poses saved during the initial docking was set to 100. For all subsequent docking calculations inner box coordinates (19.0, 46.0, −6.0) Å were used. For each ligand, up to 20 top poses were saved and scored with the Glide XP function and MM-GB/SA.</p>
+        <p>Ligand coordinates were obtained from the DrugBank <xref ref-type="bibr" rid="pcbi.1002083-Wishart1">[40]</xref> and PubChem Compound (<ext-link ext-link-type="uri" xlink:href="http://pubchem.ncbi.nlm.nih.gov/" xlink:type="simple">http://pubchem.ncbi.nlm.nih.gov/</ext-link>) databases and processed using the <italic>Ligprep</italic> 2.4 module. The parameters were assigned based on the OPLS2005 force field. For the QZ59-RRR ligand, selenium atoms were replaced with sulfur atoms. For molecules with stereocenters, only the known active forms were docked. For drugs used as racemic mixtures, both stereoisomers were investigated. The isomer with the more favorable docking score was used in the data analysis. Ionization states were assigned by <italic>Epik</italic>, and groups with pKa between 5 and 9 were treated as neutral while those outside the range were treated as charged.</p>
+        <p>Initial testing of our approach was conducted with two datasets. One of them was comprised of 24 well-known P-gp binders from <xref ref-type="table" rid="pcbi-1002083-t001">Table 1</xref> of the review article by Hennessy <italic>et al.</italic> <xref ref-type="bibr" rid="pcbi.1002083-Hennessy1">[41]</xref> and 102 endogenous molecules selected from the KEGG database <xref ref-type="bibr" rid="pcbi.1002083-Kanehisa1">[42]</xref> to represent different classes of biological compounds. The rationale for this first test was that most endogenous molecules would not be effluxed by P-gp, providing insight into how P-gp discriminates between endogenous and exogenous molecules. The second dataset was based on the Doan <italic>et al.</italic> study of FDA approved drugs <xref ref-type="bibr" rid="pcbi.1002083-MaharDoan1">[11]</xref> that generated consistent experimental data from the monolayer efflux ratio as well as the calcein-inhibition assays. We used the intersection of the results in the two assays to define sets of compounds that were clear P-gp substrates (i.e., positive in both assays) or non-substrates. We did not consider the compounds that were positive in only one of the two assays. The complete list of compounds and their scores are provided in <xref ref-type="supplementary-material" rid="pcbi.1002083.s008">Tables S1</xref> and <xref ref-type="supplementary-material" rid="pcbi.1002083.s010">Tables S3</xref>, <xref ref-type="supplementary-material" rid="pcbi.1002083.s011">S4</xref>, and <xref ref-type="supplementary-material" rid="pcbi.1002083.s012">S5</xref>.</p>
+        <table-wrap id="pcbi-1002083-t001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1002083.t001</object-id><label>Table 1</label><caption>
+            <title>Peptidic cysteine protease inhibitors.</title>
+          </caption><!--===== Grouping alternate versions of objects =====--><alternatives><graphic id="pcbi-1002083-t001-1" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002083.t001" xlink:type="simple"/><table>
+            <colgroup span="1">
+              <col align="left" span="1"/>
+              <col align="center" span="1"/>
+              <col align="center" span="1"/>
+              <col align="center" span="1"/>
+              <col align="center" span="1"/>
+            </colgroup>
+            <thead>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">Compound</td>
+                <td align="left" colspan="2" rowspan="1">Mean P<sub>app</sub> (10<sup>−6</sup> cm/s)</td>
+                <td align="left" colspan="1" rowspan="1">Mean Efflux Ratio</td>
+                <td align="left" colspan="1" rowspan="1">Glide XP (kcal/mol)</td>
+              </tr>
+              <tr>
+                <td align="left" colspan="1" rowspan="1"/>
+                <td align="left" colspan="1" rowspan="1">A to B</td>
+                <td align="left" colspan="1" rowspan="1">B to A</td>
+                <td align="left" colspan="1" rowspan="1"/>
+                <td align="left" colspan="1" rowspan="1"/>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">1</td>
+                <td align="left" colspan="1" rowspan="1">24.4</td>
+                <td align="left" colspan="1" rowspan="1">29.6</td>
+                <td align="left" colspan="1" rowspan="1">1.2</td>
+                <td align="left" colspan="1" rowspan="1">−10.9</td>
+              </tr>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">2</td>
+                <td align="left" colspan="1" rowspan="1">10.6</td>
+                <td align="left" colspan="1" rowspan="1">16.7</td>
+                <td align="left" colspan="1" rowspan="1">1.6</td>
+                <td align="left" colspan="1" rowspan="1">−9.9</td>
+              </tr>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">3</td>
+                <td align="left" colspan="1" rowspan="1">21.8</td>
+                <td align="left" colspan="1" rowspan="1">30.9</td>
+                <td align="left" colspan="1" rowspan="1">1.4</td>
+                <td align="left" colspan="1" rowspan="1">−12.7</td>
+              </tr>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">4</td>
+                <td align="left" colspan="1" rowspan="1">19.6</td>
+                <td align="left" colspan="1" rowspan="1">31.8</td>
+                <td align="left" colspan="1" rowspan="1">1.6</td>
+                <td align="left" colspan="1" rowspan="1">−12.9</td>
+              </tr>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">5</td>
+                <td align="left" colspan="1" rowspan="1">20.3</td>
+                <td align="left" colspan="1" rowspan="1">36.4</td>
+                <td align="left" colspan="1" rowspan="1">1.8</td>
+                <td align="left" colspan="1" rowspan="1">−13.0</td>
+              </tr>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">6</td>
+                <td align="left" colspan="1" rowspan="1">4.75</td>
+                <td align="left" colspan="1" rowspan="1">42.8</td>
+                <td align="left" colspan="1" rowspan="1">9.0</td>
+                <td align="left" colspan="1" rowspan="1">−14.6</td>
+              </tr>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">7</td>
+                <td align="left" colspan="1" rowspan="1">10.3</td>
+                <td align="left" colspan="1" rowspan="1">45.5</td>
+                <td align="left" colspan="1" rowspan="1">4.4</td>
+                <td align="left" colspan="1" rowspan="1">−13.2</td>
+              </tr>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">8</td>
+                <td align="left" colspan="1" rowspan="1">14.5</td>
+                <td align="left" colspan="1" rowspan="1">34.2</td>
+                <td align="left" colspan="1" rowspan="1">2.4</td>
+                <td align="left" colspan="1" rowspan="1">−14.2</td>
+              </tr>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">9</td>
+                <td align="left" colspan="1" rowspan="1">0.51</td>
+                <td align="left" colspan="1" rowspan="1">2.9</td>
+                <td align="left" colspan="1" rowspan="1">5.8</td>
+                <td align="left" colspan="1" rowspan="1">−12.3</td>
+              </tr>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">10</td>
+                <td align="left" colspan="1" rowspan="1">8.41</td>
+                <td align="left" colspan="1" rowspan="1">25.8</td>
+                <td align="left" colspan="1" rowspan="1">3.1</td>
+                <td align="left" colspan="1" rowspan="1">−11.0</td>
+              </tr>
+            </tbody>
+          </table></alternatives></table-wrap>
+      </sec>
+      <sec id="s2b">
+        <title>Synthetic Methods</title>
+        <p>Reagents and solvents were purchased from Aldrich Chemical, Alfa Aesar, Chem Impex international or TCI America and used as received. Reactions were carried out under an argon atmosphere in oven-dried glassware using anhydrous solvents from commercial suppliers. Air and/or moisture sensitive reagents were transferred via syringe or cannula and were introduced into reaction vessels through rubber septa. Solvent removal was accomplished with a rotary evaporator at ∼10–50 Torr. Automated column chromatography was carried out using a Biotage SP1 system and silica gel cartridges from Biotage or Silicycle. Analytical TLC plates from EM Science (Silica Gel 60 F<sub>254</sub>) were employed for TLC analyses. <sup>1</sup>H NMR spectra were recorded on a Varian INOVA-400 400 MHz spectrometer.</p>
+        <p>Analogs <bold>1</bold> <xref ref-type="bibr" rid="pcbi.1002083-Palmer1">[43]</xref>, <xref ref-type="bibr" rid="pcbi.1002083-Pansare1">[44]</xref>, <bold>3</bold>, <bold>6</bold>, and <bold>9</bold> were synthesized in one step from commercially available <italic>N</italic>-benzyloxycarbonyl (Cbz) protected amino acids according to the following general procedure. A solution of the <italic>N</italic>-benzyloxycarbonyl protected L-amino acid (0.33 mmol) in 2 mL of DMF was treated with aminoacetonitrile bisulfate (0.37 mmol, 1.1 equiv.), 1-hydroxybenzotriazole (0.33 mmol, 1.0 equiv), <italic>N</italic>-(3-dimethylaminopropyl)-<italic>N′</italic>-ethylcarbodiimide hydrochloride (0.67 mmol, 2.0 equiv.), and <italic>N,N</italic>-diisopropylethylamine (2.0 mmol, 6.0 equiv.). The reaction was stirred at room temperature and monitored until judged complete by TLC or HPLC. The reaction mixture was then poured into ethyl acetate and the resulting organic solution washed in succession with aqueous 1 N HCl (for non-basic analogs only), 50% aqueous NaHCO<sub>3</sub>, saturated aqueous NaCl, and then dried (MgSO<sub>4</sub>), filtered, and concentrated. The crude product thus obtained was purified using automated silica gel flash chromatography (Biotage SP1, ethyl acetate-hexane) to afford the desired products.</p>
+        <p>Analogs <bold>2</bold>, <bold>4</bold>, <bold>5</bold>, <bold>7</bold>, and <bold>10</bold> were synthesized in two steps from N-(benzyloxycarbonyl)-L-serine lactone <xref ref-type="bibr" rid="pcbi.1002083-Arnold1">[45]</xref> according to the following procedure. A solution of <italic>N</italic>-(benzyloxycarbonyl)-L-serine lactone (0.45 mmol) in 2 mL of acetonitrile was added dropwise to a solution of the relevant amine or <italic>N</italic>-trimethylsilylamine (1–10 equivalents depending on the amine, see below) in ∼3 mL of acetonitrile. The reaction was monitored at room temperature or in some cases heated at 50°C, depending on the reactivity of the amine (see below). When the reaction was judged complete by TLC or HPLC, the reaction mixture was concentrated and the desired amino acid separated from undesired amide side product in one of the following ways. For the amino acid leading to <bold>2</bold>, the crude product was partitioned between ethyl acetate and water and the water phase (containing the desired product) was then lyophilized. For the amino acids leading to <bold>4</bold> and <bold>5</bold>, purification by automated silica gel flash chromatography (Biotage SP1, methanol-dichloromethane) afforded the desired amino acids. For intermediate amino acids leading to <bold>7</bold> and <bold>10</bold>, the crude residue was partitioned between dichloromethane and 1 N aqueous NaOH, followed after phase separation by acidification of the aqueous phase with 1 N HCl to effect precipitation of the amino acid, which was collected on a filter, washed with cold water, and dried. The procedures described above provided the desired amino acids in sufficient purity for use in the subsequent coupling reaction with aminoacetonitrile, which was carried out according to the general coupling protocol described for analogs <bold>1</bold>, <bold>3</bold>, <bold>6</bold>, and <bold>9</bold> above.</p>
+        <p>Analog <bold>8</bold> was prepared in three steps by reaction of indoline with <italic>N</italic>-(benzyloxycarbonyl)-L-serine lactone as described above, using automated silica gel flash chromatography (Biotage SP1, methanol-dichloromethane) to isolate the desired amino acid. The amino acid intermediate was coupled to aminoacetonitrile according to the general procedure and finally, the resulting indoline product was oxidized to the desired indole <bold>8</bold> by reaction with 1.05 equivalents of 2,3-dichloro-5,6-dicyano-1,4-benzoquinone (DDQ) in dichloromethane for 30 minutes. The final product was purified by automated silica gel flash chromatography (Biotage SP1, ethyl acetate-hexane).</p>
+        <p>Additional details and NMR data are provided in Supplementary Methods (<xref ref-type="supplementary-material" rid="pcbi.1002083.s014">Text S1</xref>).</p>
+      </sec>
+      <sec id="s2c">
+        <title>MDCK-MDR1 Monolayer Permeability Assay</title>
+        <p>Permeability measurements were performed by Wuxi Apptec, using the following procedures.</p>
+        <p>MDCK-MDR1 cells (obtained from Piet Borst at the Netherlands Cancer Institute) were seeded onto polyethylene membranes (PET) in 96-well BD insert systems at 2×10<sup>5</sup> cells/cm<sup>2</sup> for 4–6 days to obtain confluent cell monolayer formation. Test compounds were diluted with the transport buffer (HBSS, pH 7.4) from a 10 mM stock solution to a concentration of 2 µM and applied to the apical (A) or basolateral (B) side of the cell monolayer. Permeation of the test compounds from the A to B direction or B to A direction was determined in triplicate over a 150-minute incubation at 37°C and 5% CO<sub>2</sub> with a relative humidity of 95%. In addition, the efflux ratio of each compound was also determined. Test and reference compounds were quantified by LC-MS/MS analysis based on the peak area ratio of analyte/IS.</p>
+        <p>The apparent permeability coefficient P<sub>app</sub> (cm/s) was calculated using the equation:<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002083.e001" xlink:type="simple"/></disp-formula>where dC<sub>r</sub>/dt is the cumulative concentration of compound in the receiver chamber as a function of time (µM/s); V<sub>r</sub> is the solution volume in the receiver chamber (0.075 mL on the apical side, 0.25 mL on the basolateral side); A is the surface area for the transport, i.e. 0.084 cm<sup>2</sup> for the area of the monolayer; C<sub>0</sub> is the initial concentration in the donor chamber (µM).</p>
+        <p>The efflux ratio (ER) was calculated using the equation:<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002083.e002" xlink:type="simple"/></disp-formula></p>
+        <p>Percent recovery was calculated using the equation:<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002083.e003" xlink:type="simple"/></disp-formula>Where V<sub>d</sub> is the volume in the donor chambers (0.075 mL on the apical side, 0.25 mL on the basolateral side); C<sub>d</sub> and C<sub>r</sub> are the final concentrations of transport compound in donor and receiver chambers, respectively. C<sub>c</sub> is the compound concentration in the cell lysate solution (µM), and V<sub>c</sub> is the volume of insert well (0.075 mL in this assay).</p>
+        <p>Permeability determinations were performed in triplicate and are reported as mean values. The mean total recovery was greater than 90% for all compounds tested (compounds <bold>1</bold>–<bold>10</bold>).</p>
+      </sec>
+    </sec>
+    <sec id="s3">
+      <title>Results</title>
+      <p>We initially developed the docking strategy using a number of well-known P-gp substrates and inhibitors. Specifically, we used a set of 24 known binders (Hennessy <italic>et al.</italic> <xref ref-type="bibr" rid="pcbi.1002083-Hennessy1">[41]</xref>, <xref ref-type="table" rid="pcbi-1002083-t001">Table 1</xref>) that included, among others, HIV protease inhibitors, anthracyclines, vinca alkaloids, and taxanes (<xref ref-type="supplementary-material" rid="pcbi.1002083.s008">Table S1</xref>). Initial docking using a rigid receptor and docking box coordinates centered on the co-crystallized ligand generated poses that largely overlapped with the coordinates of the cyclic peptide in the crystal structure, with most of the compounds showing extensive exposure to solvent at the base of the cavity. By contrast, the flexible-receptor docking protocol resulted in ligands receiving much more favorable docking scores (<xref ref-type="fig" rid="pcbi-1002083-g001">Figure 1</xref>) as well as ligand poses in which the ligands bound much ‘deeper’ in the cavity (<xref ref-type="fig" rid="pcbi-1002083-g002">Figure 2</xref>), with little solvent exposure.</p>
+      <fig id="pcbi-1002083-g001" position="float">
+        <object-id pub-id-type="doi">10.1371/journal.pcbi.1002083.g001</object-id>
+        <label>Figure 1</label>
+        <caption>
+          <title>Distributions of docking scores (Glide XP).</title>
+          <p>Metabolites/P-gp binders set: <bold>A</bold>) Rigid docking, binders; <bold>B</bold>) Flexible docking, binders; <bold>C</bold>) Flexible docking, metabolites.</p>
+        </caption>
+        <graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002083.g001" xlink:type="simple"/>
+      </fig>
+      <fig id="pcbi-1002083-g002" position="float">
+        <object-id pub-id-type="doi">10.1371/journal.pcbi.1002083.g002</object-id>
+        <label>Figure 2</label>
+        <caption>
+          <title>Flexible versus rigid docking.</title>
+          <p><bold>A</bold>) View of P-gp from above (i.e. viewed from the luminal face, perpendicular to the membrane plane) of the top-scored saquinavir pose (yellow) from the primary round of the flexible receptor docking. Phe71, Phe332, and Phe728 were mutated to Ala in the 1<sup>st</sup> Glide docking stage. The final positions of the three residues and Phe974 are shown in pink, while those of the original crystal structure are in green. <bold>B</bold>) Top-scored poses from second round of flexible receptor docking (red), Glide XP = −17.8 kcal/mol compared to top the pose from rigid docking (blue), Glide XP = −10.0 kcal/mol for saquinavir. <bold>C</bold>) Analogous results for nelfinavir. Flexible docking (red), Glide XP = −15.6 kcal/mol; rigid docking (blue), Glide XP = −8.9 kcal/mol. <bold>D</bold>) Rhodamine B. Flexible receptor docking (pink), Glide XP = −15.3 kcal/mol. Rigid docking (blue), Glide XP = −5.4 kcal/mol. In red, are residues shown experimentally to interact with a cysteine analogue of rhodamine B. QZ59-RRR is shown for reference in light green.</p>
+        </caption>
+        <graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002083.g002" xlink:type="simple"/>
+      </fig>
+      <p>Only side chains in the binding site were treated as flexible (<xref ref-type="supplementary-material" rid="pcbi.1002083.s009">Table S2</xref>), and the conformational changes that allowed the ligands to bind more deeply in the cavity were modest. The most important conformational changes were those of the side chains of Phe71, Phe332, and Phe728, which are located in the center of the cavity. As shown in <xref ref-type="fig" rid="pcbi-1002083-g002">Figure 2A</xref>, the rotamer changes in these side chains result in a more open cavity than that in the initial crystal structure. Representative top poses and Glide XP binding scores of some of the compounds from the final IFD round are shown in <xref ref-type="fig" rid="pcbi-1002083-g002">Figures 2B and 2C</xref>. Additional scores are provided in , and are represented as a histogram in <xref ref-type="fig" rid="pcbi-1002083-g001">Figure 1</xref>, highlighting the much more favorable docking scores achieved with flexible-receptor docking. Below, we also demonstrate that the flexible receptor approach greatly improves the ability to discriminate binders from non-binders.</p>
+      <p>In all of this work, we used two different scoring functions to rank compounds, Glide XP and a molecular mechanics based scoring function (MM-GB/SA), in addition to the default Glide SP scoring function. The results using Glide XP and MM-GB/SA scoring were, on average, remarkably similar, considering the very different functional form and methods of parameterization. Both scoring functions performed much better than Glide SP in distinguishing binders from non-binders. (On the other hand, the Glide XP and MM-GB/SA scoring functions did not always identify the same poses as top-ranked; see, e.g., doxorubicin in <xref ref-type="supplementary-material" rid="pcbi.1002083.s002">Figure S2</xref>. Given the size and flexibility of the binding cavity, it is likely that for some, if not all molecules, several binding modes are possible.) For simplicity, we present mainly the results using Glide XP here, and present the remaining results using MM-GB/SA in supplementary tables and figures, in part because the results with Glide XP are slightly better in some cases. This is not altogether surprising because the molecular mechanics scoring function has been useful primarily in ranking compounds that are chemically similar, e.g., congeneric series, and the series of compounds we use in most of the tests here are quite diverse. However, the similarity of the results using the very different scoring functions is striking, and we use the results with MM-GB/SA scoring to investigate, for example, the role of desolvation in binding by P-gp.</p>
+      <p>Also shown in <xref ref-type="fig" rid="pcbi-1002083-g002">Figure 2D</xref> are the rigid- and flexible-receptor poses of a well-known (non-drug) P-gp substrate, rhodamine B, the binding mode of which has been partially elucidated by experimental data obtained using its Cys-linked analog. The flexible-receptor pose selected by Glide XP is qualitatively consistent with the experimental data in that the molecule is reasonably close to residues facing the binding cavity and shown to interact with the ligand <xref ref-type="bibr" rid="pcbi.1002083-Loo2">[26]</xref>, <xref ref-type="bibr" rid="pcbi.1002083-Loo4">[46]</xref>. By comparison, the pose obtained by rigid docking appears less consistent with the experimental data and also has a much less favorable docking score (−5.4 kcal/mol, vs. −15.3 kcal/mol for the flexible receptor pose).</p>
+      <p>As an additional control, we docked QZ59-RRR back into the crystal structure using both rigid and flexible docking protocols. The results are illustrated in <xref ref-type="fig" rid="pcbi-1002083-g003">Figure 3</xref>. Rigid docking reproduced the binding mode of QZ59, but the molecule was ‘flipped’ in comparison to its position in the crystal structure. Induced fit docking produced a similar pose with the molecule slightly shifted upwards from the original position. (The shift was seen regardless of whether the docking box was centered on the original ligand position or shifted deeper into the cavity). The ligand still maintained contact with Phe724 and Val978 deemed to be important for drug binding (as discussed in Aller paper), as well as with the majority of the hydrophobic residues indicated to be within 4–5 Å of the crystal pose (<xref ref-type="supplementary-material" rid="pcbi.1002083.s013">Table S6</xref>). The flexible docking score in this case, though not particularly high, is also more favorable than that from rigid docking. Based on the IC<sub>50</sub> value reported for QZ59-RRR inhibition of verapamil-stimulated ATPase activity (4.8±2.6 µM), the ligand is a rather weak inhibitor, which could partially explain the weak binding score. In addition, as discussed in <xref ref-type="sec" rid="s2">Methods</xref>, it was not possible to dock the compound containing selenium atoms, and these were replaced with sulfur.</p>
+      <fig id="pcbi-1002083-g003" position="float">
+        <object-id pub-id-type="doi">10.1371/journal.pcbi.1002083.g003</object-id>
+        <label>Figure 3</label>
+        <caption>
+          <title>Flexible and rigid docking results for QZ59-RRR.</title>
+          <p>Flexible receptor docking (orange), Glide XP = −10.2 kcal/mol. Rigid docking (blue), Glide XP = −8.4 kcal/mol. QZ59-RRR from the crystal structure is shown for reference in light green. In red are two residues believed to be important for ligand binding: Phe724 and Val978.</p>
+        </caption>
+        <graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002083.g003" xlink:type="simple"/>
+      </fig>
+      <p>We next docked a set of 102 common metabolites, comprising representatives of four major classes of biological molecules including carbohydrates, amino acids, fatty acids, and nucleic acids (<xref ref-type="supplementary-material" rid="pcbi.1002083.s010">Table S3</xref>). We reasoned that most of these metabolites would be non-binders based on the notion that their efflux would be inefficient to cell function (as would inhibition of P-gp by metabolites). As shown in <xref ref-type="fig" rid="pcbi-1002083-g001">Figure 1</xref>, most of the metabolites did in fact have much less favorable docking scores than the drugs discussed above. However, a small fraction of the metabolites received docking scores similar to those of the drugs. For example, of the 26 drugs in <xref ref-type="supplementary-material" rid="pcbi.1002083.s008">Table S1</xref> known to interact with P-gp, 23 had Glide XP scores of −12 kcal/mol or better, and 15 had scores &lt;−14 kcal/mol. By contrast, 18 of the 102 metabolites received scores more favorable than −12 kcal/mol, and only 8 had scores &lt;−14 kcal/mol. Among these metabolites with favorable scores, we subsequently identified four (thyroxin, vitamin D3, progesterone, and cholesterol) that have been reported to interact with P-gp <xref ref-type="bibr" rid="pcbi.1002083-Mitchell1">[47]</xref>, <xref ref-type="bibr" rid="pcbi.1002083-Fan1">[48]</xref>, <xref ref-type="bibr" rid="pcbi.1002083-Yang1">[49]</xref>, <xref ref-type="bibr" rid="pcbi.1002083-Wang2">[50]</xref> and reassigned them to the binders set (which had little affect on the ROC-type curve). We also searched for literature data on approximately 20 randomly selected metabolites with less favorable docking scores and were unable to find any evidence of these being P-gp substrates. We also could not identify any direct evidence for other top-scoring metabolites, such as riboflavin, retinol, and leukotriene C4, interacting with P-gp, but it is possible that some of these metabolites are currently unrecognized substrates (or inhibitors). In fact, P-gp has been suggested to export naturally derived toxins in healthy cells <xref ref-type="bibr" rid="pcbi.1002083-Lee1">[51]</xref> as well as to play a role in transport of cancer-signaling lipids <xref ref-type="bibr" rid="pcbi.1002083-Fletcher1">[5]</xref>. Investigation of a more extensive set of biologically relevant molecules is currently under way.</p>
+      <p>In the absence of any direct evidence for the other metabolites, we consider them non-binders, and we quantify the ability to discriminate the known binders (26 drugs+4 metabolites) and presumed non-binders (98 metabolites) using an ROC-type curve in <xref ref-type="fig" rid="pcbi-1002083-g004">Figure 4A</xref>. Clearly, the flexible-receptor protocol results in much better discrimination between these two sets of compounds (area under the curve, AUC = 0.93) than the rigid receptor docking, either with the docking box centered on the co-crystallized QZ59 ligand (AUC = 0.78, <xref ref-type="fig" rid="pcbi-1002083-g004">Figure 4A</xref>), or with the docking box shifted deeper into the cavity as in the flexible docking results (AUC = 0.83, <xref ref-type="supplementary-material" rid="pcbi.1002083.s001">Figure S1</xref>). The results using flexible-receptor docking and the MM-GB/SA scoring function are very similar in this case, AUC = 0.93 (<xref ref-type="supplementary-material" rid="pcbi.1002083.s003">Figure S3</xref>).</p>
+      <fig id="pcbi-1002083-g004" position="float">
+        <object-id pub-id-type="doi">10.1371/journal.pcbi.1002083.g004</object-id>
+        <label>Figure 4</label>
+        <caption>
+          <title>ROC-type curves (Glide XP) for metabolites/P-gp binders set (A) and Doan <italic>et al.</italic> dataset (B).</title>
+        </caption>
+        <graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002083.g004" xlink:type="simple"/>
+      </fig>
+      <p>Next, we tested the ability to qualitatively reproduce results of <italic>in vitro</italic> assays regularly used to evaluate P-gp binding. For that purpose we selected the Doan <italic>et al.</italic> <xref ref-type="bibr" rid="pcbi.1002083-MaharDoan1">[11]</xref> dataset of FDA approved drugs that included results of the monolayer efflux and CAM inhibition assays. Based on the assay results, we defined P-gp binders (N = 13) as molecules positive for both assays (ER&gt;1.5 and &gt;10% CAM inhibition), and nonbinders (N = 34) as compounds negative for both assays (ER&lt;1.5 and &lt;10% CAM inhibition). The ROC curves obtained with Glide XP and the default treatment of ionization (see <xref ref-type="sec" rid="s2">Methods</xref>) are shown in <xref ref-type="fig" rid="pcbi-1002083-g004">Figure 4B</xref>. The induced fit approach (AUC = 0.90) again outperformed rigid docking (AUC = 0.71), although there is clearly some overlap in the distribution of scores between the binders and non-binders in this set. Some of this overlap is due to the somewhat arbitrary criteria used for distinguishing the sets of compounds, as discussed below.</p>
+      <p>The results using the MM-GB/SA (AUC = 0.81) scoring function were somewhat worse than using Glide XP (<xref ref-type="supplementary-material" rid="pcbi.1002083.s003">Figure S3</xref>), using the default treatment of ionization states. However, when all compounds were docked as neutral species, regardless of their pKa values, the MM-GB/SA scoring function performed much better (AUC = 0.92, <xref ref-type="supplementary-material" rid="pcbi.1002083.s004">Figure S4</xref>); the results using the Glide XP scoring function were similar (AUC = 0.92). It is not surprising that the MM-GB/SA scoring function is more sensitive to the treatment of protonation states, since charged compounds have large, unfavorable desolvation energies. It is not completely clear why treating all compounds as neutral results in better discrimination, although we note in this regard that one of the prevalent theories in the field is that P-gp substrates enter the binding cavity from the membrane (where they are assumed to be electrically neutral) rather than directly from the aqueous environment of the cytoplasm <xref ref-type="bibr" rid="pcbi.1002083-Ambudkar1">[4]</xref>.</p>
+      <p>It is currently challenging to measure binding affinities to P-gp, and the results of standard assays are generally interpreted qualitatively (i.e., is it a substrate or not), as we have done here. However, the ratio or difference of the rates of permeability in the two directions (basal-to-apical, P<sub>BA</sub>, and apical-to-basal, P<sub>AB</sub>) provides a quantitative measure of how ‘strong’ a substrate a given compound is. Although there is no reason to expect the computed docking scores to necessarily correlate well with these metrics, there is, in fact, a reasonable correlation with both the difference in the rates (P<sub>active</sub> = P<sub>BA</sub>−P<sub>AB</sub>) and the more commonly used log of the efflux ratio (<xref ref-type="fig" rid="pcbi-1002083-g005">Figure 5A</xref>). (Results using the MM-GB/SA scoring function are qualitatively similar, and again the results using this scoring function are better when all molecules are treated as neutral (<xref ref-type="supplementary-material" rid="pcbi.1002083.s005">Figures S5</xref> and <xref ref-type="supplementary-material" rid="pcbi.1002083.s006">S6</xref>). One advantage of representing the data this way is that it avoids somewhat arbitrary criteria used for classifying the compounds as substrates and non-substrates. The plots illustrate the two different, if somewhat overlapping ranges of the binding scores for P-gp binders and nonbinders. When the same data was plotted versus rigid docking scores, the two classes were undistinguishable (<xref ref-type="fig" rid="pcbi-1002083-g005">Figure 5B</xref>). When interpreting these plots, one must keep in mind that efflux ratio values are a result of a complex interplay between the binding affinities of the compounds and kinetic aspects of the P-gp efflux, and may be influenced by rate of passive membrane permeability, and we do not claim that it should be possible to quantitatively predict the efflux ratio based on docking calculations alone.</p>
+      <fig id="pcbi-1002083-g005" position="float">
+        <object-id pub-id-type="doi">10.1371/journal.pcbi.1002083.g005</object-id>
+        <label>Figure 5</label>
+        <caption>
+          <title>Flexible (A, C) and rigid (B, D) docking binding scores (Glide XP) versus P<sub>active</sub> and log of efflux ratio.</title>
+          <p>Compounds from Doan <italic>et al.</italic> dataset <xref ref-type="bibr" rid="pcbi.1002083-MaharDoan1">[11]</xref>.</p>
+        </caption>
+        <graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002083.g005" xlink:type="simple"/>
+      </fig>
+      <p>The P-gp binding site is highly hydrophobic and the ligand desolvation energy may have a significant effect on the ligand binding. To investigate this point, we computed free energy of transferring compounds from water to a low dielectric solvent (chloroform) using an approach described previously for predicting passive membrane permeability <xref ref-type="bibr" rid="pcbi.1002083-Rezai1">[52]</xref>, <xref ref-type="bibr" rid="pcbi.1002083-Kalyanaraman1">[53]</xref>. The plot of the P-gp binding scores vs. free energy of desolvation showed no correlation between the two (<xref ref-type="supplementary-material" rid="pcbi.1002083.s007">Figure S7</xref>), indicating that binding scores reflect specific interactions with P-gp and are not dominated solely by the polarity/hydrophobicity (quantified using the solvation free energy) of the compounds. Some of these specific interactions are illustrated in <xref ref-type="supplementary-material" rid="pcbi.1002083.s002">Figure S2</xref> and include pi-stacking, cation-pi interactions and hydrogen bonding. These results also suggest that the physicochemical properties of the ligands that define their passive membrane permeability are different from the physicochemical determinants that define their interactions with P-gp. This finding in turn suggests that it might be possible to reduce a ligand's P-gp binding using chemical modifications without dramatically reducing its membrane permeability. We note that the computations we perform here attempt to predict the (path-independent) thermodynamics of transferring a ligand from water to the P-gp binding site, and thus our computations do not provide any direct information about whether the ligand enters the binding site through the membrane, or directly from the cytoplasm.</p>
+      <p>Finally, we have performed a first ‘blind’ test of the method, using a series of peptidic cysteine protease inhibitors bearing natural and unnatural amino acid residues. These compounds were originally designed to test hypotheses concerning passive membrane permeability, and those results will be reported elsewhere. However, we also tested the compounds in a cell-monolayer assay (performed by WuXi AppTec), specifically using P-gp transfected MDCK cells. The results are summarized in <xref ref-type="table" rid="pcbi-1002083-t001">Table 1</xref> and <xref ref-type="fig" rid="pcbi-1002083-g006">Figure 6</xref>, where we again plot the predicted docking scores for binding to P-gp versus measures of the asymmetry of the permeability across the monolayer. The compound that showed the strongest evidence for P-gp mediated efflux, compound <bold>6</bold>, had an efflux ratio of 9 with moderate passive membrane permeability. Encouragingly, this compound had the most favorable Glide XP score (−14.6) among the series, comparable to many of the P-gp substrates in the benchmarking results discussed above. Similarly, the compound with the least favorable docking score (−9.9, compound <bold>2</bold>) had a much lower efflux ratio (1.6), and the compound with the lowest measured efflux ratio (1.2, compound <bold>1</bold>) had the second lowest docking score (−10.9).</p>
+      <fig id="pcbi-1002083-g006" position="float">
+        <object-id pub-id-type="doi">10.1371/journal.pcbi.1002083.g006</object-id>
+        <label>Figure 6</label>
+        <caption>
+          <title>Series of peptidic cysteine protease inhibitors.</title>
+          <p>Compound structures (<bold>A</bold>). Plot of binding scores (Glide XP) vs. P<sub>active</sub> (<bold>B</bold>) and experimentally measured efflux ratio values (<bold>C</bold>).</p>
+        </caption>
+        <graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002083.g006" xlink:type="simple"/>
+      </fig>
+      <p>The results are not perfect. Compound <bold>9</bold> has relatively polarized efflux (ER = 5.8), but has a docking score that would classify it only as a ‘possible’ binder (−12.3). However, we note that this compound has 10× lower passive membrane permeability than any other member of the series, P<sub>AB</sub> = 5×10<sup>−7</sup> cm/s, making the determination of P-gp mediated efflux more uncertain. In general, the correlation between the docking scores and the experimental results is ‘noisier’ than in the benchmarking study using the Doan <italic>et al.</italic> data set. However, we note that the range of experimental efflux ratios, as well as the range of docking scores, is narrower in this series of peptidic compounds, which is expected due to the compounds being much more chemically similar. As such, it is gratifying to be able to confirm an ability to predict compounds more/less likely to be P-gp substrates, even in the more challenging case of a more chemically homogeneous series, albeit not with ‘quantitative’ accuracy.</p>
+      <p>In this regard, we again emphasize that, even with perfect ability to predict binding affinities to P-gp (which we certainly do not claim), there is no reason to expect any simple relationship between the docking scores and experimental measures of P-gp mediated efflux. Thus the docking results, as well as the experimental results, should be interpreted in qualitative terms. As general guidelines based on the work presented here, we view a Glide XP docking score of approximately −14 or lower, using the flexible docking protocol, to be a predictor of P-gp interaction, while scores of −12 or greater predict non-interaction. Intermediate scores of approximately −12 to −14 are less conclusive, but many compounds in this range show evidence of being relatively ‘weak’ substrates.</p>
+    </sec>
+    <sec id="s4">
+      <title>Discussion</title>
+      <p>In summary, we have developed an <italic>in silico</italic> method suitable for predicting compounds that are more likely or less likely to interact with P-gp. We tested the ability of this method to differentiate between binders and nonbinders of P-gp using consistently measured experimental data from P-gp efflux and calcein-inhibition assays. Treating the P-gp binding cavity as flexible is critical for obtaining good results. We suspect that this observation reflects intrinsic flexibility of the binding site, but may also be related to the relatively low resolution of the crystal structures; most of the side chains orientations are not well defined by the electron density. Encouragingly, a first ‘blind’ test of the flexible-receptor approach on a series of peptidic protease inhibitors provided additional evidence for the predictive ability of the method.</p>
+      <p>Overall, our results suggest that specificity in P-gp is better understood in terms of physicochemical properties of the ligands (and the binding site), rather than being defined by specific sub-sites. We also suggest that many P-gp substrates bind deeper in the cavity than the cyclic peptide in the crystal structure. Finally, we also make testable predictions concerning metabolites that may be P-gp substrates.</p>
+      <p>We have not explored whether we can distinguish substrates and inhibitors of P-gp. Experimentally distinguishing these two classes is not simple, and available evidence suggests that substrates can competitively inhibit efflux of other compounds to varying extents <xref ref-type="bibr" rid="pcbi.1002083-Shapiro1">[19]</xref>. From the standpoint of the computations, it is clear that both substrates and inhibitors must bind to P-gp, presumably in the ‘inward’ configuration represented in the crystal structures. We speculate that the mode of binding (i.e., where in the binding site the compounds bind) might relate to these complicated considerations. However, the biophysical basis of coupling between ligand binding and ATP hydrolysis (enhancement and inhibition) remain poorly characterized, making further progress difficult at this time.</p>
+    </sec>
+    <sec id="s5">
+      <title>Supporting Information</title>
+      <supplementary-material id="pcbi.1002083.s001" mimetype="image/tiff" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002083.s001" xlink:type="simple">
+        <label>Figure S1</label>
+        <caption>
+          <p>ROC-type curves from rigid docking of metabolites/P-gp binders data set. Glide SP and XP with inner docking box coordinates (19.1, 52.3, −0.3) centered on the original ligand are in black and green, respectively. Glide SP and XP results with the inner box coordinates (19.0, 46.0, −6.0), located deeper in the cavity, are in red and blue, respectively.</p>
+          <p>(TIF)</p>
+        </caption>
+      </supplementary-material>
+      <supplementary-material id="pcbi.1002083.s002" mimetype="image/tiff" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002083.s002" xlink:type="simple">
+        <label>Figure S2</label>
+        <caption>
+          <p>Top-ranked poses from flexible docking. Both Glide XP and MM-GB/SA identified the similar poses as top ranked for digoxin (<bold>A</bold>) and loperamide (<bold>B</bold>) and the same pose for etoposide (<bold>C</bold>). (only Glide XP pose is shown for clarity). The different top-scored poses identified by the two methods for doxorubicin are shown in <bold>D</bold>. QZ59 is shown for reference in light green. For etoposide, two residues, Tyr303 and Ser725, forming hydrogen-bonding interactions with the ligand are shown. Residues Phe71, Phe953, and Phe974, positioned for cation-pi interaction, are shown for loperamide.</p>
+          <p>(TIF)</p>
+        </caption>
+      </supplementary-material>
+      <supplementary-material id="pcbi.1002083.s003" mimetype="image/tiff" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002083.s003" xlink:type="simple">
+        <label>Figure S3</label>
+        <caption>
+          <p>ROC-type curves (MM-GB/SA scoring) for metabolites/P-gp binders set (A) and Doan <italic>et al.</italic> dataset (B). Default treatment of protonation states (see <xref ref-type="sec" rid="s2">Methods</xref>).</p>
+          <p>(TIF)</p>
+        </caption>
+      </supplementary-material>
+      <supplementary-material id="pcbi.1002083.s004" mimetype="image/tiff" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002083.s004" xlink:type="simple">
+        <label>Figure S4</label>
+        <caption>
+          <p>ROC-type curves (MM-GB/SA scoring) for flexible docking of Doan <italic>et al.</italic> dataset using the default treatment of protonation states (labeled as “pH = 7”) and when treating all compounds as neutral.</p>
+          <p>(TIF)</p>
+        </caption>
+      </supplementary-material>
+      <supplementary-material id="pcbi.1002083.s005" mimetype="image/tiff" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002083.s005" xlink:type="simple">
+        <label>Figure S5</label>
+        <caption>
+          <p>Flexible docking binding scores (MM-GB/SA) plotted versus P<sub>active</sub> (<bold>A</bold>) and efflux ratio (<bold>B</bold>) for the Doan <italic>et al.</italic> dataset (pH 7).</p>
+          <p>(TIF)</p>
+        </caption>
+      </supplementary-material>
+      <supplementary-material id="pcbi.1002083.s006" mimetype="image/tiff" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002083.s006" xlink:type="simple">
+        <label>Figure S6</label>
+        <caption>
+          <p>Flexible docking binding scores (MM-GB/SA) plotted versus P<sub>active</sub> (<bold>A</bold>) and efflux ratio (<bold>B</bold>) for the Doan <italic>et al.</italic> dataset (neutral).</p>
+          <p>(TIF)</p>
+        </caption>
+      </supplementary-material>
+      <supplementary-material id="pcbi.1002083.s007" mimetype="image/tiff" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002083.s007" xlink:type="simple">
+        <label>Figure S7</label>
+        <caption>
+          <p>Free energy of desolvation versus MM-GB/SA binding scores.</p>
+          <p>(TIF)</p>
+        </caption>
+      </supplementary-material>
+      <supplementary-material id="pcbi.1002083.s008" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002083.s008" xlink:type="simple">
+        <label>Table S1</label>
+        <caption>
+          <p>Docking scores of P-gp binders selected from Hennessy <italic>et al.</italic>, 2007, <xref ref-type="table" rid="pcbi-1002083-t001">Table 1</xref>.</p>
+          <p>(DOCX)</p>
+        </caption>
+      </supplementary-material>
+      <supplementary-material id="pcbi.1002083.s009" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002083.s009" xlink:type="simple">
+        <label>Table S2</label>
+        <caption>
+          <p>Mouse P-gp binding cavity residues that were optimized with Prime in the first IFD round.</p>
+          <p>(DOCX)</p>
+        </caption>
+      </supplementary-material>
+      <supplementary-material id="pcbi.1002083.s010" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002083.s010" xlink:type="simple">
+        <label>Table S3</label>
+        <caption>
+          <p>Docking scores of metabolites selected from KEGG database.</p>
+          <p>(DOCX)</p>
+        </caption>
+      </supplementary-material>
+      <supplementary-material id="pcbi.1002083.s011" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002083.s011" xlink:type="simple">
+        <label>Table S4</label>
+        <caption>
+          <p>Docking scores for compounds from the Doan <italic>et al.</italic> dataset (at pH 7).</p>
+          <p>(DOCX)</p>
+        </caption>
+      </supplementary-material>
+      <supplementary-material id="pcbi.1002083.s012" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002083.s012" xlink:type="simple">
+        <label>Table S5</label>
+        <caption>
+          <p>Docking scores for compounds (treated as neutral) from the Doan <italic>et al.</italic> dataset.</p>
+          <p>(DOCX)</p>
+        </caption>
+      </supplementary-material>
+      <supplementary-material id="pcbi.1002083.s013" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002083.s013" xlink:type="simple">
+        <label>Table S6</label>
+        <caption>
+          <p>Binding cavity residues within 5 Å of QZ59 ligand in the original crystal structure and in the top flexible receptor docking pose.</p>
+          <p>(DOCX)</p>
+        </caption>
+      </supplementary-material>
+      <supplementary-material id="pcbi.1002083.s014" mimetype="application/rtf" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002083.s014" xlink:type="simple">
+        <label>Text S1</label>
+        <caption>
+          <p>Supplementary methods.</p>
+          <p>(RTF)</p>
+        </caption>
+      </supplementary-material>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <p>We thank Dr. Siegfried Leung for helpful conversations.</p>
+    </ack>
+    <ref-list>
+      <title>References</title>
+      <ref id="pcbi.1002083-Thiebaut1">
+        <label>1</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Thiebaut</surname><given-names>F</given-names></name><name name-style="western"><surname>Tsuruo</surname><given-names>T</given-names></name><name name-style="western"><surname>Hamada</surname><given-names>H</given-names></name><name name-style="western"><surname>Gottesman</surname><given-names>MM</given-names></name><name name-style="western"><surname>Pastan</surname><given-names>I</given-names></name><etal/></person-group>             <year>1987</year>             <article-title>Cellular localization of the multidrug-resistance gene product P-glycoprotein in normal human tissues.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>84</volume>             <fpage>7735</fpage>             <lpage>7738</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Szakacs1">
+        <label>2</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Szakacs</surname><given-names>G</given-names></name><name name-style="western"><surname>Varadi</surname><given-names>A</given-names></name><name name-style="western"><surname>Ozvegy-Laczka</surname><given-names>C</given-names></name><name name-style="western"><surname>Sarkadi</surname><given-names>B</given-names></name></person-group>             <year>2008</year>             <article-title>The role of ABC transporters in drug absorption, distribution, metabolism, excretion and toxicity (ADME-Tox).</article-title>             <source>Drug Discov Today</source>             <volume>13</volume>             <fpage>379</fpage>             <lpage>393</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Schinkel1">
+        <label>3</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Schinkel</surname><given-names>AH</given-names></name><name name-style="western"><surname>Wagenaar</surname><given-names>E</given-names></name><name name-style="western"><surname>Mol</surname><given-names>CA</given-names></name><name name-style="western"><surname>van Deemter</surname><given-names>L</given-names></name></person-group>             <year>1996</year>             <article-title>P-glycoprotein in the blood-brain barrier of mice influences the brain penetration and pharmacological activity of many drugs.</article-title>             <source>J Clin Invest</source>             <volume>97</volume>             <fpage>2517</fpage>             <lpage>2524</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Ambudkar1">
+        <label>4</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Ambudkar</surname><given-names>SV</given-names></name><name name-style="western"><surname>Dey</surname><given-names>S</given-names></name><name name-style="western"><surname>Hrycyna</surname><given-names>CA</given-names></name><name name-style="western"><surname>Ramachandra</surname><given-names>M</given-names></name><name name-style="western"><surname>Pastan</surname><given-names>I</given-names></name><etal/></person-group>             <year>1999</year>             <article-title>Biochemical, cellular, and pharmacological aspects of the multidrug transporter.</article-title>             <source>Annu Rev Pharmacol Toxicol</source>             <volume>39</volume>             <fpage>361</fpage>             <lpage>398</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Fletcher1">
+        <label>5</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Fletcher</surname><given-names>JI</given-names></name><name name-style="western"><surname>Haber</surname><given-names>M</given-names></name><name name-style="western"><surname>Henderson</surname><given-names>MJ</given-names></name><name name-style="western"><surname>Norris</surname><given-names>MD</given-names></name></person-group>             <year>2010</year>             <article-title>ABC transporters in cancer: more than just drug efflux pumps.</article-title>             <source>Nat Rev Cancer</source>             <volume>10</volume>             <fpage>147</fpage>             <lpage>156</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Ayrton1">
+        <label>6</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Ayrton</surname><given-names>A</given-names></name><name name-style="western"><surname>Morgan</surname><given-names>P</given-names></name></person-group>             <year>2008</year>             <article-title>Role of transport proteins in drug discovery and development: a pharmaceutical perspective.</article-title>             <source>Xenobiotica</source>             <volume>38</volume>             <fpage>676</fpage>             <lpage>708</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Hochman1">
+        <label>7</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Hochman</surname><given-names>JH</given-names></name><name name-style="western"><surname>Yamazaki</surname><given-names>M</given-names></name><name name-style="western"><surname>Ohe</surname><given-names>T</given-names></name><name name-style="western"><surname>Lin</surname><given-names>JH</given-names></name></person-group>             <year>2002</year>             <article-title>Evaluation of drug interactions with P-glycoprotein in drug discovery: in vitro assessment of the potential for drug-drug interactions with P-glycoprotein.</article-title>             <source>Curr Drug Metab</source>             <volume>3</volume>             <fpage>257</fpage>             <lpage>273</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Polli1">
+        <label>8</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Polli</surname><given-names>JW</given-names></name><name name-style="western"><surname>Wring</surname><given-names>SA</given-names></name><name name-style="western"><surname>Humphreys</surname><given-names>JE</given-names></name><name name-style="western"><surname>Huang</surname><given-names>L</given-names></name><name name-style="western"><surname>Morgan</surname><given-names>JB</given-names></name><etal/></person-group>             <year>2001</year>             <article-title>Rational use of in vitro P-glycoprotein assays in drug discovery.</article-title>             <source>J Pharmacol Exp Ther</source>             <volume>299</volume>             <fpage>620</fpage>             <lpage>628</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Feng1">
+        <label>9</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Feng</surname><given-names>B</given-names></name><name name-style="western"><surname>Mills</surname><given-names>JB</given-names></name><name name-style="western"><surname>Davidson</surname><given-names>RE</given-names></name><name name-style="western"><surname>Mireles</surname><given-names>RJ</given-names></name><name name-style="western"><surname>Janiszewski</surname><given-names>JS</given-names></name><etal/></person-group>             <year>2008</year>             <article-title>In vitro P-glycoprotein assays to predict the in vivo interactions of P-glycoprotein with drugs in the central nervous system.</article-title>             <source>Drug Metab Dispos</source>             <volume>36</volume>             <fpage>268</fpage>             <lpage>275</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Li1">
+        <label>10</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Li</surname><given-names>WX</given-names></name><name name-style="western"><surname>Li</surname><given-names>L</given-names></name><name name-style="western"><surname>Eksterowicz</surname><given-names>J</given-names></name><name name-style="western"><surname>Ling</surname><given-names>XB</given-names></name><name name-style="western"><surname>Cardozo</surname><given-names>M</given-names></name></person-group>             <year>2007</year>             <article-title>Significance analysis and multiple pharmacophore models for differentiating P-glycoprotein substrates.</article-title>             <source>J Chem Inf Model</source>             <volume>47</volume>             <fpage>2429</fpage>             <lpage>2438</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-MaharDoan1">
+        <label>11</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Mahar Doan</surname><given-names>KM</given-names></name><name name-style="western"><surname>Humphreys</surname><given-names>JE</given-names></name><name name-style="western"><surname>Webster</surname><given-names>LO</given-names></name><name name-style="western"><surname>Wring</surname><given-names>SA</given-names></name><name name-style="western"><surname>Shampine</surname><given-names>LJ</given-names></name><etal/></person-group>             <year>2002</year>             <article-title>Passive permeability and P-glycoprotein-mediated efflux differentiate central nervous system (CNS) and non-CNS marketed drugs.</article-title>             <source>J Pharmacol Exp Ther</source>             <volume>303</volume>             <fpage>1029</fpage>             <lpage>1037</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Wang1">
+        <label>12</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Wang</surname><given-names>Q</given-names></name><name name-style="western"><surname>Rager</surname><given-names>JD</given-names></name><name name-style="western"><surname>Weinstein</surname><given-names>K</given-names></name><name name-style="western"><surname>Kardos</surname><given-names>PS</given-names></name><name name-style="western"><surname>Dobson</surname><given-names>GL</given-names></name><etal/></person-group>             <year>2005</year>             <article-title>Evaluation of the MDR-MDCK cell line as a permeability screen for the blood-brain barrier.</article-title>             <source>Int J Pharm</source>             <volume>288</volume>             <fpage>349</fpage>             <lpage>359</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Gombar1">
+        <label>13</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Gombar</surname><given-names>VK</given-names></name><name name-style="western"><surname>Polli</surname><given-names>JW</given-names></name><name name-style="western"><surname>Humphreys</surname><given-names>JE</given-names></name><name name-style="western"><surname>Wring</surname><given-names>SA</given-names></name><name name-style="western"><surname>Serabjit-Singh</surname><given-names>CS</given-names></name></person-group>             <year>2004</year>             <article-title>Predicting P-glycoprotein substrates by a quantitative structure-activity relationship model.</article-title>             <source>J Pharm Sci</source>             <volume>93</volume>             <fpage>957</fpage>             <lpage>968</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Crivori1">
+        <label>14</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Crivori</surname><given-names>P</given-names></name><name name-style="western"><surname>Reinach</surname><given-names>B</given-names></name><name name-style="western"><surname>Pezzetta</surname><given-names>D</given-names></name><name name-style="western"><surname>Poggesi</surname><given-names>I</given-names></name></person-group>             <year>2006</year>             <article-title>Computational models for identifying potential P-glycoprotein substrates and inhibitors.</article-title>             <source>Mol Pharm</source>             <volume>3</volume>             <fpage>33</fpage>             <lpage>44</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Summerfield1">
+        <label>15</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Summerfield</surname><given-names>SG</given-names></name><name name-style="western"><surname>Read</surname><given-names>K</given-names></name><name name-style="western"><surname>Begley</surname><given-names>DJ</given-names></name><name name-style="western"><surname>Obradovic</surname><given-names>T</given-names></name><name name-style="western"><surname>Hidalgo</surname><given-names>IJ</given-names></name><etal/></person-group>             <year>2007</year>             <article-title>Central nervous system drug disposition: the relationship between in situ brain permeability and brain free fraction.</article-title>             <source>J Pharmacol Exp Ther</source>             <volume>322</volume>             <fpage>205</fpage>             <lpage>213</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Seelig1">
+        <label>16</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Seelig</surname><given-names>A</given-names></name></person-group>             <year>1998</year>             <article-title>A general pattern for substrate recognition by P-glycoprotein.</article-title>             <source>Eur J Biochem</source>             <volume>251</volume>             <fpage>252</fpage>             <lpage>261</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Ueda1">
+        <label>17</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Ueda</surname><given-names>K</given-names></name><name name-style="western"><surname>Cardarelli</surname><given-names>C</given-names></name><name name-style="western"><surname>Gottesman</surname><given-names>MM</given-names></name><name name-style="western"><surname>Pastan</surname><given-names>I</given-names></name></person-group>             <year>1987</year>             <article-title>Expression of a full-length cDNA for the human “MDR1” gene confers resistance to colchicine, doxorubicin, and vinblastine.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>84</volume>             <fpage>3004</fpage>             <lpage>3008</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Loo1">
+        <label>18</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Loo</surname><given-names>TW</given-names></name><name name-style="western"><surname>Clarke</surname><given-names>DM</given-names></name></person-group>             <year>1994</year>             <article-title>Mutations to amino acids located in predicted transmembrane segment 6 (TM6) modulate the activity and substrate specificity of human P-glycoprotein.</article-title>             <source>Biochem</source>             <volume>33</volume>             <fpage>14049</fpage>             <lpage>14057</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Shapiro1">
+        <label>19</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Shapiro</surname><given-names>AB</given-names></name><name name-style="western"><surname>Ling</surname><given-names>V</given-names></name></person-group>             <year>1997</year>             <article-title>Positively cooperative sites for drug transport by P-glycoprotein with distinct drug specificities.</article-title>             <source>Eur J Biochem</source>             <volume>250</volume>             <fpage>130</fpage>             <lpage>137</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Garrigues1">
+        <label>20</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Garrigues</surname><given-names>A</given-names></name><name name-style="western"><surname>Loiseau</surname><given-names>N</given-names></name><name name-style="western"><surname>Delaforge</surname><given-names>M</given-names></name><name name-style="western"><surname>Ferte</surname><given-names>J</given-names></name><name name-style="western"><surname>Garrigos</surname><given-names>M</given-names></name><etal/></person-group>             <year>2002</year>             <article-title>Characterization of two pharmacophores on the multidrug transporter P-glycoprotein.</article-title>             <source>Mol Pharmacol</source>             <volume>62</volume>             <fpage>1288</fpage>             <lpage>1298</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Penzotti1">
+        <label>21</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Penzotti</surname><given-names>JE</given-names></name><name name-style="western"><surname>Lamb</surname><given-names>ML</given-names></name><name name-style="western"><surname>Evensen</surname><given-names>E</given-names></name><name name-style="western"><surname>Grootenhuis</surname><given-names>PD</given-names></name></person-group>             <year>2002</year>             <article-title>A computational ensemble pharmacophore model for identifying substrates of P-glycoprotein.</article-title>             <source>J Med Chem</source>             <volume>45</volume>             <fpage>1737</fpage>             <lpage>1740</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-deCerqueiraLima1">
+        <label>22</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>de Cerqueira Lima</surname><given-names>P</given-names></name><name name-style="western"><surname>Golbraikh</surname><given-names>A</given-names></name><name name-style="western"><surname>Oloff</surname><given-names>S</given-names></name><name name-style="western"><surname>Xiao</surname><given-names>Y</given-names></name><name name-style="western"><surname>Tropsha</surname><given-names>A</given-names></name></person-group>             <year>2006</year>             <article-title>Combinatorial QSAR modeling of P-glycoprotein substrates.</article-title>             <source>J Chem Inf Model</source>             <volume>46</volume>             <fpage>1245</fpage>             <lpage>1254</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Huang1">
+        <label>23</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Huang</surname><given-names>J</given-names></name><name name-style="western"><surname>Ma</surname><given-names>G</given-names></name><name name-style="western"><surname>Muhammad</surname><given-names>I</given-names></name><name name-style="western"><surname>Cheng</surname><given-names>Y</given-names></name></person-group>             <year>2007</year>             <article-title>Identifying P-glycoprotein substrates using a support vector machine optimized by a particle swarm.</article-title>             <source>J Chem Inf Model</source>             <volume>47</volume>             <fpage>1638</fpage>             <lpage>1647</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Cabrera1">
+        <label>24</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Cabrera</surname><given-names>MA</given-names></name><name name-style="western"><surname>Gonzalez</surname><given-names>I</given-names></name><name name-style="western"><surname>Fernandez</surname><given-names>C</given-names></name><name name-style="western"><surname>Navarro</surname><given-names>C</given-names></name><name name-style="western"><surname>Bermejo</surname><given-names>M</given-names></name></person-group>             <year>2006</year>             <article-title>A topological substructural approach for the prediction of P-glycoprotein substrates.</article-title>             <source>J Pharm Sci</source>             <volume>95</volume>             <fpage>589</fpage>             <lpage>606</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Dey1">
+        <label>25</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Dey</surname><given-names>S</given-names></name><name name-style="western"><surname>Ramachandra</surname><given-names>M</given-names></name><name name-style="western"><surname>Pastan</surname><given-names>I</given-names></name><name name-style="western"><surname>Gottesman</surname><given-names>MM</given-names></name><name name-style="western"><surname>Ambudkar</surname><given-names>SV</given-names></name></person-group>             <year>1997</year>             <article-title>Evidence for two nonidentical drug-interaction sites in the human P-glycoprotein.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>94</volume>             <fpage>10594</fpage>             <lpage>10599</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Loo2">
+        <label>26</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Loo</surname><given-names>TW</given-names></name><name name-style="western"><surname>Bartlett</surname><given-names>MC</given-names></name><name name-style="western"><surname>Clarke</surname><given-names>DM</given-names></name></person-group>             <year>2003</year>             <article-title>Methanethiosulfonate derivatives of rhodamine and verapamil activate human P-glycoprotein at different sites.</article-title>             <source>J Biol Chem</source>             <volume>278</volume>             <fpage>50136</fpage>             <lpage>50141</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Martin1">
+        <label>27</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Martin</surname><given-names>C</given-names></name><name name-style="western"><surname>Berridge</surname><given-names>G</given-names></name><name name-style="western"><surname>Higgins</surname><given-names>CF</given-names></name><name name-style="western"><surname>Mistry</surname><given-names>P</given-names></name><name name-style="western"><surname>Charlton</surname><given-names>P</given-names></name><etal/></person-group>             <year>2000</year>             <article-title>Communication between multiple drug binding sites on P-glycoprotein.</article-title>             <source>Mol Pharmacol</source>             <volume>58</volume>             <fpage>624</fpage>             <lpage>632</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Ayesh1">
+        <label>28</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Ayesh</surname><given-names>S</given-names></name><name name-style="western"><surname>Shao</surname><given-names>YM</given-names></name><name name-style="western"><surname>Stein</surname><given-names>WD</given-names></name></person-group>             <year>1996</year>             <article-title>Co-operative, competitive and non-competitive interactions between modulators of P-glycoprotein.</article-title>             <source>Biochim Biophys Acta</source>             <volume>1316</volume>             <fpage>8</fpage>             <lpage>18</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Aller1">
+        <label>29</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Aller</surname><given-names>SG</given-names></name><name name-style="western"><surname>Yu</surname><given-names>J</given-names></name><name name-style="western"><surname>Ward</surname><given-names>A</given-names></name><name name-style="western"><surname>Weng</surname><given-names>Y</given-names></name><name name-style="western"><surname>Chittaboina</surname><given-names>S</given-names></name><etal/></person-group>             <year>2009</year>             <article-title>Structure of P-glycoprotein reveals a molecular basis for poly-specific drug binding.</article-title>             <source>Science</source>             <volume>323</volume>             <fpage>1718</fpage>             <lpage>1722</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Loo3">
+        <label>30</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Loo</surname><given-names>TW</given-names></name><name name-style="western"><surname>Bartlett</surname><given-names>MC</given-names></name><name name-style="western"><surname>Clarke</surname><given-names>DM</given-names></name></person-group>             <year>2003</year>             <article-title>Simultaneous binding of two different drugs in the binding pocket of the human multidrug resistance P-glycoprotein.</article-title>             <source>J Biol Chem</source>             <volume>278</volume>             <fpage>39706</fpage>             <lpage>39710</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Sherman1">
+        <label>31</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Sherman</surname><given-names>W</given-names></name><name name-style="western"><surname>Day</surname><given-names>T</given-names></name><name name-style="western"><surname>Jacobson</surname><given-names>MP</given-names></name><name name-style="western"><surname>Friesner</surname><given-names>RA</given-names></name><name name-style="western"><surname>Farid</surname><given-names>R</given-names></name></person-group>             <year>2006</year>             <article-title>Novel procedure for modeling ligand/receptor induced fit effects.</article-title>             <source>J Med Chem</source>             <volume>49</volume>             <fpage>534</fpage>             <lpage>553</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Friesner1">
+        <label>32</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Friesner</surname><given-names>RA</given-names></name><name name-style="western"><surname>Murphy</surname><given-names>RB</given-names></name><name name-style="western"><surname>Repasky</surname><given-names>MP</given-names></name><name name-style="western"><surname>Frye</surname><given-names>LL</given-names></name><name name-style="western"><surname>Greenwood</surname><given-names>JR</given-names></name><etal/></person-group>             <year>2006</year>             <article-title>Extra precision glide: docking and scoring incorporating a model of hydrophobic enclosure for protein-ligand complexes.</article-title>             <source>J Med Chem</source>             <volume>49</volume>             <fpage>6177</fpage>             <lpage>6196</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Ghosh1">
+        <label>33</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Ghosh</surname><given-names>A</given-names></name><name name-style="western"><surname>Rapp</surname><given-names>CS</given-names></name><name name-style="western"><surname>Friesner</surname><given-names>RA</given-names></name></person-group>             <year>1998</year>             <article-title>Generalized born model based on a surface integral formulation.</article-title>             <source>J Phys Chem B</source>             <volume>102</volume>             <fpage>10983</fpage>             <lpage>10990</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Huang2">
+        <label>34</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Huang</surname><given-names>N</given-names></name><name name-style="western"><surname>Kalyanaraman</surname><given-names>C</given-names></name><name name-style="western"><surname>Irwin</surname><given-names>JJ</given-names></name><name name-style="western"><surname>Jacobson</surname><given-names>MP</given-names></name></person-group>             <year>2006</year>             <article-title>Physics-based scoring of protein-ligand complexes: enrichment of known inhibitors in large-scale virtual screening.</article-title>             <source>J Chem Inf Model</source>             <volume>46</volume>             <fpage>243</fpage>             <lpage>253</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Altschul1">
+        <label>35</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Altschul</surname><given-names>SF</given-names></name><name name-style="western"><surname>Madden</surname><given-names>TL</given-names></name><name name-style="western"><surname>Schaffer</surname><given-names>AA</given-names></name><name name-style="western"><surname>Zhang</surname><given-names>JH</given-names></name><name name-style="western"><surname>Zhang</surname><given-names>Z</given-names></name><etal/></person-group>             <year>1997</year>             <article-title>Gapped BLAST and PSI-BLAST: a new generation of protein database search programs.</article-title>             <source>Nucleic Acids Res</source>             <volume>25</volume>             <fpage>3389</fpage>             <lpage>3402</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Friesner2">
+        <label>36</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Friesner</surname><given-names>RA</given-names></name><name name-style="western"><surname>Banks</surname><given-names>JL</given-names></name><name name-style="western"><surname>Murphy</surname><given-names>RB</given-names></name><name name-style="western"><surname>Halgren</surname><given-names>TA</given-names></name><name name-style="western"><surname>Klicic</surname><given-names>JJ</given-names></name><etal/></person-group>             <year>2004</year>             <article-title>Glide: A new approach for rapid, accurate docking and scoring. 1. Method and assessment of docking accuracy.</article-title>             <source>J Med Chem</source>             <volume>47</volume>             <fpage>1739</fpage>             <lpage>1749</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Kaminski1">
+        <label>37</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Kaminski</surname><given-names>GA</given-names></name><name name-style="western"><surname>Friesner</surname><given-names>RA</given-names></name><name name-style="western"><surname>Tirado-Rives</surname><given-names>J</given-names></name><name name-style="western"><surname>Jorgensen</surname><given-names>WL</given-names></name></person-group>             <year>2001</year>             <article-title>Evaluation and reparametrization of the OPLS-AA force field for proteins via comparison with accurate quantum chemical calculations on peptides.</article-title>             <source>J Phys Chem B</source>             <volume>105</volume>             <fpage>6474</fpage>             <lpage>6487</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Jorgensen1">
+        <label>38</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Jorgensen</surname><given-names>WL</given-names></name><name name-style="western"><surname>Tiradorives</surname><given-names>J</given-names></name></person-group>             <year>1988</year>             <article-title>The Opls Potential Functions for Proteins - Energy Minimizations for Crystals of Cyclic-Peptides and Crambin.</article-title>             <source>J Am Chem Soc</source>             <volume>110</volume>             <fpage>1657</fpage>             <lpage>1666</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Jacobson1">
+        <label>39</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Jacobson</surname><given-names>MP</given-names></name><name name-style="western"><surname>Friesner</surname><given-names>RA</given-names></name><name name-style="western"><surname>Xiang</surname><given-names>Z</given-names></name><name name-style="western"><surname>Honig</surname><given-names>B</given-names></name></person-group>             <year>2002</year>             <article-title>On the role of the crystal environment in determining protein side-chain conformations.</article-title>             <source>J Mol Biol</source>             <volume>320</volume>             <fpage>597</fpage>             <lpage>608</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Wishart1">
+        <label>40</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Wishart</surname><given-names>DS</given-names></name><name name-style="western"><surname>Knox</surname><given-names>C</given-names></name><name name-style="western"><surname>Guo</surname><given-names>AC</given-names></name><name name-style="western"><surname>Cheng</surname><given-names>D</given-names></name><name name-style="western"><surname>Shrivastava</surname><given-names>S</given-names></name><etal/></person-group>             <year>2008</year>             <article-title>DrugBank: a knowledgebase for drugs, drug actions and drug targets.</article-title>             <source>Nucleic Acids Res</source>             <volume>36</volume>             <fpage>D901</fpage>             <lpage>D906</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Hennessy1">
+        <label>41</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Hennessy</surname><given-names>M</given-names></name><name name-style="western"><surname>Spiers</surname><given-names>JP</given-names></name></person-group>             <year>2007</year>             <article-title>A primer on the mechanics of P-glycoprotein the multidrug transporter.</article-title>             <source>Pharmacol Res</source>             <volume>55</volume>             <fpage>1</fpage>             <lpage>15</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Kanehisa1">
+        <label>42</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Kanehisa</surname><given-names>M</given-names></name><name name-style="western"><surname>Goto</surname><given-names>S</given-names></name><name name-style="western"><surname>Furumichi</surname><given-names>M</given-names></name><name name-style="western"><surname>Tanabe</surname><given-names>M</given-names></name><name name-style="western"><surname>Hirakawa</surname><given-names>M</given-names></name></person-group>             <year>2010</year>             <article-title>KEGG for representation and analysis of molecular networks involving diseases and drugs.</article-title>             <source>Nucleic Acids Res</source>             <volume>38</volume>             <fpage>D355</fpage>             <lpage>360</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Palmer1">
+        <label>43</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Palmer</surname><given-names>JT</given-names></name><name name-style="western"><surname>Bryant</surname><given-names>C</given-names></name><name name-style="western"><surname>Wang</surname><given-names>DX</given-names></name><name name-style="western"><surname>Davis</surname><given-names>DE</given-names></name><name name-style="western"><surname>Setti</surname><given-names>EL</given-names></name><etal/></person-group>             <year>2005</year>             <article-title>Design and synthesis of tri-ring P3 benzamide-containing aminonitriles as potent, selective, orally effective inhibitors of cathepsin K.</article-title>             <source>J Med Chem</source>             <volume>48</volume>             <fpage>7520</fpage>             <lpage>7534</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Pansare1">
+        <label>44</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Pansare</surname><given-names>SV</given-names></name><name name-style="western"><surname>Huyer</surname><given-names>G</given-names></name><name name-style="western"><surname>Arnold</surname><given-names>LD</given-names></name><name name-style="western"><surname>Vederas</surname><given-names>JC</given-names></name></person-group>             <year>1998</year>             <article-title>Synthesis of N-protected alpha-Amino acids from N-(benzyloxycarbonyl)-L-serine via its beta-lactone: N-(benzyloxycarbonyl)-beta-(pyrazol-1-yl)-L-alanine.</article-title>             <source>Organic Syntheses</source>             <volume>Vol. 9</volume>             <fpage>58</fpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Arnold1">
+        <label>45</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Arnold</surname><given-names>LD</given-names></name><name name-style="western"><surname>Kalantar</surname><given-names>TH</given-names></name><name name-style="western"><surname>Vederas</surname><given-names>JC</given-names></name></person-group>             <year>1985</year>             <article-title>Conversion of Serine to Stereochemically Pure Beta-Substituted Alpha-Amino-Acids Via Beta-Lactones.</article-title>             <source>J Am Chem Soc</source>             <volume>107</volume>             <fpage>7105</fpage>             <lpage>7109</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Loo4">
+        <label>46</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Loo</surname><given-names>TW</given-names></name><name name-style="western"><surname>Clarke</surname><given-names>DM</given-names></name></person-group>             <year>2002</year>             <article-title>Location of the rhodamine-binding site in the human multidrug resistance P-glycoprotein.</article-title>             <source>J Biol Chem</source>             <volume>277</volume>             <fpage>44332</fpage>             <lpage>44338</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Mitchell1">
+        <label>47</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Mitchell</surname><given-names>AM</given-names></name><name name-style="western"><surname>Tom</surname><given-names>M</given-names></name><name name-style="western"><surname>Mortimer</surname><given-names>RH</given-names></name></person-group>             <year>2005</year>             <article-title>Thyroid hormone export from cells: contribution of P-glycoprotein.</article-title>             <source>J Endocrinol</source>             <volume>185</volume>             <fpage>93</fpage>             <lpage>98</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Fan1">
+        <label>48</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Fan</surname><given-names>J</given-names></name><name name-style="western"><surname>Liu</surname><given-names>S</given-names></name><name name-style="western"><surname>Du</surname><given-names>Y</given-names></name><name name-style="western"><surname>Morrison</surname><given-names>J</given-names></name><name name-style="western"><surname>Shipman</surname><given-names>R</given-names></name><etal/></person-group>             <year>2009</year>             <article-title>Up-regulation of transporters and enzymes by the vitamin D receptor ligands, 1alpha,25-dihydroxyvitamin D3 and vitamin D analogs, in the Caco-2 cell monolayer.</article-title>             <source>J Pharmacol Exp Ther</source>             <volume>330</volume>             <fpage>389</fpage>             <lpage>402</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Yang1">
+        <label>49</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Yang</surname><given-names>CP</given-names></name><name name-style="western"><surname>DePinho</surname><given-names>SG</given-names></name><name name-style="western"><surname>Greenberger</surname><given-names>LM</given-names></name><name name-style="western"><surname>Arceci</surname><given-names>RJ</given-names></name><name name-style="western"><surname>Horwitz</surname><given-names>SB</given-names></name></person-group>             <year>1989</year>             <article-title>Progesterone interacts with P-glycoprotein in multidrug-resistant cells and in the endometrium of gravid uterus.</article-title>             <source>J Biol Chem</source>             <volume>264</volume>             <fpage>782</fpage>             <lpage>788</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Wang2">
+        <label>50</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Wang</surname><given-names>E</given-names></name><name name-style="western"><surname>Casciano</surname><given-names>CN</given-names></name><name name-style="western"><surname>Clement</surname><given-names>RP</given-names></name><name name-style="western"><surname>Johnson</surname><given-names>WW</given-names></name></person-group>             <year>2000</year>             <article-title>Cholesterol interaction with the daunorubicin binding site of P-glycoprotein.</article-title>             <source>Biochem Biophys Res Commun</source>             <volume>276</volume>             <fpage>909</fpage>             <lpage>916</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Lee1">
+        <label>51</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Lee</surname><given-names>JS</given-names></name><name name-style="western"><surname>Paull</surname><given-names>K</given-names></name><name name-style="western"><surname>Alvarez</surname><given-names>M</given-names></name><name name-style="western"><surname>Hose</surname><given-names>C</given-names></name><name name-style="western"><surname>Monks</surname><given-names>A</given-names></name><etal/></person-group>             <year>1994</year>             <article-title>Rhodamine efflux patterns predict P-glycoprotein substrates in the National Cancer Institute drug screen.</article-title>             <source>Mol Pharmacol</source>             <volume>46</volume>             <fpage>627</fpage>             <lpage>638</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Rezai1">
+        <label>52</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Rezai</surname><given-names>T</given-names></name><name name-style="western"><surname>Bock</surname><given-names>JE</given-names></name><name name-style="western"><surname>Zhou</surname><given-names>MV</given-names></name><name name-style="western"><surname>Kalyanaraman</surname><given-names>C</given-names></name><name name-style="western"><surname>Lokey</surname><given-names>RS</given-names></name><etal/></person-group>             <year>2006</year>             <article-title>Conformational flexibility, internal hydrogen bonding, and passive membrane permeability: successful in silico prediction of the relative permeabilities of cyclic peptides.</article-title>             <source>J Am Chem Soc</source>             <volume>128</volume>             <fpage>14073</fpage>             <lpage>14080</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002083-Kalyanaraman1">
+        <label>53</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Kalyanaraman</surname><given-names>C</given-names></name><name name-style="western"><surname>Jacobson</surname><given-names>MP</given-names></name></person-group>             <year>2007</year>             <article-title>An atomistic model of passive membrane permeability: application to a series of FDA approved drugs.</article-title>             <source>J Comput Aided Mol Des</source>             <volume>21</volume>             <fpage>675</fpage>             <lpage>679</lpage>          </element-citation>
+      </ref>
+    </ref-list>
+    
+  </back>
+</article>

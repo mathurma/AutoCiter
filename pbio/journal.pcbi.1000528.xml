@@ -1,0 +1,975 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="3.0" xml:lang="EN">
+<front>
+<journal-meta><journal-id journal-id-type="publisher-id">plos</journal-id><journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id><journal-id journal-id-type="pmc">ploscomp</journal-id><!--===== Grouping journal title elements =====--><journal-title-group><journal-title>PLoS Computational Biology</journal-title></journal-title-group><issn pub-type="ppub">1553-734X</issn><issn pub-type="epub">1553-7358</issn><publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, USA</publisher-loc></publisher></journal-meta>
+<article-meta><article-id pub-id-type="publisher-id">09-PLCB-RA-0530R2</article-id><article-id pub-id-type="doi">10.1371/journal.pcbi.1000528</article-id><article-categories><subj-group subj-group-type="heading"><subject>Research Article</subject></subj-group><subj-group subj-group-type="Discipline"><subject>Computational Biology/Molecular Dynamics</subject><subject>Pharmacology/Drug Development</subject></subj-group></article-categories><title-group><article-title>High-Performance Drug Discovery: Computational Screening by Combining Docking and Molecular Dynamics Simulations</article-title><alt-title alt-title-type="running-head">MD-Based Screening in Drug Design</alt-title></title-group><contrib-group>
+<contrib contrib-type="author" equal-contrib="yes" xlink:type="simple"><name name-style="western"><surname>Okimoto</surname><given-names>Noriaki</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff2"><sup>2</sup></xref><xref ref-type="corresp" rid="cor1"><sup>*</sup></xref></contrib>
+<contrib contrib-type="author" equal-contrib="yes" xlink:type="simple"><name name-style="western"><surname>Futatsugi</surname><given-names>Noriyuki</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff2"><sup>2</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Fuji</surname><given-names>Hideyoshi</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff3"><sup>3</sup></xref></contrib>
+<contrib contrib-type="author" equal-contrib="yes" xlink:type="simple"><name name-style="western"><surname>Suenaga</surname><given-names>Atsushi</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Morimoto</surname><given-names>Gentaro</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff2"><sup>2</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Yanai</surname><given-names>Ryoko</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Ohno</surname><given-names>Yousuke</given-names></name><xref ref-type="aff" rid="aff2"><sup>2</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Narumi</surname><given-names>Tetsu</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff4"><sup>4</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Taiji</surname><given-names>Makoto</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff2"><sup>2</sup></xref></contrib>
+</contrib-group><aff id="aff1"><label>1</label><addr-line>High-performance Molecular Simulation Team, Computational Systems Biology Research Group, Advanced Computational Sciences Department, RIKEN Advanced Science Institute, Yokohama, Kanagawa, Japan</addr-line>       </aff><aff id="aff2"><label>2</label><addr-line>High-performance Computing Team, Integrated Simulation of Living Matter Group, Computational Science Research Program, RIKEN, Yokohama, Kanagawa, Japan</addr-line>       </aff><aff id="aff3"><label>3</label><addr-line>Graduate School of Pharmaceutical Sciences, Chiba University, Chiba, Japan</addr-line>       </aff><aff id="aff4"><label>4</label><addr-line>Department of Computer Science, The University of Electro-Communications, Chofu-shi, Tokyo, Japan</addr-line>       </aff><contrib-group>
+<contrib contrib-type="editor" xlink:type="simple"><name name-style="western"><surname>Case</surname><given-names>David</given-names></name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/></contrib>
+</contrib-group><aff id="edit1">Rutgers University, United States of America</aff><author-notes>
+<corresp id="cor1">* E-mail: <email xlink:type="simple">okimoto@gsc.riken.jp</email></corresp>
+<fn fn-type="con"><p>Conceived and designed the experiments: NO AS MT. Performed the experiments: NO NF HF. Analyzed the data: NO NF. Contributed reagents/materials/analysis tools: NO NF HF GM RY YO TN. Wrote the paper: NO AS MT.</p></fn>
+<fn fn-type="conflict"><p>The authors have declared that no competing interests exist.</p></fn></author-notes><pub-date pub-type="collection"><month>10</month><year>2009</year></pub-date><pub-date pub-type="epub"><day>9</day><month>10</month><year>2009</year></pub-date><volume>5</volume><issue>10</issue><elocation-id>e1000528</elocation-id><history>
+<date date-type="received"><day>12</day><month>5</month><year>2009</year></date>
+<date date-type="accepted"><day>3</day><month>9</month><year>2009</year></date>
+</history><!--===== Grouping copyright info into permissions =====--><permissions><copyright-year>2009</copyright-year><copyright-holder>Okimoto et al</copyright-holder><license><license-p>This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license></permissions><abstract>
+<p>Virtual compound screening using molecular docking is widely used in the discovery of new lead compounds for drug design. However, this method is not completely reliable and therefore unsatisfactory. In this study, we used massive molecular dynamics simulations of protein-ligand conformations obtained by molecular docking in order to improve the enrichment performance of molecular docking. Our screening approach employed the molecular mechanics/Poisson-Boltzmann and surface area method to estimate the binding free energies. For the top-ranking 1,000 compounds obtained by docking to a target protein, approximately 6,000 molecular dynamics simulations were performed using multiple docking poses in about a week. As a result, the enrichment performance of the top 100 compounds by our approach was improved by 1.6–4.0 times that of the enrichment performance of molecular dockings. This result indicates that the application of molecular dynamics simulations to virtual screening for lead discovery is both effective and practical. However, further optimization of the computational protocols is required for screening various target proteins.</p>
+</abstract><abstract abstract-type="summary"><title>Author Summary</title>
+<p>Lead discovery is one of the most important processes in rational drug design. To improve the rate of the detection of lead compounds, various technologies such as high-throughput screening and combinatorial chemistry have been introduced into the pharmaceutical industry. However, since these technologies alone may not improve lead productivity, computational screening has become important. A central method for computational screening is molecular docking. This method generally docks many flexible ligands to a rigid protein and predicts the binding affinity for each ligand in a practical time. However, its ability to detect lead compounds is less reliable. In contrast, molecular dynamics simulations can treat both proteins and ligands in a flexible manner, directly estimate the effect of explicit water molecules, and provide more accurate binding affinity, although their computational costs and times are significantly greater than those of molecular docking. Therefore, we developed a special purpose computer “MDGRAPE-3” for molecular dynamics simulations and applied it to computational screening. In this paper, we report an effective method for computational screening; this method is a combination of molecular docking and massive-scale molecular dynamics simulations. The proposed method showed a higher and more stable enrichment performance than the molecular docking method used alone.</p>
+</abstract><funding-group><funding-statement>This work was supported by the contracted research “Protein 3000 Project” of the Ministry of Education, Culture, Sports, Science and Technology (MEXT) of Japan and by the Research and Development of the Next-Generation Integrated Simulation of Living Matter, a part of the Development and Use of the Next-Generation Supercomputer Project of MEXT. In addition, this research was partially supported by MEXT through a Grant-in-Aid for Encouragement of Young Scientists (B), NO. 17790096 in 2005–2006. The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement></funding-group><counts><page-count count="13"/></counts></article-meta>
+</front>
+<body><sec id="s1">
+<title>Introduction</title>
+<p>In early-phase drug development research, new lead compounds are detected by the computational screening of large compound libraries. Since the goal of computational screening is basically the same as that of experimental screening, i.e., high-throughput screening (HTS), it is expected that the integration and improvement of computational and experimental approaches will increase the productivity of drug discovery. HTS is currently widely adopted and is crucial to the generation of lead compounds. Despite the many successes achieved with HTS <xref ref-type="bibr" rid="pcbi.1000528-Young1">[1]</xref>–<xref ref-type="bibr" rid="pcbi.1000528-Doman1">[5]</xref>, there remain some problems regarding the cost, complexity of the assay procedure, and screening quality <xref ref-type="bibr" rid="pcbi.1000528-Doman1">[5]</xref>–<xref ref-type="bibr" rid="pcbi.1000528-Hann1">[8]</xref>. Thus, HTS alone may not improve lead productivity. Hence, computational screening methods, such as ligand- and structure-based screening, have become important. With the advancement of computer performance and calculation techniques, computational screening has become faster and less expensive than HTS. However, the ability of computational screening to enrich hit compounds remains unsatisfactory and less reliable.</p>
+<p>Coupled with a rapidly rising number of structures for target proteins, structure-based screening has become prominent in drug discovery. Among the various structure-based computational methodologies adopted for compound screening, the principal one is molecular docking. When the three-dimensional structure of a target protein is available or can be modeled, molecular docking is often used for the screening of compound libraries. Molecular docking predicts the conformation of a protein-ligand complex and calculates the binding affinity. Most docking programs <xref ref-type="bibr" rid="pcbi.1000528-Jones1">[9]</xref>–<xref ref-type="bibr" rid="pcbi.1000528-Rarey1">[15]</xref> involve two operations: “docking” and “scoring.” The first involves the generation of multiple protein-ligand conformations, called “poses,” or the sampling of the ligand's probable conformations in the binding pocket of the target protein. Most of these programs perform flexible ligand-rigid receptor docking, and some of them are highly capable of predicting poses that resemble the experimental structure for many target proteins <xref ref-type="bibr" rid="pcbi.1000528-Bursulaya1">[16]</xref>. Since such docking programs enable a fast conformational search of ligands in a short time, they are very attractive tools for compound screening. In the second operation, the affinity between the target protein and the ligand for each pose is calculated by using a scoring function. Then, multiple ligands are ranked according to these calculated binding affinities or docking scores. Many studies using docking programs have shown that these screenings have a higher enrichment of hits than random screening <xref ref-type="bibr" rid="pcbi.1000528-Stahl1">[17]</xref>,<xref ref-type="bibr" rid="pcbi.1000528-Wyss1">[18]</xref>, but these screenings suffer from false positives and false negatives and are not sufficiently accurate to grade compounds according to the binding affinities <xref ref-type="bibr" rid="pcbi.1000528-Pearlman1">[19]</xref>. This implies that the compounds with a higher rank include false positives and false negatives; thus, there is a practical difficulty with using docking. The problems of molecular docking as a screening tool have been widely discussed: the scoring functions are inaccurate and neglect the solvent-related terms, and protein flexibility is ignored. Furthermore, the docking score corresponding to binding free energy is less reliable because it is calculated using a single conformation even though the binding free energy is an ensemble property.</p>
+<p>Molecular dynamics (MD) simulations can treat both proteins and ligands in a flexible manner, allowing the relaxation of the binding site around the ligand. In addition, they can directly estimate the effect of explicit water molecules. Further, more accurate MD-based computational techniques are available for estimating the binding free energy. These techniques include thermodynamic integration (TI) <xref ref-type="bibr" rid="pcbi.1000528-Kollman1">[20]</xref>, free energy perturbation (FEP) <xref ref-type="bibr" rid="pcbi.1000528-Kollman1">[20]</xref>, linear interaction energy (LIE) <xref ref-type="bibr" rid="pcbi.1000528-Aqvist1">[21]</xref>, and molecular mechanics/Poisson-Boltzmann and surface area (MM/PB-SA) <xref ref-type="bibr" rid="pcbi.1000528-Kollman2">[22]</xref> methods. The most rigorous computational techniques are the TI and FEP methods, but these are too expensive to be employed in computational screening. The computational cost of LIE is moderate, but it requires information regarding the binding affinities of experimentally known compounds. Hence, we focused on the MM/PB-SA method because many recent investigations have revealed that this method is highly capable of predicting the binding free energy <xref ref-type="bibr" rid="pcbi.1000528-Huo1">[23]</xref>; further, its computational cost is lower than the computational costs of the FEP and TI methods by at least 10-fold, and its broad applicability is suitable for compound screening. In the MM/PB-SA method, the free energy is calculated using the snapshots of solute molecules obtained from explicit-solvent MD simulation. At this time, the explicit-solvent is replaced with implicit models (see <xref ref-type="sec" rid="s4">Materials and Methods</xref>). These MD-based techniques can provide more accurate binding free energy, but their computational costs are considerably high, as compared to molecular docking. Further, the prediction of the optimal structures for protein-ligand complexes adds to the computational cost, even with extended-ensemble MD methods.</p>
+<p>To solve the problem of molecular docking and MD simulations, a combination of molecular docking and MD simulations is effective because it can neutralize each other's defects. However, since the application of the MD technique to screening requires the execution of many MD simulations, the problem of the high computational cost of MD simulations remains unresolved. Because of this problem, most of the studies that have used MD-based computational techniques have reported only their ability to rank several ligands according to their experimental binding affinities <xref ref-type="bibr" rid="pcbi.1000528-Huo1">[23]</xref>,<xref ref-type="bibr" rid="pcbi.1000528-Masukawa1">[24]</xref>. Further, since the most important parameter for screening is the ability to distinguish true active compounds from a large number of inactive compounds, only a few researches have assessed the ability to enrich active compounds by virtual screening using MD-based computational techniques <xref ref-type="bibr" rid="pcbi.1000528-Kuhn1">[25]</xref>,<xref ref-type="bibr" rid="pcbi.1000528-Ferrara1">[26]</xref>.</p>
+<p>In order to reduce the significant computational cost of MD simulations, we used a special-purpose computer for MD simulations, “MDGRAPE-3,” which functions with a high speed and accuracy <xref ref-type="bibr" rid="pcbi.1000528-Narumi1">[27]</xref>,<xref ref-type="bibr" rid="pcbi.1000528-Taiji1">[28]</xref>. In this study, we performed MD simulations of multiple protein-ligand conformations (multiple poses) rather than a single protein-ligand conformation (single pose). The multiple protein-ligand conformations were obtained from the result of molecular docking. Multiple poses were used so that the multiple local energy minima in the ligand's conformational space within the binding pocket could be sampled in the initial structures for MD simulations. Then, we performed massive MD simulations using multiple poses in a practically appropriate time for drug discovery.</p>
+<p>In our screening approach, we adopted molecular docking and the MM/PB-SA method as the first and second filters for compound screening; this idea was inspired by the approach adopted by Kuhn and coworkers <xref ref-type="bibr" rid="pcbi.1000528-Kuhn1">[25]</xref>. They made some important discoveries with respect to MD-based screening for lead generation. Their results showed that the application of the MM/PB-SA method to an energy-minimized complex structure is an adequate and more accurate approach than the calculation of the binding free energy using MD simulation. This is because the use of MD simulations introduces additional structural uncertainties and the free energy from the MD simulations leads to inaccuracy. Further, they reported that the strategy of using multiple poses cannot be recommended in general, and is useful only if the correct binding mode is contained within the higher-scored docking conformations but is not captured with a single pose. Their MD simulations were applied to the protein-ligand complexes for the top 200 compounds obtained by molecular docking, and the MD run for each complex was performed for 200 ps (with a time step of 1.5 fs). They concluded that a more sophisticated MD procedure involving an extended simulation time improved the results, although this time-consuming approach would not be of considerable interest as a tool for lead discovery.</p>
+<p>In our study, we attempted to investigate whether a combination of molecular docking and massive-scale MD simulations would be effective in screening compound libraries. Furthermore, we evaluated which protocols for the MM/PB-SA method were effective for compound screening. In the basic MD strategy for our compound screening, a 700-ps MD simulation (with a time step of 0.5 fs) for each complex was performed for the top 1,000 compounds obtained by docking. With regard to the time resolution, simulation time, and number of protein-ligand complex structures, our MD runs were more massive and elaborate than those of previous MD-based screenings <xref ref-type="bibr" rid="pcbi.1000528-Kuhn1">[25]</xref>.</p>
+<sec id="s1a">
+<title>Overview of Our Approach</title>
+<p>In our screening approach, we adopted molecular docking and the MM/PB-SA method based on MD simulations as the first and second filters, respectively. First, we performed molecular docking by using the conformations of a target protein and the compounds contained in the compound library. Additionally, the results of molecular docking were applied to the post-processing for the selection of successfully docked compounds and the classification of multiple binding poses (see <xref ref-type="sec" rid="s4">Materials and Methods</xref>). Next, all of the conformations obtained from the molecular docking were energy-minimized using molecular mechanics (MM) force-field (hereafter we call this MM calculations). MD simulations were then applied to multiple conformations of the protein-ligand complexes. The binding free energies were calculated by the MM/PB-SA method using the coordinate sets obtained from the MM calculations and MD simulations. Finally, we assessed the enrichment of active compounds by using ranked lists of compounds graded on the basis of their binding free energies.</p>
+</sec></sec><sec id="s2">
+<title>Results</title>
+<p>To evaluate the ability of the MM/PB-SA method to act as a filter after molecular docking, we performed MD-based compound screening for four target proteins (trypsin, HIV-1 protease (HIV PR), acetylcholine esterase (AChE), and cyclin-dependent kinase 2 (CDK2)). These targets have been widely evaluated in structure-based computer-aided drug design <xref ref-type="bibr" rid="pcbi.1000528-Ferrara1">[26]</xref>, <xref ref-type="bibr" rid="pcbi.1000528-Thomas1">[29]</xref>–<xref ref-type="bibr" rid="pcbi.1000528-Kua1">[34]</xref>. For each target protein, we first assessed the enrichment of 12 types of binding free energies (<xref ref-type="table" rid="pcbi-1000528-t001">Table 1</xref>). These 12 types of binding free energies were classified into four categories. G01–G03 in category 1 were the energies calculated from the MM calculations. The other categories 2–4, which contained the energies calculated from the MD simulations, were classified according to the combination of coordinate sets used for the enthalpy calculations; G04–G06, G07–G09, and G10–G12 belonged to categories 2, 3, and 4, respectively (a detailed explanation is given in the <xref ref-type="sec" rid="s4">Materials and Methods</xref> section.). Analyses of the Receiver Operating Characteristic (ROC) curves <xref ref-type="bibr" rid="pcbi.1000528-Witten1">[35]</xref> are given in <xref ref-type="table" rid="pcbi-1000528-t002">Table 2</xref>. An ROC curve is closely related to an enrichment curve but is not exactly equivalent to it. This curve describes the tradeoff between sensitivity and specificity. Sensitivity is defined as the ability of the classifier to detect true positives, while specificity is the ability to avoid false positives. The area under an ROC curve, i.e., the ROC value, indicates the quality of enrichment. The ROC value of a random classifier is 0.5, while that of an excellent classifier is greater than 0.9.</p>
+<table-wrap id="pcbi-1000528-t001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000528.t001</object-id><label>Table 1</label><caption>
+<title>Computational strategies of 12 binding free energies.</title>
+</caption><!--===== Grouping alternate versions of objects =====--><alternatives><graphic id="pcbi-1000528-t001-1" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000528.t001" xlink:type="simple"/><table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" colspan="1" rowspan="1">Category</td>
+<td align="left" colspan="1" rowspan="1">Δ<italic>G</italic><sub>bind</sub></td>
+<td align="left" colspan="1" rowspan="1">H<sub>COMPLEX</sub></td>
+<td align="left" colspan="1" rowspan="1">H<sub>PROTEIN</sub></td>
+<td align="left" colspan="1" rowspan="1">H<sub>LIGAND</sub></td>
+<td align="left" colspan="1" rowspan="1">TS<sub>COMPLEX</sub></td>
+<td align="left" colspan="1" rowspan="1">TS<sub>PROTEIN</sub></td>
+<td align="left" colspan="1" rowspan="1">TS<sub>LIGAND</sub></td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" colspan="1" rowspan="1">1</td>
+<td align="left" colspan="1" rowspan="1">G01</td>
+<td align="left" colspan="1" rowspan="1">MM<sub>COMPLEX</sub></td>
+<td align="left" colspan="1" rowspan="1">MM<sub>COMPLEX</sub></td>
+<td align="left" colspan="1" rowspan="1">MM<sub>COMPLEX</sub></td>
+<td align="left" colspan="1" rowspan="1">–</td>
+<td align="left" colspan="1" rowspan="1">–</td>
+<td align="left" colspan="1" rowspan="1">–</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">G02</td>
+<td align="left" colspan="1" rowspan="1">MM<sub>COMPLEX</sub></td>
+<td align="left" colspan="1" rowspan="1">MM<sub>COMPLEX</sub></td>
+<td align="left" colspan="1" rowspan="1">MM<sub>LIGAND</sub></td>
+<td align="left" colspan="1" rowspan="1">–</td>
+<td align="left" colspan="1" rowspan="1">–</td>
+<td align="left" colspan="1" rowspan="1">–</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">G03</td>
+<td align="left" colspan="1" rowspan="1">MM<sub>COMPLEX</sub></td>
+<td align="left" colspan="1" rowspan="1">MM<sub>PROTEIN</sub></td>
+<td align="left" colspan="1" rowspan="1">MM<sub>LIGAND</sub></td>
+<td align="left" colspan="1" rowspan="1">–</td>
+<td align="left" colspan="1" rowspan="1">–</td>
+<td align="left" colspan="1" rowspan="1">–</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">2</td>
+<td align="left" colspan="1" rowspan="1">G04</td>
+<td align="left" colspan="1" rowspan="1">MD<sub>COMPLEX</sub></td>
+<td align="left" colspan="1" rowspan="1">MD<sub>COMPLEX</sub></td>
+<td align="left" colspan="1" rowspan="1">MD<sub>COMPLEX</sub></td>
+<td align="left" colspan="1" rowspan="1">TS<sub>COMPLEX</sub></td>
+<td align="left" colspan="1" rowspan="1">TS<sub>COMPLEX</sub></td>
+<td align="left" colspan="1" rowspan="1">TS<sub>LIGAND</sub></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">G05</td>
+<td align="left" colspan="1" rowspan="1">MD<sub>COMPLEX</sub></td>
+<td align="left" colspan="1" rowspan="1">MD<sub>COMPLEX</sub></td>
+<td align="left" colspan="1" rowspan="1">MD<sub>COMPLEX</sub></td>
+<td align="left" colspan="1" rowspan="1">TS<sub>COMPLEX</sub></td>
+<td align="left" colspan="1" rowspan="1">TS<sub>PROTEIN</sub></td>
+<td align="left" colspan="1" rowspan="1">TS<sub>LIGAND</sub></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">G06</td>
+<td align="left" colspan="1" rowspan="1">MD<sub>COMPLEX</sub></td>
+<td align="left" colspan="1" rowspan="1">MD<sub>COMPLEX</sub></td>
+<td align="left" colspan="1" rowspan="1">MD<sub>COMPLEX</sub></td>
+<td align="left" colspan="1" rowspan="1">–</td>
+<td align="left" colspan="1" rowspan="1">–</td>
+<td align="left" colspan="1" rowspan="1">–</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">3</td>
+<td align="left" colspan="1" rowspan="1">G07</td>
+<td align="left" colspan="1" rowspan="1">MD<sub>COMPLEX</sub></td>
+<td align="left" colspan="1" rowspan="1">MD<sub>COMPLEX</sub></td>
+<td align="left" colspan="1" rowspan="1">MD<sub>LIGAND</sub></td>
+<td align="left" colspan="1" rowspan="1">TS<sub>COMPLEX</sub></td>
+<td align="left" colspan="1" rowspan="1">TS<sub>COMPLEX</sub></td>
+<td align="left" colspan="1" rowspan="1">TS<sub>LIGAND</sub></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">G08</td>
+<td align="left" colspan="1" rowspan="1">MD<sub>COMPLEX</sub></td>
+<td align="left" colspan="1" rowspan="1">MD<sub>COMPLEX</sub></td>
+<td align="left" colspan="1" rowspan="1">MD<sub>LIGAND</sub></td>
+<td align="left" colspan="1" rowspan="1">TS<sub>COMPLEX</sub></td>
+<td align="left" colspan="1" rowspan="1">TS<sub>PROTEIN</sub></td>
+<td align="left" colspan="1" rowspan="1">TS<sub>LIGAND</sub></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">G09</td>
+<td align="left" colspan="1" rowspan="1">MD<sub>COMPLEX</sub></td>
+<td align="left" colspan="1" rowspan="1">MD<sub>COMPLEX</sub></td>
+<td align="left" colspan="1" rowspan="1">MD<sub>LIGAND</sub></td>
+<td align="left" colspan="1" rowspan="1">–</td>
+<td align="left" colspan="1" rowspan="1">–</td>
+<td align="left" colspan="1" rowspan="1">–</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">4</td>
+<td align="left" colspan="1" rowspan="1">G10</td>
+<td align="left" colspan="1" rowspan="1">MD<sub>COMPLEX</sub></td>
+<td align="left" colspan="1" rowspan="1">MD<sub>PROTEIN</sub></td>
+<td align="left" colspan="1" rowspan="1">MD<sub>LIGAND</sub></td>
+<td align="left" colspan="1" rowspan="1">TS<sub>COMPLEX</sub></td>
+<td align="left" colspan="1" rowspan="1">TS<sub>COMPLEX</sub></td>
+<td align="left" colspan="1" rowspan="1">TS<sub>LIGAND</sub></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">G11</td>
+<td align="left" colspan="1" rowspan="1">MD<sub>COMPLEX</sub></td>
+<td align="left" colspan="1" rowspan="1">MD<sub>PROTEIN</sub></td>
+<td align="left" colspan="1" rowspan="1">MD<sub>LIGAND</sub></td>
+<td align="left" colspan="1" rowspan="1">TS<sub>COMPLEX</sub></td>
+<td align="left" colspan="1" rowspan="1">TS<sub>PROTEIN</sub></td>
+<td align="left" colspan="1" rowspan="1">TS<sub>LIGAND</sub></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">G12</td>
+<td align="left" colspan="1" rowspan="1">MD<sub>COMPLEX</sub></td>
+<td align="left" colspan="1" rowspan="1">MD<sub>PROTEIN</sub></td>
+<td align="left" colspan="1" rowspan="1">MD<sub>LIGAND</sub></td>
+<td align="left" colspan="1" rowspan="1">–</td>
+<td align="left" colspan="1" rowspan="1">–</td>
+<td align="left" colspan="1" rowspan="1">–</td>
+</tr>
+</tbody>
+</table></alternatives><table-wrap-foot><fn id="nt101"><p>We performed MM calculations (MM energy minimization) or MD simulations of a complex, a protein, and a ligand, and evaluated 12 types of binding free energies by combining the respective coordinate sets. The enthalpy contributions of <italic>G</italic><sub>protein</sub> and <italic>G</italic><sub>ligand</sub> in equation 2 were calculated in the following two ways: (1) by using the coordinate sets of a protein (or ligand) obtained from the MD simulations (or MM calculations) of the protein (or ligand) and (2) by using the coordinate sets extracted from the MD simulation of a complex. Similar to the enthalpy contribution, the entropy contribution was also calculated by combining the respective MD coordinate sets. H indicates the sum of &lt;<italic>E</italic><sub>MM</sub>&gt;, &lt;<italic>G</italic><sub>PB</sub>&gt;, and &lt;<italic>G</italic><sub>SA</sub>&gt; in equation 3, and TS indicates the entropy term in equation 3. MD <sub>COMPLEX</sub> (TS<sub>COMPLEX</sub>), MD<sub>PROTEIN</sub> (TS<sub>PROTEIN</sub>), and MD<sub>LIGAND</sub> (TS<sub>LIGAND</sub>) denote the use of MD coordinate sets for a complex, protein, and ligand, respectively. Similarly, MM<sub>COMPLEX</sub>, MM<sub>PROTEIN</sub>, and MM<sub>LIGAND</sub> denote the use of MM coordinate sets for a complex, protein, and ligand, respectively.</p></fn></table-wrap-foot></table-wrap><table-wrap id="pcbi-1000528-t002" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000528.t002</object-id><label>Table 2</label><caption>
+<title>Area under ROC curves.</title>
+</caption><!--===== Grouping alternate versions of objects =====--><alternatives><graphic id="pcbi-1000528-t002-2" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000528.t002" xlink:type="simple"/><table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" colspan="1" rowspan="1">Δ<italic>G</italic><sub>bind</sub></td>
+<td align="left" colspan="1" rowspan="1">Trypsin</td>
+<td align="left" colspan="1" rowspan="1">HIV PR</td>
+<td align="left" colspan="1" rowspan="1">AChE</td>
+<td align="left" colspan="1" rowspan="1">CDK2</td>
+<td align="left" colspan="1" rowspan="1">CDK2(l)</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" colspan="1" rowspan="1">G01</td>
+<td align="left" colspan="1" rowspan="1"><underline>0.754</underline> (0.318)</td>
+<td align="left" colspan="1" rowspan="1"><underline>0.775</underline> (0.696)</td>
+<td align="left" colspan="1" rowspan="1">0.655 (0.597)</td>
+<td align="left" colspan="1" rowspan="1"><underline>0.719</underline> (0.685)</td>
+<td align="left" colspan="1" rowspan="1"><underline>0.719</underline> (0.685)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">G02</td>
+<td align="left" colspan="1" rowspan="1">0.651 (0.323)</td>
+<td align="left" colspan="1" rowspan="1">0.561 (0.550)</td>
+<td align="left" colspan="1" rowspan="1">0.719 (0.627)</td>
+<td align="left" colspan="1" rowspan="1">0.595 (0.652)</td>
+<td align="left" colspan="1" rowspan="1">0.595 (0.652)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">G03</td>
+<td align="left" colspan="1" rowspan="1">0.491 (0.283)</td>
+<td align="left" colspan="1" rowspan="1">0.538 (0.492)</td>
+<td align="left" colspan="1" rowspan="1"><underline>0.747</underline> (0.554)</td>
+<td align="left" colspan="1" rowspan="1">0.586 (0.604)</td>
+<td align="left" colspan="1" rowspan="1">0.586 (0.604)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">G04</td>
+<td align="left" colspan="1" rowspan="1">0.623 (0.321)</td>
+<td align="left" colspan="1" rowspan="1">0.789 (0.435)</td>
+<td align="left" colspan="1" rowspan="1">0.527 (0.409)</td>
+<td align="left" colspan="1" rowspan="1">0.597 (<underline>0.599</underline>)</td>
+<td align="left" colspan="1" rowspan="1"><underline>0.659</underline> (0.627)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">G05</td>
+<td align="left" colspan="1" rowspan="1">0.539 (0.291)</td>
+<td align="left" colspan="1" rowspan="1">0.775 (0.425)</td>
+<td align="left" colspan="1" rowspan="1">0.506 (0.436)</td>
+<td align="left" colspan="1" rowspan="1">0.565 (0.585)</td>
+<td align="left" colspan="1" rowspan="1">0.636 (0.614)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">G06</td>
+<td align="left" colspan="1" rowspan="1"><underline>0.765</underline> (0.391)</td>
+<td align="left" colspan="1" rowspan="1"><underline>0.979</underline> (0.550)</td>
+<td align="left" colspan="1" rowspan="1"><underline>0.831</underline> (0.603)</td>
+<td align="left" colspan="1" rowspan="1">0.558 (0.568)</td>
+<td align="left" colspan="1" rowspan="1">0.624 (0.558)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">G07</td>
+<td align="left" colspan="1" rowspan="1">0.543 (0.300)</td>
+<td align="left" colspan="1" rowspan="1">0.514 (0.373)</td>
+<td align="left" colspan="1" rowspan="1">0.509 (0.413)</td>
+<td align="left" colspan="1" rowspan="1"><underline>0.625</underline> (0.623)</td>
+<td align="left" colspan="1" rowspan="1"><underline>0.647</underline> (0.638)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">G08</td>
+<td align="left" colspan="1" rowspan="1">0.486 (0.265)</td>
+<td align="left" colspan="1" rowspan="1">0.528 (0.383)</td>
+<td align="left" colspan="1" rowspan="1">0.513 (0.435)</td>
+<td align="left" colspan="1" rowspan="1">0.586 (0.606)</td>
+<td align="left" colspan="1" rowspan="1">0.635 (0.626)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">G09</td>
+<td align="left" colspan="1" rowspan="1"><underline>0.694</underline> (0.388)</td>
+<td align="left" colspan="1" rowspan="1"><underline>0.778</underline> (0.471)</td>
+<td align="left" colspan="1" rowspan="1"><underline>0.843</underline> (0.645)</td>
+<td align="left" colspan="1" rowspan="1">0.606 (0.610)</td>
+<td align="left" colspan="1" rowspan="1">0.622 (0.616)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">G10</td>
+<td align="left" colspan="1" rowspan="1">0.431 (0.369)</td>
+<td align="left" colspan="1" rowspan="1">0.336 (0.373)</td>
+<td align="left" colspan="1" rowspan="1">0.654 (0.458)</td>
+<td align="left" colspan="1" rowspan="1"><underline>0.667</underline> (0.615)</td>
+<td align="left" colspan="1" rowspan="1"><underline>0.614</underline> (0.606)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">G11</td>
+<td align="left" colspan="1" rowspan="1">0.422 (0.327)</td>
+<td align="left" colspan="1" rowspan="1">0.326 (0.389)</td>
+<td align="left" colspan="1" rowspan="1">0.678 (0.464)</td>
+<td align="left" colspan="1" rowspan="1">0.653 (0.604)</td>
+<td align="left" colspan="1" rowspan="1">0.605 (0.602)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">G12</td>
+<td align="left" colspan="1" rowspan="1"><underline>0.526</underline> (0.406)</td>
+<td align="left" colspan="1" rowspan="1"><underline>0.516</underline> (0.352)</td>
+<td align="left" colspan="1" rowspan="1"><underline>0.735</underline> (0.541)</td>
+<td align="left" colspan="1" rowspan="1">0.631 (0.605)</td>
+<td align="left" colspan="1" rowspan="1">0.612 (0.606)</td>
+</tr>
+</tbody>
+</table></alternatives><table-wrap-foot><fn id="nt102"><p>This table lists the ROC values obtained when the active compounds in the top 1,000 compounds are all considered to be as true positive. The values in parentheses denote the ROC values of a single pose, while the others denote those of multiple poses. The underlining indicates the highest ROC values in the respective categories. CDK2(l) indicates the values of longer MD simulations (1.4 ns) of CDK2.</p></fn></table-wrap-foot></table-wrap>
+<p><xref ref-type="table" rid="pcbi-1000528-t002">Table 2</xref> shows the ROC values for all of the target proteins. From these values, we can observe three common features for three of the target proteins (trypsin, HIV PR, and AChE), excluding CDK2. It is obvious that the ROC values for all of the binding free energies (G01–G12) of multiple poses are higher than those of a single pose, suggesting that docking and its post-processing can sample potentially correct docking poses of active compounds. This implies that the potentially correct binding mode is contained within the top 10 highest-scored docking poses but is not always the highest-scored docking pose. In our study, after docking and post-processing, MD simulations were applied to an average of 5–6 docking poses for each compound in order to increase the efficiency of the sampling of a ligand's conformations. Although MD simulations of multiple poses are expensive, they are necessary for improving enrichment.</p>
+<p>The second common feature is that the highest ROC value for each target protein was obtained for the energies calculated from the MD simulations, rather than for those calculated from the MM calculations. This implies that the introduction of protein flexibility and the effect of water molecules facilitated the refinement of the protein-ligand interactions and that the MD-based MM/PB-SA method provided a more reliable binding free energy. These two common features were clearly seen in the results for the active compounds. A typical successful example of MD simulations using multiple poses is shown in <xref ref-type="fig" rid="pcbi-1000528-g001">Figure 1</xref>. In the crystal structure of trypsin complexed with an inhibitor <xref ref-type="bibr" rid="pcbi.1000528-Habe1">[36]</xref>, the amidine group of the inhibitor (<xref ref-type="fig" rid="pcbi-1000528-g001">Figures 1</xref> and <xref ref-type="supplementary-material" rid="pcbi.1000528.s001">S1</xref>; active compound (13) of trypsin) formed hydrogen bonds with the important residue Asp-180 in the binding pocket. Further, the highest-scored docking pose was so inaccurate that no important interactions were observed at all, but the 7<sup>th</sup> ranked docking pose was similar to that of the crystal structure. In addition, the application of the MD simulation to the 7<sup>th</sup> ranked docking pose appropriately improved the key hydrogen bonds and the position of the naphthalene group and G06 value of the 7<sup>th</sup> ranked docking pose was the lowest in all the poses.</p>
+<fig id="pcbi-1000528-g001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000528.g001</object-id><label>Figure 1</label><caption>
+<title>Successful example of MD simulations using multiple poses.</title>
+<p>The color codes for the stick models are as follows: yellow, conformation of the inhibitor in the crystal structure; purple, 7<sup>th</sup>-ranked docking pose; and pink, conformation of the 7<sup>th</sup>-ranked docking pose after the MD simulation. In addition, the highest-scored docking pose is shown by the wireframe model. The highest-scored docking pose (wireframe model) is inaccurate, but the 7<sup>th</sup>-ranked docking pose is similar to that of the crystal structure. MD simulation of the 7<sup>th</sup>-ranked pose improved the key hydrogen bonds and the position of the naphthalene group and G06 value of the 7<sup>th</sup> ranked docking pose was the lowest in all the poses.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000528.g001" xlink:type="simple"/></fig>
+<p>The last common feature was that the binding free energies with no entropy terms (i.e., G06, G09, and G12), which were obtained by using the trajectories of the MD simulations, showed the highest ROC values in the respective energy categories (2–4). Thus, the introduction of entropy terms tended to reduce enrichment. This is probably due to the difficulty of computing entropy values for the MM-PB/SA energy function. We will further discuss this problem in the <xref ref-type="sec" rid="s3">Discussion</xref> section. Our MD simulations encouraged conformational relaxation, and the binding enthalpy from the MM-PB/SA method could satisfactorily increase the enrichment performance. However, the treatment of binding entropy terms involves certain unsolved problems. Here, we performed a statistical analysis using data on the ROC values to evaluate the differences between key classifiers, G01 (multiple poses), G06 (multiple poses), and molecular docking (<xref ref-type="table" rid="pcbi-1000528-t003">Table 3</xref>). The program DBM MRMC version 2.1 was used in this analysis <xref ref-type="bibr" rid="pcbi.1000528-Dorfman1">[37]</xref>–<xref ref-type="bibr" rid="pcbi.1000528-Roe2">[41]</xref>. From this analysis, it was obvious that the differences in the ROC values between G06 and docking, and those between G06 and rescoring (docking), were statistically significant for trypsin and HIV PR, but the difference in the ROC values between G06 and docking for AChE was not statistically significant. On the other hand, the differences in the ROC values between G01 and docking were not statistically significant for trypsin, HIV PR, and AChE. An examination of the entire data set indicated that the binding free energies of multiple poses, especially G06, which was obtained from the MD trajectories of just the protein-ligand complexes with no entropies, showed a high and stable ability to enrich the active compounds.</p>
+<table-wrap id="pcbi-1000528-t003" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000528.t003</object-id><label>Table 3</label><caption>
+<title>Statistical comparisons of ROC values.</title>
+</caption><!--===== Grouping alternate versions of objects =====--><alternatives><graphic id="pcbi-1000528-t003-3" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000528.t003" xlink:type="simple"/><table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">Trypsin</td>
+<td align="left" colspan="1" rowspan="1">HIV PR</td>
+<td align="left" colspan="1" rowspan="1">AChE</td>
+<td align="left" colspan="1" rowspan="1">CDK2</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" colspan="1" rowspan="1">G01#</td>
+<td align="left" colspan="1" rowspan="1">0.754 (0.010)</td>
+<td align="left" colspan="1" rowspan="1">0.775(0.054)</td>
+<td align="left" colspan="1" rowspan="1">0.655(0.117)</td>
+<td align="left" colspan="1" rowspan="1">0.719 (0.064)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">G06#</td>
+<td align="left" colspan="1" rowspan="1">0.765 (0.092)</td>
+<td align="left" colspan="1" rowspan="1">0.979(0.004)</td>
+<td align="left" colspan="1" rowspan="1">0.831(0.135)</td>
+<td align="left" colspan="1" rowspan="1">0.558 (0.065)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">GOLD/Rescore#</td>
+<td align="left" colspan="1" rowspan="1">0.476(0.099)/0.477(0.081)</td>
+<td align="left" colspan="1" rowspan="1">0.621(0.102)/0.636(0.117)</td>
+<td align="left" colspan="1" rowspan="1">0.614(0.159)/0.268(0.098)</td>
+<td align="left" colspan="1" rowspan="1">0.679 (0.067)/0.530 (0.038)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">P values(G01/Docking)</td>
+<td align="left" colspan="1" rowspan="1">0.054</td>
+<td align="left" colspan="1" rowspan="1">0.542</td>
+<td align="left" colspan="1" rowspan="1">0.922</td>
+<td align="left" colspan="1" rowspan="1">0.915</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">p values(G01/Rescore)</td>
+<td align="left" colspan="1" rowspan="1">0.055</td>
+<td align="left" colspan="1" rowspan="1">0.320</td>
+<td align="left" colspan="1" rowspan="1">0.019<xref ref-type="table-fn" rid="nt105">*</xref></td>
+<td align="left" colspan="1" rowspan="1">0.102</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">p values(G06/Docking)</td>
+<td align="left" colspan="1" rowspan="1">0.045<xref ref-type="table-fn" rid="nt105">*</xref></td>
+<td align="left" colspan="1" rowspan="1">0.039<xref ref-type="table-fn" rid="nt105">*</xref></td>
+<td align="left" colspan="1" rowspan="1">0.330</td>
+<td align="left" colspan="1" rowspan="1">-</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">p values(G06/Rescore)</td>
+<td align="left" colspan="1" rowspan="1">0.046<xref ref-type="table-fn" rid="nt105">*</xref></td>
+<td align="left" colspan="1" rowspan="1">0.014<xref ref-type="table-fn" rid="nt105">*</xref></td>
+<td align="left" colspan="1" rowspan="1">0.001<xref ref-type="table-fn" rid="nt105">*</xref></td>
+<td align="left" colspan="1" rowspan="1">0.712</td>
+</tr>
+</tbody>
+</table></alternatives><table-wrap-foot><fn id="nt103"><p>This analysis was analyzed by the program DBM MRMC 2.1 <xref ref-type="bibr" rid="pcbi.1000528-Dorfman1">[37]</xref>–<xref ref-type="bibr" rid="pcbi.1000528-Roe2">[41]</xref>. This program uses a jackknife method <xref ref-type="bibr" rid="pcbi.1000528-Dorfman1">[37]</xref> to assess the statistical significance of the observed difference between two classifiers. The p-value (G06/Docking) in CDK2 is not shown because the ROC value of G06 was less than that of Docking. This analysis indicated that the differences between G01 and G06 were not statistically significant (data not shown). The analyses were performed using results of multiple poses. “Rescore” indicate the result of rescoring approach (docking) (see <xref ref-type="sec" rid="s4">Materials and Methods</xref>).</p></fn><fn id="nt104"><label>#</label><p>These values are ROC values. Standard errors are shown in parentheses.</p></fn><fn id="nt105"><label>*</label><p>Differences are considered statistically significant at p&lt;0.05.</p></fn></table-wrap-foot></table-wrap>
+<p>This paper provides a detailed account of the ability of our approach to discriminate active compounds from inactive ones. <xref ref-type="fig" rid="pcbi-1000528-g002">Figure 2</xref> shows the ROC curves for the respective target proteins. The ROC curves of the binding free energies, with the highest ROC values in the respective categories, were observed for trypsin, HIV PR, and AChE. <xref ref-type="table" rid="pcbi-1000528-t004">Table 4</xref> shows the information on the enrichment factors to allow the abilities of the classifiers to be understood clearly.</p>
+<fig id="pcbi-1000528-g002" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000528.g002</object-id><label>Figure 2</label><caption>
+<title>ROC curves for the four target proteins.</title>
+<p>Each graph shows the sensitivity versus 1-specificity. These indicate the ROC curves obtained when the active compounds in the top 1,000 compounds are all considered to be as true positive. The black dashed, sky blue solid, and sky blue dashed lines indicate random screening, molecular docking and rescoring (docking), respectively. For trypsin, HIV PR, and AChE, the ROC curves of the binding free energies (multiple poses) with the highest ROC values in the respective categories are shown. For CDK2, the curves of G01 (single and multiple poses), G04 (single pose), G07 (multiple poses), and G10 (multiple poses) are shown. (s) and (m) indicate single pose and multiple poses.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000528.g002" xlink:type="simple"/></fig><table-wrap id="pcbi-1000528-t004" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000528.t004</object-id><label>Table 4</label><caption>
+<title>Enrichment factors for top 1,000 compounds.</title>
+</caption><!--===== Grouping alternate versions of objects =====--><alternatives><graphic id="pcbi-1000528-t004-4" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000528.t004" xlink:type="simple"/><table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">Trypsin</td>
+<td align="left" colspan="1" rowspan="1">HIV PR</td>
+<td align="left" colspan="1" rowspan="1">AChE</td>
+<td align="left" colspan="1" rowspan="1">CDK2</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" colspan="1" rowspan="1">EF (10%)</td>
+<td align="left" colspan="1" rowspan="1">5.00 (G01)</td>
+<td align="left" colspan="1" rowspan="1">3.33 (G01)</td>
+<td align="left" colspan="1" rowspan="1">4.29 (G03)</td>
+<td align="left" colspan="1" rowspan="1">1.76 (G01)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">4.00 (G06)</td>
+<td align="left" colspan="1" rowspan="1">10.0 (G06)</td>
+<td align="left" colspan="1" rowspan="1">7.14 (G06)</td>
+<td align="left" colspan="1" rowspan="1">1.76 (G04)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">3.00 (G09)</td>
+<td align="left" colspan="1" rowspan="1">3.33 (G09)</td>
+<td align="left" colspan="1" rowspan="1">7.14 (G09)</td>
+<td align="left" colspan="1" rowspan="1">1.43 (G07)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">0.00 (G12)</td>
+<td align="left" colspan="1" rowspan="1">0.00 (G12)</td>
+<td align="left" colspan="1" rowspan="1">4.29 (G12)</td>
+<td align="left" colspan="1" rowspan="1">2.14 (G10)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">1.00 (Docking)</td>
+<td align="left" colspan="1" rowspan="1">5.00 (Docking)</td>
+<td align="left" colspan="1" rowspan="1">4.29 (Docking)</td>
+<td align="left" colspan="1" rowspan="1">2.35 (Docking)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">0.00 (Rescoring)</td>
+<td align="left" colspan="1" rowspan="1">1.67(Rescoring)</td>
+<td align="left" colspan="1" rowspan="1">0.00 (Rescoring)</td>
+<td align="left" colspan="1" rowspan="1">0.00 (Rescoring)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">EF (30%)</td>
+<td align="left" colspan="1" rowspan="1">2.33 (G01)</td>
+<td align="left" colspan="1" rowspan="1">2.22 (G01)</td>
+<td align="left" colspan="1" rowspan="1">1.90 (G03)</td>
+<td align="left" colspan="1" rowspan="1">1.96 (G01)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">3.00 (G06)</td>
+<td align="left" colspan="1" rowspan="1">3.33 (G06)</td>
+<td align="left" colspan="1" rowspan="1">2.85 (G06)</td>
+<td align="left" colspan="1" rowspan="1">1.17 (G04)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">2.00 (G09)</td>
+<td align="left" colspan="1" rowspan="1">2.78 (G09)</td>
+<td align="left" colspan="1" rowspan="1">2.85 (G09)</td>
+<td align="left" colspan="1" rowspan="1">1.67 (G07)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">0.66 (G12)</td>
+<td align="left" colspan="1" rowspan="1">0.55 (G12)</td>
+<td align="left" colspan="1" rowspan="1">2.38 (G12)</td>
+<td align="left" colspan="1" rowspan="1">1.90 (G10)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">1.00 (Docking)</td>
+<td align="left" colspan="1" rowspan="1">2.78 (Docking)</td>
+<td align="left" colspan="1" rowspan="1">1.43 (Docking)</td>
+<td align="left" colspan="1" rowspan="1">1.76 (Docking)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">0.33 (Rescoring)</td>
+<td align="left" colspan="1" rowspan="1">1.67 (Rescoring)</td>
+<td align="left" colspan="1" rowspan="1">0.48 (Rescoring)</td>
+<td align="left" colspan="1" rowspan="1">0.19 (Rescoring)</td>
+</tr>
+</tbody>
+</table></alternatives><table-wrap-foot><fn id="nt106"><p>The enrichment factor (EF) can be defined as:<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000528.e001" xlink:type="simple"/></disp-formula>where a is the number of active compounds in the n top-ranked compounds and A is the number of total N compounds. In this table, the n for EF (10%), n for EF (30%), and N were 100, 300, and 1,000, respectively. For the respective proteins, A, n for EF (10%), and n for EF (30%) indicate the numbers of active compounds in the top 1,000, top 100, and top 300, respectively. All of the EF values calculated from the result of screening using multiple poses. “Rescoring” indicate the result of rescoring approach (docking) (see <xref ref-type="sec" rid="s4">Materials and Methods</xref>).</p></fn></table-wrap-foot></table-wrap>
+<p>For trypsin, 10 active compounds (out of 21) were ranked in the top 1,000 compounds (<xref ref-type="supplementary-material" rid="pcbi.1000528.s001">Figure S1</xref>). No significant difference was observed in the results of molecular docking and random screening for these top 1,000 compounds. Considerable improvement was observed in the results of the MM calculations and MD simulations. G01 and G06, in particular, showed high enrichment performances, and the enrichment factors for the top 100 compounds were 5.00 and 4.00, respectively (see <xref ref-type="table" rid="pcbi-1000528-t004">Table 4</xref>). Furthermore, G06 detected no less than nine active compounds in the top 300.</p>
+<p>For HIV PR, 6 active compounds (out of 8) were ranked in the top 1,000 compounds (<xref ref-type="supplementary-material" rid="pcbi.1000528.s002">Figure S2</xref>). A slightly better enrichment was achieved by docking than by random screening. As seen in the curves, we found drastically improved enrichment by G06. It detected 6 active compounds in the top 100 compounds, and the enrichment factor for the top 100 was 10.0 (<xref ref-type="table" rid="pcbi-1000528-t004">Table 4</xref>).</p>
+<p>For AChE, 7 active compounds (out of 14) were detected in the top 1,000 compounds (<xref ref-type="supplementary-material" rid="pcbi.1000528.s003">Figure S3</xref>). We found that the enrichments of G06 and G09 were considerably better than that of molecular docking, although the difference in the ROC values between G06 (or G09) and docking was not statistically significant. Because there was only a slight difference between G06 and G09, both of them detected five active compounds in the top 100.</p>
+<p>For CDK2, the ROC curves of the following representative binding free energies were drawn: G01 (single and multiple poses), G04 (single pose), G07 (multiple poses), and G10 (multiple poses). Seventeen active compounds (out of 26) were ranked in the top-scoring 1,000 compounds (<xref ref-type="supplementary-material" rid="pcbi.1000528.s004">Figure S4</xref>). The G01 of single and multiple poses as obtained from the MM calculations showed higher enrichment than random screening; however, there was no statistically significant difference between the results of G01 and molecular docking (see <xref ref-type="table" rid="pcbi-1000528-t003">Table 3</xref>). The G01 of single and multiple poses detected 10 active compounds in the top 300 and showed only slightly higher enrichment factors than molecular docking (<xref ref-type="table" rid="pcbi-1000528-t004">Table 4</xref>). In contrast, G04, G07, and G10, which were obtained from the MD simulations, remained unchanged or worsened as compared to docking, although they identified 6 or 7 active compounds in the top 200. Over all, the enrichments for CDK2 were not at all improved as mentioned above.</p>
+<p>The ROC values for CDK2 showed a different tendency as compared to those for the other three proteins (<xref ref-type="table" rid="pcbi-1000528-t002">Table 2</xref>). Among the 12 types of energies, the G01 of single and multiple poses showed the highest values (0.685 and 0.719, respectively), which implies that the enrichments of the MM calculations were better than those of the MD simulations. Moreover, for 7 types of energies (out of 12), the single pose results showed higher enrichment than those of multiple poses. In addition, the binding free energies with entropy terms showed slightly high enrichment performances in the respective categories (2–4), which were calculated from MD simulations. In particular, G04, G07, and G10, which included the binding entropy effects of the ligands, showed the highest ROC values in their respective categories.</p>
+<p>We monitored the mobility of ligand molecules in MD simulations of CDK2. <xref ref-type="fig" rid="pcbi-1000528-g003">Figure 3</xref> shows the cumulative percentages of positional displacements of ligand molecules relative to each protein between the docking and final MD structures. From this figure, it is clear that the docked ligands for CDK2 did not move very much in the MD simulations, as compared to the other target proteins, which implies that the protein-ligand interactions were not fully relaxed. Such insufficiency in conformational relaxation/refinement directly influences protein-ligand interactions. Particularly for active compounds, the binding modes obtained by MD simulations were some different from those of experimental structures (refer to <xref ref-type="supplementary-material" rid="pcbi.1000528.s005">Figures S5</xref> and <xref ref-type="supplementary-material" rid="pcbi.1000528.s006">S6</xref>). These data suggested that the use of MD simulations for CDK2 led to structural uncertainties for active compounds. In addition, the interactions of the inactive (decoy) compounds would not be refined fully in MD simulations. We think that such low mobility for ligand molecules and the improper conformational dynamics are due to an improper MD setup. This would be the reason why the enrichments of the MD simulations using multiple poses were worse than those of the MM calculations for CDK2.</p>
+<fig id="pcbi-1000528-g003" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000528.g003</object-id><label>Figure 3</label><caption>
+<title>Mobility of ligand molecules in MD simulations.</title>
+<p>This graph indicates cumulative percentage graph of positional displacements of ligand molecules relative to the respective proteins between docking structures and final MD structures. The blue, green, orange, and red solid lines indicate cumulative curves for trypsin, HIV PR, AChE, and CDK2, respectively. The broken line indicates a curve for longer MD simulations (1.4 ns) of CDK2. From the red solid line, it is clear that the docked ligands for CDK2 did not move in the MD simulations since the positional displacements of approximately 50% of the ligand conformations were less than 2.0 Å.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000528.g003" xlink:type="simple"/></fig></sec><sec id="s3">
+<title>Discussion</title>
+<p>We evaluated the ability to enrich active compounds for four target proteins: trypsin, HIV PR, AChE, and CDK2. Our screening approach could improve the molecular docking results for all of the proteins except CDK2. For trypsin, HIV PR, and AChE, our results indicated that the use of multiple poses improved the enrichments of all the MM calculations and MD simulations. In addition, the binding free energies calculated from the MD simulations showed higher and more stable enrichments than those of the docking and MM calculations. In particular, the G06 using multiple poses was considered to be effective. This energy contained no entropy components. Further, the enthalpy components were calculated using the coordinate sets extracted from the MD simulation of a complex.</p>
+<p>Kuhn and coworkers <xref ref-type="bibr" rid="pcbi.1000528-Kuhn1">[25]</xref> reported that for the MM/PB-SA values of MM calculations, the strategy of using multiple poses could only show a high enrichment when the correct binding mode was contained within the higher-scored docking conformations, but was not captured with a single pose. In our study, we carefully selected multiple docking poses by the post-processing of docking results and used an average of five to six docking poses for each compound. As a result, the correct binding modes or potentially correct modes that could be refined by the MD simulations were sampled within the selected multiple docking poses, which did not often correspond to the top-scored pose. Therefore, the results using multiple poses showed a higher enrichment than those obtained using a single pose.</p>
+<p>In addition, Kuhn et al. <xref ref-type="bibr" rid="pcbi.1000528-Kuhn1">[25]</xref> showed that the use of MD simulations often leads to structural uncertainties and an inaccurate estimation of the binding free energy. The MM/PB-SA energies of the MM calculations and MD simulations in their study corresponded to G01 and G04 in our study. A comparison between G01 and G04 indicated that the enrichment of G04 was lower than that of G01, which is consistent with the results of Kuhn and coworkers <xref ref-type="bibr" rid="pcbi.1000528-Kuhn1">[25]</xref>, although there were large differences in the MD setup, MM/PB-SA setup, and target proteins. G01 contained only the enthalpy components that were calculated using the coordinate sets derived from the MM calculation of a complex. G04 contained the binding entropy effect of the ligand. Further, the enthalpy components were calculated using the coordinate sets from the MD calculation of a complex. The difference between G04 and G06 was the presence of the entropy effect. Therefore, we consider that for trypsin, HIV PR, and AChE, the structural refinement/relaxation by longer and higher time resolution MD simulations and the relatively accurate estimation of binding free energy (enthalpy) by the MM/PB-SA method led to increased enrichment, but the introduction of the entropy values induced an uncertainty in the binding free energies. On the other hand, we think that the use of MD simulations for CDK2 led to structural uncertainties and then an inaccurate estimation of the binding free energy (<xref ref-type="supplementary-material" rid="pcbi.1000528.s005">Figures S5</xref> and <xref ref-type="supplementary-material" rid="pcbi.1000528.s006">S6</xref>). This would be due to an improper MD setup, as Kuhn and co-workers suggested in their paper <xref ref-type="bibr" rid="pcbi.1000528-Kuhn1">[25]</xref>.</p>
+<p>Basically, it is well-known that it is difficult to calculate entropy values properly. In our work, the entropy values were calculated by principal component analysis (PCA). These values are sensitive to the data sampling frequency <xref ref-type="bibr" rid="pcbi.1000528-Gohlke1">[42]</xref>,<xref ref-type="bibr" rid="pcbi.1000528-Numata1">[43]</xref> and are likely to be overestimated <xref ref-type="bibr" rid="pcbi.1000528-Chang1">[44]</xref>. Therefore, we believe that the entropy values were slightly unstable and not completely reliable. An alternative computational method is normal mode analysis. This may be stable to some extent, but it is known that conformations at different local energy minima provide rather similar entropy values even though there are differences in the finite temperature <xref ref-type="bibr" rid="pcbi.1000528-Gohlke1">[42]</xref>. Moreover, the computational cost is significantly high to use for the calculation of many structures. Thus, even if we were to use normal mode analysis, the entropy values would induce an uncertainty in the binding free energies. Therefore, in order to achieve further improved enrichment, it is necessary to improve the calculations for the entropy terms.</p>
+<p>Our strategy could not significantly improve the molecular docking results for CDK2. It is well known that, as compared to the binding pockets of the other three proteins, the binding pocket of CDK2 is more flexible and hydrophobic. We compared the binding pockets in two different X-ray crystal structures of CDK2 <xref ref-type="bibr" rid="pcbi.1000528-Davies1">[45]</xref>,<xref ref-type="bibr" rid="pcbi.1000528-Davis1">[46]</xref> (<xref ref-type="fig" rid="pcbi-1000528-g004">Figure 4</xref>). This figure indicates that the shape of the binding pocket is very flexible and that the hydrophobic region covers the surface of the binding pocket. In addition, a study on molecular docking using different CDK2 crystal structures reported that the volume (flexibility) of the binding site is a key factor for predicting docking poses <xref ref-type="bibr" rid="pcbi.1000528-Thomas1">[29]</xref>. Although only one CDK2 structure was used in this study, we applied MD simulations to protein-ligand structures obtained from molecular docking to facilitate the relaxation of protein-ligand interactions. Unfortunately, our MD simulations were insufficient to relax the protein-ligand conformations in the binding pockets (see <xref ref-type="fig" rid="pcbi-1000528-g003">Figure 3</xref>). Such insufficiency is believed to be due to the MD setup. To improve the insufficient relaxation, we applied the MD simulations for 1.4 ns to each configuration; this simulation time was twice that of the initial MD simulation time. These MD simulations effected some relaxation/refinement of the ligand conformations (<xref ref-type="fig" rid="pcbi-1000528-g003">Figure 3</xref>); the enrichments of the multiple poses were found to be higher than those of the single pose (<xref ref-type="table" rid="pcbi-1000528-t002">Table 2</xref>). Despite this, G04–G09 showed only small improvements in the enrichment performance. These results suggest that further improvement of the MD setup was necessary. To obtain information about how to improve the MD setup, we attempted to maximize the ROC values by using an approach based on the linear response (LR) <xref ref-type="bibr" rid="pcbi.1000528-Lamb1">[47]</xref> and MM/PB-SA methods (LR-MM/PB-SA approach <xref ref-type="bibr" rid="pcbi.1000528-Zhou1">[48]</xref>) The LR-MM/PB-SA equation was derived from equations 2–4 (see <xref ref-type="sec" rid="s4">Materials and Methods</xref>):<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000528.e002" xlink:type="simple"/><label>(1)</label></disp-formula>where a, b, c, d, e, and f are weighting factors ranging from 0.5 to 1.5. The terms on the right side of equation 1 represent the energy difference between the complex and protein plus ligand. This approach is usually used for estimating the binding affinity by combining an empirical MM/PB-SA energy calculation with an LR optimization of coefficients against the experimental binding affinities of several compounds. The optimized free energy model is used for interpreting the binding model and predicting the binding affinity of unknown molecules. In our study, we optimized the weighting factors to maximize the ROC value, that is, the enrichment performance, using a genetic algorithm (GA). We applied the LR-MM/PB-SA approach to the G10 of multiple poses obtained from the initial MD simulations, because G10 showed the highest ROC value among those of the binding free energies calculated from the MD simulations (<xref ref-type="table" rid="pcbi-1000528-t002">Table 2</xref>). As a result, when the weighting factors of a–f were 1.12, 0.91, 1.47, 1.01, 0.87, and 1.49, respectively, a maximum ROC value of 0.812 was obtained (<xref ref-type="fig" rid="pcbi-1000528-g005">Figure 5</xref>). This result suggested that the LR-MM/PB-SA approach was effective at improving the enrichment performance, and these weighting factors indicated an improvement plan for the MD setup. The weighting factor of the entropy term, 1.49, would contribute to dilute the percentage of inactive (decoy) compounds. This would be related to the fact that the ligands in the binding pocket of CDK2 could not move largely (<xref ref-type="fig" rid="pcbi-1000528-g003">Figure 3</xref>). In addition, it is conceivable that the weighting factor of Δ<italic>E</italic><sub>vdW</sub>, i.e., 1.47, enriched the active compounds because they include a hydrophobic region and formed comparatively strong hydrophobic interactions with the binding pocket (See <xref ref-type="supplementary-material" rid="pcbi.1000528.s004">Figure S4</xref>). As the binding modes obtained through MD simulations were some different from the experimentally observed binding modes, the conformational refinement was considered insufficient or improper to accurately predict the binding free energy. This information also suggests that fully conformational relaxation/refinement is required to improve the enrichment performance. In this study, the ligand, water molecules, and protein residues around the binding pocket were allowed to move, but other protein residues were restrained to the X-ray structure in all of the MM calculations and MD simulations (a detailed explanation is given in the <xref ref-type="sec" rid="s4">Materials and Methods</xref> section). Hence, to achieve the conformational relaxation of the binding pocket of CDK2, allowing wider protein residues to move in MD simulations and longer MD simulations are required. The former is an especially important parameter for improving the enrichment performance, although it would increase the computational cost. In our next study, which will focus on the extent of the mobility of protein residues, along with simulation time and force-field parameters for organic small molecules, we will attempt to optimize the MD setup using a recent widely used dataset of decoy compounds <xref ref-type="bibr" rid="pcbi.1000528-Huang1">[49]</xref>.</p>
+<fig id="pcbi-1000528-g004" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000528.g004</object-id><label>Figure 4</label><caption>
+<title>Binding pockets in two different X-ray crystal structures for CDK2.</title>
+<p>The left figure indicates the binding pocket in the CDK2-Oxindole inhibitor complex (PDB Id: 1FVV). This structure was used in our study. The right figure indicates the binding pocket in the CDK2-NU2058 inhibitor complex (PDB Id: 1H1P). The hydrophobic regions in the binding pocket are drawn in blue, and the hydrophilic regions are drawn in red. From this figure, it is clear that large hydrophobic regions were located in both binding pockets. In contrast, the shapes of the two binding pockets were considerably different, which means that the binding pocket of CDK2 was flexible.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000528.g004" xlink:type="simple"/></fig><fig id="pcbi-1000528-g005" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000528.g005</object-id><label>Figure 5</label><caption>
+<title>ROC curves of the LR-MM/PB-SA approach for CDK2.</title>
+<p>This graph shows the sensitivity versus 1-specificity. This indicates the ROC curves obtained when the active compounds in the top 1,000 compounds are all considered to be as true positive. The black dashed, sky blue solid, and sky blue dashed lines indicate random screening, molecular docking and rescoring (docking), respectively. The G01(m), G01(s), molecular docking and rescoring(docking) are the same as in <xref ref-type="fig" rid="pcbi-1000528-g002">Figure 2</xref>. G10 (opt) is the ROC curve of G10 (multiple poses) obtained by the LR-MM/PB-SA approach. The ROC value is 0.812.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000528.g005" xlink:type="simple"/></fig>
+<p>The computational screening of large compound libraries involves the use of hierarchical multiple filters, such as ligand- and structure-based approaches. Molecular docking plays the primary role in these filters. With advancements in computer performance and computational chemistry, docking programs have become more accurate, but their ability to enrich hit compounds remains unsatisfactory. In order to improve the enrichment performance of molecular docking, we attempted to use the MM/PB-SA method <xref ref-type="bibr" rid="pcbi.1000528-Kollman3">[50]</xref> as a post-molecular docking filter. The basis of our approach was to perform massive MD simulations of protein-ligand conformations obtained from molecular docking, aim at the refinement/relaxation of protein-ligand conformations after docking, and predict more accurate binding free energies using the MM/PB-SA method in a practical time for lead discovery. Combining molecular docking and MD simulations basically allows each of them to neutralize the other's defects, but certain problems remain even with MD simulations, particularly with regard to compound screening applications. The major drawback of MD simulations is insufficient sampling due to the significant computational cost involved. To solve this problem, we performed MD simulations using various docking conformations obtained by molecular docking. However, the computational cost of this technique was approximately five to six times that of MD simulations using single docking conformations, such as the top-scored docking conformation. The enormous computational time needed for MD simulations is a serious problem. Here, we solved this problem by accelerating most of the time-consuming operations of the MD simulation using a high-performance special-purpose computer for MD simulations, “MDGRAPE-3” <xref ref-type="bibr" rid="pcbi.1000528-Narumi1">[27]</xref>,<xref ref-type="bibr" rid="pcbi.1000528-Taiji1">[28]</xref>. Accordingly, our approach could be performed in a practical time (about a week) for lead discovery. The evaluation in this study provides valuable information on in-silico drug design. Further, a more rigorous MD-based filter is under consideration for further improving the enrichment performance. This technique will also be applied to the lead optimization stage of drug development research.</p>
+<p>In conclusion, our approach could improve the enrichment of virtual screening by molecular docking. Among the 12 types of binding free energies, G06, which was obtained from the MD simulations using multiple poses, showed the highest and most stable ability to enrich the active compounds. The strategy of multiple poses can be used to sample the potentially correct poses of active compounds; thus, it increases the enrichment performance. Since the G06 enrichment factors for the top 100 compounds ranged from 4 to 10 (see <xref ref-type="table" rid="pcbi-1000528-t004">Table 4</xref>), which indicates approximately 1.6–4.0 times higher values than the enrichment performance of molecular docking, with the exception of CDK2, it is obvious that a stable and high enrichment can be achieved after molecular docking. In addition, G06 is suitable for compound screening because its computational cost is the least among those of the other MM/PB-SA energies obtained from the MD simulations. We also confirmed that G01, which was obtained from the MM calculations, showed good enrichment ability despite its low computational cost. This result agreed with that of the previous study <xref ref-type="bibr" rid="pcbi.1000528-Kuhn1">[25]</xref>. The ability of G01 to enrich active compounds was lower and less stable than that of G06, but we believe that G01 acted as an effective filter between molecular docking and the MD-based MM/PB-SA method. From this study, we conclude that the application of MD simulations to virtual screening for lead discovery is effective and practical, but that further optimization of the MD simulation protocols is required for the screening of various target proteins, including kinases.</p>
+</sec><sec id="s4">
+<title>Materials and Methods</title>
+<sec id="s4a">
+<title>Preparation of the Target Protein</title>
+<p>We applied our approach to four target proteins: trypsin, HIV PR, AChE, and CDK2. These structures with crystallographic resolutions of less than 3.0 Å, were retrieved from the Protein Data Bank (PDB) because the conformations of residues in the binding pocket affect the molecular docking results (PDB Id: 1C5S (trypsin) <xref ref-type="bibr" rid="pcbi.1000528-Katz1">[51]</xref>, 1HWR (HIV PR) <xref ref-type="bibr" rid="pcbi.1000528-Ala1">[52]</xref>, 1E66 (AChE) <xref ref-type="bibr" rid="pcbi.1000528-Dvir1">[53]</xref>, and 1FVV (CDK2) <xref ref-type="bibr" rid="pcbi.1000528-Davis1">[46]</xref>). All of the bound crystal water molecules, ligands, and other organic compounds were removed from each protein. Hydrogen atoms were added, and energy minimizations on the hydrogen atoms were performed using the Molecular Operating Environment (MOE) program (Chemical Computing Group Inc. <xref ref-type="bibr" rid="pcbi.1000528-MOE1">[54]</xref>).</p>
+</sec><sec id="s4b">
+<title>Seeded Compound Library for Docking</title>
+<p>For each target protein, we prepared a test set of compounds that included 10,000 randomly selected compounds, or decoys, from the Maybridge library of compounds and experimentally known active compounds. It was confirmed that 95.5% of the selected decoy compounds obeyed the Lipinski rule of 5 <xref ref-type="bibr" rid="pcbi.1000528-Lipinski1">[55]</xref>. The active compounds, which had binding affinities (<italic>K</italic><sub>i</sub>, <italic>K</italic><sub>d</sub>, or IC<sub>50</sub>) below 30 µm, were selected from the PDBbind database <xref ref-type="bibr" rid="pcbi.1000528-Wang2">[56]</xref>,<xref ref-type="bibr" rid="pcbi.1000528-Wang3">[57]</xref> and by referring to the literatures <xref ref-type="bibr" rid="pcbi.1000528-Ferrara1">[26]</xref>,<xref ref-type="bibr" rid="pcbi.1000528-Gray1">[58]</xref>. Most of the active compounds also obeyed the Lipinski rule of 5. The numbers of active compounds selected for each of the respective target proteins was as follows: 21 (trypsin), 8 (HIV PR), 14 (AChE), and 26 (CDK2) (see <xref ref-type="supplementary-material" rid="pcbi.1000528.s001">Figure S1</xref>, <xref ref-type="supplementary-material" rid="pcbi.1000528.s002">S2</xref>, <xref ref-type="supplementary-material" rid="pcbi.1000528.s003">S3</xref>, <xref ref-type="supplementary-material" rid="pcbi.1000528.s004">S4</xref>). For each compound of the test set, a 3D conformation was generated, ionized, and energy minimized using LigPrep (Schrödinger Inc. <xref ref-type="bibr" rid="pcbi.1000528-Schrdinger1">[59]</xref>), assuming a pH of 7.0.</p>
+</sec><sec id="s4c">
+<title>Docking</title>
+<p>Molecular dockings were performed using the Genetic Optimisation of Ligand Docking (GOLD) version 3.1 <xref ref-type="bibr" rid="pcbi.1000528-Jones1">[9]</xref>,<xref ref-type="bibr" rid="pcbi.1000528-Jones2">[10]</xref>. This program employs a GA to explore the possible binding modes. The standard default settings for the GA parameters were used. The binding site radius was 12 Å. We performed the docking run three or four times using the GoldScore or ChemScore function for each target protein and selected the result that showed the best enrichment. GoldScore (default settings) was used as the scoring function for trypsin and HIV PR. In contrast, ChemScore (default settings) was used for AChE and CDK2 because docking runs using GoldScore can detect few of the successfully docked active compounds for AChE and CDK2. For AChE alone, the torsional rotations of Phe-330 (chi1 and chi2) were treated as flexible in the docking process. For each docking run, the 10 highest-scoring docking poses were saved to obtain a variety of binding modes.</p>
+</sec><sec id="s4d">
+<title>Post-processing of the Docking Results</title>
+<p>First, among the 10 highest-scoring docking poses saved for each compound, those in which the compound did not occupy the binding pocket or did not interact with the important residues were removed. The latter was used only for trypsin and HIV PR. The important residues were Asp180 for trypsin and Asp24 in each monomer for HIV PR. These treatments had the effect of reducing the false positives for molecular docking. The docked compounds were then arranged in descending order from the highest score with respect to the multiple docking poses, and the top 1,000 compounds were selected from the test set. Finally, for the top 1,000 compounds, the docking poses of each compound were clustered using the root mean square deviation of 0.9 Å (complete link method <xref ref-type="bibr" rid="pcbi.1000528-Srenson1">[60]</xref>). After post-processing, approximately 6,000 docking poses were selected for the 1,000 compounds, which were then used as the initial conformations for MD simulations. Some active compounds were not ranked in the top 1,000. The numbers of active compounds in the top-scoring 1,000 were 10, 6, 7, and 17 for trypsin, HIV PR, AChE, and CDK2, respectively. In addition, the compounds in the top-scoring 1,000 were rescored with ChemScore (trypsin and HIV PR) or GoldScore (AChE and CDK2) because it is known that the rescoring approach increases the enrichment performance <xref ref-type="bibr" rid="pcbi.1000528-Hoffmann1">[61]</xref>. Furthermore, we analyzed ROC curves using molecular weight as classifier (<xref ref-type="supplementary-material" rid="pcbi.1000528.s007">Figure S7</xref>). From statistical analysis, it is obvious that the differences in the ROC values between G06 and molecular weight were statistically significant for trypsin, HIV PR, AChE.</p>
+</sec><sec id="s4e">
+<title>MD Simulation Protocols</title>
+<p>We performed MD simulations of each complex (ligand-bound protein), protein, and ligand to obtain various types of binding free energies (see the following subsection). The active sites of the protein-ligand complexes were immersed in an approximately 28–30 Å sphere of transferable intermolecular potential 3 point (TIP3P) water <xref ref-type="bibr" rid="pcbi.1000528-Jorgensen1">[62]</xref> molecules. The radius of the water droplet was selected such that the distance of the atoms of all the docked compounds from the water wall was greater than 15 Å (see <xref ref-type="fig" rid="pcbi-1000528-g006">Figure 6</xref>). The total number of atoms in the respective systems was approximately 8,000–12,000. On the solvent boundary, a half-harmonic potential (1.5 kcal/mol-Å<sup>2</sup>) was applied to prevent the evaporation of the water molecules. The ligand, water molecules, and protein residues that were approximately 12 Å of the active center were allowed to move, but other protein residues were restrained to the X-ray structure by the harmonic energy term (1.5 kcal/mol-Å<sup>2</sup>) in all of the MM calculations, namely the MM energy-minimization, and MD simulations. For the simulations of the ligands, each ligand was immersed in a water droplet, and this structure was used as the initial structure for the MD simulation of the ligand. In addition, the simulation of each protein (trypsin, HIV PR, AChE, and CDK2) was performed in the same manner as that of the complex.</p>
+<fig id="pcbi-1000528-g006" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000528.g006</object-id><label>Figure 6</label><caption>
+<title>System for MD simulation of trypsin.</title>
+<p>The protein is shown by the space-filled model, and the ligand is colored blue. The peripheral residues around the active center (red region), a ligand, and water molecules were allowed to move in the MD simulation. The protein residues (grey) were restrained to the X-ray structure by a harmonic energy term. Similar systems were used for the other target proteins.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000528.g006" xlink:type="simple"/></fig>
+<p>All of the simulations were performed using AMBER 8.0 <xref ref-type="bibr" rid="pcbi.1000528-Case1">[63]</xref> modified for MDGRAPE-3 <xref ref-type="bibr" rid="pcbi.1000528-Narumi1">[27]</xref>,<xref ref-type="bibr" rid="pcbi.1000528-Taiji1">[28]</xref>. The ff03 force field <xref ref-type="bibr" rid="pcbi.1000528-Duan1">[64]</xref> was adopted, and the time step was set at 0.5 fs. To carefully consider the motion of hydrogen atoms in the interactions between the ligands and protein residues, no bond length constraint was applied to solute atoms. The temperature of each system was gradually increased to 300 K during the first 25 ps, and additional MD simulations were performed for 700 ps for equilibration. The temperature was maintained at 300 K by using the method described by Berendsen et al. <xref ref-type="bibr" rid="pcbi.1000528-Berendsen1">[65]</xref>, and the system was coupled to a temperature bath with coupling constants of 0.2 ps. The parameters and charges for the ligands were determined using the <italic>antechamber</italic> module version 1.27 of AMBER 8.0 <xref ref-type="bibr" rid="pcbi.1000528-Case1">[63]</xref> by utilizing the general atom force field (GAFF) <xref ref-type="bibr" rid="pcbi.1000528-Wang4">[66]</xref> and the AM1-BCC charge method <xref ref-type="bibr" rid="pcbi.1000528-Jakalian1">[67]</xref>,<xref ref-type="bibr" rid="pcbi.1000528-Jakalian2">[68]</xref>. Although the computational cost of the AM1-BCC charge method is low, a some difference between the charge and that of ff03 was noticeable. Since the original GAFF parameters were insufficient to cope with the parameters of all the ligands, we filled the missing parameters on the basis of the information on regarding atom types, bonds, valences, angles, and dihedrals by using an in-house program (see <xref ref-type="supplementary-material" rid="pcbi.1000528.s008">Text S1</xref>). (Note: these parameters for proteins and small organic molecules are very important to calculate the binding free energies between proteins and ligands)</p>
+<p>Our MDGRAPE-3 system is a cluster of personal computers, each equipped with two MDGRAPE-3 boards. Each board contains 12 MDGRAPE-3 chips and has a peak speed of approximately 2 Tflops. The computations of non-bonded forces and energies for MD simulations were accelerated by MDGRAPE-3, and the other calculations were performed by the host central processing unit (CPU). In this study, we used 50 host computers equipped with 100 MDGRAPE-3 boards. The calculations for an MD simulation and the estimation of the binding free energies by the MM/PB-SA method were performed simultaneously. The average computational time for a single protein-ligand complex was 2.5 h, and the computations for approximately 6,000 protein-ligand conformations obtained by docking for each protein were completed in a week. The total simulation time for each protein was 4 µs, which corresponded to an 8-µs MD simulation with a standard time step of 1 fs. A single MD simulation for the system (<xref ref-type="fig" rid="pcbi-1000528-g006">Figure 6</xref>), without using MDGRAPE-3, requires more than 10 times the abovementioned computational time. Thus, in the current state, it would be quite difficult to use our screening approach without the MDGRAPE-3 system in a practically appropriate time for lead discovery. Therefore, our study can provide important information for MD-based screening.</p>
+</sec><sec id="s4f">
+<title>Calculation of Binding Free Energy by the MM/PB-SA Method</title>
+<p>The production MD trajectory was collected for the last period of 210 ps. In the calculation of the binding free energies by the MM-PB/SA method, the water molecules were replaced with implicit solvation models. The binding free energy was calculated by the following equations.<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000528.e003" xlink:type="simple"/><label>(2)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000528.e004" xlink:type="simple"/><label>(3)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000528.e005" xlink:type="simple"/><label>(4)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000528.e006" xlink:type="simple"/><label>(5)</label></disp-formula>In the above equations, &lt; &gt; denotes the average for a set of 30 conformations along an MD trajectory. <italic>E</italic><sub>int</sub> includes the bond, angle, and torsional angle energies; <italic>E</italic><sub>ele</sub> and <italic>E</italic><sub>vdW</sub> represent the intermolecular electrostatic and van der Waals energies, respectively. <italic>G</italic><sub>PB</sub> was calculated by solving the PB equation with the DelPhi program <xref ref-type="bibr" rid="pcbi.1000528-Rocchia1">[69]</xref>,<xref ref-type="bibr" rid="pcbi.1000528-Rocchia2">[70]</xref>, using the PARSE radii <xref ref-type="bibr" rid="pcbi.1000528-Sitkoff1">[71]</xref>,<xref ref-type="bibr" rid="pcbi.1000528-Swanson1">[72]</xref> and AMBER charges. The grid spacing used was 0.5 Å. The dielectric constants inside and outside the molecule were 1.0 and 80.0, respectively. In equation 5, which calculates the nonpolar solvation contribution, <italic>A</italic> is the solvent-accessible surface area that was calculated using the Michael Sanner's Molecular Surface (MSMS) program <xref ref-type="bibr" rid="pcbi.1000528-Sanner1">[73]</xref>, and <italic>γ</italic> and <italic>b</italic> are 0.00542 kcal/mol-Å<sup>2</sup> and 0.92 kcal/mol, respectively. The probe radius was 1.4 Å. The conformational entropy term of the solute, <italic>TS</italic>, was approximated by a combination of a classical statistics expression and PCA <xref ref-type="bibr" rid="pcbi.1000528-Levy1">[74]</xref>, using the PTRAJ module of AMBER 8.0 <xref ref-type="bibr" rid="pcbi.1000528-Case1">[63]</xref>. In the PCA calculation, the last 210 ps (3,000 conformations) of each production trajectory were used.</p>
+<p>The analysis of the binding free energy involved the calculation of the energies for conformations obtained from the MM (namely, energy-minimized) coordinates or MD trajectories. When the MM calculations or MD simulations of a complex, protein, and ligand were performed, we could obtain various types of binding free energies by combining the respective coordinate sets. The enthalpy contributions of <italic>G</italic><sub>protein</sub> and <italic>G</italic><sub>ligand</sub> in equation 2 were calculated in the following 2 ways: (1) by using the coordinate sets of a protein (or ligand) obtained from the MD simulations (or MM calculations) of the protein (or ligand) and (2) by using the coordinate sets extracted from the MD simulation of a complex. Similar to the enthalpy contribution, the entropy contribution was calculated by using the MD trajectories. When the entropy contributions of <italic>G</italic><sub>complex</sub>, <italic>G</italic><sub>protein</sub>, and <italic>G</italic><sub>ligand</sub> were calculated by using the MD trajectory of only the complex, we considered the entropy contribution of Δ<italic>G</italic><sub>bind</sub> to be zero because the energy components were almost cancelled. In this study, in order to thoroughly investigate which MM/PB-SA energies were suitable for compound screening, we adopted 12 binding free energies, G01–G12, to manage the entropy contributions independently of the enthalpy contributions (see <xref ref-type="table" rid="pcbi-1000528-t001">Table 1</xref>). It should be noted that the coordinate sets for calculating the entropy contributions were not always consistent with those for calculating enthalpy contributions. <xref ref-type="table" rid="pcbi-1000528-t001">Table 1</xref> shows the enthalpy and entropy terms for computing of <italic>G</italic><sub>complex</sub>, <italic>G</italic><sub>protein</sub>, and <italic>G</italic><sub>ligand</sub> in equation 2. We classified the 12 binding free energies into four categories. Category 1 contained the energies obtained by the MM calculations, and categories 2, 3, and 4 contained those obtained by MD calculations. These categories were classified according to the combination of coordinate sets used for enthalpy calculations: G01–G03, G04–G06, G07–G09, and G10–G12 belonged to categories 1, 2, 3, and 4, respectively. Each binding free energy of a ligand adopts the minimum energies from among the energies of multiple poses. Thus, by gathering and arranging their energies, we were able to assess the enrichment performance of the screening approach.</p>
+</sec></sec><sec id="s5">
+<title>Supporting Information</title>
+<supplementary-material id="pcbi.1000528.s001" mimetype="application/msword" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000528.s001" xlink:type="simple"><label>Figure S1</label><caption>
+<p>Active compounds of trypsin. The structural formulae and PDB ids of active compounds used in the seeded compound library are shown in the following figures. The asterisks represent the active compounds in top-scoring 1,000.</p>
+<p>(0.08 MB DOC)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1000528.s002" mimetype="application/msword" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000528.s002" xlink:type="simple"><label>Figure S2</label><caption>
+<p>Active compounds of HIV PR. The structural formulae and PDB ids of active compounds used in the seeded compound library are shown in the following figures. The asterisks represent the active compounds in top-scoring 1,000.</p>
+<p>(0.53 MB DOC)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1000528.s003" mimetype="application/msword" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000528.s003" xlink:type="simple"><label>Figure S3</label><caption>
+<p>Active compounds of AChE. The structural formulae and PDB ids of active compounds used in the seeded compound library are shown in the following figures. The asterisks represent the active compounds in top-scoring 1,000.</p>
+<p>(0.06 MB DOC)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1000528.s004" mimetype="application/msword" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000528.s004" xlink:type="simple"><label>Figure S4</label><caption>
+<p>Active compounds of CDK2. The structural formulae and PDB ids of active compounds used in the seeded compound library are shown in the following figures. The asterisks represent the active compounds in top-scoring 1,000. Compounds 1 and 19 were selected by referencing literatures.</p>
+<p>(0.11 MB DOC)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1000528.s005" mimetype="application/msword" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000528.s005" xlink:type="simple"><label>Figure S5</label><caption>
+<p>Number of correctly docked conformations in top-scored active compounds. These indicate the number of correctly docked conformations in the top-scoring poses for active compounds obtained from molecular docking, G01, and G06. The red and blue bars indicate the number of poses within the root mean square deviations (RMSDs) of 2.5 and 3.5 Å from those of the experimental structure, respectively. The active compounds in the top 1,000 were investigated. In G06, the final MD structure was used.</p>
+<p>(0.10 MB DOC)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1000528.s006" mimetype="application/msword" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000528.s006" xlink:type="simple"><label>Figure S6</label><caption>
+<p>Minimal RMSD values of computed poses from experimental poses for active compounds. The horizontal axis indicates the index number of active compounds in the top 1,000 shown in <xref ref-type="supplementary-material" rid="pcbi.1000528.s001">Figures S1</xref>, <xref ref-type="supplementary-material" rid="pcbi.1000528.s002">S2</xref>, <xref ref-type="supplementary-material" rid="pcbi.1000528.s003">S3</xref>, <xref ref-type="supplementary-material" rid="pcbi.1000528.s004">S4</xref> and the vertical axis indicates the minimal RMSD among all the poses. For each protein, the poses obtained from molecular docking, G01, and G06 were investigated. In G06, the final MD structure was used. The red bars indicate the pose within the top-three scoring. For trypsin, HIV PR, and AChE, it was found that MD simulations could improve the binding modes and predict better binding free energies. For CDK2, however, it is suggested that MD simulations lead to structural uncertainties and an inaccurate estimation of the binding free energy.</p>
+<p>(0.24 MB DOC)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1000528.s007" mimetype="application/msword" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000528.s007" xlink:type="simple"><label>Figure S7</label><caption>
+<p>ROC curves using molecular weight as classifier. This graph shows the sensitivity versus 1-specificity. This indicates ROC curves when the active compounds in the top 1,000 compounds are considered as total the true positives. ROC curves for trypsin, HIV PR, AChE, and CDK2 were drawn in blue, red, yellow, and orange, respectively. These ROC values for trypsin, HIV PR, AChE, and CDK2 are 0.454, 0.674, 0.462, and 0.430. From statistical analysis, it is obvious that the differences in the ROC values between G06 and molecular weight were statistically significant for trypsin, HIV PR, AChE. The differences in the ROC values between molecular docking and molecular weight were not statistically significant for all proteins.</p>
+<p>(0.08 MB DOC)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1000528.s008" mimetype="application/msword" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000528.s008" xlink:type="simple"><label>Text S1</label><caption>
+<p>Assignment of missing force field parameters. We filled in the following missing parameters on the basis of the information on regarding atom types, bonds, valences, angles, and dihedrals by using an in-house program.</p>
+<p>(0.06 MB DOC)</p>
+</caption></supplementary-material></sec></body>
+<back><ref-list>
+<title>References</title>
+<ref id="pcbi.1000528-Young1"><label>1</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Young</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Lin</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Sun</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Lee</surname><given-names>E</given-names></name>
+<name name-style="western"><surname>Modi</surname><given-names>M</given-names></name>
+<etal/></person-group>             <year>1998</year>             <article-title>Identification of a calcium channel modulator using a high throughput yeast two-hybrid screen.</article-title>             <source>Nat Biotechnol</source>             <volume>16</volume>             <fpage>946</fpage>             <lpage>950</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Hamasaki1"><label>2</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Hamasaki</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Rando</surname><given-names>RR</given-names></name>
+</person-group>             <year>1998</year>             <article-title>A high-throughput fluorescence screen to monitor the specific binding of antagonists to RNA targets.</article-title>             <source>Anal Biochem</source>             <volume>261</volume>             <fpage>183</fpage>             <lpage>190</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Moore1"><label>3</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Moore</surname><given-names>KJ</given-names></name>
+<name name-style="western"><surname>Turconi</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Miles-Williams</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Djaballah</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Hurskainen</surname><given-names>P</given-names></name>
+<etal/></person-group>             <year>1999</year>             <article-title>A Homogenous 384-Well High Throughput Screen for Novel Tumor Necrosis Factor Receptor: Ligand Interactions Using Time Resolved Energy Transfer.</article-title>             <source>J Biomol Screen</source>             <volume>4</volume>             <fpage>205</fpage>             <lpage>214</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Dunn1"><label>4</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Dunn</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Orlowski</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>McCoy</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Gastgeb</surname><given-names>F</given-names></name>
+<name name-style="western"><surname>Appell</surname><given-names>K</given-names></name>
+<etal/></person-group>             <year>2000</year>             <article-title>Ultra-high throughput screen of two-million-member combinatorial compound collection in a miniaturized, 1536-well assay format.</article-title>             <source>J Biomol Screen</source>             <volume>5</volume>             <fpage>177</fpage>             <lpage>188</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Doman1"><label>5</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Doman</surname><given-names>TN</given-names></name>
+<name name-style="western"><surname>McGovern</surname><given-names>SL</given-names></name>
+<name name-style="western"><surname>Witherbee</surname><given-names>BJ</given-names></name>
+<name name-style="western"><surname>Kasten</surname><given-names>TP</given-names></name>
+<name name-style="western"><surname>Kurumbail</surname><given-names>R</given-names></name>
+<etal/></person-group>             <year>2002</year>             <article-title>Molecular docking and high-throughput screening for novel inhibitors of protein tyrosine phosphatase-1B.</article-title>             <source>J Med Chem</source>             <volume>45</volume>             <fpage>2213</fpage>             <lpage>2221</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Chen1"><label>6</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Chen</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Zhang</surname><given-names>Z</given-names></name>
+<name name-style="western"><surname>Stebbins</surname><given-names>JL</given-names></name>
+<name name-style="western"><surname>Zhang</surname><given-names>X</given-names></name>
+<name name-style="western"><surname>Hoffman</surname><given-names>R</given-names></name>
+<etal/></person-group>             <year>2007</year>             <article-title>A fragment-based approach for the discovery of isoform-specific p38alpha inhibitors.</article-title>             <source>ACS Chem Biol</source>             <volume>2</volume>             <fpage>329</fpage>             <lpage>336</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Carr1"><label>7</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Carr</surname><given-names>RA</given-names></name>
+<name name-style="western"><surname>Congreve</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Murray</surname><given-names>CW</given-names></name>
+<name name-style="western"><surname>Rees</surname><given-names>DC</given-names></name>
+</person-group>             <year>2005</year>             <article-title>Fragment-based lead discovery: leads by design.</article-title>             <source>Drug Discov Today</source>             <volume>10</volume>             <fpage>987</fpage>             <lpage>992</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Hann1"><label>8</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Hann</surname><given-names>MM</given-names></name>
+<name name-style="western"><surname>Leach</surname><given-names>AR</given-names></name>
+<name name-style="western"><surname>Harper</surname><given-names>G</given-names></name>
+</person-group>             <year>2001</year>             <article-title>Molecular complexity and its impact on the probability of finding leads for drug discovery.</article-title>             <source>J Chem Inf Comput Sci</source>             <volume>41</volume>             <fpage>856</fpage>             <lpage>864</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Jones1"><label>9</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Jones</surname><given-names>G</given-names></name>
+<name name-style="western"><surname>Willett</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Glen</surname><given-names>RC</given-names></name>
+</person-group>             <year>1995</year>             <article-title>Molecular recognition of receptor sites using a genetic algorithm with a description of desolvation.</article-title>             <source>J Mol Biol</source>             <volume>245</volume>             <fpage>43</fpage>             <lpage>53</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Jones2"><label>10</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Jones</surname><given-names>G</given-names></name>
+<name name-style="western"><surname>Willett</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Glen</surname><given-names>RC</given-names></name>
+<name name-style="western"><surname>Leach</surname><given-names>AR</given-names></name>
+<name name-style="western"><surname>Taylor</surname><given-names>R</given-names></name>
+</person-group>             <year>1997</year>             <article-title>Development and validation of a genetic algorithm for flexible docking.</article-title>             <source>J Mol Biol</source>             <volume>267</volume>             <fpage>727</fpage>             <lpage>748</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Ewing1"><label>11</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Ewing</surname><given-names>TJ</given-names></name>
+<name name-style="western"><surname>Makino</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Skillman</surname><given-names>AG</given-names></name>
+<name name-style="western"><surname>Kuntz</surname><given-names>ID</given-names></name>
+</person-group>             <year>2001</year>             <article-title>DOCK 4.0: search strategies for automated molecular docking of flexible molecule databases.</article-title>             <source>J Comput Aided Mol Des</source>             <volume>15</volume>             <fpage>411</fpage>             <lpage>428</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Goodsell1"><label>12</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Goodsell</surname><given-names>DS</given-names></name>
+<name name-style="western"><surname>Morris</surname><given-names>GM</given-names></name>
+<name name-style="western"><surname>Olson</surname><given-names>AJ</given-names></name>
+</person-group>             <year>1996</year>             <article-title>Automated docking of flexible ligands: applications of AutoDock.</article-title>             <source>J Mol Recognit</source>             <volume>9</volume>             <fpage>1</fpage>             <lpage>5</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Halgren1"><label>13</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Halgren</surname><given-names>TA</given-names></name>
+<name name-style="western"><surname>Murphy</surname><given-names>RB</given-names></name>
+<name name-style="western"><surname>Friesner</surname><given-names>RA</given-names></name>
+<name name-style="western"><surname>Beard</surname><given-names>HS</given-names></name>
+<name name-style="western"><surname>Frye</surname><given-names>LL</given-names></name>
+<etal/></person-group>             <year>2004</year>             <article-title>Glide: a new approach for rapid, accurate docking and scoring. 2. Enrichment factors in database screening.</article-title>             <source>J Med Chem</source>             <volume>47</volume>             <fpage>1750</fpage>             <lpage>1759</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Friesner1"><label>14</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Friesner</surname><given-names>RA</given-names></name>
+<name name-style="western"><surname>Banks</surname><given-names>JL</given-names></name>
+<name name-style="western"><surname>Murphy</surname><given-names>RB</given-names></name>
+<name name-style="western"><surname>Halgren</surname><given-names>TA</given-names></name>
+<name name-style="western"><surname>Klicic</surname><given-names>JJ</given-names></name>
+<etal/></person-group>             <year>2004</year>             <article-title>Glide: a new approach for rapid, accurate docking and scoring. 1. Method and assessment of docking accuracy.</article-title>             <source>J Med Chem</source>             <volume>47</volume>             <fpage>1739</fpage>             <lpage>1749</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Rarey1"><label>15</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Rarey</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Kramer</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Lengauer</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Klebe</surname><given-names>G</given-names></name>
+</person-group>             <year>1996</year>             <article-title>A fast flexible docking method using an incremental construction algorithm.</article-title>             <source>J Mol Biol</source>             <volume>261</volume>             <fpage>470</fpage>             <lpage>489</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Bursulaya1"><label>16</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Bursulaya</surname><given-names>BD</given-names></name>
+<name name-style="western"><surname>Totrov</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Abagyan</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Brooks</surname><given-names>CL</given-names></name>
+</person-group>             <year>2003</year>             <article-title>Comparative study of several algorithms for flexible ligand docking.</article-title>             <source>J Comput Aided Mol Des</source>             <volume>17</volume>             <fpage>755</fpage>             <lpage>763</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Stahl1"><label>17</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Stahl</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Rarey</surname><given-names>M</given-names></name>
+</person-group>             <year>2001</year>             <article-title>Detailed analysis of scoring functions for virtual screening.</article-title>             <source>J Med Chem</source>             <volume>44</volume>             <fpage>1035</fpage>             <lpage>1042</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Wyss1"><label>18</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Wyss</surname><given-names>PC</given-names></name>
+<name name-style="western"><surname>Gerber</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Hartman</surname><given-names>PG</given-names></name>
+<name name-style="western"><surname>Hubschwerlen</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Locher</surname><given-names>H</given-names></name>
+<etal/></person-group>             <year>2003</year>             <article-title>Novel dihydrofolate reductase inhibitors. Structure-based versus diversity-based library design and high-throughput synthesis and screening.</article-title>             <source>J Med Chem</source>             <volume>46</volume>             <fpage>2304</fpage>             <lpage>2312</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Pearlman1"><label>19</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Pearlman</surname><given-names>DA</given-names></name>
+<name name-style="western"><surname>Charifson</surname><given-names>PS</given-names></name>
+</person-group>             <year>2001</year>             <article-title>Are free energy calculations useful in practice? A comparison with rapid scoring functions for the p38 MAP kinase protein system.</article-title>             <source>J Med Chem</source>             <volume>44</volume>             <fpage>3417</fpage>             <lpage>3423</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Kollman1"><label>20</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Kollman</surname><given-names>P</given-names></name>
+</person-group>             <year>1993</year>             <article-title>Free-Energy Calculations - Applications to Chemical and Biochemical Phenomena.</article-title>             <source>Chemical Reviews</source>             <volume>93</volume>             <fpage>2395</fpage>             <lpage>2417</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Aqvist1"><label>21</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Aqvist</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Luzhkov</surname><given-names>VB</given-names></name>
+<name name-style="western"><surname>Brandsdal</surname><given-names>BO</given-names></name>
+</person-group>             <year>2002</year>             <article-title>Ligand binding affinities from MD simulations.</article-title>             <source>Acc Chem Res</source>             <volume>35</volume>             <fpage>358</fpage>             <lpage>365</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Kollman2"><label>22</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Kollman</surname><given-names>PA</given-names></name>
+<name name-style="western"><surname>Massova</surname><given-names>I</given-names></name>
+<name name-style="western"><surname>Reyes</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Kuhn</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Huo</surname><given-names>SH</given-names></name>
+<etal/></person-group>             <year>2000</year>             <article-title>Calculating structures and free energies of complex molecules: Combining molecular mechanics and continuum models.</article-title>             <source>Accounts of Chemical Research</source>             <volume>33</volume>             <fpage>889</fpage>             <lpage>897</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Huo1"><label>23</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Huo</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Wang</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Cieplak</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Kollman</surname><given-names>PA</given-names></name>
+<name name-style="western"><surname>Kuntz</surname><given-names>ID</given-names></name>
+</person-group>             <year>2002</year>             <article-title>Molecular dynamics and free energy analyses of cathepsin D-inhibitor interactions: insight into structure-based ligand design.</article-title>             <source>J Med Chem</source>             <volume>45</volume>             <fpage>1412</fpage>             <lpage>1419</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Masukawa1"><label>24</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Masukawa</surname><given-names>KM</given-names></name>
+<name name-style="western"><surname>Kollman</surname><given-names>PA</given-names></name>
+<name name-style="western"><surname>Kuntz</surname><given-names>ID</given-names></name>
+</person-group>             <year>2003</year>             <article-title>Investigation of neuraminidase-substrate recognition using molecular dynamics and free energy calculations.</article-title>             <source>J Med Chem</source>             <volume>46</volume>             <fpage>5628</fpage>             <lpage>5637</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Kuhn1"><label>25</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Kuhn</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Gerber</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Schulz-Gasch</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Stahl</surname><given-names>M</given-names></name>
+</person-group>             <year>2005</year>             <article-title>Validation and use of the MM-PBSA approach for drug discovery.</article-title>             <source>J Med Chem</source>             <volume>48</volume>             <fpage>4040</fpage>             <lpage>4048</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Ferrara1"><label>26</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Ferrara</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Curioni</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Vangrevelinghe</surname><given-names>E</given-names></name>
+<name name-style="western"><surname>Meyer</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Mordasini</surname><given-names>T</given-names></name>
+<etal/></person-group>             <year>2006</year>             <article-title>New scoring functions for virtual screening from molecular dynamics simulations with a quantum-refined force-field (QRFF-MD). Application to cyclin-dependent kinase 2.</article-title>             <source>J Chem Inf Model</source>             <volume>46</volume>             <fpage>254</fpage>             <lpage>263</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Narumi1"><label>27</label><element-citation publication-type="other" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Narumi</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Ohno</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Okimoto</surname><given-names>N</given-names></name>
+<name name-style="western"><surname>Koishi</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Suenaga</surname><given-names>A</given-names></name>
+<etal/></person-group>             <year>2006</year>             <article-title>A 185 Tflops simulation of amyloid-forming peptides from Yeast Prion Sup35 with the special-purpose computer System MD-GRAPE3.</article-title>             <comment>Proc Supercomputing 2006, in CD-ROM</comment>          </element-citation></ref>
+<ref id="pcbi.1000528-Taiji1"><label>28</label><element-citation publication-type="other" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Taiji</surname><given-names>M</given-names></name>
+</person-group>             <year>2004</year>             <article-title>MDGRAPE-3 chip: a 165 Gflops application specific LSI for molecular dynamics simulations.; 2004.</article-title>             <comment>IEEE Computer Society. pp. in CD-ROM</comment>          </element-citation></ref>
+<ref id="pcbi.1000528-Thomas1"><label>29</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Thomas</surname><given-names>MP</given-names></name>
+<name name-style="western"><surname>McInnes</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Fischer</surname><given-names>PM</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Protein structures in virtual screening: A case study with CDK2.</article-title>             <source>J Med Chem</source>             <volume>49</volume>             <fpage>92</fpage>             <lpage>104</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Kontoyianni1"><label>30</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Kontoyianni</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>McClellan</surname><given-names>LM</given-names></name>
+<name name-style="western"><surname>Sokol</surname><given-names>GS</given-names></name>
+</person-group>             <year>2004</year>             <article-title>Evaluation of docking performance: comparative data on docking algorithms.</article-title>             <source>J Med Chem</source>             <volume>47</volume>             <fpage>558</fpage>             <lpage>565</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Wang1"><label>31</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Wang</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Lu</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Wang</surname><given-names>S</given-names></name>
+</person-group>             <year>2003</year>             <article-title>Comparative evaluation of 11 scoring functions for molecular docking.</article-title>             <source>J Med Chem</source>             <volume>46</volume>             <fpage>2287</fpage>             <lpage>2303</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Cho1"><label>32</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Cho</surname><given-names>AE</given-names></name>
+<name name-style="western"><surname>Wendel</surname><given-names>JA</given-names></name>
+<name name-style="western"><surname>Vaidehi</surname><given-names>N</given-names></name>
+<name name-style="western"><surname>Kekenes-Huskey</surname><given-names>PM</given-names></name>
+<name name-style="western"><surname>Floriano</surname><given-names>WB</given-names></name>
+<etal/></person-group>             <year>2005</year>             <article-title>The MPSim-Dock hierarchical docking algorithm: application to the eight trypsin inhibitor cocrystals.</article-title>             <source>J Comput Chem</source>             <volume>26</volume>             <fpage>48</fpage>             <lpage>71</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Erickson1"><label>33</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Erickson</surname><given-names>JA</given-names></name>
+<name name-style="western"><surname>Jalaie</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Robertson</surname><given-names>DH</given-names></name>
+<name name-style="western"><surname>Lewis</surname><given-names>RA</given-names></name>
+<name name-style="western"><surname>Vieth</surname><given-names>M</given-names></name>
+</person-group>             <year>2004</year>             <article-title>Lessons in molecular recognition: the effects of ligand and protein flexibility on molecular docking accuracy.</article-title>             <source>J Med Chem</source>             <volume>47</volume>             <fpage>45</fpage>             <lpage>55</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Kua1"><label>34</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Kua</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Zhang</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>McCammon</surname><given-names>JA</given-names></name>
+</person-group>             <year>2002</year>             <article-title>Studying enzyme binding specificity in acetylcholinesterase using a combined molecular dynamics and multiple docking approach.</article-title>             <source>J Am Chem Soc</source>             <volume>124</volume>             <fpage>8260</fpage>             <lpage>8267</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Witten1"><label>35</label><element-citation publication-type="other" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Witten</surname><given-names>IH</given-names></name>
+<name name-style="western"><surname>Frank</surname><given-names>E</given-names></name>
+</person-group>             <year>1999</year>             <source>Data mining: practical machine learning tools and techniques with java implementations</source>             <publisher-loc>New York</publisher-loc>             <publisher-name>Morgan Kaufmann</publisher-name>          </element-citation></ref>
+<ref id="pcbi.1000528-Habe1"><label>36</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Habe</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Morii</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Fushinobu</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Nam</surname><given-names>JW</given-names></name>
+<name name-style="western"><surname>Ayabe</surname><given-names>Y</given-names></name>
+<etal/></person-group>             <year>2003</year>             <article-title>Crystal structure of a histidine-tagged serine hydrolase involved in the carbazole degradation (CarC enzyme).</article-title>             <source>Biochem Biophys Res Commun</source>             <volume>303</volume>             <fpage>631</fpage>             <lpage>639</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Dorfman1"><label>37</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Dorfman</surname><given-names>DD</given-names></name>
+<name name-style="western"><surname>Berbaum</surname><given-names>KS</given-names></name>
+<name name-style="western"><surname>Metz</surname><given-names>CE</given-names></name>
+</person-group>             <year>1992</year>             <article-title>Receiver operating characteristic rating analysis. Generalization to the population of readers and patients with the jackknife method.</article-title>             <source>Invest Radiol</source>             <volume>27</volume>             <fpage>723</fpage>             <lpage>731</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Hillis1"><label>38</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Hillis</surname><given-names>SL</given-names></name>
+<name name-style="western"><surname>Berbaum</surname><given-names>KS</given-names></name>
+</person-group>             <year>2005</year>             <article-title>Monte Carlo validation of the Dorfman-Berbaum-Metz method using normalized pseudovalues and less data-based model simplification.</article-title>             <source>Acad Radiol</source>             <volume>12</volume>             <fpage>1534</fpage>             <lpage>1541</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Hillis2"><label>39</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Hillis</surname><given-names>SL</given-names></name>
+<name name-style="western"><surname>Obuchowski</surname><given-names>NA</given-names></name>
+<name name-style="western"><surname>Schartz</surname><given-names>KM</given-names></name>
+<name name-style="western"><surname>Berbaum</surname><given-names>KS</given-names></name>
+</person-group>             <year>2005</year>             <article-title>A comparison of the Dorfman-Berbaum-Metz and Obuchowski-Rockette methods for receiver operating characteristic (ROC) data.</article-title>             <source>Stat Med</source>             <volume>24</volume>             <fpage>1579</fpage>             <lpage>1607</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Roe1"><label>40</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Roe</surname><given-names>CA</given-names></name>
+<name name-style="western"><surname>Metz</surname><given-names>CE</given-names></name>
+</person-group>             <year>1997</year>             <article-title>Variance-component modeling in the analysis of receiver operating characteristic index estimates.</article-title>             <source>Acad Radiol</source>             <volume>4</volume>             <fpage>587</fpage>             <lpage>600</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Roe2"><label>41</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Roe</surname><given-names>CA</given-names></name>
+<name name-style="western"><surname>Metz</surname><given-names>CE</given-names></name>
+</person-group>             <year>1997</year>             <article-title>Dorfman-Berbaum-Metz method for statistical analysis of multireader, multimodality receiver operating characteristic data: validation with computer simulation.</article-title>             <source>Acad Radiol</source>             <volume>4</volume>             <fpage>298</fpage>             <lpage>303</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Gohlke1"><label>42</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Gohlke</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Case</surname><given-names>DA</given-names></name>
+</person-group>             <year>2004</year>             <article-title>Converging free energy estimates: MM-PB(GB)SA studies on the protein-protein complex Ras-Raf.</article-title>             <source>Journal of Computational Chemistry</source>             <volume>25</volume>             <fpage>238</fpage>             <lpage>250</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Numata1"><label>43</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Numata</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Wan</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Knapp</surname><given-names>EW</given-names></name>
+</person-group>             <year>2007</year>             <article-title>Conformational entropy of biomolecules: beyond the quasi-harmonic approximation.</article-title>             <source>Genome Inform</source>             <volume>18</volume>             <fpage>192</fpage>             <lpage>205</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Chang1"><label>44</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Chang</surname><given-names>CE</given-names></name>
+<name name-style="western"><surname>Chen</surname><given-names>W</given-names></name>
+<name name-style="western"><surname>Gilson</surname><given-names>MK</given-names></name>
+</person-group>             <year>2005</year>             <article-title>Evaluating the accuracy of the quasiharmonic approximation.</article-title>             <source>Journal of Chemical Theory and Computation</source>             <volume>1</volume>             <fpage>1017</fpage>             <lpage>1028</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Davies1"><label>45</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Davies</surname><given-names>TG</given-names></name>
+<name name-style="western"><surname>Bentley</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Arris</surname><given-names>CE</given-names></name>
+<name name-style="western"><surname>Boyle</surname><given-names>FT</given-names></name>
+<name name-style="western"><surname>Curtin</surname><given-names>NJ</given-names></name>
+<etal/></person-group>             <year>2002</year>             <article-title>Structure-based design of a potent purine-based cyclin-dependent kinase inhibitor.</article-title>             <source>Nat Struct Biol</source>             <volume>9</volume>             <fpage>745</fpage>             <lpage>749</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Davis1"><label>46</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Davis</surname><given-names>ST</given-names></name>
+<name name-style="western"><surname>Benson</surname><given-names>BG</given-names></name>
+<name name-style="western"><surname>Bramson</surname><given-names>HN</given-names></name>
+<name name-style="western"><surname>Chapman</surname><given-names>DE</given-names></name>
+<name name-style="western"><surname>Dickerson</surname><given-names>SH</given-names></name>
+<etal/></person-group>             <year>2001</year>             <article-title>Prevention of chemotherapy-induced alopecia in rats by CDK inhibitors.</article-title>             <source>Science</source>             <volume>291</volume>             <fpage>134</fpage>             <lpage>137</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Lamb1"><label>47</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Lamb</surname><given-names>ML</given-names></name>
+<name name-style="western"><surname>Jorgensen</surname><given-names>WL</given-names></name>
+</person-group>             <year>1997</year>             <article-title>Computational approaches to molecular recognition.</article-title>             <source>Curr Opin Chem Biol</source>             <volume>1</volume>             <fpage>449</fpage>             <lpage>457</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Zhou1"><label>48</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Zhou</surname><given-names>Z</given-names></name>
+<name name-style="western"><surname>Madura</surname><given-names>JD</given-names></name>
+</person-group>             <year>2004</year>             <article-title>Relative free energy of binding and binding mode calculations of HIV-1 RT inhibitors based on dock-MM-PB/GS.</article-title>             <source>Proteins</source>             <volume>57</volume>             <fpage>493</fpage>             <lpage>503</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Huang1"><label>49</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Huang</surname><given-names>N</given-names></name>
+<name name-style="western"><surname>Shoichet</surname><given-names>BK</given-names></name>
+<name name-style="western"><surname>Irwin</surname><given-names>JJ</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Benchmarking sets for molecular docking.</article-title>             <source>J Med Chem</source>             <volume>49</volume>             <fpage>6789</fpage>             <lpage>6801</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Kollman3"><label>50</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Kollman</surname><given-names>PA</given-names></name>
+<name name-style="western"><surname>Massova</surname><given-names>I</given-names></name>
+<name name-style="western"><surname>Reyes</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Kuhn</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Huo</surname><given-names>S</given-names></name>
+<etal/></person-group>             <year>2000</year>             <article-title>Calculating structures and free energies of complex molecules: combining molecular mechanics and continuum models.</article-title>             <source>Acc Chem Res</source>             <volume>33</volume>             <fpage>889</fpage>             <lpage>897</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Katz1"><label>51</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Katz</surname><given-names>BA</given-names></name>
+<name name-style="western"><surname>Mackman</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Luong</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Radika</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Martelli</surname><given-names>A</given-names></name>
+<etal/></person-group>             <year>2000</year>             <article-title>Structural basis for selectivity of a small molecule, S1-binding, submicromolar inhibitor of urokinase-type plasminogen activator.</article-title>             <source>Chem Biol</source>             <volume>7</volume>             <fpage>299</fpage>             <lpage>312</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Ala1"><label>52</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Ala</surname><given-names>PJ</given-names></name>
+<name name-style="western"><surname>DeLoskey</surname><given-names>RJ</given-names></name>
+<name name-style="western"><surname>Huston</surname><given-names>EE</given-names></name>
+<name name-style="western"><surname>Jadhav</surname><given-names>PK</given-names></name>
+<name name-style="western"><surname>Lam</surname><given-names>PY</given-names></name>
+<etal/></person-group>             <year>1998</year>             <article-title>Molecular recognition of cyclic urea HIV-1 protease inhibitors.</article-title>             <source>J Biol Chem</source>             <volume>273</volume>             <fpage>12325</fpage>             <lpage>12331</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Dvir1"><label>53</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Dvir</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Wong</surname><given-names>DM</given-names></name>
+<name name-style="western"><surname>Harel</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Barril</surname><given-names>X</given-names></name>
+<name name-style="western"><surname>Orozco</surname><given-names>M</given-names></name>
+<etal/></person-group>             <year>2002</year>             <article-title>3D structure of Torpedo californica acetylcholinesterase complexed with huprine X at 2.1 A resolution: kinetic and molecular dynamic correlates.</article-title>             <source>Biochemistry</source>             <volume>41</volume>             <fpage>2970</fpage>             <lpage>2981</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-MOE1"><label>54</label><element-citation publication-type="other" xlink:type="simple">             <collab xlink:type="simple">MOE</collab>             <publisher-loc>Montreal</publisher-loc>             <publisher-name>Chemical Computing Group Inc</publisher-name>          </element-citation></ref>
+<ref id="pcbi.1000528-Lipinski1"><label>55</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Lipinski</surname><given-names>CA</given-names></name>
+<name name-style="western"><surname>Lombardo</surname><given-names>F</given-names></name>
+<name name-style="western"><surname>Dominy</surname><given-names>BW</given-names></name>
+<name name-style="western"><surname>Feeney</surname><given-names>PJ</given-names></name>
+</person-group>             <year>2001</year>             <article-title>Experimental and computational approaches to estimate solubility and permeability in drug discovery and development settings.</article-title>             <source>Adv Drug Deliv Rev</source>             <volume>46</volume>             <fpage>3</fpage>             <lpage>26</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Wang2"><label>56</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Wang</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Fang</surname><given-names>X</given-names></name>
+<name name-style="western"><surname>Lu</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Yang</surname><given-names>CY</given-names></name>
+<name name-style="western"><surname>Wang</surname><given-names>S</given-names></name>
+</person-group>             <year>2005</year>             <article-title>The PDBbind database: methodologies and updates.</article-title>             <source>J Med Chem</source>             <volume>48</volume>             <fpage>4111</fpage>             <lpage>4119</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Wang3"><label>57</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Wang</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Fang</surname><given-names>X</given-names></name>
+<name name-style="western"><surname>Lu</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Wang</surname><given-names>S</given-names></name>
+</person-group>             <year>2004</year>             <article-title>The PDBbind database: collection of binding affinities for protein-ligand complexes with known three-dimensional structures.</article-title>             <source>J Med Chem</source>             <volume>47</volume>             <fpage>2977</fpage>             <lpage>2980</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Gray1"><label>58</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Gray</surname><given-names>NS</given-names></name>
+<name name-style="western"><surname>Wodicka</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Thunnissen</surname><given-names>AMWH</given-names></name>
+<name name-style="western"><surname>Norman</surname><given-names>TC</given-names></name>
+<name name-style="western"><surname>Kwon</surname><given-names>SJ</given-names></name>
+<etal/></person-group>             <year>1998</year>             <article-title>Exploiting chemical libraries, structure, and genomics in the search for kinase inhibitors.</article-title>             <source>Science</source>             <volume>281</volume>             <fpage>533</fpage>             <lpage>538</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Schrdinger1"><label>59</label><element-citation publication-type="other" xlink:type="simple">             <collab xlink:type="simple">Schrödinger Inc</collab>             <publisher-loc>Portland, OR</publisher-loc>          </element-citation></ref>
+<ref id="pcbi.1000528-Srenson1"><label>60</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Sørenson</surname><given-names>T</given-names></name>
+</person-group>             <year>1948</year>             <article-title>A method of establishing groups of equal amplitude in a plant based on similarity of species content and its applications to analysis of vegetation on Danish commons.</article-title>             <source>Biologiske Skrifter</source>             <volume>5</volume>             <fpage>1</fpage>             <lpage>34</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Hoffmann1"><label>61</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Hoffmann</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Kramer</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Washio</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Steinmetzer</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Rarey</surname><given-names>M</given-names></name>
+<etal/></person-group>             <year>1999</year>             <article-title>Two-stage method for protein-ligand docking.</article-title>             <source>J Med Chem</source>             <volume>42</volume>             <fpage>4422</fpage>             <lpage>4433</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Jorgensen1"><label>62</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Jorgensen</surname><given-names>WL</given-names></name>
+<name name-style="western"><surname>Chandrasekhar</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Madura</surname><given-names>JD</given-names></name>
+<name name-style="western"><surname>Impey</surname><given-names>RW</given-names></name>
+<name name-style="western"><surname>Klein</surname><given-names>ML</given-names></name>
+</person-group>             <year>1983</year>             <article-title>Comparison of Simple Potential Functions for Simulating Liquid Water.</article-title>             <source>Journal of Chemical Physics</source>             <volume>79</volume>             <fpage>926</fpage>             <lpage>935</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Case1"><label>63</label><element-citation publication-type="other" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Case</surname><given-names>DA</given-names></name>
+<name name-style="western"><surname>Darden</surname><given-names>TA</given-names></name>
+<name name-style="western"><surname>Cheatham</surname><given-names>TEr</given-names></name>
+<name name-style="western"><surname>Simmerling</surname><given-names>CL</given-names></name>
+<name name-style="western"><surname>Wang</surname><given-names>J</given-names></name>
+<etal/></person-group>             <year>2004</year>             <source>AMBER 8</source>             <publisher-name>University of California San Francisco</publisher-name>          </element-citation></ref>
+<ref id="pcbi.1000528-Duan1"><label>64</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Duan</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Wu</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Chowdhury</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Lee</surname><given-names>MC</given-names></name>
+<name name-style="western"><surname>Xiong</surname><given-names>G</given-names></name>
+<etal/></person-group>             <year>2003</year>             <article-title>A point-charge force field for molecular mechanics simulations of proteins based on condensed-phase quantum mechanical calculations.</article-title>             <source>J Comput Chem</source>             <volume>24</volume>             <fpage>1999</fpage>             <lpage>2012</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Berendsen1"><label>65</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Berendsen</surname><given-names>HJC</given-names></name>
+<name name-style="western"><surname>Postma</surname><given-names>JMP</given-names></name>
+<name name-style="western"><surname>van Gunsteren</surname><given-names>WF</given-names></name>
+<name name-style="western"><surname>DiNola</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Haak</surname><given-names>JR</given-names></name>
+</person-group>             <year>1984</year>             <article-title>Molecular dynamics with coupling to an external bath.</article-title>             <source>J Comput Phys</source>             <volume>81</volume>             <fpage>3684</fpage>             <lpage>3690</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Wang4"><label>66</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Wang</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Wolf</surname><given-names>RM</given-names></name>
+<name name-style="western"><surname>Caldwell</surname><given-names>JW</given-names></name>
+<name name-style="western"><surname>Kollman</surname><given-names>PA</given-names></name>
+<name name-style="western"><surname>Case</surname><given-names>DA</given-names></name>
+</person-group>             <year>2004</year>             <article-title>Development and testing of a general amber force field.</article-title>             <source>J Comput Chem</source>             <volume>25</volume>             <fpage>1157</fpage>             <lpage>1174</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Jakalian1"><label>67</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Jakalian</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Jack</surname><given-names>DB</given-names></name>
+<name name-style="western"><surname>Bayly</surname><given-names>CI</given-names></name>
+</person-group>             <year>2002</year>             <article-title>Fast, efficient generation of high-quality atomic charges. AM1-BCC model: II. Parameterization and validation.</article-title>             <source>J Comput Chem</source>             <volume>23</volume>             <fpage>1623</fpage>             <lpage>1641</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Jakalian2"><label>68</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Jakalian</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Bush</surname><given-names>BL</given-names></name>
+<name name-style="western"><surname>Jack</surname><given-names>DB</given-names></name>
+<name name-style="western"><surname>Bayly</surname><given-names>CI</given-names></name>
+</person-group>             <year>2000</year>             <article-title>Fast, efficient generation of high-quality atomic Charges. AM1-BCC model: I. Method.</article-title>             <source>Journal of Computational Chemistry</source>             <volume>21</volume>             <fpage>132</fpage>             <lpage>146</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Rocchia1"><label>69</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Rocchia</surname><given-names>W</given-names></name>
+<name name-style="western"><surname>Alexov</surname><given-names>E</given-names></name>
+<name name-style="western"><surname>Honig</surname><given-names>B</given-names></name>
+</person-group>             <year>2001</year>             <article-title>Extending the applicability of the nonlinear poisson-boltzmann equation: multiple dielectric constants and multivalent ions.</article-title>             <source>J Phys Chem B</source>             <volume>105</volume>             <fpage>6507</fpage>             <lpage>6514</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Rocchia2"><label>70</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Rocchia</surname><given-names>W</given-names></name>
+<name name-style="western"><surname>Sridharan</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Nicholls</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Alexov</surname><given-names>E</given-names></name>
+<name name-style="western"><surname>Chiabrera</surname><given-names>A</given-names></name>
+<etal/></person-group>             <year>2002</year>             <article-title>Rapid grid-based construction of the molecular surface and the use of induced surface charge to calculate reaction field energies: applications to the molecular systems and geometric objects.</article-title>             <source>J Comput Chem</source>             <volume>23</volume>             <fpage>128</fpage>             <lpage>137</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Sitkoff1"><label>71</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Sitkoff</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Sharp</surname><given-names>KA</given-names></name>
+<name name-style="western"><surname>Honig</surname><given-names>B</given-names></name>
+</person-group>             <year>1994</year>             <article-title>Accurate calculation of hydration free energies using macroscopic solvent models.</article-title>             <source>J Phys Chem</source>             <volume>98</volume>             <fpage>1978</fpage>             <lpage>1988</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Swanson1"><label>72</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Swanson</surname><given-names>JMJ</given-names></name>
+<name name-style="western"><surname>Adcock</surname><given-names>SA</given-names></name>
+<name name-style="western"><surname>McCammon</surname><given-names>JA</given-names></name>
+</person-group>             <year>2005</year>             <article-title>Optimized radii for Poisson-Boltzmann calculations with the AMBER force field.</article-title>             <source>Journal of Chemical Theory and Computation</source>             <volume>1</volume>             <fpage>484</fpage>             <lpage>493</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Sanner1"><label>73</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Sanner</surname><given-names>MF</given-names></name>
+<name name-style="western"><surname>Olson</surname><given-names>AJ</given-names></name>
+<name name-style="western"><surname>Spehner</surname><given-names>JC</given-names></name>
+</person-group>             <year>1996</year>             <article-title>Reduced surface: an efficient way to compute molecular surfaces.</article-title>             <source>Biopolymers</source>             <volume>38</volume>             <fpage>305</fpage>             <lpage>320</lpage>          </element-citation></ref>
+<ref id="pcbi.1000528-Levy1"><label>74</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Levy</surname><given-names>RM</given-names></name>
+<name name-style="western"><surname>Karplus</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Kushick</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Perahia</surname><given-names>D</given-names></name>
+</person-group>             <year>1984</year>             <article-title>Evaluation of the Configurational Entropy for Proteins - Application to Molecular-Dynamics Simulations of an Alpha-Helix.</article-title>             <source>Macromolecules</source>             <volume>17</volume>             <fpage>1370</fpage>             <lpage>1374</lpage>          </element-citation></ref>
+</ref-list>
+
+</back>
+</article>

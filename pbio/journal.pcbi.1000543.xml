@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="discussion" dtd-version="3.0" xml:lang="EN">
+<front>
+<journal-meta><journal-id journal-id-type="publisher-id">plos</journal-id><journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id><journal-id journal-id-type="pmc">ploscomp</journal-id><!--===== Grouping journal title elements =====--><journal-title-group><journal-title>PLoS Computational Biology</journal-title></journal-title-group><issn pub-type="ppub">1553-734X</issn><issn pub-type="epub">1553-7358</issn><publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, USA</publisher-loc></publisher></journal-meta>
+<article-meta><article-id pub-id-type="publisher-id">09-PLCB-MI-0449R2</article-id><article-id pub-id-type="doi">10.1371/journal.pcbi.1000543</article-id><article-categories><subj-group subj-group-type="heading"><subject>Message from ISCB</subject></subj-group><subj-group subj-group-type="Discipline"><subject>Computational Biology/Genomics</subject><subject>Computational Biology/Transcriptional Regulation</subject><subject>Genetics and Genomics/Bioinformatics</subject><subject>Genetics and Genomics/Gene Expression</subject><subject>Molecular Biology/Bioinformatics</subject></subj-group></article-categories><title-group><article-title>Getting Started in Gene Expression Microarray Analysis</article-title></title-group><contrib-group>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Slonim</surname><given-names>Donna K.</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff2"><sup>2</sup></xref><xref ref-type="corresp" rid="cor1"><sup>*</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Yanai</surname><given-names>Itai</given-names></name><xref ref-type="aff" rid="aff3"><sup>3</sup></xref><xref ref-type="corresp" rid="cor1"><sup>*</sup></xref></contrib>
+</contrib-group><aff id="aff1"><label>1</label><addr-line>Department of Computer Science, Tufts University, Medford, Massachusetts, United States of America</addr-line>       </aff><aff id="aff2"><label>2</label><addr-line>Department of Pathology, Tufts University School of Medicine, Boston, Massachusetts, United States of America</addr-line>       </aff><aff id="aff3"><label>3</label><addr-line>Department of Biology, Technion–Israel Institute of Technology, Technion City, Haifa, Israel</addr-line>       </aff><contrib-group>
+<contrib contrib-type="editor" xlink:type="simple"><name name-style="western"><surname>Troyanskaya</surname><given-names>Olga G.</given-names></name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/></contrib>
+</contrib-group><aff id="edit1">Princeton University, United States of America</aff><author-notes>
+<corresp id="cor1">* E-mail: <email xlink:type="simple">Donna.Slonim@tufts.edu</email> (DKS); <email xlink:type="simple">yanai@technion.ac.il</email> (IY)</corresp>
+<fn fn-type="conflict"><p>The authors have declared that no competing interests exist.</p></fn></author-notes><pub-date pub-type="collection"><month>10</month><year>2009</year></pub-date><pub-date pub-type="epub"><day>30</day><month>10</month><year>2009</year></pub-date><volume>5</volume><issue>10</issue><elocation-id>e1000543</elocation-id><!--===== Grouping copyright info into permissions =====--><permissions><copyright-year>2009</copyright-year><copyright-holder>Slonim, Yanai</copyright-holder><license><license-p>This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license></permissions><funding-group><funding-statement>DKS is supported in part by NIH grants LM009411 and HD058880. IY is a Horev Fellow, supported by the Taub Foundations. The funders had no role in the preparation of the article.</funding-statement></funding-group><counts><page-count count="4"/></counts></article-meta>
+</front>
+<body><sec id="s1">
+<title/>
+<p>Gene expression microarrays provide a snapshot of all the transcriptional activity in a biological sample. Unlike most traditional molecular biology tools, which generally allow the study of a single gene or a small set of genes, microarrays facilitate the discovery of totally novel and unexpected functional roles of genes. The power of these tools has been applied to a range of applications, including discovering novel disease subtypes, developing new diagnostic tools, and identifying underlying mechanisms of disease or drug response. However, this technology necessarily produces a large amount of data, challenging us to interpret it by exploiting modern computational and statistical tools. In this brief review, we aim to indicate the major issues involved in microarray analysis and provide a useful starting point for new microarray users. <xref ref-type="fig" rid="pcbi-1000543-g001">Figure 1</xref> outlines the steps in a typical expression microarray experiment and maps them to the different sections of this review.</p>
+<fig id="pcbi-1000543-g001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000543.g001</object-id><label>Figure 1</label><caption>
+<title>Overview of steps in a typical gene expression microarray experiment.</title>
+<p>Topics in blue boxes with solid borders are addressed in the <xref ref-type="sec" rid="s2">Experimental Design</xref> section, those in green boxes with dashed borders are covered in the section on data preparation, and those in purple boxes with dash-dotted borders are discussed in the <xref ref-type="sec" rid="s4">Data Analysis</xref> section of this review.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000543.g001" xlink:type="simple"/></fig></sec><sec id="s2">
+<title>Experimental Design</title>
+<p>Careful experimental design is crucial for a successful microarray experiment <xref ref-type="bibr" rid="pcbi.1000543-Kerr1">[1]</xref>,<xref ref-type="bibr" rid="pcbi.1000543-Yang1">[2]</xref>, yet this important step is often shortchanged. Design issues depend in part on the exact array technology used, and indeed, choosing an array technology is often the first design choice. The main distinction is whether essentially full-length transcripts are printed onto slides (cDNA microarrays) or the desired—typically shorter—oligonucleotides are synthesized in situ (oligonucleotide arrays). While the former may be less expensive because they can be manufactured in the lab or at institutional core facilities, the latter may outperform the former in terms of number of spots per array and the spots' homogeneity <xref ref-type="bibr" rid="pcbi.1000543-Irizarry1">[3]</xref>,<xref ref-type="bibr" rid="pcbi.1000543-Shi1">[4]</xref>.</p>
+<p>Slightly different oligonucleotide array platforms are manufactured by companies such as Affymetrix, Agilent, and NimbleGen (see <xref ref-type="supplementary-material" rid="pcbi.1000543.s002">Text S1</xref> and <xref ref-type="supplementary-material" rid="pcbi.1000543.s003">Table S1</xref> for further discussion).</p>
+<p>A major design question is whether to measure the expression levels from each sample on a different microarray (using single-color, or single-channel, arrays), or instead to compare relative expression levels between a pair of samples on each microarray (two-color or two-channel arrays). There are tradeoffs between the two approaches. Single-color arrays allow for more flexibility in analysis, while two-color arrays can control for some technical issues by allowing a direct comparison in a single hybridization <xref ref-type="bibr" rid="pcbi.1000543-Altman1">[5]</xref>. A recent comparison of single- and two-color methods on the same platforms found good overall agreement in the data produced by the two methods <xref ref-type="bibr" rid="pcbi.1000543-Patterson1">[6]</xref>. cDNA arrays typically involve two channels. Agilent and NimbleGen arrays can be run using either one or two channels. Affymetrix arrays are inherently single-channel, though some associated analysis tools facilitate pair-wise comparisons.</p>
+<p>Design issues for two-color arrays are more complex <xref ref-type="bibr" rid="pcbi.1000543-Simon1">[7]</xref>. Challenges include ensuring that all samples can be compared to the appropriate controls and avoiding any biases introduced by the different labeling. “Dye-swap” experiments, in which the same pairs of samples are compared twice with the labeling colors swapped, can permit the computational removal of such bias. Dye swapping imposes additional costs in both the number of arrays and the types of data analyses possible. However, clever design can somewhat reduce the required number of arrays <xref ref-type="bibr" rid="pcbi.1000543-Kerr1">[1]</xref>.</p>
+<p>As attractive as it might seem financially to run just one microarray for each “class” of samples (of the same phenotype, time-point, or tissue type) under consideration, replicates are essential for providing meaningful results <xref ref-type="bibr" rid="pcbi.1000543-Yang1">[2]</xref>. Without replicates, no statistical analysis of the significance and reliability of the observed changes is possible; the typical result is an increased number of both false-positive and false-negative errors in detecting differentially expressed genes <xref ref-type="bibr" rid="pcbi.1000543-Lee1">[8]</xref>. However, we distinguish between technological and biological replicates. Technological replication—the same biological material hybridized independent times—is generally no longer performed, as analyses have shown that the results will be relatively consistent overall <xref ref-type="bibr" rid="pcbi.1000543-Shi1">[4]</xref>, although they may include consistent sources of bias <xref ref-type="bibr" rid="pcbi.1000543-Yang1">[2]</xref>. Instead, different patients or animals from the same class can serve as biological replicates. To improve the ability to detect outliers and their effects, we do not recommend pooling samples unless necessary to obtain sufficient amounts of material for hybridization, and even then, replicates measuring different pools with the same phenotypes must be performed <xref ref-type="bibr" rid="pcbi.1000543-Simon1">[7]</xref>.</p>
+<p>During the experimental design stage, it is important to identify all the variables to be compared and to ensure that the proposed design allows their measurement. Be aware of other variables, such as patient age or date of sample collection, that might confound the distinction between the compared classes. One option is to randomize confounding variables related to experimental conditions under your control.</p>
+</sec><sec id="s3">
+<title>Preparing Microarray Data for Analysis</title>
+<p>The task of analyzing microarray data is often at least as much an art as a science, and it typically consumes considerably more time than the laboratory protocols required to generate the data. Part of the challenge is assessing the quality of the data and ensuring that all samples are comparable for further analysis.</p>
+<p>Normalization of the raw data, which controls for technical variation between arrays within a study, is essential <xref ref-type="bibr" rid="pcbi.1000543-Simon1">[7]</xref>. The challenge of normalization is to remove as much of the technical variation as possible while leaving the biological variation untouched. This is a big challenge, and here we only touch upon the main issues. First, visualization of the raw data is an essential part of assessing data quality, choosing a normalization method, and estimating the effectiveness of the normalization. Many methods for visualization, quality assessment, and data normalization have been developed (see <xref ref-type="bibr" rid="pcbi.1000543-Quackenbush1">[9]</xref> for a review, <xref ref-type="supplementary-material" rid="pcbi.1000543.s002">Text S1</xref>, and <xref ref-type="supplementary-material" rid="pcbi.1000543.s001">Figure S1</xref>). Related issues of background adjustment and data “summarization” (reducing multiple probes representing a single transcript to a single measurement of expression) for Affymetrix arrays are well introduced in chapter 2 of <xref ref-type="bibr" rid="pcbi.1000543-Gentleman1">[10]</xref>.</p>
+<p>Clustering is a way of finding and visualizing patterns in the data. Many papers and indeed books have been written on this topic (see e.g., <xref ref-type="bibr" rid="pcbi.1000543-Duda1">[11]</xref>–<xref ref-type="bibr" rid="pcbi.1000543-Slonim1">[13]</xref> and <xref ref-type="supplementary-material" rid="pcbi.1000543.s002">Text S1</xref>). Different methods highlight different patterns, so trying more than one method can be worthwhile. Note that while clustering finds predominant patterns in the data, those patterns may not correspond to the phenotypic distinction of interest in the experiment. To identify gene expression patterns related to this distinction, more directed methods are appropriate.</p>
+</sec><sec id="s4">
+<title>Data Analysis</title>
+<p>There are many commercial packages for microarray analyses, and we have by no means evaluated all of them. However, commercial tools can be expensive, and we find many that we have tried to have limited flexibility. Fortunately, in the past few years a number of Web-based tools and open-source software packages for microarray data analysis have become available (see below and <xref ref-type="supplementary-material" rid="pcbi.1000543.s002">Text S1</xref>), and we recommend taking advantage of them.</p>
+<p>One common strategy is to create a custom data analysis pipeline using statistical analysis software packages such as Matlab or R. Both allow great flexibility, customized analysis, and access to many specialized packages designed for analyzing gene expression data. Not only is R freely available, but it also allows the use of BioConductor <xref ref-type="bibr" rid="pcbi.1000543-Gentleman2">[14]</xref>, a collection of R tools including many powerful current gene expression analysis methods written and tested by experts from the growing microarray community.</p>
+<p>The fundamental goal of most microarray experiments is to identify biological processes or pathways that consistently display differential expression between groups of samples. While the exact approach depends in part on the design of the experiment, there are two broad approaches to detecting differential expression. The first examines each gene or transcript individually to find genes that, by themselves, have statistically significant differences in expression between samples with different phenotypes or characteristics. The set of genes thus identified is then examined for over-representation of specific functions or pathways <xref ref-type="bibr" rid="pcbi.1000543-Khatri1">[15]</xref>. A powerful alternative is to identify groups of functionally related genes ahead of time and to test whether these gene sets—as a group—show differential expression <xref ref-type="bibr" rid="pcbi.1000543-Goeman1">[16]</xref>–<xref ref-type="bibr" rid="pcbi.1000543-Tomfohr1">[18]</xref>. Both of these approaches can be effective, and sometimes the combination of the two is stronger than either alone <xref ref-type="bibr" rid="pcbi.1000543-Slonim2">[19]</xref>.</p>
+<p>One crucial issue for all microarray analysis methods is adjusting for multiple testing <xref ref-type="bibr" rid="pcbi.1000543-Dudoit1">[20]</xref>. Each statistical test reports the probability of seeing the observed test score by chance under the null hypothesis that there is no difference in expression related to the phenotype being studied. Even if this reported “<italic>p</italic>-value” is low, say 0.001, one might expect to see 20 of these one-in-a-thousand events when performing 20,000 independent tests (a reasonable number of genes on a microarray). A range of methods to adjust for multiple testing are available (see <xref ref-type="bibr" rid="pcbi.1000543-Westfall1">[21]</xref> for an overview). The preferred approach for microarray analysis is to control the “false-discovery rate” (FDR): the probability that any particular significant finding is a false positive <xref ref-type="bibr" rid="pcbi.1000543-Reiner1">[22]</xref>.</p>
+<p>Once a list of differentially expressed genes has been assembled, some functional analysis is essential for interpreting the results. There are many tools available to identify pathways or biological functions that are over-represented in a given gene list. Again, adjustment for multiple testing may be desirable, although complex dependencies between pathways make finding an appropriate adjustment method controversial <xref ref-type="bibr" rid="pcbi.1000543-Gentleman3">[23]</xref>. A good review of the earlier tools that discusses many of the statistical issues is <xref ref-type="bibr" rid="pcbi.1000543-Khatri1">[15]</xref>.</p>
+<p>An alternative to the individual-gene analysis workflow is to consider entire gene sets or pathways together when looking for differential expression. There are many approaches that do this (e.g., <xref ref-type="bibr" rid="pcbi.1000543-Goeman1">[16]</xref>, <xref ref-type="bibr" rid="pcbi.1000543-Efron1">[24]</xref>–<xref ref-type="bibr" rid="pcbi.1000543-Pavlidis1">[26]</xref>), but a fundamental and widely used version is the Gene Set Enrichment Analysis (GSEA) software from the Broad Institute <xref ref-type="bibr" rid="pcbi.1000543-Subramanian1">[17]</xref>. Gene set analysis can be advantageous because it can detect subtle changes in gene expression that individual gene analyses can miss, and because it combines identification of differential expression and functional interpretation into a single step.</p>
+<p>The disadvantage of this method is that appropriate gene sets need to be known ahead of time. When studying a biological process that is still poorly understood, an individual gene method may be more appropriate, as it allows for the opportunity of implicating hitherto unexpected genes and gene sets. Given that gene set analysis is more sensitive and therefore potentially more powerful, a greater effort in defining the pathways needed to support this approach is warranted. Toward this end, GSEA's gene set database incorporates some computationally derived gene sets, including expression neighbors of known cancer genes <xref ref-type="bibr" rid="pcbi.1000543-Subramanian1">[17]</xref> and network modules mined from a large collection of expression data <xref ref-type="bibr" rid="pcbi.1000543-Segal1">[27]</xref>. Related work has used conserved coexpression <xref ref-type="bibr" rid="pcbi.1000543-Stuart1">[28]</xref> or differential coexpression <xref ref-type="bibr" rid="pcbi.1000543-Kostka1">[29]</xref> to discover new functional modules.</p>
+<p>Much has also been written about sample classification using microarray data (see review <xref ref-type="bibr" rid="pcbi.1000543-Slonim1">[13]</xref>) but, with a few exceptions <xref ref-type="bibr" rid="pcbi.1000543-Glas1">[30]</xref>,<xref ref-type="bibr" rid="pcbi.1000543-Dankbar1">[31]</xref>, microarrays themselves have not been embraced as diagnostic tools. Rather, they have been used to identify smaller sets of predictive genes or pathways that might, when assessed by other technologies, aid in diagnosis or stratification of samples. A huge range of machine learning methods <xref ref-type="bibr" rid="pcbi.1000543-Duda1">[11]</xref>,<xref ref-type="bibr" rid="pcbi.1000543-Mitra1">[12]</xref> can be applied to the related classification problems. Most people intent on doing this write their own code (but see <xref ref-type="supplementary-material" rid="pcbi.1000543.s002">Text S1</xref> for an alternative). We note that simpler classification tools often perform as well as, and generalize better than, more complex ones <xref ref-type="bibr" rid="pcbi.1000543-BenDor1">[32]</xref>.</p>
+</sec><sec id="s5">
+<title>Outlook</title>
+<p>It has been our goal in this brief review to demonstrate that it is currently feasible for researchers with no previous experience to incorporate microarray analyses in their studies. The field is now reasonably mature, with available software and tools to make data analysis manageable by nonexperts. That said, newcomers to the field should be aware that the data analysis will require a dedicated commitment of time and effort that generally substantially exceeds that of data generation. We strongly recommend that researchers do the work to familiarize themselves with the relevant analytical literature before beginning, or even designing, the experiment.</p>
+<p>It has been speculated that microarray technology will soon be superseded by next-generation sequencing, in which the transcripts are directly sequenced by low-cost, high-throughput sequencing technologies <xref ref-type="bibr" rid="pcbi.1000543-Wang1">[33]</xref>. However, currently, next-generation whole-transcriptome sequencing is still quite expensive and in its relative infancy. Its cost scales proportionally with its ability to assess low-abundance transcripts, as sufficient depth of sequencing must be performed. Further, analytic tools specific to this data source have not yet been developed for mass consumption. Recent studies have shown that the two transcriptomics technologies are expected to give very similar results <xref ref-type="bibr" rid="pcbi.1000543-Wang2">[34]</xref>,<xref ref-type="bibr" rid="pcbi.1000543-Marioni1">[35]</xref>, although for rare transcripts there is considerably less correlation between the methods <xref ref-type="bibr" rid="pcbi.1000543-Marioni1">[35]</xref>. Thus, until sequencing-based methods have become cost-effective and easily used, microarrays will remain a desirable alternative for many practitioners. We expect that, as RNA sequencing methods mature, many microarray analysis methods will come to be viewed as general analysis tools that can be applied or modified to fit any forthcoming transcriptomics technologies <xref ref-type="bibr" rid="pcbi.1000543-Perkins1">[36]</xref>.</p>
+</sec><sec id="s6">
+<title>Supporting Information</title>
+<supplementary-material id="pcbi.1000543.s001" mimetype="application/postscript" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000543.s001" xlink:type="simple"><label>Figure S1</label><caption>
+<p>Three common normalization methods. The left plots show pairs of distributions of microarray intensities to be normalized (right plots). A) If the distributions are of the same overall shape, they can simply be scaled to the same mean. B) Quantile normalization imposes the same distribution on all samples. C) A known quantity of RNA is spiked-in to each sample (vertical line) and is then used as a scaling factor.</p>
+<p>(1.57 MB EPS)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1000543.s002" mimetype="application/rtf" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000543.s002" xlink:type="simple"><label>Text S1</label><caption>
+<p>In this section we further discuss some of the issues raised in the main text.</p>
+<p>(0.23 MB RTF)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1000543.s003" mimetype="application/rtf" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000543.s003" xlink:type="simple"><label>Table S1</label><caption>
+<p>Comparison of commercial microarray manufacturers.</p>
+<p>(0.05 MB RTF)</p>
+</caption></supplementary-material></sec></body>
+<back>
+<ack>
+<p>We thank the anonymous reviewers for helpful suggestions and comments.</p>
+<p>The content is solely the responsibility of the authors and does not necessarily reflect the official views of any of the funding agencies.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1000543-Kerr1"><label>1</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Kerr</surname><given-names>MK</given-names></name>
+<name name-style="western"><surname>Churchill</surname><given-names>GA</given-names></name>
+</person-group>             <year>2001</year>             <article-title>Experimental design for gene expression microarrays.</article-title>             <source>Biostatistics</source>             <volume>2</volume>             <fpage>183</fpage>             <lpage>201</lpage>          </element-citation></ref>
+<ref id="pcbi.1000543-Yang1"><label>2</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Yang</surname><given-names>YH</given-names></name>
+<name name-style="western"><surname>Speed</surname><given-names>T</given-names></name>
+</person-group>             <year>2002</year>             <article-title>Design issues for cDNA microarray experiments.</article-title>             <source>Nat Rev Genet</source>             <volume>3</volume>             <fpage>579</fpage>             <lpage>588</lpage>          </element-citation></ref>
+<ref id="pcbi.1000543-Irizarry1"><label>3</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Irizarry</surname><given-names>RA</given-names></name>
+<name name-style="western"><surname>Warren</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Spencer</surname><given-names>F</given-names></name>
+<name name-style="western"><surname>Kim</surname><given-names>IF</given-names></name>
+<name name-style="western"><surname>Biswal</surname><given-names>S</given-names></name>
+<etal/></person-group>             <year>2005</year>             <article-title>Multiple-laboratory comparison of microarray platforms.</article-title>             <source>Nat Methods</source>             <volume>2</volume>             <fpage>345</fpage>             <lpage>350</lpage>          </element-citation></ref>
+<ref id="pcbi.1000543-Shi1"><label>4</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Shi</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Reid</surname><given-names>LH</given-names></name>
+<name name-style="western"><surname>Jones</surname><given-names>WD</given-names></name>
+<name name-style="western"><surname>Shippy</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Warrington</surname><given-names>JA</given-names></name>
+<etal/></person-group>             <year>2006</year>             <article-title>The MicroArray Quality Control (MAQC) project shows inter- and intraplatform reproducibility of gene expression measurements.</article-title>             <source>Nat Biotechnol</source>             <volume>24</volume>             <fpage>1151</fpage>             <lpage>1161</lpage>          </element-citation></ref>
+<ref id="pcbi.1000543-Altman1"><label>5</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Altman</surname><given-names>NS</given-names></name>
+<name name-style="western"><surname>Hua</surname><given-names>J</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Extending the loop design for two-channel microarray experiments.</article-title>             <source>Genet Res</source>             <volume>88</volume>             <fpage>153</fpage>             <lpage>163</lpage>          </element-citation></ref>
+<ref id="pcbi.1000543-Patterson1"><label>6</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Patterson</surname><given-names>TA</given-names></name>
+<name name-style="western"><surname>Lobenhofer</surname><given-names>EK</given-names></name>
+<name name-style="western"><surname>Fulmer-Smentek</surname><given-names>SB</given-names></name>
+<name name-style="western"><surname>Collins</surname><given-names>PJ</given-names></name>
+<name name-style="western"><surname>Chu</surname><given-names>TM</given-names></name>
+<etal/></person-group>             <year>2006</year>             <article-title>Performance comparison of one-color and two-color platforms within the MicroArray Quality Control (MAQC) project.</article-title>             <source>Nat Biotechnol</source>             <volume>24</volume>             <fpage>1140</fpage>             <lpage>1150</lpage>          </element-citation></ref>
+<ref id="pcbi.1000543-Simon1"><label>7</label><element-citation publication-type="other" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Simon</surname><given-names>RM</given-names></name>
+<name name-style="western"><surname>McShane</surname><given-names>LM</given-names></name>
+<name name-style="western"><surname>Korn</surname><given-names>EL</given-names></name>
+<name name-style="western"><surname>Radmacher</surname><given-names>MD</given-names></name>
+</person-group>             <year>2003</year>             <source>Design and Analysis of DNA Microarray Investigations</source>             <publisher-name>Springer</publisher-name>          </element-citation></ref>
+<ref id="pcbi.1000543-Lee1"><label>8</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Lee</surname><given-names>ML</given-names></name>
+<name name-style="western"><surname>Kuo</surname><given-names>FC</given-names></name>
+<name name-style="western"><surname>Whitmore</surname><given-names>GA</given-names></name>
+<name name-style="western"><surname>Sklar</surname><given-names>J</given-names></name>
+</person-group>             <year>2000</year>             <article-title>Importance of replication in microarray gene expression studies: statistical methods and evidence from repetitive cDNA hybridizations.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>97</volume>             <fpage>9834</fpage>             <lpage>9839</lpage>          </element-citation></ref>
+<ref id="pcbi.1000543-Quackenbush1"><label>9</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Quackenbush</surname><given-names>J</given-names></name>
+</person-group>             <year>2002</year>             <article-title>Microarray data normalization and transformation.</article-title>             <source>Nat Genet</source>             <volume>32</volume>             <supplement>Suppl</supplement>             <fpage>496</fpage>             <lpage>501</lpage>          </element-citation></ref>
+<ref id="pcbi.1000543-Gentleman1"><label>10</label><element-citation publication-type="other" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Gentleman</surname><given-names>RC</given-names></name>
+<name name-style="western"><surname>Carey</surname><given-names>VJ</given-names></name>
+<name name-style="western"><surname>Huber</surname><given-names>W</given-names></name>
+<name name-style="western"><surname>Irizarry</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Dudoit</surname><given-names>S</given-names></name>
+</person-group>             <year>2005</year>             <source>Bioinformatics and Computational Biology Solutions Using R and Bioconductor</source>             <publisher-loc>New York</publisher-loc>             <publisher-name>Springer</publisher-name>          </element-citation></ref>
+<ref id="pcbi.1000543-Duda1"><label>11</label><element-citation publication-type="other" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Duda</surname><given-names>RO</given-names></name>
+<name name-style="western"><surname>Hart</surname><given-names>PE</given-names></name>
+<name name-style="western"><surname>Stork</surname><given-names>DG</given-names></name>
+</person-group>             <year>2001</year>             <source>Pattern Classification</source>             <publisher-loc>New York</publisher-loc>             <publisher-name>John Wiley &amp; Sons</publisher-name>          </element-citation></ref>
+<ref id="pcbi.1000543-Mitra1"><label>12</label><element-citation publication-type="other" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Mitra</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Datta</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Perkins</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Michailidis</surname><given-names>G</given-names></name>
+</person-group>             <year>2008</year>             <source>Introduction to Machine Learning and Bioinformatics</source>             <publisher-loc>London</publisher-loc>             <publisher-name>CRC Press</publisher-name>          </element-citation></ref>
+<ref id="pcbi.1000543-Slonim1"><label>13</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Slonim</surname><given-names>DK</given-names></name>
+</person-group>             <year>2002</year>             <article-title>From patterns to pathways: gene expression data analysis comes of age.</article-title>             <source>Nat Genet</source>             <volume>32</volume>             <supplement>Suppl</supplement>             <fpage>502</fpage>             <lpage>508</lpage>          </element-citation></ref>
+<ref id="pcbi.1000543-Gentleman2"><label>14</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Gentleman</surname><given-names>RC</given-names></name>
+<name name-style="western"><surname>Carey</surname><given-names>VJ</given-names></name>
+<name name-style="western"><surname>Bates</surname><given-names>DM</given-names></name>
+<name name-style="western"><surname>Bolstad</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Dettling</surname><given-names>M</given-names></name>
+<etal/></person-group>             <year>2004</year>             <article-title>Bioconductor: open software development for computational biology and bioinformatics.</article-title>             <source>Genome Biol</source>             <volume>5</volume>             <fpage>R80</fpage>          </element-citation></ref>
+<ref id="pcbi.1000543-Khatri1"><label>15</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Khatri</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Draghici</surname><given-names>S</given-names></name>
+</person-group>             <year>2005</year>             <article-title>Ontological analysis of gene expression data: current tools, limitations, and open problems.</article-title>             <source>Bioinformatics</source>             <volume>21</volume>             <fpage>3587</fpage>             <lpage>3595</lpage>          </element-citation></ref>
+<ref id="pcbi.1000543-Goeman1"><label>16</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Goeman</surname><given-names>JJ</given-names></name>
+<name name-style="western"><surname>van de Geer</surname><given-names>SA</given-names></name>
+<name name-style="western"><surname>de Kort</surname><given-names>F</given-names></name>
+<name name-style="western"><surname>van Houwelingen</surname><given-names>HC</given-names></name>
+</person-group>             <year>2004</year>             <article-title>A global test for groups of genes: testing association with a clinical outcome.</article-title>             <source>Bioinformatics</source>             <volume>20</volume>             <fpage>93</fpage>             <lpage>99</lpage>          </element-citation></ref>
+<ref id="pcbi.1000543-Subramanian1"><label>17</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Subramanian</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Tamayo</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Mootha</surname><given-names>VK</given-names></name>
+<name name-style="western"><surname>Mukherjee</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Ebert</surname><given-names>BL</given-names></name>
+<etal/></person-group>             <year>2005</year>             <article-title>Gene set enrichment analysis: a knowledge-based approach for interpreting genome-wide expression profiles.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>102</volume>             <fpage>15545</fpage>             <lpage>15550</lpage>          </element-citation></ref>
+<ref id="pcbi.1000543-Tomfohr1"><label>18</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Tomfohr</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Lu</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Kepler</surname><given-names>TB</given-names></name>
+</person-group>             <year>2005</year>             <article-title>Pathway level analysis of gene expression using singular value decomposition.</article-title>             <source>BMC Bioinformatics</source>             <volume>6</volume>             <fpage>225</fpage>          </element-citation></ref>
+<ref id="pcbi.1000543-Slonim2"><label>19</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Slonim</surname><given-names>DK</given-names></name>
+<name name-style="western"><surname>Koide</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Johnson</surname><given-names>KL</given-names></name>
+<name name-style="western"><surname>Tantravahi</surname><given-names>U</given-names></name>
+<name name-style="western"><surname>Cowan</surname><given-names>JM</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>Functional genomic analysis of amniotic fluid cell-free mRNA suggests that oxidative stress is significant in Down syndrome fetuses.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>106</volume>             <fpage>9425</fpage>             <lpage>9429</lpage>          </element-citation></ref>
+<ref id="pcbi.1000543-Dudoit1"><label>20</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Dudoit</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Shaffer</surname><given-names>JP</given-names></name>
+<name name-style="western"><surname>Boldrick</surname><given-names>JC</given-names></name>
+</person-group>             <year>2003</year>             <article-title>Multiple hypothesis testing in microarray experiments.</article-title>             <source>Statistical Science</source>             <volume>18</volume>             <fpage>71</fpage>             <lpage>103</lpage>          </element-citation></ref>
+<ref id="pcbi.1000543-Westfall1"><label>21</label><element-citation publication-type="other" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Westfall</surname><given-names>PH</given-names></name>
+<name name-style="western"><surname>Young</surname><given-names>SS</given-names></name>
+</person-group>             <year>1993</year>             <source>Resampling-based multiple testing : examples and methods for P-value adjustment</source>             <publisher-loc>New York</publisher-loc>             <publisher-name>Wiley</publisher-name> <fpage>xvii, 340</fpage>           </element-citation></ref>
+<ref id="pcbi.1000543-Reiner1"><label>22</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Reiner</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Yekutieli</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Benjamini</surname><given-names>Y</given-names></name>
+</person-group>             <year>2003</year>             <article-title>Identifying differentially expressed genes using false discovery rate controlling procedures.</article-title>             <source>Bioinformatics</source>             <volume>19</volume>             <fpage>368</fpage>             <lpage>375</lpage>          </element-citation></ref>
+<ref id="pcbi.1000543-Gentleman3"><label>23</label><element-citation publication-type="other" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Gentleman</surname><given-names>R</given-names></name>
+</person-group>             <year>2004</year>             <source>Using GO for statistical analyses</source>             <publisher-name>COMPSTAT</publisher-name>             <fpage>171</fpage>             <lpage>180</lpage>          </element-citation></ref>
+<ref id="pcbi.1000543-Efron1"><label>24</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Efron</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Tibshirani</surname><given-names>R</given-names></name>
+</person-group>             <year>2007</year>             <article-title>On Testing the Significance of Sets of Genes.</article-title>             <source>Journal of Computational and Theoretical Nanoscience</source>             <volume>1</volume>             <fpage>107</fpage>             <lpage>129</lpage>          </element-citation></ref>
+<ref id="pcbi.1000543-Kim1"><label>25</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Kim</surname><given-names>SY</given-names></name>
+<name name-style="western"><surname>Volsky</surname><given-names>DJ</given-names></name>
+</person-group>             <year>2005</year>             <article-title>PAGE: parametric analysis of gene set enrichment.</article-title>             <source>BMC Bioinformatics</source>             <volume>6</volume>             <fpage>144</fpage>          </element-citation></ref>
+<ref id="pcbi.1000543-Pavlidis1"><label>26</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Pavlidis</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Lewis</surname><given-names>DP</given-names></name>
+<name name-style="western"><surname>Noble</surname><given-names>WS</given-names></name>
+</person-group>             <year>2002</year>             <article-title>Exploring gene expression data with class scores.</article-title>             <source>Pac Symp Biocomput</source>             <fpage>474</fpage>             <lpage>485</lpage>          </element-citation></ref>
+<ref id="pcbi.1000543-Segal1"><label>27</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Segal</surname><given-names>E</given-names></name>
+<name name-style="western"><surname>Friedman</surname><given-names>N</given-names></name>
+<name name-style="western"><surname>Koller</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Regev</surname><given-names>A</given-names></name>
+</person-group>             <year>2004</year>             <article-title>A module map showing conditional activity of expression modules in cancer.</article-title>             <source>Nat Genet</source>             <volume>36</volume>             <fpage>1090</fpage>             <lpage>1098</lpage>          </element-citation></ref>
+<ref id="pcbi.1000543-Stuart1"><label>28</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Stuart</surname><given-names>JM</given-names></name>
+<name name-style="western"><surname>Segal</surname><given-names>E</given-names></name>
+<name name-style="western"><surname>Koller</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Kim</surname><given-names>SK</given-names></name>
+</person-group>             <year>2003</year>             <article-title>A gene-coexpression network for global discovery of conserved genetic modules.</article-title>             <source>Science</source>             <volume>302</volume>             <fpage>249</fpage>             <lpage>255</lpage>          </element-citation></ref>
+<ref id="pcbi.1000543-Kostka1"><label>29</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Kostka</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Spang</surname><given-names>R</given-names></name>
+</person-group>             <year>2004</year>             <article-title>Finding disease specific alterations in the co-expression of genes.</article-title>             <source>Bioinformatics</source>             <volume>20</volume>             <supplement>Suppl 1</supplement>             <fpage>i194</fpage>             <lpage>199</lpage>          </element-citation></ref>
+<ref id="pcbi.1000543-Glas1"><label>30</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Glas</surname><given-names>AM</given-names></name>
+<name name-style="western"><surname>Floore</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Delahaye</surname><given-names>LJ</given-names></name>
+<name name-style="western"><surname>Witteveen</surname><given-names>AT</given-names></name>
+<name name-style="western"><surname>Pover</surname><given-names>RC</given-names></name>
+<etal/></person-group>             <year>2006</year>             <article-title>Converting a breast cancer microarray signature into a high-throughput diagnostic test.</article-title>             <source>BMC Genomics</source>             <volume>7</volume>             <fpage>278</fpage>          </element-citation></ref>
+<ref id="pcbi.1000543-Dankbar1"><label>31</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Dankbar</surname><given-names>DM</given-names></name>
+<name name-style="western"><surname>Dawson</surname><given-names>ED</given-names></name>
+<name name-style="western"><surname>Mehlmann</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Moore</surname><given-names>CL</given-names></name>
+<name name-style="western"><surname>Smagala</surname><given-names>JA</given-names></name>
+<etal/></person-group>             <year>2007</year>             <article-title>Diagnostic microarray for influenza B viruses.</article-title>             <source>Anal Chem</source>             <volume>79</volume>             <fpage>2084</fpage>             <lpage>2090</lpage>          </element-citation></ref>
+<ref id="pcbi.1000543-BenDor1"><label>32</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Ben-Dor</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Bruhn</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Friedman</surname><given-names>N</given-names></name>
+<name name-style="western"><surname>Nachman</surname><given-names>I</given-names></name>
+<name name-style="western"><surname>Schummer</surname><given-names>M</given-names></name>
+<etal/></person-group>             <year>2000</year>             <article-title>Tissue classification with gene expression profiles.</article-title>             <source>J Comput Biol</source>             <volume>7</volume>             <fpage>559</fpage>             <lpage>583</lpage>          </element-citation></ref>
+<ref id="pcbi.1000543-Wang1"><label>33</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Wang</surname><given-names>Z</given-names></name>
+<name name-style="western"><surname>Gerstein</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Snyder</surname><given-names>M</given-names></name>
+</person-group>             <year>2009</year>             <article-title>RNA-Seq: a revolutionary tool for transcriptomics.</article-title>             <source>Nat Rev Genet</source>             <volume>10</volume>             <fpage>57</fpage>             <lpage>63</lpage>          </element-citation></ref>
+<ref id="pcbi.1000543-Wang2"><label>34</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Wang</surname><given-names>ET</given-names></name>
+<name name-style="western"><surname>Sandberg</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Luo</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Khrebtukova</surname><given-names>I</given-names></name>
+<name name-style="western"><surname>Zhang</surname><given-names>L</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>Alternative isoform regulation in human tissue transcriptomes.</article-title>             <source>Nature</source>             <volume>456</volume>             <fpage>470</fpage>             <lpage>476</lpage>          </element-citation></ref>
+<ref id="pcbi.1000543-Marioni1"><label>35</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Marioni</surname><given-names>JC</given-names></name>
+<name name-style="western"><surname>Mason</surname><given-names>CE</given-names></name>
+<name name-style="western"><surname>Mane</surname><given-names>SM</given-names></name>
+<name name-style="western"><surname>Stephens</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Gilad</surname><given-names>Y</given-names></name>
+</person-group>             <year>2008</year>             <article-title>RNA-seq: an assessment of technical reproducibility and comparison with gene expression arrays.</article-title>             <source>Genome Res</source>             <volume>18</volume>             <fpage>1509</fpage>             <lpage>1517</lpage>          </element-citation></ref>
+<ref id="pcbi.1000543-Perkins1"><label>36</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Perkins</surname><given-names>TT</given-names></name>
+<name name-style="western"><surname>Kingsley</surname><given-names>RA</given-names></name>
+<name name-style="western"><surname>Fookes</surname><given-names>MC</given-names></name>
+<name name-style="western"><surname>Gardner</surname><given-names>PP</given-names></name>
+<name name-style="western"><surname>James</surname><given-names>KD</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>A strand-specific RNA-Seq analysis of the transcriptome of the typhoid bacillus Salmonella typhi.</article-title>             <source>PLoS Genet</source>             <volume>5</volume>             <fpage>e1000569</fpage>          </element-citation></ref>
+</ref-list>
+
+</back>
+</article>

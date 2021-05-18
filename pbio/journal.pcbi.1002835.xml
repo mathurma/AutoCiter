@@ -1,0 +1,1508 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="3.0" xml:lang="en">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">plos</journal-id>
+      <journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id>
+      <journal-id journal-id-type="pmc">ploscomp</journal-id>
+      <journal-title-group>
+        <journal-title>PLoS Computational Biology</journal-title>
+      </journal-title-group>
+      <issn pub-type="ppub">1553-734X</issn>
+      <issn pub-type="epub">1553-7358</issn>
+      <publisher>
+        <publisher-name>Public Library of Science</publisher-name>
+        <publisher-loc>San Francisco, USA</publisher-loc>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">PCOMPBIOL-D-12-00439</article-id>
+      <article-id pub-id-type="doi">10.1371/journal.pcbi.1002835</article-id>
+      <article-categories>
+        <subj-group subj-group-type="heading">
+          <subject>Research Article</subject>
+        </subj-group>
+        <subj-group subj-group-type="Discipline-v2">
+          <subject>Biology</subject>
+          <subj-group>
+            <subject>Ecology</subject>
+            <subj-group>
+              <subject>Theoretical ecology</subject>
+            </subj-group>
+          </subj-group>
+          <subj-group>
+            <subject>Evolutionary biology</subject>
+            <subj-group>
+              <subject>Evolutionary ecology</subject>
+            </subj-group>
+          </subj-group>
+          <subj-group>
+            <subject>Population biology</subject>
+            <subj-group>
+              <subject>Epidemiology</subject>
+            </subj-group>
+          </subj-group>
+        </subj-group>
+        <subj-group subj-group-type="Discipline-v2">
+          <subject>Mathematics</subject>
+          <subj-group>
+            <subject>Statistics</subject>
+            <subj-group>
+              <subject>Statistical methods</subject>
+            </subj-group>
+          </subj-group>
+        </subj-group>
+        <subj-group subj-group-type="Discipline">
+          <subject>Public Health and Epidemiology</subject>
+          <subject>Evolutionary Biology</subject>
+          <subject>Mathematics</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>Phylodynamic Inference and Model Assessment with Approximate Bayesian Computation: Influenza as a Case Study</article-title>
+        <alt-title alt-title-type="running-head">Phylodynamic Inference &amp; Model Assessment with ABC</alt-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Ratmann</surname>
+            <given-names>Oliver</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+          <xref ref-type="aff" rid="aff2">
+            <sup>2</sup>
+          </xref>
+          <xref ref-type="corresp" rid="cor1">
+            <sup>*</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Donker</surname>
+            <given-names>Gé</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff3">
+            <sup>3</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Meijer</surname>
+            <given-names>Adam</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff4">
+            <sup>4</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Fraser</surname>
+            <given-names>Christophe</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff2">
+            <sup>2</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Koelle</surname>
+            <given-names>Katia</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+          <xref ref-type="aff" rid="aff5">
+            <sup>5</sup>
+          </xref>
+        </contrib>
+      </contrib-group>
+      <aff id="aff1">
+        <label>1</label>
+        <addr-line>Department of Biology, Duke University, Durham, North Carolina, United States of America</addr-line>
+      </aff>
+      <aff id="aff2">
+        <label>2</label>
+        <addr-line>Department of Infectious Disease Epidemiology, Imperial College London, London, United Kingdom</addr-line>
+      </aff>
+      <aff id="aff3">
+        <label>3</label>
+        <addr-line>NIVEL, Netherlands Institute for Health Services Research, Utrecht, The Netherlands</addr-line>
+      </aff>
+      <aff id="aff4">
+        <label>4</label>
+        <addr-line>RIVM, National Institute for Public Health and the Environment, Centre for Infectious Disease Control, Bilthoven, The Netherlands</addr-line>
+      </aff>
+      <aff id="aff5">
+        <label>5</label>
+        <addr-line>Fogarty International Center, National Institutes of Health, Bethesda, Maryland, United States of America</addr-line>
+      </aff>
+      <contrib-group>
+        <contrib contrib-type="editor" xlink:type="simple">
+          <name name-style="western">
+            <surname>Kosakovsky Pond</surname>
+            <given-names>Sergei L.</given-names>
+          </name>
+          <role>Editor</role>
+          <xref ref-type="aff" rid="edit1"/>
+        </contrib>
+      </contrib-group>
+      <aff id="edit1">
+        <addr-line>University of California San Diego, United States of America</addr-line>
+      </aff>
+      <author-notes>
+        <corresp id="cor1">* E-mail: <email xlink:type="simple">oliver.ratmann@imperial.ac.uk</email></corresp>
+        <fn fn-type="conflict">
+          <p>The authors have declared that no competing interests exist.</p>
+        </fn>
+        <fn fn-type="con">
+          <p>Conceived and designed the experiments: OR. Performed the experiments: OR. Analyzed the data: OR CF KK. Contributed reagents/materials/analysis tools: GD AM. Wrote the paper: OR CF KK.</p>
+        </fn>
+      </author-notes>
+      <pub-date pub-type="collection">
+        <month>12</month>
+        <year>2012</year>
+      </pub-date>
+      <pub-date pub-type="epub">
+        <day>27</day>
+        <month>12</month>
+        <year>2012</year>
+      </pub-date>
+      <volume>8</volume>
+      <issue>12</issue>
+      <elocation-id>e1002835</elocation-id>
+      <history>
+        <date date-type="received">
+          <day>19</day>
+          <month>3</month>
+          <year>2012</year>
+        </date>
+        <date date-type="accepted">
+          <day>19</day>
+          <month>10</month>
+          <year>2012</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-year>2012</copyright-year>
+        <copyright-holder>Ratmann et al</copyright-holder>
+        <license xlink:type="simple">
+          <license-p>This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+        </license>
+      </permissions>
+      <abstract>
+        <p>A key priority in infectious disease research is to understand the ecological and evolutionary drivers of viral diseases from data on disease incidence as well as viral genetic and antigenic variation. We propose using a simulation-based, Bayesian method known as Approximate Bayesian Computation (ABC) to fit and assess phylodynamic models that simulate pathogen evolution and ecology against summaries of these data. We illustrate the versatility of the method by analyzing two spatial models describing the phylodynamics of interpandemic human influenza virus subtype A(H3N2). The first model captures antigenic drift phenomenologically with continuously waning immunity, and the second epochal evolution model describes the replacement of major, relatively long-lived antigenic clusters. Combining features of long-term surveillance data from the Netherlands with features of influenza A (H3N2) hemagglutinin gene sequences sampled in northern Europe, key phylodynamic parameters can be estimated with ABC. Goodness-of-fit analyses reveal that the irregularity in interannual incidence and H3N2's ladder-like hemagglutinin phylogeny are quantitatively only reproduced under the epochal evolution model within a spatial context. However, the concomitant incidence dynamics result in a very large reproductive number and are not consistent with empirical estimates of H3N2's population level attack rate. These results demonstrate that the interactions between the evolutionary and ecological processes impose multiple quantitative constraints on the phylodynamic trajectories of influenza A(H3N2), so that sequence and surveillance data can be used synergistically. ABC, one of several data synthesis approaches, can easily interface a broad class of phylodynamic models with various types of data but requires careful calibration of the summaries and tolerance parameters.</p>
+      </abstract>
+      <abstract abstract-type="summary">
+        <title>Author Summary</title>
+        <p>The infectious disease dynamics of many viral pathogens like influenza, norovirus and coronavirus are inextricably tied to their evolution. This interaction between evolutionary and ecological processes complicates our ability to understand the infectious disease behavior of rapidly evolving pathogens. Most statistical methods for the analysis of these “phylodynamics” require that the likelihood of the data can be explicitly calculated. Currently, this is not possible for many phylodynamic models, so that questions on the interaction between viral variants cannot be well-addressed within this framework. Simulation-based statistical methods circumvent likelihood calculations. Considering interpandemic human influenza A virus subtype H3N2, we here illustrate the effectiveness of these methods to fit and assess complex phylodynamic models against both sequence and surveillance data. We find that combining molecular genetic and epidemiological data is key to estimate phylodynamic parameters reliably. Moreover, the information in the available data taken together is enough to expose quantitative model inconsistencies. <xref ref-type="sec" rid="s2">Methods</xref> such as ABC which can combine sequence and surveillance data appear to be well-suited to fit and assess mechanistic hypotheses on the phylodynamics of RNA viruses.</p>
+      </abstract>
+      <funding-group>
+        <funding-statement>We gratefully accept financial support from the Wellcome Trust (<ext-link ext-link-type="uri" xlink:href="http://www.wellcome.ac.uk" xlink:type="simple">http://www.wellcome.ac.uk</ext-link>), grant WR092311MF, the National Science Foundation (<ext-link ext-link-type="uri" xlink:href="http://www.nsf.gov" xlink:type="simple">http://www.nsf.gov</ext-link>), grant NSF-EF-08-27416, and through the RAPIDD program of the Science and Technology Directorate, Department of Homeland Security, and the Fogarty International Center, National Institutes of Health (<ext-link ext-link-type="uri" xlink:href="http://www.fic.nih.gov" xlink:type="simple">http://www.fic.nih.gov</ext-link>). The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+      </funding-group>
+      <counts>
+        <page-count count="14"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec id="s1">
+      <title>Introduction</title>
+      <p>Many infectious pathogens, most notably RNA viruses, evolve on the same time scale as their ecological dynamics <xref ref-type="bibr" rid="pcbi.1002835-Grenfell1">[1]</xref>. One of the perhaps best documented examples are human influenza A viruses, which cause substantial morbidity and mortality as they escape host immunity predominantly through the evolution of their surface antigens <xref ref-type="bibr" rid="pcbi.1002835-Cox1">[2]</xref>. The resulting, dynamical interaction between the ecological and evolutionary processess can be better understood through the formulation and simulation of so-called “phylodynamic” mathematical models, e.g. <xref ref-type="bibr" rid="pcbi.1002835-Gog1">[3]</xref>–<xref ref-type="bibr" rid="pcbi.1002835-Bedford1">[8]</xref>. However, while data on disease incidence as well as viral genetic and antigenic variation are increasing for many viruses, e.g. <xref ref-type="bibr" rid="pcbi.1002835-Rambaut1">[9]</xref>–<xref ref-type="bibr" rid="pcbi.1002835-Jabara1">[13]</xref>, fitting and assessing phylodynamic models to these data is still not commonly done.</p>
+      <p>Historically, epidemiological time series data have been pervasively used to analyze hypotheses of host-pathogen interactions at the population level <xref ref-type="bibr" rid="pcbi.1002835-Keeling1">[14]</xref>–<xref ref-type="bibr" rid="pcbi.1002835-Andrieu1">[17]</xref>. However, time series data capture the underlying evolutionary processes of pathogens only very indirectly. For flu, this has limited the type of infectious disease models that can be statistically interfaced with time series data, and the number of epidemiological parameters that can be simultaneously estimated <xref ref-type="bibr" rid="pcbi.1002835-Finkenstdt1">[18]</xref>, <xref ref-type="bibr" rid="pcbi.1002835-Cauchemez1">[19]</xref>. Consequently, the disease behavior of rapidly evolving pathogens is increasingly studied under additional, complementary data sets <xref ref-type="bibr" rid="pcbi.1002835-Grenfell1">[1]</xref>, most typically in ways that attempt to qualitatively reproduce prominent disease attributes <xref ref-type="bibr" rid="pcbi.1002835-Gog1">[3]</xref>–<xref ref-type="bibr" rid="pcbi.1002835-Bedford1">[8]</xref>.</p>
+      <p>More recently, coalescent-based statistical methods have been used to elucidate the disease dynamics of RNA viruses from molecular genetic data alone <xref ref-type="bibr" rid="pcbi.1002835-Pybus1">[20]</xref>. These methods have been particularly useful to reconstruct epidemiological transmission histories, identifying when and where transmission occurred and how viral populations change over time. For example, coalescent-based analyses have highlighted the importance of the tropics in the complex circulation dynamics of human influenza A (H3N2) virus (in short: H3N2) <xref ref-type="bibr" rid="pcbi.1002835-Rambaut1">[9]</xref>, <xref ref-type="bibr" rid="pcbi.1002835-Bedford2">[21]</xref>, <xref ref-type="bibr" rid="pcbi.1002835-Bahl1">[22]</xref>. However, most coalescent methods estimate past population dynamics within a class of flexible demographic functions including exponential and logistic growth as well as the nonparametric Bayesian skyride <xref ref-type="bibr" rid="pcbi.1002835-Drummond1">[23]</xref>, <xref ref-type="bibr" rid="pcbi.1002835-Minin1">[24]</xref>; but see also <xref ref-type="bibr" rid="pcbi.1002835-Rasmussen1">[25]</xref>. These demographic functions do not explicitly describe the non-linear population dynamics of RNA viruses. Thus, assessing which ecological interactions underlie observed patterns of sequence diversity, and estimating the respective strength of these interactions, is difficult within this framework.</p>
+      <p>Because of these limitations, we adopt a different statistical approach known as Approximate Bayesian Computation (ABC) to infer the phylodynamics of RNA viruses. ABC allows mechanistic phylodynamic models to be simultaneously fitted against both sequence and surveillance data. This method circumvents explicit likelihood calculations by simulating instead from the stochastic model that defines the likelihood <xref ref-type="bibr" rid="pcbi.1002835-Marin1">[26]</xref>. Recent extensions of ABC allow for model assessment to be carried out at no further computational cost <xref ref-type="bibr" rid="pcbi.1002835-Ratmann1">[27]</xref>. We further suggest incorporating variable selection procedures to quantify if and to what extent the data provide support for the inclusion of specific model components <xref ref-type="bibr" rid="pcbi.1002835-OHara1">[28]</xref>.</p>
+      <p>To demonstrate the utility of our approach, we consider the phylodynamics of interpandemic H3N2. We obtained weekly reports of H3N2 incidence in the Netherlands from 1994–2009 by combining influenza-like-illness (ILI) surveillance data with detailed records of associated, laboratory-confirmed cases of flu by type and subtype <xref ref-type="bibr" rid="pcbi.1002835-Dijkstra1">[29]</xref>, <xref ref-type="bibr" rid="pcbi.1002835-Meijer1">[30]</xref>, and similarly for France and the USA; see <xref ref-type="fig" rid="pcbi-1002835-g001">Figure 1</xref> and the supplementary online material (<xref ref-type="supplementary-material" rid="pcbi.1002835.s001">Text S1</xref>). In addition, we reconstructed the ladder-like phylogeny of H3N2's haemagglutinin gene (HA) from dated European sequences collected in 1968–2009 (see <xref ref-type="fig" rid="pcbi-1002835-g001">Figure 1</xref> and <xref ref-type="supplementary-material" rid="pcbi.1002835.s001">Text S1</xref>). To represent H3N2's global phylodynamics, we focus on a class of spatially structured phylodynamic compartmental models that formalize probabilistically how evolving, antigenic variants interact epidemiologically. These antigenic variants might correspond to the major antigenic clusters that are distinguishable in H3N2 antigenic maps <xref ref-type="bibr" rid="pcbi.1002835-Smith1">[31]</xref>, but can in principle also represent a different phenotypic resolution. The evolutionary dynamics of viral genotypes are separately formulated for each antigenic phenotype because genetic distances do not necessarily easily translate into phenotypic relationships <xref ref-type="bibr" rid="pcbi.1002835-Koelle1">[5]</xref>. Spatial substructure has been incorporated in several models of H3N2 phylodynamics to reflect the global circulation of the virus <xref ref-type="bibr" rid="pcbi.1002835-Ferguson1">[4]</xref>, <xref ref-type="bibr" rid="pcbi.1002835-Bedford1">[8]</xref>, <xref ref-type="bibr" rid="pcbi.1002835-Koelle3">[32]</xref>. We adopt here a simple source-sink framework, where the sink is thought of as the Netherlands into which viral genetic diversity and antigenic strains are imported on a seasonal scale from a source population where the virus persists <xref ref-type="bibr" rid="pcbi.1002835-Rambaut1">[9]</xref>, <xref ref-type="bibr" rid="pcbi.1002835-Russell1">[33]</xref>. We fit and assess two distinct models to the combined features of sequence and incidence data described in <xref ref-type="fig" rid="pcbi-1002835-g001">Figure 1</xref> and <xref ref-type="table" rid="pcbi-1002835-t001">Table 1</xref>. The first model captures H3N2's antigenic drift phenomenologically through gradual loss of immunity, and the second model describes the antigenic evolution of the virus explicitly with particular assumptions on the tempo of antigenic change.</p>
+      <fig id="pcbi-1002835-g001" position="float">
+        <object-id pub-id-type="doi">10.1371/journal.pcbi.1002835.g001</object-id>
+        <label>Figure 1</label>
+        <caption>
+          <title>Features of H3N2 sequence and incidence data.</title>
+          <p>(A) Weekly ILI time series from the Netherlands, and estimated time series of influenza A(H3N2) from weekly virological data. Type and subtype specific time series were estimated under an additive Negative Binomial regression model; see <xref ref-type="supplementary-material" rid="pcbi.1002835.s001">Text S1</xref>. (B) Reconstructed HA phylogeny from 776 European sequences with known times of isolation. The phylogeny was inferred with the BEAST program under a relaxed Exponential clock; see <xref ref-type="supplementary-material" rid="pcbi.1002835.s001">Text S1</xref>. (C) H3N2 seasonal attack rates (rATT), calculated from estimated H3N2 case report times series in the Netherlands in 1994–2009 (blue), and the USA (cyan) as well as France in 1997–2008 (black). (D) Ratio of consecutive case report attack rates on the log scale. (E) Autocorrelation of case report peaks. (F) Histogram of the duration of seasonal epidemics at half their peak size. (G) Number of estimated nucleotide substitutions of dated HA sequences from the root A/Bilthoven/16190/68 as in Smith et al. <xref ref-type="bibr" rid="pcbi.1002835-Smith1">[31]</xref>. Nucleotide substitutions were estimated with BEAST under an Exponential clock (red) and Lognormal clock model (violet). (H) Histograms of pairwise nucleotide diversity among sequences collected in the same season. (I) Time series of the number of phylogenetic lineages circulating within the same month. (J) Time series of the time to the most recent common ancestor of phylogenetic lineages circulating within the same month. Colors from H to J are as in G.</p>
+        </caption>
+        <graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1002835.g001" position="float" xlink:type="simple"/>
+      </fig>
+      <table-wrap id="pcbi-1002835-t001" position="float">
+        <object-id pub-id-type="doi">10.1371/journal.pcbi.1002835.t001</object-id>
+        <label>Table 1</label>
+        <caption>
+          <title>Basic phylodynamic summaries of H3N2 surveillance data and phylogenies, and calibrated weighting schemes.</title>
+        </caption>
+        <alternatives>
+          <graphic id="pcbi-1002835-t001-1" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1002835.t001" xlink:type="simple"/>
+          <table>
+            <colgroup span="1">
+              <col align="left" span="1"/>
+              <col align="center" span="1"/>
+              <col align="center" span="1"/>
+              <col align="center" span="1"/>
+              <col align="center" span="1"/>
+              <col align="center" span="1"/>
+              <col align="center" span="1"/>
+              <col align="center" span="1"/>
+              <col align="center" span="1"/>
+            </colgroup>
+            <thead>
+              <tr>
+                <td align="left" rowspan="1" colspan="1">shorthand</td>
+                <td align="left" rowspan="1" colspan="1">summary</td>
+                <td align="left" rowspan="1" colspan="1">data</td>
+                <td align="left" rowspan="1" colspan="1">distance</td>
+                <td colspan="3" align="left" rowspan="1">summary values and distances<xref ref-type="table-fn" rid="nt101">*</xref></td>
+                <td colspan="2" align="left" rowspan="1">weighting scheme<xref ref-type="table-fn" rid="nt102">†</xref></td>
+              </tr>
+              <tr>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1">Netherlands</td>
+                <td align="left" rowspan="1" colspan="1">France</td>
+                <td align="left" rowspan="1" colspan="1">USA</td>
+                <td align="left" rowspan="1" colspan="1">under the SEIRS model</td>
+                <td align="left" rowspan="1" colspan="1">under the epochal evolution model</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e001" xlink:type="simple"/>
+                  </inline-formula>
+                  <italic>-attack</italic>
+                </td>
+                <td align="left" rowspan="1" colspan="1">average <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e002" xlink:type="simple"/></inline-formula>, where <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e003" xlink:type="simple"/></inline-formula> is the total case report incidence in season <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e004" xlink:type="simple"/></inline-formula></td>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1">log ratio</td>
+                <td align="left" rowspan="1" colspan="1">0.56%</td>
+                <td align="left" rowspan="1" colspan="1">1.9% (−1.26)</td>
+                <td align="left" rowspan="1" colspan="1">1.4%(−0.97)</td>
+                <td align="left" rowspan="1" colspan="1">Indicator (3)</td>
+                <td align="left" rowspan="1" colspan="1">Indicator (3)</td>
+              </tr>
+              <tr>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e005" xlink:type="simple"/>
+                  </inline-formula>
+                </td>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e006" xlink:type="simple"/>
+                  </inline-formula>
+                </td>
+              </tr>
+              <tr>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e007" xlink:type="simple"/>
+                  </inline-formula>
+                </td>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e008" xlink:type="simple"/>
+                  </inline-formula>
+                </td>
+              </tr>
+              <tr>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e009" xlink:type="simple"/>
+                  </inline-formula>
+                  <italic>-attack</italic>
+                </td>
+                <td align="left" rowspan="1" colspan="1">standard deviation in <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e010" xlink:type="simple"/></inline-formula></td>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1">log ratio</td>
+                <td align="left" rowspan="1" colspan="1">1.68</td>
+                <td align="left" rowspan="1" colspan="1">2.78 (−0.5)</td>
+                <td align="left" rowspan="1" colspan="1">2.24 (−0.28)</td>
+                <td align="left" rowspan="1" colspan="1">Indicator (3)</td>
+                <td align="left" rowspan="1" colspan="1">Indicator (3)</td>
+              </tr>
+              <tr>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e011" xlink:type="simple"/>
+                  </inline-formula>
+                </td>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e012" xlink:type="simple"/>
+                  </inline-formula>
+                </td>
+              </tr>
+              <tr>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e013" xlink:type="simple"/>
+                  </inline-formula>
+                </td>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e014" xlink:type="simple"/>
+                  </inline-formula>
+                </td>
+              </tr>
+              <tr>
+                <td align="left" rowspan="1" colspan="1">
+                  <italic>explosiveness</italic>
+                </td>
+                <td align="left" rowspan="1" colspan="1">average duration of reported seasonal epidemics at half their peak size</td>
+                <td align="left" rowspan="1" colspan="1">time series 1994–2009</td>
+                <td align="left" rowspan="1" colspan="1">log ratio</td>
+                <td align="left" rowspan="1" colspan="1">3.2</td>
+                <td align="left" rowspan="1" colspan="1">4.54 (−0.32)</td>
+                <td align="left" rowspan="1" colspan="1">5.81 (−0.57)</td>
+                <td align="left" rowspan="1" colspan="1">Indicator (3)</td>
+                <td align="left" rowspan="1" colspan="1">Indicator (3)</td>
+              </tr>
+              <tr>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e015" xlink:type="simple"/>
+                  </inline-formula>
+                </td>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e016" xlink:type="simple"/>
+                  </inline-formula>
+                </td>
+              </tr>
+              <tr>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e017" xlink:type="simple"/>
+                  </inline-formula>
+                </td>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e018" xlink:type="simple"/>
+                  </inline-formula>
+                </td>
+              </tr>
+              <tr>
+                <td align="left" rowspan="1" colspan="1">
+                  <italic>correlation</italic>
+                </td>
+                <td align="left" rowspan="1" colspan="1">Pearson autocorrelation of case report peaks at a lag of 2 &amp; 4 years</td>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1">largest difference</td>
+                <td align="left" rowspan="1" colspan="1">0.07 &amp; 0</td>
+                <td align="left" rowspan="1" colspan="1">0.06 &amp; −0.27 (−0.27)</td>
+                <td align="left" rowspan="1" colspan="1">−0.06 &amp; 0.23 (0.23)</td>
+                <td align="left" rowspan="1" colspan="1">Exponential (4)</td>
+                <td align="left" rowspan="1" colspan="1">Indicator (3)</td>
+              </tr>
+              <tr>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e019" xlink:type="simple"/>
+                  </inline-formula>
+                </td>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e020" xlink:type="simple"/>
+                  </inline-formula>
+                </td>
+              </tr>
+              <tr>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e021" xlink:type="simple"/>
+                  </inline-formula>
+                </td>
+              </tr>
+              <tr>
+                <td align="left" rowspan="1" colspan="1">
+                  <italic>pop-attack</italic>
+                </td>
+                <td align="left" rowspan="1" colspan="1">largest seasonal population-level attack rate</td>
+                <td align="left" rowspan="1" colspan="1">Ref. <xref ref-type="bibr" rid="pcbi.1002835-Cox1">[2]</xref></td>
+                <td align="left" rowspan="1" colspan="1">difference <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e022" xlink:type="simple"/></inline-formula><inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e023" xlink:type="simple"/></inline-formula></td>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1">20%</td>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1">Indicator (3)</td>
+                <td align="left" rowspan="1" colspan="1">Exponential (4)</td>
+              </tr>
+              <tr>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e024" xlink:type="simple"/>
+                  </inline-formula>
+                </td>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e025" xlink:type="simple"/>
+                  </inline-formula>
+                </td>
+              </tr>
+              <tr>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e026" xlink:type="simple"/>
+                  </inline-formula>
+                </td>
+                <td align="left" rowspan="1" colspan="1"/>
+              </tr>
+            </tbody>
+          </table>
+          <table>
+            <colgroup span="1">
+              <col align="left" span="1"/>
+              <col align="center" span="1"/>
+              <col align="center" span="1"/>
+              <col align="center" span="1"/>
+              <col align="center" span="1"/>
+              <col align="center" span="1"/>
+              <col align="center" span="1"/>
+              <col align="center" span="1"/>
+            </colgroup>
+            <thead>
+              <tr>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1">Exp clock</td>
+                <td align="left" rowspan="1" colspan="1">Lognormal clock</td>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td align="left" rowspan="1" colspan="1">
+                  <italic>divergence</italic>
+                </td>
+                <td align="left" rowspan="1" colspan="1">average substitution rate per genome per year</td>
+                <td align="left" rowspan="1" colspan="1">phylogeny 1968–2009</td>
+                <td align="left" rowspan="1" colspan="1">log ratio</td>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e027" xlink:type="simple"/>
+                  </inline-formula>
+                </td>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e028" xlink:type="simple"/>
+                  </inline-formula>
+                </td>
+                <td align="left" rowspan="1" colspan="1">Indicator (3)</td>
+                <td align="left" rowspan="1" colspan="1">Indicator (3)</td>
+              </tr>
+              <tr>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e029" xlink:type="simple"/>
+                  </inline-formula>
+                </td>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e030" xlink:type="simple"/>
+                  </inline-formula>
+                </td>
+              </tr>
+              <tr>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e031" xlink:type="simple"/>
+                  </inline-formula>
+                </td>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e032" xlink:type="simple"/>
+                  </inline-formula>
+                </td>
+              </tr>
+              <tr>
+                <td align="left" rowspan="1" colspan="1">
+                  <italic>diversity</italic>
+                </td>
+                <td align="left" rowspan="1" colspan="1">average pairwise diversity between any two sequences sampled in the same season</td>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1">log ratio</td>
+                <td align="left" rowspan="1" colspan="1">15.4</td>
+                <td align="left" rowspan="1" colspan="1">15.13 (0.01)</td>
+                <td align="left" rowspan="1" colspan="1">Indicator (3)</td>
+                <td align="left" rowspan="1" colspan="1">Indicator (3)</td>
+              </tr>
+              <tr>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e033" xlink:type="simple"/>
+                  </inline-formula>
+                </td>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e034" xlink:type="simple"/>
+                  </inline-formula>
+                </td>
+              </tr>
+              <tr>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e035" xlink:type="simple"/>
+                  </inline-formula>
+                </td>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e036" xlink:type="simple"/>
+                  </inline-formula>
+                </td>
+              </tr>
+              <tr>
+                <td align="left" rowspan="1" colspan="1">
+                  <italic>lineages</italic>
+                </td>
+                <td align="left" rowspan="1" colspan="1">average <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e037" xlink:type="simple"/></inline-formula>, where <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e038" xlink:type="simple"/></inline-formula> is the number of lineages in month <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e039" xlink:type="simple"/></inline-formula></td>
+                <td align="left" rowspan="1" colspan="1">phylogeny 1991–2009<xref ref-type="table-fn" rid="nt103">‡</xref></td>
+                <td align="left" rowspan="1" colspan="1">log ratio</td>
+                <td align="left" rowspan="1" colspan="1">23.6</td>
+                <td align="left" rowspan="1" colspan="1">26.7 (−0.125)</td>
+                <td align="left" rowspan="1" colspan="1">Indicator (3)</td>
+                <td align="left" rowspan="1" colspan="1">Indicator (3)</td>
+              </tr>
+              <tr>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e040" xlink:type="simple"/>
+                  </inline-formula>
+                </td>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e041" xlink:type="simple"/>
+                  </inline-formula>
+                </td>
+              </tr>
+              <tr>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e042" xlink:type="simple"/>
+                  </inline-formula>
+                </td>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e043" xlink:type="simple"/>
+                  </inline-formula>
+                </td>
+              </tr>
+              <tr>
+                <td align="left" rowspan="1" colspan="1">
+                  <italic>TMRCA</italic>
+                </td>
+                <td align="left" rowspan="1" colspan="1">largest <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e044" xlink:type="simple"/></inline-formula>, where <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e045" xlink:type="simple"/></inline-formula> is the time to the most recent common ancestor of all lineages in month <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e046" xlink:type="simple"/></inline-formula></td>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1">log ratio</td>
+                <td align="left" rowspan="1" colspan="1">5.34</td>
+                <td align="left" rowspan="1" colspan="1">5.32 <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e047" xlink:type="simple"/></inline-formula></td>
+                <td align="left" rowspan="1" colspan="1">Exponential (4)</td>
+                <td align="left" rowspan="1" colspan="1">Indicator (3)</td>
+              </tr>
+              <tr>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e048" xlink:type="simple"/>
+                  </inline-formula>
+                </td>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e049" xlink:type="simple"/>
+                  </inline-formula>
+                </td>
+              </tr>
+              <tr>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1"/>
+                <td align="left" rowspan="1" colspan="1">
+                  <inline-formula>
+                    <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e050" xlink:type="simple"/>
+                  </inline-formula>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </alternatives>
+        <table-wrap-foot>
+          <fn id="nt101">
+            <label>*</label>
+            <p>Distances between summaries derived from the first listed and subsequent data sets are given in brackets.</p>
+          </fn>
+          <fn id="nt102">
+            <label>†</label>
+            <p>Weighting schemes differ across models to accommodate weak or strong inconsistencies; see also <xref ref-type="table" rid="pcbi-1002835-t003">Table 3</xref>.</p>
+          </fn>
+          <fn id="nt103">
+            <label>‡</label>
+            <p>The number of dated HA sequences available before <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e051" xlink:type="simple"/></inline-formula> is very small, so that these years effectively do not contribute to the <italic>diversity</italic>. To make this sampling effect more apparent, all phylogenetic summaries except the <italic>divergence</italic> are only computed on the period 1991–2009.</p>
+          </fn>
+        </table-wrap-foot>
+      </table-wrap>
+    </sec>
+    <sec id="s2" sec-type="methods">
+      <title>Methods</title>
+      <sec id="s2a">
+        <title>Approximate Bayesian Computation</title>
+        <p>To perform phylodynamic inference and goodness-of-fit analyses for complex phylodynamic models, we adopt a simulation-based approach that has become known as Approximate Bayesian Computation (ABC) <xref ref-type="bibr" rid="pcbi.1002835-Marin1">[26]</xref>. Our first goal is to estimate the posterior density<disp-formula id="pcbi.1002835.e052"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1002835.e052" xlink:type="simple"/><label>(1)</label></disp-formula>of epidemiological and evolutionary model parameters <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e053" xlink:type="simple"/></inline-formula> under approximations to the likelihood <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e054" xlink:type="simple"/></inline-formula> of observed population incidence and phylogenetic data <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e055" xlink:type="simple"/></inline-formula>. The prior density <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e056" xlink:type="simple"/></inline-formula> can be used to incorporate existing information or limit the range of plausible values of model parameters. Our second goal is to assess fitted phylodynamic models based on a recent extension of ABC <xref ref-type="bibr" rid="pcbi.1002835-Ratmann1">[27]</xref>.</p>
+        <p>ABC methods circumvent computations of the likelihood <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e057" xlink:type="simple"/></inline-formula> by comparing the observed data <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e058" xlink:type="simple"/></inline-formula> to simulated data <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e059" xlink:type="simple"/></inline-formula> in terms of many, lower-dimensional summary statistics <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e060" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e061" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e062" xlink:type="simple"/></inline-formula> such as those in <xref ref-type="fig" rid="pcbi-1002835-g001">Figure 1</xref>. Using a distance function <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e063" xlink:type="simple"/></inline-formula> that compares summaries, each simulation <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e064" xlink:type="simple"/></inline-formula> is weighted according to the magnitude of the summary error <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e065" xlink:type="simple"/></inline-formula> under a weighting scheme <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e066" xlink:type="simple"/></inline-formula>, and this value is used in place of the likelihood term in Monte Carlo algorithms. In essence, ABC is a particular auxiliary variable Monte Carlo method, where the <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e067" xlink:type="simple"/></inline-formula> summary errors take on the role of auxiliary variables. Integrating these errors out, the ABC likelihood approximation <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e068" xlink:type="simple"/></inline-formula> adopted here is<disp-formula id="pcbi.1002835.e069"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1002835.e069" xlink:type="simple"/><label>(2)</label></disp-formula>where the weighting scheme is typically the Indicator<disp-formula id="pcbi.1002835.e070"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1002835.e070" xlink:type="simple"/><label>(3)</label></disp-formula>with tolerance parameter <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e071" xlink:type="simple"/></inline-formula> or the Exponential<disp-formula id="pcbi.1002835.e072"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1002835.e072" xlink:type="simple"/><label>(4)</label></disp-formula>with <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e073" xlink:type="simple"/></inline-formula>. Intuitively, the summary errors indicate how well a parameterized model reproduces the observed data. Once Monte Carlo algorithms such as the Markov Chain Monte Carlo (MCMC) sampler proposed by Marjoram et al. <xref ref-type="bibr" rid="pcbi.1002835-Marjoram1">[34]</xref> have converged, the magnitude of the summary errors can be used to diagnose goodness-of-fit with respect to each of the summaries <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e074" xlink:type="simple"/></inline-formula>. To use this detailed information on each summary, we prefer using (2) to the Mahanalobis approximation (see <xref ref-type="bibr" rid="pcbi.1002835-Marin1">[26]</xref>). Although uncommon, we typically use the log ratio <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e075" xlink:type="simple"/></inline-formula> so that the errors <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e076" xlink:type="simple"/></inline-formula> can be uniformly interpreted as fold-deviations. Parameter inference using ABC is approximate in that the ABC target density <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e077" xlink:type="simple"/></inline-formula> approaches the posterior density (1) as <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e078" xlink:type="simple"/></inline-formula> tends to zero if the summaries are sufficient for <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e079" xlink:type="simple"/></inline-formula> <xref ref-type="bibr" rid="pcbi.1002835-Marin1">[26]</xref>. We use a Monte Carlo algorithm that is very similar to the MCMC sampler in <xref ref-type="fig" rid="pcbi-1002835-g002">Figure 2</xref>. A full specification of the algorithm is given in <xref ref-type="supplementary-material" rid="pcbi.1002835.s001">Text S1</xref>.</p>
+        <fig id="pcbi-1002835-g002" position="float">
+          <object-id pub-id-type="doi">10.1371/journal.pcbi.1002835.g002</object-id>
+          <label>Figure 2</label>
+          <caption>
+            <title>Overview of simulation-based phylodynamic inference and model assessment.</title>
+            <p>Phylodynamic hypotheses are formulated into evolving, dynamical systems models. We used a two-tier model formulation whose genetic component is tied to its ecological component through the flows through the prevalence class. Existing knowledge on model parameters is incorporated through the prior <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e080" xlink:type="simple"/></inline-formula>, and Monte Carlo algorithms such as MCMC are used to fit the model to different types of data, e.g. incidence time series and reconstructed phylogenies (see <xref ref-type="fig" rid="pcbi-1002835-g001">Figure 1</xref>) with an ABC approach. ABC is based on likelihood approximations such as (2), which requires a specification of phylodynamic summaries (e.g. <xref ref-type="table" rid="pcbi-1002835-t001">Table 1</xref>). The summary errors are used to diagnose if the fitted phylodynamic model is consistent with available data in terms of the specified summaries.</p>
+          </caption>
+          <graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1002835.g002" position="float" xlink:type="simple"/>
+        </fig>
+        <p>It is typically difficult to establish the sufficiency of phylodynamic summaries analytically, and instead a small set of summaries is chosen such that model parameters of interest can be estimated <xref ref-type="bibr" rid="pcbi.1002835-Marin1">[26]</xref>. <xref ref-type="table" rid="pcbi-1002835-t001">Table 1</xref> lists basic features of H3N2 epidemiological and phylogenetic data that were primarily considered in this study. Phylodynamic models were fitted and assessed against the features of the Dutch incidence data and the viral phylogeny derived under the Exponential clock model. The differences between these summaries and those derived from the remaining data in <xref ref-type="fig" rid="pcbi-1002835-g001">Figure 1</xref> were used to set the ABC tolerances large enough so that inference is robust to the choice of phylogenetic reconstruction method and reporting country. Although smaller tolerances can be computationally feasible, these were not supported by the additional data considered. We typically use the Indicator weighting scheme (3) with tolerances <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e081" xlink:type="simple"/></inline-formula> that encompass differences in summary values across reporting countries and/or reconstruction methods, see <xref ref-type="table" rid="pcbi-1002835-t001">Table 1</xref>. When a model never fits a particular summary well, we use (4) to give a mild prior preference to small errors <xref ref-type="bibr" rid="pcbi.1002835-Ratmann1">[27]</xref>. See <xref ref-type="supplementary-material" rid="pcbi.1002835.s001">Text S1</xref> for further details.</p>
+      </sec>
+      <sec id="s2b">
+        <title>Spatial two-tier models to represent H3N2 phylodynamics</title>
+        <sec id="s2b1">
+          <title>Deterministic skeleton</title>
+          <p>ABC methods require that each phylodynamic simulation must run on the order of tens of seconds. To meet this computational requirement while still allowing for flexible modeling <xref ref-type="bibr" rid="pcbi.1002835-Gog2">[6]</xref>, <xref ref-type="bibr" rid="pcbi.1002835-Arinaminpathy1">[35]</xref>, we adopt a two-tier approach that separates the genotypes of rapidly evolving viruses from their antigenic phenotypes <xref ref-type="bibr" rid="pcbi.1002835-Koelle2">[7]</xref>. The underlying rationale is that differences in genotype are only relevant from a population dynamic perspective if they translate into perceivable phenotypic differences. The first tier describes the dynamic interactions of antigenic variants in the host population, here in terms of coupled susceptible-exposed-infected-recovered-susceptible (SEIRS) equations that are further spatially structured into a strongly seasonally forced sink population and a re-seeding, weakly seasonally forced source population (denoted by <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e082" xlink:type="simple"/></inline-formula> and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e083" xlink:type="simple"/></inline-formula> respectively). The second tier simulates a phylogeny that is consistent with the prevalence and incidence dynamics of each antigenic unit in the first tier. Assuming polarized immunity <xref ref-type="bibr" rid="pcbi.1002835-Gog1">[3]</xref>, the deterministic skeleton for the <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e084" xlink:type="simple"/></inline-formula>th antigenic unit is<disp-formula id="pcbi.1002835.e085"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1002835.e085" xlink:type="simple"/><label>(5a)</label></disp-formula><disp-formula id="pcbi.1002835.e086"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1002835.e086" xlink:type="simple"/><label>(5b)</label></disp-formula><disp-formula id="pcbi.1002835.e087"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1002835.e087" xlink:type="simple"/><label>(5c)</label></disp-formula><disp-formula id="pcbi.1002835.e088"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1002835.e088" xlink:type="simple"/><label>(5d)</label></disp-formula>where all model parameters are described in <xref ref-type="table" rid="pcbi-1002835-t002">Table 2</xref> or below. Two infectious subcompartments <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e089" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e090" xlink:type="simple"/></inline-formula> are employed to obtain more realistic infectiousness profiles <xref ref-type="bibr" rid="pcbi.1002835-Ferguson2">[36]</xref>. <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e091" xlink:type="simple"/></inline-formula> is the number of individuals infected with the <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e092" xlink:type="simple"/></inline-formula>th genotype of the <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e093" xlink:type="simple"/></inline-formula>th antigenic unit, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e094" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e095" xlink:type="simple"/></inline-formula> for convenience, and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e096" xlink:type="simple"/></inline-formula> and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e097" xlink:type="simple"/></inline-formula> for all <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e098" xlink:type="simple"/></inline-formula>.</p>
+          <table-wrap id="pcbi-1002835-t002" position="float">
+            <object-id pub-id-type="doi">10.1371/journal.pcbi.1002835.t002</object-id>
+            <label>Table 2</label>
+            <caption>
+              <title>Phylodynamic model parameters, prior and estimated densities.</title>
+            </caption>
+            <alternatives>
+              <graphic id="pcbi-1002835-t002-2" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1002835.t002" xlink:type="simple"/>
+              <table>
+                <colgroup span="1">
+                  <col align="left" span="1"/>
+                  <col align="center" span="1"/>
+                  <col align="center" span="1"/>
+                  <col align="center" span="1"/>
+                  <col align="center" span="1"/>
+                </colgroup>
+                <thead>
+                  <tr>
+                    <td align="left" rowspan="1" colspan="1">symbol</td>
+                    <td align="left" rowspan="1" colspan="1">description</td>
+                    <td align="left" rowspan="1" colspan="1">prior density</td>
+                    <td colspan="2" align="left" rowspan="1">mean<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e099" xlink:type="simple"/></inline-formula>std. dev., 95% conf. interval of</td>
+                  </tr>
+                  <tr>
+                    <td align="left" rowspan="1" colspan="1"/>
+                    <td align="left" rowspan="1" colspan="1"/>
+                    <td align="left" rowspan="1" colspan="1"/>
+                    <td align="left" rowspan="1" colspan="1">posterior density under the SEIRS model</td>
+                    <td align="left" rowspan="1" colspan="1">posterior density under the epochal evolution model</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td align="left" rowspan="1" colspan="1">
+                      <inline-formula>
+                        <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e100" xlink:type="simple"/>
+                      </inline-formula>
+                    </td>
+                    <td align="left" rowspan="1" colspan="1">Basic reproductive number</td>
+                    <td align="left" rowspan="1" colspan="1">uninformative</td>
+                    <td align="left" rowspan="1" colspan="1">3.03<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e101" xlink:type="simple"/></inline-formula>0.55, [1.77, 4.14]</td>
+                    <td align="left" rowspan="1" colspan="1">18.7<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e102" xlink:type="simple"/></inline-formula>5.3, [9.2, 26.8]</td>
+                  </tr>
+                  <tr>
+                    <td align="left" rowspan="1" colspan="1">
+                      <inline-formula>
+                        <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e103" xlink:type="simple"/>
+                      </inline-formula>
+                    </td>
+                    <td align="left" rowspan="1" colspan="1">effective reproductive number</td>
+                    <td align="left" rowspan="1" colspan="1">-</td>
+                    <td align="left" rowspan="1" colspan="1">1.26<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e104" xlink:type="simple"/></inline-formula>0.05, [1.17, 1.35]</td>
+                    <td align="left" rowspan="1" colspan="1">1.42<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e105" xlink:type="simple"/></inline-formula>0.12, [1.27, 1.51]</td>
+                  </tr>
+                  <tr>
+                    <td align="left" rowspan="1" colspan="1">
+                      <inline-formula>
+                        <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e106" xlink:type="simple"/>
+                      </inline-formula>
+                    </td>
+                    <td align="left" rowspan="1" colspan="1">Average incubation period in days</td>
+                    <td align="left" rowspan="1" colspan="1">0.9</td>
+                    <td align="left" rowspan="1" colspan="1"/>
+                    <td align="left" rowspan="1" colspan="1"/>
+                  </tr>
+                  <tr>
+                    <td align="left" rowspan="1" colspan="1">
+                      <inline-formula>
+                        <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e107" xlink:type="simple"/>
+                      </inline-formula>
+                    </td>
+                    <td align="left" rowspan="1" colspan="1">Average infectiousness period in days</td>
+                    <td align="left" rowspan="1" colspan="1">1.8</td>
+                    <td align="left" rowspan="1" colspan="1"/>
+                    <td align="left" rowspan="1" colspan="1"/>
+                  </tr>
+                  <tr>
+                    <td align="left" rowspan="1" colspan="1">
+                      <inline-formula>
+                        <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e108" xlink:type="simple"/>
+                      </inline-formula>
+                    </td>
+                    <td align="left" rowspan="1" colspan="1">Average duration of immunity in years</td>
+                    <td align="left" rowspan="1" colspan="1">uninformative</td>
+                    <td align="left" rowspan="1" colspan="1">9.8<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e109" xlink:type="simple"/></inline-formula>1.8, [6.5, 12.2]</td>
+                    <td align="left" rowspan="1" colspan="1">206<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e110" xlink:type="simple"/></inline-formula>103, [46, 380]</td>
+                  </tr>
+                  <tr>
+                    <td align="left" rowspan="1" colspan="1">
+                      <inline-formula>
+                        <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e111" xlink:type="simple"/>
+                      </inline-formula>
+                    </td>
+                    <td align="left" rowspan="1" colspan="1">Reporting rate</td>
+                    <td align="left" rowspan="1" colspan="1">uninformative</td>
+                    <td align="left" rowspan="1" colspan="1">0.15<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e112" xlink:type="simple"/></inline-formula>0.06, [0.06, 0.26]</td>
+                    <td align="left" rowspan="1" colspan="1">0.56<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e113" xlink:type="simple"/></inline-formula>0.23, [0.25, 0.95]</td>
+                  </tr>
+                  <tr>
+                    <td align="left" rowspan="1" colspan="1">
+                      <inline-formula>
+                        <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e114" xlink:type="simple"/>
+                      </inline-formula>
+                    </td>
+                    <td align="left" rowspan="1" colspan="1">Residual selection</td>
+                    <td align="left" rowspan="1" colspan="1">Exponential slab with mean 0.007 &amp; Gaussian pseudo-prior centered at 0.09 <xref ref-type="bibr" rid="pcbi.1002835-OHara1">[28]</xref></td>
+                    <td align="left" rowspan="1" colspan="1">0.1<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e115" xlink:type="simple"/></inline-formula>0.16, [0.01, 0.44]</td>
+                    <td align="left" rowspan="1" colspan="1">0.04<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e116" xlink:type="simple"/></inline-formula>0.07, [0.001, 0.12]</td>
+                  </tr>
+                  <tr>
+                    <td align="left" rowspan="1" colspan="1">
+                      <inline-formula>
+                        <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e117" xlink:type="simple"/>
+                      </inline-formula>
+                    </td>
+                    <td align="left" rowspan="1" colspan="1">Inclusion probability of <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e118" xlink:type="simple"/></inline-formula></td>
+                    <td align="left" rowspan="1" colspan="1">uninformative</td>
+                    <td align="left" rowspan="1" colspan="1">1<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e119" xlink:type="simple"/></inline-formula>0, [1,1]</td>
+                    <td align="left" rowspan="1" colspan="1">1<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e120" xlink:type="simple"/></inline-formula>0, [1,1]</td>
+                  </tr>
+                  <tr>
+                    <td align="left" rowspan="1" colspan="1">
+                      <inline-formula>
+                        <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e121" xlink:type="simple"/>
+                      </inline-formula>
+                    </td>
+                    <td align="left" rowspan="1" colspan="1">Mutation rate, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e122" xlink:type="simple"/></inline-formula></td>
+                    <td align="left" rowspan="1" colspan="1">uninformative</td>
+                    <td align="left" rowspan="1" colspan="1">1.32<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e123" xlink:type="simple"/></inline-formula>0.3, [1.0, 1.9]</td>
+                    <td align="left" rowspan="1" colspan="1">3.38<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e124" xlink:type="simple"/></inline-formula>1.2, [1.8, 5.4]</td>
+                  </tr>
+                  <tr>
+                    <td align="left" rowspan="1" colspan="1">
+                      <inline-formula>
+                        <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e125" xlink:type="simple"/>
+                      </inline-formula>
+                    </td>
+                    <td align="left" rowspan="1" colspan="1">Size of sink population</td>
+                    <td align="left" rowspan="1" colspan="1">fixed to Dutch demographic data, <ext-link ext-link-type="uri" xlink:href="http://statline.cbs.nl" xlink:type="simple">http://statline.cbs.nl</ext-link></td>
+                    <td align="left" rowspan="1" colspan="1"/>
+                    <td align="left" rowspan="1" colspan="1"/>
+                  </tr>
+                  <tr>
+                    <td align="left" rowspan="1" colspan="1">
+                      <inline-formula>
+                        <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e126" xlink:type="simple"/>
+                      </inline-formula>
+                    </td>
+                    <td align="left" rowspan="1" colspan="1">Size of source population</td>
+                    <td align="left" rowspan="1" colspan="1">uninformative</td>
+                    <td align="left" rowspan="1" colspan="1">1.28<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e127" xlink:type="simple"/></inline-formula>0.95, [0.43, 3.6]<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e128" xlink:type="simple"/></inline-formula>10<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e129" xlink:type="simple"/></inline-formula></td>
+                    <td align="left" rowspan="1" colspan="1">2.9<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e130" xlink:type="simple"/></inline-formula>1.6, [0.7, 5.7]<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e131" xlink:type="simple"/></inline-formula>10<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e132" xlink:type="simple"/></inline-formula></td>
+                  </tr>
+                  <tr>
+                    <td align="left" rowspan="1" colspan="1">
+                      <inline-formula>
+                        <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e133" xlink:type="simple"/>
+                      </inline-formula>
+                    </td>
+                    <td align="left" rowspan="1" colspan="1">Birth/death rate in the sink population</td>
+                    <td align="left" rowspan="1" colspan="1">fixed to Dutch demographic data</td>
+                    <td align="left" rowspan="1" colspan="1"/>
+                    <td align="left" rowspan="1" colspan="1"/>
+                  </tr>
+                  <tr>
+                    <td align="left" rowspan="1" colspan="1">
+                      <inline-formula>
+                        <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e134" xlink:type="simple"/>
+                      </inline-formula>
+                    </td>
+                    <td align="left" rowspan="1" colspan="1">Birth/death rate in the source population, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e135" xlink:type="simple"/></inline-formula></td>
+                    <td align="left" rowspan="1" colspan="1">1/50; average lifespan of 60 years adjusted by net fertility rate in South East Asia</td>
+                    <td align="left" rowspan="1" colspan="1"/>
+                    <td align="left" rowspan="1" colspan="1"/>
+                  </tr>
+                  <tr>
+                    <td align="left" rowspan="1" colspan="1">
+                      <inline-formula>
+                        <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e136" xlink:type="simple"/>
+                      </inline-formula>
+                    </td>
+                    <td align="left" rowspan="1" colspan="1">Seasonal forcing in the sink population</td>
+                    <td align="left" rowspan="1" colspan="1"><inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e137" xlink:type="simple"/></inline-formula> see <xref ref-type="supplementary-material" rid="pcbi.1002835.s001">Text S1</xref></td>
+                    <td align="left" rowspan="1" colspan="1">0.42<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e138" xlink:type="simple"/></inline-formula>0.14, [0.3, 0.6]</td>
+                    <td align="left" rowspan="1" colspan="1">0.35<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e139" xlink:type="simple"/></inline-formula>0.15, [0.12, 0.58]</td>
+                  </tr>
+                  <tr>
+                    <td align="left" rowspan="1" colspan="1">
+                      <inline-formula>
+                        <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e140" xlink:type="simple"/>
+                      </inline-formula>
+                    </td>
+                    <td align="left" rowspan="1" colspan="1">Seasonal forcing in the source population</td>
+                    <td align="left" rowspan="1" colspan="1"><inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e141" xlink:type="simple"/></inline-formula>; key assumption, see <xref ref-type="supplementary-material" rid="pcbi.1002835.s001">Text S1</xref></td>
+                    <td align="left" rowspan="1" colspan="1">0.01<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e142" xlink:type="simple"/></inline-formula>0.007, [0.002, 0.02]</td>
+                    <td align="left" rowspan="1" colspan="1">0.013<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e143" xlink:type="simple"/></inline-formula>0.006, [0.008,0.02]</td>
+                  </tr>
+                  <tr>
+                    <td align="left" rowspan="1" colspan="1">
+                      <inline-formula>
+                        <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e144" xlink:type="simple"/>
+                      </inline-formula>
+                    </td>
+                    <td align="left" rowspan="1" colspan="1">Number of travelers visiting the sink population</td>
+                    <td align="left" rowspan="1" colspan="1"><inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e145" xlink:type="simple"/></inline-formula>; encompassing lowest &amp; highest annual records; <ext-link ext-link-type="uri" xlink:href="http://statline.cbs.nl" xlink:type="simple">http://statline.cbs.nl</ext-link></td>
+                    <td align="left" rowspan="1" colspan="1">8.5<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e146" xlink:type="simple"/></inline-formula>2.8, [3.6, 14.1]<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e147" xlink:type="simple"/></inline-formula>10<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e148" xlink:type="simple"/></inline-formula></td>
+                    <td align="left" rowspan="1" colspan="1">9.9<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e149" xlink:type="simple"/></inline-formula>3.4, [3.8, 14.6]<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e150" xlink:type="simple"/></inline-formula>10<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e151" xlink:type="simple"/></inline-formula></td>
+                  </tr>
+                  <tr>
+                    <td align="left" rowspan="1" colspan="1">
+                      <inline-formula>
+                        <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e152" xlink:type="simple"/>
+                      </inline-formula>
+                    </td>
+                    <td align="left" rowspan="1" colspan="1">Fraction of <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e153" xlink:type="simple"/></inline-formula> re-seeding the source population</td>
+                    <td align="left" rowspan="1" colspan="1">
+                      <inline-formula>
+                        <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e154" xlink:type="simple"/>
+                      </inline-formula>
+                    </td>
+                    <td align="left" rowspan="1" colspan="1">0.06<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e155" xlink:type="simple"/></inline-formula>0.03, [0.01, 0.09]</td>
+                    <td align="left" rowspan="1" colspan="1">0.06<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e156" xlink:type="simple"/></inline-formula>0.03, [0.02, 0.09]</td>
+                  </tr>
+                  <tr>
+                    <td align="left" rowspan="1" colspan="1">
+                      <inline-formula>
+                        <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e157" xlink:type="simple"/>
+                      </inline-formula>
+                    </td>
+                    <td align="left" rowspan="1" colspan="1">Partial cross-immunity of mother-daughter variants</td>
+                    <td align="left" rowspan="1" colspan="1">uninformative</td>
+                    <td align="left" rowspan="1" colspan="1">-</td>
+                    <td align="left" rowspan="1" colspan="1">0.76<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e158" xlink:type="simple"/></inline-formula>0.05, [0.67, 0.85]</td>
+                  </tr>
+                  <tr>
+                    <td align="left" rowspan="1" colspan="1">
+                      <inline-formula>
+                        <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e159" xlink:type="simple"/>
+                      </inline-formula>
+                    </td>
+                    <td align="left" rowspan="1" colspan="1">Scale parameter of the antigenic emergence rate</td>
+                    <td align="left" rowspan="1" colspan="1">uninformative</td>
+                    <td align="left" rowspan="1" colspan="1">-</td>
+                    <td align="left" rowspan="1" colspan="1">386<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e160" xlink:type="simple"/></inline-formula>97, [247, 533]</td>
+                  </tr>
+                  <tr>
+                    <td align="left" rowspan="1" colspan="1">
+                      <inline-formula>
+                        <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e161" xlink:type="simple"/>
+                      </inline-formula>
+                    </td>
+                    <td align="left" rowspan="1" colspan="1">Shape parameter of the antigenic emergence rate</td>
+                    <td align="left" rowspan="1" colspan="1">2; Ref. <xref ref-type="bibr" rid="pcbi.1002835-Koelle2">[7]</xref></td>
+                    <td align="left" rowspan="1" colspan="1"/>
+                    <td align="left" rowspan="1" colspan="1"/>
+                  </tr>
+                </tbody>
+              </table>
+            </alternatives>
+          </table-wrap>
+          <p>In the first tier (5a–5b), competition between two antigenic variants <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e162" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e163" xlink:type="simple"/></inline-formula> arises through resource depletion via partial cross-immunity <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e164" xlink:type="simple"/></inline-formula> that decays multiplicatively with kinship level <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e165" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e166" xlink:type="simple"/></inline-formula>, where <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e167" xlink:type="simple"/></inline-formula> is the degree of cross-immunity between mother-daughter variants <xref ref-type="bibr" rid="pcbi.1002835-Gog1">[3]</xref>. The emergence of antigenic variants is described phenomenologically with a per capita hazard function <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e168" xlink:type="simple"/></inline-formula> after the emergence time <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e169" xlink:type="simple"/></inline-formula> of the resident phenotype <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e170" xlink:type="simple"/></inline-formula> <xref ref-type="bibr" rid="pcbi.1002835-Koelle2">[7]</xref>. The hazard function is parameterized with a scale parameter <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e171" xlink:type="simple"/></inline-formula> and a shape parameter <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e172" xlink:type="simple"/></inline-formula>. The strength of sinusoidal seasonal forcing in the source population in the transmission parameter, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e173" xlink:type="simple"/></inline-formula>, is assumed to be much smaller than in the asynchroneously forced sink population, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e174" xlink:type="simple"/></inline-formula>, and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e175" xlink:type="simple"/></inline-formula> is set so that transmission peaks at the winter solstice in the Northern hemisphere. <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e176" xlink:type="simple"/></inline-formula> is the number of infected visiting travelers from the source, while <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e177" xlink:type="simple"/></inline-formula> is the number of individuals that re-seed the source population. Thus, the source population can be interpreted as an interconnected, re-seeding tropical region whose population size <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e178" xlink:type="simple"/></inline-formula> is to be estimated. We further calibrate the sink population to represent the Netherlands, using demographic data to specify <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e179" xlink:type="simple"/></inline-formula> and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e180" xlink:type="simple"/></inline-formula> over the study period 1968–2009. To fit model (5), we transform <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e181" xlink:type="simple"/></inline-formula> into <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e182" xlink:type="simple"/></inline-formula> at disease equilibrium of a single variant <xref ref-type="bibr" rid="pcbi.1002835-Keeling1">[14]</xref>, and define <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e183" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e184" xlink:type="simple"/></inline-formula> by <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e185" xlink:type="simple"/></inline-formula> and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e186" xlink:type="simple"/></inline-formula> where <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e187" xlink:type="simple"/></inline-formula> is the number of infected individuals at disease equilibrium of a single variant.</p>
+          <p>In the second tier (5c–5d), the instantaneous loss in <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e188" xlink:type="simple"/></inline-formula> is proportional to genotype frequency, while the gain in <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e189" xlink:type="simple"/></inline-formula> is weighted by the fitness advantage of each genotype. As before <xref ref-type="bibr" rid="pcbi.1002835-Koelle2">[7]</xref>, fitness is assumed to increase linearly with the number <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e190" xlink:type="simple"/></inline-formula> of nucleotide mutations between the <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e191" xlink:type="simple"/></inline-formula>th genotype and the founder genotype of the <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e192" xlink:type="simple"/></inline-formula>th antigenic variant. The total number of infections and losses <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e193" xlink:type="simple"/></inline-formula> and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e194" xlink:type="simple"/></inline-formula> are the simulated transitions in and out of <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e195" xlink:type="simple"/></inline-formula> at time <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e196" xlink:type="simple"/></inline-formula>, so that (5c–5d) are tied to (5a–5b). New genotypes evolve at a rate <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e197" xlink:type="simple"/></inline-formula>, and a genealogy of the <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e198" xlink:type="simple"/></inline-formula>th antigenic unit is generated by recording the emergence times of each genotype along with their kinships. The branch length between offspring and parental genotype is always one. After extinct genotypes are pruned, the branch length between two genotypes gives the number of nucleotide substitutions between them. These genealogies are concatenated by connecting the root genotype with a genotype of the parental antigenic unit that is randomly drawn according to genotype frequencies at time <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e199" xlink:type="simple"/></inline-formula>. The residual selection parameter <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e200" xlink:type="simple"/></inline-formula> accounts phenomenologically for selection pressures between genetic variants that are evident from the shape of the virus phylogeny, but remain unexplained by a particular ecological model of antigenic variants (5a–5b). Once the distribution of <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e201" xlink:type="simple"/></inline-formula> has been inferred from population incidence and genetic data, we can then quantify how well a phylodynamic model describes patterns of continual immune selection mechanistically, and also compare alternative phylodynamic models in this respect.</p>
+        </sec>
+        <sec id="s2b2">
+          <title>Stochastic process model</title>
+          <p>To account for demographic stochasticity, Markov transition probabilites are derived from (5), assuming that the per capita rates are constant over a small time interval <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e202" xlink:type="simple"/></inline-formula>, and that transitions out of any state are independent and multinomially distributed. Generally, consider a state <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e203" xlink:type="simple"/></inline-formula> and all <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e204" xlink:type="simple"/></inline-formula> per capita rates <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e205" xlink:type="simple"/></inline-formula> out of <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e206" xlink:type="simple"/></inline-formula>. The state transitions out of <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e207" xlink:type="simple"/></inline-formula> into states <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e208" xlink:type="simple"/></inline-formula>,<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e209" xlink:type="simple"/></inline-formula>,<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e210" xlink:type="simple"/></inline-formula> are<disp-formula id="pcbi.1002835.e211"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1002835.e211" xlink:type="simple"/></disp-formula>where <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e212" xlink:type="simple"/></inline-formula> is the total number of individuals leaving <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e213" xlink:type="simple"/></inline-formula> at time <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e214" xlink:type="simple"/></inline-formula>.</p>
+          <p>For the application to H3N2 phylodynamics, simulations were started in <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e215" xlink:type="simple"/></inline-formula> at the disease equilibrium of a single antigenic variant and generated under a multinomial Euler scheme with <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e216" xlink:type="simple"/></inline-formula> days. After the simulations of the first tier completed, the corresponding phylogeny was simulated based on the flows in and out of the prevalence compartments <xref ref-type="bibr" rid="pcbi.1002835-Koelle2">[7]</xref>. Simulated data were recorded after <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e217" xlink:type="simple"/></inline-formula> to match the time range of the observed summaries in <xref ref-type="fig" rid="pcbi-1002835-g001">Figure 1</xref>. We do not estimate the initial conditions of the state variables and assume that by 1990, the phylodynamic processes do not depend any longer on the initial values in 1968.</p>
+        </sec>
+        <sec id="s2b3">
+          <title>Stochastic observation model</title>
+          <p>To interface the two-tier model with observed case report data and phylogenies, we simulated reported incidence under a Poisson model with mean <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e218" xlink:type="simple"/></inline-formula> and drew a requested number of genotypes at specified sampling times without replacement according to the genotype frequencies at those times. Replacing the genotype emergence times with the corresponding sampling times and pruning non-sampled genotypes, we obtained a dated phylogeny with branch lengths encoding nucleotide substitution distances.</p>
+        </sec>
+      </sec>
+      <sec id="s2c">
+        <title>Inferring inclusion probabilities of model parameters</title>
+        <p>A frequent problem in phylodynamic modeling is to determine if a specific model parameter should be included. For example, it can be unclear which types of ecological interactions between antigenic variants underlie pathogen phylodynamics, or if the residual selection parameter <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e219" xlink:type="simple"/></inline-formula> in (5c–5d) is required in addition to a given ecological mechanism that induces immune selection. Following existing variable selection procedures <xref ref-type="bibr" rid="pcbi.1002835-OHara1">[28]</xref>, we use an additional indicator variable <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e220" xlink:type="simple"/></inline-formula> to denote whether a single model parameter <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e221" xlink:type="simple"/></inline-formula> is present (<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e222" xlink:type="simple"/></inline-formula>) or absent (<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e223" xlink:type="simple"/></inline-formula>) and estimate its posterior probability under <xref ref-type="disp-formula" rid="pcbi.1002835.e069">equation (2)</xref>. Here, we use a standard spike-and-slab variable selection procedure <xref ref-type="bibr" rid="pcbi.1002835-OHara1">[28]</xref> to estimate inclusion probabilities of the residual selection parameter <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e224" xlink:type="simple"/></inline-formula>.</p>
+      </sec>
+    </sec>
+    <sec id="s3">
+      <title>Results</title>
+      <sec id="s3a">
+        <title>Basic geographic framework for modeling H3N2 phylodynamics</title>
+        <p>To illustrate ABC methodology with the summaries in <xref ref-type="table" rid="pcbi-1002835-t001">Table 1</xref>, we begin with a classical phenomenological model that implicitly accounts for antigenic drift through gradual loss of immunity <xref ref-type="bibr" rid="pcbi.1002835-Pease1">[37]</xref>. H3N2 phylodynamics are represented with a spatial two-tier system of equations that is a special case of (5) when the antigenic emergence rate is set to<disp-formula id="pcbi.1002835.e225"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1002835.e225" xlink:type="simple"/><label>(6)</label></disp-formula>For simplicity, we will refer to (5) without antigenic variants as the SEIRS model.</p>
+        <sec id="s3a1">
+          <title>Simulated data</title>
+          <p>We first tested ABC on simulated data generated under the SEIRS model and found that the subset <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e226" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e227" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e228" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e229" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e230" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e231" xlink:type="simple"/></inline-formula> of model parameters can be reliably estimated with ABC tolerances <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e232" xlink:type="simple"/></inline-formula> that are smaller than those in <xref ref-type="table" rid="pcbi-1002835-t001">Table 1</xref> (see <xref ref-type="supplementary-material" rid="pcbi.1002835.s001">Text S1</xref>). Tigher tolerances on the population level attack rate contributed most to more reliable estimates of <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e233" xlink:type="simple"/></inline-formula>.</p>
+        </sec>
+        <sec id="s3a2">
+          <title>Parameter inference</title>
+          <p>The behavior of the spatial SEIRS model, when fitted to the case report and phylogenetic summaries in <xref ref-type="table" rid="pcbi-1002835-t001">Table 1</xref>, is illustrated in <xref ref-type="fig" rid="pcbi-1002835-g003">Figure 3</xref> with parameter estimates given in <xref ref-type="table" rid="pcbi-1002835-t002">Table 2</xref>. On real data, the summary errors were considerably larger than on simulated data, so that the <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e234" xlink:type="simple"/></inline-formula> could not be used. Instead, we chose ABC tolerances with a data-driven approach that compares summary errors across different empirical data sets (see the Methods section and <xref ref-type="table" rid="pcbi-1002835-t001">Table 1</xref>). Overall, we can simultaneously infer the epidemiological and evolutionary parameters <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e235" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e236" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e237" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e238" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e239" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e240" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e241" xlink:type="simple"/></inline-formula>. As shown in <xref ref-type="fig" rid="pcbi-1002835-g003">Figure 3A</xref>, the MCMC algorithm may get occasionally stuck in the tails of the target density (see <xref ref-type="supplementary-material" rid="pcbi.1002835.s001">Text S1</xref> for further discussion). The posterior mean and standard deviation of <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e242" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e243" xlink:type="simple"/></inline-formula>, are relatively large in comparison to estimates from previous studies <xref ref-type="bibr" rid="pcbi.1002835-Ferguson2">[36]</xref>, <xref ref-type="bibr" rid="pcbi.1002835-Monto1">[38]</xref>–<xref ref-type="bibr" rid="pcbi.1002835-Cauchemez2">[40]</xref>, and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e244" xlink:type="simple"/></inline-formula> is positively correlated with the average duration of infection <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e245" xlink:type="simple"/></inline-formula> to yield realistic incidence time series. We back-calculated the effective reproductive number <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e246" xlink:type="simple"/></inline-formula> from the prevalence growth rate at the beginning of each season (see <xref ref-type="supplementary-material" rid="pcbi.1002835.s001">Text S1</xref>), and find that many combinations of <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e247" xlink:type="simple"/></inline-formula> and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e248" xlink:type="simple"/></inline-formula> give a tight mean posterior <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e249" xlink:type="simple"/></inline-formula> in agreement with these studies. In the absence of any ecological mechanisms inducing strain competition, the mean residual selection parameter is large <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e250" xlink:type="simple"/></inline-formula> and always included in the SEIRS model. Generally, the sequence divergence imposes negative correlations between <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e251" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e252" xlink:type="simple"/></inline-formula> (<xref ref-type="fig" rid="pcbi-1002835-g003">Figure 3E</xref>) and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e253" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e254" xlink:type="simple"/></inline-formula> (<xref ref-type="fig" rid="pcbi-1002835-g003">Figure 3F</xref>), and the posterior mean mutation rate <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e255" xlink:type="simple"/></inline-formula>/genome/year is much smaller than H3N2's substitution rate, 5.3–6.1/genome/year, when selection is incorporated into the model. <xref ref-type="fig" rid="pcbi-1002835-g004">Figure 4</xref> illustrates that the fraction of susceptible individuals ranges within 15–40% and changes smoothly under seasonal forcing, thus leading to sustained oscillations in disease incidence. We failed to estimate <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e256" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e257" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e258" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e259" xlink:type="simple"/></inline-formula> and recovered distributions close to the prior. Our prior assumptions are summarised in <xref ref-type="table" rid="pcbi-1002835-t002">Table 2</xref> and more fully discussed in <xref ref-type="supplementary-material" rid="pcbi.1002835.s001">Text S1</xref>.</p>
+          <fig id="pcbi-1002835-g003" position="float">
+            <object-id pub-id-type="doi">10.1371/journal.pcbi.1002835.g003</object-id>
+            <label>Figure 3</label>
+            <caption>
+              <title>Phylodynamic inference and goodness-of-fit analysis of the spatial SEIRS model.</title>
+              <p>(A–C) MCMC trajectories of the estimated <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e260" xlink:type="simple"/></inline-formula>, the calculated <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e261" xlink:type="simple"/></inline-formula>, and the TMRCA summary error of four chains that were started at overdispersed starting values (see Methods). Samples before iteration 1000 were discarded. (D–F) Two-dimensional histograms of parts of the ABC fit, illustrating the correlations between the estimated parameter pairs (<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e262" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e263" xlink:type="simple"/></inline-formula>), (<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e264" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e265" xlink:type="simple"/></inline-formula>) and (<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e266" xlink:type="simple"/></inline-formula>,<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e267" xlink:type="simple"/></inline-formula>). Throughout, histograms were computed from all samples across the four chains after burn-in. Color codings are separate for each subplot, with respective density values indicated in the contours. (G–I) Two-dimensional histograms of parts of the joint density of summary errors, illustrating goodness-of-fit with respect to the <italic>correlation</italic> and interannual variability of the case report data, as well as the <italic>divergence</italic>, <italic>diversity</italic> and the <italic>TMRCA</italic>'s of the HA phylogeny.</p>
+            </caption>
+            <graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1002835.g003" position="float" xlink:type="simple"/>
+          </fig>
+          <fig id="pcbi-1002835-g004" position="float">
+            <object-id pub-id-type="doi">10.1371/journal.pcbi.1002835.g004</object-id>
+            <label>Figure 4</label>
+            <caption>
+              <title>Phylodynamics arising under the spatial SEIRS model.</title>
+              <p>(A–B) Population-level weakly incidence in the sink and source population, respectively. (C) Corresponding weekly time series of the percentage of susceptible individuals in the sink population. (D) Simulated H3N2 weekly surveillance time series in the sink population (blue) and reconstructed H3N2 time series in the Netherlands (black). (E) Simulated and observed case report seasonal attack rates, and (F) autocorrelation function of case report peaks. Typically, simulations under the fitted model show sustained oscillations that follow a clear biennial pattern. (G) Simulated HA phylogeny under a large, estimated residual selection parameter. (H) Simulated and observed lineage profile, and (I) simulated and observed time series of the time to the most recent common ancestor of extant phylogenetic lineages. Despite a relatively high selection parameter, the number of lineages and the time to the most recent common ancestor are overall too high when compared to data. Model parameters are <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e268" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e269" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e270" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e271" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e272" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e273" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e274" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e275" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e276" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e277" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e278" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e279" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e280" xlink:type="simple"/></inline-formula>.</p>
+            </caption>
+            <graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1002835.g004" position="float" xlink:type="simple"/>
+          </fig>
+        </sec>
+        <sec id="s3a3">
+          <title>Sensitivity of parameter estimates to phylodynamic summaries</title>
+          <p>The extent to which phylodynamic parameters can be estimated depends mainly on the type of information that underlies the ABC summaries. As described more fully in <xref ref-type="supplementary-material" rid="pcbi.1002835.s001">Text S1</xref>, a broad range of epidemiological parameters are quantitatively consistent with summaries of the H3N2 case report data in <xref ref-type="fig" rid="pcbi-1002835-g001">Figure 1A</xref> because variable reporting rates can mask the true extent of population incidence when immunity is not permanent <xref ref-type="bibr" rid="pcbi.1002835-Cauchemez1">[19]</xref>. Detailed studies of closely monitored populations and serological data suggest interpandemic seasonal H3N2 attack rates between 10–20% in temperate regions <xref ref-type="bibr" rid="pcbi.1002835-Cox1">[2]</xref>, and we found that conditioning on a broad window of maximum seasonal population incidence attack rates (<italic>pop-attack</italic>) between 15–30% ensures that key epidemiological parameters can be well estimated (Figure S4 in <xref ref-type="supplementary-material" rid="pcbi.1002835.s001">Text S1</xref>).</p>
+          <p>Moreover, while the sequence divergence and diversity are standard descriptors of viral phylogenies <xref ref-type="bibr" rid="pcbi.1002835-Grenfell1">[1]</xref>, we found that they are not sufficient to infer the size of the source population <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e281" xlink:type="simple"/></inline-formula> when the mutation rate <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e282" xlink:type="simple"/></inline-formula> and the residual selection parameter <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e283" xlink:type="simple"/></inline-formula> are simultaneously estimated. Considering the narrowness of the phylogeny in terms of the number of circulating lineages, we could estimate the source population size (Figures S5–6 in <xref ref-type="supplementary-material" rid="pcbi.1002835.s001">Text S1</xref>). We can use the number of lineages despite their dependence on sampling effort because with ABC, we are free to sample simulated sequences exactly as in the observed data set, see the Methods section. Finally, the time to the most recent common ancestor (TMRCA) links the evolutionary dynamics with the ecological interactions between antigenically distinct viral variants because weak selective advantages invariably lead to coexistence and deep phylogenies in the face of high <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e284" xlink:type="simple"/></inline-formula> and weak <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e285" xlink:type="simple"/></inline-formula>. In the absence of sufficiently strong ecological interactions, the TMRCA's favor a larger residual selection parameter (Figure S7 in <xref ref-type="supplementary-material" rid="pcbi.1002835.s001">Text S1</xref>).</p>
+        </sec>
+        <sec id="s3a4">
+          <title>Goodness of fit</title>
+          <p>The summary errors reveal that the SEIRS model fails to reproduce the irregular interannual variability in winter season epidemics, and the narrowness and limited diversity of the HA phylogeny despite large <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e286" xlink:type="simple"/></inline-formula> (<xref ref-type="fig" rid="pcbi-1002835-g003">Figure 3G–I</xref>). However, the model can reproduce H3N2's high divergence rate. This is not the case for the SEIRS model without a separate, weakly seasonally forced source population (see <xref ref-type="supplementary-material" rid="pcbi.1002835.s001">Text S1</xref>).</p>
+        </sec>
+      </sec>
+      <sec id="s3b">
+        <title>Epochal evolution model of H3N2 phylodynamics</title>
+        <p>While several models have been able to simulate phylodynamics that are consistent with some aspects of the observed data, most notably the ladder-like phylogeny of H3N2's haemagglutinin gene <xref ref-type="bibr" rid="pcbi.1002835-Ferguson1">[4]</xref>, <xref ref-type="bibr" rid="pcbi.1002835-Koelle1">[5]</xref>, <xref ref-type="bibr" rid="pcbi.1002835-Recker1">[41]</xref>, none have been quantitatively fitted and tested against a set of epidemiological and molecular genetic features such as those in <xref ref-type="fig" rid="pcbi-1002835-g001">Figure 1</xref>. Here, we focus on the epochal evolution model as formulated in <xref ref-type="bibr" rid="pcbi.1002835-Koelle2">[7]</xref> within the above spatial framework, which is identical to (5) when antigenic variants are interpreted as major antigenic clusters. To fit (5) to the serial replacement of 11 major antigenic clusters within 1968–2002 <xref ref-type="bibr" rid="pcbi.1002835-Smith1">[31]</xref>, we define an antigenic cluster as any antigenic unit that survives for at least <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e287" xlink:type="simple"/></inline-formula> years and use the summaries in <xref ref-type="table" rid="pcbi-1002835-t001">Table 1</xref> as well as the number of antigenic clusters generated in 1968–2002 (<italic>nclust</italic>). Following <xref ref-type="bibr" rid="pcbi.1002835-Koelle2">[7]</xref>, the emergence rate is set to increase with age,<disp-formula id="pcbi.1002835.e288"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1002835.e288" xlink:type="simple"/><label>(7)</label></disp-formula><inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e289" xlink:type="simple"/></inline-formula>, and the scaling parameter <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e290" xlink:type="simple"/></inline-formula> is estimated. For simplicity, we refer to (5) with this antigenic emergence rate and an antigenic resolution that is determined by <italic>nclust</italic> as the epochal evolution model.</p>
+        <sec id="s3b1">
+          <title>Simulated data</title>
+          <p>We generated data under the epochal evolution model and fitted both models with the summaries in <xref ref-type="table" rid="pcbi-1002835-t001">Table 1</xref>. The summary errors deviated from zero only when the SEIRS model was fitted, indicating that ABC can correctly and readily identify model mismatch (see <xref ref-type="supplementary-material" rid="pcbi.1002835.s001">Text S1</xref>).</p>
+        </sec>
+        <sec id="s3b2">
+          <title>Parameter inference</title>
+          <p>We could fit and assess the epochal evolution model against summaries of H3N2 surveillance and sequence data with ABC (<xref ref-type="fig" rid="pcbi-1002835-g005">Figure 5</xref> and <xref ref-type="table" rid="pcbi-1002835-t002">Tables 2</xref>–<xref ref-type="table" rid="pcbi-1002835-t003">3</xref>). Partial cross-immunity between mother-daughter antigenic clusters is relatively weak (<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e291" xlink:type="simple"/></inline-formula>), leading to abrupt changes in herd immunity and weak competition between clusters because few susceptibles are cross-depleted (see also <xref ref-type="fig" rid="pcbi-1002835-g006">Figure 6</xref>). In contrast to the SEIRS model, the fitted epochal evolution model excites irregular viral dynamics and reproduces the limited diversity and the small TMRCA's of H3N2's HA phylogeny (<xref ref-type="fig" rid="pcbi-1002835-g003">Figures 3G–I</xref> versus <xref ref-type="fig" rid="pcbi-1002835-g005">Figures 5I–K</xref>). This enabled us to use tighter weighting schemes for several summaries under the epochal evolution model (see <xref ref-type="table" rid="pcbi-1002835-t001">Table 1</xref>). The choice of summaries influences parameter estimates in a similar manner as for the SEIRS model, see <xref ref-type="supplementary-material" rid="pcbi.1002835.s001">Text S1</xref>.</p>
+          <fig id="pcbi-1002835-g005" position="float">
+            <object-id pub-id-type="doi">10.1371/journal.pcbi.1002835.g005</object-id>
+            <label>Figure 5</label>
+            <caption>
+              <title>Phylodynamic inference and goodness-of-fit analysis of the spatial epochal evolution model.</title>
+              <p>(A–D) MCMC trajectories as in <xref ref-type="fig" rid="pcbi-1002835-g003">Figure 3</xref>. The summaries <italic>TMRCA</italic> and <italic>pop-attack</italic> are in conflict and cannot be simultaneously fitted, so that the tolerance for <italic>pop-attack</italic> was relaxed. Samples before iteration 5000 were discarded. (E–H) Two-dimensional histograms of parts of the ABC fit as in <xref ref-type="fig" rid="pcbi-1002835-g003">Figure 3</xref>. Partial cross-immunity is relatively low and correlates negatively with <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e292" xlink:type="simple"/></inline-formula>. (I–L) Two-dimensional histograms of parts of the joint density of summary errors as in <xref ref-type="fig" rid="pcbi-1002835-g003">Figure 3</xref>. The epochal evolution model captures the irregularity in H3N2 case report attack rates, and the divergence, diversity and narrowness of the HA phylogeny well, albeit at a high residual selection parameter that is essentially always included. However, under this fitted model, population-level attack rates are in conflict with the <italic>TMRCA</italic>'s and cannot be simultaneously reproduced when <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e293" xlink:type="simple"/></inline-formula> is weak.</p>
+            </caption>
+            <graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1002835.g005" position="float" xlink:type="simple"/>
+          </fig>
+          <fig id="pcbi-1002835-g006" position="float">
+            <object-id pub-id-type="doi">10.1371/journal.pcbi.1002835.g006</object-id>
+            <label>Figure 6</label>
+            <caption>
+              <title>Phylodynamics arising under the fitted, spatial epochal evolution model.</title>
+              <p>(A–I) Subplots are as in <xref ref-type="fig" rid="pcbi-1002835-g004">Figure 4</xref>. Typically, simulations under the fitted model display large infection waves and strong genetic bottlenecks at antigenic cluster invasions that are followed by refractory dynamics (A,B,H). These intrinsic dynamics result in irregular variation in case report attack rates that is well in line with H3N2 time series of several countries (E,F). Model parameters are <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e294" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e295" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e296" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e297" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e298" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e299" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e300" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e301" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e302" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e303" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e304" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e305" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e306" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e307" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e308" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e309" xlink:type="simple"/></inline-formula>, and the intrinsic dynamics are generally less pronounced when <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e310" xlink:type="simple"/></inline-formula> is higher; see <xref ref-type="supplementary-material" rid="pcbi.1002835.s001">Text S1</xref>.</p>
+            </caption>
+            <graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1002835.g006" position="float" xlink:type="simple"/>
+          </fig>
+          <table-wrap id="pcbi-1002835-t003" position="float">
+            <object-id pub-id-type="doi">10.1371/journal.pcbi.1002835.t003</object-id>
+            <label>Table 3</label>
+            <caption>
+              <title>Goodness of fit to summaries of H3N2 surveillance data and phylogenies.</title>
+            </caption>
+            <alternatives>
+              <graphic id="pcbi-1002835-t003-3" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1002835.t003" xlink:type="simple"/>
+              <table>
+                <colgroup span="1">
+                  <col align="left" span="1"/>
+                  <col align="center" span="1"/>
+                  <col align="center" span="1"/>
+                  <col align="center" span="1"/>
+                  <col align="center" span="1"/>
+                </colgroup>
+                <thead>
+                  <tr>
+                    <td align="left" rowspan="1" colspan="1">summary</td>
+                    <td colspan="4" align="left" rowspan="1">mean<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e311" xlink:type="simple"/></inline-formula>std. dev., 95% conf. interval of</td>
+                  </tr>
+                  <tr>
+                    <td align="left" rowspan="1" colspan="1"/>
+                    <td align="left" rowspan="1" colspan="1">posterior density under the SEIRS model</td>
+                    <td align="left" rowspan="1" colspan="1">comments</td>
+                    <td align="left" rowspan="1" colspan="1">posterior density under the epochal evolution model</td>
+                    <td align="left" rowspan="1" colspan="1">comments</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td align="left" rowspan="1" colspan="1">
+                      <inline-formula>
+                        <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e312" xlink:type="simple"/>
+                      </inline-formula>
+                      <italic>-attack</italic>
+                    </td>
+                    <td align="left" rowspan="1" colspan="1">−0.67<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e313" xlink:type="simple"/></inline-formula>0.42, [−1.23, 0.22]</td>
+                    <td align="left" rowspan="1" colspan="1">encompassing values for all countries</td>
+                    <td align="left" rowspan="1" colspan="1">−0.54<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e314" xlink:type="simple"/></inline-formula>0.45, [−1.18, 0.24]</td>
+                    <td align="left" rowspan="1" colspan="1">encompassing values for all countries</td>
+                  </tr>
+                  <tr>
+                    <td align="left" rowspan="1" colspan="1">
+                      <inline-formula>
+                        <inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e315" xlink:type="simple"/>
+                      </inline-formula>
+                      <italic>-attack</italic>
+                    </td>
+                    <td align="left" rowspan="1" colspan="1">−0.27<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e316" xlink:type="simple"/></inline-formula>0.27, [−0.65, 0.18]</td>
+                    <td align="left" rowspan="1" colspan="1">encompassing values for all countries</td>
+                    <td align="left" rowspan="1" colspan="1">−0.29<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e317" xlink:type="simple"/></inline-formula>0.2, [−0.67, 0.24]</td>
+                    <td align="left" rowspan="1" colspan="1">encompassing values for all countries</td>
+                  </tr>
+                  <tr>
+                    <td align="left" rowspan="1" colspan="1">
+                      <italic>explosiveness</italic>
+                    </td>
+                    <td align="left" rowspan="1" colspan="1">−0.12<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e318" xlink:type="simple"/></inline-formula>0.14, [−0.42, 0.09]</td>
+                    <td align="left" rowspan="1" colspan="1">explosiveness of Dutch data not matched well</td>
+                    <td align="left" rowspan="1" colspan="1">−0.06<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e319" xlink:type="simple"/></inline-formula>0.23, [−0.48, 0.27]</td>
+                    <td align="left" rowspan="1" colspan="1">encompassing values for all countries</td>
+                  </tr>
+                  <tr>
+                    <td align="left" rowspan="1" colspan="1">
+                      <italic>correlation</italic>
+                    </td>
+                    <td align="left" rowspan="1" colspan="1">−0.84<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e320" xlink:type="simple"/></inline-formula>0.08, [−0.85,−0.79]</td>
+                    <td align="left" rowspan="1" colspan="1">inconsistent</td>
+                    <td align="left" rowspan="1" colspan="1">−0.15<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e321" xlink:type="simple"/></inline-formula>0.25, [−0.48,0.16]</td>
+                    <td align="left" rowspan="1" colspan="1">encompassing values for all countries</td>
+                  </tr>
+                  <tr>
+                    <td align="left" rowspan="1" colspan="1">
+                      <italic>pop-attack</italic>
+                    </td>
+                    <td align="left" rowspan="1" colspan="1">0.03<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e322" xlink:type="simple"/></inline-formula>0.02, [−0.04, 0.05]</td>
+                    <td align="left" rowspan="1" colspan="1">consistent</td>
+                    <td align="left" rowspan="1" colspan="1">0.19<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e323" xlink:type="simple"/></inline-formula>0.04, [0.1,0.17]</td>
+                    <td align="left" rowspan="1" colspan="1">inconsistent in conflict with <italic>TMRCA</italic></td>
+                  </tr>
+                  <tr>
+                    <td align="left" rowspan="1" colspan="1">
+                      <italic>divergence</italic>
+                    </td>
+                    <td align="left" rowspan="1" colspan="1">0.06<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e324" xlink:type="simple"/></inline-formula>0.15, [−0.12, 0.34]</td>
+                    <td align="left" rowspan="1" colspan="1">consistent</td>
+                    <td align="left" rowspan="1" colspan="1">0<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e325" xlink:type="simple"/></inline-formula>0.12, [−0.18, 0.18]</td>
+                    <td align="left" rowspan="1" colspan="1">consistent</td>
+                  </tr>
+                  <tr>
+                    <td align="left" rowspan="1" colspan="1">
+                      <italic>diversity</italic>
+                    </td>
+                    <td align="left" rowspan="1" colspan="1">−0.43<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e326" xlink:type="simple"/></inline-formula>0.12, [−0.59, −0.21]</td>
+                    <td align="left" rowspan="1" colspan="1">inconsistent by a factor <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e327" xlink:type="simple"/></inline-formula>2</td>
+                    <td align="left" rowspan="1" colspan="1">−0.08<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e328" xlink:type="simple"/></inline-formula>0.17, [−0.33,0.23]</td>
+                    <td align="left" rowspan="1" colspan="1">consistent</td>
+                  </tr>
+                  <tr>
+                    <td align="left" rowspan="1" colspan="1">
+                      <italic>lineages</italic>
+                    </td>
+                    <td align="left" rowspan="1" colspan="1">−1.2<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e329" xlink:type="simple"/></inline-formula>0.07, [−1.29, −1.08]</td>
+                    <td align="left" rowspan="1" colspan="1">inconsistent by a factor <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e330" xlink:type="simple"/></inline-formula>2</td>
+                    <td align="left" rowspan="1" colspan="1">−0.48<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e331" xlink:type="simple"/></inline-formula>0.18, [−0.2, −0.73]</td>
+                    <td align="left" rowspan="1" colspan="1">inconsistent by a factor <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e332" xlink:type="simple"/></inline-formula>2</td>
+                  </tr>
+                  <tr>
+                    <td align="left" rowspan="1" colspan="1">
+                      <italic>TMRCA</italic>
+                    </td>
+                    <td align="left" rowspan="1" colspan="1">−0.73<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e333" xlink:type="simple"/></inline-formula>0.19, [−1.04, −0.41]</td>
+                    <td align="left" rowspan="1" colspan="1">inconsistent by a factor <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e334" xlink:type="simple"/></inline-formula>2</td>
+                    <td align="left" rowspan="1" colspan="1">−0.06<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e335" xlink:type="simple"/></inline-formula>0.19, [−0.35, 0.27]</td>
+                    <td align="left" rowspan="1" colspan="1">consistent</td>
+                  </tr>
+                  <tr>
+                    <td align="left" rowspan="1" colspan="1">
+                      <italic>nclust</italic>
+                    </td>
+                    <td align="left" rowspan="1" colspan="1">-</td>
+                    <td align="left" rowspan="1" colspan="1"/>
+                    <td align="left" rowspan="1" colspan="1">−0.03<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e336" xlink:type="simple"/></inline-formula>0.15, [−0.24, 0.2]</td>
+                    <td align="left" rowspan="1" colspan="1">consistent</td>
+                  </tr>
+                </tbody>
+              </table>
+            </alternatives>
+          </table-wrap>
+        </sec>
+        <sec id="s3b3">
+          <title>Goodness of fit</title>
+          <p>In the absence of strong seasonal forcing in the source population, infrequent cluster invasions often excite large invasion waves and refractory oscillations <xref ref-type="bibr" rid="pcbi.1002835-Koelle3">[32]</xref>, as well as pronounced genetic bottlenecks that are inconsistent with the HA phylogeny, see <xref ref-type="fig" rid="pcbi-1002835-g006">Figure 6</xref>. More importantly, when the epochal evolution model is fitted to H3N2's narrow phylogeny, ABC reveals that aspects of disease incidence cannot be quantitatively reproduced at the same time. In particular, the estimated average duration of intra-cluster immunity is <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e337" xlink:type="simple"/></inline-formula> years, which in turn implies a mean posterior <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e338" xlink:type="simple"/></inline-formula> of <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e339" xlink:type="simple"/></inline-formula> in order to reproduce H3N2's explosiveness; see <xref ref-type="fig" rid="pcbi-1002835-g005">Figures 5G,H</xref>. The effect of such high values of <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e340" xlink:type="simple"/></inline-formula> is hard to discern on interpandemic case report data without much stronger assumptions on the reporting rate than in this study. However, an <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e341" xlink:type="simple"/></inline-formula> around 20 implies long term population level attack rates well below 10%, which is not compatible with epidemiological estimates (see <xref ref-type="fig" rid="pcbi-1002835-g005">Figure 5L</xref> and <xref ref-type="bibr" rid="pcbi.1002835-Cox1">[2]</xref>). To match aspects of H3N2's HA phylogeny, unrealistically low <italic>pop-attack</italic> rates are further compensated by high <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e342" xlink:type="simple"/></inline-formula>. If strong seasonal forcing is assumed in the source population (<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e343" xlink:type="simple"/></inline-formula> but see <xref ref-type="bibr" rid="pcbi.1002835-Viboud1">[42]</xref>), the epochal evolution model produces a much better fit in line with previous work <xref ref-type="bibr" rid="pcbi.1002835-Koelle2">[7]</xref> (see <xref ref-type="supplementary-material" rid="pcbi.1002835.s001">Text S1</xref>).</p>
+        </sec>
+        <sec id="s3b4">
+          <title>Variable selection</title>
+          <p>Finally, we identify significant levels of unexplained selection pressures in the HA phylogeny under the epochal evolution model. While the mean posterior residual selection parameter <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e344" xlink:type="simple"/></inline-formula> is smaller than under the SEIRS model, the posterior probability of including <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e345" xlink:type="simple"/></inline-formula> is still 1. Typically, small <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e346" xlink:type="simple"/></inline-formula> are confounded with the corresponding inclusion probability because <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e347" xlink:type="simple"/></inline-formula> or <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e348" xlink:type="simple"/></inline-formula> and small <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e349" xlink:type="simple"/></inline-formula> are almost equally likely <xref ref-type="bibr" rid="pcbi.1002835-OHara1">[28]</xref>. Under both models, the inclusion probability is unambiguously estimated, indicating that the estimated residual selection parameter is too large to be ignored and that selection occurs not only between antigenic clusters but also within them.</p>
+        </sec>
+      </sec>
+    </sec>
+    <sec id="s4">
+      <title>Discussion</title>
+      <sec id="s4a">
+        <title>ABC for phylodynamic inference and model assessment</title>
+        <p>Fitting mechanistic models to infectious disease dynamics of RNA viruses that may escape immunity is notoriously difficult, and key epidemiological parameters such as <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e350" xlink:type="simple"/></inline-formula> can be estimated only under tacit assumptions from incidence time series <xref ref-type="bibr" rid="pcbi.1002835-Finkenstdt1">[18]</xref>, <xref ref-type="bibr" rid="pcbi.1002835-Cauchemez1">[19]</xref>, <xref ref-type="bibr" rid="pcbi.1002835-Truscott1">[43]</xref>. Currently, alternative statistical synthesis approaches are explored to harness the information in complementary data sources <xref ref-type="bibr" rid="pcbi.1002835-Rasmussen1">[25]</xref>, <xref ref-type="bibr" rid="pcbi.1002835-Ades1">[44]</xref>, <xref ref-type="bibr" rid="pcbi.1002835-Birrell1">[45]</xref>. Considering summaries of interpandemic H3N2 sequence and surveillance data, we show here that ABC can be used to fit and assess complex phylodynamic models which describe how evolutionary and ecological processes of the influenza virus may interact. Key phylodynamic parameters could be estimated under relatively weak assumptions (<xref ref-type="table" rid="pcbi-1002835-t002">Table 2</xref>), and ABC diagnosed readily if and in which direction the two considered models deviate from all the available data taken together.</p>
+        <p>Phylodynamic parameter inference and goodness-of-fit analyses rely critically on the possibility to combine epidemiological and molecular genetic data. In particular, H3N2 case report data were not sufficient to disentangle the reporting rate from epidemiological parameters, and measures of sequence divergence and diversity were not sufficient to separate the population size from evolutionary parameters. To the extent that other RNA viruses are characterized by different phylodynamic behavior, different sets of summaries must be identified in each case to replace likelihood calculations.</p>
+        <p>ABC relates evolutionary and epidemiological data mechanistically through an evolving dynamic system and thereby allows us to investigate empirical phylodynamic hypotheses more directly than is possible with other statistical data synthesis approaches <xref ref-type="bibr" rid="pcbi.1002835-Ades1">[44]</xref>, <xref ref-type="bibr" rid="pcbi.1002835-Birrell1">[45]</xref>. Whenever the evolution and ecology of the virus are inseparably linked <xref ref-type="bibr" rid="pcbi.1002835-Grenfell1">[1]</xref>, case report and phylogenetic summaries are co-dependent. In general, this reduces the degrees of freedom of a phylodynamic model in reproducing features of both types of data simultaneously, and may reveal model inconsistencies. For example, the fitted epochal evolution model could not reproduce the TMRCA's and the population attack rates at the same time (<xref ref-type="fig" rid="pcbi-1002835-g005">Figure 5L</xref>).</p>
+        <p>The reported parameter estimates and summary errors are derived by conditioning only on the phylodynamic summaries and weighting schemes described in <xref ref-type="table" rid="pcbi-1002835-t001">Table 1</xref>. ABC is sensitive to the chosen summary statistics and the tolerances <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e351" xlink:type="simple"/></inline-formula> since they determine how the prior <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e352" xlink:type="simple"/></inline-formula> is re-weighted in light of the presented evidence (see for example Table S3 and Figure S4 in <xref ref-type="supplementary-material" rid="pcbi.1002835.s001">Text S1</xref>) <xref ref-type="bibr" rid="pcbi.1002835-Marin1">[26]</xref>. Here, we chose broad enough tolerances <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e353" xlink:type="simple"/></inline-formula> such that the weighting schemes are robust to differences in surveillance time series from the Netherlands, France and the US. This approach seems appropriate to avoid overfitting in the context of the limitations of syndromic influenza surveillance, but may be less suited in the analysis of other viral infectious diseases. <xref ref-type="fig" rid="pcbi-1002835-g003">Figures 3</xref> and <xref ref-type="fig" rid="pcbi-1002835-g005">5</xref> illustrate that the resulting dimension reduction regularizes the underlying, intractable likelihood into a smooth, yet well-defined surface such that key phylodynamic model parameters are identifieable and goodness-of-fit can be characterized. It remains unclear to what degree the use of sufficient statistics or the full historical data would be desirable. Indeed, when infectious pathogens escape immunity, the likelihood surface can be especially complex <xref ref-type="bibr" rid="pcbi.1002835-Finkenstdt1">[18]</xref>, <xref ref-type="bibr" rid="pcbi.1002835-Truscott1">[43]</xref>. Likelihood-based inference is then sensitive to small changes in the complete historical data <xref ref-type="bibr" rid="pcbi.1002835-Ramsay1">[46]</xref>, <xref ref-type="bibr" rid="pcbi.1002835-Wood1">[47]</xref>, which can be problematic when the reported incidence time series or viral phylogeny is itself subject to considerable uncertainty and/or bias <xref ref-type="bibr" rid="pcbi.1002835-Cox1">[2]</xref>, <xref ref-type="bibr" rid="pcbi.1002835-Stack1">[48]</xref>.</p>
+      </sec>
+      <sec id="s4b">
+        <title>Application to H3N2 phylodynamics</title>
+        <p>We used ABC to fit mechanistic phylodynamic models of interpandemic influenza A(H3N2) to summaries of surveillance data from the Netherlands and sequence data from Northern Europe. Influenza is a globally circulating virus, and the mechanistic models considered must account for the replenishment of genetic variants from outside Northern Europe in order to reproduce features of influenza's phylogeny. In contrast, semi- or non-parametric models of population dynamics that are used in coalescent methods do not necessarily require this layer of spatial complexity <xref ref-type="bibr" rid="pcbi.1002835-Rambaut1">[9]</xref>, <xref ref-type="bibr" rid="pcbi.1002835-Pybus1">[20]</xref>. Here, the mechanistic structure of <xref ref-type="disp-formula" rid="pcbi.1002835.e088">Eqns. (5)</xref> constrains the set of possible phylodynamic trajectories in such a way that influenza's global disease dynamics must be explicitly accounted for. Put more generally, the quantitative features of H3N2 sequence and incidence data contain sufficient information to determine at least some basic aspects of phylodynamic process models statistically.</p>
+        <p>The two models we analyzed show clear limitations in their ability to replicate features of H3N2 sequence and surveillance data simultaneously, and the ABC error diagnostics give some indication how these models could be refined (<xref ref-type="fig" rid="pcbi-1002835-g003">Figures 3</xref> and <xref ref-type="fig" rid="pcbi-1002835-g005">5</xref>). For example, the phylogenies generated under the SEIRS and the epochal evolution models have, across time, more lineages than the observed HA phylogeny (<xref ref-type="table" rid="pcbi-1002835-t003">Table 3</xref>). One possible explanation is that localized extinctions may not occur sufficiently often under the re-seeding source-sink framework, suggesting that models with more detailed population structure, either in space or by age, may result in thinner phylogenies. Accounting for these types of population structure can be critical for understanding viral phylodynamics; here we showed that the fit of the epochal evolution model to both sequence and incidence data depends critically on the assumed spatial model structure and the associated φ<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e359" xlink:type="simple"/></inline-formula> (see <xref ref-type="supplementary-material" rid="pcbi.1002835.s001">Text S1</xref>).</p>
+        <p>The SEIRS model could not generate the irregularity in observed incidence data. In comparison, our analysis of the epochal evolution model demonstrates that epochal evolutionary processes can easily excite irregular between-season dynamics that match observed data (see <xref ref-type="fig" rid="pcbi-1002835-g005">Figures 5I</xref> and S18 in <xref ref-type="supplementary-material" rid="pcbi.1002835.s001">Text S1</xref>). Since the virus is known to be under intense immune selection <xref ref-type="bibr" rid="pcbi.1002835-Cox1">[2]</xref>, it seems plausible that antigenic evolution is an important co-factor in explaining influenza's irregular seasonality in temperate regions <xref ref-type="bibr" rid="pcbi.1002835-Lipsitch1">[49]</xref>.</p>
+        <p>Several alternative models have been proposed to reproduce H3N2's narrow HA phylogeny. Here, we identified an additional, testable constraint for these models on surveillance data, that arises through the phylodynamic interactions in <xref ref-type="disp-formula" rid="pcbi.1002835.e085"/><xref ref-type="disp-formula" rid="pcbi.1002835.e086"/><xref ref-type="disp-formula" rid="pcbi.1002835.e087"/><xref ref-type="disp-formula" rid="pcbi.1002835.e088">Eqns. (5)</xref>. The cluster-specific duration of immunity <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e354" xlink:type="simple"/></inline-formula> must be sufficiently long to avoid deep phylogenetic branching. If the fitted values of <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e355" xlink:type="simple"/></inline-formula> and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e356" xlink:type="simple"/></inline-formula> are correlated, this in turn implies a characteristic range of population level attack rates that can be tested against available data as in <xref ref-type="fig" rid="pcbi-1002835-g005">Figure 5L</xref>. In particular, the duration of immunity can be lower if the time between replacement events is shorter. Thus, while H3N2's limited standing genetic diversity provides information on the strength of immune interactions between H3N2 antigenic variants, this second constraint may help identify the tempo of antigenic evolution.</p>
+        <p>For the epochal evolution model with source-sink migration dynamics, the average simulated waiting time is <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e357" xlink:type="simple"/></inline-formula> years from the emergence of the current antigenic cluster to the next successfully invading offspring antigenic cluster, and this implies phylodynamics that are inconsistent with the molecular genetic and epidemiological summaries in <xref ref-type="table" rid="pcbi-1002835-t001">Table 1</xref> taken together. More frequent and more gradual transitions between antigenic variants that are smaller than H3N2's antigenic clusters would allow for lower estimates of <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1002835.e358" xlink:type="simple"/></inline-formula> that are more in line with observed population level attack rates, break weaker refractory oscillations in their onset, and might also provide sufficient, continual selection pressures to explain the fast divergence in H3N2's HA phylogeny <xref ref-type="bibr" rid="pcbi.1002835-Bedford1">[8]</xref>. In this case, sequence and surveillance data would point to a finer antigenic resolution than the one suggested through antigenic map analyses <xref ref-type="bibr" rid="pcbi.1002835-Smith1">[31]</xref>. Alternatively, it is also possible that finer population structure, either in space or by age, could increase extinction rates and thereby allow for a narrow HA phylogeny under a broader, more realistic set of epidemiological parameters without accelerating the tempo of antigenic evolution per se.</p>
+        <p>More broadly, both types of data are now increasingly becoming available for RNA viruses <xref ref-type="bibr" rid="pcbi.1002835-Rambaut1">[9]</xref>–<xref ref-type="bibr" rid="pcbi.1002835-Jabara1">[13]</xref>. This study indicates that these data, when considered simultaneously, may drastically constrain parameter space and readily expose model deficiencies, so that ABC appears as a well-suited tool to explore the phylodynamics of RNA viruses.</p>
+      </sec>
+    </sec>
+    <sec id="s5">
+      <title>Supporting Information</title>
+      <supplementary-material id="pcbi.1002835.s001" mimetype="application/pdf" xlink:href="info:doi/10.1371/journal.pcbi.1002835.s001" position="float" xlink:type="simple">
+        <label>Text S1</label>
+        <caption>
+          <p>Supplementary online text describing the influenza A (H3N2) sequence and surveillance data used, ABC algorithms and summary statistics, ABC analyses on simulated data and sensitivity analyses.</p>
+          <p>(PDF)</p>
+        </caption>
+      </supplementary-material>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <p>We thank Steven Riley, Simon Cauchemez, Anton Camacho, David Rasmussen and Neil Ferguson as well as three reviewers for their time and thoughtful comments. Computations were performed at the Imperial College High Performance Computing Service (<ext-link ext-link-type="uri" xlink:href="http://www.imperial.ac.uk/ict/services/teachingandresearchservices/highperformancecomputing" xlink:type="simple">http://www.imperial.ac.uk/ict/services/teachingandresearchservices/highperformancecomputing</ext-link>), and we thank Simon Burbidge and Matt Harvey.</p>
+    </ack>
+    <ref-list>
+      <title>References</title>
+      <ref id="pcbi.1002835-Grenfell1">
+        <label>1</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Grenfell</surname><given-names>BT</given-names></name>, <name name-style="western"><surname>Pybus</surname><given-names>OG</given-names></name>, <name name-style="western"><surname>Gog</surname><given-names>JR</given-names></name>, <name name-style="western"><surname>Wood</surname><given-names>JLN</given-names></name>, <name name-style="western"><surname>Daly</surname><given-names>JM</given-names></name>, <etal>et al</etal>. (<year>2004</year>) <article-title>Unifying the epidemiological and evolutionary dynamics of pathogens</article-title>. <source>Science</source> <volume>303</volume>: <fpage>327</fpage>–<lpage>332</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Cox1">
+        <label>2</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cox</surname><given-names>N</given-names></name>, <name name-style="western"><surname>Subbarao</surname><given-names>K</given-names></name> (<year>2000</year>) <article-title>Global epidemiology of inuenza: past and present</article-title>. <source>Annual Review of Medicine</source> <volume>51</volume>: <fpage>407</fpage>–<lpage>421</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Gog1">
+        <label>3</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gog</surname><given-names>JR</given-names></name>, <name name-style="western"><surname>Grenfell</surname><given-names>BT</given-names></name> (<year>2002</year>) <article-title>Dynamics and selection of many-strain pathogens</article-title>. <source>Proc Natl Acad Sci USA</source> <volume>99</volume>: <fpage>17209</fpage>–<lpage>17214</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Ferguson1">
+        <label>4</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ferguson</surname><given-names>NM</given-names></name>, <name name-style="western"><surname>Galvani</surname><given-names>AP</given-names></name>, <name name-style="western"><surname>Bush</surname><given-names>RM</given-names></name> (<year>2003</year>) <article-title>Ecological and immunological determinants of inuenza evolution</article-title>. <source>Nature</source> <volume>422</volume>: <fpage>428</fpage>–<lpage>433</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Koelle1">
+        <label>5</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Koelle</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Cobey</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Grenfell</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Pascual</surname><given-names>M</given-names></name> (<year>2006</year>) <article-title>Epochal Evolution Shapes the Phylodynamics of Interpandemic Inuenza A (H3N2) in Humans</article-title>. <source>Science</source> <volume>314</volume>: <fpage>1898</fpage>–<lpage>1903</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Gog2">
+        <label>6</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gog</surname><given-names>J</given-names></name> (<year>2008</year>) <article-title>The impact of evolutionary constraints on inuenza dynamics</article-title>. <source>Vaccine</source> <volume>26</volume>: <fpage>C15</fpage>–<lpage>C24</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Koelle2">
+        <label>7</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Koelle</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Khatri</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Kamradt</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Kepler</surname><given-names>T</given-names></name> (<year>2010</year>) <article-title>A two-tiered model for simulating the ecological and evolutionary dynamics of rapidly evolving viruses, with an application to inuenza</article-title>. <source>Journal of The Royal Society Interface</source> <volume>7</volume>: <fpage>1257</fpage>–<lpage>1274</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Bedford1">
+        <label>8</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bedford</surname><given-names>T</given-names></name>, <name name-style="western"><surname>Rambaut</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Pascual</surname><given-names>M</given-names></name> (<year>2012</year>) <article-title>Canalization of the evolutionary trajectory of the human inuenza virus</article-title>. <source>BMC Biology</source> <volume>10</volume> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/1741-7007-10-38" xlink:type="simple">10.1186/1741-7007-10-38</ext-link></comment>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Rambaut1">
+        <label>9</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rambaut</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Pybus</surname><given-names>OG</given-names></name>, <name name-style="western"><surname>Nelson</surname><given-names>MI</given-names></name>, <name name-style="western"><surname>Viboud</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Taubenberger</surname><given-names>JK</given-names></name>, <etal>et al</etal>. (<year>2008</year>) <article-title>The genomic and epidemiological dynamics of human inuenza A virus</article-title>. <source>Nature</source> <volume>453</volume>: <fpage>615</fpage>–<lpage>619</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Siebenga1">
+        <label>10</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Siebenga</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Vennema</surname><given-names>H</given-names></name>, <name name-style="western"><surname>Renckens</surname><given-names>B</given-names></name>, <name name-style="western"><surname>De Bruin</surname><given-names>E</given-names></name>, <name name-style="western"><surname>Van Der Veer</surname><given-names>B</given-names></name>, <etal>et al</etal>. (<year>2007</year>) <article-title>Epochal evolution of GGII.4 norovirus capsid proteins from 1995 to 2006</article-title>. <source>Journal of Virology</source> <volume>81</volume>: <fpage>9932</fpage>–<lpage>9941</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Donaldson1">
+        <label>11</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Donaldson</surname><given-names>E</given-names></name>, <name name-style="western"><surname>Lindesmith</surname><given-names>L</given-names></name>, <name name-style="western"><surname>LoBue</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Baric</surname><given-names>R</given-names></name> (<year>2010</year>) <article-title>Viral shape-shifting: norovirus evasion of the human immune system</article-title>. <source>Nature Reviews Microbiology</source> <volume>8</volume>: <fpage>231</fpage>–<lpage>241</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Fischer1">
+        <label>12</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fischer</surname><given-names>W</given-names></name>, <name name-style="western"><surname>Ganusov</surname><given-names>V</given-names></name>, <name name-style="western"><surname>Giorgi</surname><given-names>E</given-names></name>, <name name-style="western"><surname>Hraber</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Keele</surname><given-names>B</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>Transmission of single HIV-1 genomes and dynamics of early immune escape revealed by ultra-deep sequencing</article-title>. <source>PLoS One</source> <volume>5</volume>: <fpage>e12303</fpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Jabara1">
+        <label>13</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jabara</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Jones</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Roach</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Anderson</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Swanstrom</surname><given-names>R</given-names></name> (<year>2011</year>) <article-title>Accurate sampling and deep sequencing of the HIV-1 protease gene using a Primer ID</article-title>. <source>Proc Natl Acad Sci USA</source> <volume>108</volume>: <fpage>20166</fpage>–<lpage>20171</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Keeling1">
+        <label>14</label>
+        <mixed-citation publication-type="other" xlink:type="simple">Keeling M, Rohani P (2008) Modeling infectious diseases in humans and animals. Princeton: Princeton Univ Press. 408p.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Becker1">
+        <label>15</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Becker</surname><given-names>N</given-names></name>, <name name-style="western"><surname>Britton</surname><given-names>T</given-names></name> (<year>1999</year>) <article-title>Statistical studies of infectious disease incidence</article-title>. <source>Journal of the Royal Statistical Society: Series B</source> <volume>61</volume>: <fpage>287</fpage>–<lpage>307</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Ionides1">
+        <label>16</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ionides</surname><given-names>EL</given-names></name>, <name name-style="western"><surname>Breto</surname><given-names>C</given-names></name>, <name name-style="western"><surname>King</surname><given-names>AA</given-names></name> (<year>2006</year>) <article-title>Inference for nonlinear dynamical systems</article-title>. <source>Proc Natl Acad Sci USA</source> <volume>103</volume>: <fpage>18438</fpage>–<lpage>18443</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Andrieu1">
+        <label>17</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Andrieu</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Doucet</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Holenstein</surname><given-names>R</given-names></name> (<year>2010</year>) <article-title>Particle Markov chain Monte Carlo methods</article-title>. <source>Journal of the Royal Statistical Society: Series B</source> <volume>72</volume>: <fpage>269342</fpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Finkenstdt1">
+        <label>18</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Finkenstädt</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Morton</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Rand</surname><given-names>D</given-names></name> (<year>2005</year>) <article-title>Modelling antigenic drift in weekly flu incidence</article-title>. <source>Statistics in Medicine</source> <volume>24</volume>: <fpage>3447</fpage>–<lpage>3461</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Cauchemez1">
+        <label>19</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cauchemez</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Ferguson</surname><given-names>N</given-names></name> (<year>2008</year>) <article-title>Likelihood-based estimation of continuous-time epidemic models from time-series data: application to measles transmission in London</article-title>. <source>Journal of the Royal Society Interface</source> <volume>5</volume>: <fpage>885</fpage>–<lpage>897</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Pybus1">
+        <label>20</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pybus</surname><given-names>O</given-names></name>, <name name-style="western"><surname>Rambaut</surname><given-names>A</given-names></name> (<year>2009</year>) <article-title>Evolutionary analysis of the dynamics of viral infectious disease</article-title>. <source>Nature Reviews Genetics</source> <volume>10</volume>: <fpage>540</fpage>–<lpage>550</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Bedford2">
+        <label>21</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bedford</surname><given-names>T</given-names></name>, <name name-style="western"><surname>Cobey</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Beerli</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Pascual</surname><given-names>M</given-names></name> (<year>2010</year>) <article-title>Global migration dynamics underlie evolution and persistence of human inuenza A (H3N2)</article-title>. <source>PLoS Pathogens</source> <volume>6</volume>: <fpage>e1000918</fpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Bahl1">
+        <label>22</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bahl</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Nelson</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Chan</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Chen</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Vijaykrishna</surname><given-names>D</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>Temporally structured metapopulation dynamics and persistence of inuenza A H3N2 virus in humans</article-title>. <source>Proc Natl Acad Sci U S A</source> <volume>108</volume>: <fpage>19359</fpage>–<lpage>19364</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Drummond1">
+        <label>23</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Drummond</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Rambaut</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Shapiro</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Pybus</surname><given-names>O</given-names></name> (<year>2005</year>) <article-title>Bayesian coalescent inference of past population dynamics from molecular sequences</article-title>. <source>Molecular Biology and Evolution</source> <volume>22</volume>: <fpage>1185</fpage>–<lpage>1192</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Minin1">
+        <label>24</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Minin</surname><given-names>V</given-names></name>, <name name-style="western"><surname>Bloomquist</surname><given-names>E</given-names></name>, <name name-style="western"><surname>Suchard</surname><given-names>M</given-names></name> (<year>2008</year>) <article-title>Smooth skyride through a rough skyline: Bayesian coalescent-based inference of population dynamics</article-title>. <source>Molecular Biology and Evolution</source> <volume>25</volume>: <fpage>1459</fpage>–<lpage>1471</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Rasmussen1">
+        <label>25</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rasmussen</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Ratmann</surname><given-names>O</given-names></name>, <name name-style="western"><surname>Koelle</surname><given-names>K</given-names></name> (<year>2011</year>) <article-title>Inference for nonlinear epidemiological models using genealogies and time series</article-title>. <source>PLoS Computational Biology</source> <volume>7</volume>: <fpage>e1002136</fpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Marin1">
+        <label>26</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Marin</surname><given-names>JM</given-names></name>, <name name-style="western"><surname>Pudlo</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Robert</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Ryder</surname><given-names>R</given-names></name> (<year>2011</year>) <article-title>Approximate Bayesian computational methods</article-title>. <source>Statistics and Computing</source> In press.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Ratmann1">
+        <label>27</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ratmann</surname><given-names>O</given-names></name>, <name name-style="western"><surname>Andrieu</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Wiuf</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Richardson</surname><given-names>S</given-names></name> (<year>2009</year>) <article-title>Model criticism based on likelihood-free inference, with an application to protein network evolution</article-title>. <source>Proc Natl Acad Sci U S A</source> <volume>106</volume>: <fpage>10576</fpage>–<lpage>10581</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-OHara1">
+        <label>28</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>O'Hara</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Sillanpaa</surname><given-names>M</given-names></name> (<year>2009</year>) <article-title>A review of Bayesian variable selection methods: what, how and which</article-title>. <source>Bayesian Analysis</source> <volume>4</volume>: <fpage>85</fpage>–<lpage>118</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Dijkstra1">
+        <label>29</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Dijkstra</surname><given-names>F</given-names></name>, <name name-style="western"><surname>Donker</surname><given-names>G</given-names></name>, <name name-style="western"><surname>Wilbrink</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Van Gageldonk-Lafeber</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Van Der Sande</surname><given-names>M</given-names></name>, <etal>et al</etal>. (<year>2009</year>) <article-title>Long time trends in inuenza-like illness and associated determinants in The Netherlands</article-title>. <source>Epidemiol Infect</source> <volume>137</volume>: <fpage>473</fpage>–<lpage>9</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Meijer1">
+        <label>30</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Meijer</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Rimmelzwaan</surname><given-names>G</given-names></name>, <name name-style="western"><surname>Dijkstra</surname><given-names>F</given-names></name>, <name name-style="western"><surname>Donker</surname><given-names>G</given-names></name> (<year>2009</year>) <article-title>Actuele ontwikkelingen betre ffende inuenza; griepspotters in actie</article-title>. <source>Tijdschr Infect</source> <volume>4</volume>: <fpage>176</fpage>–<lpage>84</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Smith1">
+        <label>31</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Smith</surname><given-names>DJ</given-names></name>, <name name-style="western"><surname>Lapedes</surname><given-names>AS</given-names></name>, <name name-style="western"><surname>de Jong</surname><given-names>JC</given-names></name>, <name name-style="western"><surname>Bestebroer</surname><given-names>TM</given-names></name>, <name name-style="western"><surname>Rimmelzwaan</surname><given-names>GF</given-names></name>, <etal>et al</etal>. (<year>2004</year>) <article-title>Mapping the antigenic and genetic evolution of inuenza virus</article-title>. <source>Science</source> <volume>305</volume>: <fpage>371</fpage>–<lpage>376</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Koelle3">
+        <label>32</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Koelle</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Kamradt</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Pascual</surname><given-names>M</given-names></name> (<year>2009</year>) <article-title>Understanding the dynamics of rapidly evolving pathogens through modeling the tempo of antigenic change: inuenza as a case study</article-title>. <source>Epidemics</source> <volume>1</volume>: <fpage>129</fpage>–<lpage>137</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Russell1">
+        <label>33</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Russell</surname><given-names>CA</given-names></name>, <name name-style="western"><surname>Jones</surname><given-names>TC</given-names></name>, <name name-style="western"><surname>Barr</surname><given-names>IG</given-names></name>, <name name-style="western"><surname>Cox</surname><given-names>NJ</given-names></name>, <name name-style="western"><surname>Garten</surname><given-names>RJ</given-names></name>, <etal>et al</etal>. (<year>2008</year>) <article-title>The global circulation of seasonal inuenza A (H3N2) viruses</article-title>. <source>Science</source> <volume>320</volume>: <fpage>340</fpage>–<lpage>346</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Marjoram1">
+        <label>34</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Marjoram</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Molitor</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Plagnol</surname><given-names>V</given-names></name>, <name name-style="western"><surname>Tavaré</surname><given-names>S</given-names></name> (<year>2003</year>) <article-title>Markov Chain Monte Carlo without likelihoods</article-title>. <source>Proc Natl Acad Sci U S A</source> <volume>100</volume>: <fpage>15324</fpage>–<lpage>15328</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Arinaminpathy1">
+        <label>35</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Arinaminpathy</surname><given-names>N</given-names></name>, <name name-style="western"><surname>Ratmann</surname><given-names>O</given-names></name>, <name name-style="western"><surname>Koelle</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Epstein</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Prince</surname><given-names>G</given-names></name>, <etal>et al</etal>. (<year>2012</year>) <article-title>Impact of cross-protective vaccines on epidemiological and evolutionary dynamics of inuenza, pnas (2011)</article-title>. <source>Proc Natl Acad Sci U S A</source> <volume>109</volume>: <fpage>3173</fpage>–<lpage>3177</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Ferguson2">
+        <label>36</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ferguson</surname><given-names>N</given-names></name>, <name name-style="western"><surname>Cummings</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Cauchemez</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Fraser</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Riley</surname><given-names>S</given-names></name>, <etal>et al</etal>. (<year>2005</year>) <article-title>Strategies for containing an emerging inuenza pandemic in Southeast Asia</article-title>. <source>Nature</source> <volume>437</volume>: <fpage>209</fpage>–<lpage>214</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Pease1">
+        <label>37</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pease</surname><given-names>C</given-names></name> (<year>1987</year>) <article-title>An evolutionary epidemiological mechanism, with applications to type a inuenza</article-title>. <source>Theoretical Population Biology</source> <volume>31</volume>: <fpage>422</fpage>–<lpage>452</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Monto1">
+        <label>38</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Monto</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Koopman</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Longini</surname><given-names>I</given-names><suffix>Jr</suffix></name> (<year>1985</year>) <article-title>Tecumseh study of illness. xiii. Inuenza infection and disease, 1976–1981</article-title>. <source>American Journal of Epidemiology</source> <volume>121</volume>: <fpage>811</fpage>–<lpage>822</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Mills1">
+        <label>39</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mills</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Robins</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Lipsitch</surname><given-names>M</given-names></name> (<year>2004</year>) <article-title>Transmissibility of 1918 pandemic inuenza</article-title>. <source>Nature</source> <volume>432</volume>: <fpage>904</fpage>–<lpage>906</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Cauchemez2">
+        <label>40</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cauchemez</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Valleron</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Boëlle</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Flahault</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Ferguson</surname><given-names>N</given-names></name> (<year>2008</year>) <article-title>Estimating the impact of school closure on inuenza transmission from sentinel data</article-title>. <source>Nature</source> <volume>452</volume>: <fpage>750</fpage>–<lpage>754</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Recker1">
+        <label>41</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Recker</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Pybus</surname><given-names>OG</given-names></name>, <name name-style="western"><surname>Nee</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Gupta</surname><given-names>S</given-names></name> (<year>2007</year>) <article-title>The generation of inuenza outbreaks by a network of host immune responses against a limited set of antigenic types</article-title>. <source>Proc Natl Acad Sci USA</source> <volume>104</volume>: <fpage>7711</fpage>–<lpage>7716</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Viboud1">
+        <label>42</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Viboud</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Alonso</surname><given-names>W</given-names></name>, <name name-style="western"><surname>Simonsen</surname><given-names>L</given-names></name> (<year>2006</year>) <article-title>Inuenza in tropical regions</article-title>. <source>PLoS medicine</source> <volume>3</volume>: <fpage>e89</fpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Truscott1">
+        <label>43</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Truscott</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Fraser</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Cauchemez</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Meeyai</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Hinsley</surname><given-names>W</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>Essential epidemiological mechanisms underpinning the transmission dynamics of seasonal in- uenza</article-title>. <source>Journal of The Royal Society Interface</source> <volume>9</volume>: <fpage>304</fpage>–<lpage>312</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Ades1">
+        <label>44</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ades</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Sutton</surname><given-names>A</given-names></name> (<year>2006</year>) <article-title>Multiparameter evidence synthesis in epidemiology and medical decision-making: current approaches</article-title>. <source>Journal of the Royal Statistical Society: Series A</source> <volume>169</volume>: <fpage>5</fpage>–<lpage>35</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Birrell1">
+        <label>45</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Birrell</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Ketsetzis</surname><given-names>G</given-names></name>, <name name-style="western"><surname>Gay</surname><given-names>N</given-names></name>, <name name-style="western"><surname>Cooper</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Presanis</surname><given-names>A</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>Bayesian modelling to unmask and predict inuenza A/H1N1pdm dynamics in London</article-title>. <source>Proc Natl Acad Sci U S A</source> <volume>108</volume>: <fpage>18238</fpage>–<lpage>18243</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Ramsay1">
+        <label>46</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ramsay</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Hooker</surname><given-names>G</given-names></name>, <name name-style="western"><surname>Campbell</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Cao</surname><given-names>J</given-names></name> (<year>2007</year>) <article-title>Parameter estimation for differential equations: a generalized smoothing approach</article-title>. <source>Journal of the Royal Statistical Society: Series B</source> <volume>69</volume>: <fpage>741</fpage>–<lpage>796</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Wood1">
+        <label>47</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wood</surname><given-names>S</given-names></name> (<year>2010</year>) <article-title>Statistical inference for noisy nonlinear ecological dynamic systems</article-title>. <source>Nature</source> <volume>466</volume>: <fpage>1102</fpage>–<lpage>1104</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Stack1">
+        <label>48</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Stack</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Welch</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Ferrari</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Shapiro</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Grenfell</surname><given-names>B</given-names></name> (<year>2010</year>) <article-title>Protocols for sampling viral sequences to study epidemic dynamics</article-title>. <source>Journal of the Royal Society Interface</source> <volume>7</volume>: <fpage>1119</fpage>–<lpage>1127</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002835-Lipsitch1">
+        <label>49</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lipsitch</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Viboud</surname><given-names>C</given-names></name> (<year>2009</year>) <article-title>Inuenza seasonality: lifting the fog</article-title>. <source>Proc Natl Acad Sci U S A</source> <volume>106</volume>: <fpage>3645</fpage>.</mixed-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>

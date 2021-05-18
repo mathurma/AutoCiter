@@ -1,0 +1,1208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="3.0" xml:lang="en">
+<front>
+<journal-meta>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id>
+<journal-id journal-id-type="pmc">ploscomp</journal-id><journal-title-group>
+<journal-title>PLoS Computational Biology</journal-title></journal-title-group>
+<issn pub-type="ppub">1553-734X</issn>
+<issn pub-type="epub">1553-7358</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, USA</publisher-loc></publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="publisher-id">PCOMPBIOL-D-13-01741</article-id>
+<article-id pub-id-type="doi">10.1371/journal.pcbi.1003598</article-id>
+<article-categories><subj-group subj-group-type="heading"><subject>Research Article</subject></subj-group><subj-group subj-group-type="Discipline-v2"><subject>Biology and life sciences</subject></subj-group><subj-group subj-group-type="Discipline-v2"><subject>Computer and information sciences</subject></subj-group></article-categories>
+<title-group>
+<article-title>Inference of RNA Polymerase II Transcription Dynamics from Chromatin Immunoprecipitation Time Course Data</article-title>
+<alt-title alt-title-type="running-head">Modeling Transcription Dynamics</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>wa Maina</surname><given-names>Ciira</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="corresp" rid="cor1"><sup>*</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Honkela</surname><given-names>Antti</given-names></name><xref ref-type="aff" rid="aff2"><sup>2</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Matarese</surname><given-names>Filomena</given-names></name><xref ref-type="aff" rid="aff3"><sup>3</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Grote</surname><given-names>Korbinian</given-names></name><xref ref-type="aff" rid="aff4"><sup>4</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Stunnenberg</surname><given-names>Hendrik G.</given-names></name><xref ref-type="aff" rid="aff3"><sup>3</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Reid</surname><given-names>George</given-names></name><xref ref-type="aff" rid="aff5"><sup>5</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Lawrence</surname><given-names>Neil D.</given-names></name><xref ref-type="aff" rid="aff6"><sup>6</sup></xref><xref ref-type="corresp" rid="cor1"><sup>*</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Rattray</surname><given-names>Magnus</given-names></name><xref ref-type="aff" rid="aff7"><sup>7</sup></xref><xref ref-type="corresp" rid="cor1"><sup>*</sup></xref></contrib>
+</contrib-group>
+<aff id="aff1"><label>1</label><addr-line>Department of Electrical and Electronic Engineering, Dedan Kimathi University of Technology, Nyeri, Kenya</addr-line></aff>
+<aff id="aff2"><label>2</label><addr-line>Helsinki Institute for Information Technology HIIT, Department of Computer Science, University of Helsinki, Helsinki, Finland</addr-line></aff>
+<aff id="aff3"><label>3</label><addr-line>Nijmegen Centre for Molecular Life Sciences, Radboud University Nijmegen, Nijmegen, The Netherlands</addr-line></aff>
+<aff id="aff4"><label>4</label><addr-line>Genomatix Software GmbH, Muenchen, Germany</addr-line></aff>
+<aff id="aff5"><label>5</label><addr-line>Institute for Molecular Biology, Mainz, Germany</addr-line></aff>
+<aff id="aff6"><label>6</label><addr-line>Department of Computer Science, University of Sheffield, Sheffield, United Kingdom</addr-line></aff>
+<aff id="aff7"><label>7</label><addr-line>Faculty of Life Sciences, University of Manchester, Manchester, United Kingdom</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple"><name name-style="western"><surname>Sinha</surname><given-names>Saurabh</given-names></name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/></contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>University of Illinois at Urbana-Champaign, United States of America</addr-line></aff>
+<author-notes>
+<corresp id="cor1">* E-mail: <email xlink:type="simple">cwamaina.dekut@gmail.com</email> (CwM); <email xlink:type="simple">n.lawrence@sheffield.ac.uk</email> (NDL); <email xlink:type="simple">magnus.rattray@manchester.ac.uk</email> (MR)</corresp>
+<fn fn-type="conflict"><p>The authors have declared that no competing interests exist.</p></fn>
+<fn fn-type="con"><p>Conceived and designed the experiments: MR NDL HGS AH CwM. Performed the experiments: CwM FM. Analyzed the data: CwM AH MR NDL. Contributed reagents/materials/analysis tools: CwM AH FM KG GR HGS. Wrote the paper: CwM AH GR NDL MR. Algorithm design: CwM AH MR NDL. Software development: CwM.</p></fn>
+</author-notes>
+<pub-date pub-type="collection"><month>5</month><year>2014</year></pub-date>
+<pub-date pub-type="epub"><day>15</day><month>5</month><year>2014</year></pub-date>
+<volume>10</volume>
+<issue>5</issue>
+<elocation-id>e1003598</elocation-id>
+<history>
+<date date-type="received"><day>30</day><month>9</month><year>2013</year></date>
+<date date-type="accepted"><day>19</day><month>3</month><year>2014</year></date>
+</history>
+<permissions>
+<copyright-year>2014</copyright-year>
+<copyright-holder>wa Maina et al</copyright-holder><license xlink:type="simple"><license-p>This is an open-access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license></permissions>
+<abstract>
+<p>Gene transcription mediated by RNA polymerase II (pol-II) is a key step in gene expression. The dynamics of pol-II moving along the transcribed region influence the rate and timing of gene expression. In this work, we present a probabilistic model of transcription dynamics which is fitted to pol-II occupancy time course data measured using ChIP-Seq. The model can be used to estimate transcription speed and to infer the temporal pol-II activity profile at the gene promoter. Model parameters are estimated using either maximum likelihood estimation or via Bayesian inference using Markov chain Monte Carlo sampling. The Bayesian approach provides confidence intervals for parameter estimates and allows the use of priors that capture domain knowledge, e.g. the expected range of transcription speeds, based on previous experiments. The model describes the movement of pol-II down the gene body and can be used to identify the time of induction for transcriptionally engaged genes. By clustering the inferred promoter activity time profiles, we are able to determine which genes respond quickly to stimuli and group genes that share activity profiles and may therefore be co-regulated. We apply our methodology to biological data obtained using ChIP-seq to measure pol-II occupancy genome-wide when MCF-7 human breast cancer cells are treated with estradiol (E2). The transcription speeds we obtain agree with those obtained previously for smaller numbers of genes with the advantage that our approach can be applied genome-wide. We validate the biological significance of the pol-II promoter activity clusters by investigating cluster-specific transcription factor binding patterns and determining canonical pathway enrichment. We find that rapidly induced genes are enriched for both estrogen receptor alpha (ER<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e001" xlink:type="simple"/></inline-formula>) and FOXA1 binding in their proximal promoter regions.</p>
+</abstract>
+<abstract abstract-type="summary"><title>Author Summary</title>
+<p>Cells express proteins in response to changes in their environment so as to maintain normal function. An initial step in the expression of proteins is transcription, which is mediated by RNA polymerase II (pol-II). To understand changes in transcription arising due to stimuli it is useful to model the dynamics of transcription. We present a probabilistic model of pol-II transcription dynamics that can be used to compute RNA transcription speed and infer the temporal pol-II activity at the gene promoter. The inferred promoter activity profile is used to determine genes that are responding in a coordinated manner to stimuli and are therefore potentially co-regulated. Model parameters are inferred using data from high-throughput sequencing assays, such as ChIP-Seq and GRO-Seq, and can therefore be applied genome-wide in an unbiased manner. We apply the method to pol-II ChIP-Seq time course data from breast cancer cells stimulated by estradiol in order to uncover the dynamics of early response genes in this system.</p>
+</abstract>
+<funding-group><funding-statement>The work was funded by the European ERASysBio+ initiative project “Systems approach to gene regulation biology through nuclear receptors” (SYNERGY) by the BBSRC [BB/I004769/2 to CwM, MR and NDL], MR and NDL acknowledge EU FP7 project RADIANT (grant no. 305626), Academy of Finland [135311 and 259440 to AH] and by the BMBF [grant award ERASysBio+ P\#134 to GR]. The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement></funding-group><counts><page-count count="17"/></counts></article-meta>
+</front>
+<body><sec id="s1">
+<title>Introduction</title>
+<p>Transcription mediated by RNA polymerase II (pol-II) is an essential process in the expression of protein-coding genes in eukaryotes. Transcription is dependent upon a number of sequential and dynamic events, such as recruitment of pol-II to the transcriptional start site, activation of pol-II through phosphorylation of its C-terminal domain, elongation of the nascent transcript through the transcribed region and termination <xref ref-type="bibr" rid="pcbi.1003598-Hager1">[1]</xref>. Each of these steps may be rate-limiting and can therefore affect the level of gene expression. In this paper, we describe a simple probabilistic model of transcription whose parameters can be inferred using time-series data such as pol-II ChIP-Seq data <xref ref-type="bibr" rid="pcbi.1003598-Welboren1">[2]</xref> or nascent transcript measurement by GRO-Seq that reports markers of transcriptional activity <xref ref-type="bibr" rid="pcbi.1003598-Hah1">[3]</xref>. This model can be used to identify transcriptionally engaged genes, estimate their transcription rates and infer transcriptional activity adjacent to the promoter. The transcriptional dynamics of estrogen responsive genes in a breast cancer cell line were described by fitting this model to pol-II ChIP-seq time course datasets.</p>
+<p>Chromatin immunoprecipitation, in conjunction with massively parallel sequencing (ChIP-seq) evaluates interactions between proteins and DNA, and, for example, can be used to monitor the presence of pol-II on DNA. Estimating the amount of pol-II associated with a transcribed gene provides a measure of transcriptional activity <xref ref-type="bibr" rid="pcbi.1003598-Welboren1">[2]</xref>. Sequential measurement of pol-II occupancy on genes released from transcriptional blockade, for example, in response to stimuli, reveal a wave of transcription moving through the body of the responding transcript.</p>
+<p>A number of studies have attempted to determine the rate of transcription through modelling the dynamics of pol-II. Darzacq <italic>et al.</italic> fit a mechanistic model of pol-II transcription to nascent RNA data at a single locus and obtained a transcription speed of 4.3 kilobases per minute <xref ref-type="bibr" rid="pcbi.1003598-Darzacq1">[4]</xref>. Wada <italic>et al.</italic> activated transcription of genes greater than 100 kbp in length and estimated the transcription speeds using a model that measures an intronic RNA signal through taking advantage of co-transcriptional splicing. They obtain an average transcription rate of 3.1 kbp min<sup>−1</sup> <xref ref-type="bibr" rid="pcbi.1003598-Wada1">[5]</xref>. Singh and Padget (2009) reversibly inhibit transcription to determine the transcription rate of 9 genes, all of which were greater than 100 kbp which had an average transcription rate of 3.79 kbp min<sup>−1</sup> <xref ref-type="bibr" rid="pcbi.1003598-Singh1">[6]</xref>. The data used in these studies have good temporal resolution (e.g. samples every 7.5 min in <xref ref-type="bibr" rid="pcbi.1003598-Wada1">[5]</xref>) and reliably allow fitting of mathematical models or the direct measurement of transcription speed, however, only for a limited set of long genes. In contrast, high throughput data sets such as ChIP-Seq, can be used to uncover transcription dynamics genome-wide but typically have much lower temporal resolution, motivating the development of alternative modelling approaches that report genome-wide transcription rates.</p>
+<p>One way around the low temporal resolution of typical high-throughput time course data is to employ a non-parametric model of the biological signals of interest. In many cases we expect these signals to vary continuously and smoothly in time, when averaged over a cell population, and a Gaussian process model provides a convenient non-parametric model in such cases <xref ref-type="bibr" rid="pcbi.1003598-Rasmussen1">[7]</xref>. Gaussian processes have recently found applications in a range of biological system models <xref ref-type="bibr" rid="pcbi.1003598-Gao1">[8]</xref>–<xref ref-type="bibr" rid="pcbi.1003598-Liu1">[11]</xref>.</p>
+<p>Here we present a Gaussian process model of transcription dynamics which can be fitted to genome-wide pol-II occupancy data measured using ChIP-Seq. The model describes the movement of pol-II through the gene body and combines a flexible model of promoter-proximal pol-II activity with a reliable estimate of transcription speed. By identifying genes which fit the model well, we provide a useful method to identify actively transcribed genes. The model does not assume a constant transcription speed and can therefore identify variable rates of transcription, for example due to transcriptional pausing. Model parameters are inferred using either maximum likelihood (ML) estimation or via Bayesian inference using Markov chain Monte Carlo (MCMC) sampling. The Bayesian approach provides confidence intervals for parameter estimates and can incoporate priors that capture domain knowledge, e.g. the expected range of transcription speeds, based on previous experiments.</p>
+<p>We fit our model to a pol-II ChIP-Seq time course dataset from MCF7 breast cancer cells stimulated with estradiol. The model is used to identify the set of transcriptionally engaged genes and estimate their mean transcription rate and transcriptional activity near the promoter. By clustering promoter activity profiles, potential co-regulated groups of genes are identified, particularly those that respond rapidly to estrogen signalling. Subsequent characterisation of transcription factor (TF) binding sites in proximity to the promoters of genes within clusters provides a means of classifying groups of promoters that are responsive to the binding of specific combinations of TFs. Additionally, publically available ChIP-Seq datasets of TF profiles from the same system were used to identify cluster-specific patterns in TF-binding. The rates of transcription estimated by our model are consistent with the literature <xref ref-type="bibr" rid="pcbi.1003598-Darzacq1">[4]</xref>, <xref ref-type="bibr" rid="pcbi.1003598-Wada1">[5]</xref> but with the advantage that our method allows the computation of transcription speeds genome-wide.</p>
+<p>Our methodology has a number of advantages. We do not require data with high temporal resolution, making it feasible to model transcriptional dynamics genome-wide using ChIP-Seq or GRO-Seq time course data. We infer transcription rates for all genes in an unbiased manner and by using Bayesian parameter estimation we are able to associate our transcription rate estimates with confidence intervals. Our model is non-parametric and therefore does not make very strong assumptions about the temporal changes in transcriptional activity. Fitting the model genome-wide allows us to identify and filter out transcripts where pol-II does not travel down the gene body. This provides a principled method to identify responsive genes, in particular, early acting estrogen responsive genes in the specific application considered here. Since our model does not enforce a uniform transcription speed over the entire gene body, we can take into account phenomena such as pol-II pausing which would result in a non-uniform transcription speed. We also use this model to infer the promoter activity of transcriptionally engaged genes, to identify co-regulated gene modules downstream of estrogen signalling.</p>
+</sec><sec id="s2" sec-type="methods">
+<title>Methods</title>
+<p>Visualizing pol-II ChIP-seq reads mapped to transcriptional units at multiple time points following the addition of estradiol to MCF7 cells reveals the motion of pol-II through the gene body of estrogen responsive genes (see <xref ref-type="fig" rid="pcbi-1003598-g001">Figure 1</xref>). Computing the average pol-II occupancy over successive gene segments describes the motion of the transcription wave. Thereafter, fitting a model capable of smoothly interpolating between observed time points and by determining the time taken for pol-II to move from one gene segment to the next determines if pol-II is transcriptionally engaged on a given transcript and the speed at which it is moving through this transcriptional unit. We use a convolved Gaussian process to model the relationship between the pol-II signal at different regions of the gene and across time. Model parameters are determined using maximum likelihood (ML) or Bayesian inference via Markov chain Monte Carlo (MCMC) to determine genes of interest and moreover, in the case of MCMC, determine confidence intervals for our parameter estimates.</p>
+<fig id="pcbi-1003598-g001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003598.g001</object-id><label>Figure 1</label><caption>
+<title>Description of the transcription dynamics modelling framework.</title>
+<p>Pol-II ChIP-seq data for the TIPARP gene shows a transcription wave moving down the gene. The transcription dynamics model captures this motion and allows us to estimate transcription speeds. In this case the gene is divided into 5 segments and we estimate the speed to be approximately 2 kilobases per minute. Panel A shows the raw ChIP-seq reads at different times between 0 and 320 min. The top part of panel B shows the inferred promoter activity profile. The next five parts of panel B show the inferred profiles for the five gene segments corresponding to <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e002" xlink:type="simple"/></inline-formula> of the gene. By clustering these promoter activity profiles as shown in panel C, we are able to group genes into clusters that are likely to be co-regulated and in particular we identify the clusters that respond most rapidly to estrogen signalling.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003598.g001" position="float" xlink:type="simple"/></fig><sec id="s2a">
+<title>Convolved Gaussian Process Model</title>
+<p>A Gaussian process (GP) is a distribution over the space of functions. This distribution is completely specified by a mean function <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e003" xlink:type="simple"/></inline-formula> and a covariance function <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e004" xlink:type="simple"/></inline-formula>. A function <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e005" xlink:type="simple"/></inline-formula> is said to be drawn from a Gaussian process <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e006" xlink:type="simple"/></inline-formula> if <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e007" xlink:type="simple"/></inline-formula> at any finite collection of points has a multivariate Gaussian distribution with mean vector and covariance matrix specified by <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e008" xlink:type="simple"/></inline-formula> and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e009" xlink:type="simple"/></inline-formula>, respectively. GPs provide a powerful framework for non-parametric regression <xref ref-type="bibr" rid="pcbi.1003598-Rasmussen1">[7]</xref>. If a function is assumed to be drawn from a GP with known mean and covariance function, we can infer the function value and associated uncertainty at unobserved locations given noise-corrupted observations. GPs have recently been applied in modelling biological systems, e.g. modelling protein concentrations as latent variables in differential equation models of transcriptional regulation <xref ref-type="bibr" rid="pcbi.1003598-Gao1">[8]</xref>, <xref ref-type="bibr" rid="pcbi.1003598-Honkela1">[9]</xref> and modelling spatial gene expression <xref ref-type="bibr" rid="pcbi.1003598-Liu1">[11]</xref>.</p>
+<p>Here we introduce a novel application of GPs to modelling the spatio-temporal dynamics of pol-II occupancy during transcription. Convolved GPs allow the modelling of correlations between multiple coupled data sources. In our case these data sources are the pol-II occupancy over time collected at different locations along the transcribed region of a gene. Modelling the data as a convolved process borrows information from these different data sources in estimating the model parameters and inferring the underlying signal in the data. Also, we find that convolved GPs are necessary to account for changes in the shapes of signals observed at different regions of the gene. In linear systems theory, the output <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e010" xlink:type="simple"/></inline-formula> of a linear time-invariant system whose impulse response is <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e011" xlink:type="simple"/></inline-formula> is given by the convolution of the input <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e012" xlink:type="simple"/></inline-formula> and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e013" xlink:type="simple"/></inline-formula>, that is <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e014" xlink:type="simple"/></inline-formula>. If different sets of observations are believed to be related, they can be modeled as the outputs of different linear systems in response to a single input. If this input is modeled as a GP, then it will form a joint GP together with all the outputs and data from one output stream will be useful in inferring the rest <xref ref-type="bibr" rid="pcbi.1003598-Higdon1">[12]</xref>–<xref ref-type="bibr" rid="pcbi.1003598-Calder1">[20]</xref>. In our case, incorporating the data from multiple spatially separated regions of the genes allows us to infer an underlying function that links all these regions. This proves useful as a summary of the transcription dynamics of the gene and we show that it provides useful insights into potential coregulation.</p>
+<sec id="s2a1">
+<title>Model description</title>
+<p>In order to capture the movement of the transcription wave through transcriptional units, we divide each gene into <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e015" xlink:type="simple"/></inline-formula> segments and compute time series of pol-II occupancy for each of the segments. Due to the low temporal resolution characteristic of high-throughput datasets, the time series between measurements must be inferred. To this end, we model the pol-II occupancy <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e016" xlink:type="simple"/></inline-formula> in each segment <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e017" xlink:type="simple"/></inline-formula> as the convolution of a latent process <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e018" xlink:type="simple"/></inline-formula> which is shared by all segments and a (possibly delayed) smoothing kernel <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e019" xlink:type="simple"/></inline-formula> corrupted by an independent white Gaussian noise process <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e020" xlink:type="simple"/></inline-formula> with zero mean and variance <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e021" xlink:type="simple"/></inline-formula> <xref ref-type="bibr" rid="pcbi.1003598-Boyle1">[15]</xref>, <xref ref-type="bibr" rid="pcbi.1003598-Alvarez1">[16]</xref>. That is <disp-formula id="pcbi.1003598.e022"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003598.e022" xlink:type="simple"/><label>(1)</label></disp-formula>where <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e023" xlink:type="simple"/></inline-formula> is a scale factor and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e024" xlink:type="simple"/></inline-formula> is the delay of each segment. The latent process <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e025" xlink:type="simple"/></inline-formula> is modeled as a random function drawn from a GP with zero mean and a squared exponential covariance function (defined in <xref ref-type="disp-formula" rid="pcbi.1003598.e034">Equation (4</xref>) below). The smoothing kernel is assumed to be Gaussian, that is<disp-formula id="pcbi.1003598.e026"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003598.e026" xlink:type="simple"/><label>(2)</label></disp-formula></p>
+<p>The estimated delay <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e027" xlink:type="simple"/></inline-formula> of each smoothing kernel models the amount of time it takes the ‘transcription wave’ to reach the corresponding gene segment. This is used to estimate the transcription speed. Biologically the latent function can be thought of as modeling activity at the promoter while the smoothing kernel accounts for ‘diffusion’ of the transcription wave. This diffusion phenomenon is observed when time series of pol-II occupancy over different sections of a gene are plotted, with the transcription wave seen to spread out (see <xref ref-type="fig" rid="pcbi-1003598-g002">Figure 2</xref>). This phenomenon may be due to an initially synchronized cell population becoming less synchronized over time, resulting in broadening of the pol-II occupancy distribution over time. The parameter <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e028" xlink:type="simple"/></inline-formula> captures the amount of ‘spread’ observed at the <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e029" xlink:type="simple"/></inline-formula> th segment. It also serves as a measure of the loss of synchrony between the cells of the population when the transcription wave is observed at the <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e030" xlink:type="simple"/></inline-formula> th segment.</p>
+<fig id="pcbi-1003598-g002" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003598.g002</object-id><label>Figure 2</label><caption>
+<title>Inferred pol-II time profiles obtained for three of the top ten genes using ChIP-seq data.</title>
+<p>The panels on the left, (A,C,E) show the inferred distribution of the latent funtion <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e031" xlink:type="simple"/></inline-formula> and the inferred profiles for the five gene segments corresponding to <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e032" xlink:type="simple"/></inline-formula> of the gene for the <italic>MYH9</italic>, <italic>TIPARP</italic> and <italic>RAB10</italic> genes respectively. We show the 95% confidence interval of the inferred profiles using dashed lines. The panels on the right (B,D,F) are the corresponding delay histograms.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003598.g002" position="float" xlink:type="simple"/></fig>
+<p>Using <xref ref-type="disp-formula" rid="pcbi.1003598.e022">equation (1</xref>), we can compute the covariance between the pol-II occupancy at various segments of the gene. We have<disp-formula id="pcbi.1003598.e033"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003598.e033" xlink:type="simple"/><label>(3)</label></disp-formula>where<disp-formula id="pcbi.1003598.e034"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003598.e034" xlink:type="simple"/><label>(4)</label></disp-formula></p>
+<p><xref ref-type="disp-formula" rid="pcbi.1003598.e033">Equation (3</xref>) can be evaluated in closed form using the fact that the product of two Gaussians yields an un-normalized Gaussian <xref ref-type="bibr" rid="pcbi.1003598-Rasmussen1">[7]</xref>. Exploiting this fact we get<disp-formula id="pcbi.1003598.e035"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003598.e035" xlink:type="simple"/><label>(5)</label></disp-formula></p>
+<p>Similarly,<disp-formula id="pcbi.1003598.e036"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003598.e036" xlink:type="simple"/><label>(6)</label></disp-formula></p>
+</sec><sec id="s2a2">
+<title>Parameter estimation and inference</title>
+<p>Let <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e037" xlink:type="simple"/></inline-formula> be a vector of observations of pol-II occupancy over the i<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e038" xlink:type="simple"/></inline-formula> gene segment and let <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e039" xlink:type="simple"/></inline-formula> be a vector formed by concatenating all the observations for a single gene. <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e040" xlink:type="simple"/></inline-formula> is the number of observation time points and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e041" xlink:type="simple"/></inline-formula> is the number of gene segments so for a single gene <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e042" xlink:type="simple"/></inline-formula> is a vector of length <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e043" xlink:type="simple"/></inline-formula>. We have<disp-formula id="pcbi.1003598.e044"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003598.e044" xlink:type="simple"/><label>(7)</label></disp-formula>where<disp-formula id="pcbi.1003598.e045"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003598.e045" xlink:type="simple"/><label>(8)</label></disp-formula>and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e046" xlink:type="simple"/></inline-formula> are the parameters of our model which will be fitted on a gene by gene basis. The elements of <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e047" xlink:type="simple"/></inline-formula> are computed using <xref ref-type="disp-formula" rid="pcbi.1003598.e034">equations (4</xref>), (5), and (6). By marginalizing over the latent function <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e048" xlink:type="simple"/></inline-formula>, we obtain the marginal likelihood <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e049" xlink:type="simple"/></inline-formula>. Maximum likelihood estimates of the parameters <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e050" xlink:type="simple"/></inline-formula> are readily obtained by maximizing the log marginal likelihood using gradient-based optimisation.</p>
+<p>For a fully Bayesian approach, we take advantage of the fact that the parameters are positive and bounded. We transform the parameters using a logit transform and work with unconstrained variables. We place a Gaussian prior over the parameters in the transformed domain and draw samples from the posterior using the Hamiltonian Monte Carlo (HMC) algorithm <xref ref-type="bibr" rid="pcbi.1003598-Neal1">[21]</xref> (A more detailed description of the priors is included in the supplementary material).</p>
+<p>Code to implement the method is freely available as a Python package, PyPol-II, which can be downloaded from <ext-link ext-link-type="uri" xlink:href="https://github.com/ciiram/PyPol_II" xlink:type="simple">https://github.com/ciiram/PyPol_II</ext-link>.</p>
+</sec><sec id="s2a3">
+<title>Estimation of average transcription speed</title>
+<p>When fitting the model, we fix <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e051" xlink:type="simple"/></inline-formula> to ensure identifiability. The average transcription speed is computed by assuming that the value of <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e052" xlink:type="simple"/></inline-formula> is an indicator of how long it takes the ‘transcription wave’ to reach the corresponding gene segment. That is, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e053" xlink:type="simple"/></inline-formula> is the amount of time it takes to transcribe 20% of the gene, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e054" xlink:type="simple"/></inline-formula> 40% etc. To obtain confidence intervals on the delay estimates, MCMC was performed to get samples of the parameters.</p>
+<p>To compute the average transcription speed we plot the position along the gene in base pairs (bp) versus the delay in minutes and compute a linear regression through the origin. The slope of the regression line gives us the transcriptional speed. Each sample of the parameters provides a set of delay estimates from which we obtain a speed estimate.</p>
+</sec></sec><sec id="s2b">
+<title>Alternative Methods for Time Delay Inference</title>
+<p>A key component of our method involves the estimation of delay between time series observed at different segments of the gene. The study of time delay between related time series has received attention from a number of researchers for a long time <xref ref-type="bibr" rid="pcbi.1003598-Knapp1">[22]</xref>. The application areas range from signal processing to astronomy <xref ref-type="bibr" rid="pcbi.1003598-Haarsma1">[23]</xref>. The classic approach to time delay estimation involves computing the cross-correlation between the related time series and determining the value of delay for which this function is maximised. Consider two signals <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e055" xlink:type="simple"/></inline-formula> and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e056" xlink:type="simple"/></inline-formula> given by<disp-formula id="pcbi.1003598.e057"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003598.e057" xlink:type="simple"/></disp-formula><disp-formula id="pcbi.1003598.e058"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003598.e058" xlink:type="simple"/><label>(9)</label></disp-formula>where <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e059" xlink:type="simple"/></inline-formula> and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e060" xlink:type="simple"/></inline-formula> are uncorrelated noise processes. The cross-correlation function is given by <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e061" xlink:type="simple"/></inline-formula> where <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e062" xlink:type="simple"/></inline-formula> denotes the expectation operator. The value of <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e063" xlink:type="simple"/></inline-formula> that maximises <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e064" xlink:type="simple"/></inline-formula> yields an estimate of the delay <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e065" xlink:type="simple"/></inline-formula>. When the signals are sampled at <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e066" xlink:type="simple"/></inline-formula> equally spaced time points <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e067" xlink:type="simple"/></inline-formula> with spacing <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e068" xlink:type="simple"/></inline-formula> between samples, the discrete time equivalent of <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e069" xlink:type="simple"/></inline-formula> is readily estimated. Let <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e070" xlink:type="simple"/></inline-formula>, the discrete cross-correlation is estimated as<disp-formula id="pcbi.1003598.e071"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003598.e071" xlink:type="simple"/></disp-formula></p>
+<p>The delay is estimated by finding the value of <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e072" xlink:type="simple"/></inline-formula> for which <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e073" xlink:type="simple"/></inline-formula> is maximised. The corresponding delay estimate is <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e074" xlink:type="simple"/></inline-formula>. However, this approach does not work well when the time series are unevenly sampled as is the case in several astronomical and biological studies. A number of techniques have been developed to handle unevenly sampled time series including the discrete correlation function (DCF) <xref ref-type="bibr" rid="pcbi.1003598-Edelson1">[24]</xref>, and the more recent kernel based approaches <xref ref-type="bibr" rid="pcbi.1003598-CuevasTello1">[25]</xref>, <xref ref-type="bibr" rid="pcbi.1003598-Harva1">[26]</xref>. The DCF is computed as follows, for all <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e075" xlink:type="simple"/></inline-formula> the time differences <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e076" xlink:type="simple"/></inline-formula> are binned into discrete bins of size <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e077" xlink:type="simple"/></inline-formula>. The DCF at <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e078" xlink:type="simple"/></inline-formula> is given by <xref ref-type="bibr" rid="pcbi.1003598-Edelson1">[24]</xref>, <xref ref-type="bibr" rid="pcbi.1003598-CuevasTello1">[25]</xref><disp-formula id="pcbi.1003598.e079"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003598.e079" xlink:type="simple"/><label>(10)</label></disp-formula>where<disp-formula id="pcbi.1003598.e080"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003598.e080" xlink:type="simple"/><label>(11)</label></disp-formula>and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e081" xlink:type="simple"/></inline-formula> and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e082" xlink:type="simple"/></inline-formula> are the variances of the observation streams while <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e083" xlink:type="simple"/></inline-formula> and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e084" xlink:type="simple"/></inline-formula> are observation error variances.</p>
+<p>In the kernel based approach of <xref ref-type="bibr" rid="pcbi.1003598-CuevasTello1">[25]</xref>, the underlying function <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e085" xlink:type="simple"/></inline-formula> of equation (<xref ref-type="disp-formula" rid="pcbi.1003598.e058">Equation 9</xref>) is modelled as the sum of a fixed number of kernels centered at the observation times. That is<disp-formula id="pcbi.1003598.e086"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003598.e086" xlink:type="simple"/><label>(12)</label></disp-formula>where<disp-formula id="pcbi.1003598.e087"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003598.e087" xlink:type="simple"/><label>(13)</label></disp-formula></p>
+<p>The value of <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e088" xlink:type="simple"/></inline-formula> that minimises the estimation error is the delay estimate. Our implementation follows that presented in <xref ref-type="bibr" rid="pcbi.1003598-CuevasTello1">[25]</xref> where we assumed a fixed kernel width. This kernel width is determined by leave one out cross-validation.</p>
+</sec><sec id="s2c">
+<title>Benchmark Data</title>
+<p>We used synthetic data and previously published experimental data to assess our novel method's performance. To generate the synthetic data, the underlying function <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e089" xlink:type="simple"/></inline-formula> of equation (<xref ref-type="disp-formula" rid="pcbi.1003598.e058">Equation 9</xref>) was given as a sum of Gaussian kernels. That is<disp-formula id="pcbi.1003598.e090"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003598.e090" xlink:type="simple"/></disp-formula></p>
+<p>N was fixed at 20 and the observation interval <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e091" xlink:type="simple"/></inline-formula>. <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e092" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e093" xlink:type="simple"/></inline-formula> and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e094" xlink:type="simple"/></inline-formula> were generated at random with <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e095" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e096" xlink:type="simple"/></inline-formula> and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e097" xlink:type="simple"/></inline-formula>. A random delay <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e098" xlink:type="simple"/></inline-formula> was used to generate the observations which were corrupted by additive Gaussian noise with <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e099" xlink:type="simple"/></inline-formula>. To determine the effect of number of observations on the quality of inference we compute the Median Normalised Square Error (MNSE) of the estimated delay <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e100" xlink:type="simple"/></inline-formula> as a function of the number of observations for 50 random realisations of the the signals. We also investigated the effect of distorting the shape of the observed signals by introducing convolution. In real signals the restriction that the shape remains unchanged sometimes leads to poor results. The parameters of the smoothing kernel in <xref ref-type="disp-formula" rid="pcbi.1003598.e022">equation (1</xref>) were generated at random with <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e101" xlink:type="simple"/></inline-formula> and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e102" xlink:type="simple"/></inline-formula>.</p>
+<p>To assess performance of our method on a well characterised real-world dataset we obtained a dataset from Singh and Padgett <xref ref-type="bibr" rid="pcbi.1003598-Singh1">[6]</xref> where the delay in appearance of pre-mRNA signal at exon-intron junctions was used to compute estimates of transcription speed for 9 genes. To generate the data, transcription was reversibly inhibited <italic>in vivo</italic> using 5,6-dichlorobenzimidazole 1-beta-D-ribofuranoside (DRB) and the pre-mRNA measured after the inhibitor was removed. As verified by the authors, the kinetics of pol-II and pre-mRNA are similar hence we expect good performance on this dataset to indicate applicability of our method to pol-II ChIP-seq data.</p>
+</sec><sec id="s2d">
+<title>Pol-II ChIP-Seq Data</title>
+<p>To demonstrate an application to pol-II ChIP-Seq data, we apply our model to investigate the transcriptional response to Estrogen Receptor signalling. ChIP-seq was used to measure pol-II occupancy genome-wide when MCF-7 breast cancer cells are treated with estradiol (E2). Cells were put in estradiol free media for three days. This is defined media devoid of phenol red (which is estrogenic) containing 2% charcoal stripped foetal calf serum. The charcoal absorbs estradiol but not other essential serum components, such as growth factors. This results in basal levels of transcription from E2 dependent genes. The cells are then incubated with E2 containing media, which results in the stimulation of estrogen responsive genes. The measurements were taken at logarithmically spaced time points 0, 5, 10, 20, …, 320 minutes after E2 stimulation.</p>
+<p>Raw reads were mapped onto the human genome reference sequence (NCBI_build37) using the Genomatix Mining Station (software version 3.2.1). The mapping software on the Mining Station is an index based mapper that uses a shortest unique subword index generated from the reference sequence to identify possible read positions. A subsequent alignment step is then used to get the highest-scoring match(es) according to the parameters used. We used a minimum alignment quality threshold of 92% for mapping and trimmed 2 basepairs from the ends of the reads to account for deterioration in read quality at the 3′ end. The software generates separate output files for uniquely mapped reads and reads that have multiple matches with equal score. We only used the uniquely mapped reads. On average about 66% of all reads could be mapped uniquely. The data are available from the NCBI Gene Expression Omnibus under accession number GSE44800.</p>
+<p>Time series of pol-II occupancy over various segments of genes were computed in reads per million (RPM) <xref ref-type="bibr" rid="pcbi.1003598-Pepke1">[27]</xref> using BEDtools <xref ref-type="bibr" rid="pcbi.1003598-Quinlan1">[28]</xref>, <xref ref-type="bibr" rid="pcbi.1003598-Dale1">[29]</xref>. The genes were divided into 200 bp bins and the RPM computed for each bin. The occupancy in a particular gene segment was the mean RPM of the bins in that segment. Here, the gene is divided into five segments each representing 20% of the gene.</p>
+</sec></sec><sec id="s3">
+<title>Results</title>
+<sec id="s3a">
+<title>Assessment on Benchmark Data</title>
+<p>We first applied our methodology to synthetic data in order to compare its performance to other methods. We investigated the performance of five methods, namely cross-correlation (Corr), DCF, the kernel approach of <xref ref-type="bibr" rid="pcbi.1003598-CuevasTello1">[25]</xref> (Kern), a GP approach with no convolution (GP-NoConv), and the convolved GP approach developed in this paper (GP-Conv). <xref ref-type="table" rid="pcbi-1003598-t001">Tables 1</xref> and <xref ref-type="table" rid="pcbi-1003598-t002">2</xref> show the MNSE for the different delay estimation methods as a function of the number of observations for synthetic data without convolution and with convolution respectively. Note that the kernel and DCF methods require an estimate of the noise variance and in this simulation study we provide the algorithms with the true value, but that would not be known in practice. We see that when no convolution is introduced, the kernel method performs well but is outperfomed by both GP methods. When convolution is introduced the kernel method appears to break down and as expected the GP-Conv outperforms the other techniques.</p>
+<table-wrap id="pcbi-1003598-t001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003598.t001</object-id><label>Table 1</label><caption>
+<title>MNSE as a function of the number of observations with no convolution.</title>
+</caption><alternatives><graphic id="pcbi-1003598-t001-1" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003598.t001" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1">Number of Observations</td>
+<td colspan="5" align="left" rowspan="1">MNSE</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Corr</td>
+<td align="left" rowspan="1" colspan="1">DCF</td>
+<td align="left" rowspan="1" colspan="1">Kern <xref ref-type="bibr" rid="pcbi.1003598-CuevasTello1">[25]</xref></td>
+<td align="left" rowspan="1" colspan="1">GP-NoConv</td>
+<td align="left" rowspan="1" colspan="1">GP-Conv</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">6</td>
+<td align="left" rowspan="1" colspan="1">36e-3</td>
+<td align="left" rowspan="1" colspan="1">30e-3</td>
+<td align="left" rowspan="1" colspan="1">4e-3</td>
+<td align="left" rowspan="1" colspan="1">1.6e-3</td>
+<td align="left" rowspan="1" colspan="1">2.2e-3</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">8</td>
+<td align="left" rowspan="1" colspan="1">44e-3</td>
+<td align="left" rowspan="1" colspan="1">48e-3</td>
+<td align="left" rowspan="1" colspan="1">1.0e-3</td>
+<td align="left" rowspan="1" colspan="1">0.16e-3</td>
+<td align="left" rowspan="1" colspan="1">0.17e-3</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">10</td>
+<td align="left" rowspan="1" colspan="1">11e-3</td>
+<td align="left" rowspan="1" colspan="1">13e-3</td>
+<td align="left" rowspan="1" colspan="1">1.2e-3</td>
+<td align="left" rowspan="1" colspan="1">0.0076e-3</td>
+<td align="left" rowspan="1" colspan="1">0.012e-3</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">12</td>
+<td align="left" rowspan="1" colspan="1">19e-3</td>
+<td align="left" rowspan="1" colspan="1">18e-3</td>
+<td align="left" rowspan="1" colspan="1">1.2e-3</td>
+<td align="left" rowspan="1" colspan="1">0.0018e-3</td>
+<td align="left" rowspan="1" colspan="1">0.0014e-3</td>
+</tr>
+</tbody>
+</table>
+</alternatives></table-wrap><table-wrap id="pcbi-1003598-t002" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003598.t002</object-id><label>Table 2</label><caption>
+<title>MNSE as a function of the number of observations with convolution.</title>
+</caption><alternatives><graphic id="pcbi-1003598-t002-2" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003598.t002" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1">Number of Observations</td>
+<td colspan="5" align="left" rowspan="1">MNSE</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Corr</td>
+<td align="left" rowspan="1" colspan="1">DCF</td>
+<td align="left" rowspan="1" colspan="1">Kern <xref ref-type="bibr" rid="pcbi.1003598-CuevasTello1">[25]</xref></td>
+<td align="left" rowspan="1" colspan="1">GP-NoConv</td>
+<td align="left" rowspan="1" colspan="1">GP-Conv</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">6</td>
+<td align="left" rowspan="1" colspan="1">32e-3</td>
+<td align="left" rowspan="1" colspan="1">37e-3</td>
+<td align="left" rowspan="1" colspan="1">17000e-3</td>
+<td align="left" rowspan="1" colspan="1">0.16e-3</td>
+<td align="left" rowspan="1" colspan="1">0.053e-3</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">8</td>
+<td align="left" rowspan="1" colspan="1">57e-3</td>
+<td align="left" rowspan="1" colspan="1">61e-3</td>
+<td align="left" rowspan="1" colspan="1">16000e-3</td>
+<td align="left" rowspan="1" colspan="1">0.098e-3</td>
+<td align="left" rowspan="1" colspan="1">0.0057e-3</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">10</td>
+<td align="left" rowspan="1" colspan="1">11e-3</td>
+<td align="left" rowspan="1" colspan="1">15e-3</td>
+<td align="left" rowspan="1" colspan="1">17000e-3</td>
+<td align="left" rowspan="1" colspan="1">0.018e-3</td>
+<td align="left" rowspan="1" colspan="1">0.0021e-3</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">12</td>
+<td align="left" rowspan="1" colspan="1">22e-3</td>
+<td align="left" rowspan="1" colspan="1">31e-3</td>
+<td align="left" rowspan="1" colspan="1">23000e-3</td>
+<td align="left" rowspan="1" colspan="1">0.028e-3</td>
+<td align="left" rowspan="1" colspan="1">0.011e-3</td>
+</tr>
+</tbody>
+</table>
+</alternatives></table-wrap>
+<p>We next applied the model to pre-mRNA data from Singh and Padgett <xref ref-type="bibr" rid="pcbi.1003598-Singh1">[6]</xref> where the delay in appearance of pre-mRNA signal at exon-intron junctions was used to compute estimates of transcription speed for 9 genes. <xref ref-type="fig" rid="pcbi-1003598-g003">Figure 3(A)</xref> shows the pre-mRNA signal for the <italic>SLC9A9</italic> gene (the same data shown in <xref ref-type="fig" rid="pcbi-1003598-g004">Figure 4d</xref> of <xref ref-type="bibr" rid="pcbi.1003598-Singh1">[6]</xref>). The delays read from these plots were used in <xref ref-type="bibr" rid="pcbi.1003598-Singh1">[6]</xref> to determine transcription speeds. <xref ref-type="fig" rid="pcbi-1003598-g003">Figure 3 (B–D)</xref> shows the fit obtained using the kernel method, GP-NoConv and GP-Conv respectively. <xref ref-type="table" rid="pcbi-1003598-t003">Table 3</xref> shows the delays read off the plots as well as values obtained using the five delay estimation algorithms for different regions of the nine genes presented in <xref ref-type="bibr" rid="pcbi.1003598-Singh1">[6]</xref>. In each row the delay estimate with the lowest normalised square error is highlighted. <xref ref-type="table" rid="pcbi-1003598-t004">Table 4</xref> shows the MNSE for the five delay estimation algorithms for all the genes. We see that the convolved GP method developed in this paper outperforms the other techniques. This method has the added advantage of inferring a latent function which links all the observations and which can be used for downstream analysis. Also, when analysis is genome-wide, reading delays off individual plots is not feasible and furthermore when the sampling intervals are irregularly spaced assigning delays manually would be error prone. These results serve to justify the use of the convolved GP method introduced in this paper.</p>
+<fig id="pcbi-1003598-g003" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003598.g003</object-id><label>Figure 3</label><caption>
+<title>Pre-mRNA espression data.</title>
+<p>Pre-mRNA espression at exon-intron junctions for the <italic>SLC9A9</italic> gene (A). Fits for the <italic>SLC9A9</italic> gene using the kernel method (B) and the two GP methods: GP_NoConv (C) and GP_Conv (D). In the GP case we show the 95% confidence interval using dashed lines. In regions with no observations, the uncertainty is large.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003598.g003" position="float" xlink:type="simple"/></fig><fig id="pcbi-1003598-g004" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003598.g004</object-id><label>Figure 4</label><caption>
+<title>Computation of transcription speed from delay samples.</title>
+<p>Linear regression plots using the delay samples for the <italic>TIPARP</italic> gene (A) and the histogram of speed samples (B). The 95% confidence interval is indicated in (A) by the dashed red lines with the median represented by the solid red line. In (B) the 95% confidence interval is indicated by the red triangle markers (cf. <xref ref-type="table" rid="pcbi-1003598-t005">Table 5</xref>).</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003598.g004" position="float" xlink:type="simple"/></fig><table-wrap id="pcbi-1003598-t003" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003598.t003</object-id><label>Table 3</label><caption>
+<title>Transcription time estimates for different delay estimation algorithms using the pre-mRNA data from <xref ref-type="bibr" rid="pcbi.1003598-Singh1">[6]</xref>.</title>
+</caption><alternatives><graphic id="pcbi-1003598-t003-3" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003598.t003" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1">Gene</td>
+<td align="left" rowspan="1" colspan="1">Region</td>
+<td align="left" rowspan="1" colspan="1">Length (kb)</td>
+<td align="left" rowspan="1" colspan="1">Delay (min)<xref ref-type="bibr" rid="pcbi.1003598-Singh1">[6]</xref></td>
+<td align="left" rowspan="1" colspan="1">Corr</td>
+<td align="left" rowspan="1" colspan="1">DCF</td>
+<td align="left" rowspan="1" colspan="1">Kern <xref ref-type="bibr" rid="pcbi.1003598-CuevasTello1">[25]</xref></td>
+<td align="left" rowspan="1" colspan="1">GP</td>
+<td align="left" rowspan="1" colspan="1">GP</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">NoConv</td>
+<td align="left" rowspan="1" colspan="1">Conv</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">Utrophin</td>
+<td align="left" rowspan="1" colspan="1">Ex1-Ex2</td>
+<td align="left" rowspan="1" colspan="1">111</td>
+<td align="left" rowspan="1" colspan="1">30</td>
+<td align="left" rowspan="1" colspan="1">15.0</td>
+<td align="left" rowspan="1" colspan="1">10.8</td>
+<td align="left" rowspan="1" colspan="1">3.1</td>
+<td align="left" rowspan="1" colspan="1">46.9</td>
+<td align="left" rowspan="1" colspan="1"><bold>17.4</bold></td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Utrophin</td>
+<td align="left" rowspan="1" colspan="1">Ex2-Ex50</td>
+<td align="left" rowspan="1" colspan="1">174</td>
+<td align="left" rowspan="1" colspan="1">40</td>
+<td align="left" rowspan="1" colspan="1">-</td>
+<td align="left" rowspan="1" colspan="1">49.2</td>
+<td align="left" rowspan="1" colspan="1">125.5</td>
+<td align="left" rowspan="1" colspan="1">49.5</td>
+<td align="left" rowspan="1" colspan="1"><bold>46.8</bold></td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Utrophin</td>
+<td align="left" rowspan="1" colspan="1">Ex50-Ex51</td>
+<td align="left" rowspan="1" colspan="1">101</td>
+<td align="left" rowspan="1" colspan="1">25</td>
+<td align="left" rowspan="1" colspan="1">-</td>
+<td align="left" rowspan="1" colspan="1">10.8</td>
+<td align="left" rowspan="1" colspan="1">67.3</td>
+<td align="left" rowspan="1" colspan="1"><bold>34.1</bold></td>
+<td align="left" rowspan="1" colspan="1">13.8</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Utrophin</td>
+<td align="left" rowspan="1" colspan="1">Ex51-Ex74</td>
+<td align="left" rowspan="1" colspan="1">173</td>
+<td align="left" rowspan="1" colspan="1">40</td>
+<td align="left" rowspan="1" colspan="1">-</td>
+<td align="left" rowspan="1" colspan="1">238.3</td>
+<td align="left" rowspan="1" colspan="1">214.3</td>
+<td align="left" rowspan="1" colspan="1">9.9</td>
+<td align="left" rowspan="1" colspan="1"><bold>68.5</bold></td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Utrophin</td>
+<td align="left" rowspan="1" colspan="1">Ex1-Ex74</td>
+<td align="left" rowspan="1" colspan="1">561</td>
+<td align="left" rowspan="1" colspan="1">140</td>
+<td align="left" rowspan="1" colspan="1">-</td>
+<td align="left" rowspan="1" colspan="1">135.6</td>
+<td align="left" rowspan="1" colspan="1">128.6</td>
+<td align="left" rowspan="1" colspan="1"><bold>140.3</bold></td>
+<td align="left" rowspan="1" colspan="1">146.4</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">ITPR1</td>
+<td align="left" rowspan="1" colspan="1">Ex1-Ex5</td>
+<td align="left" rowspan="1" colspan="1">133</td>
+<td align="left" rowspan="1" colspan="1">40</td>
+<td align="left" rowspan="1" colspan="1">45.0</td>
+<td align="left" rowspan="1" colspan="1">45.5</td>
+<td align="left" rowspan="1" colspan="1"><bold>41.3</bold></td>
+<td align="left" rowspan="1" colspan="1">49.2</td>
+<td align="left" rowspan="1" colspan="1">43.2</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">ITPR1</td>
+<td align="left" rowspan="1" colspan="1">Ex5-Ex40</td>
+<td align="left" rowspan="1" colspan="1">105</td>
+<td align="left" rowspan="1" colspan="1">25</td>
+<td align="left" rowspan="1" colspan="1"><bold>25.0</bold></td>
+<td align="left" rowspan="1" colspan="1">24.8</td>
+<td align="left" rowspan="1" colspan="1">23.0</td>
+<td align="left" rowspan="1" colspan="1">17.4</td>
+<td align="left" rowspan="1" colspan="1">24.0</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">ITPR1</td>
+<td align="left" rowspan="1" colspan="1">Ex1-Ex40</td>
+<td align="left" rowspan="1" colspan="1">238</td>
+<td align="left" rowspan="1" colspan="1">65</td>
+<td align="left" rowspan="1" colspan="1">70.0</td>
+<td align="left" rowspan="1" colspan="1">69.8</td>
+<td align="left" rowspan="1" colspan="1">96.4</td>
+<td align="left" rowspan="1" colspan="1"><bold>66.6</bold></td>
+<td align="left" rowspan="1" colspan="1">67.2</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">EFNA5</td>
+<td align="left" rowspan="1" colspan="1">Ex1-Ex2</td>
+<td align="left" rowspan="1" colspan="1">243</td>
+<td align="left" rowspan="1" colspan="1">70</td>
+<td align="left" rowspan="1" colspan="1">65.0</td>
+<td align="left" rowspan="1" colspan="1">65.4</td>
+<td align="left" rowspan="1" colspan="1">146.9</td>
+<td align="left" rowspan="1" colspan="1">69.8</td>
+<td align="left" rowspan="1" colspan="1"><bold>69.9</bold></td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">BCL2</td>
+<td align="left" rowspan="1" colspan="1">Ex2-Ex3</td>
+<td align="left" rowspan="1" colspan="1">189</td>
+<td align="left" rowspan="1" colspan="1">50</td>
+<td align="left" rowspan="1" colspan="1">5.0</td>
+<td align="left" rowspan="1" colspan="1"><bold>54.9</bold></td>
+<td align="left" rowspan="1" colspan="1">81.3</td>
+<td align="left" rowspan="1" colspan="1">65.0</td>
+<td align="left" rowspan="1" colspan="1">55.0</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">OPA1</td>
+<td align="left" rowspan="1" colspan="1">Ex1-Ex29</td>
+<td align="left" rowspan="1" colspan="1">104</td>
+<td align="left" rowspan="1" colspan="1">25</td>
+<td align="left" rowspan="1" colspan="1">20.0</td>
+<td align="left" rowspan="1" colspan="1"><bold>25.0</bold></td>
+<td align="left" rowspan="1" colspan="1">14.9</td>
+<td align="left" rowspan="1" colspan="1">27.0</td>
+<td align="left" rowspan="1" colspan="1">26.8</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">IFT80</td>
+<td align="left" rowspan="1" colspan="1">Ex1-Ex20</td>
+<td align="left" rowspan="1" colspan="1">142</td>
+<td align="left" rowspan="1" colspan="1">35</td>
+<td align="left" rowspan="1" colspan="1">40</td>
+<td align="left" rowspan="1" colspan="1">74.6</td>
+<td align="left" rowspan="1" colspan="1"><bold>35.2</bold></td>
+<td align="left" rowspan="1" colspan="1">41.6</td>
+<td align="left" rowspan="1" colspan="1">41.6</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">CTNNBL1</td>
+<td align="left" rowspan="1" colspan="1">Ex1-Ex16</td>
+<td align="left" rowspan="1" colspan="1">178</td>
+<td align="left" rowspan="1" colspan="1">45</td>
+<td align="left" rowspan="1" colspan="1"><bold>45.0</bold></td>
+<td align="left" rowspan="1" colspan="1">45.4</td>
+<td align="left" rowspan="1" colspan="1">39.1</td>
+<td align="left" rowspan="1" colspan="1">47.2</td>
+<td align="left" rowspan="1" colspan="1">47.1</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">KIFAP3</td>
+<td align="left" rowspan="1" colspan="1">Ex1-Ex20</td>
+<td align="left" rowspan="1" colspan="1">153</td>
+<td align="left" rowspan="1" colspan="1">45</td>
+<td align="left" rowspan="1" colspan="1"><bold>45.0</bold></td>
+<td align="left" rowspan="1" colspan="1">45.4</td>
+<td align="left" rowspan="1" colspan="1">39.1</td>
+<td align="left" rowspan="1" colspan="1">46.7</td>
+<td align="left" rowspan="1" colspan="1">46.7</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">SLC9A9</td>
+<td align="left" rowspan="1" colspan="1">Ex1-Ex16</td>
+<td align="left" rowspan="1" colspan="1">583</td>
+<td align="left" rowspan="1" colspan="1">160</td>
+<td align="left" rowspan="1" colspan="1">-</td>
+<td align="left" rowspan="1" colspan="1">150.2</td>
+<td align="left" rowspan="1" colspan="1">152.0</td>
+<td align="left" rowspan="1" colspan="1"><bold>153.6</bold></td>
+<td align="left" rowspan="1" colspan="1">153.5</td>
+</tr>
+</tbody>
+</table>
+</alternatives><table-wrap-foot><fn id="nt101"><label/><p>When sampling times are uneven, cross-correlation results are omitted. In each row the delay estimate with the lowest normalised square error is highlighted.</p></fn></table-wrap-foot></table-wrap><table-wrap id="pcbi-1003598-t004" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003598.t004</object-id><label>Table 4</label><caption>
+<title>MNSE for the 5 delay estimation algorithms for all the genes using pre-mRNA data.</title>
+</caption><alternatives><graphic id="pcbi-1003598-t004-4" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003598.t004" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Corr</td>
+<td align="left" rowspan="1" colspan="1">DCF</td>
+<td align="left" rowspan="1" colspan="1">Kern <xref ref-type="bibr" rid="pcbi.1003598-CuevasTello1">[25]</xref></td>
+<td align="left" rowspan="1" colspan="1">GP-NoConv</td>
+<td align="left" rowspan="1" colspan="1">GP-Conv</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">MNSE</td>
+<td align="left" rowspan="1" colspan="1">0.115</td>
+<td align="left" rowspan="1" colspan="1">1.787</td>
+<td align="left" rowspan="1" colspan="1">1.974</td>
+<td align="left" rowspan="1" colspan="1">0.090</td>
+<td align="left" rowspan="1" colspan="1"><bold>0.065</bold></td>
+</tr>
+</tbody>
+</table>
+</alternatives></table-wrap></sec><sec id="s3b">
+<title>Application to Estrogen Response ChIP-Seq Data</title>
+<p>We applied our method to a ChIP-Seq time-course dataset measuring pol-II occupancy genome-wide when MCF-7 cells are treated with estradiol (E2). For our initial experiment, we considered 3,064 genes which exhibit significant increase of pol-II occupancy between 0 and 40 minutes after E2 treatment. These genes were determined by counting the number of pol-II tags on the annotated genes in the RefSeq hg19 assembly at 0 and 40 minutes after E2 treatment and computing the <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e103" xlink:type="simple"/></inline-formula> ratio of these counts. We keep those genes where this quantity is greater than one standard deviation above the mean. For these 3,064 genes, we filtered out genes less than 1000 bp in length and computed model fits using the ChIP-seq time series data for the remaining 2623 genes. The estimation of the parameters <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e104" xlink:type="simple"/></inline-formula> for a given gene was performed using maximum likelihood with <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e105" xlink:type="simple"/></inline-formula> fixed at zero, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e106" xlink:type="simple"/></inline-formula> and the values <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e107" xlink:type="simple"/></inline-formula> constrained to be equal. Intuitively, one would expect the values of delay <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e108" xlink:type="simple"/></inline-formula> to be non-decreasing. We therefore keep only those genes where this natural ordering is preserved for further analysis. We also discard genes with <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e109" xlink:type="simple"/></inline-formula> and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e110" xlink:type="simple"/></inline-formula> since these are generally seen to be poor fits. Small values of <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e111" xlink:type="simple"/></inline-formula> arise when the data is best modelled as a noise process while large values model constant profiles which are not interesting in our analysis. This left us with 383 genes which we consider a conservative set of genes where there is evidence of engaged transcription and where the model parameters can be confidently estimated. To rank these genes we compared the log marginal likelihood of the model fit to that obtained if we assume independence between the segments, which is equivalent to setting the off-diagonal blocks in <xref ref-type="disp-formula" rid="pcbi.1003598.e045">equation (8</xref>) to the zero matrix.</p>
+<p><xref ref-type="fig" rid="pcbi-1003598-g002">Figure 2 (A–F)</xref> shows the inferred pol-II time profile and histogram of the samples of the delay parameters for three of the top 10 genes found to fit the model well. We note that a relatively small number of activated genes fit the model well. This is primarily because for shorter genes the pol-II occupancy quickly rises over the whole gene such that the temporal resolution of the data cannot capture the wave as it traverses the gene body. With a closer or more evenly spaced time course we would expect a good fit for a greater proportion of activated genes.</p>
+<p><xref ref-type="fig" rid="pcbi-1003598-g004">Figure 4 (A)</xref> shows the linear regression plots using the delay samples for the <italic>TIPARP</italic> gene. <xref ref-type="fig" rid="pcbi-1003598-g004">Figure 4 (B)</xref> shows the histogram of speed samples from which we can compute the confidence interval for the speed estimate. The 95% confidence interval is indicated in <xref ref-type="fig" rid="pcbi-1003598-g004">Figure 4 (B)</xref> by the red triangle markers (cf. <xref ref-type="table" rid="pcbi-1003598-t005">Table 5</xref>). <xref ref-type="table" rid="pcbi-1003598-t005">Table 5</xref> shows the average transcription speeds for the top 10 genes computed using the samples of the delay parameters. <xref ref-type="fig" rid="pcbi-1003598-g005">Figure 5</xref> shows a box plot of the average transcription speeds computed using the samples of the delay parameters for these genes.</p>
+<fig id="pcbi-1003598-g005" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003598.g005</object-id><label>Figure 5</label><caption>
+<title>Box plot of speed estimates for the top ten genes found to fit the transcription model well.</title>
+<p>The box indicates the 50% confidence interval between the first and third quartiles. The red line indicates the median speed. The length of the whiskers is 1.5 times the interquartile range.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003598.g005" position="float" xlink:type="simple"/></fig><table-wrap id="pcbi-1003598-t005" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003598.t005</object-id><label>Table 5</label><caption>
+<title>Average transcription speed in kilobases per minute for the top ten genes that fit the transcription model well.</title>
+</caption><alternatives><graphic id="pcbi-1003598-t005-5" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003598.t005" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1">Gene</td>
+<td align="left" rowspan="1" colspan="1">Length (bp)</td>
+<td align="left" rowspan="1" colspan="1">2.5%</td>
+<td align="left" rowspan="1" colspan="1">50%</td>
+<td align="left" rowspan="1" colspan="1">97.5%</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">TPM1</td>
+<td align="left" rowspan="1" colspan="1">22196</td>
+<td align="left" rowspan="1" colspan="1">1.6</td>
+<td align="left" rowspan="1" colspan="1">2.4</td>
+<td align="left" rowspan="1" colspan="1">4.1</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">WDR1</td>
+<td align="left" rowspan="1" colspan="1">42611</td>
+<td align="left" rowspan="1" colspan="1">1.0</td>
+<td align="left" rowspan="1" colspan="1">1.6</td>
+<td align="left" rowspan="1" colspan="1">3.5</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">TIPARP</td>
+<td align="left" rowspan="1" colspan="1">32353</td>
+<td align="left" rowspan="1" colspan="1">1.4</td>
+<td align="left" rowspan="1" colspan="1">1.9</td>
+<td align="left" rowspan="1" colspan="1">2.4</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">RHEB</td>
+<td align="left" rowspan="1" colspan="1">53913</td>
+<td align="left" rowspan="1" colspan="1">1.2</td>
+<td align="left" rowspan="1" colspan="1">1.5</td>
+<td align="left" rowspan="1" colspan="1">1.7</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">MYH9</td>
+<td align="left" rowspan="1" colspan="1">106741</td>
+<td align="left" rowspan="1" colspan="1">2.6</td>
+<td align="left" rowspan="1" colspan="1">3.4</td>
+<td align="left" rowspan="1" colspan="1">5.5</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">ACTN1</td>
+<td align="left" rowspan="1" colspan="1">105244</td>
+<td align="left" rowspan="1" colspan="1">0.6</td>
+<td align="left" rowspan="1" colspan="1">2.8</td>
+<td align="left" rowspan="1" colspan="1">4.2</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">PDLIM7</td>
+<td align="left" rowspan="1" colspan="1">14208</td>
+<td align="left" rowspan="1" colspan="1">1.7</td>
+<td align="left" rowspan="1" colspan="1">3.5</td>
+<td align="left" rowspan="1" colspan="1">6.4</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">ATP2A2</td>
+<td align="left" rowspan="1" colspan="1">69866</td>
+<td align="left" rowspan="1" colspan="1">3.6</td>
+<td align="left" rowspan="1" colspan="1">6.8</td>
+<td align="left" rowspan="1" colspan="1">10.2</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">RAB10</td>
+<td align="left" rowspan="1" colspan="1">103595</td>
+<td align="left" rowspan="1" colspan="1">1.4</td>
+<td align="left" rowspan="1" colspan="1">2.6</td>
+<td align="left" rowspan="1" colspan="1">4.4</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">AKAP1</td>
+<td align="left" rowspan="1" colspan="1">36158</td>
+<td align="left" rowspan="1" colspan="1">5.0</td>
+<td align="left" rowspan="1" colspan="1">12.4</td>
+<td align="left" rowspan="1" colspan="1">21.4</td>
+</tr>
+</tbody>
+</table>
+</alternatives><table-wrap-foot><fn id="nt102"><label/><p>We use a Bayesian MCMC method for parameter estimation which provides the posterior distribution of the average transcription speed. We show the 2.5%, 50% and 97.5% percentiles of the posterior distribution.</p></fn></table-wrap-foot></table-wrap>
+<p>The advantage of fitting each of the delay parameters independently instead of enforcing a linear relationship is that it allows us to take into account phenomena such as pol-II pausing and provides a means to filter genes where the values of estimated delay are not naturally ordered. Visual inspection of the inferred time series of the top ranked genes is consistent with a ‘transcription wave’ traversing the gene. The transcription wave is especially evident in the longer genes <italic>MYH9</italic> and <italic>RAB10</italic>. This motivates a closer look at long genes. <xref ref-type="table" rid="pcbi-1003598-t006">Table 6</xref> shows the average transcription speeds computed using the samples of the delay parameters for the 23 long genes found to fit the pol-II dynamics model well. Grouping these genes according to the magnitude of the median transcription speed allows us to compare our results to those presented previously. From <xref ref-type="table" rid="pcbi-1003598-t006">Table 6</xref> we see that 12 (52%) of these genes have average transcription speeds between 2 and 4 kb per minute, a range that includes speeds previously reported in the literature <xref ref-type="bibr" rid="pcbi.1003598-Wada1">[5]</xref>, <xref ref-type="bibr" rid="pcbi.1003598-Singh1">[6]</xref>.</p>
+<table-wrap id="pcbi-1003598-t006" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003598.t006</object-id><label>Table 6</label><caption>
+<title>Average transcription speed in kilobases per minute for long genes between 100 and 300 kilobases long.</title>
+</caption><alternatives><graphic id="pcbi-1003598-t006-6" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003598.t006" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1">Gene</td>
+<td align="left" rowspan="1" colspan="1">Length (bp)</td>
+<td align="left" rowspan="1" colspan="1">2.5%</td>
+<td align="left" rowspan="1" colspan="1">50%</td>
+<td align="left" rowspan="1" colspan="1">97.5%</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">ACTN1</td>
+<td align="left" rowspan="1" colspan="1">105244</td>
+<td align="left" rowspan="1" colspan="1">0.6</td>
+<td align="left" rowspan="1" colspan="1">2.8</td>
+<td align="left" rowspan="1" colspan="1">4.2</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">ADCY1</td>
+<td align="left" rowspan="1" colspan="1">148590</td>
+<td align="left" rowspan="1" colspan="1">2.8</td>
+<td align="left" rowspan="1" colspan="1">9.7</td>
+<td align="left" rowspan="1" colspan="1">43.6</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">ARHGEF10L</td>
+<td align="left" rowspan="1" colspan="1">158041</td>
+<td align="left" rowspan="1" colspan="1">2.8</td>
+<td align="left" rowspan="1" colspan="1">5.4</td>
+<td align="left" rowspan="1" colspan="1">8.5</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">EPB41L1</td>
+<td align="left" rowspan="1" colspan="1">120374</td>
+<td align="left" rowspan="1" colspan="1">0.2</td>
+<td align="left" rowspan="1" colspan="1">0.4</td>
+<td align="left" rowspan="1" colspan="1">2.0</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">EPS15L1</td>
+<td align="left" rowspan="1" colspan="1">110355</td>
+<td align="left" rowspan="1" colspan="1">16.1</td>
+<td align="left" rowspan="1" colspan="1">30.0</td>
+<td align="left" rowspan="1" colspan="1">43.1</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">FARP1</td>
+<td align="left" rowspan="1" colspan="1">102125</td>
+<td align="left" rowspan="1" colspan="1">1.7</td>
+<td align="left" rowspan="1" colspan="1">2.9</td>
+<td align="left" rowspan="1" colspan="1">7.9</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">FLNB</td>
+<td align="left" rowspan="1" colspan="1">163856</td>
+<td align="left" rowspan="1" colspan="1">0.2</td>
+<td align="left" rowspan="1" colspan="1">1.5</td>
+<td align="left" rowspan="1" colspan="1">3.7</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">ITPK1</td>
+<td align="left" rowspan="1" colspan="1">179005</td>
+<td align="left" rowspan="1" colspan="1">0.3</td>
+<td align="left" rowspan="1" colspan="1">2.9</td>
+<td align="left" rowspan="1" colspan="1">6.8</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">JAK1</td>
+<td align="left" rowspan="1" colspan="1">133282</td>
+<td align="left" rowspan="1" colspan="1">0.6</td>
+<td align="left" rowspan="1" colspan="1">2.2</td>
+<td align="left" rowspan="1" colspan="1">4.2</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">JAK2</td>
+<td align="left" rowspan="1" colspan="1">142939</td>
+<td align="left" rowspan="1" colspan="1">0.6</td>
+<td align="left" rowspan="1" colspan="1">2.4</td>
+<td align="left" rowspan="1" colspan="1">5.3</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">KIAA0232</td>
+<td align="left" rowspan="1" colspan="1">101441</td>
+<td align="left" rowspan="1" colspan="1">0.9</td>
+<td align="left" rowspan="1" colspan="1">2.3</td>
+<td align="left" rowspan="1" colspan="1">4.0</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">KIF21A</td>
+<td align="left" rowspan="1" colspan="1">150163</td>
+<td align="left" rowspan="1" colspan="1">1.0</td>
+<td align="left" rowspan="1" colspan="1">2.1</td>
+<td align="left" rowspan="1" colspan="1">3.8</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">LARP1</td>
+<td align="left" rowspan="1" colspan="1">104702</td>
+<td align="left" rowspan="1" colspan="1">0.7</td>
+<td align="left" rowspan="1" colspan="1">2.0</td>
+<td align="left" rowspan="1" colspan="1">3.8</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">MYH9</td>
+<td align="left" rowspan="1" colspan="1">106741</td>
+<td align="left" rowspan="1" colspan="1">2.6</td>
+<td align="left" rowspan="1" colspan="1">3.4</td>
+<td align="left" rowspan="1" colspan="1">5.5</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">NCOR2</td>
+<td align="left" rowspan="1" colspan="1">243050</td>
+<td align="left" rowspan="1" colspan="1">6.5</td>
+<td align="left" rowspan="1" colspan="1">10.9</td>
+<td align="left" rowspan="1" colspan="1">20.5</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">NRIP1</td>
+<td align="left" rowspan="1" colspan="1">103571</td>
+<td align="left" rowspan="1" colspan="1">2.9</td>
+<td align="left" rowspan="1" colspan="1">4.7</td>
+<td align="left" rowspan="1" colspan="1">6.4</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">PKIB</td>
+<td align="left" rowspan="1" colspan="1">116142</td>
+<td align="left" rowspan="1" colspan="1">0.6</td>
+<td align="left" rowspan="1" colspan="1">1.0</td>
+<td align="left" rowspan="1" colspan="1">2.4</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">RAB10</td>
+<td align="left" rowspan="1" colspan="1">103595</td>
+<td align="left" rowspan="1" colspan="1">1.4</td>
+<td align="left" rowspan="1" colspan="1">2.6</td>
+<td align="left" rowspan="1" colspan="1">4.4</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">RAB31</td>
+<td align="left" rowspan="1" colspan="1">154326</td>
+<td align="left" rowspan="1" colspan="1">0.7</td>
+<td align="left" rowspan="1" colspan="1">1.6</td>
+<td align="left" rowspan="1" colspan="1">3.0</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">RASA3</td>
+<td align="left" rowspan="1" colspan="1">150902</td>
+<td align="left" rowspan="1" colspan="1">0.6</td>
+<td align="left" rowspan="1" colspan="1">1.4</td>
+<td align="left" rowspan="1" colspan="1">6.0</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">SHB</td>
+<td align="left" rowspan="1" colspan="1">153316</td>
+<td align="left" rowspan="1" colspan="1">0.5</td>
+<td align="left" rowspan="1" colspan="1">3.1</td>
+<td align="left" rowspan="1" colspan="1">5.0</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">WWC1</td>
+<td align="left" rowspan="1" colspan="1">180244</td>
+<td align="left" rowspan="1" colspan="1">1.9</td>
+<td align="left" rowspan="1" colspan="1">3.6</td>
+<td align="left" rowspan="1" colspan="1">5.6</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">ZNF644</td>
+<td align="left" rowspan="1" colspan="1">106174</td>
+<td align="left" rowspan="1" colspan="1">0.1</td>
+<td align="left" rowspan="1" colspan="1">0.2</td>
+<td align="left" rowspan="1" colspan="1">1.5</td>
+</tr>
+</tbody>
+</table>
+</alternatives></table-wrap><sec id="s3b1">
+<title>Clustering of promoter activity profiles</title>
+<p>The inferred latent functions for each gene model the pol-II activity adjacent to the promoter. Clustering these profiles and examining the average profiles of each cluster allows us to visualise the general trends and also classify genes according to the immediacy and nature of the response. This provides an alternative to clustering based on mRNA abundance data (from microarray or RNA-Seq experiments) which is regulated both by mRNA production and degradation processes. The production of mRNA may be delayed relative to the actual activation of transcription at the promoter causing genes which are actually triggered at the same time to show different rates of mRNA production. Differences in degradation rate can also influence mRNA abundance profiles. It may therefore be difficult to distinguish early and delayed transcriptional regulation from mRNA abundance data.</p>
+<p>To classify the profiles we sample the mean of the latent function (<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e112" xlink:type="simple"/></inline-formula> in <xref ref-type="disp-formula" rid="pcbi.1003598.e022">equation 1</xref>) and use PUMA-CLUST <xref ref-type="bibr" rid="pcbi.1003598-Pearson1">[30]</xref> to cluster the genes. PUMA-CLUST has the advantage of taking into account the uncertainty of the latent function when clustering the profiles. This uncertainty is computed from the posterior covariance of <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e113" xlink:type="simple"/></inline-formula>.</p>
+<p>The 383 genes found to fit the model well were grouped into 12 clusters (<xref ref-type="fig" rid="pcbi-1003598-g006">Figure 6</xref>) with the optimal number of clusters determined by the Bayesian Information Criterion. To determine the speed of the response in each cluster, we compute the peak time of the mean profile for each cluster (see <xref ref-type="table" rid="pcbi-1003598-t007">Table 7</xref>). We used the Genomatix Pathway System (GePS) to look for enriched canonical pathways (<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e114" xlink:type="simple"/></inline-formula>-value <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e115" xlink:type="simple"/></inline-formula>) in each cluster (supplementary material, Table S4 in <xref ref-type="supplementary-material" rid="pcbi.1003598.s002">Text S1</xref>) and performed a Gene Ontology (GO) analysis of the clusters using the DAVID tool <xref ref-type="bibr" rid="pcbi.1003598-Huang1">[31]</xref>, <xref ref-type="bibr" rid="pcbi.1003598-Huang2">[32]</xref> (supplementary material, Tables S5-S7 in <xref ref-type="supplementary-material" rid="pcbi.1003598.s002">Text S1</xref>) showing that clusters are enriched for a number of different GO categories. The GO analysis identified early peaking clusters such as 2, 4 and 10 as enriched for nucleotide binding proteins consistent with many early genes being involved in downstream transcriptional regulation. The clustering of the pair of genes <italic>JAK1</italic> and <italic>JAK2</italic> in cluster 10, which has a prominent early peak, suggests that the response of both genes to E2 is rapid and coordinated. Since these genes are known to act together in several biological pathways such as the IL-6 signaling pathway and the IFN gamma signaling pathway, their appearance in the same cluster suggests that the clustering is likely to reveal other biologically significant relationships. A closer look at the inferred pol-II promoter profiles of some examples in cluster 10, the earliest peaking cluster, and the corresponding inferred pol-II profiles over the last 20% of the genes reveals the possible influence of gene length on mRNA production and how clustering the inferred promoter profiles can account for this influence and uncover potential co-regulation. <xref ref-type="fig" rid="pcbi-1003598-g007">Figure 7</xref> shows the inferred promoter profiles and the inferred pol-II profiles over the last 20% for three genes <italic>CLN8</italic>, <italic>BRI3BP</italic> and <italic>JAK2</italic> in cluster 10. <xref ref-type="fig" rid="pcbi-1003598-g008">Figure 8</xref> shows the corresponding raw ChIP-seq reads. The lengths of the genes to the nearest kilobase are 23, 32 and 143 kb respectively. We see that despite the last segment profiles peaking at different times, the promoter profiles peak at approximately the same time. The difference in peak time over the final segment of the gene is most likely due to the length of the genes and accounts for the amount of time the pol-II takes to move down the gene. Such differences would mask potential co-regulation if we attempted to cluster genes based on their mRNA profiles.</p>
+<fig id="pcbi-1003598-g006" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003598.g006</object-id><label>Figure 6</label><caption>
+<title>Clusters of promoter activity profiles.</title>
+<p>The mean profile in each cluster is shown by the bold line.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003598.g006" position="float" xlink:type="simple"/></fig><fig id="pcbi-1003598-g007" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003598.g007</object-id><label>Figure 7</label><caption>
+<title>Influence of gene length on transcription time.</title>
+<p>Inferred promoter profiles and pol-II activity over the final 20% of the gene for three genes in cluster 10. The panels on the right (A,C,E) show the inferred promoter profiles while the panels on the left (B,D,F) show the corresponding pol-II activity over the final 20% of the gene.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003598.g007" position="float" xlink:type="simple"/></fig><fig id="pcbi-1003598-g008" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003598.g008</object-id><label>Figure 8</label><caption>
+<title>Raw ChIP-seq data.</title>
+<p>ChIP-seq reads for three genes in cluster 10: <italic>CLN8</italic> (A), <italic>BRI3BP</italic> (B) and <italic>JAK2</italic> (C).</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003598.g008" position="float" xlink:type="simple"/></fig><table-wrap id="pcbi-1003598-t007" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003598.t007</object-id><label>Table 7</label><caption>
+<title>Peak time of the mean profile for each of the 12 clusters.</title>
+</caption><alternatives><graphic id="pcbi-1003598-t007-7" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003598.t007" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1">Cluster</td>
+<td align="left" rowspan="1" colspan="1">Peak Time (min)</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">1</td>
+<td align="left" rowspan="1" colspan="1">48</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">32</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">3</td>
+<td align="left" rowspan="1" colspan="1">61</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">4</td>
+<td align="left" rowspan="1" colspan="1">32</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">5</td>
+<td align="left" rowspan="1" colspan="1">100</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">6</td>
+<td align="left" rowspan="1" colspan="1">58</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">7</td>
+<td align="left" rowspan="1" colspan="1">80</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">8</td>
+<td align="left" rowspan="1" colspan="1">122</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">9</td>
+<td align="left" rowspan="1" colspan="1">242</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">10</td>
+<td align="left" rowspan="1" colspan="1">22</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">11</td>
+<td align="left" rowspan="1" colspan="1">297</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">12</td>
+<td align="left" rowspan="1" colspan="1">80</td>
+</tr>
+</tbody>
+</table>
+</alternatives><table-wrap-foot><fn id="nt103"><label/><p>Clusters 1, 2, 4 and 10 have relatively early peaks.</p></fn></table-wrap-foot></table-wrap>
+<p>In Hah <italic>et al.</italic> <xref ref-type="bibr" rid="pcbi.1003598-Hah1">[3]</xref> GRO-seq was used to measure pol-II occupancy genome-wide when MCF-7 cells are treated with estradiol (E2) at four time points (0, 10, 40 and 160 min after E2 treatment). In addition, steady state levels of mRNA for 54 genes were measured using RT-qPCR at five time points (0, 10, 40, 160 and 320 min after E2 treatment). These data show a delay of between 1-3hr between peaks in the pol-II occupancy at the 5′ end of a gene and peaks in the mRNA steady state [3, Figure S4]. These data include the mRNA measurement for 20 genes whose corresponding GRO-seq data peak is at 40 minutes after E2 treatment. Six of these genes namely <italic>CASP7, FHL2, GREB1, ITPK1, NRIP1, WWC1</italic> are found to fit our pol-II model well with ChIP-seq data. <xref ref-type="table" rid="pcbi-1003598-t008">Table 8</xref> shows the peak time of the inferred promoter profile <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e116" xlink:type="simple"/></inline-formula>, the peak time of the inferred pol-II profile over the last 20% of the gene <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e117" xlink:type="simple"/></inline-formula>, the GRO-seq peak time as well as the mRNA peak time. For the GRO-seq and mRNA peak times we show the peak times from Hah <italic>et al.</italic> [3, Figure S4] which are limited to the finite set of sampling times. We see that all mRNA peaks occur after <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e118" xlink:type="simple"/></inline-formula>. The large value of <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e119" xlink:type="simple"/></inline-formula> for <italic>WWC1</italic> which is a long gene <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e120" xlink:type="simple"/></inline-formula> kb in length corresponds to a late peak in mRNA at 320 minutes. This shows that the parameters obtained by our model are biologically plausible. Based solely on the GRO-seq data these genes were grouped together in <xref ref-type="bibr" rid="pcbi.1003598-Hah1">[3]</xref> since they show a peak at 40 min. However our modeling reveals a greater diversity in the nature of responses. In fact the six genes appear in three different early response promoter profile clusters (see <xref ref-type="table" rid="pcbi-1003598-t008">Table 8</xref>).</p>
+<table-wrap id="pcbi-1003598-t008" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003598.t008</object-id><label>Table 8</label><caption>
+<title>The peak time of the inferred promoter profile <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e121" xlink:type="simple"/></inline-formula>, the peak time of the inferred pol-II profile over the last 20% of the gene <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e122" xlink:type="simple"/></inline-formula>, the GRO-seq peak time as well as the mRNA peak time (from [3, Figure S4]).</title>
+</caption><alternatives><graphic id="pcbi-1003598-t008-8" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003598.t008" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1">Gene</td>
+<td align="left" rowspan="1" colspan="1">Cluster</td>
+<td align="left" rowspan="1" colspan="1"><inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e123" xlink:type="simple"/></inline-formula></td>
+<td align="left" rowspan="1" colspan="1"><inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e124" xlink:type="simple"/></inline-formula></td>
+<td align="left" rowspan="1" colspan="1">GRO-seq Peak</td>
+<td align="left" rowspan="1" colspan="1">mRNA Peak</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">CASP7</td>
+<td align="left" rowspan="1" colspan="1">1</td>
+<td align="left" rowspan="1" colspan="1">36</td>
+<td align="left" rowspan="1" colspan="1">47</td>
+<td align="left" rowspan="1" colspan="1">40</td>
+<td align="left" rowspan="1" colspan="1">160</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">FHL2</td>
+<td align="left" rowspan="1" colspan="1">1</td>
+<td align="left" rowspan="1" colspan="1">42</td>
+<td align="left" rowspan="1" colspan="1">55</td>
+<td align="left" rowspan="1" colspan="1">40</td>
+<td align="left" rowspan="1" colspan="1">160</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">GREB1</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">30</td>
+<td align="left" rowspan="1" colspan="1">46</td>
+<td align="left" rowspan="1" colspan="1">40</td>
+<td align="left" rowspan="1" colspan="1">320</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">ITPK1</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">36</td>
+<td align="left" rowspan="1" colspan="1">64</td>
+<td align="left" rowspan="1" colspan="1">40</td>
+<td align="left" rowspan="1" colspan="1">160</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">NRIP1</td>
+<td align="left" rowspan="1" colspan="1">10</td>
+<td align="left" rowspan="1" colspan="1">22</td>
+<td align="left" rowspan="1" colspan="1">40</td>
+<td align="left" rowspan="1" colspan="1">40</td>
+<td align="left" rowspan="1" colspan="1">160</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">WWC1</td>
+<td align="left" rowspan="1" colspan="1">10</td>
+<td align="left" rowspan="1" colspan="1">23</td>
+<td align="left" rowspan="1" colspan="1">81</td>
+<td align="left" rowspan="1" colspan="1">40</td>
+<td align="left" rowspan="1" colspan="1">320</td>
+</tr>
+</tbody>
+</table>
+</alternatives></table-wrap>
+<p>In the supplementary material, we compare the clustering obtained from the inferred promoter profiles to that obtained if the time series of the raw ChIP-seq reads are clustered and show that our model has the potential to uncover relationships which may be missed if we only consider the raw ChIP-seq reads.</p>
+</sec><sec id="s3b2">
+<title>Transcription factor binding</title>
+<p>We investigated the TF peaks in a 40 kbp region around the gene transcription start site for all genes in each cluster using ChIP-seq data for a number of TFs measured under similar experimental conditions (i.e. MCF-7 breast cancer cells treated with E2) in the cistrome database (<ext-link ext-link-type="uri" xlink:href="http://cistrome.org" xlink:type="simple">http://cistrome.org</ext-link>). In earlier work on the estrogen interactome, Fullwood <italic>et al.</italic> <xref ref-type="bibr" rid="pcbi.1003598-Fullwood1">[33]</xref> suggest that most long range interactions between TF binding sites and gene enhancers are limited to a range of about 20 kb. We therefore investigate the region from −20 kb to 20 kb relative to the TSS (results for other regions around the TSS ranging from 1 to 100 kb are shown in the supplementary material (Tables S11–S14 in <xref ref-type="supplementary-material" rid="pcbi.1003598.s002">Text S1</xref>)). <xref ref-type="table" rid="pcbi-1003598-t009">Table 9</xref> shows the number of genes with TF binding peaks for each cluster for 7 TFs namely ER<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e125" xlink:type="simple"/></inline-formula> <xref ref-type="bibr" rid="pcbi.1003598-Welboren1">[2]</xref>, FoxA1 <xref ref-type="bibr" rid="pcbi.1003598-Lupien1">[34]</xref>, c-Fos <xref ref-type="bibr" rid="pcbi.1003598-Joseph1">[35]</xref>, c-Jun <xref ref-type="bibr" rid="pcbi.1003598-Joseph1">[35]</xref>, c-MYC <xref ref-type="bibr" rid="pcbi.1003598-Hua1">[36]</xref>, SRC-3 <xref ref-type="bibr" rid="pcbi.1003598-Lanz1">[37]</xref>, TRIM24 <xref ref-type="bibr" rid="pcbi.1003598-Tsai1">[38]</xref>. We found that the TFs RAD21 <xref ref-type="bibr" rid="pcbi.1003598-Schmidt1">[39]</xref>, CTCF <xref ref-type="bibr" rid="pcbi.1003598-Schmidt1">[39]</xref> and STAG1 <xref ref-type="bibr" rid="pcbi.1003598-Schmidt1">[39]</xref> are ubiquitously bound and not useful in uncovering cluster-specific TF binding. We investigate the statistical significance of the proportions of genes in each cluster with TF peaks in a 40 kb neighborhood of the TSS by comparing the observed proportions to those we would expect in clusters of the same size drawn at random from the set of all genes. In <xref ref-type="table" rid="pcbi-1003598-t009">Table 9</xref> statistically significant (<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e126" xlink:type="simple"/></inline-formula>-value <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e127" xlink:type="simple"/></inline-formula>) proportions are indicated in bold (larger than expected). For <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e128" xlink:type="simple"/></inline-formula>-values less than <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e129" xlink:type="simple"/></inline-formula>, the associated <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e130" xlink:type="simple"/></inline-formula>-values are indicated in parentheses according to the following scale (***: <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e131" xlink:type="simple"/></inline-formula>,**: <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e132" xlink:type="simple"/></inline-formula>,*: <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e133" xlink:type="simple"/></inline-formula>).</p>
+<table-wrap id="pcbi-1003598-t009" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003598.t009</object-id><label>Table 9</label><caption>
+<title>Analysis of transcription factor binding in 40</title>
+</caption><alternatives><graphic id="pcbi-1003598-t009-9" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003598.t009" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1">Cluster</td>
+<td colspan="7" align="left" rowspan="1">TFs</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">ER<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e134" xlink:type="simple"/></inline-formula></td>
+<td align="left" rowspan="1" colspan="1">FOXA1</td>
+<td align="left" rowspan="1" colspan="1">c-FOS</td>
+<td align="left" rowspan="1" colspan="1">c-JUN</td>
+<td align="left" rowspan="1" colspan="1">MYC</td>
+<td align="left" rowspan="1" colspan="1">SRC-3</td>
+<td align="left" rowspan="1" colspan="1">TRIM24</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">1 (37)</td>
+<td align="left" rowspan="1" colspan="1"><bold>27</bold> (**)</td>
+<td align="left" rowspan="1" colspan="1"><bold>14</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>16</bold> (*)</td>
+<td align="left" rowspan="1" colspan="1">6</td>
+<td align="left" rowspan="1" colspan="1">4</td>
+<td align="left" rowspan="1" colspan="1"><bold>25</bold> (*)</td>
+<td align="left" rowspan="1" colspan="1">27</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">2 (47)</td>
+<td align="left" rowspan="1" colspan="1"><bold>31</bold> (*)</td>
+<td align="left" rowspan="1" colspan="1"><bold>19</bold> (*)</td>
+<td align="left" rowspan="1" colspan="1"><bold>16</bold></td>
+<td align="left" rowspan="1" colspan="1">7</td>
+<td align="left" rowspan="1" colspan="1"><bold>7</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>36</bold> (***)</td>
+<td align="left" rowspan="1" colspan="1"><bold>38</bold></td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">3 (18)</td>
+<td align="left" rowspan="1" colspan="1">11</td>
+<td align="left" rowspan="1" colspan="1">5</td>
+<td align="left" rowspan="1" colspan="1">7</td>
+<td align="left" rowspan="1" colspan="1"><bold>5</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>6</bold> (**)</td>
+<td align="left" rowspan="1" colspan="1">11</td>
+<td align="left" rowspan="1" colspan="1">12</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">4 (29)</td>
+<td align="left" rowspan="1" colspan="1"><bold>20</bold> (*)</td>
+<td align="left" rowspan="1" colspan="1"><bold>11</bold></td>
+<td align="left" rowspan="1" colspan="1">9</td>
+<td align="left" rowspan="1" colspan="1"><bold>7</bold></td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">18</td>
+<td align="left" rowspan="1" colspan="1">23</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">5 (27)</td>
+<td align="left" rowspan="1" colspan="1">15</td>
+<td align="left" rowspan="1" colspan="1">4</td>
+<td align="left" rowspan="1" colspan="1">6</td>
+<td align="left" rowspan="1" colspan="1"><bold>8</bold> (*)</td>
+<td align="left" rowspan="1" colspan="1"><bold>9</bold> (***)</td>
+<td align="left" rowspan="1" colspan="1">16</td>
+<td align="left" rowspan="1" colspan="1">19</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">6 (40)</td>
+<td align="left" rowspan="1" colspan="1"><bold>27</bold> (*)</td>
+<td align="left" rowspan="1" colspan="1">8</td>
+<td align="left" rowspan="1" colspan="1">12</td>
+<td align="left" rowspan="1" colspan="1">7</td>
+<td align="left" rowspan="1" colspan="1">4</td>
+<td align="left" rowspan="1" colspan="1"><bold>25</bold></td>
+<td align="left" rowspan="1" colspan="1">31</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">7 (24)</td>
+<td align="left" rowspan="1" colspan="1">10</td>
+<td align="left" rowspan="1" colspan="1">6</td>
+<td align="left" rowspan="1" colspan="1">5</td>
+<td align="left" rowspan="1" colspan="1"><bold>6</bold></td>
+<td align="left" rowspan="1" colspan="1">3</td>
+<td align="left" rowspan="1" colspan="1">13</td>
+<td align="left" rowspan="1" colspan="1">19</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">8 (47)</td>
+<td align="left" rowspan="1" colspan="1"><bold>32</bold> (*)</td>
+<td align="left" rowspan="1" colspan="1">10</td>
+<td align="left" rowspan="1" colspan="1">14</td>
+<td align="left" rowspan="1" colspan="1"><bold>14</bold> (**)</td>
+<td align="left" rowspan="1" colspan="1"><bold>8</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>31</bold> (*)</td>
+<td align="left" rowspan="1" colspan="1"><bold>40</bold> (*)</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">9 (26)</td>
+<td align="left" rowspan="1" colspan="1"><bold>18</bold></td>
+<td align="left" rowspan="1" colspan="1">7</td>
+<td align="left" rowspan="1" colspan="1"><bold>11</bold> (*)</td>
+<td align="left" rowspan="1" colspan="1"><bold>11</bold> (***)</td>
+<td align="left" rowspan="1" colspan="1">3</td>
+<td align="left" rowspan="1" colspan="1">12</td>
+<td align="left" rowspan="1" colspan="1"><bold>22</bold></td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">10 (38)</td>
+<td align="left" rowspan="1" colspan="1"><bold>30</bold> (***)</td>
+<td align="left" rowspan="1" colspan="1"><bold>14</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>15</bold> (*)</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">1</td>
+<td align="left" rowspan="1" colspan="1"><bold>29</bold> (**)</td>
+<td align="left" rowspan="1" colspan="1"><bold>32</bold> (*)</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">11 (13)</td>
+<td align="left" rowspan="1" colspan="1">5</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1"><bold>7</bold> (*)</td>
+<td align="left" rowspan="1" colspan="1"><bold>4</bold></td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">7</td>
+<td align="left" rowspan="1" colspan="1"><bold>13</bold> (*)</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">12 (37)</td>
+<td align="left" rowspan="1" colspan="1">19</td>
+<td align="left" rowspan="1" colspan="1">8</td>
+<td align="left" rowspan="1" colspan="1">12</td>
+<td align="left" rowspan="1" colspan="1"><bold>11</bold> (**)</td>
+<td align="left" rowspan="1" colspan="1">4</td>
+<td align="left" rowspan="1" colspan="1"><bold>23</bold></td>
+<td align="left" rowspan="1" colspan="1">29</td>
+</tr>
+</tbody>
+</table>
+</alternatives><table-wrap-foot><fn id="nt104"><label/><p>The number in parentheses in the first column is the cluster size. For each TF, we show the number of genes with peaks. Statistically significant proportions (<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e135" xlink:type="simple"/></inline-formula>-value <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e136" xlink:type="simple"/></inline-formula>) are indicated in bold (larger than expected). For <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e137" xlink:type="simple"/></inline-formula>-values less than <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e138" xlink:type="simple"/></inline-formula>, the associated <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e139" xlink:type="simple"/></inline-formula>-values are indicated in parentheses according to the following scale (***: <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e140" xlink:type="simple"/></inline-formula>,**: <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e141" xlink:type="simple"/></inline-formula>,*: <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e142" xlink:type="simple"/></inline-formula>).</p></fn></table-wrap-foot></table-wrap>
+<p>Interestingly, clusters 1, 2, 4, and 10, which show an early peak in the mean promoter profile, are all enriched for ER<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e143" xlink:type="simple"/></inline-formula> and FOXA1. These clusters, with the exception of cluster 4, were also found to be enriched for the ER<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e144" xlink:type="simple"/></inline-formula> motif near the promoter. The enrichment of both ER<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e145" xlink:type="simple"/></inline-formula> and FOXA1 in these clusters is in line with conclusions drawn in Hurtado <italic>et al.</italic> <xref ref-type="bibr" rid="pcbi.1003598-Hurtado1">[40]</xref> where it was suggested FOXA1 mediates ER<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e146" xlink:type="simple"/></inline-formula> binding. We also investigated the overlap of the binding sites for ER<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e147" xlink:type="simple"/></inline-formula> and FOXA1 both in the 151 genes belonging to these clusters and genome-wide using the peaks obtained from <xref ref-type="bibr" rid="pcbi.1003598-Welboren1">[2]</xref> (ER<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e148" xlink:type="simple"/></inline-formula>) and <xref ref-type="bibr" rid="pcbi.1003598-Lupien1">[34]</xref> (FOXA1) and reported in the cistrome database. We investigated the 40 kb region −20 kbp to 20 kbp relative to the TSS. <xref ref-type="table" rid="pcbi-1003598-t010">Table 10</xref> shows the number of ER<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e149" xlink:type="simple"/></inline-formula> and FOXA1 peaks and the overlap (Two peaks are said to overlap if they have at least one base pair in common). We see that when we consider the rapid response genes in clusters 1, 2, 4, and 10 the percentage of overlap increases to 16% (35/220) whereas the overlap is 9% (956/11056) when we consider all genes. The significance associated with this elevated overlap is p = 0.004 given the null hypothesis of a random gene list of the same size (results for other regions around the TSS ranging from 1 to 100 kb are shown in the supplementary material (Tables S15 -S18 in <xref ref-type="supplementary-material" rid="pcbi.1003598.s002">Text S1</xref>)). Taken together, the results in <xref ref-type="table" rid="pcbi-1003598-t009">Tables 9</xref> and <xref ref-type="table" rid="pcbi-1003598-t010">10</xref> identify genes that respond to E2, with clusters 1, 2, 4 and 10 most likely to contain the earliest estrogen responsive genes.</p>
+<table-wrap id="pcbi-1003598-t010" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003598.t010</object-id><label>Table 10</label><caption>
+<title>Overlap of ER<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e150" xlink:type="simple"/></inline-formula> and FOXA1 binding in a 40 kb region around the TSS.</title>
+</caption><alternatives><graphic id="pcbi-1003598-t010-10" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003598.t010" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1">Genes</td>
+<td align="left" rowspan="1" colspan="1"># of ER<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e151" xlink:type="simple"/></inline-formula> peaks</td>
+<td align="left" rowspan="1" colspan="1"># of FOXA1 peaks</td>
+<td align="left" rowspan="1" colspan="1">ER<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e152" xlink:type="simple"/></inline-formula> and FOXA1 overlap</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">Clusters 1, 2, 4, and 10 (151)</td>
+<td align="left" rowspan="1" colspan="1">220 (112)</td>
+<td align="left" rowspan="1" colspan="1">86 (44)</td>
+<td align="left" rowspan="1" colspan="1">35 (0.004)</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">All genes (<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e153" xlink:type="simple"/></inline-formula> 20,000)</td>
+<td align="left" rowspan="1" colspan="1">11056</td>
+<td align="left" rowspan="1" colspan="1">4626</td>
+<td align="left" rowspan="1" colspan="1">956</td>
+</tr>
+</tbody>
+</table>
+</alternatives><table-wrap-foot><fn id="nt105"><label/><p>The numbers in parentheses in the first column are the number of genes. In each TF peak column, we show the expected number of peaks in a set of random random genes of the same size in parentheses. In the overlap column the associated p-value is shown in parentheses.</p></fn></table-wrap-foot></table-wrap></sec></sec></sec><sec id="s4">
+<title>Discussion</title>
+<p>In this work we have presented a methodology for modelling transcription dynamics and employed it to determine the transcriptional response of breast cancer cells to estradiol. To capture the movement of pol-II down the gene body, we model the observed pol-II occupancy time profiles over different gene segments as the delayed response of linear systems to the same input. The input is assumed to be drawn from a Gaussian process which models the pol-II activity adjacent to the gene promoter. Given observations from high-throughput data such as pol-II ChIP-Seq data, we are able to infer this input function and estimate the pol-II activity at the promoter. This allows us to differentiate transcriptionally engaged pol-II from pol-II paused at the promoter and yields good estimates of transcriptional activity.</p>
+<p>In addition to estimating the transcriptional activity at the promoter, inferring the pol-II occupancy time profiles over different gene segments allows us to compute the transcription speed. We expect the delay parameters of different gene segments to be non-decreasing and this provides a natural way to determine genes that are being actively transcribed in response to E2.</p>
+<p>Clustering the inferred promoter activity profiles allows us to investigate the nature of the response and group genes that are likely to be co-regulated. We found that the four clusters significantly enriched for both ER<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e154" xlink:type="simple"/></inline-formula> and FOXA1 binding within 40 kb according to public ChIP-Seq data were those that showed the earliest peak in pol-II activity at the promoter. ER<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003598.e155" xlink:type="simple"/></inline-formula> and FOXA1 ChIP peaks in the neighbourhood of these genes were also more likely to be overlapping than the average for ChIP-identified binding events of these TFs genome-wide. This observation provides some support for the previously proposed role of FOXA1 as a mediator of early transcriptional response in estrogen signalling. These results also show that our method can help regulatory network inference. The inferred promoter activity profiles pinpoint the times of transcriptional activation very accurately without confounding transcriptional delays. As genes with similar inferred promoter activity profiles are likely to have similar TF binding profiles, they are likely to be co-regulated as well. The promoter profiles should therefore lead to more accurate predictions of regulator-target relationships using time-course-based methods (e.g. <xref ref-type="bibr" rid="pcbi.1003598-Honkela1">[9]</xref>) than using expression time course data.</p>
+<p>As well as modelling transcriptional speed and transcriptional activity profiles, the proposed modelling approach may have other useful applications. For example, recent research has uncovered a link between transcription dynamics and alternative splicing <xref ref-type="bibr" rid="pcbi.1003598-Shukla1">[41]</xref>. It is believed that aberrant splicing can cause disease and a number of studies have tried to understand the mechanisms of alternative splicing <xref ref-type="bibr" rid="pcbi.1003598-Tazi1">[42]</xref>. The proposed model can potentially be used to identify transcriptional pausing events, and such results could be usefully combined with inference of splice variation from RNA-Seq datasets from the same system. Also, with the increasing availability of high-throughput sequencing data exploring multiple layered views of the transcription process and its regulation, the convolved modelling approach developed here has the potential to be usefully applied to more complex coupled spatio-temporal datasets.</p>
+</sec><sec id="s5">
+<title>Supporting Information</title>
+<supplementary-material id="pcbi.1003598.s001" mimetype="application/zip" xlink:href="info:doi/10.1371/journal.pcbi.1003598.s001" position="float" xlink:type="simple"><label>File S1</label><caption>
+<p><bold>Gene lists and clustering results.</bold> The files in this archive include the list of 2623 genes found to exhibit differential pol-II occupancy between 0 and 40 min after E2 treatment and also greater than 1000 bp in length. A BED file with the coordinates of the genes according to the hg19 annotation and a list of 383 genes found to fit the pol-II model well and their cluster indices.</p>
+<p>(ZIP)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1003598.s002" mimetype="application/pdf" xlink:href="info:doi/10.1371/journal.pcbi.1003598.s002" position="float" xlink:type="simple"><label>Text S1</label><caption>
+<p><bold>Supporting text</bold>. This file contains additional details of the mathematical model and results of biological validation via gene ontology analysis and transcription factor binding.</p>
+<p>(PDF)</p>
+</caption></supplementary-material></sec></body>
+<back>
+<ack>
+<p>We thank Nancy Bretschneider for running the mappings to generate the bed-files for this publication. We thank Dr. Jarnail Singh, and Dr. Richard A. Padgett for making data from their paper available.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1003598-Hager1"><label>1</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hager</surname><given-names>GL</given-names></name>, <name name-style="western"><surname>McNally</surname><given-names>JG</given-names></name>, <name name-style="western"><surname>Misteli</surname><given-names>T</given-names></name> (<year>2009</year>) <article-title>Transcription dynamics</article-title>. <source>Mol Cell</source> <volume>35</volume>: <fpage>741</fpage>–<lpage>753</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Welboren1"><label>2</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Welboren</surname><given-names>WJ</given-names></name>, <name name-style="western"><surname>van Driel</surname><given-names>MA</given-names></name>, <name name-style="western"><surname>Janssen-Megens</surname><given-names>EM</given-names></name>, <name name-style="western"><surname>van Heeringen</surname><given-names>SJ</given-names></name>, <name name-style="western"><surname>Sweep</surname><given-names>FCGJ</given-names></name>, <etal>et al</etal>. (<year>2009</year>) <article-title>ChIP-Seq of ER<italic>α</italic> and RNA polymerase II defines genes differentially responding to ligands</article-title>. <source>The EMBO Journal</source> <volume>28</volume>: <fpage>1418</fpage>–<lpage>1428</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Hah1"><label>3</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hah</surname><given-names>N</given-names></name>, <name name-style="western"><surname>Danko</surname><given-names>CG</given-names></name>, <name name-style="western"><surname>Core</surname><given-names>L</given-names></name>, <name name-style="western"><surname>Waterfall</surname><given-names>JJ</given-names></name>, <name name-style="western"><surname>Siepel</surname><given-names>A</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>A rapid, extensive, and transient transcriptional response to estrogen signaling in breast cancer cells</article-title>. <source>Cell</source> <volume>145</volume>: <fpage>622</fpage>–<lpage>634</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Darzacq1"><label>4</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Darzacq</surname><given-names>X</given-names></name>, <name name-style="western"><surname>Shav-Tal</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>de Turris</surname><given-names>V</given-names></name>, <name name-style="western"><surname>Brody</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Shenoy</surname><given-names>SM</given-names></name>, <etal>et al</etal>. (<year>2007</year>) <article-title>In vivo dynamics of RNA polymerase II transcription</article-title>. <source>Nature structural &amp; molecular biology</source> <volume>14</volume>: <fpage>796</fpage>–<lpage>806</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Wada1"><label>5</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wada</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Ohta</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Xu</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Tsutsumi</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Minami</surname><given-names>T</given-names></name>, <etal>et al</etal>. (<year>2009</year>) <article-title>A wave of nascent transcription on activated human genes</article-title>. <source>Proceedings of the National Academy of Sciences</source> <volume>106</volume>: <fpage>18357</fpage>–<lpage>18361</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Singh1"><label>6</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Singh</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Padgett</surname><given-names>RA</given-names></name> (<year>2009</year>) <article-title>Rates of in situ transcription and splicing in large human genes</article-title>. <source>Nature Structural &amp; Molecular Biology</source> <volume>16</volume>: <fpage>1128</fpage>–<lpage>1133</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Rasmussen1"><label>7</label>
+<mixed-citation publication-type="other" xlink:type="simple">Rasmussen CE, Williams C (2006) Gaussian Processes for Machine Learning. MIT Press.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Gao1"><label>8</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gao</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Honkela</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Rattray</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Lawrence</surname><given-names>ND</given-names></name> (<year>2008</year>) <article-title>Gaussian process modelling of latent chemical species: Applications to inferring transcription factor activities</article-title>. <source>Bioinformatics</source> <volume>24</volume>: <fpage>i70</fpage>–<lpage>i75</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Honkela1"><label>9</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Honkela</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Girardot</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Gustafson</surname><given-names>EH</given-names></name>, <name name-style="western"><surname>Liu</surname><given-names>YH</given-names></name>, <name name-style="western"><surname>Furlong</surname><given-names>EEM</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>Model-based method for transcription factor target identification with limited data</article-title>. <source>Proceedings of the National Academy of Sciences</source> <volume>107</volume>: <fpage>7793</fpage>–<lpage>7798</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Kalaitzis1"><label>10</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kalaitzis</surname><given-names>AA</given-names></name>, <name name-style="western"><surname>Lawrence</surname><given-names>ND</given-names></name> (<year>2011</year>) <article-title>A simple approach to ranking differentially expressed gene expression time courses through Gaussian process regression</article-title>. <source>BMC Bioinformatics</source> <volume>12</volume>: <fpage>180</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Liu1"><label>11</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Liu</surname><given-names>W</given-names></name> (<year>2012</year>) <collab xlink:type="simple">NiranjanM</collab> (<year>2012</year>) <article-title>Gaussian process modelling for bicoid mrna regulation in spatio-temporal bicoid profile</article-title>. <source>Bioinformatics</source> <volume>28</volume>: <fpage>366</fpage>–<lpage>372</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Higdon1"><label>12</label>
+<mixed-citation publication-type="other" xlink:type="simple">Higdon DM (2002) Space and space-time modelling using process convolutions. In: Anderson C, Barnett V, Chatwin P, El-Shaarawi A, editors, Quantitative methods for current environmental issues. pp. 37–56.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Higdon2"><label>13</label>
+<mixed-citation publication-type="other" xlink:type="simple">Higdon D (2001) Space and Space-Time Modeling Using Process Convolutions. Technical report, Institute of Statistics and Decision Sciences, Duke University.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Higdon3"><label>14</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Higdon</surname><given-names>DM</given-names></name> (<year>1998</year>) <article-title>A process-convolution approach to modeling temperatures in the north atlantic ocean</article-title>. <source>Journal of Ecological and Environmental Statistics</source> <volume>5</volume>: <fpage>173</fpage>–<lpage>190</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Boyle1"><label>15</label>
+<mixed-citation publication-type="other" xlink:type="simple">Boyle P, Frean M (2005) Dependent Gaussian processes. In: Advances in Neural Information Processing Systems 17. MIT Press, pp. 217–224.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Alvarez1"><label>16</label>
+<mixed-citation publication-type="other" xlink:type="simple">Alvarez M, Lawrence ND (2008) Sparse Convolved Gaussian Processes for Multi-output Regression. In: NIPS. volume 21, pp. 57–64.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-lvarez1"><label>17</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Álvarez</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Rosasco</surname><given-names>L</given-names></name>, <name name-style="western"><surname>Lawrence</surname><given-names>ND</given-names></name> (<year>2012</year>) <article-title>Kernels for vector-valued functions: A review</article-title>. <source>Foun-dations and Trends in Machine Learning</source> <volume>4</volume>: <fpage>195</fpage>–<lpage>266</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-lvarez2"><label>18</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Álvarez</surname><given-names>MA</given-names></name>, <name name-style="western"><surname>Lawrence</surname><given-names>ND</given-names></name> (<year>2011</year>) <article-title>Computationally efficient convolved multiple output Gaussian processes</article-title>. <source>Journal of Machine Learning Research</source> <volume>12</volume>: <fpage>1425</fpage>–<lpage>1466</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-VerHoef1"><label>19</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ver Hoef</surname><given-names>JM</given-names></name>, <name name-style="western"><surname>Barry</surname><given-names>RP</given-names></name> (<year>1998</year>) <article-title>Constructing and fitting models for cokriging and multivariable spatial prediction</article-title>. <source>Journal of Statistical Plannig and Inference</source> <volume>69</volume>: <fpage>275</fpage>–<lpage>294</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Calder1"><label>20</label>
+<mixed-citation publication-type="other" xlink:type="simple">Calder CA, Cressie NAC (2007) Some topics in convolution-based spatial modeling. In: Proceedings of the 56th Session of the International Statistics Institute.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Neal1"><label>21</label>
+<mixed-citation publication-type="other" xlink:type="simple">Neal RM (2011) MCMC using Hamiltonian dynamics. In: S Brooks, A Gelman,G Jones and X-L Meng, editor, Handbook of Markov Chain Monte Carlo, Chapman and Hall/CRC.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Knapp1"><label>22</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Knapp</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Carter</surname><given-names>GC</given-names></name> (<year>1976</year>) <article-title>The generalized correlation method for estimation of time delay</article-title>. <source>IEEE Transactions on Acoustics, Speech and Signal Processing</source> <volume>24</volume>: <fpage>320</fpage>–<lpage>327</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Haarsma1"><label>23</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Haarsma</surname><given-names>DB</given-names></name>, <name name-style="western"><surname>Hewitt</surname><given-names>JN</given-names></name>, <name name-style="western"><surname>Lehar</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Burke</surname><given-names>BF</given-names></name> (<year>1999</year>) <article-title>The Radio Wavelength Time Delay of Gravi-tational Lens 0957+561</article-title>. <source>The Astrophysical Journal</source> <volume>510</volume>: <fpage>64</fpage>–<lpage>70</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Edelson1"><label>24</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Edelson</surname><given-names>RA</given-names></name>, <name name-style="western"><surname>Krolik</surname><given-names>JH</given-names></name> (<year>1988</year>) <article-title>The discrete correlation function - A new method for analyzing unevenly sampled variability data</article-title>. <source>The Astrophysical Journal</source> <volume>333</volume>: <fpage>646</fpage>–<lpage>659</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-CuevasTello1"><label>25</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cuevas-Tello</surname><given-names>JC</given-names></name>, <name name-style="western"><surname>Tino</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Raychaudhury</surname><given-names>S</given-names></name> (<year>2006</year>) <article-title>How accurate are the time delay estimates in gravitational lensing?</article-title> <source>Astronomy and Astrophysics</source> <volume>454</volume>: <fpage>695</fpage>–<lpage>706</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Harva1"><label>26</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Harva</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Raychaudhury</surname><given-names>S</given-names></name> (<year>2008</year>) <article-title>Bayesian estimation of time delays between unevenly sampled signals</article-title>. <source>Neurocomputing</source> <volume>72</volume>: <fpage>32</fpage>–<lpage>38</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Pepke1"><label>27</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pepke</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Wold</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Mortazavi</surname><given-names>A</given-names></name> (<year>2009</year>) <article-title>Computation for ChIP-seq and RNA-seq studies</article-title>. <source>Nature Methods</source> <volume>6</volume>: <fpage>S22</fpage>–<lpage>32</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Quinlan1"><label>28</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Quinlan</surname><given-names>AR</given-names></name>, <name name-style="western"><surname>Hall</surname><given-names>IM</given-names></name> (<year>2010</year>) <article-title>BEDTools: a exible suite of utilities for comparing genomic features</article-title>. <source>Bioinformatics</source> <volume>26</volume>: <fpage>841</fpage>–<lpage>842</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Dale1"><label>29</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Dale</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Pedersen</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Quinlan</surname><given-names>A</given-names></name> (<year>2011</year>) <article-title>Pybedtools: a flexible python library for manipulating genomic datasets and annotations</article-title>. <source>Bioinformatics</source> <volume>27</volume>: <fpage>3423</fpage>–<lpage>4</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Pearson1"><label>30</label>
+<mixed-citation publication-type="other" xlink:type="simple">Pearson R, Liu X, Sanguinetti G, Milo M, Lawrence N, <etal>et al</etal>.. (2009) Puma: a Bioconductor package for propagating uncertainty in microarray analysis. BMC Bioinformatics 10: 211+.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Huang1"><label>31</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Huang</surname><given-names>DW</given-names></name>, <name name-style="western"><surname>Sherman</surname><given-names>BT</given-names></name>, <name name-style="western"><surname>Lempicki</surname><given-names>RA</given-names></name> (<year>2008</year>) <article-title>Systematic and integrative analysis of large gene lists using DAVID bioinformatics resources</article-title>. <source>Nat Protocols</source> <volume>4</volume>: <fpage>44</fpage>–<lpage>57</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Huang2"><label>32</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Huang</surname><given-names>DW</given-names></name>, <name name-style="western"><surname>Sherman</surname><given-names>BT</given-names></name>, <name name-style="western"><surname>Lempicki</surname><given-names>RA</given-names></name> (<year>2009</year>) <article-title>Bioinformatics enrichment tools: paths toward the comprehensive functional analysis of large gene lists</article-title>. <source>Nucleic Acids Research</source> <volume>37</volume>: <fpage>1</fpage>–<lpage>13</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Fullwood1"><label>33</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fullwood</surname><given-names>MJ</given-names></name>, <name name-style="western"><surname>Liu</surname><given-names>MH</given-names></name>, <name name-style="western"><surname>Pan</surname><given-names>YF</given-names></name>, <name name-style="western"><surname>Liu</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Xu</surname><given-names>H</given-names></name>, <etal>et al</etal>. (<year>2009</year>) <article-title>An oestrogen-receptor-<italic>α</italic>-bound human chromatin interactome</article-title>. <source>Nature</source> <volume>462</volume>: <fpage>58</fpage>–<lpage>64</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Lupien1"><label>34</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lupien</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Eeckhoute</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Meyer</surname><given-names>CA</given-names></name>, <name name-style="western"><surname>Wang</surname><given-names>Q</given-names></name>, <name name-style="western"><surname>Zhang</surname><given-names>Y</given-names></name>, <etal>et al</etal>. (<year>2008</year>) <article-title>FoxA1 translates epigenetic signatures into enhancer-driven lineage-specific transcription</article-title>. <source>Cell</source> <volume>132</volume>: <fpage>958</fpage>–<lpage>970</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Joseph1"><label>35</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Joseph</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Orlov</surname><given-names>YL</given-names></name>, <name name-style="western"><surname>Huss</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Sun</surname><given-names>W</given-names></name>, <name name-style="western"><surname>Kong</surname><given-names>SLL</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>Integrative model of genomic factors for determining binding site selection by estrogen receptor <italic>α</italic></article-title>. <source>Molecular systems biology</source> <volume>6</volume>: <fpage>456</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Hua1"><label>36</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hua</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Kittler</surname><given-names>R</given-names></name>, <name name-style="western"><surname>White</surname><given-names>KP</given-names></name> (<year>2009</year>) <article-title>Genomic antagonism between retinoic acid and estrogen sig-naling in breast cancer</article-title>. <source>Cell</source> <volume>137</volume>: <fpage>1259</fpage>–<lpage>1271</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Lanz1"><label>37</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lanz</surname><given-names>RB</given-names></name>, <name name-style="western"><surname>Bulynko</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Malovannaya</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Labhart</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Wang</surname><given-names>L</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>Global Characterization of Transcriptional Impact of the SRC-3 Coregulator</article-title>. <source>Molecular Endocrinology</source> <volume>24</volume>: <fpage>859</fpage>–<lpage>872</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Tsai1"><label>38</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Tsai</surname><given-names>WW</given-names></name>, <name name-style="western"><surname>Wang</surname><given-names>Z</given-names></name>, <name name-style="western"><surname>Yiu</surname><given-names>TT</given-names></name>, <name name-style="western"><surname>Akdemir</surname><given-names>KC</given-names></name>, <name name-style="western"><surname>Xia</surname><given-names>W</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>TRIM24 links a non-canonical histone signature to breast cancer</article-title>. <source>Nature</source> <volume>468</volume>: <fpage>927</fpage>–<lpage>932</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Schmidt1"><label>39</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schmidt</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Schwalie</surname><given-names>PC</given-names></name>, <name name-style="western"><surname>Ross-Innes</surname><given-names>CS</given-names></name>, <name name-style="western"><surname>Hurtado</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Brown</surname><given-names>GD</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>A CTCF-independent role for cohesin in tissue-specific transcription</article-title>. <source>Genome research</source> <volume>20</volume>: <fpage>578</fpage>–<lpage>588</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Hurtado1"><label>40</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hurtado</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Holmes</surname><given-names>KA</given-names></name>, <name name-style="western"><surname>Ross-Innes</surname><given-names>CS</given-names></name>, <name name-style="western"><surname>Schmidt</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Carroll</surname><given-names>JS</given-names></name> (<year>2011</year>) <article-title>FOXA1 is a key determinant of estrogen receptor function and endocrine response</article-title>. <source>Nature Genetics</source> <volume>43</volume>: <fpage>27</fpage>–<lpage>33</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Shukla1"><label>41</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Shukla</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Kavak</surname><given-names>E</given-names></name>, <name name-style="western"><surname>Gregory</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Imashimizu</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Shutinoski</surname><given-names>B</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>CTCF-promoted RNA polymerase II pausing links DNA methylation to splicing</article-title>. <source>Nature</source> <volume>479</volume>: <fpage>74</fpage>–<lpage>79</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003598-Tazi1"><label>42</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Tazi</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Bakkour</surname><given-names>N</given-names></name>, <name name-style="western"><surname>Stamm</surname><given-names>S</given-names></name> (<year>2009</year>) <article-title>Alternative splicing and disease</article-title>. <source>Biochimica et Biophysica Acta</source> <volume>1792</volume>: <fpage>14</fpage>–<lpage>26</lpage>.</mixed-citation>
+</ref>
+</ref-list></back>
+</article>

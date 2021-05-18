@@ -1,0 +1,897 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="3.0" xml:lang="en">
+<front>
+<journal-meta>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id>
+<journal-id journal-id-type="pmc">ploscomp</journal-id><journal-title-group>
+<journal-title>PLoS Computational Biology</journal-title></journal-title-group>
+<issn pub-type="ppub">1553-734X</issn>
+<issn pub-type="epub">1553-7358</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, USA</publisher-loc></publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="publisher-id">PCOMPBIOL-D-12-00674</article-id>
+<article-id pub-id-type="doi">10.1371/journal.pcbi.1003077</article-id>
+<article-categories><subj-group subj-group-type="heading"><subject>Research Article</subject></subj-group><subj-group subj-group-type="Discipline-v2"><subject>Biology</subject><subj-group><subject>Biochemistry</subject></subj-group><subj-group><subject>Computational biology</subject></subj-group><subj-group><subject>Proteomics</subject></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>Towards Systematic Discovery of Signaling Networks in Budding Yeast Filamentous Growth Stress Response Using Interventional Phosphorylation Data</article-title>
+<alt-title alt-title-type="running-head">Signaling Network Discovery in Phosphoproteomics</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Zhang</surname><given-names>Yan</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Kweon</surname><given-names>Hye Kyong</given-names></name><xref ref-type="aff" rid="aff2"><sup>2</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Shively</surname><given-names>Christian</given-names></name><xref ref-type="aff" rid="aff3"><sup>3</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Kumar</surname><given-names>Anuj</given-names></name><xref ref-type="aff" rid="aff3"><sup>3</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Andrews</surname><given-names>Philip C.</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff2"><sup>2</sup></xref><xref ref-type="corresp" rid="cor1"><sup>*</sup></xref></contrib>
+</contrib-group>
+<aff id="aff1"><label>1</label><addr-line>Department of Computational Medicine and Bioinformatics, University of Michigan Medical School, Ann Arbor, Michigan, United States of America</addr-line></aff>
+<aff id="aff2"><label>2</label><addr-line>Department of Biological Chemistry, University of Michigan Medical School, Ann Arbor, Michigan, United States of America</addr-line></aff>
+<aff id="aff3"><label>3</label><addr-line>Department of Molecular, Cellular, and Developmental Biology, University of Michigan, Ann Arbor, Michigan, United States of America</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple"><name name-style="western"><surname>Orengo</surname><given-names>Christine A.</given-names></name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/></contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>University College London, United Kingdom</addr-line></aff>
+<author-notes>
+<corresp id="cor1">* E-mail: <email xlink:type="simple">andrewsp@umich.edu</email></corresp>
+<fn fn-type="conflict"><p>The authors have declared that no competing interests exist.</p></fn>
+<fn fn-type="con"><p>Wrote the paper: YZ PCA AK. Conceived and initiated the project: PCA YZ AK HKK. Designed and developed the post-identification pipeline, and performed the analysis: YZ. Performed the mass spectrometry experiments: HKK. Contributed biological samples and performed experimental validation: CS. Discussed interpretation of biological results: YZ HKK CS AK PCA.</p></fn>
+</author-notes>
+<pub-date pub-type="collection"><month>6</month><year>2013</year></pub-date>
+<pub-date pub-type="epub"><day>27</day><month>6</month><year>2013</year></pub-date>
+<volume>9</volume>
+<issue>6</issue>
+<elocation-id>e1003077</elocation-id>
+<history>
+<date date-type="received"><day>27</day><month>4</month><year>2012</year></date>
+<date date-type="accepted"><day>17</day><month>4</month><year>2013</year></date>
+</history>
+<permissions>
+<copyright-year>2013</copyright-year>
+<copyright-holder>Zhang et al</copyright-holder><license xlink:type="simple"><license-p>This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license></permissions>
+<abstract>
+<p>Reversible phosphorylation is one of the major mechanisms of signal transduction, and signaling networks are critical regulators of cell growth and development. However, few of these networks have been delineated completely. Towards this end, quantitative phosphoproteomics is emerging as a useful tool enabling large-scale determination of relative phosphorylation levels. However, phosphoproteomics differs from classical proteomics by a more extensive sampling limitation due to the limited number of detectable sites per protein. Here, we propose a comprehensive quantitative analysis pipeline customized for phosphoproteome data from interventional experiments for identifying key proteins in specific pathways, discovering the protein-protein interactions and inferring the signaling network. We also made an effort to partially compensate for the missing value problem, a chronic issue for proteomics studies. The dataset used for this study was generated using SILAC (Stable Isotope Labeling with Amino acids in Cell culture) technique with interventional experiments (kinase-dead mutations). The major components of the pipeline include phosphopeptide meta-analysis, correlation network analysis and causal relationship discovery. We have successfully applied our pipeline to interventional experiments identifying phosphorylation events underlying the transition to a filamentous growth form in <italic>Saccharomyces cerevisiae</italic>. We identified 5 high-confidence proteins from meta-analysis, and 19 hub proteins from correlation analysis (Pbi2p and Hsp42p were identified by both analyses). All these proteins are involved in stress responses. Nine of them have direct or indirect evidence of involvement in filamentous growth. In addition, we tested four of our predicted proteins, Nth1p, Pbi2p, Pdr12p and Rcn2p, by interventional phenotypic experiments and all of them present differential invasive growth, providing prospective validation of our approach. This comprehensive pipeline presents a systematic way for discovering signaling networks using interventional phosphoproteome data and can suggest candidate proteins for further investigation. We anticipate the methodology to be applicable as well to other interventional studies via different experimental platforms.</p>
+</abstract>
+<abstract abstract-type="summary"><title>Author Summary</title>
+<p>Signal transduction is a ubiquitous and essential mechanism regulating cellular functions, including responses to environmental stress. Dysfunction of signaling pathways results in a variety of diseases, including cancer, diabetes, and cardiovascular disease. Phosphorylation regulates the activity of signaling and target proteins at different cellular locations and controls activation and inactivation of signal pathways. Here, we provide an analysis of phosphoproteome datasets from yeast, utilizing kinase mutants versus wild type strains. In order to provide an objective approach to identify candidate proteins involved in the transition to a filamentous growth form, we proposed and applied a comprehensive pipeline incorporating statistical and mathematical methods to investigate the phosphoproteome data from multiple perspectives. This included phosphorylation variation in response to a single mutant, phosphorylation variation patterns over multiple mutants, and the relationships represented by these patterns. We make an effort to discover the components and targets of the signaling network, infer the network structure, and to find the relationships of changes of protein phosphorylation to cellular functions, specifically in response to stress in the context of filamentous growth.</p>
+</abstract>
+<funding-group><funding-statement>The project is supported by CCMB (Center for Computational Medicine and Bioinformatics) Pilot Grant, University of Michigan Medical School. This work was also funded in part by NIH Grant #1P41RR018627 (PCA). The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement></funding-group><counts><page-count count="16"/></counts></article-meta>
+</front>
+<body><sec id="s1">
+<title>Introduction</title>
+<p>Cells exchange and receive information from the environment through signaling pathways, which are crucial for cells to maintain normal functions and properly respond to stress and stimuli. Dysregulation of these processes is a major factor in the emergence of many diseases, including cancer, diabetes, and cardiovascular disease. Reversible phosphorylation is one of the major forms of signal transduction and can affect protein function and gene expression <xref ref-type="bibr" rid="pcbi.1003077-Ptacek1">[1]</xref>–<xref ref-type="bibr" rid="pcbi.1003077-Yachie1">[7]</xref>. Investigations into phosphorylation provide insight into signaling pathways by providing the target sites of phosphorylation and the quantitative changes in phosphorylation level in response to genetic or environmental perturbations. Effective, sensitive identification of candidate proteins for further studies remains a challenge in the face of experimental limitations of current technologies which have a high cost component, provide incomplete coverage of the phosphoproteome, and have sampling limitations which affect replicate runs.</p>
+<p>Large-scale phosphoproteomics studies on a number of organisms have been carried out using mass spectrometry (MS)-based approaches (reviewed in <xref ref-type="bibr" rid="pcbi.1003077-Schmelzle1">[8]</xref>–<xref ref-type="bibr" rid="pcbi.1003077-Kosako1">[10]</xref>). These include two recent global phosphoproteomic studies of the budding yeast (<italic>Saccharomyces cerevisiae</italic>) <xref ref-type="bibr" rid="pcbi.1003077-Bodenmiller1">[5]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-Breitkreutz1">[6]</xref>. In the study carried out by Bodenmiller <italic>at al.</italic> <xref ref-type="bibr" rid="pcbi.1003077-Bodenmiller1">[5]</xref>, protein kinases and phosphatases were systematically perturbed through gene deletions. The system-wide responses to the perturbations were measured by label-free MS-based quantification, and the results evaluated to determine their contributions to understanding the relationships between these signal transduction proteins and cell pathways. Another global interaction study focused on kinase and phosphatase interactions <xref ref-type="bibr" rid="pcbi.1003077-Breitkreutz1">[6]</xref> by capturing protein-protein interactions by affinity capture-immunoblot and identifying the isolated protein complexes by mass spectrometry. These two global studies both adopted label-free, cost-effective quantitative approaches. However, label-free methods typically increase variance relative to isotope enrichment methods <xref ref-type="bibr" rid="pcbi.1003077-Bantscheff1">[11]</xref>. For the purpose of this study, we have used isotope labeled SILAC (Stable Isotope Labeling with Amino acids in Cell culture) method <xref ref-type="bibr" rid="pcbi.1003077-Ong1">[12]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-Mann1">[13]</xref> to increase sensitivity to change.</p>
+<p>The general scope of this manuscript encompasses a comprehensive pipeline, incorporating statistical and mathematical methods for investigating and evaluating quantitative phosphoproteomic data, the elucidation of candidate proteins, and the identification of processes to be pursued in subsequent molecular biology and genetic studies. The phosphoproteome data utilized in this analysis was obtained from interventional experiments of a subset of yeast kinases involved in filamentous growth. Filamentous growth is a developmental transition observed in <italic>S. cerevisiae</italic> where yeast cells form elongated and connected multicellular filaments; these filaments resemble hyphae but lack the parallel-sided walls and structure of true hyphal tubes. This pseudohyphal growth transition is induced in response to several cell stresses, including nitrogen stress, growth in the presence of short-chain alcohols, and glucose stress <xref ref-type="bibr" rid="pcbi.1003077-Gimeno1">[14]</xref>–<xref ref-type="bibr" rid="pcbi.1003077-Cullen1">[17]</xref>. The filamentous growth form presumably represents a foraging mechanism enabling non-motile yeast to better survive cell stress <xref ref-type="bibr" rid="pcbi.1003077-Gimeno1">[14]</xref>. During pseudohyphal growth, yeast cells elongate due to a delay in the G2/M transition, exhibit an altered budding pattern, and remain connected after cytokinesis <xref ref-type="bibr" rid="pcbi.1003077-Kron1">[18]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-Jin1">[19]</xref>. The resulting pseudohyphal filaments extend superficially from a colony over an agar substrate and invasively downward into the solid substrate below the colony. In liquid culture under inducing conditions, a filamentous strain of yeast exhibits elongated cells and multicellular filaments encompassing typically 3–4 cells. It is important to note that most laboratory strains of <italic>S. cerevisiae</italic> are non-filamentous and that studies of filamentous growth are typically performed in the ∑1278b strain, which we employ here.</p>
+<p>The molecular basis of filamentous growth in <italic>S. cerevisiae</italic> is broad in scope. Classic studies have identified key kinase-based signaling networks that regulate the filamentous growth transition. In particular, yeast filamentous growth is regulated by mitogen-activated protein kinase (MAPK) and protein kinase A (PKA) pathways <xref ref-type="bibr" rid="pcbi.1003077-Palecek1">[15]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-Thorner1">[20]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-CeccatoAntonini1">[21]</xref> as well as being impacted by other signaling pathways. MAPK pathways are evolutionarily conserved across phyla and consist of three-kinase cascades serving central roles in signal transduction in eukaryotic cells <xref ref-type="bibr" rid="pcbi.1003077-Saito1">[22]</xref>; the yeast filamentous growth MAPK cascade terminates in the MAPK Kss1p. In <italic>S. cerevisiae</italic>, PKA consists of the regulatory subunit Bcy1p and one of three catalytic subunits Tpk1p, Tpk2p, or Tpk3p; Tpk2p is known to be required for filamentous growth <xref ref-type="bibr" rid="pcbi.1003077-Pan1">[23]</xref>–<xref ref-type="bibr" rid="pcbi.1003077-Batlle1">[25]</xref>. It should be noted that the Kss1p MAPK pathway is required for pseudohyphal growth induced by both nitrogen stress and butanol, while the genes <italic>GPR1</italic>, <italic>MEP2</italic>, and <italic>GPA2</italic>, acting upstream of PKA, are not required for butanol-induced filamentous growth <xref ref-type="bibr" rid="pcbi.1003077-Lorenz1">[16]</xref>. In our experiments, we treated cells with 1% (vol/vol) butanol to induce filamentous growth <xref ref-type="bibr" rid="pcbi.1003077-Bharucha1">[26]</xref>. A graphical illustration of currently recognized budding yeast filamentous growth pathways, integrating information from authoritative pathway databases and reviews, is shown in <xref ref-type="fig" rid="pcbi-1003077-g001">Figure 1</xref>. While these core signaling units are well defined, the downstream scope of their signaling networks is unclear.</p>
+<fig id="pcbi-1003077-g001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003077.g001</object-id><label>Figure 1</label><caption>
+<title>Graphical illustration of the filamentous growth pathway in budding yeast from previous studies.</title>
+<p>The ellipses are proteins; the rectangles are genes; and the triangles are metabolites. The linkage between shapes: sharp-end arrows indicate stimulation, T-end arrows indicate inhibition, and wavy lines indicate association. The information were extracted from <italic>Science Signaling</italic> Database of Cell Signaling <xref ref-type="bibr" rid="pcbi.1003077-Thorner1">[20]</xref> and KEGG database <xref ref-type="bibr" rid="pcbi.1003077-Kanehisa1">[27]</xref>. The white ellipses are five of the eight kinases selected to be mutated in our experiments.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003077.g001" position="float" xlink:type="simple"/></fig>
+<p>We have generated phosphoproteomic datasets indicating kinase-dependent phosphorylation events underlying the filamentous growth transition. Specifically, we generated kinase-dead mutations (also called kinase-inactivating mutations) for a set of eight kinases that we have identified as components of the yeast filamentous growth response: Ksp1p, Kss1p, Sks1p, Ste20p, Snf1p, Tpk2p, Elm1p and Fus3p <xref ref-type="bibr" rid="pcbi.1003077-Thorner1">[20]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-Bharucha1">[26]</xref>–<xref ref-type="bibr" rid="pcbi.1003077-Edgington1">[28]</xref>. Each of these kinases exhibits a filamentous growth deletion phenotype, with the deletion of <italic>KSP1</italic>, <italic>KSS1</italic>, <italic>SKS1</italic>, <italic>STE20</italic>, <italic>SNF1</italic>, and <italic>TPK2</italic> yielding a loss of filamentous growth and the deletion of <italic>ELM1</italic> and <italic>FUS3</italic> yielding enhanced filamentation. The kinase-dead alleles of these proteins were constructed by site-directed mutagenesis. The system-wide phosphorylation responses of the mutant strains were determined using SILAC approach, and we used the Mascot search engine <xref ref-type="bibr" rid="pcbi.1003077-Perkins1">[29]</xref> followed by MaxQuant software <xref ref-type="bibr" rid="pcbi.1003077-Cox1">[30]</xref> to identify and quantify peptides and proteins. We obtained phosphorylation level changes from the MaxQuant analysis for mutants versus wild type control for the comprehensive quantitative analyses.</p>
+<p>The broad focus of the filamentous growth kinase networks in particular has made it difficult to tease out important kinase targets (direct or indirect). Bioinformatics methods provide a promising avenue with which local kinase signaling relationships can be identified. While traditional cluster analyses associated with functional enrichment analysis are useful tools, their performance might be affected by the missing value issue. We need to deal with it in order to obtain reliable clusters and enriched functions. Furthermore, a more integrative and extensive analysis is necessary to find new components of the pathways, uncover relationships between the pathway components, and to elaborate the signaling network structure. Thus we propose this comprehensive quantitative analysis pipeline customized for SILAC data, and partially compensate the missing value issue. The major building blocks include phosphopeptide meta-analysis, correlation network analysis, causal relationship discovery, and validation by literature mining. We have successfully applied the pipeline to analyze our current yeast data. Candidate proteins predicted to contribute to the filamentous growth response were selected by phosphopeptide meta-analysis and correlation network analysis. Causal relationship discovery was performed on candidate proteins identified from our analysis and validated proteins from the literature. The inferred causal relationships, along with the interactions inferred from phosphorylation changes in response to individual mutants, have suggested potential proteins that can be further intervened and studied in the future.</p>
+</sec><sec id="s2">
+<title>Results</title>
+<sec id="s2a">
+<title>Workflow</title>
+<p>An overview of the analytical workflow is shown in <xref ref-type="fig" rid="pcbi-1003077-g002">Figure 2</xref>. Following peptide identification and quantification, the comprehensive post-identification analyses performed consisted of phosphopeptide meta-analysis, correlation network analysis, and literature mining, followed by causal relationship discovery to infer signaling network characteristics. The inferred protein-protein relationships involving hub proteins were backed up by literature, and suggested potential proteins to be intervened in the future studies of yeast filamentous growth pathways. Details of the methodologies are described in <xref ref-type="sec" rid="s4"><bold>Materials and Methods</bold></xref>. <xref ref-type="table" rid="pcbi-1003077-t001">Table 1</xref> lists several important summary numbers of this dataset and subsequent analyses.</p>
+<fig id="pcbi-1003077-g002" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003077.g002</object-id><label>Figure 2</label><caption>
+<title>Summary flow chart of the analytical workflow.</title>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003077.g002" position="float" xlink:type="simple"/></fig><table-wrap id="pcbi-1003077-t001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003077.t001</object-id><label>Table 1</label><caption>
+<title>Summary of the dataset and subsequent analyses.</title>
+</caption><alternatives><graphic id="pcbi-1003077-t001-1" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003077.t001" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1">Summary</td>
+<td align="left" rowspan="1" colspan="1">Number of phosphopeptides</td>
+<td align="left" rowspan="1" colspan="1">Number of proteins</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">Identifications in the whole dataset</td>
+<td align="left" rowspan="1" colspan="1">3,312</td>
+<td align="left" rowspan="1" colspan="1">1,063</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Identifications common among all 8 kinase-dead mutants (KDs)</td>
+<td align="left" rowspan="1" colspan="1">73</td>
+<td align="left" rowspan="1" colspan="1">66</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Identifications common among 4–8 KDs</td>
+<td align="left" rowspan="1" colspan="1">882</td>
+<td align="left" rowspan="1" colspan="1">486</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Identifications that are significant in at least 1 KD</td>
+<td align="left" rowspan="1" colspan="1">863</td>
+<td align="left" rowspan="1" colspan="1">452</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>Globally</bold> significant differential phosphorylation sites</td>
+<td align="left" rowspan="1" colspan="1">28(5 from complete measurements – high-confidence)</td>
+<td align="left" rowspan="1" colspan="1">26(5 from complete measurements – high-confidence; 17 have inner connections supported by STRING <xref ref-type="bibr" rid="pcbi.1003077-VonMering1">[53]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-Szklarczyk1">[54]</xref>)</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">High-confidence hub proteins identified from the stringent correlation network</td>
+<td align="left" rowspan="1" colspan="1">-</td>
+<td align="left" rowspan="1" colspan="1">19</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Proteins known to be involved in filamentous growth from literature mining, and detected in our dataset</td>
+<td align="left" rowspan="1" colspan="1">-</td>
+<td align="left" rowspan="1" colspan="1">20(15 of them are significant in at least 1 KD)</td>
+</tr>
+</tbody>
+</table>
+</alternatives></table-wrap></sec><sec id="s2b">
+<title>Similar or reciprocal effects induced by kinase-dead mutations</title>
+<p>The relationships of the eight kinase mutants and their effects on global phosphorylation patterns were subjected to correlation analysis (see <bold><italic>Overview of the influences inferred from kinase-dead mutations</italic></bold> in <xref ref-type="sec" rid="s4"><bold>Materials and Methods</bold></xref>). The results were visualized in a correlation heatmap (<xref ref-type="fig" rid="pcbi-1003077-g003">Figure 3</xref>). The negative correlation between kinase mutants of <italic>SKS1</italic> and <italic>ELM1</italic> are apparent from <xref ref-type="fig" rid="pcbi-1003077-g003">Figure 3</xref> as are the similarities between some of the mutants (e.g., <italic>SNF1</italic> and <italic>TPK2</italic>). <italic>SKS1</italic> mutants inhibit filamentous growth and <italic>ELM1</italic> promotes it, while <italic>SNF1</italic> and <italic>TPK2</italic> have similar phenotypes. The general correlations between kinases are consistent with their filamentous growth phenotypes and reinforce the identification of core target proteins.</p>
+<fig id="pcbi-1003077-g003" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003077.g003</object-id><label>Figure 3</label><caption>
+<title>Correlation heat map of the kinase-dead mutants (log2 ratios adopted).</title>
+<p>The hierarchical clustering tree using Spearman correlation as the similarity metric is drawn along the left side of the heatmap.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003077.g003" position="float" xlink:type="simple"/></fig>
+<p>We need to be cautious when interpreting the correlations for partially multiplexed data, such as in triplex SILAC experiments. Because a peptide quantified for one sample is highly likely to be quantifiable for the other two samples in the same triplex, the identification and quantification of phosphopeptides in a triplex experiment tend to be linked. In other words, the overlap within a triplex run should be near 100% but the overlap between different triplex runs will be lower due to instrument sampling limitations. A high number of replicates may help minimize missing data, and compensate for the possible bias introduced by tied identification and quantification; but it is rarely performed due to the high cost of these analyses.</p>
+</sec><sec id="s2c">
+<title>Phosphopeptide clusters based on phosphorylation changes</title>
+<p>A total of 882 phosphopeptides representing 486 proteins were commonly identified in 4–8 kinase-dead (KD) mutants. After the missing values were imputed, the tight clustering method <xref ref-type="bibr" rid="pcbi.1003077-Tseng1">[31]</xref> was used to assign those phosphopeptides into groups, and identify the most informative, tight and stable clusters (see <bold><italic>Clustering phosphopeptides</italic></bold> in <xref ref-type="sec" rid="s4"><bold>Materials and Methods</bold></xref>). The results are illustrated in Figure S1 in <xref ref-type="supplementary-material" rid="pcbi.1003077.s005">Text S1</xref>. The assignment of proteins and peptides in the top 8 tight clusters is provided in <xref ref-type="table" rid="pcbi-1003077-t002">Table 2</xref> and Dataset S1. We also surveyed enriched functions in the tight clusters (<xref ref-type="table" rid="pcbi-1003077-t002">Table 2</xref>), in terms of functional categories, Gene Ontology, pathways and proteins Domains <xref ref-type="bibr" rid="pcbi.1003077-Kanehisa1">[27]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-Ashburner1">[32]</xref>–<xref ref-type="bibr" rid="pcbi.1003077-Huang2">[34]</xref>. In summary, similar phosphorylation change patterns over multiple mutants (compared to wild type) tends to suggest involvement in similar biological functions. Enriched functional terms include nucleotide phosphate-binding domains, ribosome biogenesis, fructose and mannose metabolism, and glycolysis. Differential carbohydrate metabolism is consistent with the invasive nutrition forage observed under environmental stresses leading to filamentous growth.</p>
+<table-wrap id="pcbi-1003077-t002" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003077.t002</object-id><label>Table 2</label><caption>
+<title>Top 8 tight clusters and functional enrichment.</title>
+</caption><alternatives><graphic id="pcbi-1003077-t002-2" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003077.t002" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1">Cluster</td>
+<td align="left" rowspan="1" colspan="1">Proteins (traced back from phosphopeptides)</td>
+<td align="left" rowspan="1" colspan="1">Enriched terms</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">1</td>
+<td align="left" rowspan="1" colspan="1">YRO2, BUG1, VPS74, HXK1, PIL1, FBP26, PTK2, NPA3, BIR1, MYO3, UTP14, ARE2, DBP5, RUD3</td>
+<td align="left" rowspan="1" colspan="1">Nucleotide phosphate-binding region:ATP (P-value = 6.54E-04, Benjamini = 3.4E-2) <xref ref-type="table-fn" rid="nt103">**</xref></td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Nucleotide-binding (P-value = 1.8E-3, Benjamini = 4.2E-2) <xref ref-type="table-fn" rid="nt103">**</xref></td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">ATP-binding (P-value = 6.0E-3, Benjamini = 9.3E-2) <xref ref-type="table-fn" rid="nt102">*</xref></td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">VMA2, SEC31, GLY1, PEA2, VTC2, KEM1, UFD1, TIF4631, BCY1, SPA2, MFT1, NEW1, KRE6</td>
+<td align="left" rowspan="1" colspan="1">-</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">3</td>
+<td align="left" rowspan="1" colspan="1">NUP60, SLA1, STU1, YCL020W, VBA4, HOM2, YDR365W-B, VPS74, PSP1, CHD1, NUP145, SPT6, HSE1, ABF1, MEH1, CKI1, YLR413W, SPT5, HRB1, LCB4, CAF20, MRL1</td>
+<td align="left" rowspan="1" colspan="1">Endosome (P-value = 1.6E-3, Benjamini = 6.6E-2) <xref ref-type="table-fn" rid="nt102">*</xref></td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">RNA polymerase II transcription elongation factor activity (P-value = 1.4E-3, Benjamini = 9.6E-2) <xref ref-type="table-fn" rid="nt102">*</xref></td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Transcription elongation regulator activity (P-value = 2.8E-3, Benjamini = 9.9E-2) <xref ref-type="table-fn" rid="nt102">*</xref></td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">4</td>
+<td align="left" rowspan="1" colspan="1">FAP7, ITR1, LSB3, LEU1, FLC3, SPT6, YGR125W, CRP1, KEL1, LCB3, YBT1, BDF1, YMR031C, DDR48, YMR295C, GPD2, ZEO1, CAF20, SNF2</td>
+<td align="left" rowspan="1" colspan="1">-</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">5</td>
+<td align="left" rowspan="1" colspan="1">PIN4, CYC8, BUD3, LYS20, CDC34, MAK21, BFR2, SUM1, GLY1, NUP145, PRP43, SPT6, ENP2, YOR1, SSZ1, NUP2, YLR345W, SUB1, ESC1, BDP1, DCP2, RPC31, SLA2, NOP8, ALE1, MSB1, SNU66</td>
+<td align="left" rowspan="1" colspan="1">Nucleus (P-value = 1.0E-4, Benjamini = 3.4E-3) <xref ref-type="table-fn" rid="nt104">***</xref></td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Nuclear lumen (P-value = 3.4E-4, Benjamini = 2.7E-2) <xref ref-type="table-fn" rid="nt103">**</xref></td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">6</td>
+<td align="left" rowspan="1" colspan="1">SIF2, PPH22, VAC8, HSP12, RTF1, RSC30, TRA1, LCB3, NAP1, SIC1, RPN13, YMR196W, MRE11, MCK1, LEM3, FPK1, LSP1</td>
+<td align="left" rowspan="1" colspan="1">-</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">7</td>
+<td align="left" rowspan="1" colspan="1">IST2, AIM3, RPC53, YDR186C, ECM32, MIG1, HXK2, VHS2, RNR2, UTR1, FBA1, EAP1, YLR257W, PFK2, PFK2, ACC1, YOR052C</td>
+<td align="left" rowspan="1" colspan="1">Fructose and mannose metabolism (P-value = 3.0E-3, Benjamini = 3.9E-2) <xref ref-type="table-fn" rid="nt103">**</xref></td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Glycolysis (P-value = 1.6E-3, Benjamini = 4.3E-2) <xref ref-type="table-fn" rid="nt103">**</xref></td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Glycolysis/gluconeogenesis (P-value = 9.8E-3, Benjamini = 6.2E-2) <xref ref-type="table-fn" rid="nt102">*</xref></td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">8</td>
+<td align="left" rowspan="1" colspan="1">AKL1, IST2, MAK5, FEN1, LHP1, RPC53, SAS10, SHS1, MAK21, DOP1, GCD6, GUK1, CHO1, PDA1, LEU1, NOP7, SPT6, TFG1, HXT1, AIM21, URA2, CDC11, MAK11, VPS13, CBF5, VTA1, CRN1, YMR031C, EFR3, ADE4, NOP12, MAM3, CAF20, PEX25, TIF5</td>
+<td align="left" rowspan="1" colspan="1">Ribosome biogenesis (P-value = 1.0E-4, Benjamini = 5.0E-3) <xref ref-type="table-fn" rid="nt104">***</xref></td>
+</tr>
+</tbody>
+</table>
+</alternatives><table-wrap-foot><fn id="nt101"><label/><p>Functional enrichment P-value and Benjamini-Hochberg corrected p-value (Benjamini) were calculated with DAVID Functional Annotation Tool <xref ref-type="bibr" rid="pcbi.1003077-Huang1">[33]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-Huang2">[34]</xref>. They are given in the brackets following corresponding terms.</p></fn><fn id="nt102"><label>*</label><p>Benjamini &lt;0.1,</p></fn><fn id="nt103"><label>**</label><p>Benjamini &lt;0.05,</p></fn><fn id="nt104"><label>***</label><p>Benjamini &lt;0.01.</p></fn><fn id="nt105"><label/><p>All the clusters are highly enriched in the term “phosphoprotein” (not listed above).</p></fn></table-wrap-foot></table-wrap>
+<p>We observed examples of multiple phosphorylation domains on the same protein that share similar phosphorylation change patterns and thus end up in the same cluster. For example, “_KGS(ph)FTTELSCR_” (position of the phosphorylated serine: 520) and “_RSS(ph)YISDTLINHQMPDAR_” (position of the phosphorylated serine: 238 or 239) on Psp1p in Cluster 3. It is possible that those phosphorylation sites are co-regulated by the same biological process. They might be closely located in protein tertiary structure or share sequence similarities that allow them to be phosphorylated by the same kinase. Another example where two phosphorylation sites are in the same domain and thus physically close in the protein sequence, “_DQDQSSPKVEVTS(ph)EDEK_” (position of the phosphorylated serine: 495) and “_VEVT(ph)SEDEKELESAAYDHAEPVQPEDAPQDIANDELK_” (position of the phosphorylated threonine: 494) on Leu1p in Cluster 4. Both of these phosphorylation sites were identified in a WT/SNF1/TPK2 experiment, where the serine (S) at position 495 in the former has phosphorylation probability 0.999 (reported by MaxQuant), while the threonine (T) at position 494 in the latter has phosphorylation probability 0.96. These two sites might be alternative phosphorylation sites having similar effects; or the dominancy of either site might be affected by protein cellular localization or kinase activity patterns.</p>
+<p>On the other hand, we also found examples of the same protein (e.g., Spt6p) to be clustered in multiple functional groups. Those different sites do not necessarily change phosphorylation in a similar pattern, since they might have different functions and be regulated by different biological processes. All the above observations are worth further investigation.</p>
+</sec><sec id="s2d">
+<title>Identification of differential phosphorylation in each mutant</title>
+<p>A total of 863 unique phosphopeptides representing 452 proteins were identified to have significant phosphorylation changes in at least one kinase-dead mutant. We can then infer the downstream proteins regulated by the kinases and the inferred regulation might be direct or indirect. A total of 1,299 significant kinase-phosphopeptide regulation pairs were identified (Dataset S2). We incorporated the corresponding proteins and generated an extended pathway map (<xref ref-type="fig" rid="pcbi-1003077-g004">Figure 4</xref>) based on the known map (<xref ref-type="fig" rid="pcbi-1003077-g001">Figure 1</xref>).</p>
+<fig id="pcbi-1003077-g004" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003077.g004</object-id><label>Figure 4</label><caption>
+<title>Extended filamentous pathway map.</title>
+<p>The extended filamentous growth pathway map integrating the known knowledge (<xref ref-type="fig" rid="pcbi-1003077-g001">Figure 1</xref>) and the regulation inferred from significant differential phosphorylation in individual KDs. The inferred regulation might be direct or indirect. The ellipses are proteins; the rectangles are DNAs; and the triangles are metabolites. The linkage between shapes: sharp-end arrows indicate stimulation, T-end arrows indicate inhibition, and wavy lines indicate association. Solid lines indicate physical interactions, while dashed lines indicate changes in phosphorylation.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003077.g004" position="float" xlink:type="simple"/></fig></sec><sec id="s2e">
+<title>Phosphopeptides with globally significant phosphorylation changes</title>
+<p>A total of 28 phosphopeptides representing 26 proteins from the entire dataset were found to have globally significant phosphorylation changes (Dataset S3). These candidates were picked out without using prior knowledge. The Fisher's probability test <xref ref-type="bibr" rid="pcbi.1003077-Fisher1">[35]</xref> was extended to allow missing values (see <xref ref-type="sec" rid="s4"><bold>Materials and Methods</bold></xref>), and it was used for detecting global significance. Each selected phosphopeptide satisfies the following criteria: the combined p-value &lt; 0.05, q-value &lt; 0.05 for controlling false discovery rate (FDR) <xref ref-type="bibr" rid="pcbi.1003077-Benjamini1">[36]</xref>, and the significance B value &lt; 0.05 in at least 4 out of 8 kinase-dead mutant (KD) versus wild type (WT) conditions. The combined p-value is a measure of global significance, while the significance B value <xref ref-type="bibr" rid="pcbi.1003077-Cox1">[30]</xref> is a measure of significance in an individual experiment. Five of the globally significant phosphopeptides, Nth1p, Hsp42p, Pbi2p, Rcn2p and Pdr12p, were identified with complete measurements (<xref ref-type="table" rid="pcbi-1003077-t003">Table 3</xref>). We consider them high-confidence candidates. Another adaptively weighted statistic <xref ref-type="bibr" rid="pcbi.1003077-Li1">[37]</xref> was applied to all complete measurements for validation. Adopting the same selection criterion as above, Nth1p, Pbi2p, Rcn2p and Pdr12 were again identified as globally significant. Both retrospective and prospective validation was performed on selected predictions.</p>
+<table-wrap id="pcbi-1003077-t003" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003077.t003</object-id><label>Table 3</label><caption>
+<title>Globally significant phosphopeptides selected from the complete measurements (high-confidence).</title>
+</caption><alternatives><graphic id="pcbi-1003077-t003-3" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003077.t003" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1">ENSEMBL ID <xref ref-type="bibr" rid="pcbi.1003077-Hubbard1">[99]</xref></td>
+<td align="left" rowspan="1" colspan="1">Standard name</td>
+<td align="left" rowspan="1" colspan="1">Name description<xref ref-type="table-fn" rid="nt106">a</xref></td>
+<td align="left" rowspan="1" colspan="1">Modified sequence</td>
+<td align="left" rowspan="1" colspan="1">Stress response</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">YDR001C</td>
+<td align="left" rowspan="1" colspan="1">NTH1</td>
+<td align="left" rowspan="1" colspan="1">Neutral trehalase;Alpha,alpha-trehalase;Alpha,alpha-trehalose glucohydrolase</td>
+<td align="left" rowspan="1" colspan="1">_RGS(ph)EDDTYSSSQGNR_</td>
+<td align="left" rowspan="1" colspan="1">Nth1p is a multiple stress responsive protein <xref ref-type="bibr" rid="pcbi.1003077-Zhringer1">[38]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-Nwaka1">[57]</xref>.</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">YNL015W</td>
+<td align="left" rowspan="1" colspan="1">PBI2</td>
+<td align="left" rowspan="1" colspan="1">Protease B inhibitors 2 and 1;Proteinase inhibitor I(B)2</td>
+<td align="left" rowspan="1" colspan="1">_HNDVIENVEEDKEVHT(ph)N_</td>
+<td align="left" rowspan="1" colspan="1">Pbi2 gene deletion leads to decreased resistance to hyperosmotic stress <xref ref-type="bibr" rid="pcbi.1003077-Yoshikawa1">[58]</xref>.</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">YOR220W</td>
+<td align="left" rowspan="1" colspan="1">RCN2</td>
+<td align="left" rowspan="1" colspan="1">Regulator of calcineurin 2;Weak suppressor of PAT1 ts protein 1</td>
+<td align="left" rowspan="1" colspan="1">_NKPLLSINT(ph)DPGVTGVDSSSLNK_</td>
+<td align="left" rowspan="1" colspan="1">Rcn2p is Induced in response to DNA-damaging agent methyl methanesulphonate <xref ref-type="bibr" rid="pcbi.1003077-Lee1">[59]</xref>.</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">YPL058C</td>
+<td align="left" rowspan="1" colspan="1">PDR12</td>
+<td align="left" rowspan="1" colspan="1">ATP-dependent permease PDR12</td>
+<td align="left" rowspan="1" colspan="1">_HLSNILS(ph)NEEGIER_</td>
+<td align="left" rowspan="1" colspan="1">Pdr12 is strongly induced by weak acid stress <xref ref-type="bibr" rid="pcbi.1003077-Hatzixanthis1">[60]</xref> and is a target of the transcription factor War1p <xref ref-type="bibr" rid="pcbi.1003077-Schller1">[61]</xref> which elicits weak organic acid stress adaptation through active efflux <xref ref-type="bibr" rid="pcbi.1003077-Kren1">[62]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-Holyoak1">[63]</xref>.</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">YDR171W</td>
+<td align="left" rowspan="1" colspan="1">HSP42</td>
+<td align="left" rowspan="1" colspan="1">Heat shock protein 42</td>
+<td align="left" rowspan="1" colspan="1">_KS(ph)S(ph)SFAHLQAPSPIPDPLQVSKPETR_</td>
+<td align="left" rowspan="1" colspan="1">Protein expression is induced by stresses such as heat shock, salt shock and starvation <xref ref-type="bibr" rid="pcbi.1003077-Wotton1">[52]</xref>.</td>
+</tr>
+</tbody>
+</table>
+</alternatives><table-wrap-foot><fn id="nt106"><label>a</label><p>Annotated with MaxQuant.</p></fn></table-wrap-foot></table-wrap>
+<p>Nth1p is a key enzyme in the trehalose pathway which plays a crucial role in glucose homeostasis and stress responses <xref ref-type="bibr" rid="pcbi.1003077-Zhringer1">[38]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-Franois1">[39]</xref> and is a substrate phosphorylated for both Tpk1p and Tpk2p <xref ref-type="bibr" rid="pcbi.1003077-Galello1">[40]</xref>. The <italic>NTH1</italic> gene also has been reported to have genetic interactions with the <italic>TPK1</italic> and <italic>TPK2</italic> genes <xref ref-type="bibr" rid="pcbi.1003077-Panni1">[41]</xref>. It has been reported to physically interact with the kinase Sks1p <xref ref-type="bibr" rid="pcbi.1003077-Ptacek1">[1]</xref> and with Bmh1p <xref ref-type="bibr" rid="pcbi.1003077-Krogan1">[42]</xref>. The above direct interactors of Nth1p, <italic>i.e.</italic>, Tpk1p, Tpk2p, Sks1p and Bmh1p, are all known to play roles in filamentous growth <xref ref-type="bibr" rid="pcbi.1003077-Bharucha1">[26]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-Santangelo1">[43]</xref>–<xref ref-type="bibr" rid="pcbi.1003077-Roberts1">[47]</xref>. The Rcn2p protein was also reported to physically interact with Bmh1p <xref ref-type="bibr" rid="pcbi.1003077-Krogan1">[42]</xref>, which associates with the Ste20p protein involved in filamentous growth <xref ref-type="bibr" rid="pcbi.1003077-Roberts1">[47]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-Gancedo1">[48]</xref>. Bmh1p may also interact with Tpk1p <xref ref-type="bibr" rid="pcbi.1003077-Bertram1">[49]</xref>–<xref ref-type="bibr" rid="pcbi.1003077-Gelperin1">[51]</xref>. Thus, Nth1p and Rcn2p have been closely associated with a number of proteins known to be involved in filamentous growth. Hsp42p has a physical association with Fus3p <xref ref-type="bibr" rid="pcbi.1003077-Krogan1">[42]</xref>, and its expression is induced under starvation <xref ref-type="bibr" rid="pcbi.1003077-Wotton1">[52]</xref>. The remaining two proteins in <xref ref-type="table" rid="pcbi-1003077-t003">Table 3</xref> have not yet been closely linked to filamentous growth but play roles in other stress responses and represent new leads.</p>
+<p>We also searched the STRING database <xref ref-type="bibr" rid="pcbi.1003077-VonMering1">[53]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-Szklarczyk1">[54]</xref> to investigate the inner connections between the 26 globally significant proteins (shown in Figure S2 in <xref ref-type="supplementary-material" rid="pcbi.1003077.s005">Text S1</xref>). STRING assigns the confidence of protein-protein interactions integrating high-throughput experiments, genetic context, co-expression and other previous knowledge. In Figure S2 in <xref ref-type="supplementary-material" rid="pcbi.1003077.s005">Text S1</xref>, 17 proteins, including Nth1p, Hsp42p, Rcn2p, Pbi2p, Hsp26p, Bfr1p, YGR250C protein, Leu1p, Lys20p, Cdc19p, Fol2p, Pil1p, Abp1p, Cdc11p, Shs1p, YLR413W protein and Pxr1p, have direct or indirect connections. It presents a closely inter-connected sub-network embodying Nth1p, Pbi2p, Rcn2p, Hsp42, YGR250C protein and Hsp26p.</p>
+</sec><sec id="s2f">
+<title>Correlation network</title>
+<p>All possible pairs among the 73 common phosphopeptides with complete measurement were tested using the Pearson correlation. A total of 45 strongly correlated phosphopeptide pairs were identified, each satisfying the following criteria: the correlation test p-value &lt; 0.05, and the stringent requirement of |Pearson correlation coefficient| ≥ 0.9. Detailed information on the 45 pairs of phosphopeptides is provided in Dataset S4. Twenty-seven of the pairs have positive correlations, while 18 pairs have negative correlations. A stringent protein correlation network containing 35 proteins (<xref ref-type="fig" rid="pcbi-1003077-g005">Figure 5</xref>) was generated by connecting the strongly correlated peptide pairs and then tracing the peptides back to their parent proteins.</p>
+<fig id="pcbi-1003077-g005" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003077.g005</object-id><label>Figure 5</label><caption>
+<title>Stringent correlation network of phosphoprotein pairs.</title>
+<p>Red lines indicate positive correlations, while black lines indicate negative correlations. The larger the node size, the greater the degree of connectivity.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003077.g005" position="float" xlink:type="simple"/></fig></sec><sec id="s2g">
+<title>Identifying core-components in the correlation network</title>
+<p>In the protein correlation network, proteins with the highest degrees of connectivity are considered core components in the network. The 19 proteins having degrees greater than 1 (protein self-connection ignored) in the stringent protein correlation network were predicted to be core components of the network. Detailed descriptions and evidence of the proteins are summarized in Table S2 in <xref ref-type="supplementary-material" rid="pcbi.1003077.s005">Text S1</xref>. Kem1p, Spa2p and Spt6p have been reported to be directly involved in filamentous growth in previous literature. Six other proteins, Are2p, Dcp2p, Hsp42p, Ssd1p, Sum1p, and Ufd1p, have reported evidence in terms of genetic and/or physical interactions with known components of filamentous growth. The remaining proteins have been implicated in various stress responses, including the unfolded protein response (e.g., sensitivity to tunicamycin), osmotic shock, and thermal shock, but not previously linked to filamentous growth. Pbi2p has not been reported previously as being involved in filamentous growth; however, our experimental results indicate that a haploid strain of <italic>S. cerevisiae</italic> deleted for <italic>PBI2</italic> exhibits decreased invasive growth relative to wild type (see <bold><italic>Experimental validation</italic></bold> in <xref ref-type="sec" rid="s2"><bold>Results</bold></xref>).</p>
+<p>Gpd2p and Lys21p are two self-connected proteins. The self-connection was built up by two distinct phosphorylation sites on the protein. Gpd2p has not been related to filamentous growth in <italic>Saccharomyces cerevisiae</italic>. Its homolog Gpd2p in <italic>Candida albicans</italic>, is involved in core stress responses, and <italic>GPD2</italic> is induced upon pseudohyphal growth <italic>in S. cerevisiae</italic> <xref ref-type="bibr" rid="pcbi.1003077-Krogan1">[42]</xref>–<xref ref-type="bibr" rid="pcbi.1003077-Bertram1">[49]</xref>.</p>
+</sec><sec id="s2h">
+<title>Literature mining</title>
+<p>In addition to the candidate proteins predicted from our dataset, we retrieved from the literature and authoritative databases <xref ref-type="bibr" rid="pcbi.1003077-Thorner1">[20]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-Bharucha1">[26]</xref>–<xref ref-type="bibr" rid="pcbi.1003077-Edgington1">[28]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-Cherry1">[55]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-SGD1">[56]</xref> a list of proteins involved in filamentous growth. A total of 69 unique proteins, not all being phosphoproteins, were extracted (Table S1 in <xref ref-type="supplementary-material" rid="pcbi.1003077.s005">Text S1</xref>), and 20 of them have been detected in our phosphoproteome dataset. Among those, 15 proteins, including Bcy1p, Cdc28p, Cyr1p, Dig1p, Dig2p, Flo8p, Kem1p, Ras2p, Sfl1p, Snf1p, Spa2p, Ste20p, Ste50p, Tpk3 and Tpm1p, showed significant phosphorylation changes in at least one kinase-dead mutant, and are displayed in our extended pathway map (<xref ref-type="fig" rid="pcbi-1003077-g004">Figure 4</xref>).</p>
+</sec><sec id="s2i">
+<title>Causal Bayesian network</title>
+<p>The interactions retrieved from the differentially phosphorylated proteins in individual kinase-dead mutants (the dashed edges in <xref ref-type="fig" rid="pcbi-1003077-g004">Figure 4</xref>) did not make use of phosphorylation change pattern over different kinase-dead mutants, and the protein pairs must contain a mutated kinase. In contrast, the correlation network is a network of the common peptides, taking into account the protein responses in all the kinase-dead mutants, and the correlated protein pairs do not necessarily contain the mutated kinases. Note that this network is not directed and more information may be gleaned from a causal analysis. We implemented causal relationship discovery to detect the direction of influences between proteins with the understanding that the relationships may be direct or indirect. A total of 46 unique proteins, including the kinases we mutated, the predicted high-confidence globally significant proteins and hub proteins, and other literature reported proteins, were selected to construct the network. All are listed in <xref ref-type="table" rid="pcbi-1003077-t004">Table 4</xref>.</p>
+<table-wrap id="pcbi-1003077-t004" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003077.t004</object-id><label>Table 4</label><caption>
+<title>Focus proteins used for causal relationship discovery.</title>
+</caption><alternatives><graphic id="pcbi-1003077-t004-4" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003077.t004" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1">Mutated kinases</td>
+<td align="left" rowspan="1" colspan="1">Globally significant (high-confidence)</td>
+<td align="left" rowspan="1" colspan="1">Hub proteins (high-confidence)</td>
+<td align="left" rowspan="1" colspan="1">From literature mining and detected in our dataset</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">(also see <xref ref-type="table" rid="pcbi-1003077-t003">Table 3</xref>)</td>
+<td align="left" rowspan="1" colspan="1">(also see Table S2 in <xref ref-type="supplementary-material" rid="pcbi.1003077.s005">Text S1</xref>)</td>
+<td align="left" rowspan="1" colspan="1">(also see Table S1 in <xref ref-type="supplementary-material" rid="pcbi.1003077.s005">Text S1</xref>)</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">KSP1</td>
+<td align="left" rowspan="1" colspan="1">NTH1</td>
+<td align="left" rowspan="1" colspan="1">SEC21</td>
+<td align="left" rowspan="1" colspan="1">BCY1</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">KSS1</td>
+<td align="left" rowspan="1" colspan="1">PBI2</td>
+<td align="left" rowspan="1" colspan="1">ABF1</td>
+<td align="left" rowspan="1" colspan="1">BMH1</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">SKS1</td>
+<td align="left" rowspan="1" colspan="1">RCN2</td>
+<td align="left" rowspan="1" colspan="1">ARE2</td>
+<td align="left" rowspan="1" colspan="1">BUD2</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">STE20</td>
+<td align="left" rowspan="1" colspan="1">PDR12</td>
+<td align="left" rowspan="1" colspan="1">DCP2</td>
+<td align="left" rowspan="1" colspan="1">CDC28</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">SNF1</td>
+<td align="left" rowspan="1" colspan="1">HSP42</td>
+<td align="left" rowspan="1" colspan="1">KEM1</td>
+<td align="left" rowspan="1" colspan="1">CYR1</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">TPK2</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">NUP145</td>
+<td align="left" rowspan="1" colspan="1">DIG1</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">ELM1</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">SPA2</td>
+<td align="left" rowspan="1" colspan="1">DIG2</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">FUS3</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">CHO1</td>
+<td align="left" rowspan="1" colspan="1">FLO8</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">GLY1</td>
+<td align="left" rowspan="1" colspan="1">GPR1</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">HSP42</td>
+<td align="left" rowspan="1" colspan="1">KEM1</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">PWP1</td>
+<td align="left" rowspan="1" colspan="1">NRG1</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">PUF6</td>
+<td align="left" rowspan="1" colspan="1">PEA2</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">SPT6</td>
+<td align="left" rowspan="1" colspan="1">RAS2</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">SSD1</td>
+<td align="left" rowspan="1" colspan="1">SFL1</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">SUM1</td>
+<td align="left" rowspan="1" colspan="1">SNF1</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">NUP2</td>
+<td align="left" rowspan="1" colspan="1">SPA2</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">PBI2</td>
+<td align="left" rowspan="1" colspan="1">STE20</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">PBP1</td>
+<td align="left" rowspan="1" colspan="1">STE50</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">UFD1</td>
+<td align="left" rowspan="1" colspan="1">TPK3</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">TPM1</td>
+</tr>
+</tbody>
+</table>
+</alternatives></table-wrap>
+<p>Bayesian network modeling identified causal influences for 22 protein pairs (44 phosphopeptide pairs) (Table S3 in <xref ref-type="supplementary-material" rid="pcbi.1003077.s005">Text S1</xref>), satisfying the posterior probability of the relationship greater than 0.5. The network comprising all the causal relationships is presented in <xref ref-type="fig" rid="pcbi-1003077-g006">Figure 6</xref>. Among those, only 6 protein pairs have the posterior probability higher than 0.7. The other protein pairs do not have high probability since the samples available for training the model is limited due to the missing data issue caused by instrument limitation. The arrows in <xref ref-type="fig" rid="pcbi-1003077-g006">Figure 6</xref> only indicate the existence of causal influence, but do not specify whether the influence is activation or inhibition. The causal relationship discovered might be between proteins that are not immediately adjacent in pathways so the relationship could be quite indirect. For example, the causal relationship between Rcn2p and Ste20p might be indirect: Rcn2p and Bmh1p have physical interaction captured by affinity capture-MS <xref ref-type="bibr" rid="pcbi.1003077-Krogan1">[42]</xref>, while Bmh1p associates with Ste20p to influence filamentous growth <xref ref-type="bibr" rid="pcbi.1003077-Roberts1">[47]</xref>.</p>
+<fig id="pcbi-1003077-g006" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003077.g006</object-id><label>Figure 6</label><caption>
+<title>Causal Bayesian network.</title>
+<p>Each edge indicates a potential causal influence between proteins, which might be a direct or indirect influence. It does not distinguish activation and inhibition. The thicker the edge, the higher the posterior probability.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003077.g006" position="float" xlink:type="simple"/></fig>
+<p>Through another inspection of the phosphorylation change patterns of the peptide pairs detected with relatively strong causal influences (posterior probability higher than 0.7), we observed that: Ste20p has opposing phosphorylation changes compared to Are2p, Pdr12p and Sec21p; two phosphopeptides (the same amino acid sequence but different phosphorylation sites) on Hsp42p present opposing phosphorylation changes compared to Ste20p; and Pbp1p presents consistent phosphorylation change compared to Ste20p. With caution we predict that the opposing pattern implicates an inhibitive influence of Are2p, Pdr12p and Sec21p to Ste20p; and similarly, inhibition of Hsp42p to Ste20p; while Pbp1p shed activating influence to Ste20p. Again, we emphasize that the influence might be quite indirect and even be influenced by multiple pathways.</p>
+</sec><sec id="s2j">
+<title>Experimental validation</title>
+<p>Our computational analyses highlight the proteins Nth1p, Pbi2p, Pdr12p, and Rcn2p as undergoing globally significant phosphorylation changes. To determine if these proteins do in fact impact filamentous growth in <italic>S. cerevisiae</italic>, we constructed haploid strains singly deleted for each gene and assayed for filamentation phenotypes. Precise gene deletions were carried out using a standard PCR-based strategy, and resulting haploid strains were assayed for invasive growth by standard plate-washing assays under normal growth conditions <xref ref-type="bibr" rid="pcbi.1003077-Cullen1">[17]</xref>. Invasive growth, characterized by filament penetration into the agar substrate, was decreased upon deletion of <italic>PBI2</italic> relative to wild-type. In addition, the deletion of <italic>NTH1</italic>, <italic>PDR12</italic>, and <italic>RCN2</italic> yielded exaggerated invasive growth relative to an otherwise isogenic wild-type strain. <xref ref-type="sec" rid="s2">Results</xref> are shown in <xref ref-type="fig" rid="pcbi-1003077-g007">Figure 7</xref>. All four proteins have been previously implicated in various yeast stress responses, but not specifically with respect to filamentous growth <xref ref-type="bibr" rid="pcbi.1003077-Zhringer1">[38]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-Wotton1">[52]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-Nwaka1">[57]</xref>–<xref ref-type="bibr" rid="pcbi.1003077-Holyoak1">[63]</xref>. Nth1p, <italic>i.e.</italic> neutral trehalase, is involved in the trehalose pathway, which is a glucose storage pathway <xref ref-type="bibr" rid="pcbi.1003077-Kopp1">[64]</xref>. Pbi2p is a cytosolic inhibitor of vacuolar proteinase B, and is involved in the regulation of proteolysis <xref ref-type="bibr" rid="pcbi.1003077-Slusarewicz1">[65]</xref>–<xref ref-type="bibr" rid="pcbi.1003077-Schu1">[69]</xref>. Rcn2p, a regulator of calcineurin <xref ref-type="bibr" rid="pcbi.1003077-Mehta1">[70]</xref>, is induced in response to DNA-damaging agents <xref ref-type="bibr" rid="pcbi.1003077-Lee1">[59]</xref>. Pdr12p is a multidrug transporter inducible by weak acid, and is required for weak organic acid resistance <xref ref-type="bibr" rid="pcbi.1003077-Piper1">[71]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-Holyoak2">[72]</xref>. These four proteins are not reported to be signaling molecules themselves, but we demonstrate that they appear to play roles in filamentous growth and are likely downstream targets of the filamentous growth pathways.</p>
+<fig id="pcbi-1003077-g007" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003077.g007</object-id><label>Figure 7</label><caption>
+<title>Phenotypic analysis of genes predicted to contribute to the yeast filamentous response.</title>
+<p>The genes <italic>PBI2</italic>, <italic>PDR12</italic>, <italic>RCN2</italic>, and <italic>NTH1</italic> were deleted in a haploid strain of the filamentous ∑1278b genetic background by targeted replacement with the G418-encoding <italic>kanMX6</italic> cassette. The resulting strains were grown 3–4 days under normal growth conditions, and invasive growth was assayed in these strains and in a wild-type strain according to standard protocols using a plate-washing assay. Deletion of <italic>PBI2</italic> resulted in decreased invasive growth upon plate washing, and strains deleted for <italic>PDR12</italic>, <italic>RCN2</italic>, and <italic>NTH1</italic> yielded hyperactive invasive growth. The increased invasive growth in these strains was most clearly evident in patched cultures as shown.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003077.g007" position="float" xlink:type="simple"/></fig>
+<p>In summary, all four deletions result in differential invasive growth compared to the wild type control, providing prospective validation for our approach to identification of candidate proteins in this biological system from phosphoproteomics data alone.</p>
+</sec></sec><sec id="s3">
+<title>Discussion</title>
+<p>In this study, we demonstrate that interventional phosphoproteome studies can provide new insight into signaling pathways involved in biological processes such as yeast filamentous growth. In order to increase sensitivity to smaller changes in phosphorylation relative to previous yeast global phosphoproteome studies <xref ref-type="bibr" rid="pcbi.1003077-Bodenmiller1">[5]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-Breitkreutz1">[6]</xref>, we used SILAC, an isotope labeling approach. Isotope labeling approaches are generally more precise relative to label-free approaches <xref ref-type="bibr" rid="pcbi.1003077-Bantscheff1">[11]</xref>, but require greater resources to implement, resulting in trade-offs between precision and missing data due to sampling limitations inherent to current instruments. We proposed and developed a comprehensive computational and statistical analysis pipeline for the post-identification studies of phosphoproteome data. The analyses are aimed at discovering candidate components of significant pathways involved in filamentous growth as well as the potential targets of the pathways, and to provide more information on the signaling network structure by monitoring changes in phosphorylation in response to mutational interventions. We applied the pipeline to analyze our interim high mass accuracy yeast phosphoproteome datasets and a total of 882 unique phosphopeptides representing 486 proteins were identified as significantly influenced by at least one out of 8 kinase-dead mutants. Twenty-eight unique phosphopeptides having globally significant phosphorylation were identified from the whole dataset among which 5 peptides representing 5 proteins, Nth1p, Pbi2p, Rcn2p, Pdr12p and Hsp42p, were identified as high-confidence candidates. Nineteen candidate proteins with relatively high degrees of connectivity were selected as hub proteins in the stringent correlation network (Pbi2p and Hsp42p were identified as hub proteins too). Among the high-confidence candidate proteins, 3 proteins have been previously reported to be directly involved in filamentous growth and another 6 proteins were also supported, in terms of genetic and physical interactions with known components involved in filamentous growth. The remaining proteins have been implicated in various other stress responses and may play roles in filamentous growth or may be secondary stress responders. In particular, we validated four candidate proteins, Nth1p, Pbi2p, Pdr12p and Rcn2p as impacting invasive growth. Causal relationship discovery was further performed on the candidates and validated proteins. The inferred causal relationships, along with the interactions inferred from phosphorylation changes in response to individual mutants, form phosphoprotein interaction networks, which suggested potential proteins to be intervened in future studies.</p>
+<p>Each of the kinases mutated in this study had previously been implicated in filamentous growth. Many of these kinases are known to also affect pathways that are not involved directly in filamentous growth. However, the proteins which change phosphorylation level in response to multiple mutants are reasonable candidates involved in filamentous growth. The sensitivity of such detection is constrained by the degree of overlap between pathways, the coverage of pathways by the mutants, and the extent of missing data. Upstream components of isolated pathways may be missed, while downstream core components are more likely to be identified.</p>
+<p>A remaining challenge for quantitative phosphoproteome analysis arises from the sampling limitations and resolution of current mass spectrometers <xref ref-type="bibr" rid="pcbi.1003077-Bantscheff1">[11]</xref>. This feature of tandem mass spectra of complex mixtures results in poor overlap of peptides identified across samples unless a relatively large number of replicate experiments are carried out (which is time consuming and often economically impractical for large-scale projects). For this reason, a significant number of missing values exist in these datasets which can obscure potential candidates for further validation studies. This is likely to be alleviated to some extent in the future as mass spectrometry technologies continue to improve, but we have developed methods to partially compensate for the missing data issue. In the phosphopeptide meta-analysis, an extension of Fisher's combined probability test was made to relax the restrictions of complete measurements. The causal network modeling component was also developed to allow missing values without excluding the incomplete measurements. We also performed cluster analysis of phosphopeptides. Instead of adopting traditional clustering methods, we directly identified the most stable clusters using missing value-imputed data. Our approach was able to pick out significantly enriched functions, and identify a number of reliable candidate proteins for further validation of which four were validated.</p>
+<p>This analysis pipeline has been developed to study yeast filamentous growth pathways; however, the methodology is not limited to yeast or this biological process. It can be applied to other complex organisms to facilitate investigation into various biological processes. We anticipate the methodology to be applicable as well to other interventional studies via different experiment platforms.</p>
+</sec><sec id="s4" sec-type="materials|methods">
+<title>Materials and Methods</title>
+<sec id="s4a">
+<title>Mass spectrometry data</title>
+<p>Tandem mass spectrometry data were generated from a series of triplex SILAC <xref ref-type="bibr" rid="pcbi.1003077-Ong1">[12]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-Kratchmarova1">[73]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-Boersema1">[74]</xref> experiments of kinase-dead mutant (KD) strains versus the wild type (WT) haploid filamentous yeast ∑1278b strain. Eight yeast kinases, KSP1p, KSS1p, SKS1p, STE20p, SNF1p, TPK2p, ELM1p and FUS3p, all known to be involved in filamentous growth <xref ref-type="bibr" rid="pcbi.1003077-Thorner1">[20]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-Bharucha1">[26]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-Kanehisa1">[27]</xref>, were chosen to generate kinase-dead mutations (inactivated alleles) individually. We investigated the yeast phosphoproteome from the eight mutants vs. wild type. We have obtained 2–3 replicates for 7 (out of 8) kinase-dead mutants. The dataset constitution is listed in Table S4 in <xref ref-type="supplementary-material" rid="pcbi.1003077.s005">Text S1</xref>. Because mass spectrometry experiments are time-consuming and costly, most recent studies in proteome research perform two <xref ref-type="bibr" rid="pcbi.1003077-Zhang1">[75]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-Seyfried1">[76]</xref> or three replicates <xref ref-type="bibr" rid="pcbi.1003077-Geiger1">[77]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-Monetti1">[78]</xref> which contributes to the missing data problem in proteomics.</p>
+<p>All strains were auxotrophic for Lys and Arg, and were grown on defined medium supplemented with the appropriate isotopic forms of Lys and Arg. The cultures were grown to log phase, and treated with 1% (vol/vol) butanol to induce filamentous growth <xref ref-type="bibr" rid="pcbi.1003077-Bharucha1">[26]</xref>. The treated samples were incubated for another 16 hours to obtain enough proteins for mass spectrometry analysis. The final O.D. at 600 nm reached a high value usually between 1.0 and 1.5. Different Lys and Arg isotope forms were used to label the three samples in a triplex SILAC experiment: light (Lys0/Arg0) for WT control sample, medium (Lys4/Arg6) and heavy (Lys8/Arg10) for two different mutant samples. Cells were harvested by centrifugation and lysed in the presence of protease and phosphatase inhibitors. In SILAC experiments, samples were pooled at the harvest stage before protein extraction. Samples pooled at this early stage can reduce both systematic and random errors that may occur in later sample preparation <xref ref-type="bibr" rid="pcbi.1003077-Ivanov1">[79]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-Thorsell1">[80]</xref>, thus the results have smaller variance compared to unpooled samples. Small sample sizes (two or three replicates) is acceptable for the low-variance SILAC experimental design. We observed in our SILAC experiments that the majority of the ratio “variability” in the data was less than 20. (The “variability” is reported by MaxQuant and is defined as the standard deviation of all log ratios used for obtaining the reported ratio value multiplied by 100 <xref ref-type="bibr" rid="pcbi.1003077-Cox1">[30]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-Emmott1">[81]</xref>.)</p>
+<p>Protein levels were determined by the Bradford protein assay and the proteins from the triplex labeling were then pooled, and were digested by trypsin. The digest was separated into fractions using strong cation-exchange (SCX) fractionation, followed by selective enrichment of phosphorylated peptides using titanium dioxide <xref ref-type="bibr" rid="pcbi.1003077-Larsen1">[82]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-Thingholm1">[83]</xref> and then analyzed by LC-MS/MS using a Thermo Fisher Orbitrap XL mass spectrometer. Peptides were identified using MaxQuant software <xref ref-type="bibr" rid="pcbi.1003077-Cox1">[30]</xref> following the Mascot search engine <xref ref-type="bibr" rid="pcbi.1003077-Perkins1">[29]</xref>, and filtered requiring peptide identification FDR&lt;1%. For Mascot searches, enzyme specificity was set to trypsin. Carbamidomethyl cysteine was set as a fixed modification. N-terminal carbamyl, oxidized methionine, as well as phosphorylation of serine, threonine, and tyrosine were set as variable modifications. Some missed cleavage was observed and could potentially contribute to the variance. The method for calculating peptide identification FDR based on concatenated databases was described by Cox J and Mann M <xref ref-type="bibr" rid="pcbi.1003077-Cox1">[30]</xref>. A total of 3,312 phosphopeptides representing 1,063 proteins were identified. Among those, 73 unique phosphopeptides representing 66 common proteins were commonly identified in all the 8 kinase-dead mutants; while, 882 phosphopeptides representing 486 proteins were common to at least half of the kinase-dead mutants.</p>
+</sec><sec id="s4b">
+<title>Post-identification analyses</title>
+<sec id="s4b1">
+<title>Post-identification analyses</title>
+<p>In the meta-analysis, we contrast and combine the results from different KD-versus-WT experiments, so that to find the correlations between kinase-dead mutants, categorize peptide phosphorylation patterns over experiments, and identify differentially phosphorylated peptides.</p>
+<sec id="s4b1a">
+<title>Overview of the influences inferred from kinase-dead mutations</title>
+<p>The relative phosphorylation level obtained for each phosphopeptide is represented as a ratio for each of the 8 kinase-dead mutants (KD) versus wild type (WT) under filamentous growth conditions. Two examples of phosphopeptides identified in all 8 kinase-dead mutants are shown in <xref ref-type="table" rid="pcbi-1003077-t005">Table 5</xref>. The ratio lists of all the identified phosphopeptides are aligned to constitute a ratio matrix. The quantity measuring statistical significance of each ratio, <italic>i.e.</italic>, the significance B value, was calculated with MaxQuant <xref ref-type="bibr" rid="pcbi.1003077-Cox1">[30]</xref>. The ratios shown in <xref ref-type="table" rid="pcbi-1003077-t005">Table 5</xref> were extracted before filtering by statistical significance.</p>
+<table-wrap id="pcbi-1003077-t005" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003077.t005</object-id><label>Table 5</label><caption>
+<title>Ratio lists for two representative phosphopeptides from the ratio matrix.</title>
+</caption><alternatives><graphic id="pcbi-1003077-t005-5" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003077.t005" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1">Phosphopeptide</td>
+<td colspan="8" align="left" rowspan="1">Phosphorylation fold-changes in following KD-vs-WT conditions</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Sks1-KD vs. WT</td>
+<td align="left" rowspan="1" colspan="1">Ste20-KD vs. WT</td>
+<td align="left" rowspan="1" colspan="1">Snf1-KD vs. WT</td>
+<td align="left" rowspan="1" colspan="1">Tpk2-KD vs. WT</td>
+<td align="left" rowspan="1" colspan="1">Elm1-KD vs. WT</td>
+<td align="left" rowspan="1" colspan="1">Fus3-KD vs. WT</td>
+<td align="left" rowspan="1" colspan="1">Kss1-KD vs. WT</td>
+<td align="left" rowspan="1" colspan="1">Ksp1-KD vs. WT</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">ADDEEDLS(ph)DENIQPELR</td>
+<td align="left" rowspan="1" colspan="1">0.72</td>
+<td align="left" rowspan="1" colspan="1">0.71</td>
+<td align="left" rowspan="1" colspan="1">0.70</td>
+<td align="left" rowspan="1" colspan="1">0.52</td>
+<td align="left" rowspan="1" colspan="1">1.0</td>
+<td align="left" rowspan="1" colspan="1">0.88</td>
+<td align="left" rowspan="1" colspan="1">0.83</td>
+<td align="left" rowspan="1" colspan="1">0.86</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">ADGTGEAQVDNS(ph)PTTESNSR</td>
+<td align="left" rowspan="1" colspan="1">2.3</td>
+<td align="left" rowspan="1" colspan="1">3.7</td>
+<td align="left" rowspan="1" colspan="1">2.1</td>
+<td align="left" rowspan="1" colspan="1">2.2</td>
+<td align="left" rowspan="1" colspan="1">0.33</td>
+<td align="left" rowspan="1" colspan="1">0.58</td>
+<td align="left" rowspan="1" colspan="1">0.75</td>
+<td align="left" rowspan="1" colspan="1">0.69</td>
+</tr>
+</tbody>
+</table>
+</alternatives><table-wrap-foot><fn id="nt107"><label/><p>Phosphorylation level of each phosphopeptide is represented in a list of ratios. We used the peptide ratios provided by the MaxQuant output, which have been normalized for each LC-MS/MS run <xref ref-type="bibr" rid="pcbi.1003077-Cox1">[30]</xref>. The significance B values provided by MaxQuant are not shown here. For the cluster analysis, if a phosphopeptide is detected multiple times under the same KD-versus-WT condition, the median of all its ratios are taken. S(ph) or T(ph) indicates that the specific amino acid, serine or threonine, is phosphorylated, respectively.</p></fn></table-wrap-foot></table-wrap>
+<p>For the purpose of evaluating similar or reciprocal effects on phosphorylation changes in response to different kinase mutations, we generated a correlation heatmap of the kinase-dead mutants (see <xref ref-type="fig" rid="pcbi-1003077-g003">Figure 3</xref>), which is presented as Spearman correlations between pairs of mutants. In order to avoid the strong correlation dominated by the majority of peptides whose phosphorylation do not change significantly, only the peptides having at least 2-fold changes in both mutants were used for calculation. Positive or negative correlations can be interpreted as similar or reciprocal effects on phosphorylation induced by different kinase mutations.</p>
+</sec><sec id="s4b1b">
+<title><italic>Clustering phosphopeptides</italic></title>
+<p>Our goal of this cluster analysis is to find the groups of phosphopeptides sharing similar phosphorylation change patterns, which are likely to be involved in similar functional pathways. The phosphopeptides commonly identified in 4–8 KD-versus-WT conditions were selected, and the missing values were imputed (on log2 scale) using 5-nearest neighbor averaging <xref ref-type="bibr" rid="pcbi.1003077-Hastie1">[84]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-Troyanskaya1">[85]</xref>. The imputed dataset was analyzed using the tight clustering method <xref ref-type="bibr" rid="pcbi.1003077-Tseng1">[31]</xref>, which sequentially identified the most informative, tight and stable clusters from the data, without enforcing all peptides to be clustered.</p>
+<p>We also attempted several traditional clustering methods, including hierarchical clustering methods <xref ref-type="bibr" rid="pcbi.1003077-Ward1">[86]</xref> and PAM (Partitioning Around Medoids) <xref ref-type="bibr" rid="pcbi.1003077-Theodoridis1">[87]</xref>. These methods enforce clustering for all peptides. However, due to the presence of large numbers of scattered peptides that do not tightly match to any pattern, it is difficult to determine the number of clusters and discover stable functional clusters. In contrast, the tight clustering method is more suitable for data with scattered peptides. It identifies the tight clusters in decreasing order of stability, and the number of clusters is less crucial <xref ref-type="bibr" rid="pcbi.1003077-Tseng1">[31]</xref>.</p>
+<p>Note that the cluster analysis was performed at the peptide level rather than the protein level, because many proteins contain multiple phosphorylation domains whose responses may correlate or not, depending on the function of phosphorylation at those sites and the physiological conditions examined. Protein identities were traced back from the peptide identifications while accounting for protein isoforms.</p>
+</sec><sec id="s4b1c">
+<title>Functional annotation within each tight cluster</title>
+<p>The functional terms were annotated for the proteins in top tight clusters to survey functional enrichment. The Functional Annotation Tool on DAVID v6.7 <xref ref-type="bibr" rid="pcbi.1003077-Huang1">[33]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-Huang2">[34]</xref> was used to facilitate annotation.</p>
+</sec><sec id="s4b1d">
+<title>Identification of differential phosphorylation in each mutant</title>
+<p>The phosphopeptides that change phosphorylation level significantly in each individual KD-versus-WT experiment were selected by the significance B value &lt; 0.05.</p>
+</sec><sec id="s4b1e">
+<title>Identification of globally significant differential phosphorylation</title>
+<p>The kinases selected to be dead mutated are all known to be involved in filamentous growth. The proteins which have globally significant responses in the mutants versus WT controls are potential components involved in filamentous growth or expression products of the gene targets. Detecting globally differentially phosphorylated peptides combining the results from all the KD-versus-WT experiments is a multiple testing problem <xref ref-type="bibr" rid="pcbi.1003077-Miller1">[88]</xref>. Due to the missing data issue common in proteome data, it is too stringent and impractical to require a candidate to be completely significant in all the experiments. Thus, we relax the requirement, and use less stringent methods which can still identify the candidates having global significance. We extended the Fisher's combined probability test <xref ref-type="bibr" rid="pcbi.1003077-Fisher1">[35]</xref> to allow missing values, and it was applied to solve the multiple testing problem.</p>
+<p>In the framework of Fisher's method, the two-tailed p-value <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003077.e001" xlink:type="simple"/></inline-formula> for an individual significance test in a KD-versus-WT experiment is calculated as twice the significance B value. In our dataset, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003077.e002" xlink:type="simple"/></inline-formula>, corresponding to the 8 KD-versus-WT conditions, and the total number of individual tests, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003077.e003" xlink:type="simple"/></inline-formula>. The test statistic <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003077.e004" xlink:type="simple"/></inline-formula> follows a chi-square distribution with <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003077.e005" xlink:type="simple"/></inline-formula> degrees of freedom. Thus, the p-value for the test statistic <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003077.e006" xlink:type="simple"/></inline-formula> can be determined, which is the combined p-value for all 8 individual tests. Each identified phosphopeptide has a combined p-value as a measure of global significance. The extension of Fisher's method: for each phosphopeptide, its combined p-value was calculated from all of its available significance B values. All the non-missing values were retained for calculating the combined p-value, rather than excluding the incomplete data from the dataset. The FDR of multiple testing is controlled using the <italic>Benjamini-Hochberg</italic> procedure <xref ref-type="bibr" rid="pcbi.1003077-Benjamini1">[36]</xref>.</p>
+<p>We also adapted an adaptively weighted statistic-based method (missing values not allowed) <xref ref-type="bibr" rid="pcbi.1003077-Li1">[37]</xref>, which was initially developed for detecting differential gene expression, for detecting differential phosphorylation from our common peptides appearing in all KDs. The globally significant phosphorylation sites detected by these two methods were generally consistent.</p>
+</sec><sec id="s4b1f">
+<title><italic>Correlation network analysis</italic></title>
+<p>A correlation network of all the 73 common phosphopeptides with complete measurements was generated based on their phosphorylation changes under all 8 KD-versus-WT conditions. The Pearson correlation coefficient between each pair of distinct phosphopeptides was calculated. Strong correlations meet the following criterion: p-value of the Pearson's correlation test &lt; 0.05, and a stringent requirement of |Pearson correlation coefficient| ≥ 0.9. The protein identifications can be traced back from the phosphopeptides.</p>
+<p>The correlation network among proteins is an undirected network. Degrees of connectivity for each protein in the network can provide an assessment of importance of the protein. The higher the degree, the more frequently the protein is involved in interactivities with other proteins in the network. From this measurement, we predict core-components in the correlation network.</p>
+</sec><sec id="s4b1g">
+<title><italic>Literature mining</italic></title>
+<p>In addition to the candidate proteins predicted by global differential phosphorylation and the core-components identified from the correlation network, we also retrieved a list of proteins reported as known or potential components involved in filamentous growth from literature as well as authoritative databases, such as SGD <xref ref-type="bibr" rid="pcbi.1003077-Cherry1">[55]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-SGD1">[56]</xref>, BIOGRID <xref ref-type="bibr" rid="pcbi.1003077-Stark1">[89]</xref> and <italic>Science Signaling</italic> Database of Cell Signaling <xref ref-type="bibr" rid="pcbi.1003077-Thorner1">[20]</xref>. Note that people have usually used different terms to refer to filamentous growth in haploid cells; “filamentous growth,” “filamentation” might all refer to the same biological process. In SGD database, we search both key words for Descriptions and GO Biological Process terms associated with the proteins.</p>
+</sec><sec id="s4b1h">
+<title><italic>Causal Bayesian network modeling</italic></title>
+<p>The correlation network is intuitive; however, it is not directed, and direction information for networks is quite useful for interpretation. For this reason we went beyond correlation analysis to causal Bayesian network modeling. Because different phosphopeptides from the same protein do not definitely change phosphorylation level in the same direction, the network modeling must be performed on peptide level, and then traced back to their parent proteins.</p>
+</sec><sec id="s4b1i">
+<title>Data preprocessing</title>
+<p>If a phosphopeptide was detected more than once in a specific mutant, the median of the fold-changes was taken as a representative of the response in this mutant. The phosphorylation fold-changes of peptides were discretized into three states based on the 2-fold change criterion <xref ref-type="bibr" rid="pcbi.1003077-Friedman1">[90]</xref>: if the ratio is smaller than 0.5, the state is categorized into <italic>under-phosphorylation</italic>; if the ratio is greater than 2, the state is categorized into <italic>over-phosphorylation</italic>; otherwise, the state is categorized into <italic>baseline</italic>.</p>
+</sec><sec id="s4b1j">
+<title>Causal relationship discovery</title>
+<p>A causal Bayesian network is a Bayesian network in which a directed edge is interpreted as a causal influence from the parent node to the child node <xref ref-type="bibr" rid="pcbi.1003077-Yoo1">[91]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-Mani1">[92]</xref>. In our study, each protein (represented by unique phosphopeptides) is considered as one node in the network, and a directed edge starting from the node of protein X pointing to the node of protein Y represents a causal influence of protein X on Y. Disregarding confounding influences, there are three simple model structures between two proteins X and Y: (1) X has causal influence on Y; (2) the opposite; (3) no causal relationship between X and Y. Note that the directed edge only indicates the direction of causal influence, but do not tell whether the influence is activation or inhibition.</p>
+<p>Non-informative prior distribution of the model structures is used. For given data, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003077.e007" xlink:type="simple"/></inline-formula>, and prior knowledge, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003077.e008" xlink:type="simple"/></inline-formula>, we want to find the model structure, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003077.e009" xlink:type="simple"/></inline-formula>, that has the highest posterior probability, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003077.e010" xlink:type="simple"/></inline-formula>. According to Bayes' theorem, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003077.e011" xlink:type="simple"/></inline-formula> ∝ <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003077.e012" xlink:type="simple"/></inline-formula>. While all the nodes have been discretized in <bold><italic>Data preprocessing</italic></bold>, assuming the causal mechanisms are local and independent, and the prior distribution of the parameters associated with each node is Dirichlet, the marginal likelihood <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003077.e013" xlink:type="simple"/></inline-formula> can be obtained by the Bayesian Dirichlet equivalent (BDe) metric <xref ref-type="bibr" rid="pcbi.1003077-Yoo1">[91]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-Cooper1">[93]</xref>–<xref ref-type="bibr" rid="pcbi.1003077-Cooper2">[95]</xref>. For the mixture of observational and interventional data, only the passively observed cases are counted in the BDe metric calculation <xref ref-type="bibr" rid="pcbi.1003077-Yoo1">[91]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-Cooper2">[95]</xref>. The model structure with the highest posterior probability is assigned to the corresponding pair of proteins.</p>
+<p>The analyses were implemented in R v2.15.1 and MATLAB R2012a. The causal Bayesian network structure learning was performed in MATLAB using BNT (Bayes Net Toolbox for MATLAB) v1.0.7 <xref ref-type="bibr" rid="pcbi.1003077-Murphy1">[96]</xref>. Cytoscape v2.8.3 <xref ref-type="bibr" rid="pcbi.1003077-Shannon1">[97]</xref>, <xref ref-type="bibr" rid="pcbi.1003077-Smoot1">[98]</xref> was used for network visualization.</p>
+</sec></sec></sec></sec><sec id="s5">
+<title>Supporting Information</title>
+<supplementary-material id="pcbi.1003077.s001" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" xlink:href="info:doi/10.1371/journal.pcbi.1003077.s001" position="float" xlink:type="simple"><label>Dataset S1</label><caption>
+<p><bold>The top 8 tight clusters.</bold></p>
+<p>(XLSX)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1003077.s002" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" xlink:href="info:doi/10.1371/journal.pcbi.1003077.s002" position="float" xlink:type="simple"><label>Dataset S2</label><caption>
+<p><bold>Significantly differentially phosphorylated peptides in individual kinase-dead mutants.</bold> This is a non-redundant list. Based on our observation, the kinase-phosphopeptide pairs are at least as significant as the significance B value presented in the table.</p>
+<p>(XLSX)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1003077.s003" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" xlink:href="info:doi/10.1371/journal.pcbi.1003077.s003" position="float" xlink:type="simple"><label>Dataset S3</label><caption>
+<p><bold>Detailed descriptions of 28 globally significant phosphopeptides selected by using an extended Fisher's strategy on all identified phosphopeptides.</bold></p>
+<p>(XLSX)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1003077.s004" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" xlink:href="info:doi/10.1371/journal.pcbi.1003077.s004" position="float" xlink:type="simple"><label>Dataset S4</label><caption>
+<p><bold>Strongly correlated phosphopeptide pairs (from complete measurements, p&lt;0.05 and |correlation| &gt; = 0.9).</bold></p>
+<p>(XLSX)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1003077.s005" mimetype="application/pdf" xlink:href="info:doi/10.1371/journal.pcbi.1003077.s005" position="float" xlink:type="simple"><label>Text S1</label><caption>
+<p><bold>Supplementary file.</bold> This pdf file contains the supplementary Tables S1, S2, S3, S4 and Figures S1, S2. The supplementary Datasets S1, S2, S3, S4 are provided in separate excel files.</p>
+<p>(PDF)</p>
+</caption></supplementary-material></sec></body>
+<back>
+<ack>
+<p>The authors acknowledge useful discussions with Santiago Schnell, Alexey Nesvizhskii, George Michailidis, Gilbert S. Omenn and Rajasree Menon.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1003077-Ptacek1"><label>1</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ptacek</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Devgan</surname><given-names>G</given-names></name>, <name name-style="western"><surname>Michaud</surname><given-names>G</given-names></name>, <name name-style="western"><surname>Zhu</surname><given-names>H</given-names></name>, <name name-style="western"><surname>Zhu</surname><given-names>X</given-names></name>, <etal>et al</etal>. (<year>2005</year>) <article-title>Global analysis of protein phosphorylation in yeast</article-title>. <source>Nature</source> <volume>438</volume>: <fpage>679</fpage>–<lpage>684</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nature04187" xlink:type="simple">10.1038/nature04187</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Manning1"><label>2</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Manning</surname><given-names>G</given-names></name>, <name name-style="western"><surname>Plowman</surname><given-names>GD</given-names></name>, <name name-style="western"><surname>Hunter</surname><given-names>T</given-names></name>, <name name-style="western"><surname>Sudarsanam</surname><given-names>S</given-names></name> (<year>2002</year>) <article-title>Evolution of protein kinase signaling from yeast to man</article-title>. <source>Trends in biochemical sciences</source> <volume>27</volume>: <fpage>514</fpage>–<lpage>520</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Ficarro1"><label>3</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ficarro</surname><given-names>SB</given-names></name>, <name name-style="western"><surname>McCleland</surname><given-names>ML</given-names></name>, <name name-style="western"><surname>Stukenberg</surname><given-names>PT</given-names></name>, <name name-style="western"><surname>Burke</surname><given-names>DJ</given-names></name>, <name name-style="western"><surname>Ross</surname><given-names>MM</given-names></name>, <etal>et al</etal>. (<year>2002</year>) <article-title>Phosphoproteome analysis by mass spectrometry and its application to Saccharomyces cerevisiae</article-title>. <source>Nature biotechnology</source> <volume>20</volume>: <fpage>301</fpage>–<lpage>305</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nbt0302-301" xlink:type="simple">10.1038/nbt0302-301</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Cohen1"><label>4</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cohen</surname><given-names>P</given-names></name> (<year>2000</year>) <article-title>The regulation of protein function by multisite phosphorylation–a 25 year update</article-title>. <source>Trends in biochemical sciences</source> <volume>25</volume>: <fpage>596</fpage>–<lpage>601</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Bodenmiller1"><label>5</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bodenmiller</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Wanka</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Kraft</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Urban</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Campbell</surname><given-names>D</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>Phosphoproteomic analysis reveals interconnected system-wide responses to perturbations of kinases and phosphatases in yeast</article-title>. <source>Science signaling</source> <volume>3</volume>: <fpage>rs4</fpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/scisignal.2001182" xlink:type="simple">10.1126/scisignal.2001182</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Breitkreutz1"><label>6</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Breitkreutz</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Choi</surname><given-names>H</given-names></name>, <name name-style="western"><surname>Sharom</surname><given-names>JR</given-names></name>, <name name-style="western"><surname>Boucher</surname><given-names>L</given-names></name>, <name name-style="western"><surname>Neduva</surname><given-names>V</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>A global protein kinase and phosphatase interaction network in yeast</article-title>. <source>Science</source> <volume>328</volume>: <fpage>1043</fpage>–<lpage>1046</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/science.1176495" xlink:type="simple">10.1126/science.1176495</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Yachie1"><label>7</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yachie</surname><given-names>N</given-names></name>, <name name-style="western"><surname>Saito</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Sugiyama</surname><given-names>N</given-names></name>, <name name-style="western"><surname>Tomita</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Ishihama</surname><given-names>Y</given-names></name> (<year>2011</year>) <article-title>Integrative features of the yeast phosphoproteome and protein-protein interaction map</article-title>. <source>PLoS computational biology</source> <volume>7</volume>: <fpage>e1001064</fpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.1001064" xlink:type="simple">10.1371/journal.pcbi.1001064</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Schmelzle1"><label>8</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schmelzle</surname><given-names>K</given-names></name>, <name name-style="western"><surname>White</surname><given-names>FM</given-names></name> (<year>2006</year>) <article-title>Phosphoproteomic approaches to elucidate cellular signaling networks</article-title>. <source>Current opinion in biotechnology</source> <volume>17</volume>: <fpage>406</fpage>–<lpage>414</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.copbio.2006.06.004" xlink:type="simple">10.1016/j.copbio.2006.06.004</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Macek1"><label>9</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Macek</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Mann</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Olsen</surname><given-names>JV</given-names></name> (<year>2009</year>) <article-title>Global and site-specific quantitative phosphoproteomics: principles and applications</article-title>. <source>Annual review of pharmacology and toxicology</source> <volume>49</volume>: <fpage>199</fpage>–<lpage>221</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1146/annurev.pharmtox.011008.145606" xlink:type="simple">10.1146/annurev.pharmtox.011008.145606</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Kosako1"><label>10</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kosako</surname><given-names>H</given-names></name>, <name name-style="western"><surname>Nagano</surname><given-names>K</given-names></name> (<year>2011</year>) <article-title>Quantitative phosphoproteomics strategies for understanding protein kinase-mediated signal transduction pathways</article-title>. <source>Expert review of proteomics</source> <volume>8</volume>: <fpage>81</fpage>–<lpage>94</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1586/epr.10.104" xlink:type="simple">10.1586/epr.10.104</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Bantscheff1"><label>11</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bantscheff</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Schirle</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Sweetman</surname><given-names>G</given-names></name>, <name name-style="western"><surname>Rick</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Kuster</surname><given-names>B</given-names></name> (<year>2007</year>) <article-title>Quantitative mass spectrometry in proteomics: a critical review</article-title>. <source>Analytical and bioanalytical chemistry</source> <volume>389</volume>: <fpage>1017</fpage>–<lpage>1031</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1007/s00216-007-1486-6" xlink:type="simple">10.1007/s00216-007-1486-6</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Ong1"><label>12</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ong</surname><given-names>S-E</given-names></name>, <name name-style="western"><surname>Blagoev</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Kratchmarova</surname><given-names>I</given-names></name>, <name name-style="western"><surname>Kristensen</surname><given-names>DB</given-names></name>, <name name-style="western"><surname>Steen</surname><given-names>H</given-names></name>, <etal>et al</etal>. (<year>2002</year>) <article-title>Stable isotope labeling by amino acids in cell culture, SILAC, as a simple and accurate approach to expression proteomics</article-title>. <source>Molecular &amp; cellular proteomics: MCP</source> <volume>1</volume>: <fpage>376</fpage>–<lpage>386</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Mann1"><label>13</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mann</surname><given-names>M</given-names></name> (<year>2006</year>) <article-title>Functional and quantitative proteomics using SILAC</article-title>. <source>Nature reviews Molecular cell biology</source> <volume>7</volume>: <fpage>952</fpage>–<lpage>958</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nrm2067" xlink:type="simple">10.1038/nrm2067</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Gimeno1"><label>14</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gimeno</surname><given-names>CJ</given-names></name>, <name name-style="western"><surname>Ljungdahl</surname><given-names>PO</given-names></name>, <name name-style="western"><surname>Styles</surname><given-names>CA</given-names></name>, <name name-style="western"><surname>Fink</surname><given-names>GR</given-names></name> (<year>1992</year>) <article-title>Unipolar cell divisions in the yeast S. cerevisiae lead to filamentous growth: regulation by starvation and RAS</article-title>. <source>Cell</source> <volume>68</volume>: <fpage>1077</fpage>–<lpage>1090</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Palecek1"><label>15</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Palecek</surname><given-names>SP</given-names></name>, <name name-style="western"><surname>Parikh</surname><given-names>AS</given-names></name>, <name name-style="western"><surname>Kron</surname><given-names>SJ</given-names></name> (<year>2002</year>) <article-title>Sensing, signalling and integrating physical processes during Saccharomyces cerevisiae invasive and filamentous growth</article-title>. <source>Microbiology (Reading, England)</source> <volume>148</volume>: <fpage>893</fpage>–<lpage>907</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Lorenz1"><label>16</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lorenz</surname><given-names>MC</given-names></name>, <name name-style="western"><surname>Cutler</surname><given-names>NS</given-names></name>, <name name-style="western"><surname>Heitman</surname><given-names>J</given-names></name> (<year>2000</year>) <article-title>Characterization of alcohol-induced filamentous growth in Saccharomyces cerevisiae</article-title>. <source>Molecular biology of the cell</source> <volume>11</volume>: <fpage>183</fpage>–<lpage>199</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Cullen1"><label>17</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cullen</surname><given-names>PJ</given-names></name>, <name name-style="western"><surname>Sprague</surname><given-names>GF</given-names></name> (<year>2000</year>) <article-title>Glucose depletion causes haploid invasive growth in yeast</article-title>. <source>Proceedings of the National Academy of Sciences of the United States of America</source> <volume>97</volume>: <fpage>13619</fpage>–<lpage>13624</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.240345197" xlink:type="simple">10.1073/pnas.240345197</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Kron1"><label>18</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kron</surname><given-names>SJ</given-names></name>, <name name-style="western"><surname>Styles</surname><given-names>CA</given-names></name>, <name name-style="western"><surname>Fink</surname><given-names>GR</given-names></name> (<year>1994</year>) <article-title>Symmetric cell division in pseudohyphae of the yeast Saccharomyces cerevisiae</article-title>. <source>Molecular biology of the cell</source> <volume>5</volume>: <fpage>1003</fpage>–<lpage>1022</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Jin1"><label>19</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jin</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Dobry</surname><given-names>CJ</given-names></name>, <name name-style="western"><surname>McCown</surname><given-names>PJ</given-names></name>, <name name-style="western"><surname>Kumar</surname><given-names>A</given-names></name> (<year>2008</year>) <article-title>Large-scale analysis of yeast filamentous growth by systematic gene disruption and overexpression</article-title>. <source>Molecular biology of the cell</source> <volume>19</volume>: <fpage>284</fpage>–<lpage>296</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1091/mbc.E07-05-0519" xlink:type="simple">10.1091/mbc.E07-05-0519</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Thorner1"><label>20</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Thorner</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Truckses</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Garrenton</surname><given-names>L</given-names></name> (<year>2012</year>) <article-title>Filamentous Growth Pathway in Yeast</article-title>. <source>Science Signaling Database of Cell Signaling</source> Available: <ext-link ext-link-type="uri" xlink:href="http://stke.sciencemag.org/cgi/cm/stkecmCMP_14554" xlink:type="simple">http://stke.sciencemag.org/cgi/cm/stkecmCMP_14554</ext-link>. Accessed 3 February 1BC.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-CeccatoAntonini1"><label>21</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ceccato-Antonini</surname><given-names>SR</given-names></name>, <name name-style="western"><surname>Sudbery</surname><given-names>PE</given-names></name> (<year>2004</year>) <article-title>Filamentous growth in Saccharomyces cerevisiae</article-title>. <source>Brazilian Journal of Microbiology</source> <volume>35</volume>: <fpage>173</fpage>–<lpage>181</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1590/S1517-83822004000200001" xlink:type="simple">10.1590/S1517-83822004000200001</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Saito1"><label>22</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Saito</surname><given-names>H</given-names></name> (<year>2010</year>) <article-title>Regulation of cross-talk in yeast MAPK signaling pathways</article-title>. <source>Current opinion in microbiology</source> <volume>13</volume>: <fpage>677</fpage>–<lpage>683</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.mib.2010.09.001" xlink:type="simple">10.1016/j.mib.2010.09.001</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Pan1"><label>23</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pan</surname><given-names>X</given-names></name>, <name name-style="western"><surname>Heitman</surname><given-names>J</given-names></name> (<year>1999</year>) <article-title>Cyclic AMP-dependent protein kinase regulates pseudohyphal differentiation in Saccharomyces cerevisiae</article-title>. <source>Molecular and cellular biology</source> <volume>19</volume>: <fpage>4874</fpage>–<lpage>4887</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Robertson1"><label>24</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Robertson</surname><given-names>LS</given-names></name>, <name name-style="western"><surname>Fink</surname><given-names>GR</given-names></name> (<year>1998</year>) <article-title>The three yeast A kinases have specific signaling functions in pseudohyphal growth</article-title>. <source>Proceedings of the National Academy of Sciences of the United States of America</source> <volume>95</volume>: <fpage>13783</fpage>–<lpage>13787</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Batlle1"><label>25</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Batlle</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Lu</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Green</surname><given-names>DA</given-names></name>, <name name-style="western"><surname>Xue</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Hirsch</surname><given-names>JP</given-names></name> (<year>2003</year>) <article-title>Krh1p and Krh2p act downstream of the Gpa2p G(alpha) subunit to negatively regulate haploid invasive growth</article-title>. <source>Journal of cell science</source> <volume>116</volume>: <fpage>701</fpage>–<lpage>710</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Bharucha1"><label>26</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bharucha</surname><given-names>N</given-names></name>, <name name-style="western"><surname>Ma</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Dobry</surname><given-names>CJ</given-names></name>, <name name-style="western"><surname>Lawson</surname><given-names>SK</given-names></name>, <name name-style="western"><surname>Yang</surname><given-names>Z</given-names></name>, <etal>et al</etal>. (<year>2008</year>) <article-title>Analysis of the yeast kinome reveals a network of regulated protein localization during filamentous growth</article-title>. <source>Molecular biology of the cell</source> <volume>19</volume>: <fpage>2708</fpage>–<lpage>2717</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1091/mbc.E07-11-1199" xlink:type="simple">10.1091/mbc.E07-11-1199</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Kanehisa1"><label>27</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kanehisa</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Goto</surname><given-names>S</given-names></name> (<year>2000</year>) <article-title>KEGG: kyoto encyclopedia of genes and genomes</article-title>. <source>Nucleic acids research</source> <volume>28</volume>: <fpage>27</fpage>–<lpage>30</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Edgington1"><label>28</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Edgington</surname><given-names>NP</given-names></name>, <name name-style="western"><surname>Blacketer</surname><given-names>MJ</given-names></name>, <name name-style="western"><surname>Bierwagen</surname><given-names>TA</given-names></name>, <name name-style="western"><surname>Myers</surname><given-names>AM</given-names></name> (<year>1999</year>) <article-title>Control of Saccharomyces cerevisiae filamentous growth by cyclin-dependent kinase Cdc28</article-title>. <source>Molecular and cellular biology</source> <volume>19</volume>: <fpage>1369</fpage>–<lpage>1380</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Perkins1"><label>29</label>
+    <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Perkins</surname><given-names>DN</given-names></name>, <name name-style="western"><surname>Pappin</surname><given-names>DJ</given-names></name>, <name name-style="western"><surname>Creasy</surname><given-names>DM</given-names></name>, <name name-style="western"><surname>Cottrell</surname><given-names>JS</given-names></name> (<year>1999</year>) <article-title>Probability-based protein identification by searching sequence databases using mass spectrometry data</article-title>. <source>Electrophoresis</source> <volume>20</volume>: <fpage>3551</fpage>–<lpage>3567</lpage> <comment>doi:;<ext-link ext-link-type="uri" xlink:href="http://tinyurl.com/pa7xjjw" xlink:type="simple">10.1002/(SICI)1522-2683(19991201)20:18&lt;3551::AID-ELPS3551&gt;3.0.CO;2-2</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Cox1"><label>30</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cox</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Mann</surname><given-names>M</given-names></name> (<year>2008</year>) <article-title>MaxQuant enables high peptide identification rates, individualized p.p.b.-range mass accuracies and proteome-wide protein quantification</article-title>. <source>Nature biotechnology</source> <volume>26</volume>: <fpage>1367</fpage>–<lpage>1372</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nbt.1511" xlink:type="simple">10.1038/nbt.1511</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Tseng1"><label>31</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Tseng</surname><given-names>GC</given-names></name>, <name name-style="western"><surname>Wong</surname><given-names>WH</given-names></name> (<year>2005</year>) <article-title>Tight clustering: a resampling-based approach for identifying stable and tight patterns in data</article-title>. <source>Biometrics</source> <volume>61</volume>: <fpage>10</fpage>–<lpage>16</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Ashburner1"><label>32</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ashburner</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Ball</surname><given-names>CA</given-names></name>, <name name-style="western"><surname>Blake</surname><given-names>JA</given-names></name>, <name name-style="western"><surname>Botstein</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Butler</surname><given-names>H</given-names></name>, <etal>et al</etal>. (<year>2000</year>) <article-title>Gene ontology: tool for the unification of biology. The Gene Ontology Consortium</article-title>. <source>Nature genetics</source> <volume>25</volume>: <fpage>25</fpage>–<lpage>29</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/75556" xlink:type="simple">10.1038/75556</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Huang1"><label>33</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Huang</surname><given-names>DW</given-names></name>, <name name-style="western"><surname>Sherman</surname><given-names>BT</given-names></name>, <name name-style="western"><surname>Lempicki</surname><given-names>RA</given-names></name> (<year>2009</year>) <article-title>Bioinformatics enrichment tools: paths toward the comprehensive functional analysis of large gene lists</article-title>. <source>Nucleic acids research</source> <volume>37</volume>: <fpage>1</fpage>–<lpage>13</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/nar/gkn923" xlink:type="simple">10.1093/nar/gkn923</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Huang2"><label>34</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Huang</surname><given-names>DW</given-names></name>, <name name-style="western"><surname>Sherman</surname><given-names>BT</given-names></name>, <name name-style="western"><surname>Lempicki</surname><given-names>RA</given-names></name> (<year>2009</year>) <article-title>Systematic and integrative analysis of large gene lists using DAVID bioinformatics resources</article-title>. <source>Nature protocols</source> <volume>4</volume>: <fpage>44</fpage>–<lpage>57</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nprot.2008.211" xlink:type="simple">10.1038/nprot.2008.211</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Fisher1"><label>35</label>
+<mixed-citation publication-type="book" xlink:type="simple">Fisher RA (1925) Statistical methods for research workers. Boyd OA, editor. Edinburgh: Oliver and Boyd.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Benjamini1"><label>36</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Benjamini</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Hochberg</surname><given-names>Y</given-names></name> (<year>1995</year>) <article-title>Controlling the False Discovery Rate: A Practical and Powerful Approach to Multiple Testing</article-title>. <source>Journal of the Royal Statistical Society Series B</source> <volume>57</volume>: <fpage>289</fpage>–<lpage>300</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Li1"><label>37</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Li</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Tseng</surname><given-names>GC</given-names></name> (<year>2011</year>) <article-title>An adaptively weighted statistic for detecting differential gene expression when combining multiple transcriptomic studies</article-title>. <source>The Annals of Applied Statistics</source> <volume>5</volume>: <fpage>994</fpage>–<lpage>1019</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1214/10-AOAS393" xlink:type="simple">10.1214/10-AOAS393</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Zhringer1"><label>38</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zähringer</surname><given-names>H</given-names></name>, <name name-style="western"><surname>Burgert</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Holzer</surname><given-names>H</given-names></name>, <name name-style="western"><surname>Nwaka</surname><given-names>S</given-names></name> (<year>1997</year>) <article-title>Neutral trehalase Nth1p of Saccharomyces cerevisiae encoded by the NTH1 gene is a multiple stress responsive protein</article-title>. <source>FEBS letters</source> <volume>412</volume>: <fpage>615</fpage>–<lpage>620</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Franois1"><label>39</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>François</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Parrou</surname><given-names>JL</given-names></name> (<year>2001</year>) <article-title>Reserve carbohydrates metabolism in the yeast Saccharomyces cerevisiae</article-title>. <source>FEMS Microbiology Reviews</source> <volume>25</volume>: <fpage>125</fpage>–<lpage>145</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/S0168-6445(00)00059-0" xlink:type="simple">10.1016/S0168-6445(00)00059-0</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Galello1"><label>40</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Galello</surname><given-names>F</given-names></name>, <name name-style="western"><surname>Portela</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Moreno</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Rossi</surname><given-names>S</given-names></name> (<year>2010</year>) <article-title>Characterization of substrates that have a differential effect on Saccharomyces cerevisiae protein kinase A holoenzyme activation</article-title>. <source>The Journal of biological chemistry</source> <volume>285</volume>: <fpage>29770</fpage>–<lpage>29779</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1074/jbc.M110.120378" xlink:type="simple">10.1074/jbc.M110.120378</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Panni1"><label>41</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Panni</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Landgraf</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Volkmer-Engert</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Cesareni</surname><given-names>G</given-names></name>, <name name-style="western"><surname>Castagnoli</surname><given-names>L</given-names></name> (<year>2008</year>) <article-title>Role of 14-3-3 proteins in the regulation of neutral trehalase in the yeast Saccharomyces cerevisiae</article-title>. <source>FEMS yeast research</source> <volume>8</volume>: <fpage>53</fpage>–<lpage>63</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1111/j.1567-1364.2007.00312.x" xlink:type="simple">10.1111/j.1567-1364.2007.00312.x</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Krogan1"><label>42</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Krogan</surname><given-names>NJ</given-names></name>, <name name-style="western"><surname>Cagney</surname><given-names>G</given-names></name>, <name name-style="western"><surname>Yu</surname><given-names>H</given-names></name>, <name name-style="western"><surname>Zhong</surname><given-names>G</given-names></name>, <name name-style="western"><surname>Guo</surname><given-names>X</given-names></name>, <etal>et al</etal>. (<year>2006</year>) <article-title>Global landscape of protein complexes in the yeast Saccharomyces cerevisiae</article-title>. <source>Nature</source> <volume>440</volume>: <fpage>637</fpage>–<lpage>643</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nature04670" xlink:type="simple">10.1038/nature04670</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Santangelo1"><label>43</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Santangelo</surname><given-names>GM</given-names></name> (<year>2006</year>) <article-title>Glucose signaling in Saccharomyces cerevisiae</article-title>. <source>Microbiology and molecular biology reviews: MMBR</source> <volume>70</volume>: <fpage>253</fpage>–<lpage>282</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1128/MMBR.70.1.253-282.2006" xlink:type="simple">10.1128/MMBR.70.1.253-282.2006</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Estruch1"><label>44</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Estruch</surname><given-names>F</given-names></name> (<year>2000</year>) <article-title>Stress-controlled transcription factors, stress-induced genes and stress tolerance in budding yeast</article-title>. <source>FEMS microbiology reviews</source> <volume>24</volume>: <fpage>469</fpage>–<lpage>486</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Norbeck1"><label>45</label>
+    <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Norbeck</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Blomberg</surname><given-names>A</given-names></name> (<year>2000</year>) <article-title>The level of cAMP-dependent protein kinase A activity strongly affects osmotolerance and osmo-instigated gene expression changes in Saccharomyces cerevisiae</article-title>. <source>Yeast (Chichester, England)</source> <volume>16</volume>: <fpage>121</fpage>–<lpage>137</lpage> <comment>doi:;<ext-link ext-link-type="uri" xlink:href="http://tinyurl.com/oblrfzs" xlink:type="simple">10.1002/(SICI)1097-0061(20000130)16:2&lt;121::AID-YEA511&gt;3.0.CO;2-A.</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Barbieri1"><label>46</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Barbieri</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Bonafè</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Franceschi</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Paolisso</surname><given-names>G</given-names></name> (<year>2003</year>) <article-title>Insulin/IGF-I-signaling pathway: an evolutionarily conserved mechanism of longevity from yeast to humans</article-title>. <source>American journal of physiology Endocrinology and metabolism</source> <volume>285</volume>: <fpage>E1064</fpage>–<lpage>71</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1152/ajpendo.00296.2003" xlink:type="simple">10.1152/ajpendo.00296.2003</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Roberts1"><label>47</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Roberts</surname><given-names>RL</given-names></name>, <name name-style="western"><surname>Mösch</surname><given-names>HU</given-names></name>, <name name-style="western"><surname>Fink</surname><given-names>GR</given-names></name> (<year>1997</year>) <article-title>14-3-3 proteins are essential for RAS/MAPK cascade signaling during pseudohyphal development in S. cerevisiae</article-title>. <source>Cell</source> <volume>89</volume>: <fpage>1055</fpage>–<lpage>1065</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Gancedo1"><label>48</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gancedo</surname><given-names>JM</given-names></name> (<year>2001</year>) <article-title>Control of pseudohyphae formation in Saccharomyces cerevisiae</article-title>. <source>FEMS microbiology reviews</source> <volume>25</volume>: <fpage>107</fpage>–<lpage>123</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Bertram1"><label>49</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bertram</surname><given-names>PG</given-names></name>, <name name-style="western"><surname>Zeng</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Thorson</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Shaw</surname><given-names>AS</given-names></name>, <name name-style="western"><surname>Zheng</surname><given-names>XF</given-names></name> (<year>1998</year>) <article-title>The 14-3-3 proteins positively regulate rapamycin-sensitive signaling</article-title>. <source>Current biology: CB</source> <volume>8</volume>: <fpage>1259</fpage>–<lpage>1267</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Irie1"><label>50</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Irie</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Gotoh</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Yashar</surname><given-names>BM</given-names></name>, <name name-style="western"><surname>Errede</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Nishida</surname><given-names>E</given-names></name>, <etal>et al</etal>. (<year>1994</year>) <article-title>Stimulatory effects of yeast and mammalian 14-3-3 proteins on the Raf protein kinase</article-title>. <source>Science (New York, NY)</source> <volume>265</volume>: <fpage>1716</fpage>–<lpage>1719</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Gelperin1"><label>51</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gelperin</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Weigle</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Nelson</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Roseboom</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Irie</surname><given-names>K</given-names></name>, <etal>et al</etal>. (<year>1995</year>) <article-title>14-3-3 proteins: potential roles in vesicular transport and Ras signaling in Saccharomyces cerevisiae</article-title>. <source>Proceedings of the National Academy of Sciences of the United States of America</source> <volume>92</volume>: <fpage>11539</fpage>–<lpage>11543</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Wotton1"><label>52</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wotton</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Freeman</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Shore</surname><given-names>D</given-names></name> (<year>1996</year>) <article-title>Multimerization of Hsp42p, a novel heat shock protein of Saccharomyces cerevisiae, is dependent on a conserved carboxyl-terminal sequence</article-title>. <source>The Journal of biological chemistry</source> <volume>271</volume>: <fpage>2717</fpage>–<lpage>2723</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-VonMering1"><label>53</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Von Mering</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Huynen</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Jaeggi</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Schmidt</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Bork</surname><given-names>P</given-names></name>, <etal>et al</etal>. (<year>2003</year>) <article-title>STRING: a database of predicted functional associations between proteins</article-title>. <source>Nucleic Acids Research</source> <volume>31</volume>: <fpage>258</fpage>–<lpage>261</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Szklarczyk1"><label>54</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Szklarczyk</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Franceschini</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Kuhn</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Simonovic</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Roth</surname><given-names>A</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>The STRING database in 2011: functional interaction networks of proteins, globally integrated and scored</article-title>. <source>Nucleic Acids Research</source> <volume>39</volume>: <fpage>D561</fpage>–<lpage>8</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/nar/gkq973" xlink:type="simple">10.1093/nar/gkq973</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Cherry1"><label>55</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cherry</surname><given-names>JM</given-names></name>, <name name-style="western"><surname>Hong</surname><given-names>EL</given-names></name>, <name name-style="western"><surname>Amundsen</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Balakrishnan</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Binkley</surname><given-names>G</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>Saccharomyces Genome Database: the genomics resource of budding yeast</article-title>. <source>Nucleic acids research</source> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/nar/gkr1029" xlink:type="simple">10.1093/nar/gkr1029</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-SGD1"><label>56</label>
+<mixed-citation publication-type="other" xlink:type="simple">SGD project (2012) Saccharomyces Genome Database. Available: <ext-link ext-link-type="uri" xlink:href="http://www.yeastgenome.org/" xlink:type="simple">http://www.yeastgenome.org/</ext-link>. Accessed 16 August 2012.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Nwaka1"><label>57</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Nwaka</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Holzer</surname><given-names>H</given-names></name> (<year>1998</year>) <article-title>Molecular biology of trehalose and the trehalases in the yeast Saccharomyces cerevisiae</article-title>. <source>Progress in nucleic acid research and molecular biology</source> <volume>58</volume>: <fpage>197</fpage>–<lpage>237</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Yoshikawa1"><label>58</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yoshikawa</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Tanaka</surname><given-names>T</given-names></name>, <name name-style="western"><surname>Furusawa</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Nagahisa</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Hirasawa</surname><given-names>T</given-names></name>, <etal>et al</etal>. (<year>2009</year>) <article-title>Comprehensive phenotypic analysis for identification of genes affecting growth under ethanol stress in Saccharomyces cerevisiae</article-title>. <source>FEMS yeast research</source> <volume>9</volume>: <fpage>32</fpage>–<lpage>44</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1111/j.1567-1364.2008.00456.x" xlink:type="simple">10.1111/j.1567-1364.2008.00456.x</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Lee1"><label>59</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lee</surname><given-names>M-W</given-names></name>, <name name-style="western"><surname>Kim</surname><given-names>B-J</given-names></name>, <name name-style="western"><surname>Choi</surname><given-names>H-K</given-names></name>, <name name-style="western"><surname>Ryu</surname><given-names>M-J</given-names></name>, <name name-style="western"><surname>Kim</surname><given-names>S-B</given-names></name>, <etal>et al</etal>. (<year>2007</year>) <article-title>Global protein expression profiling of budding yeast in response to DNA damage</article-title>. <source>Yeast (Chichester, England)</source> <volume>24</volume>: <fpage>145</fpage>–<lpage>154</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1002/yea.1446" xlink:type="simple">10.1002/yea.1446</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Hatzixanthis1"><label>60</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hatzixanthis</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Mollapour</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Seymour</surname><given-names>I</given-names></name>, <name name-style="western"><surname>Bauer</surname><given-names>BE</given-names></name>, <name name-style="western"><surname>Krapf</surname><given-names>G</given-names></name>, <etal>et al</etal>. (<year>2003</year>) <article-title>Moderately lipophilic carboxylate compounds are the selective inducers of the Saccharomyces cerevisiae Pdr12p ATP-binding cassette transporter</article-title>. <source>Yeast (Chichester, England)</source> <volume>20</volume>: <fpage>575</fpage>–<lpage>585</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1002/yea.981" xlink:type="simple">10.1002/yea.981</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Schller1"><label>61</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schüller</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Mamnun</surname><given-names>YM</given-names></name>, <name name-style="western"><surname>Mollapour</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Krapf</surname><given-names>G</given-names></name>, <name name-style="western"><surname>Schuster</surname><given-names>M</given-names></name>, <etal>et al</etal>. (<year>2004</year>) <article-title>Global phenotypic analysis and transcriptional profiling defines the weak acid stress response regulon in Saccharomyces cerevisiae</article-title>. <source>Molecular biology of the cell</source> <volume>15</volume>: <fpage>706</fpage>–<lpage>720</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1091/mbc.E03-05-0322" xlink:type="simple">10.1091/mbc.E03-05-0322</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Kren1"><label>62</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kren</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Mamnun</surname><given-names>YM</given-names></name>, <name name-style="western"><surname>Bauer</surname><given-names>BE</given-names></name>, <name name-style="western"><surname>Schüller</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Wolfger</surname><given-names>H</given-names></name>, <etal>et al</etal>. (<year>2003</year>) <article-title>War1p, a novel transcription factor controlling weak acid stress response in yeast</article-title>. <source>Molecular and cellular biology</source> <volume>23</volume>: <fpage>1775</fpage>–<lpage>1785</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Holyoak1"><label>63</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Holyoak</surname><given-names>CD</given-names></name>, <name name-style="western"><surname>Thompson</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Ortiz Calderon</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Hatzixanthis</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Bauer</surname><given-names>B</given-names></name>, <etal>et al</etal>. (<year>2000</year>) <article-title>Loss of Cmk1 Ca(2+)-calmodulin-dependent protein kinase in yeast results in constitutive weak organic acid resistance, associated with a post-transcriptional activation of the Pdr12 ATP-binding cassette transporter</article-title>. <source>Molecular microbiology</source> <volume>37</volume>: <fpage>595</fpage>–<lpage>605</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Kopp1"><label>64</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kopp</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Müller</surname><given-names>H</given-names></name>, <name name-style="western"><surname>Holzer</surname><given-names>H</given-names></name> (<year>1993</year>) <article-title>Molecular analysis of the neutral trehalase gene from Saccharomyces cerevisiae</article-title>. <source>The Journal of biological chemistry</source> <volume>268</volume>: <fpage>4766</fpage>–<lpage>4774</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Slusarewicz1"><label>65</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Slusarewicz</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Xu</surname><given-names>Z</given-names></name>, <name name-style="western"><surname>Seefeld</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Haas</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Wickner</surname><given-names>WT</given-names></name> (<year>1997</year>) <article-title>I2B is a small cytosolic protein that participates in vacuole fusion</article-title>. <source>Proceedings of the National Academy of Sciences of the United States of America</source> <volume>94</volume>: <fpage>5582</fpage>–<lpage>5587</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Xu1"><label>66</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Xu</surname><given-names>Z</given-names></name>, <name name-style="western"><surname>Mayer</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Muller</surname><given-names>E</given-names></name>, <name name-style="western"><surname>Wickner</surname><given-names>W</given-names></name> (<year>1997</year>) <article-title>A heterodimer of thioredoxin and I(B)2 cooperates with Sec18p (NSF) to promote yeast vacuole inheritance</article-title>. <source>The Journal of cell biology</source> <volume>136</volume>: <fpage>299</fpage>–<lpage>306</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Elazar1"><label>67</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Elazar</surname><given-names>Z</given-names></name>, <name name-style="western"><surname>Scherz-Shouval</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Shorer</surname><given-names>H</given-names></name> (<year>2003</year>) <article-title>Involvement of LMA1 and GATE-16 family members in intracellular membrane dynamics</article-title>. <source>Biochimica et biophysica acta</source> <volume>1641</volume>: <fpage>145</fpage>–<lpage>156</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Betz1"><label>68</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Betz</surname><given-names>H</given-names></name> (<year>1975</year>) <article-title>Levels and turnover of the proteinase B inhibitors in yeast</article-title>. <source>Biochimica et biophysica acta</source> <volume>404</volume>: <fpage>142</fpage>–<lpage>151</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Schu1"><label>69</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schu</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Suarez Rendueles</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Wolf</surname><given-names>DH</given-names></name> (<year>1991</year>) <article-title>The proteinase yscB inhibitor (PB12) gene of yeast and studies on the function of its protein product</article-title>. <source>European journal of biochemistry/FEBS</source> <volume>197</volume>: <fpage>1</fpage>–<lpage>7</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Mehta1"><label>70</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mehta</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Li</surname><given-names>H</given-names></name>, <name name-style="western"><surname>Hogan</surname><given-names>PG</given-names></name>, <name name-style="western"><surname>Cunningham</surname><given-names>KW</given-names></name> (<year>2009</year>) <article-title>Domain architecture of the regulators of calcineurin (RCANs) and identification of a divergent RCAN in yeast</article-title>. <source>Molecular and cellular biology</source> <volume>29</volume>: <fpage>2777</fpage>–<lpage>2793</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1128/MCB.01197-08" xlink:type="simple">10.1128/MCB.01197-08</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Piper1"><label>71</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Piper</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Mahé</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Thompson</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Pandjaitan</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Holyoak</surname><given-names>C</given-names></name>, <etal>et al</etal>. (<year>1998</year>) <article-title>The pdr12 ABC transporter is required for the development of weak organic acid resistance in yeast</article-title>. <source>The EMBO journal</source> <volume>17</volume>: <fpage>4257</fpage>–<lpage>4265</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/emboj/17.15.4257" xlink:type="simple">10.1093/emboj/17.15.4257</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Holyoak2"><label>72</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Holyoak</surname><given-names>CD</given-names></name>, <name name-style="western"><surname>Bracey</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Piper</surname><given-names>PW</given-names></name>, <name name-style="western"><surname>Kuchler</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Coote</surname><given-names>PJ</given-names></name> (<year>1999</year>) <article-title>The Saccharomyces cerevisiae weak-acid-inducible ABC transporter Pdr12 transports fluorescein and preservative anions from the cytosol by an energy-dependent mechanism</article-title>. <source>Journal of bacteriology</source> <volume>181</volume>: <fpage>4644</fpage>–<lpage>4652</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Kratchmarova1"><label>73</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kratchmarova</surname><given-names>I</given-names></name>, <name name-style="western"><surname>Blagoev</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Haack-Sorensen</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Kassem</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Mann</surname><given-names>M</given-names></name> (<year>2005</year>) <article-title>Mechanism of divergent growth factor effects in mesenchymal stem cell differentiation</article-title>. <source>Science (New York, NY)</source> <volume>308</volume>: <fpage>1472</fpage>–<lpage>1477</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/science.1107627" xlink:type="simple">10.1126/science.1107627</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Boersema1"><label>74</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Boersema</surname><given-names>PJ</given-names></name>, <name name-style="western"><surname>Aye</surname><given-names>TT</given-names></name>, <name name-style="western"><surname>Van Veen</surname><given-names>TAB</given-names></name>, <name name-style="western"><surname>Heck</surname><given-names>AJR</given-names></name>, <name name-style="western"><surname>Mohammed</surname><given-names>S</given-names></name> (<year>2008</year>) <article-title>Triplex protein quantification based on stable isotope labeling by peptide dimethylation applied to cell and tissue lysates</article-title>. <source>Proteomics</source> <volume>8</volume>: <fpage>4624</fpage>–<lpage>4632</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1002/pmic.200800297" xlink:type="simple">10.1002/pmic.200800297</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Zhang1"><label>75</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zhang</surname><given-names>G</given-names></name>, <name name-style="western"><surname>Fenyö</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Neubert</surname><given-names>TA</given-names></name> (<year>2008</year>) <article-title>Screening for EphB signaling effectors using SILAC with a linear ion trap-orbitrap mass spectrometer</article-title>. <source>Journal of Proteome Research</source> <volume>7</volume>: <fpage>4715</fpage>–<lpage>4726</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Seyfried1"><label>76</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Seyfried</surname><given-names>NT</given-names></name>, <name name-style="western"><surname>Gozal</surname><given-names>YM</given-names></name>, <name name-style="western"><surname>Donovan</surname><given-names>LE</given-names></name>, <name name-style="western"><surname>Herskowitz</surname><given-names>JH</given-names></name>, <name name-style="western"><surname>Dammer</surname><given-names>EB</given-names></name>, <etal>et al</etal>. (<year>2012</year>) <article-title>Quantitative analysis of the detergent-insoluble brain proteome in frontotemporal lobar degeneration using SILAC internal standards</article-title>. <source>Journal of proteome research</source> <volume>11</volume>: <fpage>2721</fpage>–<lpage>2738</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1021/pr2010814" xlink:type="simple">10.1021/pr2010814</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Geiger1"><label>77</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Geiger</surname><given-names>T</given-names></name>, <name name-style="western"><surname>Madden</surname><given-names>SF</given-names></name>, <name name-style="western"><surname>Gallagher</surname><given-names>WM</given-names></name>, <name name-style="western"><surname>Cox</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Mann</surname><given-names>M</given-names></name> (<year>2012</year>) <article-title>Proteomic portrait of human breast cancer progression identifies novel prognostic markers</article-title>. <source>Cancer research</source> <volume>72</volume>: <fpage>2428</fpage>–<lpage>2439</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1158/0008-5472.CAN-11-3711" xlink:type="simple">10.1158/0008-5472.CAN-11-3711</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Monetti1"><label>78</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Monetti</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Nagaraj</surname><given-names>N</given-names></name>, <name name-style="western"><surname>Sharma</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Mann</surname><given-names>M</given-names></name> (<year>2011</year>) <article-title>Large-scale phosphosite quantification in tissues by a spike-in SILAC method</article-title>. <source>Nature methods</source> <volume>8</volume>: <fpage>655</fpage>–<lpage>658</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nmeth.1647" xlink:type="simple">10.1038/nmeth.1647</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Ivanov1"><label>79</label>
+<mixed-citation publication-type="book" xlink:type="simple">Ivanov A, Lazarev A (2011) Sample preparation in biological mass spectrometry. New York: Springer.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Thorsell1"><label>80</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Thorsell</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Portelius</surname><given-names>E</given-names></name>, <name name-style="western"><surname>Blennow</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Westman-Brinkmalm</surname><given-names>A</given-names></name> (<year>2007</year>) <article-title>Evaluation of sample fractionation using micro-scale liquid-phase isoelectric focusing on mass spectrometric identification and quantitation of proteins in a SILAC experiment</article-title>. <source>Rapid communications in mass spectrometry: RCM</source> <volume>21</volume>: <fpage>771</fpage>–<lpage>778</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1002/rcm.2898" xlink:type="simple">10.1002/rcm.2898</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Emmott1"><label>81</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Emmott</surname><given-names>E</given-names></name>, <name name-style="western"><surname>Rodgers</surname><given-names>MA</given-names></name>, <name name-style="western"><surname>Macdonald</surname><given-names>A</given-names></name>, <name name-style="western"><surname>McCrory</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Ajuh</surname><given-names>P</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>Quantitative proteomics using stable isotope labeling with amino acids in cell culture reveals changes in the cytoplasmic, nuclear, and nucleolar proteomes in Vero cells infected with the coronavirus infectious bronchitis virus</article-title>. <source>Molecular &amp; cellular proteomics: MCP</source> <volume>9</volume>: <fpage>1920</fpage>–<lpage>1936</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Larsen1"><label>82</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Larsen</surname><given-names>MR</given-names></name>, <name name-style="western"><surname>Thingholm</surname><given-names>TE</given-names></name>, <name name-style="western"><surname>Jensen</surname><given-names>ON</given-names></name>, <name name-style="western"><surname>Roepstorff</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Jørgensen</surname><given-names>TJD</given-names></name> (<year>2005</year>) <article-title>Highly selective enrichment of phosphorylated peptides from peptide mixtures using titanium dioxide microcolumns</article-title>. <source>Molecular &amp; cellular proteomics: MCP</source> <volume>4</volume>: <fpage>873</fpage>–<lpage>886</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1074/mcp.T500007-MCP200" xlink:type="simple">10.1074/mcp.T500007-MCP200</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Thingholm1"><label>83</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Thingholm</surname><given-names>TE</given-names></name>, <name name-style="western"><surname>Jørgensen</surname><given-names>TJD</given-names></name>, <name name-style="western"><surname>Jensen</surname><given-names>ON</given-names></name>, <name name-style="western"><surname>Larsen</surname><given-names>MR</given-names></name> (<year>2006</year>) <article-title>Highly selective enrichment of phosphorylated peptides using titanium dioxide</article-title>. <source>Nature protocols</source> <volume>1</volume>: <fpage>1929</fpage>–<lpage>1935</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nprot.2006.185" xlink:type="simple">10.1038/nprot.2006.185</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Hastie1"><label>84</label>
+<mixed-citation publication-type="book" xlink:type="simple">Hastie T, Tibshirani R, Sherlock G, Eisen M, Brown P, et al.. (1999) Imputing missing data for gene expression arrays. Stanford University Statistics Department Technical report.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Troyanskaya1"><label>85</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Troyanskaya</surname><given-names>O</given-names></name>, <name name-style="western"><surname>Cantor</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Sherlock</surname><given-names>G</given-names></name>, <name name-style="western"><surname>Brown</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Hastie</surname><given-names>T</given-names></name>, <etal>et al</etal>. (<year>2001</year>) <article-title>Missing value estimation methods for DNA microarrays</article-title>. <source>Bioinformatics (Oxford, England)</source> <volume>17</volume>: <fpage>520</fpage>–<lpage>525</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Ward1"><label>86</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ward</surname><given-names>JHJ</given-names></name> (<year>1963</year>) <source>Hierarchical Grouping to Optimize an Objective Function</source> <volume>58</volume>: <fpage>236</fpage>–<lpage>244</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Theodoridis1"><label>87</label>
+<mixed-citation publication-type="book" xlink:type="simple">Theodoridis S, Koutroumbas K (2006) Pattern Recognition. Third edition. New York: Springer. 635pp.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Miller1"><label>88</label>
+<mixed-citation publication-type="book" xlink:type="simple">Miller RG (1981) Simultaneous Statistical Inference. Second edition. New York: Springer-Verlag.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Stark1"><label>89</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Stark</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Breitkreutz</surname><given-names>B-J</given-names></name>, <name name-style="western"><surname>Reguly</surname><given-names>T</given-names></name>, <name name-style="western"><surname>Boucher</surname><given-names>L</given-names></name>, <name name-style="western"><surname>Breitkreutz</surname><given-names>A</given-names></name>, <etal>et al</etal>. (<year>2006</year>) <article-title>BioGRID: a general repository for interaction datasets</article-title>. <source>Nucleic acids research</source> <volume>34</volume>: <fpage>D535</fpage>–<lpage>9</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/nar/gkj109" xlink:type="simple">10.1093/nar/gkj109</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Friedman1"><label>90</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Friedman</surname><given-names>N</given-names></name>, <name name-style="western"><surname>Linial</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Nachman</surname><given-names>I</given-names></name>, <name name-style="western"><surname>Pe'er</surname><given-names>D</given-names></name> (<year>2000</year>) <article-title>Using Bayesian networks to analyze expression data</article-title>. <source>Journal of computational biology: a journal of computational molecular cell biology</source> <volume>7</volume>: <fpage>601</fpage>–<lpage>620</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1089/106652700750050961" xlink:type="simple">10.1089/106652700750050961</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Yoo1"><label>91</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yoo</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Thorsson</surname><given-names>V</given-names></name>, <name name-style="western"><surname>Cooper</surname><given-names>G</given-names></name> (<year>2002</year>) <article-title>Discovery of Causal Relationships in a Gene-regulation Pathway from a Mixture of Experimental and Observational DNA Microarray Data</article-title>. <source>Pacific Symposium on Biocomputing</source> <volume>7</volume>: <fpage>498</fpage>–<lpage>509</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Mani1"><label>92</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mani</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Cooper</surname><given-names>GF</given-names></name> (<year>2004</year>) <article-title>Causal discovery using a Bayesian local causal discovery algorithm</article-title>. <source>Studies in health technology and informatics</source> <volume>107</volume>: <fpage>731</fpage>–<lpage>735</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Cooper1"><label>93</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cooper</surname><given-names>GF</given-names></name>, <name name-style="western"><surname>Herskovits</surname><given-names>E</given-names></name> (<year>1992</year>) <article-title>A Bayesian Method for the Induction of Probabilistic Networks from Data</article-title>. <source>Machine Learning</source> <volume>9</volume>: <fpage>309</fpage>–<lpage>347</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1023/A:1022649401552" xlink:type="simple">10.1023/A:1022649401552</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-DavidHeckerman1"><label>94</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>David Heckerman</surname><given-names>DMC</given-names></name> (<year>1995</year>) <article-title>Learning Bayesian networks: The combination of knowledge and statistical data</article-title>. <source>Machine Learning</source> <volume>20</volume>: <fpage>197</fpage>–<lpage>243</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Cooper2"><label>95</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cooper</surname><given-names>G</given-names></name>, <name name-style="western"><surname>Yoo</surname><given-names>C</given-names></name> (<year>1999</year>) <article-title>Causal Discovery from a Mixture of Experimental and Observational Data</article-title>. <source>Proceedings of Uncertainty in Artificial Intelligence</source> <fpage>116</fpage>–<lpage>125</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Murphy1"><label>96</label>
+<mixed-citation publication-type="other" xlink:type="simple">Murphy K (2011) Bayes Net Toolbox for Matlab. Available: <ext-link ext-link-type="uri" xlink:href="http://code.google.com/p/bnt/" xlink:type="simple">http://code.google.com/p/bnt/</ext-link>. Accessed 12 May 1BC.</mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Shannon1"><label>97</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Shannon</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Markiel</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Ozier</surname><given-names>O</given-names></name>, <name name-style="western"><surname>Baliga</surname><given-names>NS</given-names></name>, <name name-style="western"><surname>Wang</surname><given-names>JT</given-names></name>, <etal>et al</etal>. (<year>2003</year>) <article-title>Cytoscape: a software environment for integrated models of biomolecular interaction networks</article-title>. <source>Genome research</source> <volume>13</volume>: <fpage>2498</fpage>–<lpage>2504</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1101/gr.1239303" xlink:type="simple">10.1101/gr.1239303</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Smoot1"><label>98</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Smoot</surname><given-names>ME</given-names></name>, <name name-style="western"><surname>Ono</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Ruscheinski</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Wang</surname><given-names>P-L</given-names></name>, <name name-style="western"><surname>Ideker</surname><given-names>T</given-names></name> (<year>2011</year>) <article-title>Cytoscape 2.8: new features for data integration and network visualization</article-title>. <source>Bioinformatics (Oxford, England)</source> <volume>27</volume>: <fpage>431</fpage>–<lpage>432</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/bioinformatics/btq675" xlink:type="simple">10.1093/bioinformatics/btq675</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003077-Hubbard1"><label>99</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hubbard</surname><given-names>TJP</given-names></name>, <name name-style="western"><surname>Aken</surname><given-names>BL</given-names></name>, <name name-style="western"><surname>Beal</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Ballester</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Caccamo</surname><given-names>M</given-names></name>, <etal>et al</etal>. (<year>2007</year>) <article-title>Ensembl 2007</article-title>. <source>Nucleic acids research</source> <volume>35</volume>: <fpage>D610</fpage>–<lpage>7</lpage>.</mixed-citation>
+</ref>
+</ref-list></back>
+</article>

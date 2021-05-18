@@ -1,0 +1,766 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="3.0" xml:lang="EN">
+<front>
+<journal-meta><journal-id journal-id-type="publisher-id">plos</journal-id><journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id><journal-id journal-id-type="pmc">ploscomp</journal-id><!--===== Grouping journal title elements =====--><journal-title-group><journal-title>PLoS Computational Biology</journal-title></journal-title-group><issn pub-type="ppub">1553-734X</issn><issn pub-type="epub">1553-7358</issn><publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, USA</publisher-loc></publisher></journal-meta>
+<article-meta><article-id pub-id-type="publisher-id">07-PLCB-RA-0074R3</article-id><article-id pub-id-type="doi">10.1371/journal.pcbi.1000064</article-id><article-categories><subj-group subj-group-type="heading"><subject>Research Article</subject></subj-group><subj-group subj-group-type="Discipline"><subject>Biophysics/Theory and Simulation</subject><subject>Computational Biology/Systems Biology</subject><subject>Computational Biology/Transcriptional Regulation</subject></subj-group></article-categories><title-group><article-title>Implementing Arithmetic and Other Analytic Operations By Transcriptional Regulation</article-title><alt-title alt-title-type="running-head">Analytic Operations by Transcriptional Regulation</alt-title></title-group><contrib-group>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Cory</surname><given-names>Sean M.</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Perkins</surname><given-names>Theodore J.</given-names></name><xref ref-type="aff" rid="aff2"><sup>2</sup></xref><xref ref-type="corresp" rid="cor1"><sup>*</sup></xref></contrib>
+</contrib-group><aff id="aff1"><label>1</label><addr-line>Department of Human Genetics, McGill University, Montreal, Quebec, Canada</addr-line>       </aff><aff id="aff2"><label>2</label><addr-line>School of Computer Science, McGill University, McGill Centre for Bioinformatics, Montreal, Quebec, Canada</addr-line>       </aff><contrib-group>
+<contrib contrib-type="editor" xlink:type="simple"><name name-style="western"><surname>Rao</surname><given-names>Christopher</given-names></name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/></contrib>
+</contrib-group><aff id="edit1">University of Illinois Urbana-Champaign, United States of America</aff><author-notes>
+<corresp id="cor1">* E-mail: <email xlink:type="simple">perkins@mcb.mcgill.ca</email></corresp>
+<fn fn-type="con"><p>Conceived and designed the experiments: SC TP. Performed the experiments: SC TP. Analyzed the data: SC TP. Wrote the paper: TP.</p></fn>
+<fn fn-type="conflict"><p>The authors have declared that no competing interests exist.</p></fn></author-notes><pub-date pub-type="collection"><month>5</month><year>2008</year></pub-date><pub-date pub-type="epub"><day>9</day><month>5</month><year>2008</year></pub-date><volume>4</volume><issue>5</issue><elocation-id>e1000064</elocation-id><history>
+<date date-type="received"><day>12</day><month>2</month><year>2007</year></date>
+<date date-type="accepted"><day>21</day><month>12</month><year>2007</year></date>
+</history><!--===== Grouping copyright info into permissions =====--><permissions><copyright-year>2008</copyright-year><copyright-holder>Cory, Perkins</copyright-holder><license><license-p>This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license></permissions><abstract>
+<p>The transcriptional regulatory machinery of a gene can be viewed as a computational device, with transcription factor concentrations as inputs and expression level as the output. This view begs the question: what kinds of computations are possible? We show that different parameterizations of a simple chemical kinetic model of transcriptional regulation are able to approximate all four standard arithmetic operations: addition, subtraction, multiplication, and division, as well as various equality and inequality operations. This contrasts with other studies that emphasize logical or digital notions of computation in biological networks. We analyze the accuracy and precision of these approximations, showing that they depend on different sets of parameters, and are thus independently tunable. We demonstrate that networks of these “arithmetic” genes can be combined to accomplish yet more complicated computations by designing and simulating a network that detects statistically significant elevations in a time-varying signal. We also consider the much more general problem of approximating analytic functions, showing that this can be achieved by allowing multiple transcription factor binding sites on the promoter. These observations are important for the interpretation of naturally occurring networks and imply new possibilities for the design of synthetic networks.</p>
+</abstract><abstract abstract-type="summary"><title>Author Summary</title>
+<p>The biochemistry of the cell is daunting in its complexity. In order to understand this complexity, we are often forced to use metaphors or construct analogies to systems that we understand better. One long-standing analogy is to digital computers, with their large networks of interacting components that manage to act in coherent and useful ways. Indeed, we know from both theoretical models and empirical observations that biological entities such as genes can sometimes be described accurately by digital, or logical, expressions—turning on or off in response to regulatory signals. However, far more sophisticated computations can also take place, as has been documented in the responses of genes such as the <italic>lac</italic> operon or Endo-16. We analyze chemical kinetic models of transcriptional gene regulation and show that even simple models are capable of nearly arbitrary analog computations, ranging from elementary arithmetic operations to general analytic functions. Understanding the computational capacities of genes, and of biochemical systems more generally, tells us what to look for when studying natural systems and tells us what we can hope to build by biological engineering.</p>
+</abstract><funding-group><funding-statement>This work was supported in part by a grant from the National Science and Engineering Research Council of Canada, and by the National Science Foundation of the USA under a grant awarded in 2002. Any opinions, findings, and conclusions or recommendations expressed in this publication are those of the authors and do not necessarily reflect the views of the National Science Foundation.</funding-statement></funding-group><counts><page-count count="13"/></counts></article-meta>
+</front>
+<body><sec id="s1">
+<title>Introduction</title>
+<p>In grappling with the biochemical complexity of gene regulation, some have turned to computational metaphors for explaining gene behavior (e.g., <xref ref-type="bibr" rid="pcbi.1000064-Arkin1">[1]</xref>–<xref ref-type="bibr" rid="pcbi.1000064-Mayo1">[5]</xref>). The <italic>lac</italic> operon, for example, is often described as implementing a simple logical rule—the gene is on when lactose is present and glucose is absent <xref ref-type="bibr" rid="pcbi.1000064-Alberts1">[6]</xref>. Theoretically, a variety of nonlinear chemical systems, including gene regulatory systems, are capable of implementing arbitrary logical rules <xref ref-type="bibr" rid="pcbi.1000064-Glass1">[7]</xref>–<xref ref-type="bibr" rid="pcbi.1000064-Sauro1">[11]</xref>. Networks of such systems can implement finite state machines <xref ref-type="bibr" rid="pcbi.1000064-Hjelmfelt2">[12]</xref>, and families of such networks of increasing size can be said to implement arbitrary Turing-computable functions <xref ref-type="bibr" rid="pcbi.1000064-Magnasco1">[13]</xref>,<xref ref-type="bibr" rid="pcbi.1000064-BenHur1">[14]</xref>. In practice, logical models have proven capable of accounting for the qualitative dynamics of a variety of genetic systems <xref ref-type="bibr" rid="pcbi.1000064-Bodnar1">[15]</xref>–<xref ref-type="bibr" rid="pcbi.1000064-Gonzalez1">[23]</xref>. Models that combine logical rules with concentration thresholds for the action of regulatory molecules, as in the French-flag model of Wolpert <xref ref-type="bibr" rid="pcbi.1000064-Wolpert1">[24]</xref> or Glass networks more generally <xref ref-type="bibr" rid="pcbi.1000064-Glass2">[25]</xref>, satisfactorily describe other systems either qualitatively <xref ref-type="bibr" rid="pcbi.1000064-Ghosh1">[26]</xref>–<xref ref-type="bibr" rid="pcbi.1000064-Ropers1">[28]</xref> or quantitatively <xref ref-type="bibr" rid="pcbi.1000064-Perkins1">[29]</xref>. Synthetic biologists have constructed gene networks that perform elementary logical operations, such as storing a bit of memory <xref ref-type="bibr" rid="pcbi.1000064-Gardner1">[30]</xref> or turning off and on with a fixed period <xref ref-type="bibr" rid="pcbi.1000064-Elowitz1">[31]</xref>.</p>
+<p>However, detailed analysis of transcriptional regulatory networks reveals a behavior richer than logical responses. Yuh <italic>et al.</italic>'s model of the sea urchin developmental gene Endo-16 contains logical as well as additive and multiplicative operations <xref ref-type="bibr" rid="pcbi.1000064-Yuh1">[32]</xref>. Recent measurements of <italic>lac</italic> transcription rate as a function of the concentrations of cAMP and an analogue of allolactose show four plateaus of different rates connected by smooth boundaries <xref ref-type="bibr" rid="pcbi.1000064-Setty1">[4]</xref>,<xref ref-type="bibr" rid="pcbi.1000064-Mayo1">[5]</xref>. Even “logical” models of gene regulation often require more than two qualitatively distinct levels of gene expression (e.g., <xref ref-type="bibr" rid="pcbi.1000064-Sanchez2">[19]</xref>), recognizing that some genes cannot be treated simply as on or off.</p>
+<p>Besides logical or digital computation, several other notions of computation have been explored. Analog computations made by artificial neural networks can in principle be implemented by chemical systems <xref ref-type="bibr" rid="pcbi.1000064-Hjelmfelt1">[8]</xref>,<xref ref-type="bibr" rid="pcbi.1000064-Hjelmfelt2">[12]</xref>,<xref ref-type="bibr" rid="pcbi.1000064-Hjelmfelt3">[33]</xref>. Deckhard and Sauro experimented with evolving reaction networks to compute square and cubic roots of an input <xref ref-type="bibr" rid="pcbi.1000064-Deckard1">[34]</xref> and have since evolved networks to compute a variety of other arithmetic functions. This work shares the greatest commonality withours, the differences being that we specifically study single-gene transcriptional regulatory networks and that our designs are arrived at prescriptively, by analysis of the steady state equations, rather than by a computational search.</p>
+<p>A different line of reasoning has focussed on the robustness of biochemical networks to variability in inputs and parameters—intuitively important features for real systems <xref ref-type="bibr" rid="pcbi.1000064-Barkai1">[35]</xref>–<xref ref-type="bibr" rid="pcbi.1000064-Rao1">[37]</xref>. Reduction in noise by development gene networks was experimentally observed <xref ref-type="bibr" rid="pcbi.1000064-Houchmandzadeh1">[38]</xref>,<xref ref-type="bibr" rid="pcbi.1000064-Eldar1">[39]</xref> and confirmed as a property of mathematical models <xref ref-type="bibr" rid="pcbi.1000064-Albert1">[20]</xref>,<xref ref-type="bibr" rid="pcbi.1000064-VonDassow1">[40]</xref>. In this background, control theoretic concepts, especially noise filtering, were studied more carefully <xref ref-type="bibr" rid="pcbi.1000064-Samoilov1">[41]</xref> and found in a wide variety of systems (see <xref ref-type="bibr" rid="pcbi.1000064-Rao1">[37]</xref> for a summary). More recently, the behavior of several genes has been viewed in the context of information theory <xref ref-type="bibr" rid="pcbi.1000064-Tkacik1">[42]</xref> and Bayesian decision theory <xref ref-type="bibr" rid="pcbi.1000064-Libby1">[43]</xref>.</p>
+<p>The present work focuses on the general steady-state analog computational capacities of genes. Most of the paper considers a simple chemical kinetic model of transcriptional regulation for a single gene with two transcription factors. We assume that concentrations of proteins represent non-negative real numbers, with the transcription factor concentrations acting as inputs to the gene and the steady state expression of the gene acting as the output. Different choices for the kinetic rates allow the gene to approximate different binary arithmetic operations: addition, subtraction, multiplication, division, and testing for equality and various inequalities. Variations on the model allow alternative implementations of the same functions as well as other functions, such as the square root. In the model, these operations can be reproduced with arbitrary accuracy, although in reality, biological limits on the parameters would limit accuracy. We analyze the accuracy of these approximations in terms of the deviation between the steady state output and the desired output. We also analyze the precision of the approximations, in terms of the variability of the output over time in a stochastic interpretation of the model. Through theoretical analysis and simulations we show that such “arithmetic genes” can be combined in networks to compute more sophisticated functions. As an example, we describe an eight gene network that tracks the mean and standard deviation of a time-varying signal and detects times at which the signal is statistically significantly elevated. We also consider a model of a gene regulated by a single type of transcription factor but having multiple binding sites on the promoter. With such a gene, arbitrary analytic functions can be approximated up to a fixed order based on power series expansions. We demonstrate by designing a gene that approximates the cosine function.</p>
+</sec><sec id="s2">
+<title>Results</title>
+<sec id="s2a">
+<title>A chemical-kinetic model of transcriptional regulation</title>
+<p><xref ref-type="fig" rid="pcbi-1000064-g001">Figure 1</xref> presents a diagram of the model of transcriptional regulation and gene expression that we analyze. It models a single gene regulated by two transcription factors, <italic>A</italic> and <italic>B</italic>. These factors may bind irreversibly to form an inertdimer, or they may bind to the DNA, where they affect the rate of transcription. Transcripts are translated into proteins at a fixed rate, and both transcripts and proteins decay at fixed rates. The reaction equations below formalize the model. (Please note that <xref ref-type="table" rid="pcbi-1000064-t001">Tables 1</xref>, <xref ref-type="table" rid="pcbi-1000064-t002">2</xref>, and <xref ref-type="table" rid="pcbi-1000064-t003">3</xref> show the symbols employed in this paper and their meanings.)<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e001" xlink:type="simple"/><label>(1)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e002" xlink:type="simple"/><label>(2)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e003" xlink:type="simple"/><label>(3)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e004" xlink:type="simple"/><label>(4)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e005" xlink:type="simple"/><label>(5)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e006" xlink:type="simple"/><label>(6)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e007" xlink:type="simple"/><label>(7)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e008" xlink:type="simple"/><label>(8)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e009" xlink:type="simple"/><label>(9)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e010" xlink:type="simple"/><label>(10)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e011" xlink:type="simple"/><label>(11)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e012" xlink:type="simple"/><label>(12)</label></disp-formula>For the bidirectional reactions, equilibrium association constants are ratios of forward to backward rates (e.g., <italic>K</italic><italic><sub>oa</sub></italic> = <italic>f<sub>oa</sub></italic>/<italic>b<sub>oa</sub></italic>). We use [<italic>X</italic>] to denote the steady state concentration of molecular species <italic>X</italic>. None of the reactions create or destroy the factors <italic>A</italic> or <italic>B</italic>. We assume that the binding of single molecules of these factors to the DNA does not significantly affect the concentration of free <italic>A</italic> or <italic>B</italic>, so that [<italic>A</italic>]+[<italic>C</italic>] = [<italic>A<sub>tot</sub></italic>] and [<italic>B</italic>]+[<italic>C</italic>] = [<italic>B<sub>tot</sub></italic>], where [<italic>A<sub>tot</sub></italic>] and [<italic>B<sub>tot</sub></italic>] denote the total concentration of molecules <italic>A</italic> and <italic>B</italic> respectively, either bound or unbound.</p>
+<fig id="pcbi-1000064-g001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000064.g001</object-id><label>Figure 1</label><caption>
+<title>Schematic of a chemical model of a gene regulated by two transcription factors.</title>
+<p>Transcription factors <italic>A</italic> and <italic>B</italic> may irreversibly form an inert dimer, <italic>C</italic>, or they may bind individually or simultaneously to the promoter region of the gene, where they affect the transcription rate. Transcripts, <italic>T</italic>, are translated into proteins, <italic>Z</italic>. Both <italic>T</italic> and <italic>Z</italic> decay at fixed rates.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.g001" xlink:type="simple"/></fig><table-wrap id="pcbi-1000064-t001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000064.t001</object-id><label>Table 1</label><caption>
+<title>Symbols that pertain throughout the paper and that are used in particular for the the description and analysis of arithmetic genes.</title>
+</caption><!--===== Grouping alternate versions of objects =====--><alternatives><graphic id="pcbi-1000064-t001-1" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.t001" xlink:type="simple"/><table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" colspan="1" rowspan="1">Symbol</td>
+<td align="left" colspan="1" rowspan="1">Meaning</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>A</italic></td>
+<td align="left" colspan="1" rowspan="1">Transcription factor <italic>A</italic></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>B</italic></td>
+<td align="left" colspan="1" rowspan="1">Transcription factor <italic>B</italic></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>C</italic></td>
+<td align="left" colspan="1" rowspan="1">Inert heterodimer of <italic>A</italic> and <italic>B</italic></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>T</italic></td>
+<td align="left" colspan="1" rowspan="1">Transcript</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>Z</italic></td>
+<td align="left" colspan="1" rowspan="1">Protein</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>P</italic><sub>0</sub></td>
+<td align="left" colspan="1" rowspan="1">Promoter complex unbound</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>P<sub>A</sub></italic></td>
+<td align="left" colspan="1" rowspan="1">Promoter complex bound by <italic>A</italic></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>P<sub>B</sub></italic></td>
+<td align="left" colspan="1" rowspan="1">Promoter complex bound by <italic>B</italic></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>P<sub>AB</sub></italic></td>
+<td align="left" colspan="1" rowspan="1">Promoter complex bound by <italic>A</italic> and <italic>B</italic></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>r<sub>d</sub></italic></td>
+<td align="left" colspan="1" rowspan="1">Rate of dimerization of <italic>A</italic> and <italic>B</italic></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>K<sub>oa</sub></italic></td>
+<td align="left" colspan="1" rowspan="1">Association constant for <italic>A</italic> binding to promoter</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>K<sub>ob</sub></italic></td>
+<td align="left" colspan="1" rowspan="1">Association constant for <italic>B</italic> binding to promoter</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>K<sub>ab</sub></italic></td>
+<td align="left" colspan="1" rowspan="1">Association constant for <italic>B</italic> binding to promoter after <italic>A</italic></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>K<sub>ba</sub></italic></td>
+<td align="left" colspan="1" rowspan="1">Association constant for <italic>A</italic> binding to promoter after <italic>B</italic></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>f<sub>ij</sub></italic></td>
+<td align="left" colspan="1" rowspan="1">Forward (binding) rate for one of the above association constants</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>b<sub>ij</sub></italic></td>
+<td align="left" colspan="1" rowspan="1">Backward (unbinding) rate for one of the above association constants</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>r<sub>o</sub></italic></td>
+<td align="left" colspan="1" rowspan="1">Transcription rate when promoter unbound</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>r<sub>a</sub></italic></td>
+<td align="left" colspan="1" rowspan="1">Transcription rate when promoter bound by <italic>A</italic></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>r<sub>b</sub></italic></td>
+<td align="left" colspan="1" rowspan="1">Transcription rate when promoter bound by <italic>B</italic></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>r<sub>ab</sub></italic></td>
+<td align="left" colspan="1" rowspan="1">Transcription rate when promoter bound by <italic>A</italic> and <italic>B</italic></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>r<sub>t</sub></italic></td>
+<td align="left" colspan="1" rowspan="1">Net rate of transcription</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>r<sub>tz</sub></italic></td>
+<td align="left" colspan="1" rowspan="1">Translation rate</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>d<sub>t</sub></italic></td>
+<td align="left" colspan="1" rowspan="1">Transcript decay rate</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>d<sub>z</sub></italic></td>
+<td align="left" colspan="1" rowspan="1">Protein decay rate</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">[<italic>X</italic>]</td>
+<td align="left" colspan="1" rowspan="1">Steady state concentration of species <italic>X</italic></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>X<sub>tot</sub></italic></td>
+<td align="left" colspan="1" rowspan="1">Total amount of species <italic>X</italic> in the system</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>X</italic>(<italic>t</italic>)</td>
+<td align="left" colspan="1" rowspan="1">Concentration of species <italic>X</italic> at time <italic>t</italic></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">τ<italic><sub>o</sub></italic></td>
+<td align="left" colspan="1" rowspan="1">Fraction of time promoter unbound</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">τ<italic><sub>a</sub></italic></td>
+<td align="left" colspan="1" rowspan="1">Fraction of time promoter bound by <italic>A</italic></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">τ<italic><sub>b</sub></italic></td>
+<td align="left" colspan="1" rowspan="1">Fraction of time promoter bound by <italic>B</italic></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">τ<italic><sub>ab</sub></italic></td>
+<td align="left" colspan="1" rowspan="1">Fraction of time promoter bound by <italic>A</italic> and <italic>B</italic></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>Z<sub>on</sub></italic></td>
+<td align="left" colspan="1" rowspan="1">Target “on” concentration for <italic>Z</italic> for comparison operations</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>r<sub>z</sub></italic></td>
+<td align="left" colspan="1" rowspan="1">Dimerization rate of protein <italic>Z</italic>, for the square root function</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>Z</italic><sub>2</sub></td>
+<td align="left" colspan="1" rowspan="1">Homodimer of protein <italic>Z</italic></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">ρ</td>
+<td align="left" colspan="1" rowspan="1">Scale factor for <italic>A</italic> and <italic>B</italic> binding and unbinding rates used in noise simulations</td>
+</tr>
+</tbody>
+</table></alternatives></table-wrap><table-wrap id="pcbi-1000064-t002" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000064.t002</object-id><label>Table 2</label><caption>
+<title>Symbols that are used in the context of the network for detecting significant elevation in a time-varying signal.</title>
+</caption><!--===== Grouping alternate versions of objects =====--><alternatives><graphic id="pcbi-1000064-t002-2" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.t002" xlink:type="simple"/><table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" colspan="1" rowspan="1">Symbol</td>
+<td align="left" colspan="1" rowspan="1">Meaning</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>I</italic></td>
+<td align="left" colspan="1" rowspan="1">Input signal</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">μ<italic><sub>I</sub></italic></td>
+<td align="left" colspan="1" rowspan="1">Mean of <italic>I</italic> over time</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">σ<italic><sub>I</sub></italic></td>
+<td align="left" colspan="1" rowspan="1">Standard deviation of <italic>I</italic> over time</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>c</italic></td>
+<td align="left" colspan="1" rowspan="1">Number of standard deviations above mean deemed significantly elevated</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>T<sup>i</sup></italic></td>
+<td align="left" colspan="1" rowspan="1">Concentration of transcripts for gene G<italic>i</italic></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>Z<sup>i</sup></italic></td>
+<td align="left" colspan="1" rowspan="1">Concentration of protein for gene G<italic>i</italic></td>
+</tr>
+</tbody>
+</table></alternatives></table-wrap><table-wrap id="pcbi-1000064-t003" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000064.t003</object-id><label>Table 3</label><caption>
+<title>Symbols that are used in the context of the gene for approximating analytic functions.</title>
+</caption><!--===== Grouping alternate versions of objects =====--><alternatives><graphic id="pcbi-1000064-t003-3" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.t003" xlink:type="simple"/><table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" colspan="1" rowspan="1">Symbol</td>
+<td align="left" colspan="1" rowspan="1">Meaning</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>N</italic></td>
+<td align="left" colspan="1" rowspan="1">Number of binding sites for <italic>A</italic> on promoter</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>P<sub>i</sub></italic></td>
+<td align="left" colspan="1" rowspan="1">Promoter bound by <italic>i</italic> copies of <italic>A</italic></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>K</italic></td>
+<td align="left" colspan="1" rowspan="1">Association constant for <italic>A</italic> binding to promoter</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>r<sub>i</sub></italic></td>
+<td align="left" colspan="1" rowspan="1">Transcription rate when promoter bound by <italic>i</italic> copies of <italic>A</italic></td>
+</tr>
+</tbody>
+</table></alternatives></table-wrap>
+<p>Most of our analysis concerns the steady state behavior of this system. We use τ<italic><sub>o</sub></italic>, τ<italic><sub>a</sub></italic>, τ<italic><sub>b</sub></italic>, and τ<italic><sub>ab</sub></italic> to denote the fractions of time that the promoter spends unbound or bound by different combinations of transcription factors. We assume that the reactions for transcription factors binding to the promoter are at equilibrium.<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e013" xlink:type="simple"/><label>(13)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e014" xlink:type="simple"/><label>(14)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e015" xlink:type="simple"/><label>(15)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e016" xlink:type="simple"/><label>(16)</label></disp-formula>From this system of equations, one can deduce that <italic>K<sub>oa</sub>K<sub>ab</sub></italic> = <italic>K<sub>ob</sub>K<sub>ba</sub></italic>. However, the system is degenerate and does not lead to a solution for the occupancy times until we recognize that the occupancy times must sum to one.<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e017" xlink:type="simple"/><label>(17)</label></disp-formula>With the addition of this equation, we obtain four linearly independent equations, which can be manipulated to solve for the occupancy times.<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e018" xlink:type="simple"/><label>(18)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e019" xlink:type="simple"/><label>(19)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e020" xlink:type="simple"/><label>(20)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e021" xlink:type="simple"/><label>(21)</label></disp-formula>This allows us to calculate the net rate of transcription.<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e022" xlink:type="simple"/><label>(22)</label></disp-formula>The steady state concentration of protein <italic>Z</italic> then follows.<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e023" xlink:type="simple"/><label>(23)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e024" xlink:type="simple"/><label>(24)</label></disp-formula>Because <italic>K<sub>oa</sub>K<sub>ab</sub></italic> = <italic>K<sub>ob</sub>K<sub>ba</sub></italic>, the term <italic>K<sub>oa</sub>K<sub>ab</sub></italic> can be replaced by <italic>K<sub>ob</sub>K<sub>ba</sub></italic> in any of the equations above. These equations are also true for more restricted binding scenarios, including: <italic>A</italic> and <italic>B</italic> cannot be bound to the DNA simultaneously (signified by <italic>K<sub>ab</sub></italic> = <italic>K<sub>ba</sub></italic> = 0); <italic>A</italic> must bind before <italic>B</italic> binds, and <italic>B</italic> must unbind before <italic>A</italic> can unbind (<italic>K<sub>ob</sub></italic> = <italic>K<sub>ba</sub></italic> = 0); and <italic>B</italic> cannot bind the DNA at all (<italic>K<sub>ob</sub></italic> = <italic>K<sub>ba</sub></italic> = <italic>K<sub>ab</sub></italic> = 0). In these alternative scenarios, however, it no longer holds that <italic>K<sub>oa</sub>K<sub>ab</sub></italic> = <italic>K<sub>ob</sub>K<sub>ba</sub></italic>.</p>
+</sec><sec id="s2b">
+<title>Approximating arithmetic operations</title>
+<p>By employing subsets of the allowed reactions and setting kinetic parameters appropriately, different arithmetic operations can be approximated, with [<italic>A<sub>tot</sub></italic>] and [<italic>B<sub>tot</sub></italic>] treated as the inputs. (See <xref ref-type="fig" rid="pcbi-1000064-g002">Figure 2</xref> for a summary.) For example, consider Equation 24 under the conditions: (i) <italic>r<sub>d</sub></italic> = 0, (ii) <italic>K<sub>ab</sub></italic> = <italic>K<sub>ba</sub></italic> = 0, (iii) <italic>r<sub>o</sub></italic> = 0, (iv) <italic>r<sub>tz</sub>r<sub>a</sub>K<sub>oa</sub></italic> = <italic>r<sub>tz</sub>r<sub>b</sub>K<sub>ob</sub></italic> = <italic>d<sub>t</sub>d<sub>z</sub></italic>, (v) <italic>K<sub>oa</sub></italic>[<italic>A</italic>]≪1, and (vi) <italic>K<sub>ob</sub></italic>[<italic>B</italic>]≪1. These conditions can be interpreted as: (i) <italic>A</italic> and <italic>B</italic> do not dimerize, (ii) <italic>A</italic> and <italic>B</italic> cannot both be bound to the DNA at the same time, perhaps because their binding sites overlap, (iii) there is not transcription if neither <italic>A</italic> nor <italic>B</italic> are bound to the DNA, (iv) there is a certain balance between the production and decay rates of mRNA and protein, and (v),(vi) either <italic>A</italic> and <italic>B</italic> bind to the DNA comparatively weakly or else we are considering only comparatively small concentrations of <italic>A</italic> and <italic>B</italic>. Then Equation 24 tells us that [<italic>Z</italic>]≈[<italic>A<sub>tot</sub></italic>]+[<italic>B<sub>tot</sub></italic>], so that the gene approximates the addition operation. (See <xref ref-type="fig" rid="pcbi-1000064-g002">Figure 2B</xref> for the exact steady state expression.) The error in the approximation is analyzed in more detail in the next section.</p>
+<fig id="pcbi-1000064-g002" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000064.g002</object-id><label>Figure 2</label><caption>
+<title>Regulatory architectures and parameters for approximating various arithmetic and comparison operations.</title>
+<p>(A) Diagrams depict the reactions employed to achieve each operation. The <italic>A</italic>–<italic>B</italic> dumbbell is bold if <italic>A</italic> and <italic>B</italic> dimerize and gray if they do not. The four circles connected as a diamond represent different binding states of the promoter. In bold are achievable binding states, with bold connecting bars indicating the allowed transitions. A bold arrow leaving a circle to the right indicates a binding state in which transcription occurs. (B) Steady state expression and parameter constraints. Each row of the table corresponds to one operation. The [<italic>Z</italic>] column gives the exact and approximate steady-state expression of the gene. The exact steady state is obtained from Equation (24), assuming parameters conform to the formulae in the “Production-decay balance” column and setting to zero those parameters implied to be zero by the diagrams in (A). The final column of the table describes under what conditions each operation is well approximated. The symbol ⊝ denotes zero-truncated subtraction, defined as <italic>x</italic>⊝<italic>y</italic> = max(<italic>x</italic>–<italic>y</italic>, 0).</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.g002" xlink:type="simple"/></fig>
+<p>Alternatively, suppose that <italic>A</italic> and <italic>B</italic> bind the promoter sequentially, perhaps because <italic>A</italic> is a cofactor without which <italic>B</italic> cannot bind, and that transcription is activated only when both are bound. If production and decay are balanced as <italic>r<sub>tz</sub>r<sub>ab</sub>K<sub>oa</sub>K<sub>ab</sub></italic> = <italic>d<sub>t</sub>d<sub>z</sub></italic> and if <italic>K<sub>oa</sub></italic>[<italic>A<sub>tot</sub></italic>]≪1 and <italic>K<sub>oa</sub>K<sub>ab</sub></italic>[<italic>A<sub>tot</sub></italic>][<italic>B<sub>tot</sub></italic>]≪1, then [<italic>Z</italic>]≈[<italic>A<sub>tot</sub></italic>][<italic>B<sub>tot</sub></italic>] so that the gene approximates the multiplication operation. To achieve [<italic>Z</italic>]≈[<italic>A<sub>tot</sub></italic>]/[<italic>B<sub>tot</sub></italic>] one can assume that <italic>A</italic> and <italic>B</italic> can bind individually to promoter, and that <italic>A</italic> activates transcription whereas <italic>B</italic> represses. This approximation is most accurate when <italic>B</italic> binds strongly, so that <italic>K<sub>ob</sub></italic>[<italic>B<sub>tot</sub></italic>]≫1, and <italic>A</italic> binds comparatively weakly, so that <italic>K<sub>oa</sub></italic>[<italic>A<sub>tot</sub></italic>]≪<italic>K<sub>ob</sub></italic>[<italic>B<sub>tot</sub></italic>].</p>
+<p>As [<italic>Z</italic>] is always non-negative, one cannot approximate ordinary subtraction, [<italic>A<sub>tot</sub></italic>]−[<italic>B<sub>tot</sub></italic>], when [<italic>B<sub>tot</sub></italic>]&gt;[<italic>A<sub>tot</sub></italic>]. Instead, we consider zero-truncated subtraction.<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e025" xlink:type="simple"/><label>(25)</label></disp-formula>If <italic>A</italic> and <italic>B</italic> dimerize irreversibly with forward rate <italic>r<sub>d</sub></italic>&gt;0, then at steady state <italic>C</italic> = min([<italic>A<sub>tot</sub></italic>],[<italic>B<sub>tot</sub></italic>]). Thus, [<italic>A</italic>] = [<italic>A<sub>tot</sub></italic>]−[<italic>C</italic>] = [<italic>A<sub>tot</sub></italic>]−min([<italic>A<sub>tot</sub></italic>],[<italic>B<sub>tot</sub></italic>]) = [<italic>A<sub>tot</sub></italic>]⊖[<italic>B<sub>tot</sub></italic>]. Dimerization itself, then, solves the zero-truncated subtraction problem. If we desire [<italic>Z</italic>]≈[<italic>A<sub>tot</sub></italic>]⊖[<italic>B<sub>tot</sub></italic>], we need only assume that undimerized <italic>A</italic> binds to the promoter and activates transcription. For an accurate approximation, binding should be weak, so that <italic>K<sub>oa</sub></italic>[<italic>A</italic>]≪1.</p>
+<p>For the comparison operations, the goal is [<italic>Z</italic>] = 0 if the comparison is false and [<italic>Z</italic>] = <italic>Z<sub>on</sub></italic> if the comparison is true, for some chosen <italic>Z<sub>on</sub></italic>&gt;0. The operation [<italic>A<sub>tot</sub></italic>]&gt;[<italic>B<sub>tot</sub></italic>] can be implemented with the same set of reactions as subtraction, but <italic>A</italic> should bind the promoter strongly so that [<italic>Z</italic>]≈<italic>Z<sub>on</sub></italic> in the presence of any amount of undimerized <italic>A</italic>. For [<italic>A<sub>tot</sub></italic>] = [<italic>B<sub>tot</sub></italic>] we assume that <italic>A</italic> and <italic>B</italic> dimerize, that <italic>A</italic> and <italic>B</italic> can individually bind the promoter, acting as repressors. If [<italic>A<sub>tot</sub></italic>] = [<italic>B<sub>tot</sub></italic>], then there will be no undimerized <italic>A</italic> or <italic>B</italic>, and [<italic>Z</italic>] = <italic>Z<sub>on</sub></italic>. Otherwise, there will be some undimerized <italic>A</italic> or <italic>B</italic>, and, if it binds the promoter strongly, will turn off transcription so that [<italic>Z</italic>]≈0.</p>
+<p>These arithmetic operations can be implemented in other ways, even restricting attention to the model in <xref ref-type="fig" rid="pcbi-1000064-g001">Figure 1</xref>. For example, the addition gene could allow <italic>A</italic> and <italic>B</italic> to bind simultaneously, as long as there is no transcription when both are bound. Similarly, the multiplication gene could allow <italic>A</italic> and <italic>B</italic> to bind to the promoter in either order, as long as there is only transcription when both are bound. However, these alternate versions are less accurate than the designs in Figure reffig∶diagrams because they introduce unnecessary promoter binding states. Mathematically, the decrease in accuracy corresponds to extra terms appearing in the denominator of the second term in Equation 24. Variations on these models can produce other useful functions. Trivial modifications allow the other comparison operations: greater-than-or-equal, less-than, and less-than-or-equal. More interestingly, consider a model with a single transcription factor <italic>A</italic>, which can be obtained by dropping all equations from the model that involve <italic>B</italic>. Suppose that <italic>A</italic> activates transcription. Further, suppose that <italic>Z</italic> dimerizes at forward rate <italic>r<sub>z</sub></italic> and that the dimer itself is inert and degrades at some rate <italic>d<sub>z</sub></italic>, but that <italic>Z</italic> on its own does not decay. Then Equation 12 is replaced by<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e026" xlink:type="simple"/><label>(26)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e027" xlink:type="simple"/><label>(27)</label></disp-formula>If <italic>r<sub>tz</sub>K<sub>oa</sub>r<sub>a</sub></italic> = <italic>d<sub>t</sub>r<sub>z</sub></italic> and <italic>K<sub>oa</sub></italic>[<italic>A<sub>tot</sub></italic>]≪1, then at steady state <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e028" xlink:type="simple"/></inline-formula>. Genes that approximate other fractional powers can be constructed by assuming more complicated promoter-binding or degradation schemes.</p>
+</sec><sec id="s2c">
+<title>Accuracy depends on promoter occupancy</title>
+<p>The accuracy with which the models in <xref ref-type="fig" rid="pcbi-1000064-g002">Figure 2</xref> approximate the desired operations depends on the kinetic parameters as well as the transcription factor concentrations [<italic>A<sub>tot</sub></italic>] and [<italic>B<sub>tot</sub></italic>]. We analyze accuracy in terms of relative error. For the arithmetic operations of addition, multiplication, division, and zero-truncated subtraction, we define relative error as <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e029" xlink:type="simple"/></inline-formula>, where <italic>f</italic> is the desired operation. This is not well defined when <italic>f</italic> is zero. However, for the models in <xref ref-type="fig" rid="pcbi-1000064-g002">Figure 2</xref>, [<italic>Z</italic>] = 0 whenever <italic>f</italic> is zero, so we can take the relative error to be zero. For the comparison operations we define relative error as <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e030" xlink:type="simple"/></inline-formula>. The relative error can be calculated by substituting the formula for [<italic>Z</italic>] in <xref ref-type="fig" rid="pcbi-1000064-g002">Figure 2B</xref> into the definition for relative error. <xref ref-type="fig" rid="pcbi-1000064-g003">Figure 3</xref> shows the relative errors of the six gene models from <xref ref-type="fig" rid="pcbi-1000064-g002">Figure 2</xref>. An advantage to studying this notion of accuracy is that the relative error can be easily expressed in terms of the fraction of time the promoter spends in different binding states (<xref ref-type="fig" rid="pcbi-1000064-g003">Figure 3</xref>, third column).</p>
+<fig id="pcbi-1000064-g003" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000064.g003</object-id><label>Figure 3</label><caption>
+<title>Accuracy with which the genetic designs in <xref ref-type="fig" rid="pcbi-1000064-g002">Figure 2</xref> approximate the intended operations.</title>
+<p>We quantify accuracy in terms of relative error—|<italic>f</italic>([<italic>A<sub>tot</sub></italic>],[<italic>B<sub>tot</sub></italic>])−[<italic>Z</italic>]|/<italic>f</italic>([<italic>A<sub>tot</sub></italic>],[<italic>B<sub>tot</sub></italic>]) for the arithmetic operations, and |<italic>f</italic>([<italic>A<sub>tot</sub></italic>],[<italic>B<sub>tot</sub></italic>])−[<italic>Z</italic>]|/<italic>Z<sub>on</sub></italic> for the comparison operations, where <italic>f</italic> is the operation being approximated. The second column in the table gives relative error in terms of the kinetic parameters. The third column gives the relative error in terms of the fraction of time the promoter spends bound by different combinations of transcription factors at steady state.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.g003" xlink:type="simple"/></fig>
+<p>For the arithmetic operations, relative error is generally increasing in [<italic>A<sub>tot</sub></italic>] and [<italic>B<sub>tot</sub></italic>] as well as the equilibrium association constants for the binding of <italic>A</italic> and <italic>B</italic> to the DNA (<xref ref-type="fig" rid="pcbi-1000064-g003">Figure 3</xref>, second column). Thus, the approximations are most accurate when the concentrations of the transcription factors are small or when they bind weakly to the DNA—as already emphasized in the third column of <xref ref-type="fig" rid="pcbi-1000064-g002">Figure 2B</xref>. Intuitively, this keeps the transcriptional response in the linear regime. Saturation of the transcription rate, due to high concentration of transcription factor(s) or strong transcription factor binding, reduces accuracy. Indeed, the relative error of the addition, multiplication and zero-truncated subtraction genes is simply the fraction of time that the DNA is bound by either transcription factor. The division gene is a partial exception to these rules. First, its relative error is decreasing in <italic>K<sub>ob</sub></italic> and [<italic>B<sub>tot</sub></italic>], not increasing. Second, the relative error is equal to the fraction of time the DNA is not bound by <italic>B</italic>.</p>
+<p>The effects of these parameters cannot be considered in isolation, however, because the parameters as a group must satisfy the production-decay balance shown in <xref ref-type="fig" rid="pcbi-1000064-g002">Figure 2B</xref>. For the addition gene, for example, small transcription factor association constants, which result in an accurate approximation, must be balanced by large rates of transcription and/or translation or small rates of transcript and/or protein decay.</p>
+<p>For the comparison operations, accuracy is highest when <italic>A</italic> and <italic>B</italic> bind strongly to the promoter. If <italic>K<sub>oa</sub></italic> and <italic>K<sub>ob</sub></italic> are small and if [<italic>A<sub>tot</sub></italic>] and [<italic>B<sub>tot</sub></italic>] are just slightly different, then there is only a small amount of undimerized transcription factor binding weakly to the promoter, and this does not provide sufficient transcriptional activation (in the case of &gt;) or repression (in the case of  = ). For either gene, the relative error is either zero or τ<italic><sub>o</sub></italic>, depending on whether the comparison is true or false.</p>
+</sec><sec id="s2d">
+<title>Noise in the output is independent of accuracy</title>
+<p>In a stochastic kinetics interpretation of the model in <xref ref-type="fig" rid="pcbi-1000064-g001">Figure 1</xref> (Equations 1 to 12), the output protein concentration varies over time even if [<italic>A<sub>tot</sub></italic>] and [<italic>B<sub>tot</sub></italic>] are fixed. Let <italic>X</italic>(<italic>t</italic>) denote the concentration of molecular species <italic>X</italic> at time <italic>t</italic>. Noise in <italic>Z</italic>(<italic>t</italic>), defined as the standard deviation of <italic>Z</italic>(<italic>t</italic>) over time divided by the mean of <italic>Z</italic>(<italic>t</italic>) over time, can be attributed to three sources: (i) inherent fluctuations due to the stochastic birth-death process for <italic>Z</italic>, (ii) variability in <italic>T</italic>(<italic>t</italic>) due to its own inherently stochastic birth-death process, which in turn creates variability in the production rate of <italic>Z</italic>, and (iii) variability in the promoter state, which affects the production rate of <italic>T</italic>, and by extension, of <italic>Z</italic>. If one assumes that the transcription factor binding reactions are at steady state, then the third source of noise is absent, and the noise in <italic>Z</italic>(<italic>t</italic>) is equivalent to that in the simpler system<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e031" xlink:type="simple"/><label>(28)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e032" xlink:type="simple"/><label>(29)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e033" xlink:type="simple"/><label>(30)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e034" xlink:type="simple"/><label>(31)</label></disp-formula>where <italic>r<sub>t</sub></italic> is the net rate of transcript production.<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e035" xlink:type="simple"/><label>(32)</label></disp-formula>For this system, the moments of <italic>Z</italic> can be calculated exactly from the chemical master equation, and the noise is <xref ref-type="bibr" rid="pcbi.1000064-Thattai1">[44]</xref><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e036" xlink:type="simple"/><label>(33)</label></disp-formula>Importantly, the noise in <italic>Z</italic>(<italic>t</italic>) bears no necessary relationship with the accuracy with which [<italic>Z</italic>] approximates a desired function, because accuracy and noise depend on different sets of parameters. For the addition gene, for example, accuracy is determined by <italic>K<sub>oa</sub></italic> and <italic>K<sub>ob</sub></italic>. These could be large or small regardless of the noise level, which is determined by <italic>r<sub>tz</sub></italic>, <italic>d<sub>t</sub></italic> and <italic>d<sub>z</sub></italic>. This is true even considering the production-decay balance constraint for the gene, <italic>r<sub>tz</sub>r<sub>a</sub>K<sub>oa</sub></italic> = <italic>r<sub>tz</sub>r<sub>b</sub>K<sub>ob</sub></italic> = <italic>d<sub>t</sub>d<sub>z</sub></italic>. The parameters <italic>r<sub>a</sub></italic> and <italic>r<sub>b</sub></italic> do not occur in the formulas for either accuracy or noise and can be used to ensure that the constraints are satisfied. This is essentially the same as the observation by Thattai and van Oudenaarden that the mean and variance of gene expression levels are controlled by independent sets of parameters <xref ref-type="bibr" rid="pcbi.1000064-Thattai1">[44]</xref>.</p>
+<p>If the transcription factor binding reactions are not at steady state, then the third source of noise in <italic>Z</italic>(<italic>t</italic>) returns. Intuitively, however, the faster the binding and unbinding reactions are compared to the rate of transcription, the more this noise is filtered out by the slower transcription process. For example, consider the addition gene with inputs [<italic>A<sub>tot</sub></italic>] = 30 molecules and [<italic>B<sub>tot</sub></italic>] = 70 molecules. We used the Gillespie algorithm <xref ref-type="bibr" rid="pcbi.1000064-Gillespie1">[45]</xref> to simulate the stochastic chemical kinetics defined by Equations 1 to 12, but replacing the transcription factor-DNA binding and unbinding rates (<italic>f<sub>oa</sub></italic>, <italic>f<sub>ob</sub></italic>, <italic>b<sub>oa</sub></italic>, <italic>b<sub>ob</sub></italic>) by scaled versions (ρ<italic>f<sub>oa</sub></italic>, ρ<italic>f<sub>ob</sub></italic>, ρ<italic>b<sub>oa</sub></italic>, ρ<italic>b<sub>ob</sub></italic>). By varying ρ, we could change the rates of binding and unbinding, while leaving <italic>K<sub>oa</sub></italic> and <italic>K<sub>ob</sub></italic> constant. (See <xref ref-type="sec" rid="s4">Materials and Methods</xref> for the full set of kinetic parameters.) <xref ref-type="fig" rid="pcbi-1000064-g004">Figure 4A</xref> shows three sample traces of <italic>Z</italic>(<italic>t</italic>) for three different choices of ρ, in which the noise in <italic>Z</italic>(<italic>t</italic>) can be seen to decrease for increasing ρ. <xref ref-type="fig" rid="pcbi-1000064-g004">Figure 4B</xref> shows the noise in the simulated <italic>Z</italic>(<italic>t</italic>) for a wider range of ρ. For sufficiently large ρ, the steady state approximation for the promoter is good, and the noise is seen to converge to the value predicted by Equation 33, indicated by the dashed line. <xref ref-type="fig" rid="pcbi-1000064-g004">Figure 4C</xref> shows that the empirical mean concentration [<italic>Z</italic>] is at nearly the correctly value of 100, and is independent of ρ. Independence of accuracy from promoter state fluctuations has been shown analytically via Master equation analysis for some binding scenarios <xref ref-type="bibr" rid="pcbi.1000064-Swain1">[46]</xref>, but should hold in general for our models, as noise depends on both the binding and unbinding rates of transcription factors, whereas accuracy depends only on the ratios of the rates.</p>
+<fig id="pcbi-1000064-g004" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000064.g004</object-id><label>Figure 4</label><caption>
+<title>Stochastic kinetics simulation of an Addition gene, for varying rates of transcription factor binding and unbinding.</title>
+<p>Larger values of ρ correspond to both faster binding and unbinding, with no change in the equilibrium association constant. (A) Sample traces of the output, <italic>Z</italic>(<italic>t</italic>). (B) Empirical noise (standard deviation divided by mean) in the output. Dashed line gives the expected noise under the steady state assumption for the promoter. (C) Mean output, which is independent of ρ. See <xref ref-type="sec" rid="s4">Materials and Methods</xref> for details, including kinetic parameters.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.g004" xlink:type="simple"/></fig></sec><sec id="s2e">
+<title>Example: A network for detecting statistically significant elevation in a time varying signal</title>
+<p>Arithmetic genes can be combined into networks to perform more sophisticated computations. As an example, consider a cell in which the concentration of a molecule <italic>I</italic> varies with time. Suppose it is important for the cell to detect times at which <italic>I</italic>(<italic>t</italic>) is significantly elevated. For example, the cell might be a bacterium and <italic>I</italic>(<italic>t</italic>) might be correlated to the concentration of an extracellular sugar. If the bacterium encounters a high-sugar environment, it may want to begin expressing the genes needed to transport and metabolize the sugar. Or, <italic>I</italic> may be a toxin, and high toxin levels might trigger a defensive or developmental decision, such as sporulation, to protect the bacterium. In a synthetic biology context, <italic>I</italic> might be a signal sent by the experimenter to trigger a response or a marker for a diseased cell that should be destroyed.</p>
+<p>A single threshold-activated gene, for example the “greater than” gene of <xref ref-type="fig" rid="pcbi-1000064-g002">Figure 2</xref>, provides a simple solution to this problem. However, such a gene requires a predefined notion of how large a signal is considered elevated. Further, a chance fluctuation in the signal or in the transcriptional machinery itself might trigger a false response. The feedforward motif <xref ref-type="bibr" rid="pcbi.1000064-Alon2">[47]</xref> is one way to reduce incorrect responses due to fluctuations. This motif describes a set of three genes in which gene 1 regulates gene 2, and both genes 1 and 2 regulate gene 3. The feedforward motif appears far more often than chance in natural genomes <xref ref-type="bibr" rid="pcbi.1000064-Lee1">[48]</xref>,<xref ref-type="bibr" rid="pcbi.1000064-ShenOrr1">[49]</xref>, and presents a variety of temporal information processing possibilities <xref ref-type="bibr" rid="pcbi.1000064-Mangan1">[50]</xref>,<xref ref-type="bibr" rid="pcbi.1000064-Mangan2">[51]</xref>. Among them is the ability to detect sustained, rather than merely transient or accidental, increases in an incoming signal. However, the level of signal that is considered elevated is still preordained.</p>
+<p>We consider a more challenging version of the problem in which the statistics of the signal are not known ahead of time. This may be because the operating environment of the cell is not known <italic>a priori</italic> or because the signal itself is difficult to measure experimentally. Whether or not the signal is elevated at a given moment thus depends on the the signal's mean value and typical fluctuations—properties which may themselves change over time. More formally, if the statistics of <italic>I</italic>(<italic>t</italic>) are relatively constant for some period, then a natural definition of elevated is <italic>I</italic>(<italic>t</italic>)&gt;μ<italic><sub>I</sub></italic>+<italic>c</italic>σ<italic><sub>I</sub></italic>, where μ<italic><sub>I</sub></italic> is the mean of <italic>I</italic>(<italic>t</italic>) over time, σ<italic><sub>I</sub></italic> is the standard deviation, and <italic>c</italic> is a constant specifying how large an elevation is of interest. To solve the problem, the cell must identify the signal statistics μ<italic><sub>I</sub></italic> and σ<italic><sub>I</sub></italic>, and then compute whether the signal is elevated at any particular time.</p>
+<p><xref ref-type="fig" rid="pcbi-1000064-g005">Figure 5A</xref> depicts a network of arithmetic genes that accomplishes this task. The circles represent genes and an arrow from one gene to another means that the first gene's protein acts as an input to the second gene. The network comprises arithmetic genes for multiplication, addition, subtraction, taking the square root, and comparison, as well as two genes labeled by μ. The arithmetic and comparison genes are assumed to reach steady state at a faster time scale than variations in the input signal <italic>I</italic>(<italic>t</italic>). The two μ genes are simply activated proportional to their input and are assumed to reach steady state at a slower time scale than variations in the input signal. Thus, the μ genes effectively compute a recency-weighted time-average of their inputs, the exact nature of which depends on the details of the kinetic parameters. Gene G1 multiplies <italic>I</italic>(<italic>t</italic>) by itself, and because G1 operates at a faster time scale than <italic>I</italic>, we can approximate the expression of its protein as <italic>Z</italic><sup>1</sup>(<italic>t</italic>) = <italic>I</italic>(<italic>t</italic>)<sup>2</sup>. Gene G2 averages <italic>Z</italic><sup>1</sup>(<italic>t</italic>) over time, so we can approximate its expression as <italic>Z</italic><sup>2</sup>(<italic>t</italic>) = <italic>E<sub>t</sub></italic>(<italic>Z</italic><sup>1</sup>(<italic>t</italic>)) = <italic>E<sub>t</sub></italic>(<italic>I</italic>(<italic>t</italic>)<sup>2</sup>), where <italic>E<sub>t</sub></italic> denotes averaging over time. By similar reasoning, the expression of genes G3 and G4 is <italic>Z</italic><sup>3</sup>(<italic>t</italic>) = <italic>E<sub>t</sub></italic>(<italic>I</italic>(<italic>t</italic>)) and <italic>Z</italic><sup>4</sup>(<italic>t</italic>) = (<italic>Z</italic><sup>3</sup>(<italic>t</italic>))<sup>2</sup> = (<italic>E<sub>t</sub></italic>(<italic>I</italic>(<italic>t</italic>)))<sup>2</sup>. Genes G5 and G6 compute <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e037" xlink:type="simple"/></inline-formula>. (See Equations 26 and 27 and surrounding discussion for the square root function.) G7 is a modified addition gene which computes <italic>Z</italic><sup>7</sup>(<italic>t</italic>) = μ<italic><sub>I</sub></italic>+<italic>c</italic>σ<italic><sub>I</sub></italic>, for constant <italic>c</italic>, and G8 compares this result to <italic>I</italic>(<italic>t</italic>), turning on when the latter is greater than the former.</p>
+<fig id="pcbi-1000064-g005" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000064.g005</object-id><label>Figure 5</label><caption>
+<title>(A) Diagram of a network of arithmetic genes that computes the mean and standard deviation of a time-varying signal, <italic>I</italic>(<italic>t</italic>), and responds when the signal is statistically significantly elevated.</title>
+<p>Circles represent genes. An arrow between genes G<italic>i</italic> and G<italic>j</italic> means that G<italic>i</italic>'s protein is an input to (transcription factor for) G<italic>j</italic>. Symbols inside the circles denote the operation computed. μ denotes a gene that is activated proportional to its input, but operates at a slower time scale than the other genes, resulting in a recency-weighted temporal average of its input. (B–E) Simulation results. (B) The input signal is primarily a sinusoidal oscillation with Gaussian noise added. The mean changes on days 8 and 11, and the amplitude changes on day 14. There are short spikes in the signal on days 5, 6, 7, 17, 18 and 19. See <xref ref-type="sec" rid="s4">Materials and Methods</xref> for details. An “X” marks each time the signal is significantly elevated compared to its recent mean and standard deviation. (C) The overall response of the network is given by the expression level of gene G8. It correctly flags each significant elevation of the signal and does not respond at any other time. The responses to the input spikes do not last long because the spikes themselves do not last long. The responses to the changes in the oscillations on days 8 and 14 are short because the network quickly adjusts to the changed statistics of the input signal. (D,E) The mean and standard deviation of the sinusoidal oscillations, and the network's recency-weighted estimates of the mean and standard deviation of the signal, as encoded by the concentrations of the proteins for genes G3 and G6.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.g005" xlink:type="simple"/></fig>
+<p>To test this network, we simulated a differential equation model of transcript and protein dynamics subject to a time-varying input (see <xref ref-type="fig" rid="pcbi-1000064-g005">Figure 5B</xref> and <xref ref-type="sec" rid="s4">Materials and Methods</xref>). The simulation covered 20 days during which the signal's mean or standard deviation changed three times. There were also six brief spikes in the signal. We chose <italic>c</italic> = 3, so that G8(t) should turn on, to an expression level of 100 nM, whenever <italic>I</italic>(<italic>t</italic>) exceeded its mean plus three standard deviations. Details of the simulation, including the exact equations and kinetic parameters, can be found in the <xref ref-type="sec" rid="s4">Materials and Methods</xref> section.</p>
+<p><xref ref-type="fig" rid="pcbi-1000064-g005">Figure 5C–E</xref> shows the results of our simulation. The simulation covers 20 days of simulated time, though we do not show the first 3 days during which a transient due to the initial conditions disappears. <xref ref-type="fig" rid="pcbi-1000064-g005">Figure 5B</xref> shows the input signal, and <xref ref-type="fig" rid="pcbi-1000064-g005">Figure 5C</xref> shows the overall response of the network to that signal. The network responds at the times that it should and at no other times. Its response to the input spikes and the increase in oscillation amplitude on day 14 are brief and do not reach the fully-on level of 100 nM, mainly because the elevations themselves are brief. When the signal jumps higher on day 8 and remains there, the network responds for longer and reaches a fully-on level. However, this response too vanishes as the network adjusts to the change in signal statistics. (The problem statement requires adjustment to changing signal statistics, so that elevation is relative to the recent mean and standard deviation of the signal. If a more sustained response is desired, G8 could be augmented with a positive feedback loop to keep it activated once triggered.) <xref ref-type="fig" rid="pcbi-1000064-g005">Figure 5D,E</xref> show the mean and standard deviation of the signal's oscillations and the network's recency-weighted estimates of signal mean and standard deviation. Interestingly, changes to the signal mean on days 8 and 11 are initially interpreted by the network as changes in the standard deviation of the signal. Only over the course of several days is the mistake rectified, with the mean estimate shifting to the correct value and the standard deviation estimate returning to its previous, correct level.</p>
+</sec><sec id="s2f">
+<title>Approximating analytic functions</title>
+<p>The elementary arithmetic operations provide a basis for analog computation, in that these operations can be combined to compute more complex functions. However, from the standpoint of the cell, it seems desirable to perform computations with as little biomolecular machinery as possible. From the form of Equation 24, it is not clear how other elementary operations, such as exponentiation, logarithms, or trigonometric functions, might be implemented. Whether these particular functions are of useto cells can be debated, but certainly cells need to compute more complicated functions than elementary arithmetic. One way to approximate more complicated operations is by power series expansions. The focus of this section is on analytic functions—functions with Taylor series expansions that converge pointwise to the correct values, at least for some range of inputs. For simplicity, we consider single-input functions. Generalization to multiple-input functions is straightforward.</p>
+<p><xref ref-type="fig" rid="pcbi-1000064-g006">Figure 6A</xref> shows a schematic of a model describing a single gene regulated by one type of transcription factor, denoted by <italic>A</italic>. We assume <italic>N</italic> binding sites for <italic>A</italic> on the gene's promoter, each acting independently with equilibrium association binding constant <italic>K</italic>. We assume that transcription rate depends only on the number of binding sites occupied by <italic>A</italic>. This model is formalized by the reaction equations below.<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e038" xlink:type="simple"/><label>(34)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e039" xlink:type="simple"/><label>(35)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e040" xlink:type="simple"/><label>(36)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e041" xlink:type="simple"/><label>(37)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e042" xlink:type="simple"/><label>(38)</label></disp-formula>Here, <italic>P<sub>i</sub></italic> denotes the promoter bound by <italic>i</italic> copies of factor <italic>A</italic>. <italic>T</italic> denotes transcript, and <italic>Z</italic> denotes protein. The steady state expression of protein <italic>Z</italic> is<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e043" xlink:type="simple"/><label>(39)</label></disp-formula>This can also be written as <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e044" xlink:type="simple"/></inline-formula>, where <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e045" xlink:type="simple"/></inline-formula> is the fraction of time <italic>i</italic> binding sites for <italic>A</italic> are occupied. Now, consider an analytic function <italic>f</italic>(<italic>x</italic>) with power series expansion<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e046" xlink:type="simple"/><label>(40)</label></disp-formula>Suppose first that all the <italic>c<sub>i</sub></italic> are nonnegative. Then the gene can approximate the function up to order <italic>N</italic> by assuming <italic>K</italic>[<italic>A</italic>]≪1, so that the term (1+<italic>K</italic>[<italic>A</italic>])<italic><sup>N</sup></italic> is approximately one, and matching the coefficients in Equations (39) and (40).<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e047" xlink:type="simple"/><label>(41)</label></disp-formula>If some <italic>c<sub>i</sub></italic> are negative, then the series can be divided into positive and negative components.<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e048" xlink:type="simple"/><label>(42)</label></disp-formula>where <italic>c<sub>i</sub></italic><sup>+</sup> = max(<italic>c<sub>i</sub></italic>,0) and <italic>c<sub>i</sub></italic><sup>−</sup> = −min(<italic>c<sub>i</sub></italic>,0). Two genes of the type in <xref ref-type="fig" rid="pcbi-1000064-g006">Figure 6A</xref> can then combine to compute the function, one computing the positive part of the series and one computing the negative part. The difference in the protein concentrations of the two genes approximates <italic>f</italic>.</p>
+<fig id="pcbi-1000064-g006" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000064.g006</object-id><label>Figure 6</label><caption>
+<title>Approximation of analytic function.</title>
+<p>(A) Schematic of interactions for a gene regulated by a single transcription factor, <italic>A</italic>, via <italic>N</italic> independent binding sites. (B) For varying input levels, [<italic>A</italic>], the four curves represent: cos([<italic>A</italic>]), the 5<sup>th</sup> order Taylor series approximation of <italic>cosine</italic> centered at zero, the steady state output ([<italic>Z</italic>]) of a pair of genes computing the Taylor series approximation to <italic>cosine</italic>, and the steady state output when kinetic rates are optimized so that [<italic>Z</italic>]≈cos([<italic>A</italic>]), over the range [<italic>A</italic>]∈[0,2π] nM.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.g006" xlink:type="simple"/></fig>
+<p>For example, suppose the cell wanted to approximate the cosine function using a pair of genes of the type in <xref ref-type="fig" rid="pcbi-1000064-g006">Figure 6A</xref> with five binding sites. The Taylor series expansion for cosine, centered at zero, has coefficients <italic>c</italic><sub>0</sub> = 1, <italic>c</italic><sub>1</sub> = 0, <italic>c</italic><sub>2</sub> = −1, <italic>c</italic><sub>3</sub> = 0, <italic>c</italic><sub>4</sub> = 1, … The blue and green curves in <xref ref-type="fig" rid="pcbi-1000064-g006">Figure 6B</xref> show, respectively, the cosine function and its 5th order Taylor series approximation. Using biologically plausible parameters for the transcription factor binding affinity, translation rate, and rates of transcript and protein decay (see <xref ref-type="sec" rid="s4">Materials and Methods</xref>), Equation 41 can be solved for the necessary transcription rates, <italic>r<sub>i</sub></italic>. The red curve in <xref ref-type="fig" rid="pcbi-1000064-g006">Figure 6B</xref> shows [<italic>Z</italic>] = [<italic>Z</italic><sup>+</sup>]−[<italic>Z</italic><sup>−</sup>], where [<italic>Z</italic><sup>+</sup>] is the steady state protein concentration for the gene approximating the positive portion of the series, and [<italic>Z</italic><sup>−</sup>] is the steady state protein concentration for the gene approximating the negative portion of the series. The Taylor series approximation and [<italic>Z</italic>] match each other closely, though neither is a good approximation to cos([<italic>A</italic>]) above a concentration of about [<italic>A</italic>] = 2 nM. If the cell places importance on approximating the function at higher concentrations, then different parameters are need. The cyan curve in <xref ref-type="fig" rid="pcbi-1000064-g006">Figure 6B</xref> shows shows [<italic>Z</italic>] for the same two-gene system when parameters are optimized to minimize the mean square error between [<italic>Z</italic>] and cos([<italic>A</italic>]) over the range [<italic>A</italic>]∈[0,2π] Nm. (See <xref ref-type="sec" rid="s4">Materials and Methods</xref> for details.) Sacrificing quality only slightly near zero allows the gene pair to capture a full period of the function, while retaining biologically plausible parameters.</p>
+</sec></sec><sec id="s3">
+<title>Discussion</title>
+<p>We have shown that different parameterizations of a simple model of transcriptional regulation can reproduce binary arithmetic operations (addition, zero-truncated subtraction, multiplication, division), various inequality comparisons, and fractional powers. Unary, ternary, quaternary, etc. operations can be similarly implemented at a biochemical level. These models are not the only way, and may not be the best way, that these operations can be implemented. For example, we have not considered models with cooperativity between binding sites, allosteric features for transcription factors, regulation of translation or degradation, or chromatin-related mechanisms. One way to explore the utility of these mechanisms would be to perform an explicit computational search through some appropriate space of allowed reaction systems (as in Deckard and Sauro <xref ref-type="bibr" rid="pcbi.1000064-Deckard1">[34]</xref>, for example), searching for systems with superior performance in terms of various metrics (such as accuracy, noise, robustness, evolvability, or energy consumption). Nevertheless, our simple models demonstrate the possibility of arithmetic computations at the level of transcriptional regulation.</p>
+<p>Other functions, such as exponentiation, logarithms, and trigonometric functions, could be computed by combinations of the arithmetic operations. However, this would be energetically wasteful and would require many genes. A more efficient approach is toapproximate directly by using more complicated regulatory machinery. We showed that a pair of genes, each with <italic>N</italic> binding sites for a transcription factor, can approximate any analytic function up to order <italic>N</italic> by reproducing its power series approximation. We also showed that by adjusting the parameters of such a gene pair, the analytic function can be approximated well over a larger range of inputs. While this drastically reduces the number of genes used to compute such functions, other mechanisms may be yet more efficient, and this is an avenue for future research.</p>
+<p>Our emphasis on arithmetic computations stands in contrast to work on logical or Boolean notions of computation in genetic networks. Interestingly, Hjelmfelt <italic>et al.</italic> <xref ref-type="bibr" rid="pcbi.1000064-Hjelmfelt2">[12]</xref> and Magnasco <xref ref-type="bibr" rid="pcbi.1000064-Magnasco1">[13]</xref> both considered the problem of addition, but in the binary sense, with different chemical species effecting each bit of the operation. In general, there is no relationship between an arithmetic interpretation of a gene's behavior—which is accurate for a limited range of transcriptionfactor concentrations—and a logical interpretation—which focuses on the extremes of low and high transcription factor concentrations. For example, in our model for an Addition gene, transcription occurs whenever factor A or factor B is bound, keeping in mind that factors A and B cannot bind simultaneously (<xref ref-type="fig" rid="pcbi-1000064-g002">Figure 2A</xref>). Such a gene could be interpreted as implementing the logical OR function, because it would be expressed if either factor A or factor B is in high concentration. Recall, however, that an alternate design for an Addition gene allows A and B to bind simultaneously, as long as there was no transcription when both were bound. This gene would be interpreted as implementing XOR, as it would be expressed if A or B, but not both, were in high concentrations. Conversely, our designs for the zero-truncated subtraction function and the greater than function have identical logical structure (<xref ref-type="fig" rid="pcbi-1000064-g002">Figure 2A</xref>), but behave quite differently as arithmetic operations. Thus, a gene's arithmetic behavior, if any, is not determined by its logical behavior and vice-versa. This is an important caveat for the interpretation of empirical measurements of gene response surfaces, which may be probed at non-physiological concentrations of regulatory molecules.</p>
+<p>For our gene models to accurately approximate the desired operations, certain products of kinetic parameters must be equal. For example, the multiplication gene requires that <italic>r<sub>tz</sub>r<sub>ab</sub>K<sub>oa</sub>K<sub>ab</sub></italic> = <italic>d<sub>t</sub>d<sub>z</sub></italic>. Such a constraint may be biologically implausible or difficult to maintain over different cellular conditions. If the constraint did not hold, the expression of the multiplication gene would still be proportional to the product of the transcription factor expression levels—the role of the constraint is only to scale the output expression correctly. Thus, violation of the constraint in a particular situation need not invalidate the interpretation of the gene as performing multiplication. The case is similar for all the genes in <xref ref-type="fig" rid="pcbi-1000064-g002">Figure 2</xref> except the addition gene. This gene requires <italic>r<sub>tz</sub>r<sub>a</sub>K<sub>oa</sub></italic> = <italic>r<sub>tz</sub>r<sub>b</sub>K<sub>ob</sub></italic> = <italic>d<sub>t</sub>d<sub>z</sub></italic>. If those equalities failed, but <italic>r<sub>a</sub>K<sub>oa</sub></italic> = <italic>r<sub>b</sub>K<sub>ob</sub></italic>, then the expression of the gene would still be proportional to the sum of the transcription factor expression levels. If the latter equality failed as well, then the gene could be interpreted as performing a weighted sum. Indeed, we took advantage of this possibility in our design for the network that detects significant elevations in a time varying signal (see gene G7 in <xref ref-type="fig" rid="pcbi-1000064-g005">Figure 5A</xref>).</p>
+<p>In our models, precision (noise) in the output depends on the transcription factor binding and unbinding rates, while the accuracy of the output depends only on the ratio of the rates. This implies that there is no trade-off between precision and accuracy. Each can be selected independent of the other, by evolution or by synthetic biologists, subject to biological limitations on the parameters. We have not analyzed the speed with which these networks reach equilibrium, which could also be an important factor in some settings. Indeed, in many processes, such as development, expressing genes at the correct time is just as important as expressing them at the right level. Further, some genetic networks, such as circadian networks <xref ref-type="bibr" rid="pcbi.1000064-Ko1">[52]</xref> or the feed-forward motif <xref ref-type="bibr" rid="pcbi.1000064-Mangan1">[50]</xref>,<xref ref-type="bibr" rid="pcbi.1000064-Mangan2">[51]</xref>, exist solely to keep time or process temporal signals. Our design and analysis of a network that tracks the first and second moments of a time varying signal and responds when the signal is statistically significantly elevated demonstrates that genes performing arithmetic computations can be useful in temporal information processing. An important avenue for further research is to consider more dynamical notions of computation, including investigation of how biochemical networks might implement computations from sequential signal processing or control theory.</p>
+<p>We expect that notions of computation more sophisticated than simple logical operations, already being documented experimentally <xref ref-type="bibr" rid="pcbi.1000064-Setty1">[4]</xref>,<xref ref-type="bibr" rid="pcbi.1000064-Mayo1">[5]</xref>,<xref ref-type="bibr" rid="pcbi.1000064-Yuh1">[32]</xref>,<xref ref-type="bibr" rid="pcbi.1000064-Andrews1">[53]</xref>, will play an increasing role in our understanding of transcriptional regulation and of biochemical systems more generally. Our analysis of the analog computational abilities of transcriptional regulatory networks is a step in this direction.</p>
+</sec><sec id="s4">
+<title>Materials and Methods</title>
+<p>Our Gillespie simulations for the analysis of noise for the Addition gene used a slightly simplified set of equations. Because factors <italic>A</italic> and <italic>B</italic> cannot bind the promoter simultaneously, we lumped the two bound states into one.<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e049" xlink:type="simple"/><label>(43)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e050" xlink:type="simple"/><label>(44)</label></disp-formula>where <italic>P</italic><sub>1</sub> denotes the promoter bound by either <italic>A</italic> or <italic>B</italic>, <italic>f</italic> is the forward binding rate of <italic>A</italic> and <italic>B</italic> to the promoter, and <italic>b</italic> is the unbinding rate. Transcription then follows the reaction<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e051" xlink:type="simple"/><label>(45)</label></disp-formula>Translation, degradation of transcripts, and degradation of proteins remained the same, following Equations (10) to (12). We used the parameters [<italic>A<sub>tot</sub></italic>] = [<italic>A</italic>] = 30 nM, [<italic>B<sub>tot</sub></italic>] = [<italic>B</italic>] = 70 nM, <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e052" xlink:type="simple"/></inline-formula> nM<sup>−1</sup>·sec<sup>−1</sup>, b = ρ sec<sup>−1</sup>, <italic>r<sub>t</sub></italic> = 1 nM·sec<sup>−1</sup>, <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e053" xlink:type="simple"/></inline-formula> sec<sup>−1</sup>, <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e054" xlink:type="simple"/></inline-formula> sec<sup>−1</sup>, <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e055" xlink:type="simple"/></inline-formula> sec<sup>−1</sup>, where ρ is the dimensionless parameter we used to control the binding and unbinding rates of <italic>A</italic> and <italic>B</italic> to the promoter, while leaving the equilibrium association constant unchanged. For different values of ρ, the system was simulated from the initial condition <italic>P</italic><sub>0</sub> = 1, <italic>P</italic><sub>1</sub> = <italic>T</italic> = <italic>Z</italic> = 0, for one million reactions. <xref ref-type="fig" rid="pcbi-1000064-g004">Figure 4A</xref> plots initial portions of several of those trajectories, but <xref ref-type="fig" rid="pcbi-1000064-g004">Figure 4B,C</xref> are based on the full one million reactions.</p>
+<p>Our simulations of the network for detecting elevated signals involved 17 variables: the exogenous input <italic>I</italic>(<italic>t</italic>), and a transcript concentration <italic>T<sup>i</sup></italic>(<italic>t</italic>) and protein concentration <italic>Z<sup>i</sup></italic>(<italic>t</italic>) for each gene <italic>i</italic>. All variables have units nanomolar (nM). The input signal was primarily a sinusoidal oscillation with a period of four hours. Oscillations had mean 10 and amplitude 2 for the first eight of the 20 days simulated, mean 20 nM and amplitude 2 nM for the next three days, mean 10 nM and amplitude 2 nM for another 3 days, and mean 10 nM and amplitude 6 nM for the final six days. An independent Gaussian disturbance with mean zero and variance one was added to the signal during every 10 minute period. At the starts of days 5, 6, 7, 17, 18 and 19, there were 10 minute spikes in the signal at levels 16, 18, 20, 20, 22 and 24 nM respectively. We assumed the transcription factor binding equations were at steady state in order to speed the calculations. Transcription was driven at the rate expected based on the transcription factor concentrations. The exact differential equations simulated were:<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e056" xlink:type="simple"/><label>(46)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e057" xlink:type="simple"/><label>(47)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e058" xlink:type="simple"/><label>(48)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e059" xlink:type="simple"/><label>(49)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e060" xlink:type="simple"/><label>(50)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e061" xlink:type="simple"/><label>(51)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e062" xlink:type="simple"/><label>(52)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e063" xlink:type="simple"/><label>(53)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e064" xlink:type="simple"/><label>(54)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e065" xlink:type="simple"/><label>(55)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e066" xlink:type="simple"/><label>(56)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e067" xlink:type="simple"/><label>(57)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e068" xlink:type="simple"/><label>(58)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e069" xlink:type="simple"/><label>(59)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e070" xlink:type="simple"/><label>(60)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e071" xlink:type="simple"/><label>(61)</label></disp-formula></p>
+<p>The system of differential equations was simulated using the ode45 function of MATLAB. Equations 46 through 61 employ several simplifications compared to the equations one would obtain from a direct translation of the kinetic equations in <xref ref-type="fig" rid="pcbi-1000064-g001">Figure 1</xref>, mainly for the purpose of improving numerical stability. For example, we do not explicitly model the heterodimer of <italic>Z</italic><sup>2</sup> and <italic>Z</italic><sup>4</sup> called for by gene 5, which subtracts one concentration from the other. Rather, we drive gene 5 transcription at a rate corresponding to what would be observed if any available <italic>Z</italic><sup>2</sup> and <italic>Z</italic><sup>4</sup> dimerized instantly and irreversibly. Similarly, we do not model production and subsequent decay of the homodimer of <italic>Z</italic><sup>6</sup> suggested by our design for the square root operation. Rather, we simply assume that <italic>Z</italic><sup>6</sup> dimerizes at rate <italic>d<sub>z</sub></italic><sup>6</sup> and instantly decays.</p>
+<p>The kinetic parameters are summarized in <xref ref-type="table" rid="pcbi-1000064-t004">Table 4</xref>. The “fast” genes were given protein half-lives of 5 minutes and the “slow” genes were given protein half lives of 10 hours. These values are somewhat extreme, but the short half-life is consistent with measurements for actively degraded proteins <xref ref-type="bibr" rid="pcbi.1000064-Bachmair1">[54]</xref> and both half-lives are within the range of recent measurements in a genome-wide study of yeast <xref ref-type="bibr" rid="pcbi.1000064-Belle1">[55]</xref>. All other parameters are in typical ranges.</p>
+<table-wrap id="pcbi-1000064-t004" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000064.t004</object-id><label>Table 4</label><caption>
+<title>Parameters for the simulation of the network for detected significant elevations in a time-varying signal.</title>
+</caption><!--===== Grouping alternate versions of objects =====--><alternatives><graphic id="pcbi-1000064-t004-4" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.t004" xlink:type="simple"/><table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" colspan="1" rowspan="1">Gene</td>
+<td align="left" colspan="1" rowspan="1"><italic>d<sub>t</sub></italic> sec<sup>−1</sup></td>
+<td align="left" colspan="1" rowspan="1"><italic>d<sub>z</sub></italic> sec<sup>−1</sup></td>
+<td align="left" colspan="1" rowspan="1"><italic>r<sub>tz</sub></italic> sec<sup>−1</sup></td>
+<td align="left" colspan="1" rowspan="1"><italic>r<sub>a</sub></italic> nM·sec<sup>−1</sup></td>
+<td align="left" colspan="1" rowspan="1"><italic>r<sub>b</sub></italic> nM·sec<sup>−1</sup></td>
+<td align="left" colspan="1" rowspan="1"><italic>r<sub>ab</sub></italic> nM·sec<sup>−1</sup></td>
+<td align="left" colspan="1" rowspan="1"><italic>K<sub>oa</sub></italic> nM<sup>−1</sup></td>
+<td align="left" colspan="1" rowspan="1"><italic>K<sub>ob</sub></italic> nM<sup>−1</sup></td>
+<td align="left" colspan="1" rowspan="1"><italic>K<sub>ab</sub></italic> nM<sup>−1</sup></td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" colspan="1" rowspan="1">1</td>
+<td align="left" colspan="1" rowspan="1"><inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e072" xlink:type="simple"/></inline-formula></td>
+<td align="left" colspan="1" rowspan="1"><inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e073" xlink:type="simple"/></inline-formula></td>
+<td align="left" colspan="1" rowspan="1"><inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e074" xlink:type="simple"/></inline-formula></td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">10</td>
+<td align="left" colspan="1" rowspan="1"><inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e075" xlink:type="simple"/></inline-formula></td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">1</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">2</td>
+<td align="left" colspan="1" rowspan="1"><inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e076" xlink:type="simple"/></inline-formula></td>
+<td align="left" colspan="1" rowspan="1"><inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e077" xlink:type="simple"/></inline-formula></td>
+<td align="left" colspan="1" rowspan="1"><inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e078" xlink:type="simple"/></inline-formula></td>
+<td align="left" colspan="1" rowspan="1">1</td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"><inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e079" xlink:type="simple"/></inline-formula></td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">3</td>
+<td align="left" colspan="1" rowspan="1"><inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e080" xlink:type="simple"/></inline-formula></td>
+<td align="left" colspan="1" rowspan="1"><inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e081" xlink:type="simple"/></inline-formula></td>
+<td align="left" colspan="1" rowspan="1"><inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e082" xlink:type="simple"/></inline-formula></td>
+<td align="left" colspan="1" rowspan="1">1</td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"><inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e083" xlink:type="simple"/></inline-formula></td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">4</td>
+<td align="left" colspan="1" rowspan="1"><inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e084" xlink:type="simple"/></inline-formula></td>
+<td align="left" colspan="1" rowspan="1"><inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e085" xlink:type="simple"/></inline-formula></td>
+<td align="left" colspan="1" rowspan="1"><inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e086" xlink:type="simple"/></inline-formula></td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">10</td>
+<td align="left" colspan="1" rowspan="1"><inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e087" xlink:type="simple"/></inline-formula></td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">1</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">5</td>
+<td align="left" colspan="1" rowspan="1"><inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e088" xlink:type="simple"/></inline-formula></td>
+<td align="left" colspan="1" rowspan="1"><inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e089" xlink:type="simple"/></inline-formula></td>
+<td align="left" colspan="1" rowspan="1"><inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e090" xlink:type="simple"/></inline-formula></td>
+<td align="left" colspan="1" rowspan="1">10</td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"><inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e091" xlink:type="simple"/></inline-formula></td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">6</td>
+<td align="left" colspan="1" rowspan="1"><inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e092" xlink:type="simple"/></inline-formula></td>
+<td align="left" colspan="1" rowspan="1"><inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e093" xlink:type="simple"/></inline-formula></td>
+<td align="left" colspan="1" rowspan="1"><inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e094" xlink:type="simple"/></inline-formula></td>
+<td align="left" colspan="1" rowspan="1">10</td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"><inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e095" xlink:type="simple"/></inline-formula></td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">7</td>
+<td align="left" colspan="1" rowspan="1"><inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e096" xlink:type="simple"/></inline-formula></td>
+<td align="left" colspan="1" rowspan="1"><inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e097" xlink:type="simple"/></inline-formula></td>
+<td align="left" colspan="1" rowspan="1"><inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e098" xlink:type="simple"/></inline-formula></td>
+<td align="left" colspan="1" rowspan="1">10</td>
+<td align="left" colspan="1" rowspan="1">10</td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"><inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e099" xlink:type="simple"/></inline-formula></td>
+<td align="left" colspan="1" rowspan="1">log(2)</td>
+<td align="left" colspan="1" rowspan="1"/>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">8</td>
+<td align="left" colspan="1" rowspan="1"><inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e100" xlink:type="simple"/></inline-formula></td>
+<td align="left" colspan="1" rowspan="1"><inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e101" xlink:type="simple"/></inline-formula></td>
+<td align="left" colspan="1" rowspan="1"><inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e102" xlink:type="simple"/></inline-formula></td>
+<td align="left" colspan="1" rowspan="1"><inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e103" xlink:type="simple"/></inline-formula></td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">10</td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+</tr>
+</tbody>
+</table></alternatives></table-wrap>
+<p>For our study of the cosine approximation, we used parameters <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e104" xlink:type="simple"/></inline-formula> sec<sup>−1</sup>, <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e105" xlink:type="simple"/></inline-formula> sec<sup>−1</sup>, <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000064.e106" xlink:type="simple"/></inline-formula> sec<sup>−1</sup>, and <italic>K</italic> = 0.01 nM<sup>−1</sup>. For the direct Taylor series approximation, Equation 41 implied transcription rates <italic>r</italic><sub>0</sub><sup>+</sup> = 5.78×10<sup>−5</sup> nM·sec<sup>−1</sup>, <italic>r</italic><sub>2</sub><sup>−</sup> = 2.89×10<sup>−2</sup> nM·sec<sup>−1</sup>, and <italic>r</italic><sub>4</sub><sup>+</sup> = 48.1 nM·sec<sup>−1</sup>. For the optimized curve, we allowed all the parameters to vary, including the transcription rates of the positive and negative genes, and their rates of translation and transcript and protein decay. We use the matlab function “fminsearch” to optimize the parameters, minimizing the mean squared error between steady state [<italic>Z</italic>] and cos([<italic>A</italic>]). Because all parameters should be non-negative, they were reformulated as <italic>p<sub>i</sub></italic> = exp(<italic>b<sub>i</sub></italic>) where <italic>p<sub>i</sub></italic> is the <italic>i<sup>th</sup></italic> parameter and <italic>b<sub>i</sub></italic> is the unconstrained parameter that we actually optimized. This resulted in the constrained parameters shown in <xref ref-type="table" rid="pcbi-1000064-t005">Table 5</xref>.</p>
+<table-wrap id="pcbi-1000064-t005" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000064.t005</object-id><label>Table 5</label><caption>
+<title>Optimized parameters for a pair of genes approximating the cosine function.</title>
+</caption><!--===== Grouping alternate versions of objects =====--><alternatives><graphic id="pcbi-1000064-t005-5" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000064.t005" xlink:type="simple"/><table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" colspan="1" rowspan="1">Gene</td>
+<td align="left" colspan="1" rowspan="1"><italic>r<sub>tz</sub></italic></td>
+<td align="left" colspan="1" rowspan="1"><italic>d<sub>t</sub></italic></td>
+<td align="left" colspan="1" rowspan="1"><italic>d<sub>z</sub></italic></td>
+<td align="left" colspan="1" rowspan="1"><italic>K</italic></td>
+<td align="left" colspan="1" rowspan="1"><italic>r</italic><sub>0</sub></td>
+<td align="left" colspan="1" rowspan="1"><italic>r</italic><sub>1</sub></td>
+<td align="left" colspan="1" rowspan="1"><italic>r</italic><sub>2</sub></td>
+<td align="left" colspan="1" rowspan="1"><italic>r</italic><sub>3</sub></td>
+<td align="left" colspan="1" rowspan="1"><italic>r</italic><sub>4</sub></td>
+<td align="left" colspan="1" rowspan="1"><italic>r</italic><sub>5</sub></td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" colspan="1" rowspan="1">+</td>
+<td align="left" colspan="1" rowspan="1">0.1049</td>
+<td align="left" colspan="1" rowspan="1">0.0761</td>
+<td align="left" colspan="1" rowspan="1">0.0013</td>
+<td align="left" colspan="1" rowspan="1">0.0972</td>
+<td align="left" colspan="1" rowspan="1">0.0020</td>
+<td align="left" colspan="1" rowspan="1">0.0018</td>
+<td align="left" colspan="1" rowspan="1">0</td>
+<td align="left" colspan="1" rowspan="1">0</td>
+<td align="left" colspan="1" rowspan="1">1.1420</td>
+<td align="left" colspan="1" rowspan="1">0.0003</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">−</td>
+<td align="left" colspan="1" rowspan="1">0.1471</td>
+<td align="left" colspan="1" rowspan="1">0.0031</td>
+<td align="left" colspan="1" rowspan="1">0.0007</td>
+<td align="left" colspan="1" rowspan="1">0.0419</td>
+<td align="left" colspan="1" rowspan="1">0</td>
+<td align="left" colspan="1" rowspan="1">0</td>
+<td align="left" colspan="1" rowspan="1">0</td>
+<td align="left" colspan="1" rowspan="1">0.0161</td>
+<td align="left" colspan="1" rowspan="1">0.0214</td>
+<td align="left" colspan="1" rowspan="1">0</td>
+</tr>
+</tbody>
+</table></alternatives><table-wrap-foot><fn id="nt101"><label/><p>Units for the parameters are the same as in <xref ref-type="table" rid="pcbi-1000064-t004">Table 4</xref>.</p></fn></table-wrap-foot></table-wrap></sec></body>
+<back>
+<ack>
+<p>The authors are indebted to Peter Swain and Mathieu Blanchette, who read several drafts of this work and made suggestions resulting in significant improvements to both content and presentation.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1000064-Arkin1"><label>1</label><element-citation publication-type="other" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Arkin</surname><given-names>AP</given-names></name>
+</person-group>             <year>2000</year>             <article-title>Signal processing in biochemical reaction networks.</article-title>             <person-group person-group-type="editor">
+<name name-style="western"><surname>Walleczek</surname><given-names>J</given-names></name>
+</person-group>             <source>Self-Organized Biological Dynamics and Nonlinear Control</source>             <publisher-name>Cambridge University Press</publisher-name>          </element-citation></ref>
+<ref id="pcbi.1000064-Regev1"><label>2</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Regev</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Shapiro</surname><given-names>E</given-names></name>
+</person-group>             <year>2002</year>             <article-title>Cells as computation.</article-title>             <source>Nature</source>             <volume>419</volume>             <fpage>343</fpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Guet1"><label>3</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Guet</surname><given-names>CC</given-names></name>
+<name name-style="western"><surname>Elowitz</surname><given-names>MB</given-names></name>
+<name name-style="western"><surname>Hsing</surname><given-names>W</given-names></name>
+<name name-style="western"><surname>Leibler</surname><given-names>S</given-names></name>
+</person-group>             <year>2002</year>             <article-title>Combinatorial synthesis of genetic networks.</article-title>             <source>Science</source>             <volume>296</volume>             <fpage>1466</fpage>             <lpage>1479</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Setty1"><label>4</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Setty</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Mayo</surname><given-names>AE</given-names></name>
+<name name-style="western"><surname>Surette</surname><given-names>MG</given-names></name>
+<name name-style="western"><surname>Alon</surname><given-names>U</given-names></name>
+</person-group>             <year>2003</year>             <article-title>Detailed map of a cis-regulatory input function.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>100</volume>             <fpage>7702</fpage>             <lpage>7707</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Mayo1"><label>5</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Mayo</surname><given-names>AE</given-names></name>
+<name name-style="western"><surname>Setty</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Shavit</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Zaslaver</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Alon</surname><given-names>U</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Plasticity of the cis-regulatory input function of a gene.</article-title>             <source>PLoS Biol</source>             <volume>4</volume>             <fpage>e45</fpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Alberts1"><label>6</label><element-citation publication-type="other" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Alberts</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Johnson</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Lewis</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Raff</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Roberts</surname><given-names>K</given-names></name>
+<etal/></person-group>             <year>2002</year>             <source>Molecular biology of the cell, fourth edition</source>             <publisher-name>Garland Publishing</publisher-name>          </element-citation></ref>
+<ref id="pcbi.1000064-Glass1"><label>7</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Glass</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Kauffman</surname><given-names>SA</given-names></name>
+</person-group>             <year>1973</year>             <article-title>The logical analysis of continuous, non-linear biochemical control networks.</article-title>             <source>J Theor Biol</source>             <volume>39</volume>             <fpage>103</fpage>             <lpage>129</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Hjelmfelt1"><label>8</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Hjelmfelt</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Weinberger</surname><given-names>ED</given-names></name>
+<name name-style="western"><surname>Ross</surname><given-names>J</given-names></name>
+</person-group>             <year>1991</year>             <article-title>Chemical implementation of neural networks and Turing machines.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>88</volume>             <fpage>10983</fpage>             <lpage>10987</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Arkin2"><label>9</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Arkin</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Ross</surname><given-names>J</given-names></name>
+</person-group>             <year>1994</year>             <article-title>Computational functions in biochemical reaction networks.</article-title>             <source>Biophys J</source>             <volume>67</volume>             <fpage>560</fpage>             <lpage>578</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Buchler1"><label>10</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Buchler</surname><given-names>NE</given-names></name>
+<name name-style="western"><surname>Gerland</surname><given-names>U</given-names></name>
+<name name-style="western"><surname>Hwa</surname><given-names>T</given-names></name>
+</person-group>             <year>2003</year>             <article-title>On schemes of combinatorial transcription logic.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>100</volume>             <fpage>5136</fpage>             <lpage>5141</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Sauro1"><label>11</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Sauro</surname><given-names>HM</given-names></name>
+</person-group>             <year>2004</year>             <article-title>The computational versatility of proteomic signaling networks.</article-title>             <source>Current Proteomics</source>             <volume>1</volume>             <fpage>67</fpage>             <lpage>81</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Hjelmfelt2"><label>12</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Hjelmfelt</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Weinberger</surname><given-names>ED</given-names></name>
+<name name-style="western"><surname>Ross</surname><given-names>J</given-names></name>
+</person-group>             <year>1992</year>             <article-title>Chemical implementation of finite-state machines.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>89</volume>             <fpage>383</fpage>             <lpage>387</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Magnasco1"><label>13</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Magnasco</surname><given-names>MO</given-names></name>
+</person-group>             <year>1997</year>             <article-title>Chemical kinetics is Turing universal.</article-title>             <source>Phys Rev Lett</source>             <volume>78</volume>             <fpage>1190</fpage>             <lpage>1193</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-BenHur1"><label>14</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Ben-Hur</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Siegelmann</surname><given-names>HT</given-names></name>
+</person-group>             <year>2004</year>             <article-title>Computation in gene networks.</article-title>             <source>Chaos</source>             <volume>14</volume>             <fpage>145</fpage>             <lpage>151</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Bodnar1"><label>15</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Bodnar</surname><given-names>J</given-names></name>
+</person-group>             <year>1997</year>             <article-title>Programming the <italic>Drosophila</italic> embryo.</article-title>             <source>J Theor Biol</source>             <volume>188</volume>             <fpage>391</fpage>             <lpage>445</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Sanchez1"><label>16</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Sanchez</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>van Helden</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Thieffry</surname><given-names>D</given-names></name>
+</person-group>             <year>1997</year>             <article-title>Establishment of the dorso-ventral pattern during embryonic development of <italic>Drosophila melanogaster</italic>: a logical analysis.</article-title>             <source>J Theor Biol</source>             <volume>189</volume>             <fpage>377</fpage>             <lpage>389</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Mendoza1"><label>17</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Mendoza</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Alvarez-Buylla</surname><given-names>ER</given-names></name>
+</person-group>             <year>1998</year>             <article-title>Dynamics of the genetic regulatory network for <italic>Arabidopsis thaliana</italic> flower morphogenesis.</article-title>             <source>J Theor Biol</source>             <volume>193</volume>             <fpage>307</fpage>             <lpage>319</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Mendoza2"><label>18</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Mendoza</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Thieffry</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Alvarez-Buylla</surname><given-names>ER</given-names></name>
+</person-group>             <year>1999</year>             <article-title>Genetic control of flower morphogenesis in arabidopsis thaliana: a logical analysis.</article-title>             <source>Bioinformatics</source>             <volume>14</volume>             <fpage>593</fpage>             <lpage>696</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Sanchez2"><label>19</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Sanchez</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Thieffry</surname><given-names>D</given-names></name>
+</person-group>             <year>2001</year>             <article-title>A logical analysis of the gap gene system.</article-title>             <source>J Theor Biol</source>             <volume>211</volume>             <fpage>115</fpage>             <lpage>141</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Albert1"><label>20</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Albert</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Othmer</surname><given-names>HG</given-names></name>
+</person-group>             <year>2003</year>             <article-title>The topology of the regulatory interactions predicts the expression pattern of the segment polarity genes in <italic>Drosophila melanogaster</italic>.</article-title>             <source>J Theor Biol</source>             <volume>223</volume>             <fpage>1</fpage>             <lpage>18</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Sanchez3"><label>21</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Sanchez</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Thieffry</surname><given-names>D</given-names></name>
+</person-group>             <year>2003</year>             <article-title>Segmenting the fly embryo: a logical analysis of the <italic>pair-rule</italic> cross-regulatory module.</article-title>             <source>J Theor Biol</source>             <volume>224</volume>             <fpage>517</fpage>             <lpage>537</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Faure1"><label>22</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Faure</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Naldi</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Chaouiya</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Thieffry</surname><given-names>D</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Dynamical analysis of a generic boolean model for the control of the mammalian cell cycle.</article-title>             <source>Bioinformatics</source>             <volume>22</volume>             <fpage>e124</fpage>             <lpage>e131</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Gonzalez1"><label>23</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Gonzalez</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Chaouiya</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Thieffry</surname><given-names>D</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Dynamical analysis of the regulatory network defining the dorsal-ventral boundary of the drosophila wing imaginal disc.</article-title>             <source>Genetics</source>             <volume>174</volume>             <fpage>1625</fpage>             <lpage>1634</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Wolpert1"><label>24</label><element-citation publication-type="other" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Wolpert</surname><given-names>L</given-names></name>
+</person-group>             <year>1968</year>             <article-title>The french flag problem.</article-title>             <person-group person-group-type="editor">
+<name name-style="western"><surname>Waddington</surname><given-names>CH</given-names></name>
+</person-group>             <source>Towards a Theoretical Biology</source>             <publisher-loc>Chicago</publisher-loc>             <publisher-name>Aldine Publishing Company</publisher-name>             <fpage>125</fpage>             <lpage>133</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Glass2"><label>25</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Glass</surname><given-names>L</given-names></name>
+</person-group>             <year>1975</year>             <article-title>Combinatorial and topological methods in nonlinear chemical kinetics.</article-title>             <source>J Chem Phys</source>             <volume>63</volume>             <fpage>1325</fpage>             <lpage>1335</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Ghosh1"><label>26</label><element-citation publication-type="other" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Ghosh</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Tomlin</surname><given-names>CJ</given-names></name>
+</person-group>             <year>2001</year>             <article-title>Lateral inhibition through delta-noth signaling: A piecewise affine hybrid model.</article-title>             <person-group person-group-type="editor">
+<name name-style="western"><surname>Benedetto</surname><given-names>MDD</given-names></name>
+<name name-style="western"><surname>Sangiovanni-Vincentelli</surname><given-names>A</given-names></name>
+</person-group>             <source>Lectures Notes in Computer Science 2034</source>             <fpage>232</fpage>             <lpage>246</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-deJong1"><label>27</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>de Jong</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Geiselmann</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Batt</surname><given-names>G</given-names></name>
+<name name-style="western"><surname>Hernandez</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Page</surname><given-names>M</given-names></name>
+</person-group>             <year>2004</year>             <article-title>Qualitative simulation of the initiation of sporulation in <italic>Bacillus subtilis</italic>.</article-title>             <source>Bull Math Biol</source>             <volume>66</volume>             <fpage>261</fpage>             <lpage>300</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Ropers1"><label>28</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Ropers</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>de Jong</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Page</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Schneider</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Geiselmann</surname><given-names>J</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Qualitative simulation of the carbon starvation response in <italic>Escherichia coli</italic>.</article-title>             <source>BioSystems</source>             <volume>84</volume>             <fpage>124</fpage>             <lpage>152</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Perkins1"><label>29</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Perkins</surname><given-names>TJ</given-names></name>
+<name name-style="western"><surname>Jaeger</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Reinitz</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Glass</surname><given-names>L</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Reverse engineering the gap gene network of <italic>Drosophila melanogaster</italic>.</article-title>             <source>PLoS Comput Biol</source>             <volume>2</volume>             <fpage>e51</fpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Gardner1"><label>30</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Gardner</surname><given-names>TS</given-names></name>
+<name name-style="western"><surname>Cantor</surname><given-names>CR</given-names></name>
+<name name-style="western"><surname>Collins</surname><given-names>JJ</given-names></name>
+</person-group>             <year>2000</year>             <article-title>Construction of a genetic toggle switch in <italic>Escherichia coli</italic>.</article-title>             <source>Nature</source>             <volume>403</volume>             <fpage>339</fpage>             <lpage>342</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Elowitz1"><label>31</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Elowitz</surname><given-names>MB</given-names></name>
+<name name-style="western"><surname>Leibler</surname><given-names>S</given-names></name>
+</person-group>             <year>2000</year>             <article-title>A synthetic oscillatory network of transcriptional regulators.</article-title>             <source>Nature</source>             <volume>403</volume>             <fpage>335</fpage>             <lpage>338</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Yuh1"><label>32</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Yuh</surname><given-names>CH</given-names></name>
+<name name-style="western"><surname>Bolouri</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Davidson</surname><given-names>EH</given-names></name>
+</person-group>             <year>1998</year>             <article-title>Genomic cis-regulatory logic: experimental and computational analysis of a sea urchin gene.</article-title>             <source>Science</source>             <volume>279</volume>             <fpage>1896</fpage>             <lpage>1902</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Hjelmfelt3"><label>33</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Hjelmfelt</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Ross</surname><given-names>J</given-names></name>
+</person-group>             <year>1992</year>             <article-title>Chemical implementation and thermodynamics of collective neural networks.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>89</volume>             <fpage>388</fpage>             <lpage>391</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Deckard1"><label>34</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Deckard</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Sauro</surname><given-names>HM</given-names></name>
+</person-group>             <year>2004</year>             <article-title>Preliminary studies on the in silico evolution of biochemical networks.</article-title>             <source>Chembiochem</source>             <volume>5</volume>             <fpage>1423</fpage>             <lpage>1431</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Barkai1"><label>35</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Barkai</surname><given-names>N</given-names></name>
+<name name-style="western"><surname>Leibler</surname><given-names>S</given-names></name>
+</person-group>             <year>1997</year>             <article-title>Robustness in simple biochemical networks.</article-title>             <source>Nature</source>             <volume>387</volume>             <fpage>913</fpage>             <lpage>917</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Alon1"><label>36</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Alon</surname><given-names>U</given-names></name>
+<name name-style="western"><surname>Surette</surname><given-names>MG</given-names></name>
+<name name-style="western"><surname>Barkai</surname><given-names>N</given-names></name>
+<name name-style="western"><surname>Leibler</surname><given-names>S</given-names></name>
+</person-group>             <year>1999</year>             <article-title>Robustness in bacterial chemotaxis.</article-title>             <source>Nature</source>             <volume>397</volume>             <fpage>168</fpage>             <lpage>171</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Rao1"><label>37</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Rao</surname><given-names>CV</given-names></name>
+<name name-style="western"><surname>Wolf</surname><given-names>DM</given-names></name>
+<name name-style="western"><surname>Arkin</surname><given-names>AP</given-names></name>
+</person-group>             <year>2002</year>             <article-title>Control, exploitation and tolerance of intracellular noise.</article-title>             <source>Nature</source>             <volume>420</volume>             <fpage>231</fpage>             <lpage>237</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Houchmandzadeh1"><label>38</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Houchmandzadeh</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Wieschaus</surname><given-names>E</given-names></name>
+<name name-style="western"><surname>Leibler</surname><given-names>S</given-names></name>
+</person-group>             <year>2002</year>             <article-title>Establishment of developmental precision and proportions in the early <italic>Drosophila</italic> embryo.</article-title>             <source>Nature</source>             <volume>415</volume>             <fpage>798</fpage>             <lpage>802</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Eldar1"><label>39</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Eldar</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Dorfman</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Weiss</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Ashe</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Shilo</surname><given-names>BZ</given-names></name>
+<etal/></person-group>             <year>2002</year>             <article-title>Robustness of the BMP morphogen gradient in <italic>Drosophila</italic> embryonic patterning.</article-title>             <source>Nature</source>             <volume>419</volume>             <fpage>304</fpage>             <lpage>308</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-VonDassow1"><label>40</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Von Dassow</surname><given-names>G</given-names></name>
+<name name-style="western"><surname>Meir</surname><given-names>E</given-names></name>
+<name name-style="western"><surname>Munro</surname><given-names>EM</given-names></name>
+<name name-style="western"><surname>Odell</surname><given-names>GM</given-names></name>
+</person-group>             <year>2000</year>             <article-title>The segment polarity network is a robust developmental module.</article-title>             <source>Nature</source>             <volume>406</volume>             <fpage>188</fpage>             <lpage>192</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Samoilov1"><label>41</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Samoilov</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Arkin</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Ross</surname><given-names>J</given-names></name>
+</person-group>             <year>2002</year>             <article-title>Signal processing by simple chemical systems.</article-title>             <source>J Phys Chem A</source>             <volume>106</volume>             <fpage>10205</fpage>             <lpage>10221</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Tkacik1"><label>42</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Tkacik</surname><given-names>G</given-names><suffix>Jr</suffix></name>
+<name name-style="western"><surname>C</surname><given-names>GC</given-names></name>
+<name name-style="western"><surname>Bialek</surname><given-names>W</given-names></name>
+</person-group>             <year>2007</year>             <article-title>Information flow and optimization in transcriptional control.</article-title>             <source>ArXiv:</source>             <fpage>0705.0313v1</fpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Libby1"><label>43</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Libby</surname><given-names>E</given-names></name>
+<name name-style="western"><surname>Perkins</surname><given-names>TJ</given-names></name>
+<name name-style="western"><surname>Swain</surname><given-names>PS</given-names></name>
+</person-group>             <year>2007</year>             <article-title>Noisy information processing through transcriptional regulation.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>104</volume>             <fpage>7151</fpage>             <lpage>7156</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Thattai1"><label>44</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Thattai</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>van Oudenaarden</surname><given-names>A</given-names></name>
+</person-group>             <year>2001</year>             <article-title>Intrinsic noise in gene regulatory networks.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>98</volume>             <fpage>8614</fpage>             <lpage>8619</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Gillespie1"><label>45</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Gillespie</surname><given-names>DT</given-names></name>
+</person-group>             <year>1977</year>             <article-title>Exact stochastic simulation of coupled chemical reactions.</article-title>             <source>J Phys Chem</source>             <volume>81</volume>             <fpage>2340</fpage>             <lpage>2361</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Swain1"><label>46</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Swain</surname><given-names>PS</given-names></name>
+<name name-style="western"><surname>Elowitz</surname><given-names>MB</given-names></name>
+<name name-style="western"><surname>Siggia</surname><given-names>ED</given-names></name>
+</person-group>             <year>2002</year>             <article-title>Intrinsic and extrinsic contributions to stochasticity in gene expression.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>99</volume>             <fpage>12795</fpage>             <lpage>12800</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Alon2"><label>47</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Alon</surname><given-names>U</given-names></name>
+</person-group>             <year>2007</year>             <article-title>Network motifs: theory and experimental approaches.</article-title>             <source>Nat Rev Genet</source>             <volume>8</volume>             <fpage>450</fpage>             <lpage>461</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Lee1"><label>48</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Lee</surname><given-names>TI</given-names></name>
+<name name-style="western"><surname>Rinaldi</surname><given-names>NJ</given-names></name>
+<name name-style="western"><surname>Robert</surname><given-names>F</given-names></name>
+<name name-style="western"><surname>Odom</surname><given-names>DT</given-names></name>
+<name name-style="western"><surname>Bar-Joseph</surname><given-names>Z</given-names></name>
+<etal/></person-group>             <year>2002</year>             <article-title>Transcriptional regulatory networks in <italic>Saccharomyces cerevisiae</italic>.</article-title>             <source>Science</source>             <volume>298</volume>             <fpage>799</fpage>             <lpage>804</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-ShenOrr1"><label>49</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Shen-Orr</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Milo</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Mangan</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Alon</surname><given-names>U</given-names></name>
+</person-group>             <year>2002</year>             <article-title>Network motifs in the transcriptional regulation network of <italic>Escherichia coli</italic>.</article-title>             <source>Nat Genet</source>             <volume>31</volume>             <fpage>64</fpage>             <lpage>68</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Mangan1"><label>50</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Mangan</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Alon</surname><given-names>U</given-names></name>
+</person-group>             <year>2003</year>             <article-title>Structure and function of the feed-forward loop network motif.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>100</volume>             <fpage>11980</fpage>             <lpage>11985</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Mangan2"><label>51</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Mangan</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Itzkovitz</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Zaslaver</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Alon</surname><given-names>U</given-names></name>
+</person-group>             <year>2006</year>             <article-title>The incoherent feed-forward loop accelerates the response-time of the gal system of <italic>Escherichia coli</italic>.</article-title>             <source>J Mol Biol</source>             <volume>356</volume>             <fpage>1073</fpage>             <lpage>1081</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Ko1"><label>52</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Ko</surname><given-names>CH</given-names></name>
+<name name-style="western"><surname>Takahashi</surname><given-names>JS</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Molecular components of the mammalian circadian clock.</article-title>             <source>Hum Mol Genet</source>             <volume>15</volume>             <fpage>R271</fpage>             <lpage>R277</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Andrews1"><label>53</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Andrews</surname><given-names>BW</given-names></name>
+<name name-style="western"><surname>Yi</surname><given-names>TM</given-names></name>
+<name name-style="western"><surname>Iglesias</surname><given-names>PA</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Optimal noise filtering in the chemotactic response of <italic>Escherichia coli</italic>.</article-title>             <source>PLoS Comput Biol</source>             <volume>2</volume>             <fpage>e154</fpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Bachmair1"><label>54</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Bachmair</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Finley</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Varshavsky</surname><given-names>A</given-names></name>
+</person-group>             <year>1986</year>             <article-title>In vivo half-life of a protein is a function of its amino-terminal residue.</article-title>             <source>Science</source>             <volume>234</volume>             <fpage>179</fpage>             <lpage>186</lpage>          </element-citation></ref>
+<ref id="pcbi.1000064-Belle1"><label>55</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Belle</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Tanay</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Bitincka</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Shamir</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>O'Shea</surname><given-names>EK</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Quantification of protein half-lives in the budding yeast proteome.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>103</volume>             <fpage>13004</fpage>             <lpage>13009</lpage>          </element-citation></ref>
+</ref-list>
+
+</back>
+</article>

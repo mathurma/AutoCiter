@@ -1,0 +1,722 @@
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.1d3 20150301//EN" "http://jats.nlm.nih.gov/publishing/1.1d3/JATS-journalpublishing1.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="1.1d3" xml:lang="en">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">ploscomp</journal-id>
+<journal-title-group>
+<journal-title>PLOS Computational Biology</journal-title>
+</journal-title-group>
+<issn pub-type="ppub">1553-734X</issn>
+<issn pub-type="epub">1553-7358</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="publisher-id">PCOMPBIOL-D-17-00149</article-id>
+<article-id pub-id-type="doi">10.1371/journal.pcbi.1005661</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+<subj-group subj-group-type="Discipline-v3"><subject>Research and analysis methods</subject><subj-group><subject>Mathematical and statistical techniques</subject><subj-group><subject>Mathematical functions</subject><subj-group><subject>Convolution</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Research and analysis methods</subject><subj-group><subject>Database and informatics methods</subject><subj-group><subject>Database searching</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Research and analysis methods</subject><subj-group><subject>Database and informatics methods</subject><subj-group><subject>Biological databases</subject><subj-group><subject>Proteomic databases</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Biochemistry</subject><subj-group><subject>Proteomics</subject><subj-group><subject>Proteomic databases</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Research and analysis methods</subject><subj-group><subject>Database and informatics methods</subject><subj-group><subject>Biological databases</subject><subj-group><subject>Sequence databases</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Research and analysis methods</subject><subj-group><subject>Database and informatics methods</subject><subj-group><subject>Bioinformatics</subject><subj-group><subject>Sequence analysis</subject><subj-group><subject>Sequence databases</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Computer and information sciences</subject><subj-group><subject>Artificial intelligence</subject><subj-group><subject>Artificial neural networks</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Computational biology</subject><subj-group><subject>Computational neuroscience</subject><subj-group><subject>Artificial neural networks</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Neuroscience</subject><subj-group><subject>Computational neuroscience</subject><subj-group><subject>Artificial neural networks</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Biochemistry</subject><subj-group><subject>Proteins</subject><subj-group><subject>Proteomes</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Computer and information sciences</subject><subj-group><subject>Neural networks</subject></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Neuroscience</subject><subj-group><subject>Neural networks</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Physical sciences</subject><subj-group><subject>Mathematics</subject><subj-group><subject>Optimization</subject></subj-group></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>DeepPep: Deep proteome inference from peptide profiles</article-title>
+<alt-title alt-title-type="running-head">Deep proteome inference</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" equal-contrib="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Kim</surname> <given-names>Minseung</given-names></name>
+<role content-type="http://credit.casrai.org/">Conceptualization</role>
+<role content-type="http://credit.casrai.org/">Data curation</role>
+<role content-type="http://credit.casrai.org/">Formal analysis</role>
+<role content-type="http://credit.casrai.org/">Investigation</role>
+<role content-type="http://credit.casrai.org/">Methodology</role>
+<role content-type="http://credit.casrai.org/">Project administration</role>
+<role content-type="http://credit.casrai.org/">Resources</role>
+<role content-type="http://credit.casrai.org/">Software</role>
+<role content-type="http://credit.casrai.org/">Validation</role>
+<role content-type="http://credit.casrai.org/">Visualization</role>
+<role content-type="http://credit.casrai.org/">Writing – original draft</role>
+<role content-type="http://credit.casrai.org/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" equal-contrib="yes" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0002-2487-017X</contrib-id>
+<name name-style="western">
+<surname>Eetemadi</surname> <given-names>Ameen</given-names></name>
+<role content-type="http://credit.casrai.org/">Data curation</role>
+<role content-type="http://credit.casrai.org/">Investigation</role>
+<role content-type="http://credit.casrai.org/">Methodology</role>
+<role content-type="http://credit.casrai.org/">Resources</role>
+<role content-type="http://credit.casrai.org/">Software</role>
+<role content-type="http://credit.casrai.org/">Validation</role>
+<role content-type="http://credit.casrai.org/">Writing – original draft</role>
+<role content-type="http://credit.casrai.org/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0003-1104-7616</contrib-id>
+<name name-style="western">
+<surname>Tagkopoulos</surname> <given-names>Ilias</given-names></name>
+<role content-type="http://credit.casrai.org/">Conceptualization</role>
+<role content-type="http://credit.casrai.org/">Funding acquisition</role>
+<role content-type="http://credit.casrai.org/">Project administration</role>
+<role content-type="http://credit.casrai.org/">Supervision</role>
+<role content-type="http://credit.casrai.org/">Writing – original draft</role>
+<role content-type="http://credit.casrai.org/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+</contrib-group>
+<aff id="aff001">
+<label>1</label>
+<addr-line>Department of Computer Science, University of California, Davis, Davis, California, United States of America</addr-line>
+</aff>
+<aff id="aff002">
+<label>2</label>
+<addr-line>Genome Center, University of California, Davis, Davis, California, United States of America</addr-line>
+</aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Tang</surname> <given-names>Haixu</given-names></name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1">
+<addr-line>Indiana University, UNITED STATES</addr-line>
+</aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">iliast@ucdavis.edu</email></corresp>
+</author-notes>
+<pub-date pub-type="collection">
+<month>9</month>
+<year>2017</year>
+</pub-date>
+<pub-date pub-type="epub">
+<day>5</day>
+<month>9</month>
+<year>2017</year>
+</pub-date>
+<volume>13</volume>
+<issue>9</issue>
+<elocation-id>e1005661</elocation-id>
+<history>
+<date date-type="received">
+<day>25</day>
+<month>1</month>
+<year>2017</year>
+</date>
+<date date-type="accepted">
+<day>27</day>
+<month>6</month>
+<year>2017</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2017</copyright-year>
+<copyright-holder>Kim et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pcbi.1005661"/>
+<abstract>
+<p>Protein inference, the identification of the protein set that is the origin of a given peptide profile, is a fundamental challenge in proteomics. We present DeepPep, a deep-convolutional neural network framework that predicts the protein set from a proteomics mixture, given the sequence universe of possible proteins and a target peptide profile. In its core, DeepPep quantifies the change in probabilistic score of peptide-spectrum matches in the presence or absence of a specific protein, hence selecting as candidate proteins with the largest impact to the peptide profile. Application of the method across datasets argues for its competitive predictive ability (AUC of 0.80±0.18, AUPR of 0.84±0.28) in inferring proteins without need of peptide detectability on which the most competitive methods rely. We find that the convolutional neural network architecture outperforms the traditional artificial neural network architectures without convolution layers in protein inference. We expect that similar deep learning architectures that allow learning nonlinear patterns can be further extended to problems in metagenome profiling and cell type inference. The source code of DeepPep and the benchmark datasets used in this study are available at <ext-link ext-link-type="uri" xlink:href="https://deeppep.github.io/DeepPep/" xlink:type="simple">https://deeppep.github.io/DeepPep/</ext-link>.</p>
+</abstract>
+<abstract abstract-type="summary">
+<title>Author Summary</title>
+<p>The accurate identification of proteins in a proteomics sample, called the protein inference problem, is a fundamental challenge in biomedical sciences. Current approaches are based on applications of traditional neural networks, linear optimization and Bayesian techniques. We here present DeepPep, a deep-convolutional neural network framework that predicts the protein set from a standard proteomics mixture, given all protein sequences and a peptide profile. Comparison to leading methods shows that DeepPep has most robust performance with various instruments and datasets. Our results provide evidence that using sequence-level location information of a peptide in the context of proteome sequence can result in more accurate and robust protein inference. We conclude that Deep Learning on protein sequence leads to superior platforms for protein inference that can be further refined with additional features and extended for far reaching applications.</p>
+</abstract>
+<funding-group>
+<award-group id="award001">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/100000083</institution-id>
+<institution>Directorate for Computer and Information Science and Engineering</institution>
+</institution-wrap>
+</funding-source>
+<award-id>1516695</award-id>
+<principal-award-recipient>
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0003-1104-7616</contrib-id>
+<name name-style="western">
+<surname>Tagkopoulos</surname> <given-names>Ilias</given-names></name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award002">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/100000083</institution-id>
+<institution>Directorate for Computer and Information Science and Engineering</institution>
+</institution-wrap>
+</funding-source>
+<award-id>1254205</award-id>
+<principal-award-recipient>
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0003-1104-7616</contrib-id>
+<name name-style="western">
+<surname>Tagkopoulos</surname> <given-names>Ilias</given-names></name>
+</principal-award-recipient>
+</award-group>
+<funding-statement>This work was supported by a grant (to IT) from Mars, Inc. (<ext-link ext-link-type="uri" xlink:href="http://www.mars.com" xlink:type="simple">www.mars.com</ext-link>) and National Science Foundation (<ext-link ext-link-type="uri" xlink:href="http://www.nsf.gov" xlink:type="simple">www.nsf.gov</ext-link>) awards 1254205 and 1516695 (to IT). The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="5"/>
+<table-count count="1"/>
+<page-count count="17"/>
+</counts>
+<custom-meta-group>
+<custom-meta>
+<meta-name>PLOS Publication Stage</meta-name>
+<meta-value>vor-update-to-uncorrected-proof</meta-value>
+</custom-meta>
+<custom-meta>
+<meta-name>Publication Update</meta-name>
+<meta-value>2017-09-15</meta-value>
+</custom-meta>
+<custom-meta id="data-availability">
+<meta-name>Data Availability</meta-name>
+<meta-value>All data are fully available without restriction from <ext-link ext-link-type="uri" xlink:href="https://deeppep.github.io/DeepPep" xlink:type="simple">https://deeppep.github.io/DeepPep</ext-link>.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<disp-quote>
+<p>This is a <italic>PLOS Computational Biology</italic> Methods paper.</p>
+</disp-quote>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>The accurate identification of proteins in a proteomics sample is a key challenge in life sciences. Proteins, the final gene product and the fundamental blocks of all cellular processes, are elusive to detect. The standard technology that provides fast, high-throughput characterization of complex protein mixtures is mass spectrometry-based shotgun proteomics. Initially, proteins are fragmented in small amino acid chains that are called peptides that then pass through a mass spectrometer. This results in a specific mass spectrum signature for each peptide, which correlates current intensity with a peptide’s weight and charge. Next, this signature is matched to a peptide database to identify which peptides are present in the sample (peptide identification step). Finally, the peptide profile is used to predict which proteins were more likely to produce the observed peptide set (protein inference step) [<xref ref-type="bibr" rid="pcbi.1005661.ref001">1</xref>]. More precisely, the challenge in protein inference is to infer the proteins (output) that give rise to the peptides observed in the sample. Each peptide has been identified after a database search of the sample mass spectrum, with a certain confidence level, also known as the “peptide probability” [<xref ref-type="bibr" rid="pcbi.1005661.ref002">2</xref>].</p>
+<p>The protein inference problem has been particularly challenging due to existence of degenerate peptides and ‘one-hit wonders’ [<xref ref-type="bibr" rid="pcbi.1005661.ref001">1</xref>]. A degenerate peptide is one that can be generated by multiple proteins. A ‘one-hit wonder’ is a protein that has only one peptide match. The tools that have been developed for tackling these challenges use a wide arsenal of algorithmic methods, including optimization and parsimonious techniques [<xref ref-type="bibr" rid="pcbi.1005661.ref003">3</xref>], non-parametric [<xref ref-type="bibr" rid="pcbi.1005661.ref004">4</xref>] and parametric models [<xref ref-type="bibr" rid="pcbi.1005661.ref005">5</xref>] (in particular, ensemble of machine-learning methods [<xref ref-type="bibr" rid="pcbi.1005661.ref006">6</xref>]), among others [<xref ref-type="bibr" rid="pcbi.1005661.ref007">7</xref>–<xref ref-type="bibr" rid="pcbi.1005661.ref009">9</xref>] (see [<xref ref-type="bibr" rid="pcbi.1005661.ref001">1</xref>] for an extensive review). Most recent advances [<xref ref-type="bibr" rid="pcbi.1005661.ref008">8</xref>, <xref ref-type="bibr" rid="pcbi.1005661.ref009">9</xref>] rely on the quantification of peptide detectability, a measure of the detection probability for a given peptide from a standard sample mixture by a standard proteomics routine given its parent protein. That is, the peptide detectability can be considered as an inherent characteristic of a peptide that is primarily determined by its sequence and its parent protein sequence [<xref ref-type="bibr" rid="pcbi.1005661.ref001">1</xref>]. Such information is typically predicted from peptide features such as amino acid composition, N- and C- terminal residues. An intrinsic problem in estimating peptide detectabilities is the existence of different biological conditions, the unequal concentrations of proteins before preparation of the sample and the existence of errors, all of which complicate protein inference and introduce noise [<xref ref-type="bibr" rid="pcbi.1005661.ref007">7</xref>].</p>
+<p>To address these challenging aspects of protein inference, we have developed a deep learning technique, DeepPep, that uses the sequence information of proteins and peptides as inputs. Artificial neural networks have been applied in the past in proteomics, with applications such as the prediction of the retention time in LC-MS data [<xref ref-type="bibr" rid="pcbi.1005661.ref010">10</xref>, <xref ref-type="bibr" rid="pcbi.1005661.ref011">11</xref>], prediction of peptide detectability [<xref ref-type="bibr" rid="pcbi.1005661.ref007">7</xref>, <xref ref-type="bibr" rid="pcbi.1005661.ref012">12</xref>, <xref ref-type="bibr" rid="pcbi.1005661.ref013">13</xref>], prediction of peak intensity in a MS/MS spectrum [<xref ref-type="bibr" rid="pcbi.1005661.ref014">14</xref>] and more recently, prediction of protein secondary structure [<xref ref-type="bibr" rid="pcbi.1005661.ref015">15</xref>]. Notably, [<xref ref-type="bibr" rid="pcbi.1005661.ref013">13</xref>] used ensemble of 30 neural networks with one hidden layer where the number of hidden nodes ranges from 1 to 4 for prediction of peptide detectability and protein quantity. In a recent work, a neural network with one hidden layer is trained to differentiate target proteins from decoy proteins in target decoy dataset [<xref ref-type="bibr" rid="pcbi.1005661.ref016">16</xref>]. DeepPep differs from previous work as it uses convolution layers for capturing the sequence information of proteins and peptides, hence allowing for more complex nonlinear relationships. This introduces new computational challenges that we solve using advanced techniques ranging from regularization, efficient optimization method <bold>Section 2.5</bold>, and sparsity-aware, redundancy-aware computations <bold>Section 2.7</bold>. In the following sections we present the DeepPep’s architecture, the inference algorithm and its application in seven benchmark datasets.</p>
+</sec>
+<sec id="sec002" sec-type="materials|methods">
+<title>Methods</title>
+<sec id="sec003">
+<title>Method overview</title>
+<p>DeepPep is a deep learning-based framework that predicts the list of scored proteins (output) that are more likely to generate a given peptide profile (input). Each candidate protein is scored based on its effect on peptide probability predictions of the deep learning model when it is present/absent <bold>Section 2.6</bold>. The framework is composed of four sequential steps as shown in <xref ref-type="fig" rid="pcbi.1005661.g001">Fig 1</xref>. The training data consist of two components: (a) the observed peptide sequences with associated probabilities returned by mass spectra database search [<xref ref-type="bibr" rid="pcbi.1005661.ref017">17</xref>], and (b) the whole set of proteins (and their sequences) for the respective organism. This data are imported to the convolutional neural network (CNN) for identifying complex patterns between the probability of observed peptides and the positional information of the peptide in the protein sequences.</p>
+<fig id="pcbi.1005661.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1005661.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>DeepPep overview.</title>
+<p>DeepPep takes as an input a set of strings for sequences of all the protein matches to an observed peptide. (A) To train the model for a specific peptide, each protein sequence string is converted to binary with ones where the peptide sequence matches that of the protein sequence, and zero everywhere else. (B) A CNN is then trained to predict the peptide probability. A peptide probability is the probability that the peptide that is identified through a database search from the mass spectra is the correct one. (C) The effect of a protein removal to a peptide probability is then calculated for all proteins and all peptides. (D) Finally, we score proteins based on differential change of each protein in CNN when it is present/absent.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005661.g001" xlink:type="simple"/>
+</fig>
+<p>There are two key ideas here that are translated to tasks for the CNN to (indirectly) learn: first, that a protein that matches multiple peptides in the sample is more likely to be part of the protein set that gave rise to that particular sample; second, a protein with non-overlapping peptide hits is more likely to exist in the sample than a protein with the same amount but overlapping peptide hits. “Non-overlapping peptide hits” are the peptide matches to a specific protein that do not coincide, that is, there is no position in the protein sequence where two or more peptides match. The more frequent occurrence of non-overlapping hits stems from the chemical treatment of the proteins; proteins are typically degraded to peptides by trypsin, which deterministically cleaves at the carboxyl side of the amino acids lysine or arginine (except when either is followed by proline [<xref ref-type="bibr" rid="pcbi.1005661.ref018">18</xref>]) and therefore, this deterministic process in protein degradation gives rise to non-overlapping peptides. In the next step, all peptide probabilities are predicted with and without the presence of each protein. We finally score the proteins based on the difference in peptide probability between being present and absent. This differential ranking is a key concept behind DeepPep. Conceptual basis of this idea is rooted from feature selection in machine learning [<xref ref-type="bibr" rid="pcbi.1005661.ref019">19</xref>], which is performed to find informative attributes in a prediction task. Protein inference methods using feature selection can be vulnerable to cases where attributes contain similar information. Although this can make such methods give low or zero weights to proteins containing homologous peptides, we observe that such cases are very limited in real datasets. For seven separate proteomic datasets (<bold>Section 2.2</bold>), the population of protein pairs having similar peptide matches (PCC &gt; 0.7) represent on average below 0.05% among all possible pairwise comparisons of candidate proteins (<bold>S1 Table</bold> in <xref ref-type="supplementary-material" rid="pcbi.1005661.s001">S1 Text</xref>).</p>
+</sec>
+<sec id="sec004">
+<title>Datasets</title>
+<p>We used seven separate MS/MS datasets for evaluation purpose as follows:</p>
+<list list-type="bullet">
+<list-item>
+<p>Sigma49: synthetic mixture of 49 proteins from Sigma Aldrich, made available by [<xref ref-type="bibr" rid="pcbi.1005661.ref008">8</xref>].</p>
+</list-item>
+<list-item>
+<p>UPS2: sample mixture consisting of 48 human proteins with various concentrations made available by [<xref ref-type="bibr" rid="pcbi.1005661.ref020">20</xref>].</p>
+</list-item>
+<list-item>
+<p>18Mix: synthetic highly purified extract of 18 proteins [<xref ref-type="bibr" rid="pcbi.1005661.ref021">21</xref>].</p>
+</list-item>
+<list-item>
+<p>Yeast: yeast cellular extract with reference generated by intersection of various MS and non-MS based techniques [<xref ref-type="bibr" rid="pcbi.1005661.ref022">22</xref>].</p>
+</list-item>
+<list-item>
+<p>DME: protein extract of Drosophila melanogaster S2 cells [<xref ref-type="bibr" rid="pcbi.1005661.ref023">23</xref>].</p>
+</list-item>
+<list-item>
+<p>HumanMD: protein extract of human medulloblastoma Daoy cells [<xref ref-type="bibr" rid="pcbi.1005661.ref024">24</xref>].</p>
+</list-item>
+<list-item>
+<p>HumanEKC: protein extract of human embryonic kidney cells T293 [<xref ref-type="bibr" rid="pcbi.1005661.ref025">25</xref>].</p>
+</list-item>
+</list>
+<p>The summary statistics and source information of the seven datasets are shown in <bold>S2 Table</bold> (in <xref ref-type="supplementary-material" rid="pcbi.1005661.s001">S1 Text</xref>). Four datasets of Sigma49, UPS2, 18Mix, and Yeast were the ones available with information of the true protein set that gave rise to the respective peptide profiles. For three remaining datasets (DME, HumanMD, HumanEKC) however the true protein set is unknown. To mitigate, we used the target decoy strategy [<xref ref-type="bibr" rid="pcbi.1005661.ref026">26</xref>] for evaluation in such datasets instead. A target decoy strategy adds a set of incorrect (i.e. decoy) proteins to the search space to be considered as true negatives during evaluation. More specifically we used the default decoy strategy in Trans Proteomic Pipeline (TPP v5.0.0) [<xref ref-type="bibr" rid="pcbi.1005661.ref027">27</xref>], which performs random shuffling of tryptic peptides of a real protein from database to generate a new decoy protein. For each dataset, given all available mass spectrometry files and the related reference protein database, peptide probabilities are calculated using TPP. For database search and for estimation of peptide identification probabilities, X!Tandem and PeptideProphet are used, respectively. The peptide detectabilities (as needed for running MSBayesPro and ProteinLasso) are estimated using a pre-trained model provided by DQmodel [<xref ref-type="bibr" rid="pcbi.1005661.ref007">7</xref>] team. For optimizing hyper-parameters of Fido, we used the target decoy strategy over each dataset where the performance is measured based on how well the method differentiates target proteins from decoy proteins without looking into the true protein set. This doubles the size of each search dataset by adding decoy protein sequences for the amount of target proteins. For investigation of hyper-parameters for DeepPep, we employ the same approach used for Fido but only on 18Mix dataset. We would like to note that this strategy doesn’t use the information of the true protein set that gives rise to the observed profiles and thus can be used for evaluation purpose with regards to prediction of the true proteins.</p>
+</sec>
+<sec id="sec005">
+<title>Data preparation</title>
+<p>The training dataset consists of training pairs {<italic>x</italic><sub><italic>i</italic></sub>, <italic>y</italic><sub><italic>i</italic></sub>} for each peptide <italic>pp</italic><sub><italic>i</italic></sub>. The actual number of peptides that are present in any proteomics profile differ and can be from a few hundred to thousands. The input <italic>x</italic><sub><italic>i</italic></sub> is a set of binary vectors that has been constructed by (a) first preparing the amino-acid sequences of all proteins that have at least one match for any of the observed peptides in the profile, (b) then replacing their amino-acid sequences of each protein with ones in any place where there is a full match of peptide <italic>pp</italic><sub><italic>i</italic></sub> and zeros otherwise. In other words, <italic>x</italic><sub><italic>i</italic></sub> is a set of vectors that contains the location where the peptide <italic>pp</italic><sub><italic>i</italic></sub> matches to the organism’s proteome. The input <italic>y</italic><sub><italic>i</italic></sub> is the probabilistic score of a specific peptide-spectrum match for peptide <italic>pp</italic><sub><italic>i</italic></sub>, calculated from PeptideProphet [<xref ref-type="bibr" rid="pcbi.1005661.ref002">2</xref>]. In other words, it is the identification probability of a peptide in mass spectra returned by a database search. We choose the highest probability in case there exist multiple spectra matches to the same peptide. The construction of input sequence (<italic>x</italic><sub><italic>i</italic></sub>) is described in <bold>Algorithm 1</bold> and it has to be applied for each of the observed peptides.</p>
+<p><bold>Algorithm 1</bold> Build CNN Training Data</p>
+<p specific-use="line"><bold>Comment:</bold> <inline-formula id="pcbi.1005661.e001">
+<alternatives>
+<graphic id="pcbi.1005661.e001g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005661.e001" xlink:type="simple"/>
+<mml:math display="inline" id="M1">
+<mml:mover accent="true">
+<mml:mi>p</mml:mi>
+<mml:mo>^</mml:mo>
+</mml:mover>
+</mml:math>
+</alternatives>
+</inline-formula> is the set of sequences for the candidate proteins <italic>p</italic>. <inline-formula id="pcbi.1005661.e002"><alternatives><graphic id="pcbi.1005661.e002g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005661.e002" xlink:type="simple"/><mml:math display="inline" id="M2"><mml:msub><mml:mover accent="true"><mml:mrow><mml:mi>p</mml:mi> <mml:mi>p</mml:mi></mml:mrow> <mml:mo>^</mml:mo></mml:mover> <mml:mi>i</mml:mi></mml:msub></mml:math></alternatives></inline-formula> is the sequence of peptide <italic>pp</italic><sub><italic>i</italic></sub>. <italic>x</italic><sub><italic>j</italic></sub>[<italic>m</italic>, <italic>n</italic>] is the output string from position <italic>m</italic> to <italic>n</italic> for protein <italic>p</italic><sub><italic>j</italic></sub>.</p>
+<p specific-use="line"><bold>Input:</bold> <inline-formula id="pcbi.1005661.e003">
+<alternatives>
+<graphic id="pcbi.1005661.e003g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005661.e003" xlink:type="simple"/>
+<mml:math display="inline" id="M3">
+<mml:mover accent="true">
+<mml:mi>p</mml:mi>
+<mml:mo>^</mml:mo>
+</mml:mover>
+</mml:math>
+</alternatives>
+</inline-formula>, <inline-formula id="pcbi.1005661.e004"><alternatives><graphic id="pcbi.1005661.e004g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005661.e004" xlink:type="simple"/><mml:math display="inline" id="M4"><mml:mover accent="true"><mml:mrow><mml:mi>p</mml:mi> <mml:msub><mml:mi>p</mml:mi> <mml:mi>i</mml:mi></mml:msub></mml:mrow> <mml:mo>^</mml:mo></mml:mover></mml:math></alternatives></inline-formula></p>
+<p specific-use="line"><bold>Output:</bold> <italic>x</italic></p>
+<p specific-use="line"><bold>for</bold> <italic>j</italic> = 1 <bold>to</bold> |<italic>p</italic>| <bold>do</bold></p>
+<p specific-use="line"> Initialize <italic>x</italic><sub><italic>j</italic></sub> to zeros where <inline-formula id="pcbi.1005661.e005"><alternatives><graphic id="pcbi.1005661.e005g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005661.e005" xlink:type="simple"/><mml:math display="inline" id="M5"><mml:mrow><mml:mrow><mml:mo>|</mml:mo></mml:mrow> <mml:msub><mml:mi>x</mml:mi> <mml:mi>j</mml:mi></mml:msub> <mml:mrow><mml:mo>|</mml:mo> <mml:mo>=</mml:mo> <mml:mo>|</mml:mo></mml:mrow> <mml:msub><mml:mover accent="true"><mml:mi>p</mml:mi> <mml:mo>^</mml:mo></mml:mover> <mml:mi>j</mml:mi></mml:msub> <mml:mrow><mml:mo>|</mml:mo></mml:mrow></mml:mrow></mml:math></alternatives></inline-formula></p>
+<p specific-use="line"> <bold>for</bold> <italic>m</italic> = 1 <bold>to</bold> <inline-formula id="pcbi.1005661.e006"><alternatives><graphic id="pcbi.1005661.e006g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005661.e006" xlink:type="simple"/><mml:math display="inline" id="M6"><mml:mrow><mml:mrow><mml:mo>|</mml:mo></mml:mrow> <mml:msub><mml:mover accent="true"><mml:mi>p</mml:mi> <mml:mo>^</mml:mo></mml:mover> <mml:mi>j</mml:mi></mml:msub> <mml:mrow><mml:mo>|</mml:mo> <mml:mo>-</mml:mo> <mml:mo>|</mml:mo></mml:mrow> <mml:msub><mml:mover accent="true"><mml:mrow><mml:mi>p</mml:mi> <mml:mi>p</mml:mi></mml:mrow> <mml:mo>^</mml:mo></mml:mover> <mml:mi>i</mml:mi></mml:msub> <mml:mrow><mml:mo>|</mml:mo> <mml:mo>+</mml:mo> <mml:mn>1</mml:mn></mml:mrow></mml:mrow></mml:math></alternatives></inline-formula> <bold>do</bold></p>
+<p specific-use="line">   <bold>if</bold> <inline-formula id="pcbi.1005661.e007"><alternatives><graphic id="pcbi.1005661.e007g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005661.e007" xlink:type="simple"/><mml:math display="inline" id="M7"><mml:mrow><mml:mrow><mml:mtext>equal</mml:mtext> <mml:mo>(</mml:mo></mml:mrow> <mml:msub><mml:mover accent="true"><mml:mi>p</mml:mi> <mml:mo>^</mml:mo></mml:mover> <mml:mi>j</mml:mi></mml:msub> <mml:mrow><mml:mo>[</mml:mo> <mml:mi>m</mml:mi> <mml:mo>,</mml:mo> <mml:mi>m</mml:mi> <mml:mo>+</mml:mo> <mml:mo>|</mml:mo></mml:mrow> <mml:msub><mml:mover accent="true"><mml:mrow><mml:mi>p</mml:mi> <mml:mi>p</mml:mi></mml:mrow> <mml:mo>^</mml:mo></mml:mover> <mml:mi>i</mml:mi></mml:msub> <mml:mrow><mml:mo>|</mml:mo> <mml:mo>-</mml:mo> <mml:mn>1</mml:mn> <mml:mo>]</mml:mo> <mml:mo>,</mml:mo></mml:mrow> <mml:msub><mml:mover accent="true"><mml:mrow><mml:mi>p</mml:mi> <mml:mi>p</mml:mi></mml:mrow> <mml:mo>^</mml:mo></mml:mover> <mml:mi>i</mml:mi></mml:msub> <mml:mrow><mml:mo>)</mml:mo></mml:mrow></mml:mrow></mml:math></alternatives></inline-formula> <bold>then</bold></p>
+<p specific-use="line">    <inline-formula id="pcbi.1005661.e008"><alternatives><graphic id="pcbi.1005661.e008g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005661.e008" xlink:type="simple"/><mml:math display="inline" id="M8"><mml:mrow><mml:msub><mml:mi>x</mml:mi> <mml:mi>j</mml:mi></mml:msub> <mml:mrow><mml:mo>[</mml:mo> <mml:mi>m</mml:mi> <mml:mo>,</mml:mo> <mml:mi>m</mml:mi> <mml:mo>+</mml:mo> <mml:mo>|</mml:mo></mml:mrow> <mml:msub><mml:mover accent="true"><mml:mrow><mml:mi>p</mml:mi> <mml:mi>p</mml:mi></mml:mrow> <mml:mo>^</mml:mo></mml:mover> <mml:mi>i</mml:mi></mml:msub> <mml:mrow><mml:mo>|</mml:mo> <mml:mo>-</mml:mo> <mml:mn>1</mml:mn> <mml:mo>]</mml:mo></mml:mrow> <mml:mo>=</mml:mo> <mml:mn>1</mml:mn></mml:mrow></mml:math></alternatives></inline-formula></p>
+<p specific-use="line">   <bold>end if</bold></p>
+<p specific-use="line">  <bold>end for</bold></p>
+<p specific-use="line"><bold>end for</bold></p>
+</sec>
+<sec id="sec006">
+<title>CNN architecture</title>
+<p>The deep convolutional network (CNN) is organized by a series of layers (<xref ref-type="fig" rid="pcbi.1005661.g002">Fig 2</xref>). Unlike typical CNNs, the CNN in the DeepPep framework has distinctive binary vectors as its input layer to represent sequences of proteins encoding input peptides. The organization of layers in the CNN architecture is similar to what has been used before in other fields [<xref ref-type="bibr" rid="pcbi.1005661.ref028">28</xref>], alternating a convolution layer and a pooling layer four times, followed by a fully connected layer and finally overlaying an output layer that predicts the peptide probability. Each layer computes a linear transformation of the output from the previous layer multiplied by a weight matrix, followed by a nonlinear transformation (ReLU). The only exception is at output layer where it produces linear value from the previous layer without applying the transformation.</p>
+<fig id="pcbi.1005661.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1005661.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>The architecture of CNN.</title>
+<p>Input peptide constructs the n set of input sequences where n is the number of all proteins and the position of the input peptide is marked in binary mode. For example, the input peptide (TRPAY) marks ones where it has matches in each of protein sequences, otherwise zeros. The input sequence is processed in four sequential convolution layers where a pooling layer and dropout are applied between each. Fully connected layer is applied after the fourth convolution layer, which produces the output value of predicted peptide probability. ReLU function was used for all transformations.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005661.g002" xlink:type="simple"/>
+</fig>
+<p>The CNN uses three different types of layers: the convolution layer, the pooling layer and the fully connected layer. The convolution layer computes output by one-dimensional convolution operation with a specified number of filters (weight matrices) and all convolution operation outputs are then transformed by the rectified linear activation function (ReLU):
+<disp-formula id="pcbi.1005661.e009"><alternatives><graphic id="pcbi.1005661.e009g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005661.e009" xlink:type="simple"/><mml:math display="block" id="M9"><mml:mrow><mml:msubsup><mml:mi>X</mml:mi> <mml:mrow><mml:mi>i</mml:mi> <mml:mo>,</mml:mo> <mml:mi>f</mml:mi></mml:mrow> <mml:mrow><mml:mi>p</mml:mi> <mml:mo>,</mml:mo> <mml:mi>l</mml:mi></mml:mrow></mml:msubsup> <mml:mo>=</mml:mo> <mml:mtext>ReLU</mml:mtext> <mml:mrow><mml:mo stretchy="false">(</mml:mo> <mml:munderover><mml:mo>∑</mml:mo> <mml:mrow><mml:mi>j</mml:mi> <mml:mo>=</mml:mo> <mml:mn>1</mml:mn></mml:mrow> <mml:mi>w</mml:mi></mml:munderover> <mml:mspace width="1pt"/><mml:mrow><mml:munderover><mml:mo>∑</mml:mo> <mml:mrow><mml:mi>k</mml:mi> <mml:mo>=</mml:mo> <mml:mn>1</mml:mn></mml:mrow> <mml:mi>n</mml:mi></mml:munderover> <mml:mspace width="1pt"/><mml:mrow><mml:msubsup><mml:mi>W</mml:mi> <mml:mrow><mml:mi>j</mml:mi> <mml:mo>,</mml:mo> <mml:mi>k</mml:mi></mml:mrow> <mml:mrow><mml:mi>f</mml:mi> <mml:mo>,</mml:mo> <mml:mi>l</mml:mi> <mml:mo>-</mml:mo> <mml:mn>1</mml:mn></mml:mrow></mml:msubsup> <mml:msubsup><mml:mi>X</mml:mi> <mml:mrow><mml:mi>i</mml:mi> <mml:mo>+</mml:mo> <mml:mi>j</mml:mi> <mml:mo>,</mml:mo> <mml:mi>k</mml:mi></mml:mrow> <mml:mrow><mml:mi>p</mml:mi> <mml:mo>,</mml:mo> <mml:mi>l</mml:mi> <mml:mo>-</mml:mo> <mml:mn>1</mml:mn></mml:mrow></mml:msubsup></mml:mrow></mml:mrow> <mml:mo stretchy="false">)</mml:mo></mml:mrow></mml:mrow></mml:math></alternatives></disp-formula>
+where <italic>X</italic> is the input, <italic>p</italic> is the index of protein, <italic>l</italic> is the index of the convolution layer, <italic>i</italic> is the index of the output position and <italic>f</italic> is the index of filters. Each convolution filter <italic>W</italic><sup><italic>f</italic>,<italic>l</italic></sup> is an <italic>w</italic> × <italic>n</italic> weight matrix of filter <italic>f</italic> at layer <italic>l</italic> with <italic>w</italic> being the window size and <italic>n</italic> being the number of input channels.</p>
+<p>A pooling layer computes the function <italic>pool</italic> (max-pooling) in a window with the specified length (<italic>w</italic>) for each filters computed from preceding convolutional layers. The step size is equal to the size of the pooling window. This reduces the size of the output to that of the window size and thus allows sequence learning patterns of higher abstraction in the next convolution layer:
+<disp-formula id="pcbi.1005661.e010"><alternatives><graphic id="pcbi.1005661.e010g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005661.e010" xlink:type="simple"/><mml:math display="block" id="M10"><mml:mrow><mml:msubsup><mml:mi>X</mml:mi> <mml:mrow><mml:mi>i</mml:mi> <mml:mo>,</mml:mo> <mml:mi>f</mml:mi></mml:mrow> <mml:mrow><mml:mi>p</mml:mi> <mml:mo>,</mml:mo> <mml:mi>l</mml:mi></mml:mrow></mml:msubsup> <mml:mo>=</mml:mo> <mml:mtext>pool</mml:mtext> <mml:mrow><mml:mo stretchy="false">(</mml:mo> <mml:mrow><mml:mo stretchy="false">{</mml:mo> <mml:msubsup><mml:mi>X</mml:mi> <mml:mrow><mml:mi>i</mml:mi> <mml:mi>w</mml:mi> <mml:mo>,</mml:mo> <mml:mi>f</mml:mi></mml:mrow> <mml:mrow><mml:mi>p</mml:mi> <mml:mo>,</mml:mo> <mml:mi>l</mml:mi> <mml:mo>-</mml:mo> <mml:mn>1</mml:mn></mml:mrow></mml:msubsup> <mml:mo>,</mml:mo> <mml:msubsup><mml:mi>X</mml:mi> <mml:mrow><mml:mi>i</mml:mi> <mml:mi>w</mml:mi> <mml:mo>+</mml:mo> <mml:mn>1</mml:mn> <mml:mo>,</mml:mo> <mml:mi>f</mml:mi></mml:mrow> <mml:mrow><mml:mi>p</mml:mi> <mml:mo>,</mml:mo> <mml:mi>l</mml:mi> <mml:mo>-</mml:mo> <mml:mn>1</mml:mn></mml:mrow></mml:msubsup> <mml:mo>.</mml:mo> <mml:mo>.</mml:mo> <mml:mo>.</mml:mo> <mml:msubsup><mml:mi>X</mml:mi> <mml:mrow><mml:mi>i</mml:mi> <mml:mi>w</mml:mi> <mml:mo>+</mml:mo> <mml:mi>w</mml:mi> <mml:mo>-</mml:mo> <mml:mn>1</mml:mn> <mml:mo>,</mml:mo> <mml:mi>f</mml:mi></mml:mrow> <mml:mrow><mml:mi>p</mml:mi> <mml:mo>,</mml:mo> <mml:mi>l</mml:mi> <mml:mo>-</mml:mo> <mml:mn>1</mml:mn></mml:mrow></mml:msubsup> <mml:mo stretchy="false">}</mml:mo></mml:mrow> <mml:mo stretchy="false">)</mml:mo></mml:mrow></mml:mrow></mml:math></alternatives></disp-formula>
+where <italic>X</italic><sup><italic>p</italic>,<italic>l</italic></sup> is the input of protein <italic>p</italic> from preceding convolution layer <italic>l</italic> − 1, <italic>i</italic> is index of output position, <italic>f</italic> is index of filter, <italic>w</italic> is pooling window size.</p>
+<p>The number of filters for each of the four convolution layers increase at each level (5, 10, 15 and 20 respectively), so that higher-level convolution layers can produce more complex patterns. We added a fully connected layer over the fourth pooling layer, which is the high-level representation of information computed from the binary proteome sequence that encodes the input peptide profile. This fully connected layer computes the product <italic>W</italic><sup><italic>l</italic></sup><italic>X</italic><sup><italic>l</italic></sup>, where <italic>X</italic><sup><italic>l</italic></sup> is the combined input of all proteins from convolution layer <italic>l</italic> and <italic>W</italic><sup><italic>l</italic></sup> is the weight matrix for the fully connected layer. There is one weight matrix <italic>W</italic><sup><italic>l</italic></sup> corresponding to the output node of the output layer that calculates the predicted peptide probability. The optimal configuration with respect to the pooling function <italic>pool</italic>, number of filters, window sizes in convolution layer and pooling layer and number of nodes in fully connected layer was empirically determined (<bold>Section</bold>) and the final architecture is depicted in <xref ref-type="fig" rid="pcbi.1005661.g002">Fig 2</xref>.</p>
+</sec>
+<sec id="sec007">
+<title>Training of CNN</title>
+<p>The objective function is the minimization of the sum of squared errors between predicted and measured peptide probability:
+<disp-formula id="pcbi.1005661.e011"><alternatives><graphic id="pcbi.1005661.e011g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005661.e011" xlink:type="simple"/><mml:math display="block" id="M11"><mml:mrow><mml:mtext mathvariant="bold">minimize</mml:mtext> <mml:mspace width="1pt"/><mml:munder><mml:mo>∑</mml:mo> <mml:mrow><mml:mi>i</mml:mi> <mml:mo>=</mml:mo> <mml:mn>1</mml:mn></mml:mrow></mml:munder> <mml:mspace width="1pt"/><mml:msup><mml:mrow><mml:mo>(</mml:mo> <mml:msub><mml:mi>y</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>-</mml:mo> <mml:msub><mml:mover accent="true"><mml:mi>y</mml:mi> <mml:mo>^</mml:mo></mml:mover> <mml:mi>i</mml:mi></mml:msub> <mml:mo>)</mml:mo></mml:mrow> <mml:mn>2</mml:mn></mml:msup></mml:mrow></mml:math></alternatives></disp-formula>
+where <italic>i</italic> is the peptide index of all observed peptides and <italic>y</italic><sub><italic>i</italic></sub> indicates the measured probability of peptide <italic>i</italic>, <inline-formula id="pcbi.1005661.e012"><alternatives><graphic id="pcbi.1005661.e012g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005661.e012" xlink:type="simple"/><mml:math display="inline" id="M12"><mml:msub><mml:mover accent="true"><mml:mi>y</mml:mi> <mml:mo>^</mml:mo></mml:mover> <mml:mi>i</mml:mi></mml:msub></mml:math></alternatives></inline-formula> represents predicted probability of peptide <italic>i</italic>. Derivatives of the objective function with respect to the model parameters are calculated and used in standard backpropagation [<xref ref-type="bibr" rid="pcbi.1005661.ref029">29</xref>]. For updating weights in CNN, we used a gradient decent optimization algorithm called RMSprop, which was developed to deal with radically diminishing learning rates [<xref ref-type="bibr" rid="pcbi.1005661.ref030">30</xref>]. This algorithm converged significantly faster than conventional approaches such as Stochastic Gradient Descent (SGD), requiring only 30 epochs with the learning rate of 0.01 to reach below root mean squared error (RMSE) of 0.01 in all seven datasets we examined. After computation of each convolutional and fully connected layer, a dropout layer where a fraction (20% at each layer) of the model parameters are set to zero is applied to prevent overfitting [<xref ref-type="bibr" rid="pcbi.1005661.ref031">31</xref>]. We didn’t impose any regularization constraints as dropout already discarded a sufficient number of the parameters.</p>
+</sec>
+<sec id="sec008">
+<title>Protein inference using CNN</title>
+<p>The key idea behind DeepPep is that if a protein is the origin of the input peptide, the peptide probability will depend on the presence or absence of the protein from the input. To quantify this, we define the normalized change in the probability of peptide <italic>pp</italic><sub><italic>j</italic></sub> due to protein <italic>p</italic><sub><italic>i</italic></sub> as:
+<disp-formula id="pcbi.1005661.e013"><alternatives><graphic id="pcbi.1005661.e013g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005661.e013" xlink:type="simple"/><mml:math display="block" id="M13"><mml:mrow><mml:msub><mml:mi>c</mml:mi> <mml:mrow><mml:mi>i</mml:mi> <mml:mo>,</mml:mo> <mml:mi>j</mml:mi></mml:mrow></mml:msub> <mml:mo>=</mml:mo> <mml:mfrac><mml:mrow><mml:mrow><mml:mo>|</mml:mo></mml:mrow> <mml:msub><mml:mi>y</mml:mi> <mml:mi>j</mml:mi></mml:msub> <mml:mo>-</mml:mo> <mml:mtext>CNN</mml:mtext> <mml:mrow><mml:mo>(</mml:mo> <mml:msub><mml:mi>x</mml:mi> <mml:mi>j</mml:mi></mml:msub> <mml:mo>,</mml:mo> <mml:msub><mml:mi>p</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>)</mml:mo></mml:mrow> <mml:mrow><mml:mo>|</mml:mo></mml:mrow></mml:mrow> <mml:msubsup><mml:mi>n</mml:mi> <mml:mrow><mml:mi>i</mml:mi></mml:mrow> <mml:mi>j</mml:mi></mml:msubsup></mml:mfrac></mml:mrow></mml:math></alternatives></disp-formula>
+where CNN(<italic>x</italic><sub><italic>j</italic></sub>, <italic>p</italic><sub><italic>i</italic></sub>) represents the predicted probability of peptide <italic>pp</italic><sub><italic>j</italic></sub> in the absence of protein <italic>p</italic><sub><italic>i</italic></sub>. The normalization quantity <inline-formula id="pcbi.1005661.e014"><alternatives><graphic id="pcbi.1005661.e014g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005661.e014" xlink:type="simple"/><mml:math display="inline" id="M14"><mml:msubsup><mml:mi>n</mml:mi> <mml:mi>i</mml:mi> <mml:mi>j</mml:mi></mml:msubsup></mml:math></alternatives></inline-formula> denotes the number of positions in protein <italic>p</italic><sub><italic>i</italic></sub> that were reset to zero to declare the absence of the protein. In other words, these are the number of amino acids in the protein that have a perfect match with the peptide <italic>pp</italic><sub><italic>j</italic></sub> and it is always a multiple of its length. This normalization is necessary as the probability difference will increase with the number of zeros that we impose. Finally, the score of protein <italic>p</italic><sub><italic>i</italic></sub> is assigned to be the average of <italic>c</italic><sub><italic>i</italic>,<italic>j</italic></sub> for all <italic>j</italic>. The scores of all proteins <italic>p</italic> are the outputs of DeepPep.</p>
+</sec>
+<sec id="sec009">
+<title>Scalability of DeepPep</title>
+<p>Given the way DeepPep represents peptide-protein matches, the memory requirement for loading inputs can be massive. For example, the input for the Yeast dataset takes 26GB. Even worse, the memory that a deep network needs is several times more than the actual input size (for storing gradients in each layer). Furthermore, in terms of CPU, computation of convolution, linear transformations and gradients in the network given such data, can pose a limit to scalability of DeepPep. However, given that any protein only matches with a handful of peptides, the input to DeepPep is largely sparse (between 95% to 99% depending on the dataset) and therefore taking advantage of this property can greatly reduce the memory and computational overhead of DeepPep (<bold>Section 3.4</bold>). Next we explain how to take advantage of this sparsity in the context of Deep Neural Networks.</p>
+<sec id="sec010">
+<title>Sparse representation</title>
+<p>Given that the data is sparse, we use a sparse representation, as in <bold>S1 Fig</bold> (<bold>in</bold> <xref ref-type="supplementary-material" rid="pcbi.1005661.s001">S1 Text</xref>), hence only the non-sparse information is encoded along with the index of the row which contains non-sparse information for a given column (protein). This representation reduces the memory overhead approximately 98 fold.</p>
+</sec>
+<sec id="sec011">
+<title>Sparse calculations</title>
+<p>Given the sparse input representation, individual layers need to preserve the sparsity across layers, hence avoiding computations involving zero records throughout. We achieve this by introducing the following:</p>
+<list list-type="order">
+<list-item>
+<p>Avoiding the bias term: To preserve the sparsity of data throughout layers we remove the “bias” (or offset) term in all layers. Although this has the potential of limiting the modeling capacity of the network (e.g. negative correlations), our experiments did not show a practical difference for the given datasets. This can be due to i) input dataset being non-negative, ii) peptide abundance is expected to increase monotonically with added proteins. Hence we don’t expect to have negative trends.</p>
+</list-item>
+<list-item>
+<p>Avoiding gradient calculation: In DeepPep, only the Convolution and Linear layers have parameters (i.e. weights) for which gradient need to be calculated. When the module input is zero, there is no contribution of the back-propagated error to the local gradient, hence those calculations are omitted.</p>
+</list-item>
+</list>
+</sec>
+<sec id="sec012">
+<title>Shared intermediate transformations</title>
+<p>The final phase of DeepPep consists of calculating the share of each protein in predicted peptide probabilities. In a naïve implementation, for each protein the CNN is applied on all the inputs while peptide matches for the given protein is set to zero. To make this efficient, the CNN’s output of the layer prior to the final layer is first saved without setting any match to zero. Then for each protein, only the outputs corresponding to that protein are multiplied by their related weights in the final layer to calculate the share of that protein in the final prediction. This implementation provides (<italic>N</italic>-1) fold improvement in terms of runtime where <italic>N</italic> is the number of candidate proteins.</p>
+</sec>
+</sec>
+<sec id="sec013">
+<title>Comparison with other methods</title>
+<p>We used the following four popular methods that are based on optimization, Bayesian, and constrained regression approaches to compare with DeepPep. The running time of protein inference methods including prerequisite steps of each method (e.g. DQModel, TPP pipeline) was all measured and compared on Two Intel E5-2630 v3 2.4GHz CPUs with eight cores with 64GB of RDIMM RAM.</p>
+<sec id="sec014">
+<title>Fido</title>
+<p>Fido [<xref ref-type="bibr" rid="pcbi.1005661.ref032">32</xref>] is the Bayesian method for computing discriminative posterior protein probabilities. This method has been updated to achieve higher computational efficiency by employing probabilistic convolution trees [<xref ref-type="bibr" rid="pcbi.1005661.ref033">33</xref>]. It is based on three parameters of i) the probability of generating associated peptides from present proteins, ii) the probability of creating peptides from a noise model, and iii) the prior probability of each protein. As suggested in [<xref ref-type="bibr" rid="pcbi.1005661.ref034">34</xref>], we first ran a grid search of <italic>α</italic>, <italic>β</italic>, and <italic>γ</italic> using FidoChooseParameters with decoy dataset (for more information about how decoy datasets were generated, see <bold>Section 2.2</bold>) and executed Fido with the optimal hyper-parameters for each dataset (<bold>S3 Table</bold> in <xref ref-type="supplementary-material" rid="pcbi.1005661.s001">S1 Text</xref>). To find most accurate hyper-parameters, we set 1 for <italic>c</italic> parameter option in FidoChooseParameters. For Sigma49 dataset, we used the optimal hyper-parameters reported in [<xref ref-type="bibr" rid="pcbi.1005661.ref032">32</xref>], as its raw MS data was not available and thus, we weren’t able to produce a decoy dataset for hyper-parameter optimization.</p>
+</sec>
+<sec id="sec015">
+<title>MSBayesPro</title>
+<p>MSBayesPro [<xref ref-type="bibr" rid="pcbi.1005661.ref009">9</xref>] utilizes the concept of peptide detectability, which is defined as the probability of detecting a peptide in a standard sample by a standard proteomics routine. We first obtain the peptide identifications and their probabilities from PeptideProphet [<xref ref-type="bibr" rid="pcbi.1005661.ref002">2</xref>]. Peptide detectabilities of a protein search database were produced using DQModel [<xref ref-type="bibr" rid="pcbi.1005661.ref007">7</xref>] and then the detectability information of the proteins present in peptide identification step are filtered in (<bold>Section 2.2</bold>). Finally, we run MSBayesPro to estimate the protein priors and run again with priors to obtain the final protein probabilities.</p>
+</sec>
+<sec id="sec016">
+<title>ProteinLasso</title>
+<p>ProteinLasso [<xref ref-type="bibr" rid="pcbi.1005661.ref008">8</xref>] formulates the protein inference problem as a constrained Lasso regression problem, which can be solved very efficiently through a coordinate descent procedure. Similar to MSBayesPro, ProteinLasso also needs peptide detectability values as input. We adopt the same peptide detectability generation procedure used in MSBayesPro. As instructed from [<xref ref-type="bibr" rid="pcbi.1005661.ref008">8</xref>], we set <italic>ϵ</italic> = 0.001 and <italic>K</italic> = 100 in our experiment. From the peptide identification and peptide detectability files, we can calculate the <italic>λ</italic><sub><italic>max</italic></sub> value. Then we measure <italic>λ</italic><sub><italic>min</italic></sub> by assigning <italic>ϵλ</italic><sub><italic>max</italic></sub>. <italic>K</italic> intervals are chosen from <italic>λ</italic><sub><italic>max</italic></sub> to <italic>λ</italic><sub><italic>min</italic></sub> on the log scale. Based on each <italic>λ</italic> value, ProteinLasso finally outputs a list of protein probabilities.</p>
+</sec>
+<sec id="sec017">
+<title>ProteinLP</title>
+<p>ProteinLP [<xref ref-type="bibr" rid="pcbi.1005661.ref003">3</xref>] minimizes the number of proteins with non-zero probabilities under the constraint that the difference between the calculated peptide probability and the peptide probability generated from peptide identification algorithms should be less than some threshold. We set <italic>ϵ</italic> = 0 in the experiment for ProteinLP as instructed from [<xref ref-type="bibr" rid="pcbi.1005661.ref003">3</xref>].</p>
+</sec>
+</sec>
+<sec id="sec018">
+<title>Implementation</title>
+<p>Hyper-parameter optimization of DeepPep was performed on parallel under the CPU environment on the NCSA Blue Waters supercomputer (a petascale machine with 22,500 nodes of AMD 6276 Interlagos 2.3GHz processors, 64GB memory per node). The computing environment used for comparison of running time of protein inference methods was described in <bold>Section 2.8</bold>. The “Data Preparation” step is done in Python while the training and protein inference using CNN architecture are implemented with the torch7 framework. For efficient implementation of convolutional layers, sliding windows between neighboring proteins are omitted to avoid any biases coming from concatenation of strings amongst heterogeneous proteins. The source code of DeepPep and the benchmark datasets used in this study are available at <ext-link ext-link-type="uri" xlink:href="https://deeppep.github.io/DeepPep/" xlink:type="simple">https://deeppep.github.io/DeepPep/</ext-link>.</p>
+</sec>
+</sec>
+<sec id="sec019" sec-type="results">
+<title>Results</title>
+<sec id="sec020">
+<title>Architecture optimization</title>
+<p>We first performed empirical hyper-parameter optimization by measuring the effect of different parameters to the prediction performance. The optimal configuration (e.g. max pooling) was investigated with respect to the pooling function <italic>pool</italic>, number of filters, window sizes in convolution layer and pooling layer and number of nodes in fully connected layer. The performance of each configuration was evaluated using the target decoy approach on 18Mix dataset (<bold>Section 2.2</bold>). In this approach, the performance is measured based on how well the method differentiates target proteins from decoy proteins and therefore, this evaluation does not use the information of the true protein set. As shown in <bold>S4 Table</bold> (in <xref ref-type="supplementary-material" rid="pcbi.1005661.s001">S1 Text</xref>), DeepPep remains robust with a high AUC/AUPR value (0.94±0.009/0.93±0.008) in the spectrum of the experiments we performed (final selection is shown in <xref ref-type="fig" rid="pcbi.1005661.g002">Fig 2</xref>).</p>
+</sec>
+<sec id="sec021">
+<title>Performance comparison</title>
+<p><xref ref-type="fig" rid="pcbi.1005661.g003">Fig 3</xref> depicts the performance of the six methods for the seven independent datasets with respect to ROC curve and PR curve. Overall, DeepPep shows competing performance across different datasets, ranking first by a narrow margin in overall AUC and AUPR. It is noticeable that DeepPep outperforms other methods for HumanEKC dataset. Although the AUC/AUPR performance of DeepPep are below those of other methods for DME dataset, we noticed that the performance based on the final list of inferred proteins (i.e. F1-measure) is comparable as shown in <xref ref-type="fig" rid="pcbi.1005661.g004">Fig 4</xref>. Furthermore, the hyper-parameters of DeepPep learned from the decoy-added 18Mix dataset might not be optimal for DME dataset, which could be improved once hyper-parameter optimization is performed separately for each of the seven datasets using the target decoy approach <bold>Section 2.2</bold> as done for Fido <bold>Section 2.8.1</bold>. DeepPep ranks first by a small margin or ties with others in first place for four (18Mix, Sigma49, Yeast and HumanEKC) out of seven datasets.</p>
+<fig id="pcbi.1005661.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1005661.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title>ROC (Receiver Operator Characteristic) and PR (Precision Recall) curve of DeepPep and five other methods for seven independent datasets.</title>
+<p>ANN-Pep uses the same framework of DeepPep except that its neural network architecture doesn’t employ convolution layers. Among 18 different configurations of ANN-Pep, the configuration with best performance is shown. Complete results of ANN-Pep are shown in <bold>S5 Table</bold> (in <xref ref-type="supplementary-material" rid="pcbi.1005661.s001">S1 Text</xref>).</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005661.g003" xlink:type="simple"/>
+</fig>
+<fig id="pcbi.1005661.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1005661.g004</object-id>
+<label>Fig 4</label>
+<caption>
+<title/>
+<p>(A) F1-measure of DeepPep and four other methods for three independent sources. F1-measure was computed for positive predictions, and negative predictions. (B) Precision of degenerate proteins (proteins that have peptides with multiple protein matches) was measured for each of three datasets. That is, the proportion of degenerate proteins being known among all degenerate proteins predicted as known. The final list of inferred protein set is decided by top-k ranked proteins, where k is 38, 43, 51, 3405, 316, 282, 1316 for 18 Mixtures, Sigma49, USP2, Yeast, DME, HumanMD, and HumanEKC, respectively. As in [<xref ref-type="bibr" rid="pcbi.1005661.ref008">8</xref>], the value of <italic>k</italic> is determined by the number of proteins having probability of 1.0 computed by ProteinProphet [<xref ref-type="bibr" rid="pcbi.1005661.ref004">4</xref>]. LP; ProteinLP, PL; ProteinLasso.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005661.g004" xlink:type="simple"/>
+</fig>
+<p>Next, we assess the degree that the convolution layers impact the performance of DeepPep. For this purpose, we compare the performance of DeepPep against traditional Artificial Neural Networks without convolution layers but otherwise similar settings (ANN-Pep). ANN-Pep uses fully connected layers to connect inputs to outputs. The results (<xref ref-type="fig" rid="pcbi.1005661.g003">Fig 3</xref> and <bold>S5 Table</bold> in <xref ref-type="supplementary-material" rid="pcbi.1005661.s001">S1 Text</xref>) show that overall, DeepPep (AUC/AUPR: 0.80/0.84) outperforms ANNs with 18 different architectural configurations for seven datasets (max AUC/AUPR: 0.74/0.77), which suggests spatial dependencies within input sequences are crucial to maximize the capacity of protein inference. The performance of all 18 configuration are tabulated in <bold>S5 Table</bold> (in <xref ref-type="supplementary-material" rid="pcbi.1005661.s001">S1 Text</xref>).</p>
+<p>We also evaluated DeepPep with other methods based on the list of predicted proteins (<xref ref-type="fig" rid="pcbi.1005661.g004">Fig 4</xref>). DeepPep shows comparable performance with the other four methods across different datasets with regards to positive prediction and negative prediction of inferred proteins. MSBayesPro shows top performance in positive prediction of inferred proteins for HumanMD dataset, whereas its performance is degraded on other datasets (e.g. Sigma49 and HumanEKC). Second, DeepPep is particularly sensitive in prediction of degenerate proteins, which have peptides with multiple protein matches. It is particularly notable that the performance of other methods for degenerate proteins fluctuates across the datasets of Sigma49, 18Mix, UPS2, and Yeast whereas DeepPep shows consistently competitive performance overall. Dealing with such proteins has been considered more challenging than others because there are multiple options to select protein origins of a peptide. Overall, DeepPep outperforms other methods in terms of precision for degenerate proteins.</p>
+</sec>
+<sec id="sec022">
+<title>Visual interpretation of DeepPep</title>
+<p>We next investigated visually underlying processes in DeepPep. As shown in <xref ref-type="fig" rid="pcbi.1005661.g005">Fig 5A</xref>, the mean change in peptide probability with and without a protein (left bar) highly correlates with a list of gold standard proteins (right bar). As expected, the proteins with more peptide matches undergo more changes in peptide probability in general (heat map). This is because our CNN learns the source of observed peptide probability with respect to proteome sequences and a protein with multiple peptides matches will have higher weights in the CNN than a protein with few matches. This will result in increased change in the CNN’s output when a protein that is the origin of the peptide is nullified. In the underlying processes of computing output from input in the CNN, the deeper convolution layers increase the difference between positive and negative samples (<xref ref-type="fig" rid="pcbi.1005661.g005">Fig 5B</xref>). One explanation is that the changes are transmitted to adjacent neurons as a pair of pooling/convolution undergoes and proteins with more peptide matches (which is likely be in the protein set) will overall impact more in neighboring neurons than proteins with few peptide matches. This interpretation is more visible in <xref ref-type="fig" rid="pcbi.1005661.g005">Fig 5C</xref>, which shows that in the first convolution layer, the changes are visible in regions matching with input peptides only when it is propagated to the whole segment of the protein as it gets into a deeper layer.</p>
+<fig id="pcbi.1005661.g005" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1005661.g005</object-id>
+<label>Fig 5</label>
+<caption>
+<title>Visualization of underlying processes in DeepPep.</title>
+<p>(A) Changes in peptide probability owing to protein absence are visualized in heat map for all peptides and for all proteins in 18Mix dataset. Left bar indicates the mean changes across all peptides for each protein and it is in the decreasing order from bottom. Right bar marks known proteins in orange. (B) Mean changes of each convolution layer for known protein and unknown protein. (C) Visual representation of the averaged intermediate values for the protein P00722 in four convolutional layers for processing 68 input peptides having matches in the protein in DeepPep.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005661.g005" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec023">
+<title>Comparison of computational efficiency</title>
+<p>We examined computational efficiency of DeepPep in comparison to other methods over seven datasets. The results (<xref ref-type="table" rid="pcbi.1005661.t001">Table 1</xref>) show that the efficient implementation of DeepPep (<bold>Section 2.7</bold>) enables it to run between 2.5 minutes and 90 minutes depending on the size of dataset (<bold>S2 Table</bold> in <xref ref-type="supplementary-material" rid="pcbi.1005661.s001">S1 Text</xref>). We observed that MSBayesPro shows a significant delay when the dataset size becomes larger (i.e. Yeast, DME, HumanMD, and HumanEKC). Please note that the computational efficiency of Fido can be enhanced further with its advanced version (FidoCT, [<xref ref-type="bibr" rid="pcbi.1005661.ref033">33</xref>]) although its impact should be minimal in the rank as it already shows top performance overall. Apparently, although DeepPep is not the most efficient method among five methods in terms of running time of the protein inference method, we would like to point out that many other methods need prerequisite steps before execution ranging from estimation of peptide detectability (ProteinLasso and MSBayesPro) to hyper-parameter optimization using target decoy strategy (Fido), which all affect the overall running time (<bold>S6 Table</bold> in <xref ref-type="supplementary-material" rid="pcbi.1005661.s001">S1 Text</xref>). Specifically, Fido’s prerequisite step to optimize hyper-parameters based on a grid search over a decoy-added dataset necessitates to almost double the running time of TPP by adding decoy proteins on the search database, which consumes from 15 min to 29 hours more depending on the size of dataset. Considering all these hidden steps required before running actual methods, DeepPep ranks in second or third place among five methods in overall running time comparisons.</p>
+<table-wrap id="pcbi.1005661.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1005661.t001</object-id>
+<label>Table 1</label>
+<caption>
+<title>Comparison of computational efficiency of five protein inference methods over six datasets.</title>
+<p>We ran three times for each method on the computer (Two Intel E5-2630 v3 2.4GHz CPUs with eight cores with 64GB of RDIMM RAM). PLP; ProteinLP, MSB; MSBayesPro, PL; ProteinLasso. HMD; HumanMD dataset, HEKC, HumanEKC dataset.</p>
+</caption>
+<alternatives>
+<graphic id="pcbi.1005661.t001g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005661.t001" xlink:type="simple"/>
+<table border="0" frame="box" rules="all">
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="center" rowspan="2">Datasets</th>
+<th align="center" colspan="5">Methods</th>
+</tr>
+<tr>
+<th align="center">PLP</th>
+<th align="center">MSB</th>
+<th align="center">PL</th>
+<th align="center">Fido</th>
+<th align="center">DeepPep</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><bold>18Mix</bold></td>
+<td align="center">1.79s (±0.05)</td>
+<td align="center">4.11s (±1.02)</td>
+<td align="center">0.23s (±0.01)</td>
+<td align="center">0.24s (±0.01)</td>
+<td align="center">150.07s (±1.07)</td>
+</tr>
+<tr>
+<td align="center"><bold>UPS2</bold></td>
+<td align="center">1.81s (±0.06)</td>
+<td align="center">12.32s (±0.61)</td>
+<td align="center">3.09s (±0.18)</td>
+<td align="center">5.45s (±0.19)</td>
+<td align="center">211.68s (±1.70)</td>
+</tr>
+<tr>
+<td align="center"><bold>Yeast</bold></td>
+<td align="center">742.7s (±10.78)</td>
+<td align="center">36120s (±190.72)</td>
+<td align="center">36.35s (±1.12)</td>
+<td align="center">3.90s (±0.24)</td>
+<td align="center">5421s (±113.9)</td>
+</tr>
+<tr>
+<td align="center"><bold>DME</bold></td>
+<td align="center">6.34s (±0.29)</td>
+<td align="center">1923.36s (±12.66)</td>
+<td align="center">22.78s (±1.17)</td>
+<td align="center">0.60s (±0.07)</td>
+<td align="center">737.48s (±4.56)</td>
+</tr>
+<tr>
+<td align="center"><bold>HMD</bold></td>
+<td align="center">150.7s (±4.54)</td>
+<td align="center">22640.1s (±709.17)</td>
+<td align="center">285.12s (±2.45)</td>
+<td align="center">4.55s (±0.17)</td>
+<td align="center">2483s (±113.84)</td>
+</tr>
+<tr>
+<td align="center"><bold>HEKC</bold></td>
+<td align="center">59.09s (±3.25)</td>
+<td align="center">10617.8s (±222.25)</td>
+<td align="center">136.54s (±5.22)</td>
+<td align="center">3.65s (±0.22)</td>
+<td align="center">1152.73s (±9.80)</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+</sec>
+</sec>
+<sec id="sec024" sec-type="conclusions">
+<title>Discussion</title>
+<p>We described DeepPep, a convolutional neural network method for deep protein inference. Our results provide evidence that using sequence-level location information of a peptide in the context of proteome sequence can result in more accurate and robust protein inference. DeepPep demonstrated a competitive predictive ability (AUC of 0.80±0.18, AUPR of 0.84±0.28) in inferring proteins without need of peptide detectability on which recent methods mostly rely. This has significant implications in proteomics pipelines, where peptide detectability quantification is a major step. We also demonstrated the predictive value of the convolutional layers, by comparing DeepPep to various other ANNs, highlighting the importance of spatial dependencies in peptide/protein sequences.</p>
+<p>In performance comparison, while DeepPep was trained on the same datasets that required protein inference, the detectability-based methods (ProteinLasso and MSBayesPro) were executed with peptide detectabilities predicted using models trained on totally different datasets. As shown in [<xref ref-type="bibr" rid="pcbi.1005661.ref007">7</xref>], detectability predictions impact the protein inference performance, therefore, training detectability prediction models on the datasets to infer the protein set might alter the reported performance of ProteinLasso and MSBayesPro at the expense of having a longer overall computation time.</p>
+<p>The architecture of DeepPep can be extended to predict quantities of proteins beyond identification of proteins. For example, one can use the concentration or count of each peptide as an informative feature for predicting the concentration of each protein in the original sample. Furthermore, although we have addressed scalability issues in DeepPep by employing the sparsity of proteome datasets, other advances to tackle computational complexity in deep learning, for example, distributed training [<xref ref-type="bibr" rid="pcbi.1005661.ref035">35</xref>] and optimization of memory use [<xref ref-type="bibr" rid="pcbi.1005661.ref036">36</xref>], can be integrated, which will make the tool more available, anticipating the method can be deployed for most practical applications, similar to the way it was demonstrated in this work. In addition, the proposed method relies on the preceding method (PeptideProphet [<xref ref-type="bibr" rid="pcbi.1005661.ref002">2</xref>]) that identifies peptides from a given set of mass-spectra. This method has shown high precision, achieving AUC from 0.96 to 0.97 across different datasets [<xref ref-type="bibr" rid="pcbi.1005661.ref037">37</xref>]. To minimize any noise produced in identifying peptides, the proposed framework can be extended to directly take mass spectra as input (e.g. input encodes short peptide corresponding to each mass spectra and its intensity becomes desired output of CNN.).</p>
+<p>We would like to emphasize that application of a similar architecture to the one present in DeepPep can be introduced to solve biological problems beyond protein inference. For example, it can be applied in metagenome sequencing where genetic profiles are derived directly from environmental samples and there the task will be to identify the microbial consortia [<xref ref-type="bibr" rid="pcbi.1005661.ref038">38</xref>]. Similarly, cell type inference from short RNA reads of fragmented heterogeneous cells [<xref ref-type="bibr" rid="pcbi.1005661.ref039">39</xref>] can benefit from such architecture. Doing so will add one more area where the power of deep learning can be harvested to increase prediction performance in computational biology [<xref ref-type="bibr" rid="pcbi.1005661.ref028">28</xref>, <xref ref-type="bibr" rid="pcbi.1005661.ref040">40</xref>, <xref ref-type="bibr" rid="pcbi.1005661.ref041">41</xref>].</p>
+</sec>
+<sec id="sec025">
+<title>Supporting information</title>
+<supplementary-material id="pcbi.1005661.s001" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005661.s001" xlink:type="simple">
+<label>S1 Text</label>
+<caption>
+<title>Supplementary results.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ack>
+<p>We would like to thank to Dr. Haixu Tang and Dr. Sujun Li for their help with setting up and running the DQModel.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1005661.ref001">
+<label>1</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Huang</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Yu</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>He</surname> <given-names>Z</given-names></name>. <article-title>Protein inference: a review</article-title>. <source>Briefings in bioinformatics</source>. <year>2012</year>;p. <fpage>bbs004</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref002">
+<label>2</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Ma</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Vitek</surname> <given-names>O</given-names></name>, <name name-style="western"><surname>Nesvizhskii</surname> <given-names>AI</given-names></name>. <article-title>A statistical model-building perspective to identification of MS/MS spectra with PeptideProphet</article-title>. <source>BMC bioinformatics</source>. <year>2012</year>;<volume>13</volume>(<issue>Suppl 16</issue>):<fpage>S1</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/1471-2105-13-S16-S1" xlink:type="simple">10.1186/1471-2105-13-S16-S1</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref003">
+<label>3</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Huang</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>He</surname> <given-names>Z</given-names></name>. <article-title>A linear programming model for protein inference problem in shotgun proteomics</article-title>. <source>Bioinformatics</source>. <year>2012</year>;<volume>28</volume>(<issue>22</issue>):<fpage>2956</fpage>–<lpage>2962</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/bioinformatics/bts540" xlink:type="simple">10.1093/bioinformatics/bts540</ext-link></comment> <object-id pub-id-type="pmid">22954624</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref004">
+<label>4</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Nesvizhskii</surname> <given-names>AI</given-names></name>, <name name-style="western"><surname>Keller</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Kolker</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Aebersold</surname> <given-names>R</given-names></name>. <article-title>A statistical model for identifying proteins by tandem mass spectrometry</article-title>. <source>Analytical chemistry</source>. <year>2003</year>;<volume>75</volume>(<issue>17</issue>):<fpage>4646</fpage>–<lpage>4658</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1021/ac0341261" xlink:type="simple">10.1021/ac0341261</ext-link></comment> <object-id pub-id-type="pmid">14632076</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref005">
+<label>5</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Moore</surname> <given-names>RE</given-names></name>, <name name-style="western"><surname>Young</surname> <given-names>MK</given-names></name>, <name name-style="western"><surname>Lee</surname> <given-names>TD</given-names></name>. <article-title>Qscore: an algorithm for evaluating SEQUEST database search results</article-title>. <source>Journal of the American Society for Mass Spectrometry</source>. <year>2002</year>;<volume>13</volume>(<issue>4</issue>):<fpage>378</fpage>–<lpage>386</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/S1044-0305(02)00352-5" xlink:type="simple">10.1016/S1044-0305(02)00352-5</ext-link></comment> <object-id pub-id-type="pmid">11951976</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref006">
+<label>6</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Zhao</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Liu</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Teng</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>He</surname> <given-names>Z</given-names></name>. <article-title>BagReg: Protein inference through machine learning</article-title>. <source>Computational biology and chemistry</source>. <year>2015</year>;<volume>57</volume>:<fpage>12</fpage>–<lpage>20</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.compbiolchem.2015.02.009" xlink:type="simple">10.1016/j.compbiolchem.2015.02.009</ext-link></comment> <object-id pub-id-type="pmid">25707552</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref007">
+<label>7</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Li</surname> <given-names>YF</given-names></name>, <name name-style="western"><surname>Arnold</surname> <given-names>RJ</given-names></name>, <name name-style="western"><surname>Tang</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Radivojac</surname> <given-names>P</given-names></name>. <article-title>The importance of peptide detectability for protein identification, quantification, and experiment design in MS/MS proteomics</article-title>. <source>Journal of proteome research</source>. <year>2010</year>;<volume>9</volume>(<issue>12</issue>):<fpage>6288</fpage>–<lpage>6297</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1021/pr1005586" xlink:type="simple">10.1021/pr1005586</ext-link></comment> <object-id pub-id-type="pmid">21067214</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref008">
+<label>8</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Huang</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Gong</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Yang</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>He</surname> <given-names>Z</given-names></name>. <article-title>ProteinLasso: A Lasso regression approach to protein inference problem in shotgun proteomics</article-title>. <source>Computational biology and chemistry</source>. <year>2013</year>;<volume>43</volume>:<fpage>46</fpage>–<lpage>54</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.compbiolchem.2012.12.008" xlink:type="simple">10.1016/j.compbiolchem.2012.12.008</ext-link></comment> <object-id pub-id-type="pmid">23385215</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref009">
+<label>9</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Li</surname> <given-names>YF</given-names></name>, <name name-style="western"><surname>Arnold</surname> <given-names>RJ</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Radivojac</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Sheng</surname> <given-names>Q</given-names></name>, <name name-style="western"><surname>Tang</surname> <given-names>H</given-names></name>. <article-title>A Bayesian approach to protein inference problem in shotgun proteomics</article-title>. <source>Journal of Computational Biology</source>. <year>2009</year>;<volume>16</volume>(<issue>8</issue>):<fpage>1183</fpage>–<lpage>1193</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1089/cmb.2009.0018" xlink:type="simple">10.1089/cmb.2009.0018</ext-link></comment> <object-id pub-id-type="pmid">19645593</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref010">
+<label>10</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Shinoda</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Sugimoto</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Yachie</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Sugiyama</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Masuda</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Robert</surname> <given-names>M</given-names></name>, <etal>et al</etal>. <article-title>Prediction of liquid chromatographic retention times of peptides generated by protease digestion of the Escherichia coli proteome using artificial neural networks</article-title>. <source>Journal of proteome research</source>. <year>2006</year>;<volume>5</volume>(<issue>12</issue>):<fpage>3312</fpage>–<lpage>3317</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1021/pr0602038" xlink:type="simple">10.1021/pr0602038</ext-link></comment> <object-id pub-id-type="pmid">17137332</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref011">
+<label>11</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Petritis</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Kangas</surname> <given-names>LJ</given-names></name>, <name name-style="western"><surname>Yan</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Strittmatter</surname> <given-names>EF</given-names></name>, <name name-style="western"><surname>Monroe</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Qian</surname> <given-names>W</given-names></name>, <etal>et al</etal>. <article-title>Improved peptide elution time prediction for reversed-phase liquid chromatography-MS by incorporating peptide sequence information</article-title>. <source>Analytical chemistry</source>. <year>2006</year>;<volume>78</volume>(<issue>14</issue>):<fpage>5026</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1021/ac060143p" xlink:type="simple">10.1021/ac060143p</ext-link></comment> <object-id pub-id-type="pmid">16841926</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref012">
+<label>12</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Sanders</surname> <given-names>WS</given-names></name>, <name name-style="western"><surname>Bridges</surname> <given-names>SM</given-names></name>, <name name-style="western"><surname>McCarthy</surname> <given-names>FM</given-names></name>, <name name-style="western"><surname>Nanduri</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Burgess</surname> <given-names>SC</given-names></name>. <article-title>Prediction of peptides observable by mass spectrometry applied at the experimental set level</article-title>. <source>BMC bioinformatics</source>. <year>2007</year>;<volume>8</volume>(<issue>7</issue>):<fpage>S23</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/1471-2105-8-S7-S23" xlink:type="simple">10.1186/1471-2105-8-S7-S23</ext-link></comment> <object-id pub-id-type="pmid">18047723</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref013">
+<label>13</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Tang</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Arnold</surname> <given-names>RJ</given-names></name>, <name name-style="western"><surname>Alves</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Xun</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Clemmer</surname> <given-names>DE</given-names></name>, <name name-style="western"><surname>Novotny</surname> <given-names>MV</given-names></name>, <etal>et al</etal>. <article-title>A computational approach toward label-free protein quantification using predicted peptide detectability</article-title>. <source>Bioinformatics</source>. <year>2006</year>;<volume>22</volume>(<issue>14</issue>):<fpage>e481</fpage>–<lpage>e488</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/bioinformatics/btl237" xlink:type="simple">10.1093/bioinformatics/btl237</ext-link></comment> <object-id pub-id-type="pmid">16873510</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref014">
+<label>14</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Zhou</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Bowler</surname> <given-names>LD</given-names></name>, <name name-style="western"><surname>Feng</surname> <given-names>J</given-names></name>. <article-title>A machine learning approach to explore the spectra intensity pattern of peptides using tandem mass spectrometry data</article-title>. <source>BMC bioinformatics</source>. <year>2008</year>;<volume>9</volume>(<issue>1</issue>):<fpage>325</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/1471-2105-9-325" xlink:type="simple">10.1186/1471-2105-9-325</ext-link></comment> <object-id pub-id-type="pmid">18664292</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref015">
+<label>15</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Spencer</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Eickholt</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Cheng</surname> <given-names>J</given-names></name>. <article-title>A deep learning network approach to ab initio protein secondary structure prediction</article-title>. <source>IEEE/ACM Transactions on Computational Biology and Bioinformatics</source>. <year>2015</year>;<volume>12</volume>(<issue>1</issue>):<fpage>103</fpage>–<lpage>112</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1109/TCBB.2014.2343960" xlink:type="simple">10.1109/TCBB.2014.2343960</ext-link></comment> <object-id pub-id-type="pmid">25750595</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref016">
+<label>16</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Spivak</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Weston</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Tomazela</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>MacCoss</surname> <given-names>MJ</given-names></name>, <name name-style="western"><surname>Noble</surname> <given-names>WS</given-names></name>. <article-title>Direct maximization of protein identifications from tandem mass spectra</article-title>. <source>Molecular &amp; Cellular Proteomics</source>. <year>2012</year>;<volume>11</volume>(<issue>2</issue>):<fpage>M111</fpage>–<lpage>012161</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref017">
+<label>17</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Li</surname> <given-names>YF</given-names></name>, <name name-style="western"><surname>Radivojac</surname> <given-names>P</given-names></name>. <article-title>Computational approaches to protein inference in shotgun proteomics</article-title>. <source>BMC bioinformatics</source>. <year>2012</year>;<volume>13</volume>(<issue>Suppl 16</issue>):<fpage>S4</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref018">
+<label>18</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Olsen</surname> <given-names>JV</given-names></name>, <name name-style="western"><surname>Ong</surname> <given-names>SE</given-names></name>, <name name-style="western"><surname>Mann</surname> <given-names>M</given-names></name>. <article-title>Trypsin cleaves exclusively C-terminal to arginine and lysine residues</article-title>. <source>Molecular &amp; Cellular Proteomics</source>. <year>2004</year>;<volume>3</volume>(<issue>6</issue>):<fpage>608</fpage>–<lpage>614</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1074/mcp.T400003-MCP200" xlink:type="simple">10.1074/mcp.T400003-MCP200</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref019">
+<label>19</label>
+<mixed-citation publication-type="other" xlink:type="simple">Langley P, et al. Selection of relevant features in machine learning. In: Proceedings of the AAAI Fall symposium on relevance. vol. 184; 1994. p. 245–271.</mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref020">
+<label>20</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Ahrné</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Molzahn</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Glatter</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Schmidt</surname> <given-names>A</given-names></name>. <article-title>Critical assessment of proteome-wide label-free absolute abundance estimation strategies</article-title>. <source>Proteomics</source>. <year>2013</year>;<volume>13</volume>(<issue>17</issue>):<fpage>2567</fpage>–<lpage>2578</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1002/pmic.201300135" xlink:type="simple">10.1002/pmic.201300135</ext-link></comment> <object-id pub-id-type="pmid">23794183</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref021">
+<label>21</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Klimek</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Eddes</surname> <given-names>JS</given-names></name>, <name name-style="western"><surname>Hohmann</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Jackson</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Peterson</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Letarte</surname> <given-names>S</given-names></name>, <etal>et al</etal>. <article-title>The standard protein mix database: a diverse data set to assist in the production of improved peptide and protein identification software tools</article-title>. <source>The Journal of Proteome Research</source>. <year>2007</year>;<volume>7</volume>(<issue>01</issue>):<fpage>96</fpage>–<lpage>103</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1021/pr070244j" xlink:type="simple">10.1021/pr070244j</ext-link></comment> <object-id pub-id-type="pmid">17711323</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref022">
+<label>22</label>
+<mixed-citation publication-type="other" xlink:type="simple">Ramakrishnan S, Vogel C. Gold Standard of Protein Expression in Yeast; 2009. Available from: <ext-link ext-link-type="uri" xlink:href="http://www.marcottelab.org/MSdata/gold_yeast.html" xlink:type="simple">http://www.marcottelab.org/MSdata/gold_yeast.html</ext-link>.</mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref023">
+<label>23</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Brunner</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Ahrens</surname> <given-names>CH</given-names></name>, <name name-style="western"><surname>Mohanty</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Baetschmann</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Loevenich</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Potthast</surname> <given-names>F</given-names></name>, <etal>et al</etal>. <article-title>A high-quality catalog of the Drosophila melanogaster proteome</article-title>. <source>Nature biotechnology</source>. <year>2007</year>;<volume>25</volume>(<issue>5</issue>):<fpage>576</fpage>–<lpage>583</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nbt1300" xlink:type="simple">10.1038/nbt1300</ext-link></comment> <object-id pub-id-type="pmid">17450130</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref024">
+<label>24</label>
+<mixed-citation publication-type="other" xlink:type="simple">Penalva L, Vogel C. Human—Orbitrap—Daoy medulloblastoma wildtype, cell lysate; 2009. Available from: <ext-link ext-link-type="uri" xlink:href="http://www.marcottelab.org/MSdata/Data_05/" xlink:type="simple">http://www.marcottelab.org/MSdata/Data_05/</ext-link>.</mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref025">
+<label>25</label>
+<mixed-citation publication-type="other" xlink:type="simple">Penalva L, Vogel C. Human—Orbitrap—T293 embryonic kidney cells, overexpressing GFP, cell lysate and pellet; 2009. Available from: <ext-link ext-link-type="uri" xlink:href="http://www.marcottelab.org/MSdata/Data_07/" xlink:type="simple">http://www.marcottelab.org/MSdata/Data_07/</ext-link>.</mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref026">
+<label>26</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Elias</surname> <given-names>JE</given-names></name>, <name name-style="western"><surname>Gygi</surname> <given-names>SP</given-names></name>. <article-title>Target-decoy search strategy for increased confidence in large-scale protein identifications by mass spectrometry</article-title>. <source>Nature methods</source>. <year>2007</year>;<volume>4</volume>(<issue>3</issue>):<fpage>207</fpage>–<lpage>214</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nmeth1019" xlink:type="simple">10.1038/nmeth1019</ext-link></comment> <object-id pub-id-type="pmid">17327847</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref027">
+<label>27</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Deutsch</surname> <given-names>EW</given-names></name>, <name name-style="western"><surname>Mendoza</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Shteynberg</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Farrah</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Lam</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Tasman</surname> <given-names>N</given-names></name>, <etal>et al</etal>. <article-title>A guided tour of the Trans-Proteomic Pipeline</article-title>. <source>Proteomics</source>. <year>2010</year>;<volume>10</volume>(<issue>6</issue>):<fpage>1150</fpage>–<lpage>1159</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1002/pmic.200900375" xlink:type="simple">10.1002/pmic.200900375</ext-link></comment> <object-id pub-id-type="pmid">20101611</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref028">
+<label>28</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Zhou</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Troyanskaya</surname> <given-names>OG</given-names></name>. <article-title>Predicting effects of noncoding variants with deep learning-based sequence model</article-title>. <source>Nature methods</source>. <year>2015</year>;<volume>12</volume>(<issue>10</issue>):<fpage>931</fpage>–<lpage>934</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nmeth.3547" xlink:type="simple">10.1038/nmeth.3547</ext-link></comment> <object-id pub-id-type="pmid">26301843</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref029">
+<label>29</label>
+<mixed-citation publication-type="other" xlink:type="simple">Krizhevsky A, Sutskever I, Hinton GE. Imagenet classification with deep convolutional neural networks. In: Advances in neural information processing systems; 2012. p. 1097–1105.</mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref030">
+<label>30</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Tieleman</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Hinton</surname> <given-names>G</given-names></name>. <article-title>Lecture 6.5-rmsprop: Divide the gradient by a running average of its recent magnitude</article-title>. <source>COURSERA: Neural networks for machine learning</source>. <year>2012</year>;<volume>4</volume>(<issue>2</issue>).</mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref031">
+<label>31</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Srivastava</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Hinton</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Krizhevsky</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Sutskever</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Salakhutdinov</surname> <given-names>R</given-names></name>. <article-title>Dropout: A simple way to prevent neural networks from overfitting</article-title>. <source>The Journal of Machine Learning Research</source>. <year>2014</year>;<volume>15</volume>(<issue>1</issue>):<fpage>1929</fpage>–<lpage>1958</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref032">
+<label>32</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Serang</surname> <given-names>O</given-names></name>, <name name-style="western"><surname>MacCoss</surname> <given-names>MJ</given-names></name>, <name name-style="western"><surname>Noble</surname> <given-names>WS</given-names></name>. <article-title>Efficient marginalization to compute protein posterior probabilities from shotgun mass spectrometry data</article-title>. <source>Journal of proteome research</source>. <year>2010</year>;<volume>9</volume>(<issue>10</issue>):<fpage>5346</fpage>–<lpage>5357</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1021/pr100594k" xlink:type="simple">10.1021/pr100594k</ext-link></comment> <object-id pub-id-type="pmid">20712337</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref033">
+<label>33</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Serang</surname> <given-names>O</given-names></name>. <article-title>The probabilistic convolution tree: efficient exact Bayesian inference for faster LC-MS/MS protein inference</article-title>. <source>PloS one</source>. <year>2014</year>;<volume>9</volume>(<issue>3</issue>):<fpage>e91507</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pone.0091507" xlink:type="simple">10.1371/journal.pone.0091507</ext-link></comment> <object-id pub-id-type="pmid">24626234</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref034">
+<label>34</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Serang</surname> <given-names>O</given-names></name>. <article-title>Concerning the accuracy of Fido and parameter choice</article-title>. <source>Bioinformatics</source>. <year>2013</year>;<volume>29</volume>(<issue>3</issue>). <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/bioinformatics/bts687" xlink:type="simple">10.1093/bioinformatics/bts687</ext-link></comment> <object-id pub-id-type="pmid">23193221</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref035">
+<label>35</label>
+<mixed-citation publication-type="other" xlink:type="simple">Dean J, Corrado G, Monga R, Chen K, Devin M, Mao M, et al. Large scale distributed deep networks. In: Advances in Neural Information Processing Systems; 2012. p. 1223–1231.</mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref036">
+<label>36</label>
+<mixed-citation publication-type="other" xlink:type="simple">Coates A, Huval B, Wang T, Wu D, Catanzaro B, Andrew N. Deep learning with COTS HPC systems. In: Proceedings of the 30th international conference on machine learning; 2013. p. 1337–1345.</mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref037">
+<label>37</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Kapp</surname> <given-names>EA</given-names></name>, <name name-style="western"><surname>Schütz</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Connolly</surname> <given-names>LM</given-names></name>, <name name-style="western"><surname>Chakel</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Meza</surname> <given-names>JE</given-names></name>, <name name-style="western"><surname>Miller</surname> <given-names>CA</given-names></name>, <etal>et al</etal>. <article-title>An evaluation, comparison, and accurate benchmarking of several publicly available MS/MS search algorithms: sensitivity and specificity analysis</article-title>. <source>Proteomics</source>. <year>2005</year>;<volume>5</volume>(<issue>13</issue>):<fpage>3475</fpage>–<lpage>3490</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1002/pmic.200500126" xlink:type="simple">10.1002/pmic.200500126</ext-link></comment> <object-id pub-id-type="pmid">16047398</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref038">
+<label>38</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Riesenfeld</surname> <given-names>CS</given-names></name>, <name name-style="western"><surname>Schloss</surname> <given-names>PD</given-names></name>, <name name-style="western"><surname>Handelsman</surname> <given-names>J</given-names></name>. <article-title>Metagenomics: genomic analysis of microbial communities</article-title>. <source>Annu Rev Genet</source>. <year>2004</year>;<volume>38</volume>:<fpage>525</fpage>–<lpage>552</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1146/annurev.genet.38.072902.091216" xlink:type="simple">10.1146/annurev.genet.38.072902.091216</ext-link></comment> <object-id pub-id-type="pmid">15568985</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref039">
+<label>39</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Efroni</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Ip</surname> <given-names>PL</given-names></name>, <name name-style="western"><surname>Nawy</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Mello</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Birnbaum</surname> <given-names>KD</given-names></name>. <article-title>Quantification of cell identity from single-cell gene expression profiles</article-title>. <source>Genome biology</source>. <year>2015</year>;<volume>16</volume>(<issue>9</issue>):<fpage>910</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref040">
+<label>40</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Alipanahi</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Delong</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Weirauch</surname> <given-names>MT</given-names></name>, <name name-style="western"><surname>Frey</surname> <given-names>BJ</given-names></name>. <article-title>Predicting the sequence specificities of DNA-and RNA-binding proteins by deep learning</article-title>. <source>Nature biotechnology</source>. <year>2015</year>;. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nbt.3300" xlink:type="simple">10.1038/nbt.3300</ext-link></comment> <object-id pub-id-type="pmid">26213851</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1005661.ref041">
+<label>41</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Xiong</surname> <given-names>HY</given-names></name>, <name name-style="western"><surname>Alipanahi</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Lee</surname> <given-names>LJ</given-names></name>, <name name-style="western"><surname>Bretschneider</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Merico</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Yuen</surname> <given-names>RK</given-names></name>, <etal>et al</etal>. <article-title>The human splicing code reveals new insights into the genetic determinants of disease</article-title>. <source>Science</source>. <year>2015</year>;<volume>347</volume>(<issue>6218</issue>):<fpage>1254806</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/science.1254806" xlink:type="simple">10.1126/science.1254806</ext-link></comment> <object-id pub-id-type="pmid">25525159</object-id></mixed-citation>
+</ref>
+</ref-list>
+</back>
+</article>

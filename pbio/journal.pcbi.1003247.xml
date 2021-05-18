@@ -1,0 +1,870 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="3.0" xml:lang="en">
+<front>
+<journal-meta>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id>
+<journal-id journal-id-type="pmc">ploscomp</journal-id><journal-title-group>
+<journal-title>PLoS Computational Biology</journal-title></journal-title-group>
+<issn pub-type="ppub">1553-734X</issn>
+<issn pub-type="epub">1553-7358</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, USA</publisher-loc></publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="publisher-id">PCOMPBIOL-D-13-00660</article-id>
+<article-id pub-id-type="doi">10.1371/journal.pcbi.1003247</article-id>
+<article-categories><subj-group subj-group-type="heading"><subject>Research Article</subject></subj-group></article-categories>
+<title-group>
+<article-title>A Horizontal Alignment Tool for Numerical Trend Discovery in Sequence Data: Application to Protein Hydropathy</article-title>
+<alt-title alt-title-type="running-head">A Horizontal Tool for Numerical Trend Discovery</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Hadzipasic</surname><given-names>Omar</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Wrabl</surname><given-names>James O.</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Hilser</surname><given-names>Vincent J.</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff2"><sup>2</sup></xref><xref ref-type="corresp" rid="cor1"><sup>*</sup></xref></contrib>
+</contrib-group>
+<aff id="aff1"><label>1</label><addr-line>Department of Biology, Johns Hopkins University, Baltimore, Maryland, United States of America</addr-line></aff>
+<aff id="aff2"><label>2</label><addr-line>T.C. Jenkins Department of Biophysics, Johns Hopkins University, Baltimore, Maryland, United States of America</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple"><name name-style="western"><surname>Fetrow</surname><given-names>Jacquelyn S.</given-names></name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/></contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>Wake Forest University, United States of America</addr-line></aff>
+<author-notes>
+<corresp id="cor1">* E-mail: <email xlink:type="simple">hilser@jhu.edu</email></corresp>
+<fn fn-type="conflict"><p>The authors declare that a United States Patent Application relating to the HePCaT algorithm has been filed, and is pending, on behalf of The Johns Hopkins University.</p></fn>
+<fn fn-type="con"><p>Conceived and designed the experiments: OH JOW VJH. Performed the experiments: OH JOW. Analyzed the data: OH JOW. Contributed reagents/materials/analysis tools: OH JOW. Wrote the paper: OH JOW VJH.</p></fn>
+</author-notes>
+<pub-date pub-type="collection"><month>10</month><year>2013</year></pub-date>
+<pub-date pub-type="epub"><day>10</day><month>10</month><year>2013</year></pub-date>
+<volume>9</volume>
+<issue>10</issue>
+<elocation-id>e1003247</elocation-id>
+<history>
+<date date-type="received"><day>19</day><month>4</month><year>2013</year></date>
+<date date-type="accepted"><day>10</day><month>7</month><year>2013</year></date>
+</history>
+<permissions>
+<copyright-year>2013</copyright-year>
+<copyright-holder>Hadzipasic et al</copyright-holder><license xlink:type="simple"><license-p>This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license></permissions><related-article id="RA1" related-article-type="companion" ext-link-type="uri" vol="" page="e1002972" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1002972"><article-title>New Methods Section in PLOS Computational Biology</article-title></related-article>
+<abstract>
+<p>An algorithm is presented that returns the optimal pairwise gapped alignment of two sets of signed numerical sequence values. One distinguishing feature of this algorithm is a flexible comparison engine (based on both relative shape and absolute similarity measures) that does not rely on explicit gap penalties. Additionally, an empirical probability model is developed to estimate the significance of the returned alignment with respect to randomized data. The algorithm's utility for biological hypothesis formulation is demonstrated with test cases including database search and pairwise alignment of protein hydropathy. However, the algorithm and probability model could possibly be extended to accommodate other diverse types of protein or nucleic acid data, including positional thermodynamic stability and mRNA translation efficiency. The algorithm requires only numerical values as input and will readily compare data other than protein hydropathy. The tool is therefore expected to complement, rather than replace, existing sequence and structure based tools and may inform medical discovery, as exemplified by proposed similarity between a chlamydial ORFan protein and bacterial colicin pore-forming domain. The source code, documentation, and a basic web-server application are available.</p>
+</abstract>
+<abstract abstract-type="summary"><title>Author Summary</title>
+<p>Trend discovery is an important way to generate understanding from large amounts of data. We have developed a novel tool that discovers significantly similar trends shared between two numerical data sets. Since the tool's algorithmic method compares both the relative shapes of the “peaks” and “valleys” in the data, as well as the absolute magnitudes of the numerical values, we believe the tool is tolerant of imperfections and could be applicable to a wide range of scientific, engineering, social, or economic problems. In short, if measurements can be converted to a series of numbers, our tool may potentially be useful for trend discovery. Since we are a protein biophysics group, we are most naturally interested in discovering new similarities between proteins, and we have discovered a particularly interesting, statistically significant similarity between a protein unique to <italic>Chlamydia</italic> and a bacterial pore-forming protein, colicin. This previously unreported similarity may have medical relevance, and we are currently experimentally testing the properties of the chlamydial protein in the laboratory. In a second example, we demonstrate the tool's ability to easily recover a known, but difficult to detect, relationship between two other GPCR proteins.</p>
+</abstract>
+<funding-group><funding-statement>This work is supported by the NSF USA MCB-0446050 (<ext-link ext-link-type="uri" xlink:href="http://nsf.gov" xlink:type="simple">http://nsf.gov</ext-link>) and the NIH USA GM063747 (<ext-link ext-link-type="uri" xlink:href="http://nih.gov" xlink:type="simple">http://nih.gov</ext-link>). Publication of this article was funded in part by the Open Access Promotion Fund of the Johns Hopkins University Libraries. The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement></funding-group><counts><page-count count="13"/></counts></article-meta>
+</front>
+<body><sec id="s1">
+<title/>
+<disp-quote>
+<p>This is a <italic>PLOS Computational Biology</italic> Methods article.</p>
+</disp-quote></sec><sec id="s2">
+<title>Introduction</title>
+<p>Determining the evolutionary relatedness of two protein sequences is most successfully performed by amino acid sequence comparison <xref ref-type="bibr" rid="pcbi.1003247-Soeding1">[1]</xref>–<xref ref-type="bibr" rid="pcbi.1003247-Altschul2">[5]</xref>. However, it is well known that structure can be preserved even when sequence has diverged past the point of amino acid similarity recognition <xref ref-type="bibr" rid="pcbi.1003247-Kinch1">[6]</xref>, suggesting that sequences can bestow local, subglobal, and global properties to a protein that can be preserved in the absence of strict conservation of the side chain atoms. In other words, similar properties could exist horizontally in a sequence even when recognizable vertical conservation is lost <xref ref-type="bibr" rid="pcbi.1003247-Schlessinger1">[7]</xref>. Even if such similarities are due to analogy rather than homology <xref ref-type="bibr" rid="pcbi.1003247-Krishna1">[8]</xref>, approaches are needed that can augment sequence based analysis by matching patterns that may be independent of amino acid conservation at each position.</p>
+<p>Comparison of three-dimensional atomic structures <xref ref-type="bibr" rid="pcbi.1003247-Sadreyev1">[9]</xref>–<xref ref-type="bibr" rid="pcbi.1003247-Holm1">[13]</xref> is one example of such pattern matching. However, protein function and evolution arise from a manifold of physical, chemical, and biological mechanisms, only partly accounted for by side chain identity or structural similarity <xref ref-type="bibr" rid="pcbi.1003247-Tokuriki1">[14]</xref>–<xref ref-type="bibr" rid="pcbi.1003247-Liberles1">[18]</xref>. It may be the case that proteins can also be meaningfully characterized by other attributes, such as the energetic contributions to stability <xref ref-type="bibr" rid="pcbi.1003247-Gu1">[19]</xref> or the predicted codon translation efficiency along the mRNA <xref ref-type="bibr" rid="pcbi.1003247-dosReis1">[20]</xref>–<xref ref-type="bibr" rid="pcbi.1003247-Spencer1">[22]</xref>. Yet, such attributes are not easily accommodated by simple adaptation of current algorithms, largely because the scoring systems for such algorithms are based on positional sequence identity (amino acid substitution matrices) or absolute geometric structural similarity (Euclidean distance).</p>
+<p>As a result, properties other than sequence and structure, and their additional potential biological insight into proteins, have not been as thoroughly explored. For example, the local thermodynamic stability of a protein, as experimentally measured by deuterium-hydrogen exchange <xref ref-type="bibr" rid="pcbi.1003247-Bai1">[23]</xref>, <xref ref-type="bibr" rid="pcbi.1003247-Liu1">[24]</xref>, is described by a one-dimensional sequence of numerical values (<italic>i.e.</italic> amide protection factors). These values are well-known to be a combination of sequence, structure, and solvent effects <xref ref-type="bibr" rid="pcbi.1003247-Bai2">[25]</xref>, but no substitution matrix or distance measure exists for the objective comparison of two sets of protection factors. As such, important relationships could be overlooked, or worse, erroneous knowledge could be inferred from comparisons that separate the effects (<italic>e.g.</italic> comparing side chain identity in the absence of information about the thermodynamic stability at the same position).</p>
+<p>One-dimensional software tools have been developed for the special case of hydrophobicity analysis, such as identification and alignment of the membrane spanning regions of non-globular proteins <xref ref-type="bibr" rid="pcbi.1003247-Khafizov1">[26]</xref>–<xref ref-type="bibr" rid="pcbi.1003247-Lolkema1">[28]</xref>. Although useful, these tools have historically incorporated family-specific scoring matrices <xref ref-type="bibr" rid="pcbi.1003247-Hill1">[29]</xref> and empirical gap penalties. Such heuristics hinder the algorithms' transferability to different proteins or applicability to data types other than transmembrane protein hydrophobicity. In addition, the scoring functions for hydrophobicity analysis are often based on template-based matching or absolute similarity <xref ref-type="bibr" rid="pcbi.1003247-Lolkema2">[30]</xref>, and while this is effective at finding matches that are similar in both shape and magnitude, two sets of data that describe the same shape, but are offset by a scalar value, would be missed. For example, such a case can arise for experimentally measured local thermodynamic stabilities of proteins, where the relative stabilities of the same structural region of two homologs are observed to be strikingly similar, yet offset by a constant ΔΔG value <xref ref-type="bibr" rid="pcbi.1003247-Hollien1">[31]</xref>. Finally, some of these previous tools lack the capability for large database searches or do not include estimates of statistical significance, limiting their usefulness and effectiveness even for the appropriate input data.</p>
+<p>To address these shortcomings, we have developed a tool to compare the internal consistency of one-dimensional profiles defined by arbitrary sequences of numerical data. To maximize the flexibility of the tool, we have deliberately chosen in the design to include two metrics that match both the relative shapes of the two profiles as well as the absolute similarity of the numerical values. Thus, the scoring system is designed to be independent of the input data type (as opposed to the tool's probability model which is very much dependent on the data type). Since this design emphasizes the closeness in shape of the two sets scanned over a horizontal range of positions, in contrast to the vertical position-by-position independent scoring of a standard amino acid substitution matrix, the algorithm is named <italic>Horizontal Protein Comparison Tool</italic> (<italic>HePCaT</italic>).</p>
+</sec><sec id="s3" sec-type="materials|methods">
+<title>Materials and Methods</title>
+<sec id="s3a">
+<title>Detailed description of the <italic>HePCaT</italic> algorithm</title>
+<p>The algorithm proceeds by creating internal signed distance matrices from each of two sets of input numerical data vectors <italic>v</italic> (<xref ref-type="fig" rid="pcbi-1003247-g001">Figure 1</xref>, Steps 1 and 2). The vector is composed of <italic>M</italic> elements given a protein of length <italic>M</italic> residues. In the following development, <italic>v<sub>i</sub></italic> denotes an arbitrary numerical value at residue <italic>i</italic>. For a protein of <italic>M</italic> residues, each element of its distance matrix <bold><italic>D</italic></bold> is defined as<disp-formula id="pcbi.1003247.e001"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003247.e001" xlink:type="simple"/><label>(1)</label></disp-formula>The signed distance matrices, while not symmetric, are reflections across the diagonal (<xref ref-type="fig" rid="pcbi-1003247-g001">Figure 1</xref>, Step 2). Thus, both shape and magnitude information about each data set are encoded in these matrices. For example, the Protein 2 matrix <bold><italic>D<sub>2</sub></italic></bold> (<xref ref-type="fig" rid="pcbi-1003247-g001">Figure 1</xref>, Step 2) clearly indicates the strong local maximum in the N-terminal half relative to the strong local minimum in the C-terminal half as prominent red or blue regions.</p>
+<fig id="pcbi-1003247-g001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003247.g001</object-id><label>Figure 1</label><caption>
+<title>Overview of the Horizontal Protein Comparison Tool (<italic>HePCaT</italic>) algorithm.</title>
+<p>The hydropathy profiles of two hypothetical proteins, each of length <italic>M</italic> = <italic>N</italic> = 20 residues, are shown (Step 1). Intraprotein signed distances are computed within each protein according to <xref ref-type="disp-formula" rid="pcbi.1003247.e001">Equation 1</xref> in the main text (Step 2). Positive distances, <italic>e.g</italic>. measured from a residue with a local minimum value to a residue with a local maximum value, are indicated in red, negative distances in blue. The signed distance matrices are therefore square and symmetrically reflected across the diagonal. Distances for protein 1 and protein 2 correspond to matrices <bold><italic>D<sub>1</sub></italic></bold> and <bold><italic>D<sub>2</sub></italic></bold>, respectively. The similarity matrix <bold><italic>S</italic></bold> that ultimately compares the two proteins is constructed from the average absolute distance differences of <italic>W</italic> = 5 residue blocks between <bold><italic>D<sub>1</sub></italic></bold> and <bold><italic>D<sub>2</sub></italic></bold>, according to <xref ref-type="disp-formula" rid="pcbi.1003247.e002">Equation 2</xref> (Step 3). In <bold><italic>S</italic></bold>, light colored squares indicate blocks of <italic>W</italic> = 5 residues starting at residue <italic>i</italic> in protein 1 and residue <italic>j</italic> in protein 2 with similarly shaped hydropathy, dark squares indicate dissimilar shapes. (<bold><italic>S</italic></bold><italic><sub>i = 1,j = 1</sub></italic> is the lower left corner in the figure.) As described in the text, <bold><italic>S</italic></bold> is exhaustively searched and all longest alignments with up to possibly <italic>GapMax</italic> gaps, whose squares (average path distance, <italic>APD</italic>) pass a user-defined average similarity cutoff <italic>C</italic>, are kept in a list (set of colored arrows). The alignment of this list with the closest absolute shape (lowest <italic>RMSD</italic>) is defined as the optimal match (Step 5). An Optimal Path Score (<italic>OPS</italic>), defined by <xref ref-type="disp-formula" rid="pcbi.1003247.e004">Equation 4</xref>, is assigned to the alignment and its significance is computed with respect to the score distribution of random alignments of identical length (Step 6). Note that the example alignment, while a reasonable visual match, is only marginally significant with respect to random alignments of identical length, due to its short length of 10 residues.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003247.g001" position="float" xlink:type="simple"/></fig>
+<p><xref ref-type="disp-formula" rid="pcbi.1003247.e001">Equation 1</xref> demonstrates a key conceptual difference from structure comparison algorithms that are usually based on distance or contact matrices restricted to only positive values <xref ref-type="bibr" rid="pcbi.1003247-Holm2">[32]</xref>, <xref ref-type="bibr" rid="pcbi.1003247-Shindyalov2">[33]</xref>. This difference reflects the nature of the information being compared. For structure comparison, the distance between two atoms is identical whether it is computed between the first and second atom or <italic>vice versa</italic>, while in the case of thermodynamic stability, for example, there may be a relative stabilization between the first and second atoms, which becomes a relative destabilization between second and first. The sign in <xref ref-type="disp-formula" rid="pcbi.1003247.e001">Equation 1</xref> thus represents this key conceptual difference: a “distance” in <italic>HePCaT</italic> has <italic>both</italic> sign and magnitude. (It is noted that <xref ref-type="disp-formula" rid="pcbi.1003247.e001">Equation 1</xref> may be extended to an arbitrary number of mathematical dimensions, but the present work only considers the one-dimensional case.)</p>
+<p>A shape similarity matrix, <bold><italic>S</italic></bold>, is then constructed from the two distance matrices (<xref ref-type="fig" rid="pcbi-1003247-g001">Figure 1</xref>, Step 3). To speed the calculation, a heuristic window size, <italic>W</italic>, is introduced. (In this work, <italic>W</italic> is always five residues, but we note that this is potentially an adjustable parameter and a completely exhaustive search may be performed with <italic>W</italic> = 1.) For each position <italic>i = M−(W−1)</italic> in Protein 1 and each position <italic>j = N−(W−1)</italic> in Protein 2, the relative shape similarity is computed between the two five-residue blocks originating at positions <italic>i</italic> and <italic>j</italic>:<disp-formula id="pcbi.1003247.e002"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003247.e002" xlink:type="simple"/><label>(2)</label></disp-formula><xref ref-type="disp-formula" rid="pcbi.1003247.e002">Equation 2</xref> is simply the average absolute value of the difference of equivalenced internal distances between the two blocks. If the shape similarity is high this value will be small, if the shape similarity is very different this value will be large. Such dissimilarity can be readily viewed for the example proteins: the <xref ref-type="fig" rid="pcbi-1003247-g001">Figure 1</xref> similarity matrix contains strong positive values (darkest red) where the large peak in the middle of the first protein coincides with the deep valley in the C-terminal region of the second (or <italic>vice versa</italic>).</p>
+<p>In this implementation, the signed internal distances within each block of <italic>W</italic> = 5 residues are scaled such that the longest absolute value of the internal distance is one,<disp-formula id="pcbi.1003247.e003"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003247.e003" xlink:type="simple"/><label>(3)</label></disp-formula>Although this normalization can be disabled, we believe that emphasizing comparison of relative shape improves detection of relative trends in biological data, which can exhibit wide variations in scale. Practically, normalization also intuitively simplifies the choice of the user-defined alignment shape similarity cutoff, as described below.</p>
+<p>The optimal alignment between Proteins 1 and 2 is found by exhaustive search of the shape similarity matrix (<xref ref-type="fig" rid="pcbi-1003247-g001">Figure 1</xref>, Steps 4 and 5). “Optimal” is defined as the largest unique set of blocks of size <italic>W</italic>, subject to at most <italic>GapMax</italic> skipped positions of the similarity matrix between blocks, which exhibits the smallest <italic>RMSD</italic> of all such sets passing a user-defined shape similarity cutoff, <italic>C</italic>. If <italic>C</italic> = 0, exact shape matches only are permitted in the alignment list. For this work, where <xref ref-type="disp-formula" rid="pcbi.1003247.e003">Equation 3</xref> applies, <italic>C</italic> was set to 0.40, meaning that an alignment whose average normalized distance between two five residue blocks was at most 40% different was counted as a matching shape. If <xref ref-type="disp-formula" rid="pcbi.1003247.e003">Equation 3</xref> were disabled, <italic>C</italic> would have to be adjusted empirically based on the dynamic ranges of data compared.</p>
+<p>The algorithm starts at cell (1,1) of <bold><italic>S</italic></bold> (<italic>i.e.</italic> the lower left corner of the matrix in <xref ref-type="fig" rid="pcbi-1003247-g001">Figure 1</xref>, Step 3), corresponding to the average difference between the scaled intraprotein distances of residues 1–5 in Protein 1 and residues 1–5 in Protein 2. If <bold><italic>S</italic></bold><sub>1,1</sub>&lt; = <italic>C</italic>, this match is kept and position <bold><italic>S</italic></bold><sub>6,6</sub> is checked, until all cells of <bold><italic>S</italic></bold> are evaluated up to the position <bold><italic>S</italic></bold><italic><sub>M-W+1,N-W+1</sub></italic> (<italic>i.e.</italic> the upper right corner of the matrix in <xref ref-type="fig" rid="pcbi-1003247-g001">Figure 1</xref>, Step 3). If at any point <bold><italic>S</italic></bold><sub>i,j</sub>&gt;<italic>C</italic>, single cell gaps are inserted in one or both sequences up to a maximum of <italic>GapMax</italic> in an attempt to obtain the longest path through <bold><italic>S</italic></bold> subject to <italic>C</italic>. A list of the longest gapped paths is kept at this stage (<xref ref-type="fig" rid="pcbi-1003247-g001">Figure 1</xref>, Step 3, colored arrows). Therefore, all paths in this list are comprised of equivalenced positions in the two proteins such that, on average, the intraprotein distances seen at every position match to at least degree <italic>C</italic>; this average value is named Average Path Distance (<italic>APD</italic>, <xref ref-type="fig" rid="pcbi-1003247-g001">Figure 1</xref>, Step 4). <italic>GapMax</italic> was empirically set to 4 for this work. No penalty is applied to <italic>APD</italic> for insertion of a gap. Importantly, at this first stage only relative shape similarity is checked; any systematic offset between the two data sets is ignored because only the differences between intraprotein distances are evaluated.</p>
+<p>After <bold><italic>S</italic></bold> has been exhaustively searched, the list of longest alignments passing the shape cutoff is filtered by <italic>RMSD</italic> of the aligned positions (<xref ref-type="fig" rid="pcbi-1003247-g001">Figure 1</xref>, Step 5). The smallest <italic>RMSD</italic> alignment is defined as the optimal (thus, the <italic>RMSD</italic> is effectively a magnitude filter). If multiple alignments of identical longest length happen to exhibit identical <italic>RMSD</italic>, only the first such one encountered is returned. In <italic>HePCaT</italic>, the <italic>RMSD</italic> calculation is executed after translation of both sets to data to their respective centers-of-mass, thus effects of a global offset between each data set are again minimized. Following Jia, <italic>et al.</italic> <xref ref-type="bibr" rid="pcbi.1003247-Jia1">[34]</xref>, we define an Optimal Path Score (<italic>OPS</italic>) for this optimal alignment according to the formula:<disp-formula id="pcbi.1003247.e004"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003247.e004" xlink:type="simple"/><label>(4)</label></disp-formula>In <xref ref-type="disp-formula" rid="pcbi.1003247.e004">Equation 4</xref>, <italic>L</italic> is the alignment length and <italic>Gaps</italic> is the total number of cells skipped in <bold><italic>S</italic></bold> to obtain that alignment. Note that, as mentioned above, gaps are not explicitly penalized during alignment, but gaps will penalize the final score according to <xref ref-type="disp-formula" rid="pcbi.1003247.e004">Equation 4</xref>, under the reasonable and common assumption that a gapless match is a “better” match than a gapped one. Alternatively, the <italic>GapMax</italic> parameter could be set to zero if desired so that all gaps are forbidden.</p>
+<p>A probability model to estimate the significance of an <italic>OPS</italic> score <italic>s</italic> of an alignment of length <italic>L</italic> was derived from analysis of randomly generated alignments (<xref ref-type="fig" rid="pcbi-1003247-g001">Figure 1</xref>, Step 6). It is important to realize that a probability model is specific to the type of data aligned and must also be recalibrated for a specific combination of <italic>W</italic>, <italic>C</italic>, and <italic>GapMax</italic>. The probability model for Kyte-Doolittle hydropathy <xref ref-type="bibr" rid="pcbi.1003247-Kyte1">[35]</xref>, averaged over a 15-residue window, is listed in <xref ref-type="table" rid="pcbi-1003247-t001">Tables 1</xref> and <xref ref-type="table" rid="pcbi-1003247-t002">2</xref> and was built for the following <italic>HePCaT</italic> parameters: <italic>W</italic> = 5 residues, <italic>GapMax</italic> = 4 residues, <italic>C</italic> = 0.4 with the local scaling of <xref ref-type="disp-formula" rid="pcbi.1003247.e003">Equation 3</xref>. (Other probability models have been constructed and tested by the authors, including models based on <italic>eScape</italic> predicted native state thermodynamic stability <xref ref-type="bibr" rid="pcbi.1003247-Gu1">[19]</xref>, and predicted translation efficiency index <italic>tAI</italic> <xref ref-type="bibr" rid="pcbi.1003247-dosReis1">[20]</xref>, <xref ref-type="bibr" rid="pcbi.1003247-Tuller1">[21]</xref>, and are available upon request.)</p>
+<table-wrap id="pcbi-1003247-t001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003247.t001</object-id><label>Table 1</label><caption>
+<title>Goodness of fit statistics between Scaled Inverse Chi Squared probability distribution function (<xref ref-type="disp-formula" rid="pcbi.1003247.e005">Equation 5</xref>) and <italic>OPS</italic> score distributions of various length optimal <italic>HePCaT</italic> alignments of random amino acid sequences.</title>
+</caption><alternatives><graphic id="pcbi-1003247-t001-1" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003247.t001" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1">Hydropathy</td>
+<td align="center" rowspan="1" colspan="1"/>
+<td align="center" rowspan="1" colspan="1"/>
+<td align="center" rowspan="1" colspan="1"/>
+<td align="center" rowspan="1" colspan="1"/>
+<td align="center" rowspan="1" colspan="1"/>
+<td align="center" rowspan="1" colspan="1"/>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">Kyte-Doolittle Hydropathy, averaged over 15 residues</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><italic>W</italic> = 5 residues</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><italic>GapMax</italic> = 4 residues</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><italic>C</italic> = 0.4</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+</tbody>
+</table>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1"><italic>HePCaT</italic> Alignment Length</td>
+<td align="left" rowspan="1" colspan="1"><italic>ν</italic></td>
+<td align="left" rowspan="1" colspan="1"><italic>ln σ<sup>2</sup></italic></td>
+<td align="left" rowspan="1" colspan="1"><italic>χ<sup>2</sup></italic></td>
+<td align="left" rowspan="1" colspan="1"><italic>d.o.f.</italic></td>
+<td align="left" rowspan="1" colspan="1"><italic>P-Value</italic></td>
+<td align="left" rowspan="1" colspan="1"><italic>N</italic></td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">20</td>
+<td align="left" rowspan="1" colspan="1">20.030</td>
+<td align="left" rowspan="1" colspan="1">−4.092</td>
+<td align="left" rowspan="1" colspan="1">19.4</td>
+<td align="left" rowspan="1" colspan="1">20</td>
+<td align="left" rowspan="1" colspan="1">0.37</td>
+<td align="left" rowspan="1" colspan="1">433</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">25<xref ref-type="table-fn" rid="nt101">a</xref></td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">30</td>
+<td align="left" rowspan="1" colspan="1">20.444</td>
+<td align="left" rowspan="1" colspan="1">−4.266</td>
+<td align="left" rowspan="1" colspan="1">2.3</td>
+<td align="left" rowspan="1" colspan="1">9</td>
+<td align="left" rowspan="1" colspan="1">0.94</td>
+<td align="left" rowspan="1" colspan="1">205</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">35</td>
+<td align="left" rowspan="1" colspan="1">18.771</td>
+<td align="left" rowspan="1" colspan="1">−4.305</td>
+<td align="left" rowspan="1" colspan="1">9.8</td>
+<td align="left" rowspan="1" colspan="1">15</td>
+<td align="left" rowspan="1" colspan="1">0.71</td>
+<td align="left" rowspan="1" colspan="1">322</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">40</td>
+<td align="left" rowspan="1" colspan="1">22.152</td>
+<td align="left" rowspan="1" colspan="1">−4.371</td>
+<td align="left" rowspan="1" colspan="1">16.8</td>
+<td align="left" rowspan="1" colspan="1">17</td>
+<td align="left" rowspan="1" colspan="1">0.33</td>
+<td align="left" rowspan="1" colspan="1">365</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">45</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">50</td>
+<td align="left" rowspan="1" colspan="1">23.895</td>
+<td align="left" rowspan="1" colspan="1">−4.507</td>
+<td align="left" rowspan="1" colspan="1">10.2</td>
+<td align="left" rowspan="1" colspan="1">14</td>
+<td align="left" rowspan="1" colspan="1">0.60</td>
+<td align="left" rowspan="1" colspan="1">309</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">55</td>
+<td align="left" rowspan="1" colspan="1">31.086</td>
+<td align="left" rowspan="1" colspan="1">−4.556</td>
+<td align="left" rowspan="1" colspan="1">23.7</td>
+<td align="left" rowspan="1" colspan="1">17</td>
+<td align="left" rowspan="1" colspan="1">0.07</td>
+<td align="left" rowspan="1" colspan="1">368</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">60</td>
+<td align="left" rowspan="1" colspan="1">27.883</td>
+<td align="left" rowspan="1" colspan="1">−4.634</td>
+<td align="left" rowspan="1" colspan="1">17.9</td>
+<td align="left" rowspan="1" colspan="1">19</td>
+<td align="left" rowspan="1" colspan="1">0.39</td>
+<td align="left" rowspan="1" colspan="1">414</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">65</td>
+<td align="left" rowspan="1" colspan="1">31.871</td>
+<td align="left" rowspan="1" colspan="1">−4.675</td>
+<td align="left" rowspan="1" colspan="1">9.1</td>
+<td align="left" rowspan="1" colspan="1">17</td>
+<td align="left" rowspan="1" colspan="1">0.87</td>
+<td align="left" rowspan="1" colspan="1">379</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">70</td>
+<td align="left" rowspan="1" colspan="1">34.017</td>
+<td align="left" rowspan="1" colspan="1">−4.751</td>
+<td align="left" rowspan="1" colspan="1">11.3</td>
+<td align="left" rowspan="1" colspan="1">15</td>
+<td align="left" rowspan="1" colspan="1">0.58</td>
+<td align="left" rowspan="1" colspan="1">339</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">75</td>
+<td align="left" rowspan="1" colspan="1">37.144</td>
+<td align="left" rowspan="1" colspan="1">−4.752</td>
+<td align="left" rowspan="1" colspan="1">16.0</td>
+<td align="left" rowspan="1" colspan="1">19</td>
+<td align="left" rowspan="1" colspan="1">0.52</td>
+<td align="left" rowspan="1" colspan="1">405</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">80</td>
+<td align="left" rowspan="1" colspan="1">40.667</td>
+<td align="left" rowspan="1" colspan="1">−4.860</td>
+<td align="left" rowspan="1" colspan="1">15.5</td>
+<td align="left" rowspan="1" colspan="1">19</td>
+<td align="left" rowspan="1" colspan="1">0.56</td>
+<td align="left" rowspan="1" colspan="1">419</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">85</td>
+<td align="left" rowspan="1" colspan="1">39.468</td>
+<td align="left" rowspan="1" colspan="1">−4.851</td>
+<td align="left" rowspan="1" colspan="1">19.2</td>
+<td align="left" rowspan="1" colspan="1">17</td>
+<td align="left" rowspan="1" colspan="1">0.21</td>
+<td align="left" rowspan="1" colspan="1">374</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">90</td>
+<td align="left" rowspan="1" colspan="1">40.866</td>
+<td align="left" rowspan="1" colspan="1">−4.903</td>
+<td align="left" rowspan="1" colspan="1">15.1</td>
+<td align="left" rowspan="1" colspan="1">16</td>
+<td align="left" rowspan="1" colspan="1">0.37</td>
+<td align="left" rowspan="1" colspan="1">343</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">95</td>
+<td align="left" rowspan="1" colspan="1">50.460</td>
+<td align="left" rowspan="1" colspan="1">−4.935</td>
+<td align="left" rowspan="1" colspan="1">19.0</td>
+<td align="left" rowspan="1" colspan="1">18</td>
+<td align="left" rowspan="1" colspan="1">0.27</td>
+<td align="left" rowspan="1" colspan="1">386</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">100</td>
+<td align="left" rowspan="1" colspan="1">58.710</td>
+<td align="left" rowspan="1" colspan="1">−4.974</td>
+<td align="left" rowspan="1" colspan="1">16.3</td>
+<td align="left" rowspan="1" colspan="1">16</td>
+<td align="left" rowspan="1" colspan="1">0.29</td>
+<td align="left" rowspan="1" colspan="1">352</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">105</td>
+<td align="left" rowspan="1" colspan="1">48.502</td>
+<td align="left" rowspan="1" colspan="1">−5.033</td>
+<td align="left" rowspan="1" colspan="1">15.0</td>
+<td align="left" rowspan="1" colspan="1">15</td>
+<td align="left" rowspan="1" colspan="1">0.31</td>
+<td align="left" rowspan="1" colspan="1">329</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">110</td>
+<td align="left" rowspan="1" colspan="1">50.481</td>
+<td align="left" rowspan="1" colspan="1">−5.038</td>
+<td align="left" rowspan="1" colspan="1">5.4</td>
+<td align="left" rowspan="1" colspan="1">11</td>
+<td align="left" rowspan="1" colspan="1">0.80</td>
+<td align="left" rowspan="1" colspan="1">254</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">115</td>
+<td align="left" rowspan="1" colspan="1">60.850</td>
+<td align="left" rowspan="1" colspan="1">−5.074</td>
+<td align="left" rowspan="1" colspan="1">6.9</td>
+<td align="left" rowspan="1" colspan="1">14</td>
+<td align="left" rowspan="1" colspan="1">0.86</td>
+<td align="left" rowspan="1" colspan="1">315</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">120</td>
+<td align="left" rowspan="1" colspan="1">52.309</td>
+<td align="left" rowspan="1" colspan="1">−5.114</td>
+<td align="left" rowspan="1" colspan="1">8.6</td>
+<td align="left" rowspan="1" colspan="1">12</td>
+<td align="left" rowspan="1" colspan="1">0.57</td>
+<td align="left" rowspan="1" colspan="1">267</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">125</td>
+<td align="left" rowspan="1" colspan="1">56.929</td>
+<td align="left" rowspan="1" colspan="1">−5.160</td>
+<td align="left" rowspan="1" colspan="1">7.4</td>
+<td align="left" rowspan="1" colspan="1">13</td>
+<td align="left" rowspan="1" colspan="1">0.76</td>
+<td align="left" rowspan="1" colspan="1">295</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">130</td>
+<td align="left" rowspan="1" colspan="1">73.921</td>
+<td align="left" rowspan="1" colspan="1">−5.170</td>
+<td align="left" rowspan="1" colspan="1">11.6</td>
+<td align="left" rowspan="1" colspan="1">12</td>
+<td align="left" rowspan="1" colspan="1">0.31</td>
+<td align="left" rowspan="1" colspan="1">279</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">135</td>
+<td align="left" rowspan="1" colspan="1">66.086</td>
+<td align="left" rowspan="1" colspan="1">−5.231</td>
+<td align="left" rowspan="1" colspan="1">3.7</td>
+<td align="left" rowspan="1" colspan="1">13</td>
+<td align="left" rowspan="1" colspan="1">0.98</td>
+<td align="left" rowspan="1" colspan="1">282</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">140</td>
+<td align="left" rowspan="1" colspan="1">91.441</td>
+<td align="left" rowspan="1" colspan="1">−5.262</td>
+<td align="left" rowspan="1" colspan="1">8.4</td>
+<td align="left" rowspan="1" colspan="1">11</td>
+<td align="left" rowspan="1" colspan="1">0.50</td>
+<td align="left" rowspan="1" colspan="1">251</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">145</td>
+<td align="left" rowspan="1" colspan="1">75.360</td>
+<td align="left" rowspan="1" colspan="1">−5.265</td>
+<td align="left" rowspan="1" colspan="1">4.6</td>
+<td align="left" rowspan="1" colspan="1">12</td>
+<td align="left" rowspan="1" colspan="1">0.92</td>
+<td align="left" rowspan="1" colspan="1">276</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">150</td>
+<td align="left" rowspan="1" colspan="1">74.003</td>
+<td align="left" rowspan="1" colspan="1">−5.289</td>
+<td align="left" rowspan="1" colspan="1">5.2</td>
+<td align="left" rowspan="1" colspan="1">13</td>
+<td align="left" rowspan="1" colspan="1">0.92</td>
+<td align="left" rowspan="1" colspan="1">296</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">155</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">160</td>
+<td align="left" rowspan="1" colspan="1">82.535</td>
+<td align="left" rowspan="1" colspan="1">−5.341</td>
+<td align="left" rowspan="1" colspan="1">8.7</td>
+<td align="left" rowspan="1" colspan="1">14</td>
+<td align="left" rowspan="1" colspan="1">0.73</td>
+<td align="left" rowspan="1" colspan="1">308</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">165</td>
+<td align="left" rowspan="1" colspan="1">74.069</td>
+<td align="left" rowspan="1" colspan="1">−5.378</td>
+<td align="left" rowspan="1" colspan="1">7.9</td>
+<td align="left" rowspan="1" colspan="1">15</td>
+<td align="left" rowspan="1" colspan="1">0.85</td>
+<td align="left" rowspan="1" colspan="1">331</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">170</td>
+<td align="left" rowspan="1" colspan="1">87.990</td>
+<td align="left" rowspan="1" colspan="1">−5.403</td>
+<td align="left" rowspan="1" colspan="1">12.0</td>
+<td align="left" rowspan="1" colspan="1">14</td>
+<td align="left" rowspan="1" colspan="1">0.45</td>
+<td align="left" rowspan="1" colspan="1">319</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">175</td>
+<td align="left" rowspan="1" colspan="1">78.128</td>
+<td align="left" rowspan="1" colspan="1">−5.437</td>
+<td align="left" rowspan="1" colspan="1">19.1</td>
+<td align="left" rowspan="1" colspan="1">17</td>
+<td align="left" rowspan="1" colspan="1">0.21</td>
+<td align="left" rowspan="1" colspan="1">362</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">180</td>
+<td align="left" rowspan="1" colspan="1">84.227</td>
+<td align="left" rowspan="1" colspan="1">−5.449</td>
+<td align="left" rowspan="1" colspan="1">22.2</td>
+<td align="left" rowspan="1" colspan="1">17</td>
+<td align="left" rowspan="1" colspan="1">0.10</td>
+<td align="left" rowspan="1" colspan="1">360</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">185</td>
+<td align="left" rowspan="1" colspan="1">92.662</td>
+<td align="left" rowspan="1" colspan="1">−5.472</td>
+<td align="left" rowspan="1" colspan="1">9.8</td>
+<td align="left" rowspan="1" colspan="1">15</td>
+<td align="left" rowspan="1" colspan="1">0.71</td>
+<td align="left" rowspan="1" colspan="1">332</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">190</td>
+<td align="left" rowspan="1" colspan="1">85.812</td>
+<td align="left" rowspan="1" colspan="1">−5.493</td>
+<td align="left" rowspan="1" colspan="1">12.0</td>
+<td align="left" rowspan="1" colspan="1">16</td>
+<td align="left" rowspan="1" colspan="1">0.61</td>
+<td align="left" rowspan="1" colspan="1">343</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">195</td>
+<td align="left" rowspan="1" colspan="1">86.967</td>
+<td align="left" rowspan="1" colspan="1">−5.531</td>
+<td align="left" rowspan="1" colspan="1">12.7</td>
+<td align="left" rowspan="1" colspan="1">16</td>
+<td align="left" rowspan="1" colspan="1">0.55</td>
+<td align="left" rowspan="1" colspan="1">344</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">200</td>
+<td align="left" rowspan="1" colspan="1">108.592</td>
+<td align="left" rowspan="1" colspan="1">−5.540</td>
+<td align="left" rowspan="1" colspan="1">12.5</td>
+<td align="left" rowspan="1" colspan="1">14</td>
+<td align="left" rowspan="1" colspan="1">0.41</td>
+<td align="left" rowspan="1" colspan="1">319</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">205</td>
+<td align="left" rowspan="1" colspan="1">104.753</td>
+<td align="left" rowspan="1" colspan="1">−5.565</td>
+<td align="left" rowspan="1" colspan="1">13.1</td>
+<td align="left" rowspan="1" colspan="1">15</td>
+<td align="left" rowspan="1" colspan="1">0.44</td>
+<td align="left" rowspan="1" colspan="1">332</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">210</td>
+<td align="left" rowspan="1" colspan="1">109.308</td>
+<td align="left" rowspan="1" colspan="1">−5.603</td>
+<td align="left" rowspan="1" colspan="1">9.8</td>
+<td align="left" rowspan="1" colspan="1">14</td>
+<td align="left" rowspan="1" colspan="1">0.64</td>
+<td align="left" rowspan="1" colspan="1">317</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">215</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">220</td>
+<td align="left" rowspan="1" colspan="1">103.593</td>
+<td align="left" rowspan="1" colspan="1">−5.631</td>
+<td align="left" rowspan="1" colspan="1">11.9</td>
+<td align="left" rowspan="1" colspan="1">12</td>
+<td align="left" rowspan="1" colspan="1">0.29</td>
+<td align="left" rowspan="1" colspan="1">262</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">225</td>
+<td align="left" rowspan="1" colspan="1">106.655</td>
+<td align="left" rowspan="1" colspan="1">−5.651</td>
+<td align="left" rowspan="1" colspan="1">9.2</td>
+<td align="left" rowspan="1" colspan="1">12</td>
+<td align="left" rowspan="1" colspan="1">0.51</td>
+<td align="left" rowspan="1" colspan="1">260</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">230</td>
+<td align="left" rowspan="1" colspan="1">108.842</td>
+<td align="left" rowspan="1" colspan="1">−5.658</td>
+<td align="left" rowspan="1" colspan="1">5.1</td>
+<td align="left" rowspan="1" colspan="1">9</td>
+<td align="left" rowspan="1" colspan="1">0.65</td>
+<td align="left" rowspan="1" colspan="1">213</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">235</td>
+<td align="left" rowspan="1" colspan="1">106.144</td>
+<td align="left" rowspan="1" colspan="1">−5.687</td>
+<td align="left" rowspan="1" colspan="1">9.1</td>
+<td align="left" rowspan="1" colspan="1">9</td>
+<td align="left" rowspan="1" colspan="1">0.25</td>
+<td align="left" rowspan="1" colspan="1">203</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">240</td>
+<td align="left" rowspan="1" colspan="1">147.619</td>
+<td align="left" rowspan="1" colspan="1">−5.705</td>
+<td align="left" rowspan="1" colspan="1">6.2</td>
+<td align="left" rowspan="1" colspan="1">9</td>
+<td align="left" rowspan="1" colspan="1">0.52</td>
+<td align="left" rowspan="1" colspan="1">201</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">245</td>
+<td align="left" rowspan="1" colspan="1">111.964</td>
+<td align="left" rowspan="1" colspan="1">−5.717</td>
+<td align="left" rowspan="1" colspan="1">4.7</td>
+<td align="left" rowspan="1" colspan="1">7</td>
+<td align="left" rowspan="1" colspan="1">0.45</td>
+<td align="left" rowspan="1" colspan="1">173</td>
+</tr>
+</tbody>
+</table>
+</alternatives><table-wrap-foot><fn id="nt101"><label>a</label><p>Blank rows for certain alignment lengths indicate that the null hypothesis (<italic>i.e.</italic> that the distribution of <italic>OPS</italic> scores for randomly generated sequences was drawn from an underlying inverse chi square distribution) was rejected at the <italic>p</italic>&lt;0.05 level.</p></fn></table-wrap-foot></table-wrap><table-wrap id="pcbi-1003247-t002" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003247.t002</object-id><label>Table 2</label><caption>
+<title>Parameters used in <xref ref-type="disp-formula" rid="pcbi.1003247.e006">Equations 6</xref> and <xref ref-type="disp-formula" rid="pcbi.1003247.e007">7</xref> to estimate length-dependent random protein data probability distributions based on the Inverse Chi-Squared Distribution.</title>
+</caption><alternatives><graphic id="pcbi-1003247-t002-2" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003247.t002" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1">Data Type</td>
+<td align="left" rowspan="1" colspan="1"><italic>m</italic></td>
+<td align="left" rowspan="1" colspan="1"><italic>a</italic></td>
+<td align="left" rowspan="1" colspan="1"><italic>b</italic></td>
+<td align="left" rowspan="1" colspan="1"><italic>c</italic></td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">Hydropathy</td>
+<td align="left" rowspan="1" colspan="1">0.497609</td>
+<td align="left" rowspan="1" colspan="1">0.160379</td>
+<td align="left" rowspan="1" colspan="1">−1.04167</td>
+<td align="left" rowspan="1" colspan="1">38.9045</td>
+</tr>
+</tbody>
+</table>
+</alternatives></table-wrap></sec><sec id="s3b">
+<title>Construction of probability model</title>
+<p>Significance of the <xref ref-type="disp-formula" rid="pcbi.1003247.e004">Equation 4</xref> score of optimal <italic>HePCaT</italic> alignments was estimated with respect to the scores of optimal alignments of identical length between proteins of random amino acid sequence. Two random proteins of equal lengths between 10 and 500 residues were generated according to background amino acid frequencies as given by Robinson &amp; Robinson. <xref ref-type="bibr" rid="pcbi.1003247-Robinson1">[36]</xref> Sets of at least 20,000 such pairs for each length were optimally aligned using <italic>HePCaT</italic>, and the distributions of <xref ref-type="disp-formula" rid="pcbi.1003247.e004">Equation 4</xref> scores for a given optimal alignment length from the entire pool were tabulated (<xref ref-type="fig" rid="pcbi-1003247-g002">Figure 2A</xref>). It was observed that these skewed unimodal distributions exhibited a strong dependence on alignment length (<xref ref-type="fig" rid="pcbi-1003247-g002">Figure 2B</xref>). Out of several possible two-variable formulae, it was empirically determined that these score distributions were statistically best fit by Scaled Inverse Chi-Squared probability density functions (<xref ref-type="fig" rid="pcbi-1003247-g002">Figure 2</xref>, <xref ref-type="table" rid="pcbi-1003247-t001">Tables 1</xref> and <xref ref-type="table" rid="pcbi-1003247-t002">2</xref>) <xref ref-type="bibr" rid="pcbi.1003247-Johnson1">[37]</xref>,<disp-formula id="pcbi.1003247.e005"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003247.e005" xlink:type="simple"/><label>(5)</label></disp-formula>In <xref ref-type="disp-formula" rid="pcbi.1003247.e005">Equation 5</xref>, <italic>L</italic> is optimal alignment length, and Γ(x) is the Gamma function. <xref ref-type="bibr" rid="pcbi.1003247-Press1">[38]</xref> Parameters ν and σ<sup>2</sup> were estimated by minimum chi-squared fits to the binned score data at each observed alignment length (<xref ref-type="fig" rid="pcbi-1003247-g002">Figure 2A</xref>). Binning and parameter estimation were performed using custom <italic>Mathematica</italic> 8.0 scripts, such that each variable-width bin contained at least 20 points, additional details are provided in <xref ref-type="table" rid="pcbi-1003247-t001">Table 1</xref>.</p>
+<fig id="pcbi-1003247-g002" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003247.g002</object-id><label>Figure 2</label><caption>
+<title>Empirically determined probability model for protein hydropathy.</title><p><bold>A.</bold> <bold>Inverse Chi-Squared model for the distribution of observed scores.</bold> Distributions of <xref ref-type="disp-formula" rid="pcbi.1003247.e004">Equation 4</xref> scores for <italic>HePCaT</italic> alignments of length <italic>L</italic> = 100 obtained from parameters <italic>W</italic> = 5 residues, <italic>GapMax</italic> = 4 residues, <italic>C</italic> = 0.4. Pairs of random sequences were generated, their Kyte-Doolittle amino acid hydropathies averaged over a 15-residue window, and subjected to optimal alignment using <italic>HePCaT</italic>, as described in the text. Binned data in each case was reasonably fit to the Inverse Chi-Squared probability distribution function (PDF, <xref ref-type="disp-formula" rid="pcbi.1003247.e005">Equation 5</xref>), as described in Methods and tabulated in <xref ref-type="table" rid="pcbi-1003247-t001">Table 1</xref>. <bold>B.</bold> <bold>Analytical parameters to estimate statistical significance.</bold> Parameters <italic>ν</italic> and <italic>σ<sup>2</sup></italic> for the PDF were observed to vary smoothly as a function of <italic>HePCaT</italic> alignment length, allowing the parameters, and thus alignment significance, to be analytically estimated for arbitrary alignment length using <xref ref-type="disp-formula" rid="pcbi.1003247.e006">Equations 6</xref> and <xref ref-type="disp-formula" rid="pcbi.1003247.e007">7</xref> and parameters in <xref ref-type="table" rid="pcbi-1003247-t002">Table 2</xref>. Discrete best-fit parameters for <italic>ν</italic> and <italic>σ<sup>2</sup></italic> are given in <xref ref-type="table" rid="pcbi-1003247-t001">Table 1</xref>. Equations for displayed best-fit curves are as follows: y = 0.497609x (Hydropathy, <italic>ν</italic>), y = 0.160379–1.04167 ln(x+38.9045) (Hydropathy, <italic>σ<sup>2</sup></italic>).</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003247.g002" position="float" xlink:type="simple"/></fig>
+<p><italic>Ad-hoc</italic> analytical expressions were fitted to the collected best-fit parameters of <xref ref-type="disp-formula" rid="pcbi.1003247.e005">Equation 5</xref> as a function of optimal alignment length <italic>L</italic> (<xref ref-type="fig" rid="pcbi-1003247-g002">Figure 2B</xref>):<disp-formula id="pcbi.1003247.e006"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003247.e006" xlink:type="simple"/><label>(6)</label></disp-formula><disp-formula id="pcbi.1003247.e007"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003247.e007" xlink:type="simple"/><label>(7)</label></disp-formula>Determination of coefficients <italic>a</italic>, <italic>b</italic>, <italic>c</italic>, and <italic>m</italic> only employed reasonably well-fit <xref ref-type="disp-formula" rid="pcbi.1003247.e005">Equation 5</xref> values whose null hypotheses (<italic>i.e.</italic> that the simulated data were drawn from Inverse Chi Square Distributions) could not be rejected at <italic>p</italic>&lt;0.05. <xref ref-type="disp-formula" rid="pcbi.1003247.e006">Equations 6</xref> and <xref ref-type="disp-formula" rid="pcbi.1003247.e007">7</xref> coefficients for protein hydropathy are given in <xref ref-type="table" rid="pcbi-1003247-t002">Table 2</xref>, all resulted from excellent fits of <italic>R<sup>2</sup></italic> = 0.99 or better using <italic>gnumeric</italic> spreadsheet software (<xref ref-type="fig" rid="pcbi-1003247-g002">Figure 2B</xref>).</p>
+<p>Therefore, given an observed optimal <italic>HePCaT</italic> alignment of length <italic>L</italic> with <xref ref-type="disp-formula" rid="pcbi.1003247.e004">Equation 4</xref> score <italic>s</italic>, the probability <italic>p</italic> of observing that alignment of protein hydropathy by chance could be estimated from the corresponding Scaled Inverse Chi-Squared cumulative distribution function as:<disp-formula id="pcbi.1003247.e008"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003247.e008" xlink:type="simple"/><label>(8)</label></disp-formula>In <xref ref-type="disp-formula" rid="pcbi.1003247.e008">Equation 8</xref>, <italic>Q(a,x)</italic> is the complement of the regularized Gamma function <xref ref-type="bibr" rid="pcbi.1003247-Press1">[38]</xref>; <italic>ν</italic> and <italic>σ<sup>2</sup></italic> were estimated from <xref ref-type="disp-formula" rid="pcbi.1003247.e006">Equations 6</xref> and <xref ref-type="disp-formula" rid="pcbi.1003247.e007">7</xref>, using coefficients of <xref ref-type="table" rid="pcbi-1003247-t002">Table 2</xref>.</p>
+</sec><sec id="s3c">
+<title>Clustering of membrane protein structures based on hydropathy</title>
+<p>All 1604 amino acid sequences corresponding to every membrane protein structure in SCOP 1.73 (class <italic>f</italic> ) <xref ref-type="bibr" rid="pcbi.1003247-Andreeva1">[39]</xref> were obtained from the ASTRAL domain database <xref ref-type="bibr" rid="pcbi.1003247-Chandonia1">[40]</xref> and clustered at 70% sequence identity by the cd-hit server <xref ref-type="bibr" rid="pcbi.1003247-Huang1">[41]</xref>, resulting in 214 representative sequences. The Kyte-Doolittle hydropathy values <xref ref-type="bibr" rid="pcbi.1003247-Kyte1">[35]</xref> for each sequence were averaged over a window size of 15 residues, with the average being assigned to the middle position of the window. These 214 hydropathy profiles were then compared using <italic>HePCaT</italic> in an all-<italic>vs</italic>-all manner, with the probability value for each optimal match computed using the model coefficients listed in <xref ref-type="table" rid="pcbi-1003247-t002">Table 2</xref>. For each protein, a vector of length 214 containing the probability values against all other proteins was constructed. These 214 vectors were then clustered by Manhattan Distance and Ward's minimum variance criterion as implemented in the Hierarchical Clustering Package of <italic>Mathematica 8.0</italic> (Wolfram Research) to create a dendrogram. A similar tree was computed from <italic>FASTA</italic> <xref ref-type="bibr" rid="pcbi.1003247-Pearson1">[42]</xref> E-values of all pairwise sequence comparisons. Significance of each grouping was estimated using the bootstrap “Gap Test” option of the software.</p>
+</sec><sec id="s3d">
+<title>Hydropathy database search of the human proteome using adenosine receptor A2a as query</title>
+<p>The human proteome was obtained from translation of the DNA sequences contained in the NCBI CDDS <xref ref-type="bibr" rid="pcbi.1003247-Pruitt1">[43]</xref> build 36.3 (April 30, 2008). Each amino acid in every protein was assigned a value according to the Kyte-Doolittle hydropathy scale.<xref ref-type="bibr" rid="pcbi.1003247-Kyte1">[35]</xref> The values for each protein were averaged using a 15 residue sliding window; averaged values for the first and last seven residues in each protein were subsequently ignored. The averaged values for the G-protein coupled receptor (GPCR) human adenosine receptor A2a (CCDS 13826.1, gi|5921992) were used as query against the human proteome, <italic>i.e.</italic> the averaged hydropathy values of each protein in the proteome were optimally pairwise aligned to A2a using <italic>HePCaT</italic> with the following parameters: <italic>W</italic> = 5 residues, <italic>C</italic> = 0.4, <italic>GapMax</italic> = 4 residues. <italic>P</italic>-values for each alignment were computed using the probability model specific to these data as described above. GPCRs were checked and annotated in our local copy of the human proteome by <italic>FASTA</italic>-aligning <xref ref-type="bibr" rid="pcbi.1003247-Pearson1">[42]</xref> amino acid sequences of the proteome with amino acid sequences of known GPCRs obtained from the <italic>GPCRDB</italic> <xref ref-type="bibr" rid="pcbi.1003247-Vroling1">[44]</xref>. Modeling was performed with a local installation of I-TASSER software <xref ref-type="bibr" rid="pcbi.1003247-Roy1">[45]</xref> using default parameters. Structural similarity between the first I-TASSER model and known proteins was assessed using the DALI server <xref ref-type="bibr" rid="pcbi.1003247-Holm3">[46]</xref>.</p>
+</sec><sec id="s3e">
+<title>Discovery of similarity between <italic>ORFan</italic> protein <italic>TC0624</italic> and colicin pore-forming domain</title>
+<p>A dataset of 8812 ORFan protein sequences was obtained from Yomtovian, <italic>et al.</italic> <xref ref-type="bibr" rid="pcbi.1003247-Yomtovian1">[47]</xref> As described above, <italic>HePCaT</italic> was used to optimally align the Kyte-Doolittle averaged hydropathy profiles of each ORFan protein with the profile of each member of the non-redundant set of 214 membrane proteins of known structure described above Secondary structure prediction was performed using the PSIPRED server <xref ref-type="bibr" rid="pcbi.1003247-Buchan1">[48]</xref> <xref ref-type="bibr" rid="pcbi.1003247-Jones1">[49]</xref> and Hidden Markov Model sequence profile comparison was performed using the HHpred server <xref ref-type="bibr" rid="pcbi.1003247-Soeding2">[50]</xref>, both with default parameters. Modeling was performed with a local installation of I-TASSER software <xref ref-type="bibr" rid="pcbi.1003247-Roy1">[45]</xref> using default parameters. Structural similarity between the first I-TASSER model and known proteins was assessed using the DALI server <xref ref-type="bibr" rid="pcbi.1003247-Holm3">[46]</xref>.</p>
+</sec></sec><sec id="s4">
+<title>Results</title>
+<p>The biological utility of <italic>HePCaT</italic> was assessed by exploring three different questions relating to protein hydropathy: sequence clustering of known membrane protein structures, similarity search against a database, and structure prediction of an ORFan protein. Results described below provided biological insight and testable hypotheses from these common bioinformatics tasks. However, it is emphasized that the results are not intended to demonstrate improvement of <italic>HePCaT</italic> over current state-of-the-art methods for sequence and structure comparison, rather, the results do illuminate strengths and weaknesses of the algorithm's current implementation.</p>
+<sec id="s4a">
+<title>Clustering of known membrane protein structures based on common hydropathy patterns</title>
+<p>Unlike most globular proteins, most membrane protein structures can be classified, independent of evolutionary relationships, into two main groups, “all-alpha” and “all-beta”, based on structural characteristics alone <xref ref-type="bibr" rid="pcbi.1003247-Vinothkumar1">[51]</xref>, <xref ref-type="bibr" rid="pcbi.1003247-Neumann1">[52]</xref>. One dominant characteristic is the requirement for stability within the nonpolar interior of the membrane, and this is reflected in recurring patterns of defined length hydrophobic segments, imposed by the physical constraints of alpha-helical or beta-strand secondary structure elements. Such patterns can be used for the effective prediction of transmembrane spanning segments and fold topology of the inserted protein <xref ref-type="bibr" rid="pcbi.1003247-Krogh1">[53]</xref>–<xref ref-type="bibr" rid="pcbi.1003247-Engelman1">[55]</xref>.</p>
+<p>Analysis and clustering of a set of diverse membrane protein structures, based on similarities in the proteins' average hydropathy patterns using <italic>HePCaT</italic>, reflects this major level of structural organization (<xref ref-type="fig" rid="pcbi-1003247-g003">Figure 3A</xref>). In this dendrogram, the “all-beta” proteins clearly segregate into distinct and statistically significant sub-branches of the tree. Finer levels of overall fold similarity, including the G-protein coupled receptors (f.13), toxins' membrane translocation domains (f.1), and the transmembrane beta barrels (f.4), can also largely be resolved only on the basis of hydropathy similarity (labeled sub-branches in <xref ref-type="fig" rid="pcbi-1003247-g003">Figure 3A</xref>). Interestingly, proteins belonging to f.13, annotated as “single transmembrane helix” and thus “not a true SCOP fold” <xref ref-type="bibr" rid="pcbi.1003247-Murzin2">[56]</xref>, are spread among several dispersed sub-branches, consistent with this provisional expert curation.</p>
+<fig id="pcbi-1003247-g003" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003247.g003</object-id><label>Figure 3</label><caption>
+<title>Clustering of known membrane protein structures by hydropathy similarity.</title>
+<p>Dendrogram leaves are members of a set of 214 representative membrane protein structures taken from SCOP 1.73, as described in the text. Blue colors denote proteins of all (or mostly) alpha helical secondary structure, red colors denote proteins of all (or mostly) beta strand secondary structure, and green colors indicate proteins of mixed structure. Identical shades of color denote identical SCOP fold. Particular sub-branches that significantly cluster according to known evolutionary or structural relationships are labeled by SCOP fold. Vertical dashed red lines indicate statistical significance of the clustering. <bold>A.</bold> <bold>Dendrogram based on hydropathy similarity.</bold> Branch lengths are inversely proportional to the <italic>HePCaT</italic> significance of the pairwise similarity between hydropathy patterns (<italic>i.e.</italic> shorter branch lengths indicate higher similarity). <bold>B.</bold> <bold>Dendrogram based on sequence similarity.</bold> Branch lengths are inversely proportional to FASTA E-value of pairwise sequence similarity. For these diverse proteins, both sequence and hydropathy similarity differentiate beta proteins from alpha proteins. However, the <italic>HePCaT</italic> beta dendrogram cluster is evidently more homogenous than the <italic>FASTA</italic> beta cluster, and more individual protein folds are segregated based on hydropathy similarity than by sequence similarity. Both observations suggest that meaningful information about protein structure and evolution can be objectively detected by the <italic>HePCaT</italic> algorithm.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003247.g003" position="float" xlink:type="simple"/></fig>
+<p>In contrast, clustering of the identical proteins based on pairwise amino acid sequence similarity alone appears less resolved at levels higher than pairs of highly similar sequences (<xref ref-type="fig" rid="pcbi-1003247-g003">Figure 3B</xref>). In particular, the “all-beta” proteins, while also resolved to a particular statistically significant sub-branch, are not cleanly segregated from other “all-alpha” proteins. Few fold families are clustered at statistical significance, probably due to the overall low level of sequence similarity in this diverse set (approximately 30% identity over 40 residues on average). Clearly, patterns of hydropathy, reflecting the well-known idea that protein structure similarity is more conserved than sequence similarity <xref ref-type="bibr" rid="pcbi.1003247-Chothia1">[57]</xref>, <xref ref-type="bibr" rid="pcbi.1003247-Wong1">[58]</xref>, can be objectively recovered using pairwise <italic>HePCaT</italic> alignments in conjunction with the appropriate probability model described above.</p>
+</sec><sec id="s4b">
+<title>Database search using human adenosine receptor A2a as query</title>
+<p>Given the ability of <italic>HePCaT</italic> to match expected hydropathy patterns, an exploratory search was initiated to discover unknown matches. The hydropathy profile of the human adenosine A2a 7Tm G-protein coupled receptor (GPCR) was used to search the human proteome for close unreported matches. As expected, hundreds of known 7Tm GPCRs were significantly matched by <italic>HePCaT</italic> (<italic>p</italic>&lt;0.01, data not shown). The most significant ten matches are displayed in <xref ref-type="fig" rid="pcbi-1003247-g004">Figure 4</xref>. These hits fell into two categories: those that matched the transmembrane region <xref ref-type="bibr" rid="pcbi.1003247-Topiol1">[59]</xref> of A2a (<xref ref-type="fig" rid="pcbi-1003247-g004">Figure 4</xref>, blue) and those that mostly matched the tail region (<xref ref-type="fig" rid="pcbi-1003247-g004">Figure 4</xref>, red).</p>
+<fig id="pcbi-1003247-g004" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003247.g004</object-id><label>Figure 4</label><caption>
+<title>Most significant similarities in the human proteome to the Kyte-Doolittle hydropathy profile of adenosine receptor A2a.</title>
+<p>Pairwise <italic>HePCaT</italic> alignments are shown for A2a (black, gi|5921992) and the top nine most significant nonredundant hits in the human proteome. Blue color indicates known seven transmembrane spanning region proteins as annotated by the <italic>GPCRDB</italic> database, red mostly indicates hits to the tail region of A2a. The hits are shown from top to bottom in order of most to least significant: hematological and neurological expressed protein-like 1 (gi|21700763, <italic>p</italic> = 4.0×10<sup>−6</sup>), ephrin-A4 isoform a precursor (gi|4885197, <italic>p</italic> = 7.6×10<sup>−5</sup>), NSFL1 cofactor p47 isoform a (gi|20149635, <italic>p</italic> = 9.1×10<sup>−5</sup>), metallothionein-1E (gi|83367075, <italic>p</italic> = 9.7×10<sup>−5</sup>), taste receptor type 2 member 19 (gi|28882035, <italic>p</italic> = 4.1×10<sup>−4</sup>), B- and T-lymphocyte attenuator isoform 1 precursor (gi|145580621, <italic>p</italic> = 5.4×10<sup>−4</sup>), WD-repeat domain-containing protein 83 (gi|153791298, <italic>p</italic> = 6.5×10<sup>−4</sup>), dual specificity protein phosphatase 26 (gi|13128968, <italic>p</italic> = 7.7×10<sup>−4</sup>), adenosine receptor A2b (gi|4501951, <italic>p</italic> = 8.3×10<sup>−4</sup>). Thick lines indicate residue positions included in the optimal <italic>HePCaT</italic> alignment to A2a, and thin lines indicate unaligned positions. Rainbow colored cylinders from N- to C-terminus indicate the approximate sequence locations of the seven experimentally determined transmembrane spanning helices of A2a.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003247.g004" position="float" xlink:type="simple"/></fig>
+<p>The longest match to the transmembrane region was the A2b isoform, which is also 59% sequence identical to A2a (<xref ref-type="fig" rid="pcbi-1003247-g005">Figure 5A</xref>). Unexpectedly, a Type 2 taste receptor also exhibited a significant match to this region (<xref ref-type="fig" rid="pcbi-1003247-g004">Figure 4</xref>). As this taste receptor has insignificant pairwise sequence identity to A2a (<xref ref-type="fig" rid="pcbi-1003247-g005">Figure 5B</xref>) and its structure has not been experimentally determined <xref ref-type="bibr" rid="pcbi.1003247-Tebben1">[60]</xref>, this observed similarity was consistent with an independently produced model of the taste receptor, constructed using no <italic>HePCaT</italic> information (<xref ref-type="fig" rid="pcbi-1003247-g005">Figure 5C</xref>). Additionally, the original <italic>HePCaT</italic> match was demonstrated to be a useful template for a homology model <xref ref-type="bibr" rid="pcbi.1003247-Eswar1">[61]</xref> based on the A2a structure (data not shown). The validity of the hydropathy similarity between A2a and the taste receptor was further demonstrated to be robust with respect to the particular hydrophobicity scale used (<xref ref-type="supplementary-material" rid="pcbi.1003247.s001">Text S1</xref>; Figures S1 and S2 in <xref ref-type="supplementary-material" rid="pcbi.1003247.s001">Text S1</xref>).</p>
+<fig id="pcbi-1003247-g005" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003247.g005</object-id><label>Figure 5</label><caption>
+<title>Pairwise sequence alignment does not detect significant similarity between human A2a and Taste Receptor Type 2, Member 19, yet a similar structure can be modeled based on the <italic>HePCaT</italic> match.</title><p><bold>A.</bold> <bold><italic>FASTA</italic> pairwise sequence alignment between human adenosine receptor A2a and its known homolog human adenosine receptor A2b.</bold> Alignment was extracted from a sequence search of the human proteome. Sequence similarity is 59% over 330 amino acids, with a highly significant E-value of 6.6e-53. Note that the hydropathy similarity between these two proteins is also significant, as given in <xref ref-type="fig" rid="pcbi-1003247-g004">Figure 4</xref>. <bold>B.</bold> <bold><italic>FASTA</italic></bold><bold> pairwise sequence alignment between human A2a and human taste receptor type 2, member 19.</bold> Sequence similarity is 21% over 305 amino acids. Although extensive, the similarity is not significant, with an E-value of 5.1e+3, in contrast to the significant hydropathy similarity displayed in <xref ref-type="fig" rid="pcbi-1003247-g004">Figure 4</xref>. This result suggests that hydropathy similarity, as assessed by <italic>HePCaT</italic>, may be able to detect remote relationships in the absence of sequence similarity. <bold>C.</bold> <bold>Model of Taste Receptor Type 2, Member 19 is similar to the experimental structure of A2a.</bold> Experimental structure of A2a (left panel) is based on PDB identifier 3rey. I-TASSER <xref ref-type="bibr" rid="pcbi.1003247-Roy1">[45]</xref> model of Taste Receptor Type 2, Member 19 (right panel) achieved an I-TASSER C-score of 0.67 and a DALI Z-Score <xref ref-type="bibr" rid="pcbi.1003247-Holm3">[46]</xref> of 24.9 against the 3rey structure, indicating a confident model that is significantly similar to A2a. Rainbow colored helices follow the colors of <xref ref-type="fig" rid="pcbi-1003247-g004">Figure 4</xref>, indicating the seven structurally aligned transmembrane spanning helices. The RMSD of the 269 DALI-aligned residues is 3.1 Å between modeled and experimental structures.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003247.g005" position="float" xlink:type="simple"/></fig>
+<p>We attempted to rationalize the best matches to the A2a tail region in terms of sequence, structure, or function. However, in contrast to the transmembrane region matches, biological explanations for these remain unknown. The shortest hit to the tail region was possibly a statistical artifact: this metallothionein is naturally short and contains a high frequency of cysteine residues; such low-complexity sequences are normally filtered out of amino acid sequence searches <xref ref-type="bibr" rid="pcbi.1003247-Wootten1">[62]</xref>, which was not done in the present study. Some of the proteins in this group are medically important, such as the hematological and neurological expressed-1 like protein, ephrin A4 isoforms, and the B and T-lymphocyte attenuator precursor. Structural information, where available about the matches, could not be confidently transferred to the putatively disordered tail region of A2a, which is thought to be involved in ligand specificity of the GPCR <xref ref-type="bibr" rid="pcbi.1003247-Lebon1">[63]</xref>. These tail matches may also result from the local scaling (<xref ref-type="disp-formula" rid="pcbi.1003247.e003">Equation 3</xref>), which could potentially be disabled, illustrating the sensitivity <italic>vs.</italic> specificity tradeoffs inherent to relative shape matching.</p>
+</sec><sec id="s4c">
+<title>Predicted remote similarity between the pore forming domain of bacterial colicin and Chlamydia <italic>TC0624</italic> protein</title>
+<p>A third example of the utility of <italic>HePCaT</italic> concerns the possible discovery of remote similarity with medical importance. The <italic>C. muridarum</italic> protein <italic>TC0624</italic>, classified as an “ORFan” due to the absence of significant sequence similarity between any other known proteins <xref ref-type="bibr" rid="pcbi.1003247-Yomtovian1">[47]</xref>, nonetheless exhibited a significant <italic>HePCaT</italic> hydropathy match to the pore forming domain of <italic>E. coli</italic> colicin A (<xref ref-type="fig" rid="pcbi-1003247-g006">Figure 6A</xref>). This match spanned the entire chain length of the ORFan protein and the experimentally-determined minimal length region of functional importance of the pore-forming domain <xref ref-type="bibr" rid="pcbi.1003247-Cascales1">[64]</xref>. The validity of the hydropathy similarity between colicin and TC0624 was further demonstrated to be robust with respect to the particular hydrophobicity scale used (<xref ref-type="supplementary-material" rid="pcbi.1003247.s001">Text S1</xref>; Figures S1 and S2 in <xref ref-type="supplementary-material" rid="pcbi.1003247.s001">Text S1</xref>).</p>
+<fig id="pcbi-1003247-g006" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003247.g006</object-id><label>Figure 6</label><caption>
+<title>Observed hydropathy and predicted structure similarity between ORFan <italic>C. muridarum TC0624</italic> and bacterial colicin pore-forming domain.</title><p><bold>A.</bold> <bold>Significant similarity between hydropathy of <italic>TC0624</italic> and <italic>E. coli</italic> colicin A (SCOP domain d1cola_).</bold> The likelihood of obtaining this match by chance is <italic>p</italic> = 1.5×10<sup>−5</sup>. The blue cylinders indicate PSIPRED confidently predicted helical secondary structure of TC0624, the red cylinders indicate the actual helical secondary structure of d1cola_ domain as assessed by DSSP <xref ref-type="bibr" rid="pcbi.1003247-Kabsch1">[69]</xref>. Numbers indicate the functionally important helical elements, as annotated by Cramer, et al. <xref ref-type="bibr" rid="pcbi.1003247-Cramer1">[65]</xref> Reasonable correspondence between the type and locations of secondary structure elements is observed. Gapped regions of colicin helices are connected with dotted lines to guide the eye. <bold>B.</bold> <bold>Tertiary structure location of the hydrophobic similarity (left) and the sequence similarity (right) matches between </bold><bold><italic>TC0624</italic></bold><bold> and colicin.</bold> In both molecular cartoons, helices are colored red, strands yellow, and loops green. Locations of a match between <italic>TC0624</italic> and colicin are colored blue. The left figure is based on d1cola_, colored according to the <italic>HePCaT</italic> alignment in <xref ref-type="fig" rid="pcbi-1003247-g006">Figure 6A</xref>, and the right figure is based on the homolog d1rh1a2 SCOP domain observed in the marginally significant <italic>HHPred</italic> <xref ref-type="bibr" rid="pcbi.1003247-Soeding2">[50]</xref> hidden Markov model sequence match. Both matches independently link the sequence and hydrophobicity of the ORFan to the functionally important structural core region of colicin. The extensive structure, sequence, and chemical similarities suggest the medically important hypothesis that <italic>TC0624</italic> could also be a pore-forming protein facilitating chlamydia survival.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003247.g006" position="float" xlink:type="simple"/></fig>
+<p>Secondary structure prediction was consistent with the proposed tertiary structural similarity (<xref ref-type="fig" rid="pcbi-1003247-g006">Figure 6A</xref>), and sensitive sequence profile search using hidden Markov models revealed marginal (maximum <italic>HHPred</italic> P-Value 30% <xref ref-type="bibr" rid="pcbi.1003247-Soeding2">[50]</xref>), but repeated, similarity to the sequence of colicin implicated in the hydropathy match (<xref ref-type="fig" rid="pcbi-1003247-g006">Figure 6B</xref>). Thus, a total of four lines of evidence (hydropathy, secondary structure prediction, sensitive sequence similarity, and the regional correspondence between the sequence and structure matches) all converged on similarity between <italic>TC0624</italic> and the pore forming domain of colicin. Modeling <xref ref-type="bibr" rid="pcbi.1003247-Roy1">[45]</xref> of <italic>TC0624</italic> also resulted in a low-confidence fold prediction consistent with colicin (data not shown). However, these conclusions would have not been possible without the original statistical significance of the <italic>HePCaT</italic> hydropathy match.</p>
+<p>Importantly, the hydrophobic region of colicin implicated in this match has long been thought to be functionally crucial for colicin's lethal ability to travel from a hydrophilic extracellular environment, insert into the hydrophobic membrane interior, and form toxic pores in its host <xref ref-type="bibr" rid="pcbi.1003247-Cramer1">[65]</xref>. <italic>TC0624</italic> has independently been placed <xref ref-type="bibr" rid="pcbi.1003247-Lutter1">[66]</xref> in a class unique to <italic>Chlamydiae</italic> that is observed by experiment to also similarly partition into the membrane interior of the chlamydial inclusion <xref ref-type="bibr" rid="pcbi.1003247-Bannantine1">[67]</xref>. These so-called “<italic>Inc</italic>” proteins, difficult or impossible to predict using existing computational tools <xref ref-type="bibr" rid="pcbi.1003247-Lutter1">[66]</xref>, are nonetheless important for chlamydial survival and maturation within its human or animal hosts. It appears that the extreme hydrophobicity exhibited by the <italic>Inc</italic> proteins <xref ref-type="bibr" rid="pcbi.1003247-Bannantine1">[67]</xref> facilitates their computational prediction using <italic>HePCaT</italic>.</p>
+<p>Taken together, the results suggest a novel functional hypothesis for these medically important proteins: the <italic>Incs</italic> may form membrane-spanning pores that obtain nutrition from the host cytoplasm. This example also suggests that this particular ORFan may actually belong to a known protein family. Experiments are currently in progress to test these hypotheses.</p>
+</sec></sec><sec id="s5">
+<title>Discussion</title>
+<p>Most protein and nucleic acid data contained within the avalanche of next-generation genome sequencing can be expressed as sequentially numeric “peaks” and “valleys”. These data include, but are not limited to, gene expression, ribosomal profiling, <italic>ChIPSeq</italic>, <italic>RNASeq</italic>, mRNA translation efficiency, thermodynamic stability of protein or mRNA, and physico-chemical properties such as hydropathy. A gap exists among software algorithms for analysis of such data, and the <italic>HePCaT</italic> algorithm described in this work is designed to help fill this gap. To facilitate such analysis and discovery, a webtool that allows execution of the algorithm, visualization of the result, and access to the raw and analyzed data is freely available at <ext-link ext-link-type="uri" xlink:href="http://best.bio.jhu.edu/HePCaT" xlink:type="simple">http://best.bio.jhu.edu/HePCaT</ext-link>. (A detailed manuscript describing the use and capabilities of this web portal is in preparation.) Due to patent and license restrictions, information about access to source code is available through The Johns Hopkins University Office of Technology Transfer from the corresponding author.</p>
+<p>There are at least three distinguishing features of the <italic>HePCaT</italic> algorithm. First, the input is completely arbitrary: if the data can be expressed in numeric form regardless of its source, patterns can potentially be detected. Second, its scoring system is sensitive to both shape and magnitude similarity, allowing some degree of pairwise alignment flexibility. Third, the <italic>W</italic> parameter emphasizes a horizontal matching of patterns, as contrasted with the vertical matching that commonly occurs with amino acid substitution matrices or profile PSSMs.</p>
+<p>In our view, vertical evolutionary conservation of amino acids has been thoroughly explored using tools such as <italic>BLAST</italic> <xref ref-type="bibr" rid="pcbi.1003247-Altschul1">[4]</xref>, <xref ref-type="bibr" rid="pcbi.1003247-Altschul2">[5]</xref> and <italic>FASTA</italic> <xref ref-type="bibr" rid="pcbi.1003247-Pearson1">[42]</xref>, while horizontal conservation of other protein properties has not. Thus, non-local properties of proteins, depending on correlations across residue positions, such as thermodynamic stability, can now be potentially explored with <italic>HePCaT</italic>. The case studies presented in <xref ref-type="fig" rid="pcbi-1003247-g005">Figures 5</xref> and <xref ref-type="fig" rid="pcbi-1003247-g006">6</xref> suggest that substantial horizontal similarity can be detected in one pass through a database, minimizing the need for longer iterative searches when the vertical similarity may be weak or statistically impossible to detect.</p>
+<p>Importantly these anecdotal examples are not intended to demonstrate the superiority of the <italic>HePCaT</italic> algorithm, or the information contained in horizontal conservation, over current state-of-the-art methods for remote homology detection that are based on vertical conservation. To the contrary, <italic>HePCaT</italic> is intended as a complementary tool that would be most usefully applied to cases where vertical conservation is weak or absent.</p>
+<p>Furthermore, although the tool formally returns a pairwise positional alignment, it is not clear if such an alignment, could or should be quantitatively compared to existing amino acid sequence alignment tools. The <italic>HePCaT</italic> input is subject to possible averaging over one window size (<italic>e.g.</italic> the hydropathy is averaged over 15 positions) and the output is matched using quantized blocks of a second multi-residue window size (<italic>e.g.</italic> 5 positions). Future work is necessary to determine whether <italic>HePCaT</italic> can substantially improve upon the accuracy of the best current pairwise alignment methods.</p>
+<p>Rigorous evaluation of the statistical significance of a result is an essential piece of scientific data that is often neglected in bioinformatics tools. The significances returned by <italic>HePCaT</italic> allow prioritization of matches and aid expert interpretation. As with other tools, the <italic>HePCaT</italic> statistical significances require calibration specific to the input data and algorithm parameters. Although recalibration for random simulation data not covered by <xref ref-type="table" rid="pcbi-1003247-t002">Table 2</xref> parameters is straightforward and has been achieved for other types of numerical data, an alternative estimate of statistical significance is available. Specifically, the non-parametric statistics of the <italic>MIC</italic> score reported by Reshef, <italic>et al.</italic> <xref ref-type="bibr" rid="pcbi.1003247-Reshef1">[68]</xref> could potentially be used to evaluate a match returned by <italic>HePCaT</italic>. In this way, the significances of arbitrary pattern associations reported by Reshef, <italic>et al.</italic> could be greatly leveraged by using <italic>HePCaT</italic> as a “front-end” for other types of numerical data. Although this idea has not yet been thoroughly studied, we believe that the applicability of the <italic>MIC</italic> statistics would be maximized with <italic>HePCaT</italic> parameters of <italic>GapMax</italic> = 0 and <italic>W</italic> = 1.</p>
+</sec><sec id="s6">
+<title>Supporting Information</title>
+<supplementary-material id="pcbi.1003247.s001" mimetype="application/msword" xlink:href="info:doi/10.1371/journal.pcbi.1003247.s001" position="float" xlink:type="simple"><label>Text S1</label><caption>
+<p><bold>Significant </bold><bold><italic>HePCaT</italic></bold><bold> matches are robust to different hydrophobicity scales.</bold></p>
+<p>(DOC)</p>
+</caption></supplementary-material></sec></body>
+<back><ref-list>
+<title>References</title>
+<ref id="pcbi.1003247-Soeding1"><label>1</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Soeding</surname><given-names>J</given-names></name> (<year>2005</year>) <article-title>Protein homology detection by HMM-HMM comparison</article-title>. <source>Bioinformatics</source> <volume>21</volume>: <fpage>951</fpage>–<lpage>960</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Aravind1"><label>2</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Aravind</surname><given-names>L</given-names></name>, <name name-style="western"><surname>Koonin</surname><given-names>EV</given-names></name> (<year>1999</year>) <article-title>Gleaning non-trivial structural, functional and evolutionary information about proteins by iterative database searches</article-title>. <source>J Mol Biol</source> <volume>287</volume>: <fpage>1023</fpage>–<lpage>1040</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Alva1"><label>3</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Alva</surname><given-names>V</given-names></name>, <name name-style="western"><surname>Remmert</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Biegert</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Lupas</surname><given-names>AN</given-names></name>, <name name-style="western"><surname>Soding</surname><given-names>J</given-names></name> (<year>2010</year>) <article-title>A galaxy of folds</article-title>. <source>Protein Sci</source> <volume>19</volume>: <fpage>124</fpage>–<lpage>130</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Altschul1"><label>4</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Altschul</surname><given-names>SF</given-names></name>, <name name-style="western"><surname>Gish</surname><given-names>W</given-names></name>, <name name-style="western"><surname>Miller</surname><given-names>W</given-names></name>, <name name-style="western"><surname>Myers</surname><given-names>EW</given-names></name>, <name name-style="western"><surname>Lipman</surname><given-names>DJ</given-names></name> (<year>1990</year>) <article-title>Basic local alignment search tool</article-title>. <source>J Mol Biol</source> <volume>215</volume>: <fpage>403</fpage>–<lpage>410</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Altschul2"><label>5</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Altschul</surname><given-names>SF</given-names></name>, <name name-style="western"><surname>Madden</surname><given-names>TF</given-names></name>, <name name-style="western"><surname>Schaffer</surname><given-names>AA</given-names></name>, <name name-style="western"><surname>Zhang</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Zhang</surname><given-names>Z</given-names></name>, <etal>et al</etal>. (<year>1997</year>) <article-title>Gapped BLAST and PSI-BLAST: a new generation of database search programs</article-title>. <source>Nucleic Acids Res</source> <volume>25</volume>: <fpage>3389</fpage>–<lpage>3402</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Kinch1"><label>6</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kinch</surname><given-names>LN</given-names></name>, <name name-style="western"><surname>Grishin</surname><given-names>NV</given-names></name> (<year>2002</year>) <article-title>Expanding the nitrogen regulatory protein superfamily: Homology detection at below random sequence identity</article-title>. <source>Proteins</source> <volume>48</volume>: <fpage>75</fpage>–<lpage>84</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Schlessinger1"><label>7</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schlessinger</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Schaefer</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Vicedo</surname><given-names>E</given-names></name>, <name name-style="western"><surname>Schmidberger</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Punta</surname><given-names>M</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>Protein disorder - a breakthrough invention of evolution?</article-title> <source>Current Opinion in Structural Biology</source> <volume>21</volume>: <fpage>412</fpage>–<lpage>418</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Krishna1"><label>8</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Krishna</surname><given-names>SS</given-names></name>, <name name-style="western"><surname>Grishin</surname><given-names>NV</given-names></name> (<year>2004</year>) <article-title>Structurally analogous proteins do exist!</article-title>. <source>Structure</source> <volume>12</volume>: <fpage>1125</fpage>–<lpage>1127</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Sadreyev1"><label>9</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Sadreyev</surname><given-names>RI</given-names></name>, <name name-style="western"><surname>Kim</surname><given-names>BH</given-names></name>, <name name-style="western"><surname>Grishin</surname><given-names>NV</given-names></name> (<year>2009</year>) <article-title>Discrete-continuous duality of protein structure space</article-title>. <source>Curr Opin Struct Biol</source> <volume>19</volume>: <fpage>321</fpage>–<lpage>328</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Skolnick1"><label>10</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Skolnick</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Arakaki</surname><given-names>AK</given-names></name>, <name name-style="western"><surname>Lee</surname><given-names>SY</given-names></name>, <name name-style="western"><surname>Brylinski</surname><given-names>M</given-names></name> (<year>2009</year>) <article-title>The continuity of protein structure space is an intrinsic property of proteins</article-title>. <source>Proc Natl Acad Sci U S A</source> <volume>106</volume>: <fpage>15690</fpage>–<lpage>15695</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Shindyalov1"><label>11</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Shindyalov</surname><given-names>IN</given-names></name>, <name name-style="western"><surname>Bourne</surname><given-names>PE</given-names></name> (<year>2000</year>) <article-title>An alternative view of protein fold space</article-title>. <source>Proteins</source> <volume>38</volume>: <fpage>247</fpage>–<lpage>260</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Sander1"><label>12</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Sander</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Schneider</surname><given-names>R</given-names></name> (<year>1991</year>) <article-title>Database of homology-derived protein structures and the structural meaning of sequence alignment</article-title>. <source>Proteins</source> <volume>9</volume>: <fpage>56</fpage>–<lpage>68</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Holm1"><label>13</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Holm</surname><given-names>L</given-names></name>, <name name-style="western"><surname>Sander</surname><given-names>C</given-names></name> (<year>1997</year>) <article-title>Dali/FSSP classification of protein folds</article-title>. <source>Nucleic Acids Res</source> <volume>25</volume>: <fpage>231</fpage>–<lpage>234</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Tokuriki1"><label>14</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Tokuriki</surname><given-names>N</given-names></name>, <name name-style="western"><surname>Tawfik</surname><given-names>DS</given-names></name> (<year>2009</year>) <article-title>Protein dynamism and evolvability</article-title>. <source>Science</source> <volume>324</volume>: <fpage>203</fpage>–<lpage>207</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Bryan1"><label>15</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bryan</surname><given-names>PN</given-names></name>, <name name-style="western"><surname>Orban</surname><given-names>J</given-names></name> (<year>2010</year>) <article-title>Proteins that switch folds</article-title>. <source>Curr Opin Struct Biol</source> <volume>20</volume>: <fpage>482</fpage>–<lpage>488</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Murzin1"><label>16</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Murzin</surname><given-names>AG</given-names></name> (<year>2008</year>) <article-title>Metamorphic Proteins</article-title>. <source>Science</source> <volume>320</volume>: <fpage>1725</fpage>–<lpage>1726</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-HenzlerWildman1"><label>17</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Henzler-Wildman</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Kern</surname><given-names>D</given-names></name> (<year>2007</year>) <article-title>Dynamic personalities of proteins</article-title>. <source>Nature</source> <volume>450</volume>: <fpage>964</fpage>–<lpage>972</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Liberles1"><label>18</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Liberles</surname><given-names>DA</given-names></name>, <name name-style="western"><surname>Teichmann</surname><given-names>SA</given-names></name>, <name name-style="western"><surname>Bahar</surname><given-names>I</given-names></name>, <name name-style="western"><surname>Bastolla</surname><given-names>U</given-names></name>, <name name-style="western"><surname>Bloom</surname><given-names>J</given-names></name>, <etal>et al</etal>. (<year>2012</year>) <article-title>The interface of protein structure, protein biophysics, and molecular evolution</article-title>. <source>Protein Science</source> <volume>21</volume>: <fpage>769</fpage>–<lpage>785</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Gu1"><label>19</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gu</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Hilser</surname><given-names>VJ</given-names></name> (<year>2008</year>) <article-title>Predicting the energetics of conformational fluctuations in proteins from sequence: a strategy for profiling the proteome</article-title>. <source>Structure</source> <volume>16</volume>: <fpage>1627</fpage>–<lpage>1637</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-dosReis1"><label>20</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>dos Reis</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Savva</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Wernisch</surname><given-names>L</given-names></name> (<year>2004</year>) <article-title>Solving the riddle of codon usage preferences: a test for translational selection</article-title>. <source>Nucleic Acids Res</source> <volume>32</volume>: <fpage>5036</fpage>–<lpage>5044</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Tuller1"><label>21</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Tuller</surname><given-names>T</given-names></name>, <name name-style="western"><surname>Carmi</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Vestsigian</surname><given-names>KN</given-names></name>, <name name-style="western"><surname>S., Dorfan</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Zaborske</surname><given-names>J</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>An evolutionarily conserved mechanism for controlling the efficiency of protein translation</article-title>. <source>Cell</source> <volume>14</volume>: <fpage>344</fpage>–<lpage>354</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Spencer1"><label>22</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Spencer</surname><given-names>PS</given-names></name>, <name name-style="western"><surname>Siller</surname><given-names>E</given-names></name>, <name name-style="western"><surname>Anderson</surname><given-names>JF</given-names></name>, <name name-style="western"><surname>Barral</surname><given-names>JM</given-names></name> (<year>2012</year>) <article-title>Silent substitutions predictably alter translation elongation rates and protein folding efficiencies</article-title>. <source>Journal of Molecular Biology</source> <volume>422</volume>: <fpage>328</fpage>–<lpage>335</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Bai1"><label>23</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bai</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Milne</surname><given-names>JS</given-names></name>, <name name-style="western"><surname>Mayne</surname><given-names>L</given-names></name>, <name name-style="western"><surname>Englander</surname><given-names>SW</given-names></name> (<year>1994</year>) <article-title>Protein stability parameters measured by hydrogen exchange</article-title>. <source>Proteins</source> <volume>20</volume>: <fpage>4</fpage>–<lpage>14</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Liu1"><label>24</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Liu</surname><given-names>T</given-names></name>, <name name-style="western"><surname>Pantazatos</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Li</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Hamuro</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Hilser</surname><given-names>VJ</given-names></name>, <etal>et al</etal>. (<year>2012</year>) <article-title>Quantitative assessment of protein structural models by comparison of H/D exchange MS data with exchange behavior accurately predicted by DXCOREX</article-title>. <source>Journal of the American Society for Mass Spectrometry</source> <volume>23</volume>: <fpage>43</fpage>–<lpage>56</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Bai2"><label>25</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bai</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Milne</surname><given-names>JS</given-names></name>, <name name-style="western"><surname>Mayne</surname><given-names>L</given-names></name>, <name name-style="western"><surname>Englander</surname><given-names>SW</given-names></name> (<year>1993</year>) <article-title>Primary structure effects on peptide group hydrogen exchange</article-title>. <source>Proteins</source> <volume>17</volume>: <fpage>75</fpage>–<lpage>86</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Khafizov1"><label>26</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Khafizov</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Staritzbichler</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Stamm</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Forrest</surname><given-names>LR</given-names></name> (<year>2010</year>) <article-title>A study of the evolution of inverted-topology repeats from Leu T-fold transporters using AlignMe</article-title>. <source>Biochemistry</source> <volume>49</volume>: <fpage>10702</fpage>–<lpage>10713</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Clements1"><label>27</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Clements</surname><given-names>JD</given-names></name>, <name name-style="western"><surname>Martin</surname><given-names>RE</given-names></name> (<year>2002</year>) <article-title>Identification of novel membrane proteins by searching for patterns in hydropathy profiles</article-title>. <source>European Journal of Biochemistry</source> <volume>269</volume>: <fpage>2101</fpage>–<lpage>2107</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Lolkema1"><label>28</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lolkema</surname><given-names>JS</given-names></name>, <name name-style="western"><surname>Slotboom</surname><given-names>DJ</given-names></name> (<year>1998</year>) <article-title>Hydropathy profile alignment: a tool to search for structural homologues of membrane proteins</article-title>. <source>FEMS Microbiology Reviews</source> <volume>22</volume>: <fpage>305</fpage>–<lpage>322</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Hill1"><label>29</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hill</surname><given-names>JR</given-names></name>, <name name-style="western"><surname>Kelm</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Shi</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Deane</surname><given-names>CM</given-names></name> (<year>2011</year>) <article-title>Environment specific substitution tables improve membrane protein alignment</article-title>. <source>Bioinformatics</source> <volume>27</volume>: <fpage>15</fpage>–<lpage>23</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Lolkema2"><label>30</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lolkema</surname><given-names>JS</given-names></name>, <name name-style="western"><surname>Slotboom</surname><given-names>DJ</given-names></name> (<year>1998</year>) <article-title>Estimation of structural similarity of membrane proteins by hydropathy profile alignment</article-title>. <source>Molecular Membrane Biology</source> <volume>15</volume>: <fpage>33</fpage>–<lpage>42</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Hollien1"><label>31</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hollien</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Marqusee</surname><given-names>S</given-names></name> (<year>1999</year>) <article-title>Structural distribution of thermodynamic stability in a thermophilic enzyme</article-title>. <source>Proceedings of the National Academy of Sciences, USA</source> <volume>96</volume>: <fpage>13674</fpage>–<lpage>13678</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Holm2"><label>32</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Holm</surname><given-names>L</given-names></name>, <name name-style="western"><surname>Sander</surname><given-names>C</given-names></name> (<year>1993</year>) <article-title>Protein structure comparison by alignment of distance matrices</article-title>. <source>Journal of Molecular Biology</source> <volume>233</volume>: <fpage>123</fpage>–<lpage>138</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Shindyalov2"><label>33</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Shindyalov</surname><given-names>IN</given-names></name>, <name name-style="western"><surname>Bourne</surname><given-names>PE</given-names></name> (<year>1998</year>) <article-title>Protein structure alignment by incremental combinatorial extension (CE) of the optimal path</article-title>. <source>Protein Eng</source> <volume>11</volume>: <fpage>739</fpage>–<lpage>747</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Jia1"><label>34</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jia</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Dewey</surname><given-names>TG</given-names></name>, <name name-style="western"><surname>Shindyalov</surname><given-names>IN</given-names></name>, <name name-style="western"><surname>Bourne</surname><given-names>PE</given-names></name> (<year>2004</year>) <article-title>A new scoring function and associated statistical significance for structure alignment by CE</article-title>. <source>J Comp Biol</source> <volume>11</volume>: <fpage>787</fpage>–<lpage>799</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Kyte1"><label>35</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kyte</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Doolittle</surname><given-names>RF</given-names></name> (<year>1982</year>) <article-title>A simple method for displaying the hydropathic character of a protein</article-title>. <source>Journal of Molecular Biology</source> <volume>157</volume>: <fpage>105</fpage>–<lpage>132</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Robinson1"><label>36</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Robinson</surname><given-names>AB</given-names></name>, <name name-style="western"><surname>Robinson</surname><given-names>LR</given-names></name> (<year>1991</year>) <article-title>Distribution of glutamine and asparagine residues and their near neighbors in peptides and proteins</article-title>. <source>Proceedings of the National Academy of Sciences, USA</source> <volume>88</volume>: <fpage>8880</fpage>–<lpage>8884</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Johnson1"><label>37</label>
+<mixed-citation publication-type="other" xlink:type="simple">Johnson NL, Kotz S, Balakrishnan N (1994) Continuous Univariate Distributions. New York, New York: John Wiley &amp; Sons.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Press1"><label>38</label>
+<mixed-citation publication-type="other" xlink:type="simple">Press WH, Teukolsky SA, Vetterling WT, Flannery BP (1992) Numerical recipes in C: the art of scientific computing. New York: Cambridge University Press.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Andreeva1"><label>39</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Andreeva</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Howorth</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Chandonia</surname><given-names>JM</given-names></name>, <name name-style="western"><surname>Brenner</surname><given-names>SE</given-names></name>, <name name-style="western"><surname>Hubbard</surname><given-names>TJ</given-names></name>, <etal>et al</etal>. (<year>2008</year>) <article-title>Data growth and its impact on the SCOP database: new developments</article-title>. <source>Nucleic Acids Res</source> <volume>36</volume>: <fpage>D419</fpage>–<lpage>425</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Chandonia1"><label>40</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chandonia</surname><given-names>JM</given-names></name>, <name name-style="western"><surname>Hon</surname><given-names>G</given-names></name>, <name name-style="western"><surname>Walker</surname><given-names>NS</given-names></name>, <name name-style="western"><surname>Lo Conte</surname><given-names>L</given-names></name>, <name name-style="western"><surname>Koehl</surname><given-names>P</given-names></name>, <etal>et al</etal>. (<year>2004</year>) <article-title>The ASTRAL compendium in 2004</article-title>. <source>Nucleic Acids Res</source> <volume>32</volume>: <fpage>D189</fpage>–<lpage>D192</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Huang1"><label>41</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Huang</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Niu</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Gao</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Fu</surname><given-names>L</given-names></name>, <name name-style="western"><surname>Li</surname><given-names>W</given-names></name> (<year>2010</year>) <article-title>CD-HIT suite: a web server for clustering and comparing biological sequences</article-title>. <source>Bioinformatics</source> <volume>26</volume>: <fpage>680</fpage>–<lpage>682</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Pearson1"><label>42</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pearson</surname><given-names>WR</given-names></name> (<year>2000</year>) <article-title>Flexible sequence similarity searching with the FASTA3 program package</article-title>. <source>Methods Mol Biol</source> <volume>132</volume>: <fpage>185</fpage>–<lpage>219</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Pruitt1"><label>43</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pruitt</surname><given-names>KD</given-names></name>, <name name-style="western"><surname>Harrow</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Harte</surname><given-names>RA</given-names></name>, <name name-style="western"><surname>Wallin</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Diekhans</surname><given-names>M</given-names></name>, <etal>et al</etal>. (<year>2009</year>) <article-title>The consensus coding sequence (CCDS) project: identifying a common protein-coding gene set for the human and mouse genomes</article-title>. <source>Genome Research</source> <volume>19</volume>: <fpage>1316</fpage>–<lpage>1323</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Vroling1"><label>44</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Vroling</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Sanders</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Baakman</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Borrmann</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Verhoeven</surname><given-names>S</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>GPRCDB: information system for G-protein coupled receptors</article-title>. <source>Nucleic Acids Res</source> <volume>39</volume>: <fpage>D309</fpage>–<lpage>D319</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Roy1"><label>45</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Roy</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Kucukural</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Zhang</surname><given-names>Y</given-names></name> (<year>2010</year>) <article-title>I-TASSER: a unified platform for automated protein structure and function prediction</article-title>. <source>Nature Protocols</source> <volume>5</volume>: <fpage>725</fpage>–<lpage>738</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Holm3"><label>46</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Holm</surname><given-names>L</given-names></name>, <name name-style="western"><surname>Rosenstroem</surname><given-names>P</given-names></name> (<year>2010</year>) <article-title>Dali server: conservation mapping in 3D</article-title>. <source>Nucleic Acids Research</source> <volume>38</volume>: <fpage>W545</fpage>–<lpage>549</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Yomtovian1"><label>47</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yomtovian</surname><given-names>I</given-names></name>, <name name-style="western"><surname>Teerakulkittipong</surname><given-names>N</given-names></name>, <name name-style="western"><surname>Lee</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Moult</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Unger</surname><given-names>R</given-names></name> (<year>2010</year>) <article-title>Composiiton bias and the origin of ORFan genes</article-title>. <source>Bioinformatics</source> <volume>26</volume>: <fpage>996</fpage>–<lpage>999</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Buchan1"><label>48</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Buchan</surname><given-names>DW</given-names></name>, <name name-style="western"><surname>Ward</surname><given-names>SM</given-names></name>, <name name-style="western"><surname>Lobley</surname><given-names>AE</given-names></name>, <name name-style="western"><surname>Nugent</surname><given-names>TC</given-names></name>, <name name-style="western"><surname>Bryson</surname><given-names>K</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>Protein annotation and modeling servers at University College London</article-title>. <source>Nucleic Acids Research</source> <volume>38</volume>: <fpage>W563</fpage>–<lpage>W568</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Jones1"><label>49</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jones</surname><given-names>DT</given-names></name> (<year>1999</year>) <article-title>Protein secondary structure prediction based on position-specific scoring matrices</article-title>. <source>Journal of Molecular Biology</source> <volume>292</volume>: <fpage>195</fpage>–<lpage>202</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Soeding2"><label>50</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Soeding</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Biegert</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Lupas</surname><given-names>AN</given-names></name> (<year>2005</year>) <article-title>The HHpred interactive server for protein homology detection and structure prediction</article-title>. <source>Nucleic Acids Res</source> <volume>33</volume>: <fpage>W244</fpage>–<lpage>W248</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Vinothkumar1"><label>51</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Vinothkumar</surname><given-names>KR</given-names></name>, <name name-style="western"><surname>Henderson</surname><given-names>R</given-names></name> (<year>2010</year>) <article-title>Structures of membrane proteins</article-title>. <source>Quarterly Reviews of Biophysics</source> <volume>43</volume>: <fpage>65</fpage>–<lpage>158</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Neumann1"><label>52</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Neumann</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Fuchs</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Miulkidjanian</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Frishman</surname><given-names>D</given-names></name> (<year>2010</year>) <article-title>Current status of membrane protein structure classification</article-title>. <source>Proteins: Structure, Function, and Bioinformatics</source> <volume>78</volume>: <fpage>1760</fpage>–<lpage>1773</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Krogh1"><label>53</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Krogh</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Larsson</surname><given-names>B</given-names></name>, <name name-style="western"><surname>von Heijne</surname><given-names>G</given-names></name>, <name name-style="western"><surname>Sonnhammer</surname><given-names>ELL</given-names></name> (<year>2001</year>) <article-title>Predicting transmembrane protein topology with a hidden Markov model: application to complete genomes</article-title>. <source>Journal of Molecular Biology</source> <volume>305</volume>: <fpage>587</fpage>–<lpage>590</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Kali1"><label>54</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kali</surname><given-names>L</given-names></name>, <name name-style="western"><surname>Krogh</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Sonnhammer</surname><given-names>ELL</given-names></name> (<year>2007</year>) <article-title>Advantages of combined transmembrane topology and signal peptide prediction: the Phobius web server</article-title>. <source>Nucleic Acids Research</source> <volume>35</volume>: <fpage>W429</fpage>–<lpage>W432</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Engelman1"><label>55</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Engelman</surname><given-names>DM</given-names></name>, <name name-style="western"><surname>Steitz</surname><given-names>TA</given-names></name>, <name name-style="western"><surname>Goldman</surname><given-names>A</given-names></name> (<year>1986</year>) <article-title>Identifying nonpolar transbilayer helices in amino acid sequences of membrane proteins</article-title>. <source>Annual Reviews of Biophysics and Biophysical Chemistry</source> <volume>15</volume>: <fpage>321</fpage>–<lpage>353</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Murzin2"><label>56</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Murzin</surname><given-names>AG</given-names></name>, <name name-style="western"><surname>Brenner</surname><given-names>SE</given-names></name>, <name name-style="western"><surname>Hubbard</surname><given-names>T</given-names></name>, <name name-style="western"><surname>Chothia</surname><given-names>C</given-names></name> (<year>1995</year>) <article-title>SCOP: a structural classification of proteins database for the investigation of sequences and structures</article-title>. <source>J Mol Biol</source> <volume>247</volume>: <fpage>536</fpage>–<lpage>540</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Chothia1"><label>57</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chothia</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Lesk</surname><given-names>AM</given-names></name> (<year>1986</year>) <article-title>The relation between the divergence of sequence and structure in proteins</article-title>. <source>EMBO Journal</source> <volume>5</volume>: <fpage>823</fpage>–<lpage>826</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Wong1"><label>58</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wong</surname><given-names>WC</given-names></name>, <name name-style="western"><surname>Maurer-Stroh</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Eisenhaber</surname><given-names>F</given-names></name> (<year>2010</year>) <article-title>More than 1001 problems with protein domain databases: transmembrane regions, signal peptides, and the issue of sequence homology</article-title>. <source>PLOS Computational Biology</source> <volume>6</volume>: <fpage>e1000867</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Topiol1"><label>59</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Topiol</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Sabio</surname><given-names>M</given-names></name> (<year>2009</year>) <article-title>X-ray structure breakthroughs in the GPCR transmembrane region</article-title>. <source>Biochemical Pharmacology</source> <volume>78</volume>: <fpage>11</fpage>–<lpage>20</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Tebben1"><label>60</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Tebben</surname><given-names>AJ</given-names></name>, <name name-style="western"><surname>Schnur</surname><given-names>DM</given-names></name> (<year>2011</year>) <article-title>Beyond rhodopsin: G protein-coupled receptor structure and modeling incorporating the beta2-adrenergic and adenosine A2A crystal structures</article-title>. <source>Chmoinformatics and computational chemical biology: methods in molecular biology</source> <volume>672</volume>: <fpage>359</fpage>–<lpage>386</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Eswar1"><label>61</label>
+<mixed-citation publication-type="other" xlink:type="simple">Eswar N, Marti-Renom MA, Webb B, Madhusudhan MS, Eramian D, <etal>et al</etal>.. (2006) Comparative Protein Structure Modeling With MODELLER.: John WIley &amp; Sons, Inc.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Wootten1"><label>62</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wootten</surname><given-names>JC</given-names></name>, <name name-style="western"><surname>Federhen</surname><given-names>S</given-names></name> (<year>1993</year>) <article-title>Statistics of local complexity in amino acid sequences and sequence databases</article-title>. <source>Computational Chemistry</source> <volume>17</volume>: <fpage>149</fpage>–<lpage>163</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Lebon1"><label>63</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lebon</surname><given-names>G</given-names></name>, <name name-style="western"><surname>Warne</surname><given-names>T</given-names></name>, <name name-style="western"><surname>Edwards</surname><given-names>PC</given-names></name>, <name name-style="western"><surname>Bennett</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Langmead</surname><given-names>CJ</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>Agonist-bound adenosine A(2A) receptor structures reveal common features of GPCR activation</article-title>. <source>Nature</source> <volume>474</volume>: <fpage>521</fpage>–<lpage>525</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Cascales1"><label>64</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cascales</surname><given-names>E</given-names></name>, <name name-style="western"><surname>Buchanan</surname><given-names>SK</given-names></name>, <name name-style="western"><surname>Duche</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Kleanthous</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Lloubes</surname><given-names>R</given-names></name>, <etal>et al</etal>. (<year>2007</year>) <article-title>Colicin biology</article-title>. <source>Microiology and molecular biology reviews</source> <volume>71</volume>: <fpage>158</fpage>–<lpage>229</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Cramer1"><label>65</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cramer</surname><given-names>WA</given-names></name>, <name name-style="western"><surname>Heymann</surname><given-names>JB</given-names></name>, <name name-style="western"><surname>Schendel</surname><given-names>SL</given-names></name>, <name name-style="western"><surname>Deriy</surname><given-names>BN</given-names></name>, <name name-style="western"><surname>Cohen</surname><given-names>FS</given-names></name>, <etal>et al</etal>. (<year>1995</year>) <article-title>Structure-function of the channel-forming colicins</article-title>. <source>Annual Reviews of Biophysics and Biomolecular Structure</source> <volume>24</volume>: <fpage>611</fpage>–<lpage>641</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Lutter1"><label>66</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lutter</surname><given-names>EI</given-names></name>, <name name-style="western"><surname>Martens</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Hackstadt</surname><given-names>T</given-names></name> (<year>2012</year>) <article-title>Evolution and conservation of predicted inclusion membrane proteins in chlamydiae</article-title>. <source>Comparative and Functional Genomics</source> <volume>362104</volume>: <fpage>1</fpage>–<lpage>13</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Bannantine1"><label>67</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bannantine</surname><given-names>JP</given-names></name>, <name name-style="western"><surname>Griffiths</surname><given-names>RS</given-names></name>, <name name-style="western"><surname>Viratyosin</surname><given-names>W</given-names></name>, <name name-style="western"><surname>Brown</surname><given-names>WJ</given-names></name>, <name name-style="western"><surname>D.D</surname><given-names>R</given-names></name> (<year>2000</year>) <article-title>A secondary structure motif predictive of protein localization to the chlamydial inclusion membrane</article-title>. <source>Cellular Microbiology</source> <volume>2</volume>: <fpage>35</fpage>–<lpage>47</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Reshef1"><label>68</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Reshef</surname><given-names>DN</given-names></name>, <name name-style="western"><surname>Reshef</surname><given-names>YA</given-names></name>, <name name-style="western"><surname>Fuinucane</surname><given-names>HK</given-names></name>, <name name-style="western"><surname>Grossman</surname><given-names>SR</given-names></name>, <name name-style="western"><surname>McVean</surname><given-names>G</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>Detecting novel associations in large data sets</article-title>. <source>Science</source> <volume>334</volume>: <fpage>1518</fpage>–<lpage>1524</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003247-Kabsch1"><label>69</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kabsch</surname><given-names>W</given-names></name>, <name name-style="western"><surname>Sander</surname><given-names>C</given-names></name> (<year>1983</year>) <article-title>Dictionary of protein secondary structure: pattern recognition of hydrogen-bonded and geometrical features</article-title>. <source>Biopolymers</source> <volume>22</volume>: <fpage>2577</fpage>–<lpage>2637</lpage>.</mixed-citation>
+</ref>
+</ref-list></back>
+</article>

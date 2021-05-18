@@ -1,0 +1,920 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="discussion" dtd-version="3.0" xml:lang="EN">
+<front>
+<journal-meta><journal-id journal-id-type="publisher-id">plos</journal-id><journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id><journal-id journal-id-type="pmc">ploscomp</journal-id><!--===== Grouping journal title elements =====--><journal-title-group><journal-title>PLoS Computational Biology</journal-title></journal-title-group><issn pub-type="ppub">1553-734X</issn><issn pub-type="epub">1553-7358</issn><publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, USA</publisher-loc></publisher></journal-meta>
+<article-meta><article-id pub-id-type="publisher-id">09-PLCB-EN-1149R3</article-id><article-id pub-id-type="doi">10.1371/journal.pcbi.1000655</article-id><article-categories><subj-group subj-group-type="heading"><subject>Education</subject></subj-group><subj-group subj-group-type="Discipline"><subject>Computational Biology</subject><subject>Computational Biology/Systems Biology</subject><subject>Genetics and Genomics</subject></subj-group></article-categories><title-group><article-title>How to Understand the Cell by Breaking It: Network Analysis of Gene Perturbation Screens</article-title></title-group><contrib-group>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Markowetz</surname><given-names>Florian</given-names></name><xref ref-type="aff" rid="aff1"/><xref ref-type="corresp" rid="cor1"><sup>*</sup></xref></contrib>
+</contrib-group><aff id="aff1">          <addr-line>Cancer Research UK Cambridge Research Institute, Cambridge, United Kingdom</addr-line>       </aff><contrib-group>
+<contrib contrib-type="editor" xlink:type="simple"><name name-style="western"><surname>Lewitter</surname><given-names>Fran</given-names></name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/></contrib>
+</contrib-group><aff id="edit1">Whitehead Institute, United States of America</aff><author-notes>
+<corresp id="cor1">* E-mail: <email xlink:type="simple">florian.markowetz@cancer.org.uk</email></corresp>
+<fn fn-type="conflict"><p>The author has declared that no competing interests exist.</p></fn></author-notes><pub-date pub-type="collection"><month>2</month><year>2010</year></pub-date><pub-date pub-type="epub"><day>26</day><month>2</month><year>2010</year></pub-date><volume>6</volume><issue>2</issue><elocation-id>e1000655</elocation-id><!--===== Grouping copyright info into permissions =====--><permissions><copyright-year>2010</copyright-year><copyright-holder>Florian Markowetz</copyright-holder><license><license-p>This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license></permissions><funding-group><funding-statement>FM's research is funded by Cancer Research UK. No specific funding was received for this article.</funding-statement></funding-group><counts><page-count count="8"/></counts></article-meta>
+</front>
+<body><sec id="s1">
+<title>Introduction</title>
+<p>Functional genomics has demonstrated considerable success in inferring the inner working of a cell through analysis of its response to various perturbations. In recent years several technological advances have pushed gene perturbation screens to the forefront of functional genomics. Most importantly, modern technologies make it possible to probe gene function on a genome-wide scale in many model organisms and human. For example, large collections of knock-out mutants play a prominent role in the study of <italic>Saccharomyces cerevisiae</italic> <xref ref-type="bibr" rid="pcbi.1000655-Winzeler1">[1]</xref>, and RNA interference (RNAi) has become a widely used high-throughput method to knock-down target genes in a wide range of organisms, including <italic>Drosophila melanogaster</italic>, <italic>Caenorhabditis elegans</italic>, and human <xref ref-type="bibr" rid="pcbi.1000655-Fuchs1">[2]</xref>–<xref ref-type="bibr" rid="pcbi.1000655-Boutros1">[4]</xref>.</p>
+<p>Another major advance is the development of rich phenotypic descriptions by imaging or measuring molecular features globally. Observed phenotypes can reveal which genes are essential for an organism, or work in a particular pathway, or have a specific cellular function. Combining high-throughput screening techniques with rich phenotypes enables researchers to observe detailed reactions to experimental perturbations on a genome-wide scale. This makes gene perturbation screens one of the most promising tools in functional genomics.</p>
+<p>Advances in the design and analysis of gene perturbation screens may have an immediate impact on many areas of biological and medical research. New screening and phenotyping techniques often directly translate into new insights in gene and protein functions. Results of perturbation screens can also reveal unexploited areas of potential therapeutic intervention. For example, a recent RNAi screen showed that some of the most critical protein kinases for the proliferation and survival of cancer cell lines are also the least studied <xref ref-type="bibr" rid="pcbi.1000655-Luo1">[5]</xref>.</p>
+<p>A goal becoming more and more prominent in both experimental as well as computational research is to leverage gene perturbation screens to the identification of molecular interactions, cellular pathways, and regulatory mechanisms. Research focus is shifting from understanding the phenotypes of single proteins to understanding how proteins fulfill their function, what other proteins they interact with, and where they act in a pathway. Novel ideas on how to use perturbation screens to uncover cellular wiring diagrams can lead to a better understanding of how cellular networks are deregulated in diseases like cancer. This knowledge is indispensable for finding new drug targets to attack the drivers of a disease and not only the symptoms.</p>
+<p>This review surveys the current state-of-the-art in analyzing single gene perturbation screens from a network point of view. We describe approaches to make the step from the parts list to the wiring diagram by using phenotypes for network inference and integrating them with complementary data sources.</p>
+<sec id="s1a">
+<title>Phenotypes</title>
+<p>A phenotype can be any observable characteristic of an organism. Analysis strategies strongly depend on how rich and informative phenotype descriptors are. We will call phenotypes resulting from a single reporter (or a small number of reporters) low-dimensional phenotypes and the genes showing significant results hits <xref ref-type="bibr" rid="pcbi.1000655-Boutros2">[6]</xref>,<xref ref-type="bibr" rid="pcbi.1000655-Rieber1">[7]</xref>. Examples of such low-dimensional phenotypes are cell viability versus cell death <xref ref-type="bibr" rid="pcbi.1000655-Winzeler1">[1]</xref>, growth rates <xref ref-type="bibr" rid="pcbi.1000655-Giaever1">[8]</xref>, or the activity of reporter constructs, e.g., a luciferase, downstream of a pathway of interest <xref ref-type="bibr" rid="pcbi.1000655-Mller1">[9]</xref>. Low-dimensional phenotyping screens can identify candidate genes on a genome-wide scale and are often used as a first step for follow-up analysis. We will discuss methods to functionally interpret hits from low-dimensional phenotyping screens and to place them in the context of cellular networks in the first part of this review.</p>
+<p>The second part will be devoted to high-dimensional phenotyping screens, which evaluate a large number of cellular features at the same time. Observing system-wide changes promises key insights into cellular mechanisms and pathways that can not be supplied by low-dimensional screens. For example, high-dimensional phenotypes can include changes in cell morphology <xref ref-type="bibr" rid="pcbi.1000655-Perlman1">[10]</xref>–<xref ref-type="bibr" rid="pcbi.1000655-Bakal1">[13]</xref>, or growth rates under a wide range of conditions <xref ref-type="bibr" rid="pcbi.1000655-Brown1">[14]</xref>, or transcriptional changes measured on microarrays <xref ref-type="bibr" rid="pcbi.1000655-Hughes1">[15]</xref>–<xref ref-type="bibr" rid="pcbi.1000655-Amit1">[18]</xref>, or changes in the metabolome and proteome <xref ref-type="bibr" rid="pcbi.1000655-Ideker1">[19]</xref> measured by mass spectrometry <xref ref-type="bibr" rid="pcbi.1000655-Gstaiger1">[20]</xref> or flow cytometry <xref ref-type="bibr" rid="pcbi.1000655-Sachs1">[21]</xref>,<xref ref-type="bibr" rid="pcbi.1000655-Niu1">[22]</xref>. Morphological and growth phenotypes can be obtained on a genome-wide scale <xref ref-type="bibr" rid="pcbi.1000655-Bakal1">[13]</xref>,<xref ref-type="bibr" rid="pcbi.1000655-Brown1">[14]</xref>, while transcriptional and proteomic phenotypes are often restricted to individual pathways or processes <xref ref-type="bibr" rid="pcbi.1000655-Boutros3">[16]</xref>,<xref ref-type="bibr" rid="pcbi.1000655-Ivanova1">[17]</xref>,<xref ref-type="bibr" rid="pcbi.1000655-Sachs1">[21]</xref>.</p>
+<p>The distinction between low- and high-dimensional phenotypes may sound technical, but it is crucial for choosing potential analysis methods. The central difference is that high-dimensional phenotypes allow one to compute correlations and other similarity measures, which are not applicable for low-dimensional phenotypes. Another important distinction is between static phenotypes, providing a “snapshot” of a cell's reaction to a gene perturbation, and dynamic phenotypes showing a cell's reaction over time. We expect more and more studies in the future to produce dynamic output and in the following note explicitly which methods can be applied to dynamic phenotypes. For the biological interpretation of screening results it is very important to keep in mind which level of “cellular granularity” a phenotype describes: growth rates or cell morphologies are much more “high-level” features of the cell than gene or protein expressions. As soon as more studies produce dynamic phenotypes on many different cellular levels, integrative analysis of interconnected phenotypes <xref ref-type="bibr" rid="pcbi.1000655-Lu1">[23]</xref> will become more important. In the following, however, we concentrate on the current state-of-the art, which almost always uses a single type of readout in a perturbation screen.</p>
+</sec><sec id="s1b">
+<title>Preprocessing Pipeline</title>
+<p>In this review we focus on single gene perturbations by knockouts <xref ref-type="bibr" rid="pcbi.1000655-Winzeler1">[1]</xref> or RNAi <xref ref-type="bibr" rid="pcbi.1000655-Boutros1">[4]</xref> that allow targeting of individual genes or combinations of genes. Before network analysis, the raw data needs to pass an initial analysis and quality control pipeline specific to the perturbation and phenotyping technologies used. Low-dimensional screens are mostly performed in multiple-well-plates and a typical analysis pipeline <xref ref-type="bibr" rid="pcbi.1000655-Boutros1">[4]</xref> includes data preprocessing, removal of spatial biases per plate, normalization between plates, and finally detection of significant hits <xref ref-type="bibr" rid="pcbi.1000655-Boutros2">[6]</xref>,<xref ref-type="bibr" rid="pcbi.1000655-Rieber1">[7]</xref>,<xref ref-type="bibr" rid="pcbi.1000655-Birmingham1">[24]</xref>. In vertebrates, genes need to be targeted with multiple siRNAs to ensure effective down-regulation <xref ref-type="bibr" rid="pcbi.1000655-Boutros1">[4]</xref>, and the multiple phenotypes per gene can afterwards be integrated into a statistical score <xref ref-type="bibr" rid="pcbi.1000655-Knig1">[25]</xref>. High-dimensional morphological screens depend on computational analysis like image segmentation <xref ref-type="bibr" rid="pcbi.1000655-Carpenter1">[26]</xref>,<xref ref-type="bibr" rid="pcbi.1000655-Sklyar1">[27]</xref> and phenotype discovery <xref ref-type="bibr" rid="pcbi.1000655-Jones1">[28]</xref>–<xref ref-type="bibr" rid="pcbi.1000655-Wang1">[30]</xref> for rapid and consistent phenotyping. Molecular high-dimensional phenotypes need preprocessing depending on their platform and different approaches exist, e.g., for flow-cytometry data <xref ref-type="bibr" rid="pcbi.1000655-Hahne1">[31]</xref> or microarrays <xref ref-type="bibr" rid="pcbi.1000655-Smyth1">[32]</xref>.</p>
+</sec><sec id="s1c">
+<title>From Phenotypes to Cellular Networks</title>
+<p>The phenotypes we have discussed above allow only an indirect view on how different genes in the same process interact to achieve a particular phenotype. Cell morphology or sensitivity to stresses, for example, are global features of the cell and hard to relate directly to how individual genes contribute to them (see <xref ref-type="fig" rid="pcbi-1000655-g001">Figure 1A</xref>). Gene expression phenotypes show transcriptional changes in the genes downstream of a perturbed pathway but offer only an indirect view of pathway structure because of the high number of nontranscriptional regulatory events like protein modifications <xref ref-type="bibr" rid="pcbi.1000655-Markowetz1">[33]</xref>. For example, different protein activation states by phosphorylation may not be visible by changes in mRNA concentrations (see <xref ref-type="fig" rid="pcbi-1000655-g001">Figure 1B</xref>).</p>
+<fig id="pcbi-1000655-g001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000655.g001</object-id><label>Figure 1</label><caption>
+<title>Cellular networks underlying observable phenotypes.</title>
+<p>(A) Phenotypes are the response of the cell to external signals mediated by cellular networks and pathways. The goal of computation is to reconstruct these networks from the observed phenotypes. (B) Global molecular phenotypes like gene expression allow a view inside the cell but also have limitations. This is exemplified here in a cartoon pathway adapted from <xref ref-type="bibr" rid="pcbi.1000655-Wagner1">[61]</xref> showing a cascade of five genes/proteins (1–5). Proteins 1–3 form a kinase cascade, 4 is a transcription factor acting on 5. Up-regulation of 1 starts information flow in the cascade and results in 5 being turned on. In gene expression data this is visible as a correlation between 1 and 5 (represented as an undirected edge in the model). Experimentally perturbing a gene, say 3, removes the corresponding protein from the cascade, breaks the information flow, and results in an expression change at 5 (represented as an arrow in the model). However, the different phosphorylation and activation states of proteins 2–4 will most probably not be visible as changes in gene expression. Thus, because of the pathway mostly acting on the protein level most parts of the cascade (dashed arrows in the model) can not be inferred from gene expression data directly.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000655.g001" xlink:type="simple"/></fig>
+<p>This gap between observed phenotypes and underlying cellular networks is the main problem in the analysis of perturbation screens and applies to both low- and high-dimensional screens. The goal of computational analysis is to bridge this gap by inferring gene function and recovering pathways and mechanisms from observed phenotypes. The following methods address the challenge in different ways, mostly by integrating the perturbation effects and phenotypes with additional sources of information like collections of functionally related gene sets or protein-interaction networks.</p>
+</sec></sec><sec id="s2">
+<title>Network Analysis of Low-Dimensional Phenotypes</title>
+<sec id="s2a">
+<title>Global Overview by Enrichment Analysis</title>
+<p>A simple way to link phenotypes to gene function is to test whether pathways or functional groups of genes (e.g., defined by Gene Ontology terms <xref ref-type="bibr" rid="pcbi.1000655-Ashburner1">[34]</xref> or MSigDB <xref ref-type="bibr" rid="pcbi.1000655-Subramanian1">[35]</xref>) are enriched in the list of hits. Most methods use a hypergeometric test statistic (see <xref ref-type="fig" rid="pcbi-1000655-g002">Figure 2A</xref>) and many can be used online <xref ref-type="bibr" rid="pcbi.1000655-Huang1">[36]</xref>–<xref ref-type="bibr" rid="pcbi.1000655-Bauer1">[38]</xref> or as Bioconductor packages <xref ref-type="bibr" rid="pcbi.1000655-Alexa1">[39]</xref>. An alternative global functional annotation method tests whether functional groups show a trend towards especially strong or weak phenotypes without using a cutoff to define hits (see <xref ref-type="fig" rid="pcbi-1000655-g002">Figure 2B</xref>) <xref ref-type="bibr" rid="pcbi.1000655-Subramanian1">[35]</xref>. Enrichment analysis can also be very useful to analyze high-dimensional phenotypes, for example when functionally annotating the results of a clustering method.</p>
+<fig id="pcbi-1000655-g002" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000655.g002</object-id><label>Figure 2</label><caption>
+<title>Functional annotation of hits by enrichment analysis.</title>
+<p>(A) In the first approach <xref ref-type="bibr" rid="pcbi.1000655-Bauer1">[38]</xref> a cutoff is applied to select the hits with strongest phenotypes. A hyper-geometric test then evaluates if the overlap between the hits and a given gene set is surprisingly large (or small) compared to the overlap with a random set. (B) A second approach <xref ref-type="bibr" rid="pcbi.1000655-Subramanian1">[35]</xref> does not need a cutoff. It maps the gene set (black bars) onto the observed phenotypes and quantifies if there is a significant trend or if the genes are spread out uniformly over the whole range.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000655.g002" xlink:type="simple"/></fig>
+<p>Enrichment analysis results in a list of <italic>p</italic>-values describing how significantly each gene set was represented in the hits. Enrichment analysis reduces complexity and improves interpretability of results by moving from single genes to functionally related gene sets. This type of analysis is often called “unbiased” and “hypothesis-free” and is ideal for a comprehensive first overview. However, enrichment analysis loses its value for complexity reduction if the number of gene sets becomes too big. Also, overlap and dependencies between gene lists that could potentially bias the results have so far only been addressed for the gene ontology (GO) graph <xref ref-type="bibr" rid="pcbi.1000655-Bauer1">[38]</xref>,<xref ref-type="bibr" rid="pcbi.1000655-Alexa1">[39]</xref> but not for more general collections of gene lists like MSigDB <xref ref-type="bibr" rid="pcbi.1000655-Subramanian1">[35]</xref>.</p>
+<p>Good data analysis asks specific questions. A hypothesis-free method can only be the very first starting point for a deeper exploration of the data. For example, all enrichment methods rely on known gene sets and cannot uncover new pathways or components. Enrichment methods treat pathways as bags of unconnected genes without considering connections within and between pathways. Thus, enrichment methods can only deliver a very crude picture of the cell. In the following we will discuss approaches to overcome some of the limitations of enrichment analysis by integrating the observed phenotypes with complementary sources of information.</p>
+</sec><sec id="s2b">
+<title>Mapping Phenotypes to Networks</title>
+<p>Another valuable source of information to interpret RNAi hits are gene and protein networks obtained either experimentally <xref ref-type="bibr" rid="pcbi.1000655-Bork1">[40]</xref>,<xref ref-type="bibr" rid="pcbi.1000655-Stelzl1">[41]</xref> or computationally by literature mining <xref ref-type="bibr" rid="pcbi.1000655-Maayan1">[42]</xref>, or integrating heterogeneous genomic data <xref ref-type="bibr" rid="pcbi.1000655-Lee1">[43]</xref>–<xref ref-type="bibr" rid="pcbi.1000655-Guan1">[45]</xref>. All computational networks are available online on supplementary Web pages and the experimental networks can be obtained from databases like STRING <xref ref-type="bibr" rid="pcbi.1000655-Jensen1">[46]</xref> or BioGRID <xref ref-type="bibr" rid="pcbi.1000655-Breitkreutz1">[47]</xref>.</p>
+<p>Using these complementary data sources can improve hit identification <xref ref-type="bibr" rid="pcbi.1000655-Kaplow1">[48]</xref>–<xref ref-type="bibr" rid="pcbi.1000655-Berndt1">[50]</xref> and even provide a more refined view of the pathways the hits contribute to. One strategy is to search for subnetworks containing a surprisingly large number of hits (see <xref ref-type="fig" rid="pcbi-1000655-g003">Figure 3A</xref>). While this strategy is already useful when evaluating interesting subnetworks by eye <xref ref-type="bibr" rid="pcbi.1000655-Lee2">[51]</xref>,<xref ref-type="bibr" rid="pcbi.1000655-Krishnan1">[52]</xref>, its true power comes from the availability of efficient search algorithms to find subnetworks enriched for RNAi hits and assess their significance <xref ref-type="bibr" rid="pcbi.1000655-Ideker2">[53]</xref>–<xref ref-type="bibr" rid="pcbi.1000655-Tu1">[57]</xref>. An additional application of mapping hits to a network is that known phenotypes can be used to predict phenotypes of genes not included in the screen, e.g., by assuming that a gene connected to many hits should also show a strong phenotype <xref ref-type="bibr" rid="pcbi.1000655-Lee2">[51]</xref>. The success of all network-mapping strategies strongly depends on the quality and coverage of both the screen and the linkage in the network.</p>
+<fig id="pcbi-1000655-g003" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000655.g003</object-id><label>Figure 3</label><caption>
+<title>Extracting rich subnetworks.</title>
+<p>Different patterns in the graph point to a common cellular mechanism causing a phenotype: (A) hits in a low-dimensional screen (red nodes) clustering in highly connected subnetworks, and (B) high correlation between high-dimensional phenotypes of target genes connected in the background network. The black graph represents any type of background network.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000655.g003" xlink:type="simple"/></fig></sec><sec id="s2c">
+<title>Gene Prioritization</title>
+<p>Other approaches complement genomic data with biological prior knowledge showing how “interesting” hits look. Gene prioritization <xref ref-type="bibr" rid="pcbi.1000655-Wang2">[49]</xref>,<xref ref-type="bibr" rid="pcbi.1000655-Aerts1">[58]</xref> ranks genes according to how promising they would be for follow-up studies. Because it uses prior knowledge to fine-tune the algorithm, gene prioritization can be more focussed than a global uninformed search for enriched subnetworks.</p>
+</sec></sec><sec id="s3">
+<title>Network Analysis of High-Dimensional Phenotypes</title>
+<sec id="s3a">
+<title>Global Overview by Clustering and Ranking</title>
+<p>Most state-of-the-art analysis techniques rely on a “guilt-by-association” paradigm: genes with similar phenotypes will most probably have a similar biological function. This explains the prevalence of clustering techniques in analyzing high-dimensional phenotyping screens <xref ref-type="bibr" rid="pcbi.1000655-Perlman1">[10]</xref>,<xref ref-type="bibr" rid="pcbi.1000655-Bakal1">[13]</xref>,<xref ref-type="bibr" rid="pcbi.1000655-Brown1">[14]</xref>,<xref ref-type="bibr" rid="pcbi.1000655-Ivanova1">[17]</xref>. Clustering is a convenient first analysis and visualization step that can highlight strong trends and patterns in the data and can thus yield a global first impression of functional units. Another analysis strategy relying on guilt-by-association is to rank genes by their phenotypic similarity compared to a gene of interest <xref ref-type="bibr" rid="pcbi.1000655-Gunsalus1">[11]</xref>. Clustering and ranking can be combined with enrichment analysis (as discussed above) for functional interpretation.</p>
+</sec><sec id="s3b">
+<title>Graph Methods Linking Causes to Effects</title>
+<p>Another useful data visualization especially for transcriptional phenotypes is to build a directed (not necessarily acyclic) graph by drawing an arrow between two genes if perturbing one results in a significant expression change at the other <xref ref-type="bibr" rid="pcbi.1000655-Rung1">[59]</xref>. This graph representation can be then used as a starting point for further analysis, for example by using graph-theoretic methods of transitive reduction <xref ref-type="bibr" rid="pcbi.1000655-Aho1">[60]</xref> to distinguish between direct and indirect effects of a perturbation <xref ref-type="bibr" rid="pcbi.1000655-Wagner1">[61]</xref>,<xref ref-type="bibr" rid="pcbi.1000655-Tresch1">[62]</xref>.</p>
+</sec><sec id="s3c">
+<title>Probabilistic Graphical Models</title>
+<p>Most approaches to infer pathway structure from experimental data rely on probabilistic graphical models. For low-dimensional phenotypes they often suffer from nonuniqueness and unidentifiability issues <xref ref-type="bibr" rid="pcbi.1000655-Kaderali1">[63]</xref>, but can be applied very successfully in high-dimensional settings. A prominent approach are (static or dynamic) Bayesian networks, which describe probabilistically how a gene is controlled by its regulators <xref ref-type="bibr" rid="pcbi.1000655-Friedman1">[64]</xref>,<xref ref-type="bibr" rid="pcbi.1000655-Markowetz2">[65]</xref>. To model experimental perturbations most approaches rely on the concept of “ideal interventions” <xref ref-type="bibr" rid="pcbi.1000655-Pearl1">[66]</xref>, which deterministically fix a target gene to a particular state (e.g., “0” for a gene knockout). Ideal interventions were applied in Bayesian networks <xref ref-type="bibr" rid="pcbi.1000655-Sachs1">[21]</xref>,<xref ref-type="bibr" rid="pcbi.1000655-Ellis1">[67]</xref>,<xref ref-type="bibr" rid="pcbi.1000655-Peer1">[68]</xref>, factor graphs <xref ref-type="bibr" rid="pcbi.1000655-GatViks1">[69]</xref>, and dependency networks <xref ref-type="bibr" rid="pcbi.1000655-Rogers1">[70]</xref>. In simulations <xref ref-type="bibr" rid="pcbi.1000655-Werhli1">[71]</xref>,<xref ref-type="bibr" rid="pcbi.1000655-Zak1">[72]</xref> and on real data <xref ref-type="bibr" rid="pcbi.1000655-Sachs1">[21]</xref>,<xref ref-type="bibr" rid="pcbi.1000655-Werhli1">[71]</xref> it was found that interventions are critical for effective inference.</p>
+<p>The model of ideal interventions contains a number of idealizations (hence the name), most importantly that manipulations only affect single genes and that perturbation strength can be controlled deterministically. The first assumption may not be true if there are off-target or compensatory effects involving other genes. The second assumption may also not hold true in realistic biological scenarios; in particular for RNAi screens where experimentalists often lack knowledge about the exact knock-down efficiency. Probabilistic generalizations of ideal interventions can be used to cope with this uncertainty <xref ref-type="bibr" rid="pcbi.1000655-Markowetz3">[73]</xref>.</p>
+</sec><sec id="s3d">
+<title>Probabilistic Data Integration</title>
+<p>High-dimensional phenotypic profiles can be mapped to given graphs and networks by finding subgraphs that are connected in the background network and at the same time show high similarity of phenotypic profiles. These approaches already exist for mapping gene expression data onto protein interaction networks <xref ref-type="bibr" rid="pcbi.1000655-Ulitsky1">[74]</xref> and the same algorithms could easily be applied to any other kind of high-dimensional phenotypic profiles (see <xref ref-type="fig" rid="pcbi-1000655-g003">Figure 3B</xref>). Other approaches use data integration to construct potential pathways from protein interactions and transcription factor binding data to relate perturbed genes to the observed downstream effects <xref ref-type="bibr" rid="pcbi.1000655-Yeang1">[75]</xref>–<xref ref-type="bibr" rid="pcbi.1000655-Ourfali1">[77]</xref>.</p>
+</sec><sec id="s3e">
+<title>Multiple Input - Multiple Output (MIMO) Models</title>
+<p>Many of the approaches discussed so far—like clustering or graphical models—can be applied to both static “snapshots” as well as dynamic time-course measurements. Another approach to model specifically the dynamics of networks comes from a branch of control theory called “systems identification” <xref ref-type="bibr" rid="pcbi.1000655-Ljung1">[78]</xref> and uses so called Multiple Input - Multiple Output (MIMO) models. MIMO models represent the evolution of a perturbed cell over time by linear differential equations <xref ref-type="bibr" rid="pcbi.1000655-Tegner1">[79]</xref>–<xref ref-type="bibr" rid="pcbi.1000655-Lorenz1">[83]</xref> and can represent nonlinear effects by transfer functions <xref ref-type="bibr" rid="pcbi.1000655-Nelander1">[84]</xref>. The models can be inferred by regression techniques in the linear case <xref ref-type="bibr" rid="pcbi.1000655-Gardner1">[80]</xref> or Monte Carlo stochastic search in the nonlinear case <xref ref-type="bibr" rid="pcbi.1000655-Nelander1">[84]</xref>. The framework is very flexible and can incorporate single as well as combinatorial perturbations.</p>
+</sec><sec id="s3f">
+<title>Nested Effects Models (NEMs)</title>
+<p>One of the key problems in analyzing perturbation screens is that the observed phenotypes are downstream of the perturbed pathway and may not show the direct influence of one pathway component on another. A class of models explicitly addressing this problem are Nested Effects Models (NEMS) <xref ref-type="bibr" rid="pcbi.1000655-Markowetz1">[33]</xref>,<xref ref-type="bibr" rid="pcbi.1000655-Markowetz4">[85]</xref>. They reconstruct pathway structure from subset relations on the basis of the following rationale: Perturbing some genes may have an influence on a global process, while perturbing others affects subprocesses of it. Imagine, for example, a signaling pathway activating several transcription factors. Blocking the entire pathway will most probably affect all targets of all transcription factors, while perturbing a single transcription factor will only affect its direct targets, which are a subset of the phenotype obtained by blocking the complete pathway. Given high-dimensional phenotypes showing a subset structure, NEMs find the most likely pathway topology explaining the data. They differ from other statistical approaches like Bayesian networks by encoding subset relations instead of correlations or other similarity measures. The theory of NEMs has been applied and extended in several studies <xref ref-type="bibr" rid="pcbi.1000655-Frhlich1">[86]</xref>–<xref ref-type="bibr" rid="pcbi.1000655-Frhlich3">[89]</xref>. An implementation is available as an R/Bioconductor package <xref ref-type="bibr" rid="pcbi.1000655-Frhlich4">[90]</xref>. Other extensions to the NEM framework distinguish between activating and inhibiting regulation <xref ref-type="bibr" rid="pcbi.1000655-Vaske1">[91]</xref> or include dynamic information from time-series measurements <xref ref-type="bibr" rid="pcbi.1000655-Anchang1">[92]</xref>.</p>
+</sec></sec><sec id="s4">
+<title>Discussion and Outlook</title>
+<p>In this review we have discussed two main approaches to describe the reaction of a cell to an experimental gene perturbation: low-dimensional phenotypes measure individual reporters for cell viability or pathway activation, while high-dimensional phenotypes show global effects on cell morphology, transcriptome, or proteome. <xref ref-type="table" rid="pcbi-1000655-t001">Table 1</xref> lists examples of freely available software implementing some of these approaches. All of them can be directly applied to gene perturbation screens, even though some of them have been introduced in different contexts. While this review has focused on single gene knock-outs and knock-downs, similar approaches can be applied to gene over-expression screens <xref ref-type="bibr" rid="pcbi.1000655-Niu1">[22]</xref>,<xref ref-type="bibr" rid="pcbi.1000655-Lorenz1">[83]</xref>,<xref ref-type="bibr" rid="pcbi.1000655-Sopko1">[93]</xref>,<xref ref-type="bibr" rid="pcbi.1000655-Stokic1">[94]</xref>, drug treatment <xref ref-type="bibr" rid="pcbi.1000655-Nelander1">[84]</xref>, environmental stresses changing many genes <xref ref-type="bibr" rid="pcbi.1000655-Yosef1">[95]</xref>,<xref ref-type="bibr" rid="pcbi.1000655-MacCarthy1">[96]</xref>, or even natural genetic variation <xref ref-type="bibr" rid="pcbi.1000655-Rockman1">[97]</xref>.</p>
+<table-wrap id="pcbi-1000655-t001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000655.t001</object-id><label>Table 1</label><caption>
+<title>Examples of software for network analysis of gene perturbation screens.</title>
+</caption><!--===== Grouping alternate versions of objects =====--><alternatives><graphic id="pcbi-1000655-t001-1" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000655.t001" xlink:type="simple"/><table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" colspan="1" rowspan="1">Method Name</td>
+<td align="left" colspan="1" rowspan="1">Description with Reference</td>
+<td align="left" colspan="1" rowspan="1">Web Page</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>General data analysis and network visualization</bold></td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>Bioconductor</bold></td>
+<td align="left" colspan="1" rowspan="1">Software environment for the analysis of genomic data featuring hundreds of contributed packages <xref ref-type="bibr" rid="pcbi.1000655-Gentleman1">[112]</xref></td>
+<td align="left" colspan="1" rowspan="1"><ext-link ext-link-type="uri" xlink:href="http://www.bioconductor.org" xlink:type="simple">www.bioconductor.org</ext-link></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>Cytoscape</bold></td>
+<td align="left" colspan="1" rowspan="1">Software platform for visualizing molecular interaction networks and integrating them with other data types <xref ref-type="bibr" rid="pcbi.1000655-Shannon1">[113]</xref></td>
+<td align="left" colspan="1" rowspan="1"><ext-link ext-link-type="uri" xlink:href="http://www.cytoscape.org" xlink:type="simple">www.cytoscape.org</ext-link></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>Setting up data for network analysis</bold></td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>cellHTS2</bold></td>
+<td align="left" colspan="1" rowspan="1">End-to-end analysis of cell-based screens: from raw intensity readings to the annotated hit list <xref ref-type="bibr" rid="pcbi.1000655-Boutros2">[6]</xref></td>
+<td align="left" colspan="1" rowspan="1"><ext-link ext-link-type="uri" xlink:href="http://www.bioconductor.org" xlink:type="simple">www.bioconductor.org</ext-link></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>RNAither</bold></td>
+<td align="left" colspan="1" rowspan="1">Analysis of cell-based RNAi screens, includes quality assessment and customizable normalization <xref ref-type="bibr" rid="pcbi.1000655-Rieber1">[7]</xref></td>
+<td align="left" colspan="1" rowspan="1"><ext-link ext-link-type="uri" xlink:href="http://www.bioconductor.org" xlink:type="simple">www.bioconductor.org</ext-link></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>EBImage</bold></td>
+<td align="left" colspan="1" rowspan="1">Cell image analysis and feature extraction <xref ref-type="bibr" rid="pcbi.1000655-Sklyar1">[27]</xref></td>
+<td align="left" colspan="1" rowspan="1"><ext-link ext-link-type="uri" xlink:href="http://www.bioconductor.org" xlink:type="simple">www.bioconductor.org</ext-link></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>CellProfiler</bold></td>
+<td align="left" colspan="1" rowspan="1">Cell image analysis and feature extraction <xref ref-type="bibr" rid="pcbi.1000655-Carpenter1">[26]</xref></td>
+<td align="left" colspan="1" rowspan="1"><ext-link ext-link-type="uri" xlink:href="http://www.cellprofiler.org" xlink:type="simple">www.cellprofiler.org</ext-link></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>Enrichment analysis</bold></td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>DAVID</bold></td>
+<td align="left" colspan="1" rowspan="1">Tools for data annotation, visualization, and integration <xref ref-type="bibr" rid="pcbi.1000655-Huang1">[36]</xref></td>
+<td align="left" colspan="1" rowspan="1">david.abcc.ncifcrf.gov</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>GOLEM</bold></td>
+<td align="left" colspan="1" rowspan="1">Enrichment analysis and visualization of GO graph (<xref ref-type="fig" rid="pcbi-1000655-g002">Figure 2A</xref>) <xref ref-type="bibr" rid="pcbi.1000655-Sealfon1">[37]</xref></td>
+<td align="left" colspan="1" rowspan="1">function.princeton.edu/GOLEM</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>Ontologizer</bold></td>
+<td align="left" colspan="1" rowspan="1">Enrichment analysis with dependencies between GO nodes (<xref ref-type="fig" rid="pcbi-1000655-g002">Figure 2A</xref>) <xref ref-type="bibr" rid="pcbi.1000655-Bauer1">[38]</xref></td>
+<td align="left" colspan="1" rowspan="1">compbio.charite.de/ontologizer</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>GSEA</bold></td>
+<td align="left" colspan="1" rowspan="1">Gene set enrichment analysis (<xref ref-type="fig" rid="pcbi-1000655-g002">Figure 2B</xref>) <xref ref-type="bibr" rid="pcbi.1000655-Subramanian1">[35]</xref></td>
+<td align="left" colspan="1" rowspan="1"><ext-link ext-link-type="uri" xlink:href="http://www.broadinstitute.org/gsea/" xlink:type="simple">www.broadinstitute.org/gsea/</ext-link></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>Clustering and ranking</bold></td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>Cell Profiler Analyst</bold></td>
+<td align="left" colspan="1" rowspan="1">Interactive exploration and analysis of multidimensional data from image-based experiments <xref ref-type="bibr" rid="pcbi.1000655-Jones1">[28]</xref></td>
+<td align="left" colspan="1" rowspan="1"><ext-link ext-link-type="uri" xlink:href="http://www.cellprofiler.org" xlink:type="simple">www.cellprofiler.org</ext-link></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>PhenoBlast</bold></td>
+<td align="left" colspan="1" rowspan="1">Ranking of phenotype profiles according to similarity with given profile <xref ref-type="bibr" rid="pcbi.1000655-Gunsalus1">[11]</xref></td>
+<td align="left" colspan="1" rowspan="1"><ext-link ext-link-type="uri" xlink:href="http://www.rnai.org" xlink:type="simple">www.rnai.org</ext-link></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>Endeavour</bold></td>
+<td align="left" colspan="1" rowspan="1">Prioritizes hits for further analysis <xref ref-type="bibr" rid="pcbi.1000655-Aerts1">[58]</xref></td>
+<td align="left" colspan="1" rowspan="1"><ext-link ext-link-type="uri" xlink:href="http://www.esat.kuleuven.be/endeavour/" xlink:type="simple">www.esat.kuleuven.be/endeavour/</ext-link></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>Finding rich subnetworks</bold></td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>heinz</bold></td>
+<td align="left" colspan="1" rowspan="1">Finds optimal subnetworks rich in hits (<xref ref-type="fig" rid="pcbi-1000655-g003">Figure 3A</xref>) <xref ref-type="bibr" rid="pcbi.1000655-Dittrich1">[55]</xref></td>
+<td align="left" colspan="1" rowspan="1"><ext-link ext-link-type="uri" xlink:href="http://www.planet-lisa.net" xlink:type="simple">www.planet-lisa.net</ext-link></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>jActiveModules</bold></td>
+<td align="left" colspan="1" rowspan="1">Finds heuristic subnetworks rich in hits (<xref ref-type="fig" rid="pcbi-1000655-g003">Figure 3A</xref>) <xref ref-type="bibr" rid="pcbi.1000655-Ideker2">[53]</xref></td>
+<td align="left" colspan="1" rowspan="1"><ext-link ext-link-type="uri" xlink:href="http://www.cytoscape.org" xlink:type="simple">www.cytoscape.org</ext-link></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>Matisse</bold></td>
+<td align="left" colspan="1" rowspan="1">Finds subnetworks with high phenotypic similarity (<xref ref-type="fig" rid="pcbi-1000655-g003">Figure 3B</xref>) <xref ref-type="bibr" rid="pcbi.1000655-Ulitsky1">[74]</xref></td>
+<td align="left" colspan="1" rowspan="1">acgt.cs.tau.ac.il/matisse/</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>Network reconstruction</bold></td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>nem</bold></td>
+<td align="left" colspan="1" rowspan="1">NEMs reconstruct pathway features from subset relations in high-dim phenotypes <xref ref-type="bibr" rid="pcbi.1000655-Frhlich4">[90]</xref></td>
+<td align="left" colspan="1" rowspan="1"><ext-link ext-link-type="uri" xlink:href="http://www.bioconductor.org" xlink:type="simple">www.bioconductor.org</ext-link></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>copia</bold></td>
+<td align="left" colspan="1" rowspan="1">Copia uses MIMO models to reconstruct networks from perturbations <xref ref-type="bibr" rid="pcbi.1000655-Nelander1">[84]</xref></td>
+<td align="left" colspan="1" rowspan="1">cbio.mskcc.org/copia/</td>
+</tr>
+</tbody>
+</table></alternatives><table-wrap-foot><fn id="nt101"><label/><p>This list is far from comprehensive, but hopefully provides a starting point even for noncoding experimentalists.</p></fn></table-wrap-foot></table-wrap><sec id="s4a">
+<title>Predicting Phenotypes from Metabolic Networks</title>
+<p>The focus of this review is on functionally annotating hits in a network context and reconstructing networks from high-dimensional phenotypes. In a complementary direction of research, genome-wide reconstructions of metabolic networks <xref ref-type="bibr" rid="pcbi.1000655-Herrgard1">[98]</xref>,<xref ref-type="bibr" rid="pcbi.1000655-Duarte1">[99]</xref> are used to predict effects of gene perturbations. Instead of predicting networks from phenotypes, these approaches predict phenotypes from networks. For example, in <italic>S. cerevisiae</italic> and <italic>Escherichia coli</italic> computational models very accurately predict fitness effects of gene knock-outs <xref ref-type="bibr" rid="pcbi.1000655-Papp1">[100]</xref>,<xref ref-type="bibr" rid="pcbi.1000655-Fong1">[101]</xref> as well as compensatory rescue effects <xref ref-type="bibr" rid="pcbi.1000655-Motter1">[102]</xref>. However, recent developments in metabolic network modeling have led to linear programming algorithms to extract relevant context-specific subnetworks of activity from a genome-wide network <xref ref-type="bibr" rid="pcbi.1000655-Shlomi1">[103]</xref>,<xref ref-type="bibr" rid="pcbi.1000655-Becker1">[104]</xref>. In the same way as the probabilistic data integration methods discussed above, e.g., <xref ref-type="bibr" rid="pcbi.1000655-Ulitsky1">[74]</xref>, these algorithms could be used in the future to find metabolic subnetworks active under certain gene perturbations.</p>
+</sec><sec id="s4b">
+<title>From Single to Combinatorial Perturbations</title>
+<p>While single gene perturbation screens have been immensely successful in extending our knowledge of pathway components and interactions, an important limitation can be caused by compensatory effects, genetic buffering, and redundancy of cellular mechanisms and pathways <xref ref-type="bibr" rid="pcbi.1000655-Deutscher1">[105]</xref>,<xref ref-type="bibr" rid="pcbi.1000655-Gitter1">[106]</xref>. This limitation can only be overcome by perturbing several genes at the same time. The number of possible combinations grows rapidly and thus current approaches are mainly limited to perturbing pairs of genes and observing low-dimensional phenotypes like fitness estimates <xref ref-type="bibr" rid="pcbi.1000655-Tong1">[107]</xref>. The analysis of combinatorial perturbations is outside the scope of this review.</p>
+</sec><sec id="s4c">
+<title>The End of the Screen is the Beginning of the Experiment</title>
+<p>Global phenotyping and pathway screening can be combined in the same study. For example, a first genome-wide screen identifies key genes representative for pathways and cellular mechanisms involved in the phenotype. In a second step the hits of the first screen could be assayed for high-dimensional molecular phenotypes to infer a pathway diagram using NEMs or other statistical approaches.</p>
+<p>In a further step preliminary pathway models could be used to plan an additional round of experimentation. Different modeling frameworks propose future experiments to most effectively refine a pathway hypothesis, e.g., Bayesian networks <xref ref-type="bibr" rid="pcbi.1000655-Pournara1">[108]</xref>,<xref ref-type="bibr" rid="pcbi.1000655-Yoo1">[109]</xref>, physical network models <xref ref-type="bibr" rid="pcbi.1000655-Yeang2">[76]</xref>, logical models <xref ref-type="bibr" rid="pcbi.1000655-Szczurek1">[110]</xref>, Boolean networks <xref ref-type="bibr" rid="pcbi.1000655-Ideker3">[111]</xref>, and dynamical modeling <xref ref-type="bibr" rid="pcbi.1000655-Tegner1">[79]</xref>.</p>
+<p>Iteratively integrating experimentation and computation may lead to a virtuous circle and is one of the most promising approaches to refine our understanding of the inner working of the cell.</p>
+</sec></sec></body>
+<back>
+<ack>
+<p>I thank the organizers of the ISMB 2009 tutorial sessions for the opportunity to present this material. Yinyin Yuan, Roland Schwarz, and Gregoire Pau provided helpful comments on drafts of the manuscript.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1000655-Winzeler1"><label>1</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Winzeler</surname><given-names>EA</given-names></name>
+<name name-style="western"><surname>Shoemaker</surname><given-names>DD</given-names></name>
+<name name-style="western"><surname>Astromoff</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Liang</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Anderson</surname><given-names>K</given-names></name>
+<etal/></person-group>             <year>1999</year>             <article-title>Functional characterization of the S. cerevisiae genome by gene deletion and parallel analysis.</article-title>             <source>Science</source>             <volume>285</volume>             <fpage>901</fpage>             <lpage>906</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Fuchs1"><label>2</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Fuchs</surname><given-names>F</given-names></name>
+<name name-style="western"><surname>Boutros</surname><given-names>M</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Cellular phenotyping by RNAi.</article-title>             <source>Brief Funct Genomic Proteomic</source>             <volume>5</volume>             <fpage>52</fpage>             <lpage>56</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Moffat1"><label>3</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Moffat</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Sabatini</surname><given-names>D</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Building mammalian signalling pathways with RNAi screens.</article-title>             <source>Nat Rev Mol Cell Biol</source>             <volume>7</volume>             <fpage>177</fpage>             <lpage>187</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Boutros1"><label>4</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Boutros</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Ahringer</surname><given-names>J</given-names></name>
+</person-group>             <year>2008</year>             <article-title>The art and design of genetic screens: RNA interference.</article-title>             <source>Nat Rev Genet</source>             <volume>9</volume>             <fpage>554</fpage>             <lpage>566</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Luo1"><label>5</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Luo</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Cheung</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Subramanian</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Sharifnia</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Okamoto</surname><given-names>M</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>Highly parallel identification of essential genes in cancer cells.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>105</volume>             <fpage>20380</fpage>             <lpage>20385</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Boutros2"><label>6</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Boutros</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Brás</surname><given-names>LP</given-names></name>
+<name name-style="western"><surname>Huber</surname><given-names>W</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Analysis of cell-based RNAi screens.</article-title>             <source>Genome Biol</source>             <volume>7</volume>             <fpage>R66</fpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Rieber1"><label>7</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Rieber</surname><given-names>N</given-names></name>
+<name name-style="western"><surname>Knapp</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Eils</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Kaderali</surname><given-names>L</given-names></name>
+</person-group>             <year>2009</year>             <article-title>RNAither, an automated pipeline for the statistical analysis of high-throughput RNAi screens.</article-title>             <source>Bioinformatics</source>             <volume>25</volume>             <fpage>678</fpage>             <lpage>679</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Giaever1"><label>8</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Giaever</surname><given-names>G</given-names></name>
+<name name-style="western"><surname>Chu</surname><given-names>AM</given-names></name>
+<name name-style="western"><surname>Ni</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Connelly</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Riles</surname><given-names>L</given-names></name>
+<etal/></person-group>             <year>2002</year>             <article-title>Functional profiling of the saccharomyces cerevisiae genome.</article-title>             <source>Nature</source>             <volume>418</volume>             <fpage>387</fpage>             <lpage>391</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Mller1"><label>9</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Müller</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Kuttenkeuler</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Gesellchen</surname><given-names>V</given-names></name>
+<name name-style="western"><surname>Zeidler</surname><given-names>MP</given-names></name>
+<name name-style="western"><surname>Boutros</surname><given-names>M</given-names></name>
+</person-group>             <year>2005</year>             <article-title>Identification of JAK/STAT signalling components by genome-wide RNA interference.</article-title>             <source>Nature</source>             <volume>436</volume>             <fpage>871</fpage>             <lpage>875</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Perlman1"><label>10</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Perlman</surname><given-names>ZE</given-names></name>
+<name name-style="western"><surname>Slack</surname><given-names>MD</given-names></name>
+<name name-style="western"><surname>Feng</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Mitchison</surname><given-names>TJ</given-names></name>
+<name name-style="western"><surname>Wu</surname><given-names>LF</given-names></name>
+<etal/></person-group>             <year>2004</year>             <article-title>Multidimensional drug profiling by automated microscopy.</article-title>             <source>Science</source>             <volume>306</volume>             <fpage>1194</fpage>             <lpage>1198</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Gunsalus1"><label>11</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Gunsalus</surname><given-names>KC</given-names></name>
+<name name-style="western"><surname>Yueh</surname><given-names>WC</given-names></name>
+<name name-style="western"><surname>MacMenamin</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Piano</surname><given-names>F</given-names></name>
+</person-group>             <year>2004</year>             <article-title>RNAiDB and PhenoBlast: web tools for genome-wide phenotypic mapping projects.</article-title>             <source>Nucleic Acids Res</source>             <volume>32</volume>             <fpage>D406</fpage>             <lpage>10</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Neumann1"><label>12</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Neumann</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Held</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Liebel</surname><given-names>U</given-names></name>
+<name name-style="western"><surname>Erfle</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Rogers</surname><given-names>P</given-names></name>
+<etal/></person-group>             <year>2006</year>             <article-title>High-throughput RNAi screening by time-lapse imaging of live human cells.</article-title>             <source>Nat Methods</source>             <volume>3</volume>             <fpage>385</fpage>             <lpage>390</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Bakal1"><label>13</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Bakal</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Aach</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Church</surname><given-names>G</given-names></name>
+<name name-style="western"><surname>Perrimon</surname><given-names>N</given-names></name>
+</person-group>             <year>2007</year>             <article-title>Quantitative morphological signatures define local signaling networks regulating cell morphology.</article-title>             <source>Science</source>             <volume>316</volume>             <fpage>1753</fpage>             <lpage>1756</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Brown1"><label>14</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Brown</surname><given-names>JA</given-names></name>
+<name name-style="western"><surname>Sherlock</surname><given-names>G</given-names></name>
+<name name-style="western"><surname>Myers</surname><given-names>CL</given-names></name>
+<name name-style="western"><surname>Burrows</surname><given-names>NM</given-names></name>
+<name name-style="western"><surname>Deng</surname><given-names>C</given-names></name>
+<etal/></person-group>             <year>2006</year>             <article-title>Global analysis of gene function in yeast by quantitative phenotypic profiling.</article-title>             <source>Mol Syst Biol</source>             <volume>2</volume>             <fpage>2006.0001</fpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Hughes1"><label>15</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Hughes</surname><given-names>TR</given-names></name>
+<name name-style="western"><surname>Marton</surname><given-names>MJ</given-names></name>
+<name name-style="western"><surname>Jones</surname><given-names>AR</given-names></name>
+<name name-style="western"><surname>Roberts</surname><given-names>CJ</given-names></name>
+<name name-style="western"><surname>Stoughton</surname><given-names>R</given-names></name>
+<etal/></person-group>             <year>2000</year>             <article-title>Functional discovery via a compendium of expression profiles.</article-title>             <source>Cell</source>             <volume>102</volume>             <fpage>109</fpage>             <lpage>126</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Boutros3"><label>16</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Boutros</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Agaisse</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Perrimon</surname><given-names>N</given-names></name>
+</person-group>             <year>2002</year>             <article-title>Sequential activation of signaling pathways during innate immune responses in drosophila.</article-title>             <source>Dev Cell</source>             <volume>3</volume>             <fpage>711</fpage>             <lpage>722</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Ivanova1"><label>17</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Ivanova</surname><given-names>N</given-names></name>
+<name name-style="western"><surname>Dobrin</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Lu</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Kotenko</surname><given-names>I</given-names></name>
+<name name-style="western"><surname>Levorse</surname><given-names>J</given-names></name>
+<etal/></person-group>             <year>2006</year>             <article-title>Dissecting self-renewal in stem cells with RNA interference.</article-title>             <source>Nature</source>             <volume>442</volume>             <fpage>533</fpage>             <lpage>533</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Amit1"><label>18</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Amit</surname><given-names>I</given-names></name>
+<name name-style="western"><surname>Garber</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Chevrier</surname><given-names>N</given-names></name>
+<name name-style="western"><surname>Leite</surname><given-names>AP</given-names></name>
+<name name-style="western"><surname>Donner</surname><given-names>Y</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>Unbiased reconstruction of a mammalian transcriptional network mediating pathogen responses.</article-title>             <source>Science</source>             <volume>326</volume>             <fpage>257</fpage>             <lpage>263</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Ideker1"><label>19</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Ideker</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Thorsson</surname><given-names>V</given-names></name>
+<name name-style="western"><surname>Ranish</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Christmas</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Buhler</surname><given-names>J</given-names></name>
+<etal/></person-group>             <year>2001</year>             <article-title>Integrated genomic and proteomic analyses of a systematically perturbed metabolic network.</article-title>             <source>Science</source>             <volume>292</volume>             <fpage>929</fpage>             <lpage>934</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Gstaiger1"><label>20</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Gstaiger</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Aebersold</surname><given-names>R</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Applying mass spectrometry-based proteomics to genetics, genomics and network biology.</article-title>             <source>Nat Rev Genet</source>             <volume>10</volume>             <fpage>617</fpage>             <lpage>627</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Sachs1"><label>21</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Sachs</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Perez</surname><given-names>O</given-names></name>
+<name name-style="western"><surname>Pe'er</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Lauffenburger</surname><given-names>DA</given-names></name>
+<name name-style="western"><surname>Nolan</surname><given-names>GP</given-names></name>
+</person-group>             <year>2005</year>             <article-title>Causal protein-signaling networks derived from multiparameter single-cell data.</article-title>             <source>Science</source>             <volume>308</volume>             <fpage>523</fpage>             <lpage>529</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Niu1"><label>22</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Niu</surname><given-names>W</given-names></name>
+<name name-style="western"><surname>Li</surname><given-names>Z</given-names></name>
+<name name-style="western"><surname>Zhan</surname><given-names>W</given-names></name>
+<name name-style="western"><surname>Iyer</surname><given-names>VR</given-names></name>
+<name name-style="western"><surname>Marcotte</surname><given-names>EM</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Mechanisms of cell cycle control revealed by a systematic and quantitative overexpression screen in s. cerevisiae.</article-title>             <source>PLoS Genetics</source>             <volume>4</volume>             <fpage>e1000120</fpage>             <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pgen.1000120" xlink:type="simple">10.1371/journal.pgen.1000120</ext-link></comment>          </element-citation></ref>
+<ref id="pcbi.1000655-Lu1"><label>23</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Lu</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Markowetz</surname><given-names>F</given-names></name>
+<name name-style="western"><surname>Unwin</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Leek</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Airoldi</surname><given-names>E</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>Systems-level dynamic analyses of fate change in murine embryonic stem cells.</article-title>             <source>Nature</source>             <volume>462</volume>             <fpage>358</fpage>             <lpage>362</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Birmingham1"><label>24</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Birmingham</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Selfors</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Forster</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Wrobel</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Kennedy</surname><given-names>C</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>Statistical methods for analysis of high-throughput RNA interference screens.</article-title>             <source>Nat Methods</source>             <volume>6</volume>             <fpage>569</fpage>             <lpage>575</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Knig1"><label>25</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>König</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Chiang</surname><given-names>Cy</given-names></name>
+<name name-style="western"><surname>Tu</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Yan</surname><given-names>SF</given-names></name>
+<name name-style="western"><surname>DeJesus</surname><given-names>P</given-names></name>
+<etal/></person-group>             <year>2007</year>             <article-title>A probability-based approach for the analysis of large-scale RNAi screens.</article-title>             <source>Nat Methods</source>             <volume>4</volume>             <fpage>847</fpage>             <lpage>849</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Carpenter1"><label>26</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Carpenter</surname><given-names>AE</given-names></name>
+<name name-style="western"><surname>Jones</surname><given-names>TR</given-names></name>
+<name name-style="western"><surname>Lamprecht</surname><given-names>MR</given-names></name>
+<name name-style="western"><surname>Clarke</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Kang</surname><given-names>IH</given-names></name>
+<etal/></person-group>             <year>2006</year>             <article-title>Cellprofiler: image analysis software for identifying and quantifying cell phenotypes.</article-title>             <source>Genome Biol</source>             <volume>7</volume>             <fpage>R100</fpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Sklyar1"><label>27</label><element-citation publication-type="other" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Sklyar</surname><given-names>O</given-names></name>
+<name name-style="western"><surname>Pau</surname><given-names>G</given-names></name>
+<name name-style="western"><surname>Smith</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Huber</surname><given-names>W</given-names></name>
+</person-group>             <year>2008</year>             <article-title>EBImage: image processing and image analysis toolkit for R.</article-title>             <comment>Available: <ext-link ext-link-type="uri" xlink:href="http://www.bioconductor.org" xlink:type="simple">http://www.bioconductor.org</ext-link></comment>          </element-citation></ref>
+<ref id="pcbi.1000655-Jones1"><label>28</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Jones</surname><given-names>TR</given-names></name>
+<name name-style="western"><surname>Carpenter</surname><given-names>AE</given-names></name>
+<name name-style="western"><surname>Lamprecht</surname><given-names>MR</given-names></name>
+<name name-style="western"><surname>Moffat</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Silver</surname><given-names>SJ</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>Scoring diverse cellular morphologies in image-based screens with iterative feedback and machine learning.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>106</volume>             <fpage>1826</fpage>             <lpage>1831</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Yin1"><label>29</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Yin</surname><given-names>Z</given-names></name>
+<name name-style="western"><surname>Zhou</surname><given-names>X</given-names></name>
+<name name-style="western"><surname>Bakal</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Li</surname><given-names>F</given-names></name>
+<name name-style="western"><surname>Sun</surname><given-names>Y</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>Using iterative cluster merging with improved gap statistics to perform online phenotype discovery in the context of high-throughput rnai screens.</article-title>             <source>BMC Bioinformatics</source>             <volume>9</volume>             <fpage>264</fpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Wang1"><label>30</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Wang</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Zhou</surname><given-names>X</given-names></name>
+<name name-style="western"><surname>Bradley</surname><given-names>PL</given-names></name>
+<name name-style="western"><surname>Chang</surname><given-names>SF</given-names></name>
+<name name-style="western"><surname>Perrimon</surname><given-names>N</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>Cellular phenotype recognition for high-content rna interference genome-wide screening.</article-title>             <source>J Biomol Screen</source>             <volume>13</volume>             <fpage>29</fpage>             <lpage>39</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Hahne1"><label>31</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Hahne</surname><given-names>F</given-names></name>
+<name name-style="western"><surname>Arlt</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Sauermann</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Majety</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Poustka</surname><given-names>A</given-names></name>
+<etal/></person-group>             <year>2006</year>             <article-title>Statistical methods and software for the analysis of high throughput reverse genetic assays using flow cytometry readouts.</article-title>             <source>Genome Biol</source>             <volume>7</volume>             <fpage>R77</fpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Smyth1"><label>32</label><element-citation publication-type="other" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Smyth</surname><given-names>GK</given-names></name>
+</person-group>             <year>2005</year>             <article-title>Limma: linear models for microarray data.</article-title>             <person-group person-group-type="editor">
+<name name-style="western"><surname>Gentleman</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Carey</surname><given-names>V</given-names></name>
+<name name-style="western"><surname>Dudoit</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>R Irizarry</surname><given-names>WH</given-names></name>
+</person-group>             <source>Bioinformatics and computational biology solutions using R and bioconductor</source>             <publisher-loc>New York</publisher-loc>             <publisher-name>Springer</publisher-name>             <fpage>397</fpage>             <lpage>420</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Markowetz1"><label>33</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Markowetz</surname><given-names>F</given-names></name>
+<name name-style="western"><surname>Bloch</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Spang</surname><given-names>R</given-names></name>
+</person-group>             <year>2005</year>             <article-title>Non-transcriptional pathway features reconstructed from secondary effects of RNA interference.</article-title>             <source>Bioinformatics</source>             <volume>21</volume>             <fpage>4026</fpage>             <lpage>4032</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Ashburner1"><label>34</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Ashburner</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Ball</surname><given-names>CA</given-names></name>
+<name name-style="western"><surname>Blake</surname><given-names>JA</given-names></name>
+<name name-style="western"><surname>Botstein</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Butler</surname><given-names>H</given-names></name>
+<etal/></person-group>             <year>2000</year>             <article-title>Gene ontology: tool for the unification of biology. The gene ontology consortium.</article-title>             <source>Nat Genet</source>             <volume>25</volume>             <fpage>25</fpage>             <lpage>29</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Subramanian1"><label>35</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Subramanian</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Tamayo</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Mootha</surname><given-names>VK</given-names></name>
+<name name-style="western"><surname>Mukherjee</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Ebert</surname><given-names>BL</given-names></name>
+<etal/></person-group>             <year>2005</year>             <article-title>Gene set enrichment analysis: a knowledge-based approach for interpreting genome-wide expression profiles.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>102</volume>             <fpage>15545</fpage>             <lpage>15550</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Huang1"><label>36</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Huang</surname><given-names>DW</given-names></name>
+<name name-style="western"><surname>Sherman</surname><given-names>BT</given-names></name>
+<name name-style="western"><surname>Lempicki</surname><given-names>RA</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Systematic and integrative analysis of large gene lists using david bioinformatics resources.</article-title>             <source>Nat Protoc</source>             <volume>4</volume>             <fpage>44</fpage>             <lpage>57</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Sealfon1"><label>37</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Sealfon</surname><given-names>RSG</given-names></name>
+<name name-style="western"><surname>Hibbs</surname><given-names>MA</given-names></name>
+<name name-style="western"><surname>Huttenhower</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Myers</surname><given-names>CL</given-names></name>
+<name name-style="western"><surname>Troyanskaya</surname><given-names>OG</given-names></name>
+</person-group>             <year>2006</year>             <article-title>GOLEM: an interactive graph-based gene-ontology navigation and analysis tool.</article-title>             <source>BMC Bioinformatics</source>             <volume>7</volume>             <fpage>443</fpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Bauer1"><label>38</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Bauer</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Grossmann</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Vingron</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Robinson</surname><given-names>PN</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Ontologizer 2.0-a multifunctional tool for GO term enrichment analysis and data exploration.</article-title>             <source>Bioinformatics</source>             <volume>24</volume>             <fpage>1650</fpage>             <lpage>1651</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Alexa1"><label>39</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Alexa</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Rahnenführer</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Lengauer</surname><given-names>T</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Improved scoring of functional groups from gene expression data by decorrelating GO graph structure.</article-title>             <source>Bioinformatics</source>             <volume>22</volume>             <fpage>1600</fpage>             <lpage>1607</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Bork1"><label>40</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Bork</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Jensen</surname><given-names>LJ</given-names></name>
+<name name-style="western"><surname>von Mering</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Ramani</surname><given-names>AK</given-names></name>
+<name name-style="western"><surname>Lee</surname><given-names>I</given-names></name>
+<etal/></person-group>             <year>2004</year>             <article-title>Protein interaction networks from yeast to human.</article-title>             <source>Curr Opin Struct Biol</source>             <volume>14</volume>             <fpage>292</fpage>             <lpage>299</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Stelzl1"><label>41</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Stelzl</surname><given-names>U</given-names></name>
+<name name-style="western"><surname>Worm</surname><given-names>U</given-names></name>
+<name name-style="western"><surname>Lalowski</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Haenig</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Brembeck</surname><given-names>FH</given-names></name>
+<etal/></person-group>             <year>2005</year>             <article-title>A human protein-protein interaction network: a resource for annotating the proteome.</article-title>             <source>Cell</source>             <volume>122</volume>             <fpage>957</fpage>             <lpage>968</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Maayan1"><label>42</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Ma'ayan</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Jenkins</surname><given-names>SL</given-names></name>
+<name name-style="western"><surname>Neves</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Hasseldine</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Grace</surname><given-names>E</given-names></name>
+<etal/></person-group>             <year>2005</year>             <article-title>Formation of regulatory patterns during signal propagation in a mammalian cellular network.</article-title>             <source>Science</source>             <volume>309</volume>             <fpage>1078</fpage>             <lpage>1083</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Lee1"><label>43</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Lee</surname><given-names>I</given-names></name>
+<name name-style="western"><surname>Date</surname><given-names>SV</given-names></name>
+<name name-style="western"><surname>Adai</surname><given-names>AT</given-names></name>
+<name name-style="western"><surname>Marcotte</surname><given-names>EM</given-names></name>
+</person-group>             <year>2004</year>             <article-title>A probabilistic functional network of yeast genes.</article-title>             <source>Science</source>             <volume>306</volume>             <fpage>1555</fpage>             <lpage>1558</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Myers1"><label>44</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Myers</surname><given-names>CL</given-names></name>
+<name name-style="western"><surname>Robson</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Wible</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Hibbs</surname><given-names>MA</given-names></name>
+<name name-style="western"><surname>Chiriac</surname><given-names>C</given-names></name>
+<etal/></person-group>             <year>2005</year>             <article-title>Discovery of biological networks from diverse functional genomic data.</article-title>             <source>Genome Biol</source>             <volume>6</volume>             <fpage>R114</fpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Guan1"><label>45</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Guan</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Myers</surname><given-names>CL</given-names></name>
+<name name-style="western"><surname>Lu</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Lemischka</surname><given-names>IR</given-names></name>
+<name name-style="western"><surname>Bult</surname><given-names>CJ</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>A genomewide functional network for the laboratory mouse.</article-title>             <source>PLoS Comput Biol</source>             <volume>4</volume>             <fpage>e1000165</fpage>             <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.1000165" xlink:type="simple">10.1371/journal.pcbi.1000165</ext-link></comment>          </element-citation></ref>
+<ref id="pcbi.1000655-Jensen1"><label>46</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Jensen</surname><given-names>LJ</given-names></name>
+<name name-style="western"><surname>Kuhn</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Stark</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Chaffron</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Creevey</surname><given-names>C</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>String 8-a global view on proteins and their functional interactions in 630 organisms.</article-title>             <source>Nucleic Acids Res</source>             <volume>37</volume>             <fpage>D412</fpage>             <lpage>D416</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Breitkreutz1"><label>47</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Breitkreutz</surname><given-names>BJ</given-names></name>
+<name name-style="western"><surname>Stark</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Reguly</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Boucher</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Breitkreutz</surname><given-names>A</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>The BioGRID interaction database: 2008 update.</article-title>             <source>Nucleic Acids Res</source>             <volume>36</volume>             <fpage>D637</fpage>             <lpage>D640</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Kaplow1"><label>48</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Kaplow</surname><given-names>I</given-names></name>
+<name name-style="western"><surname>Singh</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Friedman</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Bakal</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Perrimon</surname><given-names>N</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>RNAiCut: automated detection of significant genes from functional genomic screens.</article-title>             <source>Nat Methods</source>             <volume>6</volume>             <fpage>476</fpage>             <lpage>477</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Wang2"><label>49</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Wang</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Tu</surname><given-names>Z</given-names></name>
+<name name-style="western"><surname>Sun</surname><given-names>F</given-names></name>
+</person-group>             <year>2009</year>             <article-title>A network-based integrative approach to prioritize reliable hits from multiple genome-wide rnai screens in drosophila.</article-title>             <source>BMC Genomics</source>             <volume>10</volume>             <fpage>220</fpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Berndt1"><label>50</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Berndt</surname><given-names>JD</given-names></name>
+<name name-style="western"><surname>Biechele</surname><given-names>TL</given-names></name>
+<name name-style="western"><surname>Moon</surname><given-names>RT</given-names></name>
+<name name-style="western"><surname>Major</surname><given-names>MB</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Integrative analysis of genome-wide RNA interference screens.</article-title>             <source>Sci Signal</source>             <volume>2</volume>             <fpage>pt4</fpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Lee2"><label>51</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Lee</surname><given-names>I</given-names></name>
+<name name-style="western"><surname>Lehner</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Crombie</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Wong</surname><given-names>W</given-names></name>
+<name name-style="western"><surname>Fraser</surname><given-names>A</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>A single gene network accurately predicts phenotypic effects of gene perturbation in caenorhabditis elegans.</article-title>             <source>Nat Genet</source>             <volume>40</volume>             <fpage>181</fpage>             <lpage>188</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Krishnan1"><label>52</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Krishnan</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Ng</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Sukumaran</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Gilfoy</surname><given-names>F</given-names></name>
+<name name-style="western"><surname>Uchil</surname><given-names>P</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>RNA interference screen for human genes associated with west nile virus infection.</article-title>             <source>Nature</source>             <volume>455</volume>             <fpage>242</fpage>             <lpage>245</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Ideker2"><label>53</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Ideker</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Ozier</surname><given-names>O</given-names></name>
+<name name-style="western"><surname>Schwikowski</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Siegel</surname><given-names>AF</given-names></name>
+</person-group>             <year>2002</year>             <article-title>Discovering regulatory and signalling circuits in molecular interaction networks.</article-title>             <source>Bioinformatics</source>             <volume>18</volume>             <fpage>S233</fpage>             <lpage>S240</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Knig2"><label>54</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>König</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Zhou</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Elleder</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Diamond</surname><given-names>TL</given-names></name>
+<name name-style="western"><surname>Bonamy</surname><given-names>GMC</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>Global analysis of host-pathogen interactions that regulate early-stage HIV-1 replication.</article-title>             <source>Cell</source>             <volume>135</volume>             <fpage>49</fpage>             <lpage>60</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Dittrich1"><label>55</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Dittrich</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Klau</surname><given-names>G</given-names></name>
+<name name-style="western"><surname>Rosenwald</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Dandekar</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Müller</surname><given-names>T</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Identifying functional modules in protein-protein interaction networks: an integrated exact approach.</article-title>             <source>Bioinformatics</source>             <volume>24</volume>             <fpage>i223</fpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Bankhead1"><label>56</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Bankhead</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Sach</surname><given-names>I</given-names></name>
+<name name-style="western"><surname>Ni</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>LeMeur</surname><given-names>N</given-names></name>
+<name name-style="western"><surname>Kruger</surname><given-names>M</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>Knowledge based identification of essential signaling from genome-scale siRNA experiments.</article-title>             <source>BMC Systems Biology</source>             <volume>3</volume>             <fpage>80</fpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Tu1"><label>57</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Tu</surname><given-names>ZCA</given-names></name>
+<name name-style="western"><surname>Wong</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Mitnaul</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Edwards</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Sach</surname><given-names>I</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>Integrating siRNA and protein-protein interaction data to identify an expanded insulin signaling network.</article-title>             <source>Genome Res</source>             <volume>19</volume>             <fpage>1057</fpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Aerts1"><label>58</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Aerts</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Lambrechts</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Maity</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Van Loo</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Coessens</surname><given-names>B</given-names></name>
+<etal/></person-group>             <year>2006</year>             <article-title>Gene prioritization through genomic data fusion.</article-title>             <source>Nat Biotech</source>             <volume>24</volume>             <fpage>537</fpage>             <lpage>544</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Rung1"><label>59</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Rung</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Schlitt</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Brazma</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Freivalds</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Vilo</surname><given-names>J</given-names></name>
+</person-group>             <year>2002</year>             <article-title>Building and analysing genome-wide gene disruption networks.</article-title>             <source>Bioinformatics</source>             <volume>18</volume>             <fpage>202</fpage>             <lpage>210</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Aho1"><label>60</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Aho</surname><given-names>AV</given-names></name>
+<name name-style="western"><surname>Garey</surname><given-names>MR</given-names></name>
+<name name-style="western"><surname>Ullman</surname><given-names>JD</given-names></name>
+</person-group>             <year>1972</year>             <article-title>The transitive reduction of a directed graph.</article-title>             <source>SIAM J Sci Comput</source>             <volume>1</volume>             <fpage>131</fpage>             <lpage>137</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Wagner1"><label>61</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Wagner</surname><given-names>A</given-names></name>
+</person-group>             <year>2001</year>             <article-title>How to reconstruct a large genetic network from n gene perturbations in fewer than <italic>n</italic><sup>2</sup> easy steps.</article-title>             <source>Bioinformatics</source>             <volume>17</volume>             <fpage>1183</fpage>             <lpage>1197</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Tresch1"><label>62</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Tresch</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Beissbarth</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Sültmann</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Kuner</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Poustka</surname><given-names>A</given-names></name>
+<etal/></person-group>             <year>2007</year>             <article-title>Discrimination of direct and indirect interactions in a network of regulatory effects.</article-title>             <source>J Comput Biol</source>             <volume>14</volume>             <fpage>1217</fpage>             <lpage>1228</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Kaderali1"><label>63</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Kaderali</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Dazert</surname><given-names>E</given-names></name>
+<name name-style="western"><surname>Zeuge</surname><given-names>U</given-names></name>
+<name name-style="western"><surname>Frese</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Bartenschlager</surname><given-names>R</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Reconstructing signaling pathways from rnai data using probabilistic boolean threshold networks.</article-title>             <source>Bioinformatics</source>             <volume>25</volume>             <fpage>2229</fpage>             <lpage>2235</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Friedman1"><label>64</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Friedman</surname><given-names>N</given-names></name>
+</person-group>             <year>2004</year>             <article-title>Inferring cellular networks using probabilistic graphical models.</article-title>             <source>Science</source>             <volume>303</volume>             <fpage>799</fpage>             <lpage>805</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Markowetz2"><label>65</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Markowetz</surname><given-names>F</given-names></name>
+<name name-style="western"><surname>Spang</surname><given-names>R</given-names></name>
+</person-group>             <year>2007</year>             <article-title>Inferring cellular networks-a review.</article-title>             <source>BMC Bioinformatics</source>             <volume>8</volume>             <fpage>S5</fpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Pearl1"><label>66</label><element-citation publication-type="other" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Pearl</surname><given-names>J</given-names></name>
+</person-group>             <year>2000</year>             <source>Causality: models, reasoning and inference</source>             <publisher-loc>Cambridge</publisher-loc>             <publisher-name>Cambridge University Press</publisher-name>          </element-citation></ref>
+<ref id="pcbi.1000655-Ellis1"><label>67</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Ellis</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Wong</surname><given-names>WH</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Learning causal bayesian network structures from experimental data.</article-title>             <source>J Am Stat Assoc</source>             <volume>103</volume>             <fpage>778</fpage>             <lpage>789</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Peer1"><label>68</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Peer</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Regev</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Elidan</surname><given-names>G</given-names></name>
+<name name-style="western"><surname>Friedman</surname><given-names>N</given-names></name>
+</person-group>             <year>2001</year>             <article-title>Inferring subnetworks from perturbed expression profiles.</article-title>             <source>Bioinformatics</source>             <volume>17</volume>             <fpage>215</fpage>             <lpage>224</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-GatViks1"><label>69</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Gat-Viks</surname><given-names>I</given-names></name>
+<name name-style="western"><surname>Tanay</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Raijman</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Shamir</surname><given-names>R</given-names></name>
+</person-group>             <year>2006</year>             <article-title>A probabilistic methodology for integrating knowledge and experiments on biological networks.</article-title>             <source>J Comput Biol</source>             <volume>13</volume>             <fpage>165</fpage>             <lpage>181</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Rogers1"><label>70</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Rogers</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Girolami</surname><given-names>M</given-names></name>
+</person-group>             <year>2005</year>             <article-title>A Bayesian regression approach to the inference of regulatory networks from gene expression data.</article-title>             <source>Bioinformatics</source>             <volume>21</volume>             <fpage>3131</fpage>             <lpage>3137</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Werhli1"><label>71</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Werhli</surname><given-names>AV</given-names></name>
+<name name-style="western"><surname>Grzegorczyk</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Husmeier</surname><given-names>D</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Comparative evaluation of reverse engineering gene regulatory networks with relevance networks, graphical Gaussian models and Bayesian networks.</article-title>             <source>Bioinformatics</source>             <volume>22</volume>             <fpage>2523</fpage>             <lpage>2531</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Zak1"><label>72</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Zak</surname><given-names>DE</given-names></name>
+<name name-style="western"><surname>Gonye</surname><given-names>GE</given-names></name>
+<name name-style="western"><surname>Schwaber</surname><given-names>JS</given-names></name>
+<name name-style="western"><surname>Doyle</surname><given-names>FJ</given-names></name>
+</person-group>             <year>2003</year>             <article-title>Importance of input perturbations and stochastic gene expression in the reverse engineering of genetic regulatory networks: insights from an identifiability analysis of an in silico network.</article-title>             <source>Genome Res</source>             <volume>13</volume>             <fpage>2396</fpage>             <lpage>2405</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Markowetz3"><label>73</label><element-citation publication-type="other" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Markowetz</surname><given-names>F</given-names></name>
+<name name-style="western"><surname>Grossmann</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Spang</surname><given-names>R</given-names></name>
+</person-group>             <year>2005</year>             <article-title>Probabilistic soft interventions in conditional gaussian networks.</article-title>             <comment>In: Proceedings of the Tenth International Workshop on Artificial Intelligence and Statistics (AISTATS); 6–8 January 2005; Barbados. Available: <ext-link ext-link-type="uri" xlink:href="http://www.gatsby.ucl.ac.uk/aistats/" xlink:type="simple">http://www.gatsby.ucl.ac.uk/aistats/</ext-link></comment>          </element-citation></ref>
+<ref id="pcbi.1000655-Ulitsky1"><label>74</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Ulitsky</surname><given-names>I</given-names></name>
+<name name-style="western"><surname>Shamir</surname><given-names>R</given-names></name>
+</person-group>             <year>2007</year>             <article-title>Identification of functional modules using network topology and high-throughput data.</article-title>             <source>BMC Syst Biol</source>             <volume>1</volume>             <fpage>8</fpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Yeang1"><label>75</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Yeang</surname><given-names>CH</given-names></name>
+<name name-style="western"><surname>Ideker</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Jaakkola</surname><given-names>T</given-names></name>
+</person-group>             <year>2004</year>             <article-title>Physical network models.</article-title>             <source>J Comput Biol</source>             <volume>11</volume>             <fpage>243</fpage>             <lpage>262</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Yeang2"><label>76</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Yeang</surname><given-names>CH</given-names></name>
+<name name-style="western"><surname>Mak</surname><given-names>HC</given-names></name>
+<name name-style="western"><surname>McCuine</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Workman</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Jaakkola</surname><given-names>T</given-names></name>
+<etal/></person-group>             <year>2005</year>             <article-title>Validation and refinement of gene-regulatory pathways on a network of physical interactions.</article-title>             <source>Genome Biol</source>             <volume>6</volume>             <fpage>R62</fpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Ourfali1"><label>77</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Ourfali</surname><given-names>O</given-names></name>
+<name name-style="western"><surname>Shlomi</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Ideker</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Ruppin</surname><given-names>E</given-names></name>
+<name name-style="western"><surname>Sharan</surname><given-names>R</given-names></name>
+</person-group>             <year>2007</year>             <article-title>SPINE: a framework for signaling-regulatory pathway inference from cause-effect experiments.</article-title>             <source>Bioinformatics</source>             <volume>23</volume>             <fpage>i359</fpage>             <lpage>66</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Ljung1"><label>78</label><element-citation publication-type="other" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Ljung</surname><given-names>L</given-names></name>
+</person-group>             <year>1986</year>             <source>System identification: theory for the user</source>             <publisher-loc>Englewood Cliffs (New Jersey)</publisher-loc>             <publisher-name>Prentice Hall</publisher-name>          </element-citation></ref>
+<ref id="pcbi.1000655-Tegner1"><label>79</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Tegner</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Yeung</surname><given-names>MKS</given-names></name>
+<name name-style="western"><surname>Hasty</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Collins</surname><given-names>JJ</given-names></name>
+</person-group>             <year>2003</year>             <article-title>Reverse engineering gene networks: integrating genetic perturbations with dynamical modeling.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>100</volume>             <fpage>5944</fpage>             <lpage>5949</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Gardner1"><label>80</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Gardner</surname><given-names>TS</given-names></name>
+<name name-style="western"><surname>di Bernardo</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Lorenz</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Collins</surname><given-names>JJ</given-names></name>
+</person-group>             <year>2003</year>             <article-title>Inferring genetic networks and identifying compound mode of action via expression profiling.</article-title>             <source>Science</source>             <volume>301</volume>             <fpage>102</fpage>             <lpage>105</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Xiong1"><label>81</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Xiong</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Li</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Fang</surname><given-names>X</given-names></name>
+</person-group>             <year>2004</year>             <article-title>Identification of genetic networks.</article-title>             <source>Genetics</source>             <volume>166</volume>             <fpage>1037</fpage>             <lpage>1052</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-diBernardo1"><label>82</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>di Bernardo</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Thompson</surname><given-names>MJ</given-names></name>
+<name name-style="western"><surname>Gardner</surname><given-names>TS</given-names></name>
+<name name-style="western"><surname>Chobot</surname><given-names>SE</given-names></name>
+<name name-style="western"><surname>Eastwood</surname><given-names>EL</given-names></name>
+<etal/></person-group>             <year>2005</year>             <article-title>Chemogenomic profiling on a genome-wide scale using reverse-engineered gene networks.</article-title>             <source>Nat Biotechnol</source>             <volume>23</volume>             <fpage>377</fpage>             <lpage>383</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Lorenz1"><label>83</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Lorenz</surname><given-names>DR</given-names></name>
+<name name-style="western"><surname>Cantor</surname><given-names>CR</given-names></name>
+<name name-style="western"><surname>Collins</surname><given-names>JJ</given-names></name>
+</person-group>             <year>2009</year>             <article-title>A network biology approach to aging in yeast.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>106</volume>             <fpage>1145</fpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Nelander1"><label>84</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Nelander</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Wang</surname><given-names>W</given-names></name>
+<name name-style="western"><surname>Nilsson</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>She</surname><given-names>QB</given-names></name>
+<name name-style="western"><surname>Pratilas</surname><given-names>C</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>Models from experiments: combinatorial drug perturbations of cancer cells.</article-title>             <source>Mol Syst Biol</source>             <volume>4</volume>             <fpage>216</fpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Markowetz4"><label>85</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Markowetz</surname><given-names>F</given-names></name>
+<name name-style="western"><surname>Kostka</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Troyanskaya</surname><given-names>O</given-names></name>
+<name name-style="western"><surname>Spang</surname><given-names>R</given-names></name>
+</person-group>             <year>2007</year>             <article-title>Nested effects models for high-dimensional phenotyping screens.</article-title>             <source>Bioinformatics</source>             <volume>23</volume>             <fpage>305</fpage>             <lpage>312</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Frhlich1"><label>86</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Fröhlich</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Fellmann</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Sueltmann</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Poustka</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Beissbarth</surname><given-names>T</given-names></name>
+</person-group>             <year>2007</year>             <article-title>Large scale statistical inference of signaling pathways from RNAi and microarray data.</article-title>             <source>BMC Bioinformatics</source>             <volume>8</volume>             <fpage>386</fpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Tresch2"><label>87</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Tresch</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Markowetz</surname><given-names>F</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Structure learning in nested effects models.</article-title>             <source>Stat Appl Genet Mol Biol</source>             <volume>7</volume>             <fpage>Article 9</fpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Frhlich2"><label>88</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Fröhlich</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Fellmann</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Sültmann</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Poustka</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Beissbarth</surname><given-names>T</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Estimating large scale signaling networks through nested effect models with intervention effects from microarray data.</article-title>             <source>Bioinformatics</source>             <volume>24</volume>             <fpage>2650</fpage>             <lpage>2656</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Frhlich3"><label>89</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Fröhlich</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Tresch</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Beißbarth</surname><given-names>T</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Nested effects models for learning signaling networks from perturbation data.</article-title>             <source>Biom J</source>             <volume>51</volume>             <fpage>304</fpage>             <lpage>323</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Frhlich4"><label>90</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Fröhlich</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Beißbarth</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Tresch</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Kostka</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Jacob</surname><given-names>J</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>Analyzing gene perturbation screens with nested effects models in R and Bioconductor.</article-title>             <source>Bioinformatics</source>             <volume>24</volume>             <fpage>2549</fpage>             <lpage>2550</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Vaske1"><label>91</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Vaske</surname><given-names>CJ</given-names></name>
+<name name-style="western"><surname>House</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Luu</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Frank</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Yeang</surname><given-names>CH</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>A factor graph nested effects model to identify networks from genetic perturbations.</article-title>             <source>PLoS Comput Biol</source>             <volume>5</volume>             <fpage>e1000274</fpage>             <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.1000274" xlink:type="simple">10.1371/journal.pcbi.1000274</ext-link></comment>          </element-citation></ref>
+<ref id="pcbi.1000655-Anchang1"><label>92</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Anchang</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Sadeh</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Jacob</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Tresch</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Vlad</surname><given-names>M</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>Modeling the temporal interplay of molecular signaling and gene expression by using dynamic nested effects models.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>106</volume>             <fpage>6447</fpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Sopko1"><label>93</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Sopko</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Huang</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Preston</surname><given-names>N</given-names></name>
+<name name-style="western"><surname>Chua</surname><given-names>G</given-names></name>
+<name name-style="western"><surname>Papp</surname><given-names>B</given-names></name>
+<etal/></person-group>             <year>2006</year>             <article-title>Mapping pathways and phenotypes by systematic gene overexpression.</article-title>             <source>Mol Cell</source>             <volume>21</volume>             <fpage>319</fpage>             <lpage>330</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Stokic1"><label>94</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Stokic</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Hanel</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Thurner</surname><given-names>S</given-names></name>
+</person-group>             <year>2009</year>             <article-title>A fast and efficient gene-network reconstruction method from multiple over-expression experiments.</article-title>             <source>BMC Bioinformatics</source>             <volume>10</volume>             <fpage>253</fpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Yosef1"><label>95</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Yosef</surname><given-names>N</given-names></name>
+<name name-style="western"><surname>Kaufman</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Ruppin</surname><given-names>E</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Inferring functional pathways from multi-perturbation data.</article-title>             <source>Bioinformatics</source>             <volume>22</volume>             <fpage>e539</fpage>          </element-citation></ref>
+<ref id="pcbi.1000655-MacCarthy1"><label>96</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>MacCarthy</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Pomiankowski</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Seymour</surname><given-names>R</given-names></name>
+</person-group>             <year>2005</year>             <article-title>Using large-scale perturbations in gene network reconstruction.</article-title>             <source>BMC Bioinformatics</source>             <volume>6</volume>             <fpage>11</fpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Rockman1"><label>97</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Rockman</surname><given-names>M</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Reverse engineering the genotype-phenotype map with natural genetic variation.</article-title>             <source>Nature</source>             <volume>456</volume>             <fpage>738</fpage>             <lpage>744</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Herrgard1"><label>98</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Herrgard</surname><given-names>MJ</given-names></name>
+<name name-style="western"><surname>Swainston</surname><given-names>N</given-names></name>
+<name name-style="western"><surname>Dobson</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Dunn</surname><given-names>WB</given-names></name>
+<name name-style="western"><surname>Arga</surname><given-names>KY</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>A consensus yeast metabolic network reconstruction obtained from a community approach to systems biology.</article-title>             <source>Nat Biotechnol</source>             <volume>26</volume>             <fpage>1155</fpage>             <lpage>1160</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Duarte1"><label>99</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Duarte</surname><given-names>NC</given-names></name>
+<name name-style="western"><surname>Becker</surname><given-names>SA</given-names></name>
+<name name-style="western"><surname>Jamshidi</surname><given-names>N</given-names></name>
+<name name-style="western"><surname>Thiele</surname><given-names>I</given-names></name>
+<name name-style="western"><surname>Mo</surname><given-names>ML</given-names></name>
+<etal/></person-group>             <year>2007</year>             <article-title>Global reconstruction of the human metabolic network based on genomic and bibliomic data.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>104</volume>             <fpage>1777</fpage>             <lpage>1782</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Papp1"><label>100</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Papp</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Pál</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Hurst</surname><given-names>LD</given-names></name>
+</person-group>             <year>2004</year>             <article-title>Metabolic network analysis of the causes and evolution of enzyme dispensability in yeast.</article-title>             <source>Nature</source>             <volume>429</volume>             <fpage>661</fpage>             <lpage>664</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Fong1"><label>101</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Fong</surname><given-names>SS</given-names></name>
+<name name-style="western"><surname>Palsson</surname><given-names>BØ</given-names></name>
+</person-group>             <year>2004</year>             <article-title>Metabolic gene-deletion strains of escherichia coli evolve to computationally predicted growth phenotypes.</article-title>             <source>Nat Genet</source>             <volume>36</volume>             <fpage>1056</fpage>             <lpage>1058</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Motter1"><label>102</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Motter</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Gulbahce</surname><given-names>N</given-names></name>
+<name name-style="western"><surname>Almaas</surname><given-names>E</given-names></name>
+<name name-style="western"><surname>Barabasi</surname><given-names>AL</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Predicting synthetic rescues in metabolic networks.</article-title>             <source>Mol Sys Bio</source>             <volume>4</volume>             <fpage>168</fpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Shlomi1"><label>103</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Shlomi</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Cabili</surname><given-names>MN</given-names></name>
+<name name-style="western"><surname>Herrgård</surname><given-names>MJ</given-names></name>
+<name name-style="western"><surname>Palsson</surname><given-names>BØ</given-names></name>
+<name name-style="western"><surname>Ruppin</surname><given-names>E</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Network-based prediction of human tissue-specific metabolism.</article-title>             <source>Nat Biotechnol</source>             <volume>26</volume>             <fpage>1003</fpage>             <lpage>1010</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Becker1"><label>104</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Becker</surname><given-names>SA</given-names></name>
+<name name-style="western"><surname>Palsson</surname><given-names>BO</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Context-specific metabolic networks are consistent with experiments.</article-title>             <source>PLoS Comput Biol</source>             <volume>4</volume>             <fpage>e1000082</fpage>             <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.1000082" xlink:type="simple">10.1371/journal.pcbi.1000082</ext-link></comment>          </element-citation></ref>
+<ref id="pcbi.1000655-Deutscher1"><label>105</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Deutscher</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Meilijson</surname><given-names>I</given-names></name>
+<name name-style="western"><surname>Schuster</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Ruppin</surname><given-names>E</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Can single knockouts accurately single out gene functions?</article-title>             <source>BMC Systems Biology</source>             <volume>2</volume>             <fpage>50</fpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Gitter1"><label>106</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Gitter</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Siegfried</surname><given-names>Z</given-names></name>
+<name name-style="western"><surname>Klutstein</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Fornes</surname><given-names>O</given-names></name>
+<name name-style="western"><surname>Oliva</surname><given-names>B</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>Backup in gene regulatory networks explains differences between binding and knockout results.</article-title>             <source>Mol Syst Biol</source>             <volume>5</volume>             <fpage>276</fpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Tong1"><label>107</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Tong</surname><given-names>AHY</given-names></name>
+<name name-style="western"><surname>Lesage</surname><given-names>G</given-names></name>
+<name name-style="western"><surname>Bader</surname><given-names>GD</given-names></name>
+<name name-style="western"><surname>Ding</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Xu</surname><given-names>H</given-names></name>
+<etal/></person-group>             <year>2004</year>             <article-title>Global mapping of the yeast genetic interaction network.</article-title>             <source>Science</source>             <volume>303</volume>             <fpage>808</fpage>             <lpage>813</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Pournara1"><label>108</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Pournara</surname><given-names>I</given-names></name>
+<name name-style="western"><surname>Wernisch</surname><given-names>L</given-names></name>
+</person-group>             <year>2004</year>             <article-title>Reconstruction of gene networks using Bayesian learning and manipulation experiments.</article-title>             <source>Bioinformatics</source>             <volume>20</volume>             <fpage>2934</fpage>             <lpage>2942</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Yoo1"><label>109</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Yoo</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Cooper</surname><given-names>GF</given-names></name>
+</person-group>             <year>2004</year>             <article-title>An evaluation of a system that recommends microarray experiments to perform to discover gene-regulation pathways.</article-title>             <source>Artif Intell Med</source>             <volume>31</volume>             <fpage>169</fpage>             <lpage>182</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Szczurek1"><label>110</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Szczurek</surname><given-names>E</given-names></name>
+<name name-style="western"><surname>Gat-Viks</surname><given-names>I</given-names></name>
+<name name-style="western"><surname>Tiuryn</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Vingron</surname><given-names>M</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Elucidating regulatory mechanisms downstream of a signaling pathway using informative experiments.</article-title>             <source>Mol Syst Biol</source>             <volume>5</volume>             <fpage>287</fpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Ideker3"><label>111</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Ideker</surname><given-names>TE</given-names></name>
+<name name-style="western"><surname>Thorsson</surname><given-names>V</given-names></name>
+<name name-style="western"><surname>Karp</surname><given-names>RM</given-names></name>
+</person-group>             <year>2000</year>             <article-title>Discovery of regulatory interactions through perturbation: inference and experimental design.</article-title>             <source>Pac Symp Biocomput</source>             <fpage>305</fpage>             <lpage>316</lpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Gentleman1"><label>112</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Gentleman</surname><given-names>RC</given-names></name>
+<name name-style="western"><surname>Carey</surname><given-names>VJ</given-names></name>
+<name name-style="western"><surname>Bates</surname><given-names>DM</given-names></name>
+<name name-style="western"><surname>Bolstad</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Dettling</surname><given-names>M</given-names></name>
+<etal/></person-group>             <year>2004</year>             <article-title>Bioconductor: open software development for computational biology and bioinformatics.</article-title>             <source>Genome Biol</source>             <volume>5</volume>             <fpage>R80</fpage>          </element-citation></ref>
+<ref id="pcbi.1000655-Shannon1"><label>113</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Shannon</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Markiel</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Ozier</surname><given-names>O</given-names></name>
+<name name-style="western"><surname>Baliga</surname><given-names>NS</given-names></name>
+<name name-style="western"><surname>Wang</surname><given-names>JT</given-names></name>
+<etal/></person-group>             <year>2003</year>             <article-title>Cytoscape: a software environment for integrated models of biomolecular interaction networks.</article-title>             <source>Genome Res</source>             <volume>13</volume>             <fpage>2498</fpage>             <lpage>2504</lpage>          </element-citation></ref>
+</ref-list>
+
+</back>
+</article>

@@ -1,0 +1,660 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="discussion" dtd-version="3.0" xml:lang="EN">
+<front>
+<journal-meta><journal-id journal-id-type="publisher-id">plos</journal-id><journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id><journal-id journal-id-type="pmc">ploscomp</journal-id><!--===== Grouping journal title elements =====--><journal-title-group><journal-title>PLoS Computational Biology</journal-title></journal-title-group><issn pub-type="ppub">1553-734X</issn><issn pub-type="epub">1553-7358</issn><publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, USA</publisher-loc></publisher></journal-meta>
+<article-meta><article-id pub-id-type="publisher-id">09-PLCB-EN-1569R2</article-id><article-id pub-id-type="doi">10.1371/journal.pcbi.1000779</article-id><article-categories><subj-group subj-group-type="heading"><subject>Education</subject></subj-group><subj-group subj-group-type="Discipline"><subject>Computational Biology</subject><subject>Computational Biology/Systems Biology</subject><subject>Computational Biology/Bio-ontology</subject></subj-group></article-categories><title-group><article-title>A Quick Guide to Large-Scale Genomic Data Mining</article-title></title-group><contrib-group>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Huttenhower</surname><given-names>Curtis</given-names></name><xref ref-type="aff" rid="aff1"/><xref ref-type="corresp" rid="cor1"><sup>*</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Hofmann</surname><given-names>Oliver</given-names></name><xref ref-type="aff" rid="aff1"/></contrib>
+</contrib-group><aff id="aff1">          <addr-line>Department of Biostatistics, Harvard School of Public Health, Boston, Massachusetts, United States of America</addr-line>       </aff><contrib-group>
+<contrib contrib-type="editor" xlink:type="simple"><name name-style="western"><surname>Lewitter</surname><given-names>Fran</given-names></name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/></contrib>
+</contrib-group><aff id="edit1">Whitehead Institute, United States of America</aff><author-notes>
+<corresp id="cor1">* E-mail: <email xlink:type="simple">chuttenh@hsph.harvard.edu</email></corresp>
+<fn fn-type="conflict"><p>The authors have declared that no competing interests exist.</p></fn></author-notes><pub-date pub-type="collection"><month>5</month><year>2010</year></pub-date><pub-date pub-type="epub"><day>27</day><month>5</month><year>2010</year></pub-date><volume>6</volume><issue>5</issue><elocation-id>e1000779</elocation-id><!--===== Grouping copyright info into permissions =====--><permissions><copyright-year>2010</copyright-year><copyright-holder>Huttenhower, Hofmann</copyright-holder><license><license-p>This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license></permissions><funding-group><funding-statement>The authors received no specific funding for this work.</funding-statement></funding-group><counts><page-count count="6"/></counts></article-meta>
+</front>
+<body><sec id="s1">
+<title>Introduction</title>
+<p>For the first several hundred years of research in cellular biology, the main bottleneck to scientific progress was data collection. Our newfound data-richness, however, has shifted this bottleneck from collection to analysis <xref ref-type="bibr" rid="pcbi.1000779-McPherson1">[1]</xref>. While a variety of options exists for examining any one experimental dataset, we are still discovering what new biological questions can be answered by mining thousands of genomic datasets in tandem, potentially spanning different molecular activities, technological platforms, and model organisms. As an analogy, consider the difference between searching one document for a keyword and executing an online search. While the tasks are conceptually similar, they require vastly different underlying methodologies, and they have correspondingly large differences in their potentials for knowledge discovery.</p>
+<p>Large-scale genomic data mining is thus the process of using many (potentially diverse) datasets, often from public repositories, to address a specific biological question. Statistical meta-analyses are an excellent example, in which many experimental results are examined in order to lend statistical power to a hypothesis test (e.g., for differential expression) <xref ref-type="bibr" rid="pcbi.1000779-Rhodes1">[2]</xref>, <xref ref-type="bibr" rid="pcbi.1000779-Cahan1">[3]</xref>. As the amount of available genomic data grows, however, exploratory methods allowing hypothesis generation are also becoming more prevalent. The ArrayExpress Gene Expression Atlas, for example, allows users to examine hundreds of experimental factors across thousands of independent experimental results <xref ref-type="bibr" rid="pcbi.1000779-Kapushesky1">[4]</xref>. In most cases, though, an investigator with a specific question in mind must collect relevant data to bring to bear on a question of interest. Some examples might be:</p>
+<list list-type="bullet"><list-item>
+<p>If you've obtained a gene set of interest, in which tissues or cell lines are they coexpressed?</p>
+</list-item><list-item>
+<p>If you assay a particular cellular environment, are there other experimental conditions that incur a similar genomic response?</p>
+</list-item><list-item>
+<p>If you have high-specificity, low-throughput data for a few genes, with what other genes do they interact or coexpress in high-throughput data repositories? Under what experimental conditions, or in which tissues?</p>
+</list-item></list>
+<p>Bringing large quantities of genomic data to bear on such questions involves three main tasks: establishing methodology for efficiently querying large data collections; assembling data from appropriate repositories; and integrating information from a variety of experimental data types. Since the technical <xref ref-type="bibr" rid="pcbi.1000779-Hwang1">[5]</xref>–<xref ref-type="bibr" rid="pcbi.1000779-Jenkinson1">[7]</xref> and methodological <xref ref-type="bibr" rid="pcbi.1000779-Troyanskaya1">[8]</xref>–<xref ref-type="bibr" rid="pcbi.1000779-Lee1">[10]</xref> challenges in heterogeneous data integration have been discussed elsewhere, this introduction will focus mainly on the first two points. As discussed below, the computational requirements for processing thousands of whole-genome datasets in a reasonable amount of time must be addressed, either algorithmically or using cloud or distributed computing <xref ref-type="bibr" rid="pcbi.1000779-Huttenhower1">[11]</xref>, <xref ref-type="bibr" rid="pcbi.1000779-Langmead1">[12]</xref>. Subsequently, data collection is sometimes easy—as is increasingly the case for high-throughput sequencing, individual experiments can themselves be the sources of large data repositories. In other cases, a biological investigation might benefit from the inclusion of substantial external or public data.</p>
+</sec><sec id="s2">
+<title>Methods and Pitfalls in Manipulating Genomic Data</title>
+<p>A point that must be emphasized when dealing with very large genomic data collections is that many convenient computational tools for individual dataset analysis will scale poorly to repositories of hundreds or thousands of genome-scale experimental results. Scripting environments such as R/Bioconductor <xref ref-type="bibr" rid="pcbi.1000779-Gentleman1">[13]</xref> and MATLAB (The MathWorks) should be used with caution to avoid excessive runtimes. Similarly, data storage can be as great or greater a concern as data processing: plain text or XML storage formats, while conveniently human-readable, can waste unsustainable amounts of space for large repositories.</p>
+<p>Solutions to these technical issues include software and data access methodologies specifically tailored to large-scale data manipulation. Three broad categories of solutions exist: Web applications that aggregate information from multiple sources, programmatic APIs that allow sophisticated computational queries of individual large data sources, and do-it-yourself solutions that rely on manually obtaining and processing bulk data from public repositories. In the first category, most current bioinformatic systems include online interfaces, but these generally provide analyses of individual datasets rather than large compendia. Notable exceptions include the STRING <xref ref-type="bibr" rid="pcbi.1000779-Jensen1">[14]</xref> and BioMart <xref ref-type="bibr" rid="pcbi.1000779-Haider1">[15]</xref> tools, which aggregate a large number of functional and sequence annotation data sources, respectively. Integrated results and data portals are also available for many model organisms, including HEFalMp <xref ref-type="bibr" rid="pcbi.1000779-Huttenhower2">[16]</xref>, Endeavour <xref ref-type="bibr" rid="pcbi.1000779-Tranchevent1">[17]</xref>, and the Prioritizer <xref ref-type="bibr" rid="pcbi.1000779-Franke1">[18]</xref> for human data, integrated within- <xref ref-type="bibr" rid="pcbi.1000779-Gunsalus1">[19]</xref> and across-species <xref ref-type="bibr" rid="pcbi.1000779-Zhong1">[20]</xref> results for <italic>Caenorhabditis elegans</italic>, bioPIXIE <xref ref-type="bibr" rid="pcbi.1000779-Myers1">[21]</xref> and SPELL <xref ref-type="bibr" rid="pcbi.1000779-Hibbs1">[22]</xref> for <italic>Saccharomyces cerevisiae</italic>, and a variety of tools for other systems <xref ref-type="bibr" rid="pcbi.1000779-Jansen1">[23]</xref>–<xref ref-type="bibr" rid="pcbi.1000779-Alexeyenko1">[25]</xref>.</p>
+<p>While these online tools provide pre-computed data mining results, a second option is to perform tailored queries of experimental results from one or more large public repositories. This adds a level of complexity, since you must still decide on appropriate downstream analyses of the retrieved data, but the heavy lifting of data normalization, filtering, and search is still done by the remote system. Manual portals to such information are the core of canonical interfaces at the National Center for Biotechnology Information <xref ref-type="bibr" rid="pcbi.1000779-Sayers1">[26]</xref> and European Bioinformatics Institute <xref ref-type="bibr" rid="pcbi.1000779-McWilliam1">[27]</xref>, and workflow systems such as Taverna <xref ref-type="bibr" rid="pcbi.1000779-Hull1">[28]</xref> and Galaxy <xref ref-type="bibr" rid="pcbi.1000779-Blankenberg1">[29]</xref> are emerging to automate significant portions of these analysis pipelines. Most major data repositories now offer programmable interfaces using one of several common protocols: HTTP (i.e., programmatic URLs or REST) <xref ref-type="bibr" rid="pcbi.1000779-Sayers1">[26]</xref>, <xref ref-type="bibr" rid="pcbi.1000779-McWilliam1">[27]</xref>, SOAP <xref ref-type="bibr" rid="pcbi.1000779-Sand1">[30]</xref>, <xref ref-type="bibr" rid="pcbi.1000779-Stockinger1">[31]</xref>, or bioinformatic services such as DAS <xref ref-type="bibr" rid="pcbi.1000779-Jenkinson1">[7]</xref>, BioMOBY <xref ref-type="bibr" rid="pcbi.1000779-Wilkinson1">[32]</xref>, or Gaggle <xref ref-type="bibr" rid="pcbi.1000779-Shannon1">[33]</xref>. These protocols provide a way to pose sophisticated queries to a data repository, leaving you to examine only the end products of interest.</p>
+<p>The greatest level of flexibility in large-scale biological data mining is offered by manually processing bulk experimental data, which of course also incurs the greatest level of time commitment and overhead. However, this is currently one of the only ways in which sophisticated multifactorial queries can be executed. If you're interested in identifying potential targets of yeast cell cycle kinases under a variety of culture growth conditions, even a relatively complex large-scale computational screen will likely be simpler than running new corresponding high-throughput assays:</p>
+<list list-type="order"><list-item>
+<p>By examining the <italic>S. cerevisiae</italic> Gene Ontology (GO) <xref ref-type="bibr" rid="pcbi.1000779-Ashburner1">[34]</xref> annotations at the <italic>Saccharomyces</italic> Genome Database <xref ref-type="bibr" rid="pcbi.1000779-Hong1">[35]</xref>, we find that the intersection between the <italic>cell cycle</italic> process (669 genes) and the <italic>protein kinase activity</italic> function (135 genes, both terms downloadable at AmiGO <xref ref-type="bibr" rid="pcbi.1000779-Carbon1">[36]</xref>) yields a list of 51 genes.</p>
+</list-item><list-item>
+<p>By downloading the DIP <xref ref-type="bibr" rid="pcbi.1000779-Salwinski1">[37]</xref>, MINT <xref ref-type="bibr" rid="pcbi.1000779-Chatraryamontri1">[38]</xref>, and bioGRID <xref ref-type="bibr" rid="pcbi.1000779-Stark1">[39]</xref> interaction databases (discussed below) in bulk and searching for all interactions in which these genes' products participate, we obtain 7,830 potential kinase-target pairs.</p>
+</list-item><list-item>
+<p>By downloading all Gene Expression Omnibus (GEO) <xref ref-type="bibr" rid="pcbi.1000779-Barrett1">[40]</xref> yeast expression data in bulk (also discussed below), calculating all normalized correlations using Sleipnir (<xref ref-type="bibr" rid="pcbi.1000779-Huttenhower1">[11]</xref>, a calculation taking &lt;1h), and listing only correlations stringently significant at a corrected 0.01 level (<italic>p</italic> = 1.2×10<sup>−5</sup>, z = 4.22), we find 81 cell cycle kinase-target pairs with high correlation under some experimental condition.</p>
+</list-item><list-item>
+<p>It is vital to evaluate the accuracy of our predictions, although since GO was used as part of the input data, care must be taken to avoid a circular evaluation. In this case, the non-kinase interaction partners were predicted solely based on experimental interactions and coexpression, and we find that 45 of them (∼25%, hypergeometric <italic>p</italic>&lt;10<sup>−8</sup>) indeed have known roles in the cell cycle.</p>
+</list-item></list>
+<p>Note that in each of these steps, experimental data of several different types is processed using a uniform network model, and this workflow for large-scale biological data analysis is summarized in <xref ref-type="fig" rid="pcbi-1000779-g001">Figure 1</xref>; a description of the analysis is provided in <xref ref-type="sec" rid="pcbi-1000779-box001">Box 1</xref> and detailed commands are listed in <xref ref-type="supplementary-material" rid="pcbi.1000779.s001">Text S1</xref>. This small example is obviously biologically somewhat naive, but it demonstrates the remarkably nuanced questions that can be answered using large-scale data mining even without complex machine learning methodology.</p>
+<fig id="pcbi-1000779-g001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000779.g001</object-id><label>Figure 1</label><caption>
+<title>Large-scale genomic data mining.</title>
+<p>A schematic overview of possible inputs, data sources, network models, and output predictions from computational screens leveraging many genome-scale datasets. Note that both the “output” pathway model and the “input” experimental data are represented as networks: directed regulatory binding site targets, undirected weighted coexpression, and undirected interactions, respectively. As demonstrated by the sample analysis in <xref ref-type="sec" rid="pcbi-1000779-box001">Box 1</xref>, biological networks provide a uniform framework within which both experimental data and predicted models can be represented, facilitating integrative analyses.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000779.g001" xlink:type="simple"/></fig><boxed-text id="pcbi-1000779-box001" position="float">
+<p><bold>Box 1.</bold> An example using multiple genome-scale data repositories to determine potential kinase-target interactions active during the <italic>S. cerevisiae</italic> cell cycle.</p>
+<p>For step-by-step instructions on performing each task, please see <xref ref-type="supplementary-material" rid="pcbi.1000779.s001">Text S1</xref>.</p>
+<list list-type="order"><list-item>
+<p>Retrieve lists of known yeast cell cycle and protein kinase genes from the Gene Ontology <xref ref-type="bibr" rid="pcbi.1000779-Ashburner1">[34]</xref> using the AmiGO <xref ref-type="bibr" rid="pcbi.1000779-Carbon1">[36]</xref> Web service.</p>
+</list-item><list-item>
+<p>Intersect these two gene sets to find protein kinases potentially involved in the cell cycle.</p>
+</list-item><list-item>
+<p>Retrieve lists of experimentally determined protein–protein interactions from the DIP <xref ref-type="bibr" rid="pcbi.1000779-Salwinski1">[37]</xref>, MINT <xref ref-type="bibr" rid="pcbi.1000779-Chatraryamontri1">[38]</xref>, and bioGRID <xref ref-type="bibr" rid="pcbi.1000779-Stark1">[39]</xref> databases.</p>
+</list-item><list-item>
+<p>Map all appropriate gene identifiers to gene symbols using information from BioMart <xref ref-type="bibr" rid="pcbi.1000779-Haider1">[15]</xref>.</p>
+</list-item><list-item>
+<p>Taking the union of these three databases, identify any pairs of interacting proteins in which at least one partner is a member of the cell cycle protein kinase list. Note that this will provide a conservative underestimate, since many transient kinase–target interactions are difficult to detect based on high-throughput data.</p>
+</list-item><list-item>
+<p>Retrieve yeast expression data from GEO <xref ref-type="bibr" rid="pcbi.1000779-Barrett1">[40]</xref> and convert each dataset into a normalized coexpression network using the Sleipnir software <xref ref-type="bibr" rid="pcbi.1000779-Huttenhower1">[11]</xref>.</p>
+</list-item><list-item>
+<p>Extract all gene pairs correlated above a multiple hypothesis corrected 0.01 significance level, and intersect these pairs with the list of cell cycle protein kinase interactions.</p>
+</list-item><list-item>
+<p>This produces a list of potential cell cycle-linked phosphorylation targets that is based on protein kinases known to be involved in the cell cycle, interacting with the putative target, and coexpressing strongly with it under some experimental condition.</p>
+</list-item><list-item>
+<p>Finally, evaluate the proposed list's plausibility by examining how many of the non-kinase partners are known cell cycle genes.</p>
+</list-item></list>
+</boxed-text>
+<p>Unsurprisingly, a number of common technical pitfalls arise in large-scale data analysis. Even structured databases can break down in the face of thousands of whole-genome interactomes, leading most current large-scale data repositories to employ some combination of file system-based flat file storage archives and binary formats (including GenBank's ASN.1 PER <xref ref-type="bibr" rid="pcbi.1000779-Sayers1">[26]</xref>, BioHDF <xref ref-type="bibr" rid="pcbi.1000779-Dougherty1">[41]</xref>, and Sleipnir's DAB <xref ref-type="bibr" rid="pcbi.1000779-Huttenhower1">[11]</xref>). Data transfer mechanisms for bulk data are often limited to FTP or Aspera (<ext-link ext-link-type="uri" xlink:href="http://www.asperasoft.com" xlink:type="simple">http://www.asperasoft.com</ext-link>), although experimental metadata is often available through sophisticated programmable interfaces <xref ref-type="bibr" rid="pcbi.1000779-Barrett1">[40]</xref>, <xref ref-type="bibr" rid="pcbi.1000779-Parkinson1">[42]</xref>, <xref ref-type="bibr" rid="pcbi.1000779-Quackenbush1">[43]</xref>. Several reviews have been written dealing with inter-study data normalization <xref ref-type="bibr" rid="pcbi.1000779-Troyanskaya1">[8]</xref>, <xref ref-type="bibr" rid="pcbi.1000779-Louie1">[44]</xref>, particularly for microarrays <xref ref-type="bibr" rid="pcbi.1000779-Quackenbush2">[45]</xref>–<xref ref-type="bibr" rid="pcbi.1000779-Kapushesky2">[47]</xref>—although perhaps the simplest yet most important normalizations required are often chromosomal coordinates and gene, transcript, and protein identification schemes <xref ref-type="bibr" rid="pcbi.1000779-Durinck1">[48]</xref>.</p>
+</sec><sec id="s3">
+<title>Genomic Data Resources</title>
+<p>Three practical impediments to large-scale integrative data mining are data availability, data size, and algorithms and models for integration. As discussed above, the challenges inherent in manipulating large data can often be overcome through compact encodings and awareness of efficiency issues. Similarly, although many sophisticated systems for biological data integration exist <xref ref-type="bibr" rid="pcbi.1000779-Troyanskaya1">[8]</xref>–<xref ref-type="bibr" rid="pcbi.1000779-Lee1">[10]</xref>, <xref ref-type="bibr" rid="pcbi.1000779-Lanckriet1">[49]</xref>, they are not always necessary in order to discover new biology in large data collections. As demonstrated by the toy analysis above, simply asking the right questions of several different data repositories can rapidly generate novel biological hypotheses. It remains to discover and catalog the availability and scope of these repositories; the annual <italic>Nucleic Acids Research</italic> database issue <xref ref-type="bibr" rid="pcbi.1000779-Cochrane1">[50]</xref> is an excellent resource for this, as are online database aggregators (e.g., <xref ref-type="bibr" rid="pcbi.1000779-Babu1">[51]</xref>–<xref ref-type="bibr" rid="pcbi.1000779-Brazas1">[53]</xref> and <ext-link ext-link-type="uri" xlink:href="http://biodatabase.org" xlink:type="simple">http://biodatabase.org</ext-link>), and several primary biological data types and sources are presented here in summary.</p>
+<sec id="s3a">
+<title>High-Throughput Sequencing</title>
+<p>Next-generation short-read DNA sequencing is rapidly becoming a current-generation technology and producing ever-longer read lengths. While the purpose of this manuscript is not to address the (serious) informatic requirements needed for processing raw sequence data, several points raised by <xref ref-type="bibr" rid="pcbi.1000779-McPherson1">[1]</xref> are worth summarizing. Current sequencers can generate up to 400 million 50–100-bp reads per run, and this number will be obsolete soon after this manuscript is published. Performing even the simplest analyses on this data, let alone assembly, polymorphism detection, annotation, or other complex tasks, requires sophisticated computational hardware <italic>and</italic> software. Few cookie-cutter solutions are available, given how rapidly the technology continues to change, but online forums such as SEQanswers (<ext-link ext-link-type="uri" xlink:href="http://seqanswers.com" xlink:type="simple">http://seqanswers.com</ext-link>) are currently one of the best resources for up-to-date information on short-read sequencing.</p>
+<p>When investigating individual organisms' genomes (discussed below in more detail), many of the tools for large-scale sequence mining are focused on the study of variation: across disease state, tissue, or pathogen samples (e.g., The Cancer Genome Atlas <xref ref-type="bibr" rid="pcbi.1000779-Network1">[54]</xref> and the Cancer Genome Project <xref ref-type="bibr" rid="pcbi.1000779-Greenman1">[55]</xref>), structurally or polymorphically across individuals (e.g., the 1,000 Genomes Project <xref ref-type="bibr" rid="pcbi.1000779-Hayden1">[56]</xref> and the Personal Genome Project <xref ref-type="bibr" rid="pcbi.1000779-Church1">[57]</xref>), or phylogenetically across species (e.g., Genome 10K <xref ref-type="bibr" rid="pcbi.1000779-Scientists1">[58]</xref>). Particularly for phylogeny and evolutionary relationships, a variety of tools are available online that efficiently summarize very large sequence collections; EMBOSS <xref ref-type="bibr" rid="pcbi.1000779-Rice1">[59]</xref>, MEGA <xref ref-type="bibr" rid="pcbi.1000779-Kumar1">[60]</xref>, MEGAN <xref ref-type="bibr" rid="pcbi.1000779-Huson1">[61]</xref>, and mothur <xref ref-type="bibr" rid="pcbi.1000779-Schloss1">[62]</xref> are only a few of the creatively named systems available in this area.</p>
+<p>An interesting large-scale data mining opportunity afforded by modern sequencing techniques is provided by metagenomic repositories such as CAMERA <xref ref-type="bibr" rid="pcbi.1000779-Seshadri1">[63]</xref>, MG-RAST <xref ref-type="bibr" rid="pcbi.1000779-Meyer1">[64]</xref>, and IMG/M <xref ref-type="bibr" rid="pcbi.1000779-Markowitz1">[65]</xref>, all of which offer tools for inter-study comparisons of multiple environmental or microfloral datasets. For instance, an experimenter can easily upload an entire metagenome to MG-RAST and receive a detailed profile of the community's metabolic potential; using CAMERA, fragment recruitment profiles can be generated comparing any pair of metagenomes. Simultaneously considering the functional diversity of a metagenome, its constituent organisms, and the associated experimental metadata allows a single analysis to scale from molecular mechanisms to global ecology <xref ref-type="bibr" rid="pcbi.1000779-Gianoulis1">[66]</xref>.</p>
+</sec><sec id="s3b">
+<title>Whole-Genome Sequences</title>
+<p>The first widely used large-scale biological data repositories were (arguably) for reads deposited during the Human Genome Project and other pioneering sequencing projects, and these remain important sources of annotated genomic sequences. GenBank <xref ref-type="bibr" rid="pcbi.1000779-Benson1">[67]</xref> has diversified to include a variety of online and offline tools such as the Genome Workbench, and Ensembl <xref ref-type="bibr" rid="pcbi.1000779-Hubbard1">[68]</xref> provides an invaluable online window into a number of genome builds. The Sanger Institute hosts a number of additional genome resources (<ext-link ext-link-type="uri" xlink:href="http://www.sanger.ac.uk/Projects/" xlink:type="simple">http://www.sanger.ac.uk/Projects/</ext-link>), and the Joint Genome Institute provides several microbial genomes and associated tools <xref ref-type="bibr" rid="pcbi.1000779-Liolios1">[69]</xref>. Sequence annotations have been reviewed elsewhere <xref ref-type="bibr" rid="pcbi.1000779-Brent1">[70]</xref> and include everything from open reading frames through regulatory sites to chromatin structure and epigenetics; much of this information is available through a uniform interface at the UCSC Genome Browser <xref ref-type="bibr" rid="pcbi.1000779-Rhead1">[71]</xref>. Sequence data have been highly standardized over the years, with most raw sequences provided as FASTA or its variants, detailed annotations provided as GenBank/EMBL files, and brief annotations as GFFs. Most sequence manipulation software will recognize all of these formats <xref ref-type="bibr" rid="pcbi.1000779-Information1">[72]</xref>.</p>
+</sec><sec id="s3c">
+<title>Microarrays</title>
+<p>Similarly, gene expression microarrays were the first functional data to be analyzed on a large scale, although applications of high-throughput sequencing are poised to overtake them in widespread data availability. The GEO <xref ref-type="bibr" rid="pcbi.1000779-Barrett1">[40]</xref> and ArrayExpress <xref ref-type="bibr" rid="pcbi.1000779-Parkinson1">[42]</xref> databases are the most common sources of array data, with Celsius <xref ref-type="bibr" rid="pcbi.1000779-Day1">[73]</xref>, field-specific resources such as Oncomine <xref ref-type="bibr" rid="pcbi.1000779-Rhodes2">[74]</xref>, and institute-specific databases <xref ref-type="bibr" rid="pcbi.1000779-Demeter1">[75]</xref> providing additional datasets. Both GEO and ArrayExpress provide programmatic interfaces and structured FTP file systems for bulk analysis. GEO data are standardized around the SOFT text file format <xref ref-type="bibr" rid="pcbi.1000779-Barrett1">[40]</xref> and ArrayExpress around the MGED MAGE format family <xref ref-type="bibr" rid="pcbi.1000779-Rayner1">[76]</xref>; both are variants of tab-delimited text and can be manipulated by a variety of publicly available tools <xref ref-type="bibr" rid="pcbi.1000779-Davis1">[77]</xref>, <xref ref-type="bibr" rid="pcbi.1000779-Rayner2">[78]</xref> or custom software.</p>
+</sec><sec id="s3d">
+<title>Physical, Genetic, and Regulatory Interactomes</title>
+<p>Interactomes are significantly more diverse than sequence and expression data, both in their biological grounding and their electronic availability and distribution. For a subset of the many available physical, genetic, and regulatory interaction databases, we refer the reader to previous articles in the <italic>PLoS Computational Biology</italic> Getting Started series <xref ref-type="bibr" rid="pcbi.1000779-Viswanathan1">[79]</xref>. These data are distributed in a range of formats and with a variety of experimental metadata. The fundamental computational data being communicated is most often an unweighted (possibly directed) graph, and interactome data thus lends itself well to large-scale exploration using simple Boolean operations and graph mining algorithms <xref ref-type="bibr" rid="pcbi.1000779-Huber1">[80]</xref>, <xref ref-type="bibr" rid="pcbi.1000779-Maayan1">[81]</xref>. More biologically focused investigation can be done using, for example, PSI-formatted files containing experimental and biological metadata <xref ref-type="bibr" rid="pcbi.1000779-Martens1">[82]</xref>.</p>
+</sec><sec id="s3e">
+<title>Other Genomic Data Types and Sources</title>
+<p>This is only a small selection of the data resources that can be mined integratively to address biological questions, with structural <xref ref-type="bibr" rid="pcbi.1000779-Andreeva1">[83]</xref>, <xref ref-type="bibr" rid="pcbi.1000779-Henrick1">[84]</xref>, proteomic <xref ref-type="bibr" rid="pcbi.1000779-Gasteiger1">[85]</xref>, <xref ref-type="bibr" rid="pcbi.1000779-UniProt1">[86]</xref>, and metabolic <xref ref-type="bibr" rid="pcbi.1000779-Oberhardt1">[87]</xref> databases being obvious large-scale omissions. A final data type that must be considered, however, is not directly experimental; curated pathway and structured knowledge resources are invaluable in the planning and validation of large-scale data mining <xref ref-type="bibr" rid="pcbi.1000779-Ashburner1">[34]</xref>, <xref ref-type="bibr" rid="pcbi.1000779-Karp1">[88]</xref>–<xref ref-type="bibr" rid="pcbi.1000779-Matthews1">[90]</xref>. Two vital considerations when using such resources are, first, that they are originally based on published literature and experimental results. Subtle issues of circularity can arise when curated resources are used to supplement or validate data mining results, since the data being analyzed may itself have contributed to the curation process. Second, we have as yet to discover and catalog all biological knowledge—when used as gold standards, even the best-curated resources can be incomplete in the face of the billions of datapoints now being generated by the field on a regular basis, with important consequences in computational learning and evaluation <xref ref-type="bibr" rid="pcbi.1000779-Huttenhower3">[91]</xref>.</p>
+</sec></sec><sec id="s4">
+<title>Outlook</title>
+<p>With almost every type of biological data accumulating at an exponential rate, large-scale genomic data mining is increasingly becoming a necessity. For computational investigators, this represents a clear opportunity for methodology development; since data are becoming available at a rate that outpaces even Moore's law, it is not enough to wait for faster computers to execute longer and longer queries, and new bioinformatic tools must be developed with an eye to scalability and efficiency (e.g., through massive parallelization). However, the opportunity for biological investigation is at least as large. Nature has already harnessed scalability to her own advantage, and the combinatorics of the genetic code, multimodal and combinatorial regulation, cellular differentiation, and temporal development ensure that even our current wealth of data provide an incomplete view of biological complexity. A simple justification for broad-ranging computational screens of genomic data is their speed and low cost as a precursor to more extensive laboratory work. An even more compelling motivation, though, is the fact that the extent and complexity of biological systems may best be discovered by simultaneously considering a wide range of genome-scale data.</p>
+</sec><sec id="s5">
+<title>Supporting Information</title>
+<supplementary-material id="pcbi.1000779.s001" mimetype="application/msword" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000779.s001" xlink:type="simple"><label>Text S1</label><caption>
+<p>An example using multiple genome-scale data repositories to determine potential kinase-target interactions active during the <italic>S. cerevisiae </italic>cell cycle.</p>
+<p>(0.07 MB DOC)</p>
+</caption></supplementary-material></sec></body>
+<back>
+<ack>
+<p>We would like to gratefully thank Winston Hide and Olga Troyanskaya for their input into this tutorial and the <italic>PLoS Computational Biology</italic> editors and reviewers for supporting the Education Collection.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1000779-McPherson1"><label>1</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>McPherson</surname><given-names>JD</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Next-generation gap.</article-title>             <source>Nat Methods</source>             <volume>6</volume>             <fpage>S2</fpage>             <lpage>S5</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Rhodes1"><label>2</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Rhodes</surname><given-names>DR</given-names></name>
+<name name-style="western"><surname>Yu</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Shanker</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Deshpande</surname><given-names>N</given-names></name>
+<name name-style="western"><surname>Varambally</surname><given-names>R</given-names></name>
+<etal/></person-group>             <year>2004</year>             <article-title>Large-scale meta-analysis of cancer microarray data identifies common transcriptional profiles of neoplastic transformation and progression.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>101</volume>             <fpage>9309</fpage>             <lpage>9314</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Cahan1"><label>3</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Cahan</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Rovegno</surname><given-names>F</given-names></name>
+<name name-style="western"><surname>Mooney</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Newman</surname><given-names>JC</given-names></name>
+<name name-style="western"><surname>St Laurent</surname><given-names>G</given-names><suffix>3rd</suffix></name>
+<etal/></person-group>             <year>2007</year>             <article-title>Meta-analysis of microarray results: challenges, opportunities, and recommendations for standardization.</article-title>             <source>Gene</source>             <volume>401</volume>             <fpage>12</fpage>             <lpage>18</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Kapushesky1"><label>4</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Kapushesky</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Emam</surname><given-names>I</given-names></name>
+<name name-style="western"><surname>Holloway</surname><given-names>E</given-names></name>
+<name name-style="western"><surname>Kurnosov</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Zorin</surname><given-names>A</given-names></name>
+<etal/></person-group>             <year>2010</year>             <article-title>Gene expression atlas at the European bioinformatics institute.</article-title>             <source>Nucleic Acids Res</source>             <volume>38</volume>             <fpage>D690</fpage>             <lpage>D698</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Hwang1"><label>5</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Hwang</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Smith</surname><given-names>JJ</given-names></name>
+<name name-style="western"><surname>Leslie</surname><given-names>DM</given-names></name>
+<name name-style="western"><surname>Weston</surname><given-names>AD</given-names></name>
+<name name-style="western"><surname>Rust</surname><given-names>AG</given-names></name>
+<etal/></person-group>             <year>2005</year>             <article-title>A data integration methodology for systems biology: experimental verification.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>102</volume>             <fpage>17302</fpage>             <lpage>17307</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Butte1"><label>6</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Butte</surname><given-names>AJ</given-names></name>
+<name name-style="western"><surname>Kohane</surname><given-names>IS</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Creation and implications of a phenome-genome network.</article-title>             <source>Nat Biotechnol</source>             <volume>24</volume>             <fpage>55</fpage>             <lpage>62</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Jenkinson1"><label>7</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Jenkinson</surname><given-names>AM</given-names></name>
+<name name-style="western"><surname>Albrecht</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Birney</surname><given-names>E</given-names></name>
+<name name-style="western"><surname>Blankenburg</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Down</surname><given-names>T</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>Integrating biological data - the Distributed Annotation System.</article-title>             <source>BMC Bioinformatics</source>             <volume>9</volume>             <supplement>Suppl 8</supplement>             <fpage>S3</fpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Troyanskaya1"><label>8</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Troyanskaya</surname><given-names>OG</given-names></name>
+</person-group>             <year>2005</year>             <article-title>Putting microarrays in a context: integrated analysis of diverse biological data.</article-title>             <source>Brief Bioinform</source>             <volume>6</volume>             <fpage>34</fpage>             <lpage>43</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Aerts1"><label>9</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Aerts</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Lambrechts</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Maity</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Van Loo</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Coessens</surname><given-names>B</given-names></name>
+<etal/></person-group>             <year>2006</year>             <article-title>Gene prioritization through genomic data fusion.</article-title>             <source>Nat Biotechnol</source>             <volume>24</volume>             <fpage>537</fpage>             <lpage>544</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Lee1"><label>10</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Lee</surname><given-names>I</given-names></name>
+<name name-style="western"><surname>Marcotte</surname><given-names>EM</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Integrating functional genomics data.</article-title>             <source>Methods Mol Biol</source>             <volume>453</volume>             <fpage>267</fpage>             <lpage>278</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Huttenhower1"><label>11</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Huttenhower</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Schroeder</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Chikina</surname><given-names>MD</given-names></name>
+<name name-style="western"><surname>Troyanskaya</surname><given-names>OG</given-names></name>
+</person-group>             <year>2008</year>             <article-title>The Sleipnir library for computational functional genomics.</article-title>             <source>Bioinformatics</source>             <volume>24</volume>             <fpage>1559</fpage>             <lpage>1561</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Langmead1"><label>12</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Langmead</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Schatz</surname><given-names>MC</given-names></name>
+<name name-style="western"><surname>Lin</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Pop</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Salzberg</surname><given-names>SL</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Searching for SNPs with cloud computing.</article-title>             <source>Genome Biol</source>             <volume>10</volume>             <fpage>R134</fpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Gentleman1"><label>13</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Gentleman</surname><given-names>RC</given-names></name>
+<name name-style="western"><surname>Carey</surname><given-names>VJ</given-names></name>
+<name name-style="western"><surname>Bates</surname><given-names>DM</given-names></name>
+<name name-style="western"><surname>Bolstad</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Dettling</surname><given-names>M</given-names></name>
+<etal/></person-group>             <year>2004</year>             <article-title>Bioconductor: open software development for computational biology and bioinformatics.</article-title>             <source>Genome Biol</source>             <volume>5</volume>             <fpage>R80</fpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Jensen1"><label>14</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Jensen</surname><given-names>LJ</given-names></name>
+<name name-style="western"><surname>Kuhn</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Stark</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Chaffron</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Creevey</surname><given-names>C</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>STRING 8–a global view on proteins and their functional interactions in 630 organisms.</article-title>             <source>Nucleic Acids Res</source>             <volume>37</volume>             <fpage>D412</fpage>             <lpage>D416</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Haider1"><label>15</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Haider</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Ballester</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Smedley</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Zhang</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Rice</surname><given-names>P</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>BioMart Central Portal–unified access to biological data.</article-title>             <source>Nucleic Acids Res</source>             <volume>37</volume>             <fpage>W23</fpage>             <lpage>W27</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Huttenhower2"><label>16</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Huttenhower</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Haley</surname><given-names>EM</given-names></name>
+<name name-style="western"><surname>Hibbs</surname><given-names>MA</given-names></name>
+<name name-style="western"><surname>Dumeaux</surname><given-names>V</given-names></name>
+<name name-style="western"><surname>Barrett</surname><given-names>DR</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>Exploring the human genome with functional maps.</article-title>             <source>Genome Res</source>             <volume>19</volume>             <fpage>1093</fpage>             <lpage>1106</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Tranchevent1"><label>17</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Tranchevent</surname><given-names>LC</given-names></name>
+<name name-style="western"><surname>Barriot</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Yu</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Van Vooren</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Van Loo</surname><given-names>P</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>ENDEAVOUR update: a web resource for gene prioritization in multiple species.</article-title>             <source>Nucleic Acids Res</source>             <volume>36</volume>             <fpage>W377</fpage>             <lpage>W384</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Franke1"><label>18</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Franke</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>van Bakel</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Fokkens</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>de Jong</surname><given-names>ED</given-names></name>
+<name name-style="western"><surname>Egmont-Petersen</surname><given-names>M</given-names></name>
+<etal/></person-group>             <year>2006</year>             <article-title>Reconstruction of a functional human gene network, with an application for prioritizing positional candidate genes.</article-title>             <source>Am J Hum Genet</source>             <volume>78</volume>             <fpage>1011</fpage>             <lpage>1025</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Gunsalus1"><label>19</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Gunsalus</surname><given-names>KC</given-names></name>
+<name name-style="western"><surname>Ge</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Schetter</surname><given-names>AJ</given-names></name>
+<name name-style="western"><surname>Goldberg</surname><given-names>DS</given-names></name>
+<name name-style="western"><surname>Han</surname><given-names>JD</given-names></name>
+<etal/></person-group>             <year>2005</year>             <article-title>Predictive models of molecular machines involved in Caenorhabditis elegans early embryogenesis.</article-title>             <source>Nature</source>             <volume>436</volume>             <fpage>861</fpage>             <lpage>865</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Zhong1"><label>20</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Zhong</surname><given-names>W</given-names></name>
+<name name-style="western"><surname>Sternberg</surname><given-names>PW</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Genome-wide prediction of C. elegans genetic interactions.</article-title>             <source>Science</source>             <volume>311</volume>             <fpage>1481</fpage>             <lpage>1484</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Myers1"><label>21</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Myers</surname><given-names>CL</given-names></name>
+<name name-style="western"><surname>Robson</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Wible</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Hibbs</surname><given-names>MA</given-names></name>
+<name name-style="western"><surname>Chiriac</surname><given-names>C</given-names></name>
+<etal/></person-group>             <year>2005</year>             <article-title>Discovery of biological networks from diverse functional genomic data.</article-title>             <source>Genome Biol</source>             <volume>6</volume>             <fpage>R114</fpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Hibbs1"><label>22</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Hibbs</surname><given-names>MA</given-names></name>
+<name name-style="western"><surname>Hess</surname><given-names>DC</given-names></name>
+<name name-style="western"><surname>Myers</surname><given-names>CL</given-names></name>
+<name name-style="western"><surname>Huttenhower</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Li</surname><given-names>K</given-names></name>
+<etal/></person-group>             <year>2007</year>             <article-title>Exploring the functional landscape of gene expression: directed search of large microarray compendia.</article-title>             <source>Bioinformatics</source>             <volume>23</volume>             <fpage>2692</fpage>             <lpage>2699</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Jansen1"><label>23</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Jansen</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Yu</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Greenbaum</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Kluger</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Krogan</surname><given-names>NJ</given-names></name>
+<etal/></person-group>             <year>2003</year>             <article-title>A Bayesian networks approach for predicting protein-protein interactions from genomic data.</article-title>             <source>Science</source>             <volume>302</volume>             <fpage>449</fpage>             <lpage>453</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-PenaCastillo1"><label>24</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Pena-Castillo</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Tasan</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Myers</surname><given-names>CL</given-names></name>
+<name name-style="western"><surname>Lee</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Joshi</surname><given-names>T</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>A critical assessment of Mus musculus gene function prediction using integrated genomic evidence.</article-title>             <source>Genome Biol</source>             <volume>9</volume>             <supplement>Suppl 1</supplement>             <fpage>S2</fpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Alexeyenko1"><label>25</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Alexeyenko</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Sonnhammer</surname><given-names>EL</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Global networks of functional coupling in eukaryotes from comprehensive data integration.</article-title>             <source>Genome Res</source>             <volume>19</volume>             <fpage>1107</fpage>             <lpage>1116</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Sayers1"><label>26</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Sayers</surname><given-names>EW</given-names></name>
+<name name-style="western"><surname>Barrett</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Benson</surname><given-names>DA</given-names></name>
+<name name-style="western"><surname>Bolton</surname><given-names>E</given-names></name>
+<name name-style="western"><surname>Bryant</surname><given-names>SH</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>Database resources of the National Center for Biotechnology Information.</article-title>             <source>Nucleic Acids Res</source>             <volume>37</volume>             <fpage>D5</fpage>             <lpage>D15</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-McWilliam1"><label>27</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>McWilliam</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Valentin</surname><given-names>F</given-names></name>
+<name name-style="western"><surname>Goujon</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Li</surname><given-names>W</given-names></name>
+<name name-style="western"><surname>Narayanasamy</surname><given-names>M</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>Web services at the European Bioinformatics Institute-2009.</article-title>             <source>Nucleic Acids Res</source>             <volume>37</volume>             <fpage>W6</fpage>             <lpage>W10</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Hull1"><label>28</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Hull</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Wolstencroft</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Stevens</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Goble</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Pocock</surname><given-names>MR</given-names></name>
+<etal/></person-group>             <year>2006</year>             <article-title>Taverna: a tool for building and running workflows of services.</article-title>             <source>Nucleic Acids Res</source>             <volume>34</volume>             <fpage>W729</fpage>             <lpage>W732</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Blankenberg1"><label>29</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Blankenberg</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Taylor</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Schenck</surname><given-names>I</given-names></name>
+<name name-style="western"><surname>He</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Zhang</surname><given-names>Y</given-names></name>
+<etal/></person-group>             <year>2007</year>             <article-title>A framework for collaborative analysis of ENCODE data: making large-scale analyses biologist-friendly.</article-title>             <source>Genome Res</source>             <volume>17</volume>             <fpage>960</fpage>             <lpage>964</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Sand1"><label>30</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Sand</surname><given-names>O</given-names></name>
+<name name-style="western"><surname>Thomas-Chollier</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Vervisch</surname><given-names>E</given-names></name>
+<name name-style="western"><surname>van Helden</surname><given-names>J</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Analyzing multiple data sets by interconnecting RSAT programs via SOAP Web services: an example with ChIP-chip data.</article-title>             <source>Nat Protoc</source>             <volume>3</volume>             <fpage>1604</fpage>             <lpage>1615</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Stockinger1"><label>31</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Stockinger</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Attwood</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Chohan</surname><given-names>SN</given-names></name>
+<name name-style="western"><surname>Cote</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Cudre-Mauroux</surname><given-names>P</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>Experience using web services for biological sequence analysis.</article-title>             <source>Brief Bioinform</source>             <volume>9</volume>             <fpage>493</fpage>             <lpage>505</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Wilkinson1"><label>32</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Wilkinson</surname><given-names>MD</given-names></name>
+<name name-style="western"><surname>Senger</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Kawas</surname><given-names>E</given-names></name>
+<name name-style="western"><surname>Bruskiewich</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Gouzy</surname><given-names>J</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>Interoperability with Moby 1.0–it's better than sharing your toothbrush!</article-title>             <source>Brief Bioinform</source>             <volume>9</volume>             <fpage>220</fpage>             <lpage>231</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Shannon1"><label>33</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Shannon</surname><given-names>PT</given-names></name>
+<name name-style="western"><surname>Reiss</surname><given-names>DJ</given-names></name>
+<name name-style="western"><surname>Bonneau</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Baliga</surname><given-names>NS</given-names></name>
+</person-group>             <year>2006</year>             <article-title>The Gaggle: an open-source software system for integrating bioinformatics software and data sources.</article-title>             <source>BMC Bioinformatics</source>             <volume>7</volume>             <fpage>176</fpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Ashburner1"><label>34</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Ashburner</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Ball</surname><given-names>CA</given-names></name>
+<name name-style="western"><surname>Blake</surname><given-names>JA</given-names></name>
+<name name-style="western"><surname>Botstein</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Butler</surname><given-names>H</given-names></name>
+<etal/></person-group>             <year>2000</year>             <article-title>Gene ontology: tool for the unification of biology. The Gene Ontology Consortium.</article-title>             <source>Nat Genet</source>             <volume>25</volume>             <fpage>25</fpage>             <lpage>29</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Hong1"><label>35</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Hong</surname><given-names>EL</given-names></name>
+<name name-style="western"><surname>Balakrishnan</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Dong</surname><given-names>Q</given-names></name>
+<name name-style="western"><surname>Christie</surname><given-names>KR</given-names></name>
+<name name-style="western"><surname>Park</surname><given-names>J</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>Gene Ontology annotations at SGD: new data sources and annotation methods.</article-title>             <source>Nucleic Acids Res</source>             <volume>36</volume>             <fpage>D577</fpage>             <lpage>D581</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Carbon1"><label>36</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Carbon</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Ireland</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Mungall</surname><given-names>CJ</given-names></name>
+<name name-style="western"><surname>Shu</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Marshall</surname><given-names>B</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>AmiGO: online access to ontology and annotation data.</article-title>             <source>Bioinformatics</source>             <volume>25</volume>             <fpage>288</fpage>             <lpage>289</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Salwinski1"><label>37</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Salwinski</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Miller</surname><given-names>CS</given-names></name>
+<name name-style="western"><surname>Smith</surname><given-names>AJ</given-names></name>
+<name name-style="western"><surname>Pettit</surname><given-names>FK</given-names></name>
+<name name-style="western"><surname>Bowie</surname><given-names>JU</given-names></name>
+<etal/></person-group>             <year>2004</year>             <article-title>The Database of Interacting Proteins: 2004 update.</article-title>             <source>Nucleic Acids Res</source>             <volume>32</volume>             <fpage>D449</fpage>             <lpage>D451</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Chatraryamontri1"><label>38</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Chatr-aryamontri</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Ceol</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Palazzi</surname><given-names>LM</given-names></name>
+<name name-style="western"><surname>Nardelli</surname><given-names>G</given-names></name>
+<name name-style="western"><surname>Schneider</surname><given-names>MV</given-names></name>
+<etal/></person-group>             <year>2007</year>             <article-title>MINT: the Molecular INTeraction database.</article-title>             <source>Nucleic Acids Res</source>             <volume>35</volume>             <fpage>D572</fpage>             <lpage>D574</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Stark1"><label>39</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Stark</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Breitkreutz</surname><given-names>BJ</given-names></name>
+<name name-style="western"><surname>Reguly</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Boucher</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Breitkreutz</surname><given-names>A</given-names></name>
+<etal/></person-group>             <year>2006</year>             <article-title>BioGRID: a general repository for interaction datasets.</article-title>             <source>Nucleic Acids Res</source>             <volume>34</volume>             <fpage>D535</fpage>             <lpage>D539</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Barrett1"><label>40</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Barrett</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Troup</surname><given-names>DB</given-names></name>
+<name name-style="western"><surname>Wilhite</surname><given-names>SE</given-names></name>
+<name name-style="western"><surname>Ledoux</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Rudnev</surname><given-names>D</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>NCBI GEO: archive for high-throughput functional genomic data.</article-title>             <source>Nucleic Acids Res</source>             <volume>37</volume>             <fpage>D885</fpage>             <lpage>D890</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Dougherty1"><label>41</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Dougherty</surname><given-names>MT</given-names></name>
+<name name-style="western"><surname>Folk</surname><given-names>MJ</given-names></name>
+<name name-style="western"><surname>Zadok</surname><given-names>E</given-names></name>
+<name name-style="western"><surname>Bernstein</surname><given-names>HJ</given-names></name>
+<name name-style="western"><surname>Bernstein</surname><given-names>FC</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>Unifying biological image formats with HDF5.</article-title>             <source>Commun ACM</source>             <volume>52</volume>             <fpage>42</fpage>             <lpage>47</lpage>             <comment>Available: <ext-link ext-link-type="uri" xlink:href="http://cacm.acm.org/magazines/2009/10/42364-unifying-biological-image-formats-with-hdf5/fulltext" xlink:type="simple">http://cacm.acm.org/magazines/2009/10/42364-unifying-biological-image-formats-with-hdf5/fulltext</ext-link>. Accessed 26 April 2010</comment>          </element-citation></ref>
+<ref id="pcbi.1000779-Parkinson1"><label>42</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Parkinson</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Kapushesky</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Kolesnikov</surname><given-names>N</given-names></name>
+<name name-style="western"><surname>Rustici</surname><given-names>G</given-names></name>
+<name name-style="western"><surname>Shojatalab</surname><given-names>M</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>ArrayExpress update–from an archive of functional genomics experiments to the atlas of gene expression.</article-title>             <source>Nucleic Acids Res</source>             <volume>37</volume>             <fpage>D868</fpage>             <lpage>D872</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Quackenbush1"><label>43</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Quackenbush</surname><given-names>J</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Data reporting standards: making the things we use better.</article-title>             <source>Genome Med</source>             <volume>1</volume>             <fpage>111</fpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Louie1"><label>44</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Louie</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Mork</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Martin-Sanchez</surname><given-names>F</given-names></name>
+<name name-style="western"><surname>Halevy</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Tarczy-Hornoch</surname><given-names>P</given-names></name>
+</person-group>             <year>2007</year>             <article-title>Data integration and genomic medicine.</article-title>             <source>J Biomed Inform</source>             <volume>40</volume>             <fpage>5</fpage>             <lpage>16</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Quackenbush2"><label>45</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Quackenbush</surname><given-names>J</given-names></name>
+</person-group>             <year>2002</year>             <article-title>Microarray data normalization and transformation.</article-title>             <source>Nat Genet</source>             <volume>32</volume>             <supplement>Suppl</supplement>             <fpage>496</fpage>             <lpage>501</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Steinhoff1"><label>46</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Steinhoff</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Vingron</surname><given-names>M</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Normalization and quantification of differential expression in gene expression microarrays.</article-title>             <source>Brief Bioinform</source>             <volume>7</volume>             <fpage>166</fpage>             <lpage>177</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Kapushesky2"><label>47</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Kapushesky</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Emam</surname><given-names>I</given-names></name>
+<name name-style="western"><surname>Holloway</surname><given-names>E</given-names></name>
+<name name-style="western"><surname>Kurnosov</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Zorin</surname><given-names>A</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>Gene Expression Atlas at the European Bioinformatics Institute.</article-title>             <source>Nucleic Acids Res</source>             <volume>38</volume>             <fpage>D690</fpage>             <lpage>D698</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Durinck1"><label>48</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Durinck</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Spellman</surname><given-names>PT</given-names></name>
+<name name-style="western"><surname>Birney</surname><given-names>E</given-names></name>
+<name name-style="western"><surname>Huber</surname><given-names>W</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Mapping identifiers for the integration of genomic datasets with the R/Bioconductor package biomaRt.</article-title>             <source>Nat Protoc</source>             <volume>4</volume>             <fpage>1184</fpage>             <lpage>1191</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Lanckriet1"><label>49</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Lanckriet</surname><given-names>GR</given-names></name>
+<name name-style="western"><surname>De Bie</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Cristianini</surname><given-names>N</given-names></name>
+<name name-style="western"><surname>Jordan</surname><given-names>MI</given-names></name>
+<name name-style="western"><surname>Noble</surname><given-names>WS</given-names></name>
+</person-group>             <year>2004</year>             <article-title>A statistical framework for genomic data fusion.</article-title>             <source>Bioinformatics</source>             <volume>20</volume>             <fpage>2626</fpage>             <lpage>2635</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Cochrane1"><label>50</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Cochrane</surname><given-names>GR</given-names></name>
+<name name-style="western"><surname>Galperin</surname><given-names>MY</given-names></name>
+</person-group>             <year>2010</year>             <article-title>The 2010 Nucleic Acids Research database issue and online Database Collection: a community of data resources.</article-title>             <source>Nucleic Acids Res</source>             <volume>38</volume>             <fpage>D1</fpage>             <lpage>D4</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Babu1"><label>51</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Babu</surname><given-names>PA</given-names></name>
+<name name-style="western"><surname>Udyama</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Kumar</surname><given-names>RK</given-names></name>
+<name name-style="western"><surname>Boddepalli</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Mangala</surname><given-names>DS</given-names></name>
+<etal/></person-group>             <year>2007</year>             <article-title>DoD2007: 1082 molecular biology databases.</article-title>             <source>Bioinformation</source>             <volume>2</volume>             <fpage>64</fpage>             <lpage>67</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Chen1"><label>52</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Chen</surname><given-names>YB</given-names></name>
+<name name-style="western"><surname>Chattopadhyay</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Bergen</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Gadd</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Tannery</surname><given-names>N</given-names></name>
+</person-group>             <year>2007</year>             <article-title>The Online Bioinformatics Resources Collection at the University of Pittsburgh Health Sciences Library System–a one-stop gateway to online bioinformatics databases and software tools.</article-title>             <source>Nucleic Acids Res</source>             <volume>35</volume>             <fpage>D780</fpage>             <lpage>D785</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Brazas1"><label>53</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Brazas</surname><given-names>MD</given-names></name>
+<name name-style="western"><surname>Yamada</surname><given-names>JT</given-names></name>
+<name name-style="western"><surname>Ouellette</surname><given-names>BF</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Evolution in bioinformatic resources: 2009 update on the Bioinformatics Links Directory.</article-title>             <source>Nucleic Acids Res</source>             <volume>37</volume>             <fpage>W3</fpage>             <lpage>W5</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Network1"><label>54</label><element-citation publication-type="journal" xlink:type="simple">             <collab xlink:type="simple">Network TCGAR</collab>             <year>2008</year>             <article-title>Comprehensive genomic characterization defines human glioblastoma genes and core pathways.</article-title>             <source>Nature</source>             <volume>455</volume>             <fpage>1061</fpage>             <lpage>1068</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Greenman1"><label>55</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Greenman</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Stephens</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Smith</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Dalgliesh</surname><given-names>GL</given-names></name>
+<name name-style="western"><surname>Hunter</surname><given-names>C</given-names></name>
+<etal/></person-group>             <year>2007</year>             <article-title>Patterns of somatic mutation in human cancer genomes.</article-title>             <source>Nature</source>             <volume>446</volume>             <fpage>153</fpage>             <lpage>158</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Hayden1"><label>56</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Hayden</surname><given-names>EC</given-names></name>
+</person-group>             <year>2008</year>             <article-title>International genome project launched.</article-title>             <source>Nature</source>             <volume>451</volume>             <fpage>378</fpage>             <lpage>379</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Church1"><label>57</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Church</surname><given-names>GM</given-names></name>
+</person-group>             <year>2005</year>             <article-title>The personal genome project.</article-title>             <source>Mol Syst Biol</source>             <volume>1</volume>             <volume>2005 0030</volume>          </element-citation></ref>
+<ref id="pcbi.1000779-Scientists1"><label>58</label><element-citation publication-type="journal" xlink:type="simple">             <collab xlink:type="simple">Scientists GKCo</collab>             <year>2009</year>             <article-title>Genome 10K: a proposal to obtain whole-genome sequence for 10,000 vertebrate species.</article-title>             <source>J Hered</source>             <volume>100</volume>             <fpage>659</fpage>             <lpage>674</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Rice1"><label>59</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Rice</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Longden</surname><given-names>I</given-names></name>
+<name name-style="western"><surname>Bleasby</surname><given-names>A</given-names></name>
+</person-group>             <year>2000</year>             <article-title>EMBOSS: the European Molecular Biology Open Software Suite.</article-title>             <source>Trends Genet</source>             <volume>16</volume>             <fpage>276</fpage>             <lpage>277</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Kumar1"><label>60</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Kumar</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Nei</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Dudley</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Tamura</surname><given-names>K</given-names></name>
+</person-group>             <year>2008</year>             <article-title>MEGA: a biologist-centric software for evolutionary analysis of DNA and protein sequences.</article-title>             <source>Brief Bioinform</source>             <volume>9</volume>             <fpage>299</fpage>             <lpage>306</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Huson1"><label>61</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Huson</surname><given-names>DH</given-names></name>
+<name name-style="western"><surname>Auch</surname><given-names>AF</given-names></name>
+<name name-style="western"><surname>Qi</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Schuster</surname><given-names>SC</given-names></name>
+</person-group>             <year>2007</year>             <article-title>MEGAN analysis of metagenomic data.</article-title>             <source>Genome Res</source>             <volume>17</volume>             <fpage>377</fpage>             <lpage>386</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Schloss1"><label>62</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Schloss</surname><given-names>PD</given-names></name>
+<name name-style="western"><surname>Westcott</surname><given-names>SL</given-names></name>
+<name name-style="western"><surname>Ryabin</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Hall</surname><given-names>JR</given-names></name>
+<name name-style="western"><surname>Hartmann</surname><given-names>M</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>Introducing mothur: open-source, platform-independent, community-supported software for describing and comparing microbial communities.</article-title>             <source>Appl Environ Microbiol</source>             <volume>75</volume>             <fpage>7537</fpage>             <lpage>7541</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Seshadri1"><label>63</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Seshadri</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Kravitz</surname><given-names>SA</given-names></name>
+<name name-style="western"><surname>Smarr</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Gilna</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Frazier</surname><given-names>M</given-names></name>
+</person-group>             <year>2007</year>             <article-title>CAMERA: a community resource for metagenomics.</article-title>             <source>PLoS Biol</source>             <volume>5</volume>             <fpage>e75</fpage>             <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pbio.0050075" xlink:type="simple">10.1371/journal.pbio.0050075</ext-link></comment>          </element-citation></ref>
+<ref id="pcbi.1000779-Meyer1"><label>64</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Meyer</surname><given-names>F</given-names></name>
+<name name-style="western"><surname>Paarmann</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>D'Souza</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Olson</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Glass</surname><given-names>EM</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>The metagenomics RAST server - a public resource for the automatic phylogenetic and functional analysis of metagenomes.</article-title>             <source>BMC Bioinformatics</source>             <volume>9</volume>             <fpage>386</fpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Markowitz1"><label>65</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Markowitz</surname><given-names>VM</given-names></name>
+<name name-style="western"><surname>Ivanova</surname><given-names>NN</given-names></name>
+<name name-style="western"><surname>Szeto</surname><given-names>E</given-names></name>
+<name name-style="western"><surname>Palaniappan</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Chu</surname><given-names>K</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>IMG/M: a data management and analysis system for metagenomes.</article-title>             <source>Nucleic Acids Res</source>             <volume>36</volume>             <fpage>D534</fpage>             <lpage>D538</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Gianoulis1"><label>66</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Gianoulis</surname><given-names>TA</given-names></name>
+<name name-style="western"><surname>Raes</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Patel</surname><given-names>PV</given-names></name>
+<name name-style="western"><surname>Bjornson</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Korbel</surname><given-names>JO</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>Quantifying environmental adaptation of metabolic pathways in metagenomics.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>106</volume>             <fpage>1374</fpage>             <lpage>1379</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Benson1"><label>67</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Benson</surname><given-names>DA</given-names></name>
+<name name-style="western"><surname>Karsch-Mizrachi</surname><given-names>I</given-names></name>
+<name name-style="western"><surname>Lipman</surname><given-names>DJ</given-names></name>
+<name name-style="western"><surname>Ostell</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Sayers</surname><given-names>EW</given-names></name>
+</person-group>             <year>2009</year>             <article-title>GenBank.</article-title>             <source>Nucleic Acids Res</source>             <volume>37</volume>             <fpage>D26</fpage>             <lpage>D31</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Hubbard1"><label>68</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Hubbard</surname><given-names>TJ</given-names></name>
+<name name-style="western"><surname>Aken</surname><given-names>BL</given-names></name>
+<name name-style="western"><surname>Ayling</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Ballester</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Beal</surname><given-names>K</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>Ensembl 2009.</article-title>             <source>Nucleic Acids Res</source>             <volume>37</volume>             <fpage>D690</fpage>             <lpage>D697</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Liolios1"><label>69</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Liolios</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Chen</surname><given-names>IM</given-names></name>
+<name name-style="western"><surname>Mavromatis</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Tavernarakis</surname><given-names>N</given-names></name>
+<name name-style="western"><surname>Hugenholtz</surname><given-names>P</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>The Genomes On Line Database (GOLD) in 2009: status of genomic and metagenomic projects and their associated metadata.</article-title>             <source>Nucleic Acids Res</source>             <volume>38</volume>             <fpage>D346</fpage>             <lpage>D354</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Brent1"><label>70</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Brent</surname><given-names>MR</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Steady progress and recent breakthroughs in the accuracy of automated genome annotation.</article-title>             <source>Nat Rev Genet</source>             <volume>9</volume>             <fpage>62</fpage>             <lpage>73</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Rhead1"><label>71</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Rhead</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Karolchik</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Kuhn</surname><given-names>RM</given-names></name>
+<name name-style="western"><surname>Hinrichs</surname><given-names>AS</given-names></name>
+<name name-style="western"><surname>Zweig</surname><given-names>AS</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>The UCSC genome browser database: update 2010.</article-title>             <source>Nucleic Acids Res</source>          </element-citation></ref>
+<ref id="pcbi.1000779-Information1"><label>72</label><element-citation publication-type="other" xlink:type="simple">             <collab xlink:type="simple">Information NCfB</collab>             <year>2009</year>             <source>The NCBI handbook</source>             <publisher-loc>Bethesda, MD</publisher-loc>             <publisher-name>National Library of Medicine</publisher-name>          </element-citation></ref>
+<ref id="pcbi.1000779-Day1"><label>73</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Day</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Carlson</surname><given-names>MR</given-names></name>
+<name name-style="western"><surname>Dong</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>O'Connor</surname><given-names>BD</given-names></name>
+<name name-style="western"><surname>Nelson</surname><given-names>SF</given-names></name>
+</person-group>             <year>2007</year>             <article-title>Celsius: a community resource for Affymetrix microarray data.</article-title>             <source>Genome Biol</source>             <volume>8</volume>             <fpage>R112</fpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Rhodes2"><label>74</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Rhodes</surname><given-names>DR</given-names></name>
+<name name-style="western"><surname>Kalyana-Sundaram</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Mahavisno</surname><given-names>V</given-names></name>
+<name name-style="western"><surname>Varambally</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Yu</surname><given-names>J</given-names></name>
+<etal/></person-group>             <year>2007</year>             <article-title>Oncomine 3.0: genes, pathways, and networks in a collection of 18,000 cancer gene expression profiles.</article-title>             <source>Neoplasia</source>             <volume>9</volume>             <fpage>166</fpage>             <lpage>180</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Demeter1"><label>75</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Demeter</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Beauheim</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Gollub</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Hernandez-Boussard</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Jin</surname><given-names>H</given-names></name>
+<etal/></person-group>             <year>2007</year>             <article-title>The Stanford Microarray Database: implementation of new analysis tools and open source release of software.</article-title>             <source>Nucleic Acids Res</source>             <volume>35</volume>             <fpage>D766</fpage>             <lpage>D770</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Rayner1"><label>76</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Rayner</surname><given-names>TF</given-names></name>
+<name name-style="western"><surname>Rocca-Serra</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Spellman</surname><given-names>PT</given-names></name>
+<name name-style="western"><surname>Causton</surname><given-names>HC</given-names></name>
+<name name-style="western"><surname>Farne</surname><given-names>A</given-names></name>
+<etal/></person-group>             <year>2006</year>             <article-title>A simple spreadsheet-based, MIAME-supportive format for microarray data: MAGE-TAB.</article-title>             <source>BMC Bioinformatics</source>             <volume>7</volume>             <fpage>489</fpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Davis1"><label>77</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Davis</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Meltzer</surname><given-names>PS</given-names></name>
+</person-group>             <year>2007</year>             <article-title>GEOquery: a bridge between the Gene Expression Omnibus (GEO) and BioConductor.</article-title>             <source>Bioinformatics</source>             <volume>23</volume>             <fpage>1846</fpage>             <lpage>1847</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Rayner2"><label>78</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Rayner</surname><given-names>TF</given-names></name>
+<name name-style="western"><surname>Rezwan</surname><given-names>FI</given-names></name>
+<name name-style="western"><surname>Lukk</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Bradley</surname><given-names>XZ</given-names></name>
+<name name-style="western"><surname>Farne</surname><given-names>A</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>MAGETabulator, a suite of tools to support the microarray data format MAGE-TAB.</article-title>             <source>Bioinformatics</source>             <volume>25</volume>             <fpage>279</fpage>             <lpage>280</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Viswanathan1"><label>79</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Viswanathan</surname><given-names>GA</given-names></name>
+<name name-style="western"><surname>Seto</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Patil</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Nudelman</surname><given-names>G</given-names></name>
+<name name-style="western"><surname>Sealfon</surname><given-names>SC</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Getting started in biological pathway construction and analysis.</article-title>             <source>PLoS Comput Biol</source>             <volume>4</volume>             <fpage>e16</fpage>             <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.0040016" xlink:type="simple">10.1371/journal.pcbi.0040016</ext-link></comment>          </element-citation></ref>
+<ref id="pcbi.1000779-Huber1"><label>80</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Huber</surname><given-names>W</given-names></name>
+<name name-style="western"><surname>Carey</surname><given-names>VJ</given-names></name>
+<name name-style="western"><surname>Long</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Falcon</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Gentleman</surname><given-names>R</given-names></name>
+</person-group>             <year>2007</year>             <article-title>Graphs in molecular biology.</article-title>             <source>BMC Bioinformatics</source>             <volume>8</volume>             <supplement>Suppl 6</supplement>             <fpage>S8</fpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Maayan1"><label>81</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Ma'ayan</surname><given-names>A</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Network integration and graph analysis in mammalian molecular systems biology.</article-title>             <source>IET Syst Biol</source>             <volume>2</volume>             <fpage>206</fpage>             <lpage>221</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Martens1"><label>82</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Martens</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Orchard</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Apweiler</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Hermjakob</surname><given-names>H</given-names></name>
+</person-group>             <year>2007</year>             <article-title>Human Proteome Organization Proteomics Standards Initiative: data standardization, a view on developments and policy.</article-title>             <source>Mol Cell Proteomics</source>             <volume>6</volume>             <fpage>1666</fpage>             <lpage>1667</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Andreeva1"><label>83</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Andreeva</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Howorth</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Chandonia</surname><given-names>JM</given-names></name>
+<name name-style="western"><surname>Brenner</surname><given-names>SE</given-names></name>
+<name name-style="western"><surname>Hubbard</surname><given-names>TJ</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>Data growth and its impact on the SCOP database: new developments.</article-title>             <source>Nucleic Acids Res</source>             <volume>36</volume>             <fpage>D419</fpage>             <lpage>D425</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Henrick1"><label>84</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Henrick</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Feng</surname><given-names>Z</given-names></name>
+<name name-style="western"><surname>Bluhm</surname><given-names>WF</given-names></name>
+<name name-style="western"><surname>Dimitropoulos</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Doreleijers</surname><given-names>JF</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>Remediation of the protein data bank archive.</article-title>             <source>Nucleic Acids Res</source>             <volume>36</volume>             <fpage>D426</fpage>             <lpage>D433</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Gasteiger1"><label>85</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Gasteiger</surname><given-names>E</given-names></name>
+<name name-style="western"><surname>Gattiker</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Hoogland</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Ivanyi</surname><given-names>I</given-names></name>
+<name name-style="western"><surname>Appel</surname><given-names>RD</given-names></name>
+<etal/></person-group>             <year>2003</year>             <article-title>ExPASy: The proteomics server for in-depth protein knowledge and analysis.</article-title>             <source>Nucleic Acids Res</source>             <volume>31</volume>             <fpage>3784</fpage>             <lpage>3788</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-UniProt1"><label>86</label><element-citation publication-type="journal" xlink:type="simple">             <collab xlink:type="simple">UniProt Consortium</collab>             <year>2010</year>             <article-title>The Universal Protein Resource (UniProt) in 2010.</article-title>             <source>Nucleic Acids Res</source>             <volume>38</volume>             <fpage>D142</fpage>             <lpage>D148</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Oberhardt1"><label>87</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Oberhardt</surname><given-names>MA</given-names></name>
+<name name-style="western"><surname>Palsson</surname><given-names>BO</given-names></name>
+<name name-style="western"><surname>Papin</surname><given-names>JA</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Applications of genome-scale metabolic reconstructions.</article-title>             <source>Mol Syst Biol</source>             <volume>5</volume>             <fpage>320</fpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Karp1"><label>88</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Karp</surname><given-names>PD</given-names></name>
+<name name-style="western"><surname>Ouzounis</surname><given-names>CA</given-names></name>
+<name name-style="western"><surname>Moore-Kochlacs</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Goldovsky</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Kaipa</surname><given-names>P</given-names></name>
+<etal/></person-group>             <year>2005</year>             <article-title>Expansion of the BioCyc collection of pathway/genome databases to 160 genomes.</article-title>             <source>Nucleic Acids Res</source>             <volume>33</volume>             <fpage>6083</fpage>             <lpage>6089</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Kanehisa1"><label>89</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Kanehisa</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Goto</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Furumichi</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Tanabe</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Hirakawa</surname><given-names>M</given-names></name>
+</person-group>             <year>2010</year>             <article-title>KEGG for representation and analysis of molecular networks involving diseases and drugs.</article-title>             <source>Nucleic Acids Res</source>             <volume>38</volume>             <fpage>D355</fpage>             <lpage>D360</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Matthews1"><label>90</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Matthews</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Gopinath</surname><given-names>G</given-names></name>
+<name name-style="western"><surname>Gillespie</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Caudy</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Croft</surname><given-names>D</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>Reactome knowledgebase of human biological pathways and processes.</article-title>             <source>Nucleic Acids Res</source>             <volume>37</volume>             <fpage>D619</fpage>             <lpage>D622</lpage>          </element-citation></ref>
+<ref id="pcbi.1000779-Huttenhower3"><label>91</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Huttenhower</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Hibbs</surname><given-names>MA</given-names></name>
+<name name-style="western"><surname>Myers</surname><given-names>CL</given-names></name>
+<name name-style="western"><surname>Caudy</surname><given-names>AA</given-names></name>
+<name name-style="western"><surname>Hess</surname><given-names>DC</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>The impact of incomplete knowledge on evaluation: an experimental benchmark for protein function prediction.</article-title>             <source>Bioinformatics</source>             <volume>25</volume>             <fpage>2404</fpage>             <lpage>2410</lpage>          </element-citation></ref>
+</ref-list>
+
+</back>
+</article>

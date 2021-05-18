@@ -1,0 +1,854 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="3.0" xml:lang="en">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">ploscomp</journal-id>
+<journal-title-group>
+<journal-title>PLOS Computational Biology</journal-title>
+</journal-title-group>
+<issn pub-type="ppub">1553-734X</issn>
+<issn pub-type="epub">1553-7358</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pcbi.1004630</article-id>
+<article-id pub-id-type="publisher-id">PCOMPBIOL-D-15-00921</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+</article-categories>
+<title-group>
+<article-title>Text Mining for Protein Docking</article-title>
+<alt-title alt-title-type="running-head">Text Mining for Protein Docking</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Badal</surname>
+<given-names>Varsha D.</given-names>
+</name>
+<xref rid="aff001" ref-type="aff"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Kundrotas</surname>
+<given-names>Petras J.</given-names>
+</name>
+<xref rid="aff001" ref-type="aff"><sup>1</sup></xref>
+<xref rid="cor001" ref-type="corresp">*</xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Vakser</surname>
+<given-names>Ilya A.</given-names>
+</name>
+<xref rid="aff001" ref-type="aff"><sup>1</sup></xref>
+<xref rid="aff002" ref-type="aff"><sup>2</sup></xref>
+<xref rid="cor001" ref-type="corresp">*</xref>
+</contrib>
+</contrib-group>
+<aff id="aff001"><label>1</label> <addr-line>Center for Computational Biology, The University of Kansas, Lawrence, Kansas, United States of America</addr-line></aff>
+<aff id="aff002"><label>2</label> <addr-line>Department of Molecular Biosciences, The University of Kansas, Lawrence, Kansas, United States of America</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Ben-Tal</surname>
+<given-names>Nir</given-names>
+</name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>Tel Aviv University, ISRAEL</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<fn fn-type="con" id="contrib001">
+<p>Conceived and designed the experiments: VDB PJK IAV. Performed the experiments: VDB. Analyzed the data: VDB PJK IAV. Contributed reagents/materials/analysis tools: VDB PJK. Wrote the paper: VDB PJK IAV.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">vakser@ku.edu</email> (IAV); <email xlink:type="simple">pkundro@ku.edu</email> (PJK)</corresp>
+</author-notes>
+<pub-date pub-type="epub">
+<day>9</day>
+<month>12</month>
+<year>2015</year>
+</pub-date>
+<pub-date pub-type="collection">
+<month>12</month>
+<year>2015</year>
+</pub-date>
+<volume>11</volume>
+<issue>12</issue>
+<elocation-id>e1004630</elocation-id>
+<history>
+<date date-type="received">
+<day>8</day>
+<month>6</month>
+<year>2015</year>
+</date>
+<date date-type="accepted">
+<day>29</day>
+<month>10</month>
+<year>2015</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2015</copyright-year>
+<copyright-holder>Badal et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pcbi.1004630" xlink:type="simple"/>
+<abstract>
+<p>The rapidly growing amount of publicly available information from biomedical research is readily accessible on the Internet, providing a powerful resource for predictive biomolecular modeling. The accumulated data on experimentally determined structures transformed structure prediction of proteins and protein complexes. Instead of exploring the enormous search space, predictive tools can simply proceed to the solution based on similarity to the existing, previously determined structures. A similar major paradigm shift is emerging due to the rapidly expanding amount of information, other than experimentally determined structures, which still can be used as constraints in biomolecular structure prediction. Automated text mining has been widely used in recreating protein interaction networks, as well as in detecting small ligand binding sites on protein structures. Combining and expanding these two well-developed areas of research, we applied the text mining to structural modeling of protein-protein complexes (protein docking). Protein docking can be significantly improved when constraints on the docking mode are available. We developed a procedure that retrieves published abstracts on a specific protein-protein interaction and extracts information relevant to docking. The procedure was assessed on protein complexes from <sc>Dockground</sc> (<ext-link ext-link-type="uri" xlink:href="http://dockground.compbio.ku.edu/" xlink:type="simple">http://dockground.compbio.ku.edu</ext-link>). The results show that correct information on binding residues can be extracted for about half of the complexes. The amount of irrelevant information was reduced by conceptual analysis of a subset of the retrieved abstracts, based on the bag-of-words (features) approach. Support Vector Machine models were trained and validated on the subset. The remaining abstracts were filtered by the best-performing models, which decreased the irrelevant information for ~ 25% complexes in the dataset. The extracted constraints were incorporated in the docking protocol and tested on the <sc>Dockground</sc> unbound benchmark set, significantly increasing the docking success rate.</p>
+</abstract>
+<abstract abstract-type="summary">
+<title>Author Summary</title>
+<p>Protein interactions are central for many cellular processes. Physical characterization of these interactions is essential for understanding of life processes and applications in biology and medicine. Because of the inherent limitations of experimental techniques and rapid development of computational power and methodology, computer modeling is a tool of choice in many studies. Publicly available information from biomedical research is readily accessible on the Internet, providing a powerful resource for modeling of proteins and protein complexes. A major paradigm shift in modeling of protein complexes is emerging due to the rapidly expanding amount of such information, which can be used as modeling constraints. Text mining has been widely used in recreating networks of protein interactions, as well as in detecting small molecule binding sites on proteins. Combining and expanding these two well-developed areas of research, we applied the text mining to physical modeling of protein complexes (protein docking). Our procedure retrieves published abstracts on a protein-protein interaction and extracts the relevant information. The results show that correct information on binding can be obtained for about half of protein complexes. The extracted constraints were incorporated in a modeling procedure, significantly improving its performance.</p>
+</abstract>
+<funding-group>
+<funding-statement>This study was supported by NIH grant R01GM074255 and NSF grant DBI1262621. The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="6"/>
+<table-count count="4"/>
+<page-count count="21"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability" xlink:type="simple">
+<meta-name>Data Availability</meta-name>
+<meta-value>The paper contains a description of how to generate the raw data. The raw data is also available on request from the corresponding author (<email xlink:type="simple">vakser@ku.edu</email>).</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<disp-quote>
+<p><italic>This is a PLOS Computational Biology Methods paper.</italic></p>
+</disp-quote>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>The rapidly growing amount of publicly available information from biomedical research is a modern day phenomena that is likely to continue and accelerate in the future. Most of this information is readily accessible on the Internet, providing a powerful resource for predictive biomolecular modeling. The accumulated data revolutionized structure prediction of proteins in the 80’s [<xref rid="pcbi.1004630.ref001" ref-type="bibr">1</xref>] and, recently, of protein complexes [<xref rid="pcbi.1004630.ref002" ref-type="bibr">2</xref>–<xref rid="pcbi.1004630.ref004" ref-type="bibr">4</xref>] due to the growth of Protein Data Bank (PDB) [<xref rid="pcbi.1004630.ref005" ref-type="bibr">5</xref>], providing enough structural “templates” for the prediction targets. Instead of painstaking and generally unreliable exploration of the enormous search space, based on the physical “first principles,” nowadays tools can simply proceed to the solution based on similarity to the existing, previously determined structures.</p>
+<p>In our opinion, the next stage of this revolution is brewing due to the rapidly expanding amount of information, other than experimentally determined structures, which still can be used as constraints in biomolecular structure prediction [<xref rid="pcbi.1004630.ref006" ref-type="bibr">6</xref>]. In this paper we present the first, to our knowledge, approach to structural modeling of protein-protein (PP) complexes (protein docking), based on the input from automated text mining (TM) of publications on the Internet.</p>
+<p>Protein-protein interactions (PPI) are central for many cellular processes. Structural characterization of PPI is essential for fundamental understanding of life processes and applications in biology and medicine. Because of the inherent limitations of experimental techniques and rapid development of computational power and methodology, protein docking is a tool of choice in many studies. One of the main problems in protein docking [<xref rid="pcbi.1004630.ref007" ref-type="bibr">7</xref>] is identification of a near-native match among the large, often overwhelming, number of putative matches produced by a global docking scan. To detect the near-native matches at the docking post-processing stage, a scoring procedure is performed by re-ranking of the scan output matches, typically using energy/scoring functions, which are too computationally expensive or impossible/impractical to include in the global search. Such scoring schemes may be based on structural, physicochemical, or evolutionary considerations [<xref rid="pcbi.1004630.ref008" ref-type="bibr">8</xref>]. For some PPI, information on the docking mode (e.g. one or more residues at the PP interfaces) is available prior to the docking. If this information is certain, there is no need for the docking global scan, and the search can be performed in the sub-space that satisfies the constraints. However, if the probability of such information is &lt;100%, it may rather be included in the post-processing of the global scan, as part of the scoring.</p>
+<p>Given the inherent uncertainties of the global-search docking predictions, such independent information on the binding modes is extremely valuable [<xref rid="pcbi.1004630.ref009" ref-type="bibr">9</xref>]. Such information may be available on the case-by-case basis. However, for docking server predictions that can be used by the broad biological community an automated search for such information can be of great value.</p>
+<p>The PPI research is an extremely active field, yielding a vast amount of publications on interacting proteins [<xref rid="pcbi.1004630.ref010" ref-type="bibr">10</xref>]. These publications quickly become available online (e.g. through PubMed, <ext-link ext-link-type="uri" xlink:href="http://www.ncbi.nlm.nih.gov/pubmed" xlink:type="simple">http://www.ncbi.nlm.nih.gov/pubmed</ext-link>), and are a growing resource for automated mining of the PP binding mode. Many applications (PubMed ENTREZ, NLProt, MedMiner, etc.) utilizing TM techniques have been developed to improve access to the published knowledge [<xref rid="pcbi.1004630.ref011" ref-type="bibr">11</xref>]. TM converts textual information into database content and complex networks, facilitating development of novel working hypothesis [<xref rid="pcbi.1004630.ref012" ref-type="bibr">12</xref>]. In biology, TM tools have been used to mine generic or specific information on genes, proteins and their functional relationships. Natural Language Processing (NLP) and Support Vector Machines (SVM) have been used to extract information on connection between proteins in PPI networks [<xref rid="pcbi.1004630.ref013" ref-type="bibr">13</xref>–<xref rid="pcbi.1004630.ref019" ref-type="bibr">19</xref>]. Along with the networks of interacting proteins, TM tools have been used to generate a dataset of non-interacting proteins [<xref rid="pcbi.1004630.ref020" ref-type="bibr">20</xref>]. Full-text articles on metabolic reactions and mutation impacts have been mined by rule-based parser, pattern matching, and entity taggers (protein and gene names along with specific keywords) [<xref rid="pcbi.1004630.ref021" ref-type="bibr">21</xref>, <xref rid="pcbi.1004630.ref022" ref-type="bibr">22</xref>]. Automated TM procedure was developed to predict subcellular localization and function of proteins [<xref rid="pcbi.1004630.ref023" ref-type="bibr">23</xref>]. TM in combination with the dynamic perturbation analysis has been employed to increase confidence in predicted protein functional site [<xref rid="pcbi.1004630.ref024" ref-type="bibr">24</xref>], suggesting that if a residue is mentioned in an abstract on the protein structure, it is likely to be in the functional site.</p>
+<p>TM approaches are also implemented in many Web-based applications. There are different TM tools for identification of interacting proteins from biological literature and databases [<xref rid="pcbi.1004630.ref025" ref-type="bibr">25</xref>]. GENIA corpus (a collection of semantically annotated documents) has been specifically designed for testing NLP approaches [<xref rid="pcbi.1004630.ref026" ref-type="bibr">26</xref>]. PESCADOR extracts a network of interactions from a user-provided set of PubMed abstracts [<xref rid="pcbi.1004630.ref027" ref-type="bibr">27</xref>]. LAITOR can further filter this mined interactome according to the specific user needs [<xref rid="pcbi.1004630.ref028" ref-type="bibr">28</xref>]. CRAB extracts data from MEDLINE abstracts, which are relevant to tumor-related chemicals posing risk to human health [<xref rid="pcbi.1004630.ref029" ref-type="bibr">29</xref>]. PIE utilizes word and syntactic features to effectively capture PPI patterns from biomedical literature [<xref rid="pcbi.1004630.ref030" ref-type="bibr">30</xref>, <xref rid="pcbi.1004630.ref031" ref-type="bibr">31</xref>]. eFIP mines information on phosphorylation and related interactions of a given protein using rule-based NLP [<xref rid="pcbi.1004630.ref032" ref-type="bibr">32</xref>]. PPInterFinder extracts Medline abstracts on human proteins using co-occurrences of protein names, specific keyword dictionary, and pattern matching [<xref rid="pcbi.1004630.ref033" ref-type="bibr">33</xref>]. BioQRator can annotate PPI-relevant entity relationships from the biomedical publications [<xref rid="pcbi.1004630.ref034" ref-type="bibr">34</xref>].</p>
+<p>In this paper, we propose the first, to our knowledge, approach to TM constraints for PP docking. Our methodology, by design, is a combination and expansion of two well-developed TM fields: (1) identification of interactors in PPI networks, and (2) detection of protein functional (small ligand) sites. We use the first one as the source of expertise on TM of PPI (existing approaches are concerned with the fact of interaction, not the mode of interaction), and the second one as the source of expertise on TM for structural prediction of the binding sites on proteins (existing approaches are for small non-protein ligands). The method was tested on PubMed abstracts of publications on protein complexes from <sc>Dockground</sc> (<ext-link ext-link-type="uri" xlink:href="http://dockground.compbio.ku.edu/" xlink:type="simple">http://dockground.compbio.ku.edu</ext-link>) and showed a significant improvement of the docking success rates.</p>
+</sec>
+<sec id="sec002" sec-type="materials|methods">
+<title>Methods</title>
+<sec id="sec003">
+<title>Text-mining protocol</title>
+<p>The principal stages of the TM protocol are shown in <xref rid="pcbi.1004630.g001" ref-type="fig">Fig 1</xref>. We divide our procedure into two parts, information retrieval (selecting abstracts containing names of both or either proteins in a complex) and information extraction (detecting occurrence of residues in the retrieved abstracts). The abstracts were further filtered by SVM model with optimal sets of features. The TM tool was benchmarked on 579 PP complexes with known bound X-ray structures from Dockground and applied for re-scoring of the initial docking models for 99 protein pairs from the Dockground unbound benchmark set 3.</p>
+<fig id="pcbi.1004630.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004630.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>Flowchart of the text mining protocol.</title>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004630.g001" position="float" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec004">
+<title>Information retrieval</title>
+<p>Protein name and UniProtKB ID, corresponding to the particular PDB code and protein chain, were obtained from PDB. To simulate the “real case scenario” when the structure of the target protein is unknown, PubMed ID (PMID) of the direct citation (publication describing the X-ray structure of the complex) was extracted from the PDB and the publication excluded from the further consideration. To further test our methodology, we also restricted the analysis to abstracts published prior to the direct citation paper. Using the UniProtKB ID, protein information in XML format was acquired from the UniProtKB [<xref rid="pcbi.1004630.ref035" ref-type="bibr">35</xref>]. Information from both PDB and UniProtKB was accessed through REST (REpresentational State Transfer) Web Services (<ext-link ext-link-type="uri" xlink:href="http://www.rcsb.org/pdb/software/rest.do" xlink:type="simple">http://www.rcsb.org/pdb/software/rest.do</ext-link>), (<ext-link ext-link-type="uri" xlink:href="http://www.uniprot.org/help/programmatic_access" xlink:type="simple">http://www.uniprot.org/help/programmatic_access</ext-link>). For the query construction, at the current stage, we used only recommended, short and alternative protein names, ignoring organism name, classification of the monoclonal antibodies (“CD_antigen” tag), all parts of gene information (name, synonyms, ordered locus names, and open reading frame), E.C (Enzyme Commission) numbers, as well as UniProtKB terms “Uncharacterized protein.” Inclusion of all this additional information into the search queries requires implementation of deep parsers, which is in our plans for the future research.</p>
+<p>Protein names were normalized by replacing reserved characters with their URL encodings (spaces replaced by %20, etc.), by removing extra (trailing) spaces, and by hyphen replacement. The query for a protein with a hyphen in its name contains OR-connected versions of the name with hyphen, hyphen removed and replaced by space. For example, query for “IL-15R-alpha” (PDB: 2z3q, chain B) also includes following variations: “IL-15Ralpha”, “IL15R-alpha”, “IL15Ralpha”, “IL%2015Ralpha”, “IL15R%20alpha”, and “IL%2015R%20alpha”. Short names with &lt; 3 symbols were ignored and additional AND-connected keyword “protein” was added to the 3-symbols names.</p>
+<p>For 13 PP complexes in the set, protein names coincided with generic, frequently used words (“act” for 1yrt, chain A, UniProtKB: P0DKX7 or “hot” for 2ido, chain B, UniProtKB: Q71T70). To reduce noise, search queries for such complexes contained also MESH terms [<xref rid="pcbi.1004630.ref036" ref-type="bibr">36</xref>] (combinations of the MESH terms under heading “Biochemical Phenomena”).</p>
+<p>For 87 proteins, UniProtKB had section “Cleaved into the following X chains” referring to different domains. In such cases, we considered several scenarios. In the case of exact match between PDB and UniProtKB recommended protein names (29 proteins), we assumed that the PDB structure comprised all the domains mentioned in UniProtKB and included into the query OR-connected recommended name for the entire protein and the names of all the domains. For example, X-ray structure for cationic trypsin (PDB 2xtt, chain B, UniProtKB: P00760) contains both domains (Alpha-trypsin chain 1 and Alpha-trypsin chain 2) mentioned in UniProtKB and the PDB name matches exactly the UniProtKB recommended name. If PDB name matched exactly only one of the domain names (17 proteins), than the query included the name of only this domain along with the recommended protein name. For example, “Protease inhibitor SGPI-1” (PDB 2xtt, chain A, UniProtKB: O46162) is the PDB protein name, which matches exactly one of the cleaved components and does not match recommended UniProtKB name “Serine protease inhibitor I/II”. If the PDB protein name did not match exactly neither UniProtKB recommended name, nor any domain names (41 proteins), we considered only the recommended and the PDB names. For example, “epithelial-cadherin” is the PDB protein name (PDB 2omz, chain B, UniProtKB: P12830), which is not the same as the recommended UniProtKB name “Cadherin-1” and none of the cleaved components (“E-Cad/CTF1”, “E-Cad/CTF2”, “E-Cad/CTF3”). String comparison was performed using Perl module Text::Levenshtein, which implements Levenshtein similarity string matching algorithm (<ext-link ext-link-type="uri" xlink:href="http://search.cpan.org/dist/Text-Levenshtein/lib/Text/Levenshtein.pm" xlink:type="simple">http://search.cpan.org/dist/Text-Levenshtein/lib/Text/Levenshtein.pm</ext-link>).</p>
+<p>After constructing two queries, “query1” and “query2”, one for each protein in a particular complex, two final queries were assembled: “query1 AND query2<italic>”</italic> (termed here as AND-query) and “query1 OR query2<italic>”</italic> (OR-query). The AND- and OR-queries were submitted to ESearch and EFetch modules of NCBI EUtilies tool (<ext-link ext-link-type="uri" xlink:href="http://www.ncbi.nlm.nih.gov/books/NBK25501" xlink:type="simple">http://www.ncbi.nlm.nih.gov/books/NBK25501</ext-link>). To keep track on which protein is studied in the retrieved abstracts, two parts of the OR-query were submitted separately. Maximum of 100,000 PubMed abstracts with publication dates between January 1, 1971 and November 30, 2014 were retrieved for each submitted query.</p>
+</sec>
+<sec id="sec005">
+<title>Information extraction</title>
+<p>Abstracts of publications corresponding to 579 complexes, retrieved by the E-utilities from the PubMed (the number of abstracts varies for different types of queries, see <xref rid="sec009" ref-type="sec">Results and Discussion</xref>), were searched for the residues using regular expressions (<xref rid="pcbi.1004630.t001" ref-type="table">Table 1</xref>) obtained by the manual inspection of 100 abstracts that mention residues. We considered patterns with only three-letter or full residue names, since mining of one-letter residue abbreviations requires deep parsing of the surrounding text, which is beyond the scope of our current study. However, if keywords related to mutagenesis studies (“mutation”, “mutagenesis”, “mutagen”, “mutant”, “substitution”) were spotted, one-letter abbreviations for mutation (e.g., “S4A”) were included in the search patterns. For the mutations, both original and substitution residues were taken (e.g., for the pattern “S4A”, both Serine 4 and Alanine 4 were considered as the mined residues).</p>
+<table-wrap id="pcbi.1004630.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004630.t001</object-id>
+<label>Table 1</label> <caption><title>Regular expressions for amino acids in the information extraction part of the text mining protocol.</title></caption>
+<alternatives>
+<graphic id="pcbi.1004630.t001g" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004630.t001" xlink:type="simple"/>
+<table>
+<colgroup span="1">
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+</colgroup>
+<thead>
+<tr>
+<th align="justify" rowspan="1" colspan="1">Parameter</th>
+<th align="justify" rowspan="1" colspan="1">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="justify" rowspan="1" colspan="1"><bold>Number</bold></td>
+<td align="justify" rowspan="1" colspan="1">[1–9][0–9] <xref rid="t001fn001" ref-type="table-fn"><sup>a</sup></xref></td>
+</tr>
+<tr>
+<td align="justify" rowspan="1" colspan="1"><bold>Amino acid (AA)</bold></td>
+<td align="justify" rowspan="1" colspan="1">[Ala,…, Val] OR [ala,…, val] OR [ALA,…, VAL] <xref rid="t001fn002" ref-type="table-fn"><sup>b</sup></xref></td>
+</tr>
+<tr>
+<td align="justify" rowspan="1" colspan="1"><bold>Three letter residue</bold></td>
+<td align="justify" rowspan="1" colspan="1">AA(no space)Number OR AA(space)Number OR AA–Number <bold>|</bold> AA(Number)</td>
+</tr>
+<tr>
+<td align="justify" rowspan="1" colspan="1"><bold>Full AA</bold></td>
+<td align="justify" rowspan="1" colspan="1">[Alanine,…,Valine] OR [alanine,…,valine] <xref rid="t001fn003" ref-type="table-fn"><sup>c</sup></xref></td>
+</tr>
+<tr>
+<td align="justify" rowspan="1" colspan="1"><bold>Full word residue</bold></td>
+<td align="justify" rowspan="1" colspan="1">Full_AA(no space)Number OR <bold>|</bold> Full_AA(space)Number OR Full<bold>_</bold>AA–Number OR Full_AA(Number)</td>
+</tr>
+<tr>
+<td align="justify" rowspan="1" colspan="1"><bold>Single AA</bold></td>
+<td align="justify" rowspan="1" colspan="1">[A,….,V] <xref rid="t001fn004" ref-type="table-fn"><sup>d</sup></xref></td>
+</tr>
+<tr>
+<td align="justify" rowspan="1" colspan="1"><bold>Single letter mutation</bold></td>
+<td align="justify" rowspan="1" colspan="1">Single_AA(no space)Number(no space)Single_AA</td>
+</tr>
+<tr>
+<td align="justify" rowspan="1" colspan="1"><bold>Three letter mutation</bold></td>
+<td align="justify" rowspan="1" colspan="1">AA(no space)Number(no space)AA OR AA-Number(no space)AA</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t001fn001"><p><sup>a</sup> Non-zero digit followed by any number of digits</p></fn>
+<fn id="t001fn002"><p><sup>b</sup> Three-letter abbreviation for standard amino acids</p></fn>
+<fn id="t001fn003"><p><sup>c</sup> Full name of amino acid</p></fn>
+<fn id="t001fn004"><p><sup>d</sup> One-letter abbreviation for amino acid</p></fn>
+</table-wrap-foot>
+</table-wrap>
+<p>Since residues participating in docking are on the protein surface, the names and numbers of the extracted residues were checked against the names and numbers of the surface residues from the original PDB file. For the AND-query, the check was performed against both chains of the original complex, whereas for the OR-query, the examination was done only for the protein mentioned in the retrieved abstract (to reduce noise due to the accidental match of the residue name and numbers). Surface residues were defined as those with ≥ 25% of their surface exposed to solvent [<xref rid="pcbi.1004630.ref037" ref-type="bibr">37</xref>]. The solvent accessible area was calculated by the program surfv [<xref rid="pcbi.1004630.ref038" ref-type="bibr">38</xref>]. Only the residues with both name and number matching the residues from the original PDB file were considered further (we termed them "identified residues"). In the case of mismatch between PDB and UniProt sequence numbering, we mapped the UniProt sequence on the PDB one as in Ref. [<xref rid="pcbi.1004630.ref039" ref-type="bibr">39</xref>]. An identified residue was considered correct if any of its heavy atoms was ≤ 6 Å from any heavy atom of the interacting protein in the co-crystallized complex, which means that the residue is at the PP interface. Performance of the TM protocol for a particular PPI, for which a query extracted <italic>N</italic> abstracts containing residues, was quantified as a fraction of correct (interface) residues among all identified residues
+<disp-formula id="pcbi.1004630.e001">
+<alternatives>
+<graphic id="pcbi.1004630.e001g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004630.e001" xlink:type="simple"/>
+<mml:math display="block" id="M1" overflow="scroll">
+<mml:mrow><mml:msub><mml:mi>P</mml:mi><mml:mrow><mml:mtext>TM</mml:mtext></mml:mrow></mml:msub><mml:mo>=</mml:mo><mml:mfrac><mml:mrow><mml:mstyle displaystyle="true"><mml:munderover><mml:mo>∑</mml:mo><mml:mrow><mml:mi>i</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow><mml:mi>N</mml:mi></mml:munderover><mml:mrow><mml:msubsup><mml:mi>N</mml:mi><mml:mi>i</mml:mi><mml:mrow><mml:mi>int</mml:mi></mml:mrow></mml:msubsup></mml:mrow></mml:mstyle></mml:mrow><mml:mrow><mml:mstyle displaystyle="true"><mml:munderover><mml:mo>∑</mml:mo><mml:mrow><mml:mi>i</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow><mml:mi>N</mml:mi></mml:munderover><mml:mrow><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:msubsup><mml:mi>N</mml:mi><mml:mi>i</mml:mi><mml:mrow><mml:mi>int</mml:mi></mml:mrow></mml:msubsup><mml:mo>+</mml:mo><mml:msubsup><mml:mi>N</mml:mi><mml:mi>i</mml:mi><mml:mrow><mml:mtext>non</mml:mtext></mml:mrow></mml:msubsup></mml:mrow><mml:mo>)</mml:mo></mml:mrow></mml:mrow></mml:mstyle></mml:mrow></mml:mfrac><mml:mo>,</mml:mo></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(1)</label>
+</disp-formula>
+where <inline-formula id="pcbi.1004630.e002"><alternatives><graphic id="pcbi.1004630.e002g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004630.e002" xlink:type="simple"/>
+<mml:math display="inline" id="M2" overflow="scroll"><mml:mrow><mml:msubsup><mml:mi>N</mml:mi><mml:mi>i</mml:mi><mml:mrow><mml:mi>int</mml:mi></mml:mrow></mml:msubsup></mml:mrow></mml:math>
+</alternatives></inline-formula> and <inline-formula id="pcbi.1004630.e003"><alternatives><graphic id="pcbi.1004630.e003g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004630.e003" xlink:type="simple"/>
+<mml:math display="inline" id="M3" overflow="scroll"><mml:mrow><mml:msubsup><mml:mi>N</mml:mi><mml:mi>i</mml:mi><mml:mrow><mml:mtext>non</mml:mtext></mml:mrow></mml:msubsup></mml:mrow></mml:math>
+</alternatives></inline-formula> are numbers of interface (correct) and non-interface (incorrect) residues in abstract <italic>i</italic>.</p>
+</sec>
+<sec id="sec006">
+<title>Generation of feature sets for SVM models</title>
+<p>We generated a set of features by handpicking 60 words from carefully read randomly selected 21 PPI abstracts and 43 non-PPI abstracts (<xref rid="pcbi.1004630.t002" ref-type="table">Table 2</xref>). Subsets of 50, 40, 30, 20 and 10 features were also selected based on our understanding of importance of a feature for PPI description. We refer to these sets of features as <italic>manually selected</italic>, abbreviated as MF<italic>xx</italic>, where <italic>xx</italic> is the number of features in the set.</p>
+<table-wrap id="pcbi.1004630.t002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004630.t002</object-id>
+<label>Table 2</label> <caption><title>Sets of features (stems) for SVM models.</title> <p>Manually selected features are sorted alphabetically and automatically selected features are sorted based on the ratio δ (<xref rid="pcbi.1004630.e009" ref-type="disp-formula">Eq 5</xref>) large to small. PPI-relevant features are in bold.</p></caption>
+<alternatives>
+<graphic id="pcbi.1004630.t002g" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004630.t002" xlink:type="simple"/>
+<table>
+<colgroup span="1">
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+</colgroup>
+<thead>
+<tr>
+<th align="justify" rowspan="1" colspan="1">Number of words in a bag</th>
+<th align="justify" rowspan="1" colspan="1">Bag of words</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="2" align="justify" rowspan="1"><bold><italic>Manual selection</italic></bold></td>
+</tr>
+<tr>
+<td align="justify" rowspan="1" colspan="1"><bold>60</bold></td>
+<td align="justify" rowspan="1" colspan="1">activ, <bold>affin,</bold> alloster, <bold>associ, attach, between, bind, bond, bound</bold>, <bold>catalyt</bold>, <bold>chang</bold>, cleavag, cofactor, <bold>complex, conform</bold>, cooper, conjug, <bold>conserv</bold>, <bold>contact,</bold> cycliz, delet, diminish, <bold>direct, domain</bold>, downstream, enhanc<bold>, enzym</bold>, facilit, growth, increas, <bold>induc</bold>, induct, inhibit<bold>, interact, interfac</bold>, involv, <bold>linkag,</bold> mechan, metabol", modifi, modul, phosphoryl, <bold>positio, preferenti, proxim,</bold> reassoci<bold>, receptor,</bold> recognit, redox, regulatori, <bold>signal, specif, stabil</bold>, stimul<bold>, substrat</bold>, suppress, <bold>surfac</bold>, <bold>target, transform, trigger</bold></td>
+</tr>
+<tr>
+<td align="justify" rowspan="1" colspan="1"><bold>50</bold></td>
+<td align="justify" rowspan="1" colspan="1">affin, alloster, associ, attach, bind, bond, bound, catalyt, chang, cleavag, complex, conform, conserv, cooper, contact, cycliz, delet, diminish, direct, domain, downstream, enhanc, enzym, facilit, growth, increas, induc, inhibit, interact, interfac, involv, linkag, mechan, metabol, modifi, modul, preferenti, reassoci, recognit, regulatori, signal, specif, stabil, stimul, substrat, suppress, surfac, target, transform, trigger.</td>
+</tr>
+<tr>
+<td align="justify" rowspan="1" colspan="1"><bold>40</bold></td>
+<td align="justify" rowspan="1" colspan="1">affin, alloster, associ, attach, bind, bond, bound, catalyt, cleavag, complex, conform, conserv, cooper, contact, cycliz, delet, diminish, domain, enhanc, enzym, facilit, increas, induc, inhibit, interact, interfac, linkag, mechan, modifi, modul, preferenti, recognit, regulatori, specif, stabil, substrat, surfac, target, transform, trigger.</td>
+</tr>
+<tr>
+<td align="justify" rowspan="1" colspan="1"><bold>30</bold></td>
+<td align="justify" rowspan="1" colspan="1">affin, alloster, associ, attach, bind, bond, bound, cleavag, complex, conform, conserv, contact, cooper, domain, induc, interfac, interact, linkag, mechan, modifi, modul, preferenti, recognit, regulatori specif, stabil, surface, substrat, target, transform</td>
+</tr>
+<tr>
+<td align="justify" rowspan="1" colspan="1"><bold>20</bold></td>
+<td align="justify" rowspan="1" colspan="1">alloster, bind, bond, bound, cleavag, complex, conform, contact, conserv, domain, induc, interfac, interact, mechan, modul, preferenti, recognit, specif, stabi, surface.</td>
+</tr>
+<tr>
+<td align="justify" rowspan="1" colspan="1"><bold>10</bold></td>
+<td align="justify" rowspan="1" colspan="1">alloster, bind, complex, conform, conserv, contact, induc, interface, interact, recognit.</td>
+</tr>
+<tr>
+<td colspan="2" align="justify" rowspan="1"><bold><italic>Automated selection</italic></bold></td>
+</tr>
+<tr>
+<td align="justify" rowspan="1" colspan="1"><bold>143</bold></td>
+<td align="justify" rowspan="1" colspan="1">polymorph, <bold>interfac</bold>, <bold>energi, bond</bold>, <bold>free</bold>, antibodi, <bold>beta</bold>, phenotyp, patient, promot, light, <bold>degre</bold>, <bold>conjug</bold>, gene, <bold>affin</bold>, <bold>label,</bold> diseas, filament, affect, <bold>signal, ca2+, crystal,</bold> properti, <bold>complex, interact,</bold> resist, level, <bold>valu,</bold> detect, membran, contain, <bold>contribut</bold>, inclu, <bold>terminu</bold>, <bold>produc,</bold> genera, regul, shown, examin, transcript, normal, lower, <bold>time</bold>, <bold>base</bold>, <bold>stabil</bold>, express, <bold>critic</bold>, phosphoryl, <bold>subunit</bold>, function, assai, <bold>peptid, catalyt, surfac,</bold> enhanc, investig, <bold>format, positio</bold>, <bold>determin, residu</bold>, <bold>bind, loop,</bold> rate, <bold>effici</bold>, report, factor<bold>, molecul, inhibit</bold>, <bold>prolifer, deriv,</bold> sequenc, alter, singl, mediat, <bold>structur, purifi,</bold> induc, depend, dna, <bold>reveal,</bold> sensit, <bold>receptor</bold>, compar, <bold>model</bold>, <bold>cleavag, via, product</bold>, <bold>target, variant, specif</bold>, loss, <bold>growth</bold>, potenti, <bold>requir,</bold> essenti, caus, <bold>decreas</bold>, low, <bold>substrat,</bold> associ, mechan, <bold>conform</bold>, <bold>fold</bold>, <bold>contrast</bold>, similar, type, <bold>involv</bold>, found, <bold>novel</bold>, region, <bold>exhibit,</bold> wild, vitro, <bold>observ, develop</bold>, <bold>fragment,</bold> famil<bold>, conserv,</bold> cell, <bold>identifi,</bold> stud, reduc, <bold>provid,</bold> demonstr<bold>, acid, data, link,</bold> effect, presenc, activ, <bold>result</bold>, role, domain, <bold>chain</bold>, <bold>enzym, form, alpha, index</bold>, site, increas, suggest, <bold>mutant</bold>, protein</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p>We also generated a set of features by automated counting of words in the abstracts. We refer to this set and all of its subsets as <italic>automatically selected</italic>, abbreviate as AF<italic>xx</italic>, where <italic>xx</italic> is the number of features in the set. For this set, <italic>L</italic><sub>pos</sub> = 450 positive and <italic>L</italic><sub>neg</sub> = 855 negative abstracts, respectively satisfying conditions
+<disp-formula id="pcbi.1004630.e004">
+<alternatives>
+<graphic id="pcbi.1004630.e004g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004630.e004" xlink:type="simple"/>
+<mml:math display="block" id="M4" overflow="scroll">
+<mml:mrow><mml:mtable columnalign="left"><mml:mtr columnalign="left"><mml:mtd columnalign="left"><mml:mrow><mml:mrow><mml:mo>[</mml:mo><mml:mrow><mml:msubsup><mml:mi>N</mml:mi><mml:mi>i</mml:mi><mml:mrow><mml:mi>int</mml:mi></mml:mrow></mml:msubsup><mml:mo>−</mml:mo><mml:msubsup><mml:mi>N</mml:mi><mml:mi>i</mml:mi><mml:mrow><mml:mtext>non</mml:mtext></mml:mrow></mml:msubsup><mml:mo>&gt;</mml:mo><mml:mn>4</mml:mn></mml:mrow><mml:mo>]</mml:mo></mml:mrow><mml:mspace width="0.15em"/><mml:mtext>OR</mml:mtext><mml:mspace width="0.15em"/><mml:mrow><mml:mo>[</mml:mo><mml:mrow><mml:msubsup><mml:mi>N</mml:mi><mml:mi>i</mml:mi><mml:mrow><mml:mtext>non</mml:mtext></mml:mrow></mml:msubsup><mml:mo>=</mml:mo><mml:mn>0</mml:mn><mml:mspace width="0.20em"/><mml:mtext>AND</mml:mtext><mml:mspace width="0.20em"/><mml:msubsup><mml:mi>N</mml:mi><mml:mi>i</mml:mi><mml:mrow><mml:mi>int</mml:mi></mml:mrow></mml:msubsup><mml:mo>&gt;</mml:mo><mml:mn>0</mml:mn></mml:mrow><mml:mo>]</mml:mo></mml:mrow><mml:mspace width="0.75em"/><mml:mtext>and</mml:mtext></mml:mrow></mml:mtd></mml:mtr><mml:mtr columnalign="left"><mml:mtd columnalign="left"><mml:mrow><mml:mrow><mml:mo>[</mml:mo><mml:mrow><mml:msubsup><mml:mi>N</mml:mi><mml:mi>i</mml:mi><mml:mrow><mml:mtext>non</mml:mtext></mml:mrow></mml:msubsup><mml:mo>−</mml:mo><mml:msubsup><mml:mi>N</mml:mi><mml:mi>i</mml:mi><mml:mrow><mml:mtext>int</mml:mtext></mml:mrow></mml:msubsup><mml:mo>&gt;</mml:mo><mml:mn>4</mml:mn></mml:mrow><mml:mo>]</mml:mo></mml:mrow><mml:mspace width="0.15em"/><mml:mtext>OR</mml:mtext><mml:mspace width="0.15em"/><mml:mrow><mml:mo>[</mml:mo><mml:mrow><mml:msubsup><mml:mi>N</mml:mi><mml:mi>i</mml:mi><mml:mrow><mml:mtext>non</mml:mtext></mml:mrow></mml:msubsup><mml:mo>&gt;</mml:mo><mml:mn>0</mml:mn><mml:mspace width="0.20em"/><mml:mtext>AND</mml:mtext><mml:mspace width="0.20em"/><mml:msubsup><mml:mi>N</mml:mi><mml:mi>i</mml:mi><mml:mrow><mml:mi>int</mml:mi></mml:mrow></mml:msubsup><mml:mo>=</mml:mo><mml:mn>0</mml:mn></mml:mrow><mml:mo>]</mml:mo></mml:mrow><mml:mo>,</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(2)</label>
+</disp-formula>
+were selected from 1,523 abstracts retrieved by the AND-queries. Positive and negative abstracts were further randomly split into training (80% of abstracts, or <inline-formula id="pcbi.1004630.e005"><alternatives><graphic id="pcbi.1004630.e005g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004630.e005" xlink:type="simple"/>
+<mml:math display="inline" id="M5" overflow="scroll"><mml:mrow><mml:msubsup><mml:mi>L</mml:mi><mml:mrow><mml:mtext>pos</mml:mtext></mml:mrow><mml:mrow><mml:mtext>train</mml:mtext></mml:mrow></mml:msubsup></mml:mrow></mml:math>
+</alternatives></inline-formula> = 360 positive and <inline-formula id="pcbi.1004630.e006"><alternatives><graphic id="pcbi.1004630.e006g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004630.e006" xlink:type="simple"/>
+<mml:math display="inline" id="M6" overflow="scroll"><mml:mrow><mml:msubsup><mml:mi>L</mml:mi><mml:mrow><mml:mtext>neg</mml:mtext></mml:mrow><mml:mrow><mml:mtext>train</mml:mtext></mml:mrow></mml:msubsup></mml:mrow></mml:math>
+</alternatives></inline-formula> = 684 negative abstracts) and validation (remaining 20%) sets, and features were selected from the training set.</p>
+<p>Specific protein and amino acid names were excluded from the counting, as they were part of the queries in the TM protocol. Stop words (“and”, “as”, “because”, “the”) were also purged from the abstracts. The abstracts were subjected to the tokenizer [<xref rid="pcbi.1004630.ref040" ref-type="bibr">40</xref>] for the suffix stripping by the Porters stemming algorithm [<xref rid="pcbi.1004630.ref041" ref-type="bibr">41</xref>] in order to get the stem (root) forms of the remaining abstract words. We slightly modified the original algorithm so that a root of a word would accommodate wider variability in the spelling of words with the same meaning. For example, words “include” and “inclusion” are counted by the root “inclu-”, words “mutant”, “mutagenesis”, “mutation”, “mutagen”, “mutated”, “mutations”, “mutation” are accounted for by the root “muta-”, etc.</p>
+<p>The normalized counts for each stem (feature) were calculated separately for the positive (<italic>k</italic> = pos) and the negative (<italic>k</italic> = neg) abstracts in the training set
+<disp-formula id="pcbi.1004630.e007">
+<alternatives>
+<graphic id="pcbi.1004630.e007g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004630.e007" xlink:type="simple"/>
+<mml:math display="block" id="M7" overflow="scroll">
+<mml:mrow><mml:msub><mml:mi>f</mml:mi><mml:mi>k</mml:mi></mml:msub><mml:mrow><mml:mo>(</mml:mo><mml:mi>m</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>=</mml:mo><mml:mfrac><mml:mn>1</mml:mn><mml:mrow><mml:msubsup><mml:mi>L</mml:mi><mml:mi>k</mml:mi><mml:mrow><mml:mtext>train</mml:mtext></mml:mrow></mml:msubsup></mml:mrow></mml:mfrac><mml:mstyle displaystyle="true"><mml:munderover><mml:mo>∑</mml:mo><mml:mrow><mml:mi>i</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow><mml:mrow><mml:msubsup><mml:mi>L</mml:mi><mml:mi>k</mml:mi><mml:mrow><mml:mtext>train</mml:mtext></mml:mrow></mml:msubsup></mml:mrow></mml:munderover><mml:mrow><mml:msub><mml:mi>J</mml:mi><mml:mi>i</mml:mi></mml:msub><mml:mrow><mml:mo>(</mml:mo><mml:mi>m</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>,</mml:mo></mml:mrow></mml:mstyle></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(3)</label>
+</disp-formula>
+where <italic>J</italic><sub><italic>i</italic></sub>(<italic>m</italic>) is the number of times feature <italic>m</italic> appears in abstract <italic>i</italic>. All features satisfying conditions
+<disp-formula id="pcbi.1004630.e008">
+<alternatives>
+<graphic id="pcbi.1004630.e008g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004630.e008" xlink:type="simple"/>
+<mml:math display="block" id="M8" overflow="scroll">
+<mml:mrow><mml:mrow><mml:mo stretchy="false">|</mml:mo><mml:mrow><mml:msub><mml:mi>f</mml:mi><mml:mrow><mml:mtext>pos</mml:mtext></mml:mrow></mml:msub><mml:mrow><mml:mo>(</mml:mo><mml:mi>m</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>−</mml:mo><mml:msub><mml:mi>f</mml:mi><mml:mrow><mml:mtext>neg</mml:mtext></mml:mrow></mml:msub><mml:mrow><mml:mo>(</mml:mo><mml:mi>m</mml:mi><mml:mo>)</mml:mo></mml:mrow></mml:mrow><mml:mo stretchy="false">|</mml:mo></mml:mrow><mml:mo>&gt;</mml:mo><mml:mn>0.02</mml:mn><mml:mspace width="0.75em"/><mml:mtext>and</mml:mtext><mml:mspace width="0.75em"/><mml:msub><mml:mi>f</mml:mi><mml:mrow><mml:mtext>pos</mml:mtext></mml:mrow></mml:msub><mml:mrow><mml:mo>(</mml:mo><mml:mi>m</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>+</mml:mo><mml:msub><mml:mi>f</mml:mi><mml:mrow><mml:mtext>neg</mml:mtext></mml:mrow></mml:msub><mml:mrow><mml:mo>(</mml:mo><mml:mi>m</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>&gt;</mml:mo><mml:mn>0.2</mml:mn></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(4)</label>
+</disp-formula>
+were selected for the full set AF143 (automatically selected 143 features). The criteria are meant to balance a maximal number of features and a strong signal. The full set was sorted based on the ratio
+<disp-formula id="pcbi.1004630.e009">
+<alternatives>
+<graphic id="pcbi.1004630.e009g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004630.e009" xlink:type="simple"/>
+<mml:math display="block" id="M9" overflow="scroll">
+<mml:mrow><mml:mi>δ</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mi>m</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>=</mml:mo><mml:mfrac><mml:mrow><mml:msub><mml:mi>f</mml:mi><mml:mrow><mml:mtext>pos</mml:mtext></mml:mrow></mml:msub><mml:mrow><mml:mo>(</mml:mo><mml:mi>m</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>−</mml:mo><mml:msub><mml:mi>f</mml:mi><mml:mrow><mml:mtext>neg</mml:mtext></mml:mrow></mml:msub><mml:mrow><mml:mo>(</mml:mo><mml:mi>m</mml:mi><mml:mo>)</mml:mo></mml:mrow></mml:mrow><mml:mrow><mml:msub><mml:mi>f</mml:mi><mml:mrow><mml:mtext>pos</mml:mtext></mml:mrow></mml:msub><mml:mrow><mml:mo>(</mml:mo><mml:mi>m</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>+</mml:mo><mml:msub><mml:mi>f</mml:mi><mml:mrow><mml:mtext>neg</mml:mtext></mml:mrow></mml:msub><mml:mrow><mml:mo>(</mml:mo><mml:mi>m</mml:mi><mml:mo>)</mml:mo></mml:mrow></mml:mrow></mml:mfrac></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(5)</label>
+</disp-formula>
+and consists of 76 PPI-relevant (<italic>δ</italic>(<italic>m</italic>) &gt; 0) and 67 PPI-non-relevant (<italic>δ</italic>(<italic>m</italic>) &lt; 0) features (<xref rid="pcbi.1004630.t002" ref-type="table">Table 2</xref>).</p>
+</sec>
+<sec id="sec007">
+<title>SVM models</title>
+<p>We define an SVM model as an SVM classifier with a kernel function, trained and validated with a particular set of features. For the training and validation of the SVM models we used readily available SVMLight [<xref rid="pcbi.1004630.ref042" ref-type="bibr">42</xref>, <xref rid="pcbi.1004630.ref043" ref-type="bibr">43</xref>] with polynomial, <italic>K</italic>(<italic>X</italic><sub><italic>i</italic></sub>,<italic>X</italic><sub><italic>j</italic></sub>) = (<italic>αX</italic><sub><italic>i</italic></sub><italic>X</italic><sub><italic>j</italic></sub> + <italic>C</italic>)<sup><italic>d</italic></sup>, and radial-base (RBF), <italic>K</italic>(<italic>X</italic><sub><italic>i</italic></sub>,<italic>X</italic><sub><italic>j</italic></sub>) = exp(−<italic>γ</italic>|<italic>X</italic><sub><italic>i</italic></sub> − <italic>X</italic><sub><italic>j</italic></sub>|<sup>2</sup>) kernel functions (<italic>X</italic><sub><italic>i</italic></sub> and <italic>X</italic><sub><italic>j</italic></sub> are support and test feature vectors). We tested different values of parameters <italic>d</italic> and <italic>γ</italic> while parameters <italic>α</italic> and <italic>C</italic> had default values (<italic>α</italic> = 1 and <italic>C</italic> = 0), and distinguished a particular case of the polynomial kernel with <italic>d</italic> = 1, as the linear kernel. We have also investigated how results are affected by varying degree <italic>d</italic> of polynomial and parameter <italic>γ</italic> of RBF kernels. Validation of the SVM models was carried out in the classification mode where an abstract was identified as positive or negative depending on the sign of the SVM-score. In some cases, abstracts with SVM scores close to zero (within a margin) were considered as “unclassified” and excluded from the performance evaluation.</p>
+<p>All SVM models were trained on 1044 abstracts and validated on different 261 abstracts (see above). Performance of an SVM model was evaluated in usual terms of precision <italic>P</italic>, recall <italic>R</italic>, accuracy <italic>A</italic> [<xref rid="pcbi.1004630.ref044" ref-type="bibr">44</xref>], and Matthews’ correlation coefficient <italic>MCC</italic> [<xref rid="pcbi.1004630.ref045" ref-type="bibr">45</xref>]
+<disp-formula id="pcbi.1004630.e010">
+<alternatives>
+<graphic id="pcbi.1004630.e010g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004630.e010" xlink:type="simple"/>
+<mml:math display="block" id="M10" overflow="scroll">
+<mml:mrow><mml:mtable columnalign="left"><mml:mtr columnalign="left"><mml:mtd columnalign="left"><mml:mtable columnalign="left"><mml:mtr><mml:mtd><mml:mi>P</mml:mi><mml:mo>=</mml:mo><mml:mfrac><mml:mrow><mml:mtext>TP</mml:mtext></mml:mrow><mml:mrow><mml:mtext>TP</mml:mtext><mml:mo>+</mml:mo><mml:mtext>FP</mml:mtext></mml:mrow></mml:mfrac><mml:mo>,</mml:mo><mml:mspace width="0.50em"/><mml:mi>R</mml:mi><mml:mo>=</mml:mo><mml:mfrac><mml:mrow><mml:mtext>TP</mml:mtext></mml:mrow><mml:mrow><mml:mtext>TP</mml:mtext><mml:mo>+</mml:mo><mml:mtext>FN</mml:mtext></mml:mrow></mml:mfrac><mml:mo>,</mml:mo><mml:mspace width="0.50em"/><mml:mi>A</mml:mi><mml:mo>=</mml:mo><mml:mfrac><mml:mrow><mml:mtext>TP</mml:mtext><mml:mo>+</mml:mo><mml:mtext>TN</mml:mtext></mml:mrow><mml:mrow><mml:mtext>TP</mml:mtext><mml:mo>+</mml:mo><mml:mtext>FN</mml:mtext><mml:mo>+</mml:mo><mml:mtext>TN</mml:mtext><mml:mo>+</mml:mo><mml:mtext>FP</mml:mtext></mml:mrow></mml:mfrac><mml:mspace width="0.50em"/><mml:mtext>and</mml:mtext></mml:mtd></mml:mtr><mml:mtr><mml:mtd><mml:mrow/></mml:mtd></mml:mtr></mml:mtable></mml:mtd></mml:mtr><mml:mtr columnalign="left"><mml:mtd columnalign="left"><mml:mrow><mml:mi>M</mml:mi><mml:mi>C</mml:mi><mml:mi>C</mml:mi><mml:mo>=</mml:mo><mml:mfrac><mml:mrow><mml:mtext>TP</mml:mtext><mml:mo>×</mml:mo><mml:mtext>TN</mml:mtext><mml:mo>+</mml:mo><mml:mtext>FP</mml:mtext><mml:mo>×</mml:mo><mml:mi>F</mml:mi><mml:mtext>N</mml:mtext></mml:mrow><mml:mrow><mml:msqrt><mml:mrow><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mtext>TP</mml:mtext><mml:mo>+</mml:mo><mml:mtext>FP</mml:mtext></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mtext>TP</mml:mtext><mml:mo>+</mml:mo><mml:mtext>FN</mml:mtext></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mtext>TN</mml:mtext><mml:mo>+</mml:mo><mml:mtext>FP</mml:mtext></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mtext>TN</mml:mtext><mml:mo>+</mml:mo><mml:mtext>FN</mml:mtext></mml:mrow><mml:mo>)</mml:mo></mml:mrow></mml:mrow></mml:msqrt></mml:mrow></mml:mfrac><mml:mo>,</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(6)</label>
+</disp-formula>
+where TP, FP, TN, and FN are, correspondingly, the numbers of correctly identified positive, incorrectly identified positive, correctly identified negative and incorrectly identified negative abstracts in the validation set.</p>
+</sec>
+<sec id="sec008">
+<title>Docking with text-mining constraints</title>
+<p>Basic TM protocol with the OR-queries was used to mine residues for 99 complexes from the <sc>Dockground</sc> benchmark set 3 [<xref rid="pcbi.1004630.ref046" ref-type="bibr">46</xref>], containing the unbound X-ray structures for the co-crystallized complexes (bound structures). Queries for individual proteins and 63 binary complexes were generated as described above. For 36 multimeric complexes, queries were generated using OR-combinations of queries for all monomers in a multimeric chain (e.g., for complex AB: CDE the OR-query was “(queryA OR queryB) OR (queryC OR queryD OR queryE)”). Abstract of publications on the X-ray structure of the co-crystallized complex were excluded from consideration using corresponding PMID from the PDB entry. For validation, the extracted residues were matched to the residues in the bound structures of the dataset (numbering and chain IDs in the bound and the unbound structures is often different). Extracted residues were ranked, in descending order, separately for each interactor (single or multimeric) by the confidence function
+<disp-formula id="pcbi.1004630.e011">
+<alternatives>
+<graphic id="pcbi.1004630.e011g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004630.e011" xlink:type="simple"/>
+<mml:math display="block" id="M11" overflow="scroll">
+<mml:mrow><mml:mi>f</mml:mi><mml:mo stretchy="false">(</mml:mo><mml:mi>R</mml:mi><mml:mo stretchy="false">)</mml:mo><mml:mo>=</mml:mo><mml:mi>min</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mn>10</mml:mn><mml:mo>,</mml:mo><mml:mspace width="0.15em"/><mml:mstyle displaystyle="true"><mml:munderover><mml:mo>∑</mml:mo><mml:mrow><mml:mi>i</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow><mml:mrow><mml:msub><mml:mi>N</mml:mi><mml:mi>R</mml:mi></mml:msub></mml:mrow></mml:munderover><mml:mrow><mml:msub><mml:mi>a</mml:mi><mml:mi>i</mml:mi></mml:msub></mml:mrow></mml:mstyle></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mo>,</mml:mo></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(7)</label>
+</disp-formula>
+where <italic>N</italic><sub><italic>R</italic></sub> is the total number of distinct abstracts, in which residue <italic>R</italic> is mentioned, and <italic>a</italic><sub><italic>i</italic></sub> = 2, if abstract <italic>i</italic> was retrieved by the AND-query and <italic>a</italic><sub><italic>i</italic></sub> = 1, if the abstract was retrieved by the OR-query only. Top five residues for each interactor were used as constraints in our GRAMM docking program [<xref rid="pcbi.1004630.ref047" ref-type="bibr">47</xref>] giving an extra weight (proportional to <italic>f</italic>(<italic>R</italic>)) to the scoring function if the identified residue was at the interface of a docking model. The upper limit of 10 in <xref rid="pcbi.1004630.e011" ref-type="disp-formula">Eq 7</xref> was chosen to balance the diversity of low confidence (<italic>f</italic> = 1) vs. high confidence (<italic>f</italic> = 10) constraints and potential overrepresentation of a residue in publications (very high <italic>f</italic> values). If &gt; 5 residues had the highest <italic>f</italic> values, then preference was given to the residues with scores containing more contributions from the abstracts retrieved by the AND-queries. Otherwise, the excess residues were removed from the list randomly.</p>
+<p>For validation, the residues at the crystallographically determined interface (reference residues) were extracted from the co-crystallized complexes using 6 Å distance cutoff between the heavy atoms of the proteins in the complex. All pairs of these interface residues were ranked in ascending order by the distance between their C<sup>α</sup> atoms. The top three pairs were submitted to GRAMM with the highest possible confidence score 10 (reference constraints).</p>
+<p>The unbound structures were docked by GRAMM once using the TM constraints and then, for comparison, the reference constraints. The output of the global low-resolution docking scan consisted of 20,000 matches, with no post-processing (except for the removal of redundant matches). These matches were subjected to scoring by the sum of the <italic>f</italic> values (<xref rid="pcbi.1004630.e011" ref-type="disp-formula">Eq 7</xref>) if constraints were generated for the complex. If no constraints were generated, the score was zero. All matches were then re-sorted according to these scores. The quality of a match was assessed by C<sup>α</sup> ligand interface root-mean-square deviation, <italic>i</italic>-RMSD (ligand and receptor are the smaller and the larger proteins in the complex, respectively), calculated between the interface of the docked unbound ligand and corresponding atoms of the unbound ligand superimposed on the co-crystallized bound structure.</p>
+</sec>
+</sec>
+<sec id="sec009" sec-type="conclusions">
+<title>Results and Discussions</title>
+<sec id="sec010">
+<title>Basic text mining</title>
+<sec id="sec011">
+<title>Overall performance of two query types</title>
+<p>The ultimate success of our TM approach relies heavily on the text pool obtained during information retrieval stage (<xref rid="pcbi.1004630.g001" ref-type="fig">Fig 1</xref>). Queries for mining texts on interactions of two proteins often are generated based on the co-occurrence principle [<xref rid="pcbi.1004630.ref028" ref-type="bibr">28</xref>], requiring that information on <italic>both</italic> proteins be presented in the abstract of a publication (AND-query, see <xref rid="sec002" ref-type="sec">Methods</xref>). For generating docking constraints, however, it could be desirable to extract a more diverse text set by requiring presence of information on <italic>either</italic> protein (OR-query). This could be especially helpful for proteins that bind several partners at the same interface. However, the “brute-force” use of the OR-queries may also result in many irrelevant abstracts (allosteric sites, substrate preference, signaling and conformational changes, etc.).</p>
+<p>To clarify this issue, we have analyzed abstracts for 579 protein complexes from <sc>Dockground</sc> retrieved by the AND- and OR-queries. The original publications, describing the PDB structures of the complex, were excluded from consideration. The AND-queries retrieved 220,603 abstracts for 277 complexes, and 18,670 residues (with the names that match features in <xref rid="pcbi.1004630.t002" ref-type="table">Table 2</xref>) were extracted from 11,732 abstracts for 193 complexes. The application of the simple filters (see <xref rid="sec002" ref-type="sec">Methods</xref>) reduced these numbers to 1,375 residues (identified residues) in 1,660 abstracts for 128 complexes. Of those, 571 residues for 108 complexes were found to be correct (at the PP interfaces). For 21 complexes, all identified residues were correct (<italic>P</italic><sub>TM</sub> = 1), and for 20 complexes, all identified residues were outside the interface (<italic>P</italic><sub>TM</sub> = 0). The OR-queries retrieved 2,640,816 abstracts for 492 complexes; and 207,931 residues were extracted from 150,060 abstracts for 431 complexes. Residue filtering resulted in 5,781 identified residues in 18,528 abstracts for 328 complexes, out of which 1,919 residues in 273 complexes were correct. All identified residues were correct in 36 complexes, and no interface residues were identified for 55 complexes. All abstracts retrieved by the AND-queries were retrieved by the OR-queries as well.</p>
+<p>Comparison of the overall basic TM performance for AND- and OR-queries (first two data rows in <xref rid="pcbi.1004630.t003" ref-type="table">Table 3</xref>) suggests significantly higher coverage, with comparable accuracy for the OR–queries. However, as data in <xref rid="pcbi.1004630.g002" ref-type="fig">Fig 2</xref> indicates, the OR-queries also extracted many irrelevant abstracts with non-interface residues (bars for the OR-queries with weaker TM performance [smaller <italic>P</italic><sub>TM</sub> values] are larger than the corresponding bars for the AND-queries). For example, for SH2D1A-p59Fyn complex (1m27) AND-query did not retrieve any abstracts, whereas OR-query retrieved 6 abstracts, from which 3 interface and 1 non-interface residues were extracted (<xref rid="pcbi.1004630.g003" ref-type="fig">Fig 3</xref>; for the detailed description, see <xref rid="pcbi.1004630.s001" ref-type="supplementary-material">S1 Text</xref>). <xref rid="pcbi.1004630.s004" ref-type="supplementary-material">S1 Fig</xref> and <xref rid="pcbi.1004630.s001" ref-type="supplementary-material">S1 Text</xref> provide more examples of the basic TM performance with different <italic>P</italic><sub>TM</sub> and a detailed explanation of what residues were extracted from the abstracts, retrieved by the AND- and OR-queries.</p>
+<fig id="pcbi.1004630.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004630.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>Distribution of complexes according to the quality of the basic TM.</title>
+<p>The TM performance is according to <italic>P</italic><sub>TM</sub> (<xref rid="pcbi.1004630.e001" ref-type="disp-formula">Eq 1</xref>). The distribution is normalized to the total number of complexes for which residues were identified (column 3 in <xref rid="pcbi.1004630.t003" ref-type="table">Table 3</xref>).</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004630.g002" position="float" xlink:type="simple"/>
+</fig>
+<fig id="pcbi.1004630.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004630.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title>Examples of residues extracted from an abstracts retrieved by OR-query.</title>
+<p>The structure, chain ID, and residue numbers are from 1m27. Interface and non-interface residues are in brown and magenta, correspondingly.</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004630.g003" position="float" xlink:type="simple"/>
+</fig>
+<table-wrap id="pcbi.1004630.t003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004630.t003</object-id>
+<label>Table 3</label> <caption><title>Performance of basic and SVM-enhanced TM protocols.</title> <p>The SVM models were trained and tested on abstracts retrieved by the AND-queries. Best models were applied to abstracts retrieved by the OR-queries (see <xref rid="sec002" ref-type="sec">Methods</xref>). Total number of complexes in the dataset is 579, if not specified otherwise.</p></caption>
+<alternatives>
+<graphic id="pcbi.1004630.t003g" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004630.t003" xlink:type="simple"/>
+<table>
+<colgroup span="1">
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+</colgroup>
+<thead>
+<tr>
+<th align="justify" rowspan="1" colspan="1">Query type</th>
+<th align="justify" rowspan="1" colspan="1">SVM model</th>
+<th align="center" rowspan="1" colspan="1"><italic>L</italic><sub>tot</sub> <xref rid="t003fn001" ref-type="table-fn"><sup>a</sup></xref></th>
+<th align="center" rowspan="1" colspan="1"><italic>L</italic><sub>int</sub> <xref rid="t003fn002" ref-type="table-fn"><sup>b</sup></xref></th>
+<th align="justify" rowspan="1" colspan="1">Coverage (%) <xref rid="t003fn003" ref-type="table-fn"><sup>c</sup></xref></th>
+<th align="center" rowspan="1" colspan="1">Success (%) <xref rid="t003fn004" ref-type="table-fn"><sup>d</sup></xref></th>
+<th align="center" rowspan="1" colspan="1">Accuracy (%) <xref rid="t003fn005" ref-type="table-fn"><sup>e</sup></xref></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="7" align="justify" rowspan="1"><bold><italic>Basic text mining (numbering of residues from PDB only)</italic></bold></td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">AND</td>
+<td align="justify" rowspan="1" colspan="1"/>
+<td align="center" rowspan="1" colspan="1">128</td>
+<td align="center" rowspan="1" colspan="1">108</td>
+<td align="center" rowspan="1" colspan="1">22.1</td>
+<td align="center" rowspan="1" colspan="1">18.7</td>
+<td align="center" rowspan="1" colspan="1">84.4</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">OR</td>
+<td align="justify" rowspan="1" colspan="1"/>
+<td align="center" rowspan="1" colspan="1">328</td>
+<td align="center" rowspan="1" colspan="1">273</td>
+<td align="center" rowspan="1" colspan="1">56.6</td>
+<td align="center" rowspan="1" colspan="1">47.2</td>
+<td align="center" rowspan="1" colspan="1">83.2</td>
+</tr>
+<tr>
+<td colspan="7" align="justify" rowspan="1"><bold><italic>Basic text mining (numbering of residues from PDB and UniProt)</italic></bold></td>
+</tr>
+<tr>
+<td align="justify" rowspan="1" colspan="1">AND</td>
+<td align="justify" rowspan="1" colspan="1"/>
+<td align="center" rowspan="1" colspan="1">142</td>
+<td align="center" rowspan="1" colspan="1">118</td>
+<td align="center" rowspan="1" colspan="1">24.5</td>
+<td align="center" rowspan="1" colspan="1">20.4</td>
+<td align="center" rowspan="1" colspan="1">83.1</td>
+</tr>
+<tr>
+<td align="justify" rowspan="1" colspan="1">OR</td>
+<td align="justify" rowspan="1" colspan="1"/>
+<td align="center" rowspan="1" colspan="1">342</td>
+<td align="center" rowspan="1" colspan="1">283</td>
+<td align="center" rowspan="1" colspan="1">59.1</td>
+<td align="center" rowspan="1" colspan="1">48.9</td>
+<td align="center" rowspan="1" colspan="1">82.7</td>
+</tr>
+<tr>
+<td colspan="7" align="left" rowspan="1"><bold><italic>Basic text mining (numbering of residues from PDB</italic>, <italic>only abstracts prior original publication)</italic></bold></td>
+</tr>
+<tr>
+<td align="justify" rowspan="1" colspan="1">AND</td>
+<td align="justify" rowspan="1" colspan="1"/>
+<td align="center" rowspan="1" colspan="1">96</td>
+<td align="center" rowspan="1" colspan="1">75</td>
+<td align="center" rowspan="1" colspan="1">16.6</td>
+<td align="center" rowspan="1" colspan="1">13.0</td>
+<td align="center" rowspan="1" colspan="1">78.1</td>
+</tr>
+<tr>
+<td align="justify" rowspan="1" colspan="1">OR</td>
+<td align="justify" rowspan="1" colspan="1"/>
+<td align="center" rowspan="1" colspan="1">268</td>
+<td align="center" rowspan="1" colspan="1">202</td>
+<td align="center" rowspan="1" colspan="1">46.3</td>
+<td align="center" rowspan="1" colspan="1">34.9</td>
+<td align="center" rowspan="1" colspan="1">75.4</td>
+</tr>
+<tr>
+<td colspan="7" align="justify" rowspan="1"><bold><italic>SVM-enhanced text mining (numbering of residues from PDB only)</italic></bold></td>
+</tr>
+<tr>
+<td align="justify" rowspan="1" colspan="1">OR</td>
+<td align="justify" rowspan="1" colspan="1">MF50L</td>
+<td align="center" rowspan="1" colspan="1">266</td>
+<td align="center" rowspan="1" colspan="1">211</td>
+<td align="center" rowspan="1" colspan="1">45.9</td>
+<td align="center" rowspan="1" colspan="1">36.4</td>
+<td align="center" rowspan="1" colspan="1">79.3</td>
+</tr>
+<tr>
+<td align="justify" rowspan="1" colspan="1">OR</td>
+<td align="justify" rowspan="1" colspan="1">AF138L</td>
+<td align="center" rowspan="1" colspan="1">269</td>
+<td align="center" rowspan="1" colspan="1">213</td>
+<td align="center" rowspan="1" colspan="1">46.5</td>
+<td align="center" rowspan="1" colspan="1">36.9</td>
+<td align="center" rowspan="1" colspan="1">79.2</td>
+</tr>
+<tr>
+<td align="justify" rowspan="1" colspan="1">OR</td>
+<td align="justify" rowspan="1" colspan="1">AF24L</td>
+<td align="center" rowspan="1" colspan="1">253</td>
+<td align="center" rowspan="1" colspan="1">193</td>
+<td align="center" rowspan="1" colspan="1">43.7</td>
+<td align="center" rowspan="1" colspan="1">33.3</td>
+<td align="center" rowspan="1" colspan="1">76.3</td>
+</tr>
+<tr>
+<td colspan="7" align="justify" rowspan="1"><bold>Basic text mining on benchmark 3 (99 complexes, numbering of residues from PDB only)</bold></td>
+</tr>
+<tr>
+<td align="justify" rowspan="1" colspan="1">OR</td>
+<td align="justify" rowspan="1" colspan="1"/>
+<td align="center" rowspan="1" colspan="1">93</td>
+<td align="center" rowspan="1" colspan="1">82</td>
+<td align="center" rowspan="1" colspan="1">93.9</td>
+<td align="center" rowspan="1" colspan="1">82.8</td>
+<td align="center" rowspan="1" colspan="1">88.2</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t003fn001"><p><sup>a</sup> Number of complexes for which TM protocol found at least one abstract with residues</p></fn>
+<fn id="t003fn002"><p><sup>b</sup> Number of complexes with at least one interface residue found in abstracts</p></fn>
+<fn id="t003fn003"><p><sup>c</sup> Ratio of <bold><italic>L</italic></bold><sub><bold>tot</bold></sub> and total number of complexes</p></fn>
+<fn id="t003fn004"><p><sup>d</sup> Ratio of <bold><italic>L</italic></bold><sub><bold>int</bold></sub> and total number of complexes</p></fn>
+<fn id="t003fn005"><p><sup>e</sup> Ratio of <bold><italic>L</italic></bold><sub><bold>int</bold></sub> and <bold><italic>L</italic></bold><sub><bold>tot</bold></sub></p></fn>
+</table-wrap-foot>
+</table-wrap>
+</sec>
+<sec id="sec012">
+<title>Correction for different residue numbering</title>
+<p>For 430 out of 1158 monomers, the numbering of residues in PDB files did not match that in the UniProt. For these monomers, we modified the filtering of the initial pool of extracted residues (described above), which resulted in 1,619 identified residues in 2,028 abstracts for 142 complexes, for AND- queries; and 6,735 identified residues in 20,040 abstracts for 342 complexes, for OR- queries. All identified residues were correct for 25 and 31 complexes, and no interface residues were identified for 24 and 59 complexes for AND- and OR-queries, respectively. Analysis of these results (third and fourth data rows in <xref rid="pcbi.1004630.t003" ref-type="table">Table 3</xref> and <xref rid="pcbi.1004630.s005" ref-type="supplementary-material">S2 Fig</xref>) suggests that the numbering mapping only slightly improved TM performance.</p>
+</sec>
+<sec id="sec013">
+<title>Mining of abstracts published before the PDB structure paper</title>
+<p>To further test the predictive power of our approach, for each complex, we considered only abstracts with publication date earlier than that of the paper on the PDB structure. This reduced the pool to 84,366 abstracts for 263 complexes, and 1,586,097 abstracts for 487 complexes retrieved by the AND- and OR-queries, respectively. For AND- queries, 7,956 residues were extracted from 3,944 abstracts, and standard residue filtering (see <xref rid="sec002" ref-type="sec">Methods</xref>) resulted in 776 identified residues in 814 abstracts for 96 complexes. For OR- queries, 114,472 residues were extracted from 81,418 abstracts, and standard residue filtering resulted in 3,731 identified residues in 9,321 abstracts for 268 complexes. All identified residues were correct for 21 and 29 complexes, and no interface residues were identified for 21 and 66 complexes, for AND- and OR-queries, respectively. The analysis of these TM results (5<sup>th</sup> and 6<sup>th</sup> data rows in <xref rid="pcbi.1004630.t003" ref-type="table">Table 3</xref> and <xref rid="pcbi.1004630.s006" ref-type="supplementary-material">S3 Fig</xref>) showed no significant change in the TM performance.</p>
+</sec>
+</sec>
+<sec id="sec014">
+<title>SVM-enhanced text mining</title>
+<sec id="sec015">
+<title>Optimization of SVM models</title>
+<p>For the manual mode of feature selection, we considered full MF60 set and five of its subsets, MF50, MF40, MF30, MF20 and MF10 (upper part of <xref rid="pcbi.1004630.t002" ref-type="table">Table 2</xref>). For the automated mode of feature selection, we started with the full AF143 set (lower part of <xref rid="pcbi.1004630.t002" ref-type="table">Table 2</xref>) and gradually remove features with smallest |δ(m)| (<xref rid="pcbi.1004630.e009" ref-type="disp-formula">Eq 5</xref>). For each subset, we trained and tested SVM procedure with several different kernels, with and without a margin for the abstract classification (see <xref rid="sec002" ref-type="sec">Methods</xref>).</p>
+<p>Introduction of the margin only slightly changes SVM performance (<xref rid="pcbi.1004630.s007" ref-type="supplementary-material">S4</xref> and <xref rid="pcbi.1004630.s009" ref-type="supplementary-material">S6</xref> Figs for the MF<italic>xx</italic> sets with linear and RBF γ = 1 kernels, respectively) and filters out considerable number of the abstracts (e.g., for the MF50 set, 13 and 223 abstracts were classified within the 0.05 margin by the linear and the RBF γ = 1 kernels, respectively). Results for the AF<italic>xx</italic> sets and other kernels do not show significant change in the performance of SVM with the margin as well (examples of data for the linear kernel are compared in <xref rid="pcbi.1004630.s011" ref-type="supplementary-material">S8</xref> and <xref rid="pcbi.1004630.s012" ref-type="supplementary-material">S9</xref> Figs). Varying degree <italic>d</italic> of the polynomial (<xref rid="pcbi.1004630.s008" ref-type="supplementary-material">S5</xref> and <xref rid="pcbi.1004630.s013" ref-type="supplementary-material">S10</xref> Figs) and parameter γ of the RBF (<xref rid="pcbi.1004630.s010" ref-type="supplementary-material">S7</xref> and <xref rid="pcbi.1004630.s014" ref-type="supplementary-material">S11</xref> Figs) kernels for both MF<italic>xx</italic> and AF<italic>xx</italic> sets also did not change the SVM performance significantly. Thus, for simplicity, we present and analyze results only for the linear (polynomial <italic>d</italic> = 1) and RBF <italic>γ</italic> = 1 kernels without the margin. Hereafter, we will abbreviate SVM models as AB, where A stands for the feature set (see <xref rid="sec002" ref-type="sec">Methods</xref>) and B = L, R for linear or RBF kernels, correspondingly.</p>
+<p>In this study, we utilized a binary SVM classifier (abstracts are categorized as either positive or negative). Then, the performance of our SVM models can be quantified by a single measure, Matthew correlation coefficient, MCC (<xref rid="pcbi.1004630.e010" ref-type="disp-formula">Eq 6</xref>) and the optimum SVM model would have the maximum MCC value [<xref rid="pcbi.1004630.ref045" ref-type="bibr">45</xref>]. Results, presented in <xref rid="pcbi.1004630.g004" ref-type="fig">Fig 4</xref>, show that three SVM models (MF50L, AF138L, and AF24L) have approximately the same maximum MCC value ~0.25. The AF138L model has the best recall (57.8%), but worst accuracy and precision (64% and 48.1%, respectively), whereas the AF24L model achieved the best accuracy and precision (66.7% and 51.7%, respectively), but the worst recall (51.1%). The MF50L model has all parameters between the AF138L and AF24L models (<xref rid="pcbi.1004630.t004" ref-type="table">Table 4</xref>). The variations in the model parameters do not exceed 10% (<xref rid="pcbi.1004630.t004" ref-type="table">Table 4</xref>). Thus we kept all three models for further consideration.</p>
+<fig id="pcbi.1004630.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004630.g004</object-id>
+<label>Fig 4</label>
+<caption>
+<title>Matthews correlation coefficient vs. number of features in SVM model.</title>
+<p>The Matthews correlation coefficient (MCC) is calculated according to <xref rid="pcbi.1004630.e010" ref-type="disp-formula">Eq 6</xref>. The features were selected manually (A) and in automated mode (B), for linear and RBF SVM kernels. The data was obtained on the validation set of 261 abstracts. The SVM models were trained on 1,044 abstracts (see <xref rid="sec002" ref-type="sec">Methods</xref>).</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004630.g004" position="float" xlink:type="simple"/>
+</fig>
+<table-wrap id="pcbi.1004630.t004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004630.t004</object-id>
+<label>Table 4</label> <caption><title>Classification of abstracts in the test set by the three optimal SVM models.</title> <p>Total number of abstracts 261 (90 PPI-relevant and 171 non-PPI).</p></caption>
+<alternatives>
+<graphic id="pcbi.1004630.t004g" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004630.t004" xlink:type="simple"/>
+<table>
+<colgroup span="1">
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+</colgroup>
+<thead>
+<tr>
+<th align="justify" rowspan="1" colspan="1">SVM model</th>
+<th align="justify" rowspan="1" colspan="1">TP</th>
+<th align="justify" rowspan="1" colspan="1">FN</th>
+<th align="justify" rowspan="1" colspan="1">TN</th>
+<th align="justify" rowspan="1" colspan="1">FP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="justify" rowspan="1" colspan="1">MF50L</td>
+<td align="justify" rowspan="1" colspan="1">48</td>
+<td align="justify" rowspan="1" colspan="1">42</td>
+<td align="justify" rowspan="1" colspan="1">123</td>
+<td align="justify" rowspan="1" colspan="1">48</td>
+</tr>
+<tr>
+<td align="justify" rowspan="1" colspan="1">AF138L</td>
+<td align="justify" rowspan="1" colspan="1">52</td>
+<td align="justify" rowspan="1" colspan="1">38</td>
+<td align="justify" rowspan="1" colspan="1">115</td>
+<td align="justify" rowspan="1" colspan="1">56</td>
+</tr>
+<tr>
+<td align="justify" rowspan="1" colspan="1">AF24L</td>
+<td align="justify" rowspan="1" colspan="1">46</td>
+<td align="justify" rowspan="1" colspan="1">44</td>
+<td align="justify" rowspan="1" colspan="1">128</td>
+<td align="justify" rowspan="1" colspan="1">43</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p>No models with the RBF kernel had similar performance, except the AF<italic>xx</italic> sets with <italic>xx</italic> &lt; 15 (<xref rid="pcbi.1004630.g004" ref-type="fig">Fig 4</xref>). Such small number of features in the SVM model is clearly not enough for statistically reliable results and such models were discarded. As number of features in the model increases, the performance of the RBF kernel deteriorates, in particularly, due to the large amount of abstracts with the SVM score close to zero. This correlates with the conclusion of other studies [<xref rid="pcbi.1004630.ref048" ref-type="bibr">48</xref>–<xref rid="pcbi.1004630.ref050" ref-type="bibr">50</xref>] that for the most text categorization problems, the best performance is achieved by the linear separation of feature vectors.</p>
+<p>Abstract-wise feature selection, irrespective of the number times a feature appears in an abstract, used earlier to extract features for prediction of protein function and localization [<xref rid="pcbi.1004630.ref023" ref-type="bibr">23</xref>, <xref rid="pcbi.1004630.ref051" ref-type="bibr">51</xref>], changes the rank of the initial features. However, the MCC values, calculated for the SVM models with two different methods of feature selections, are in the same range (<xref rid="pcbi.1004630.s015" ref-type="supplementary-material">S12 Fig</xref>). Thus significant changes in the SVM performance should not be expected.</p>
+</sec>
+<sec id="sec016">
+<title>Performance of SVM-enhanced text-mining protocol</title>
+<p>While retrieving abstracts with the residues for significantly larger amount of PPI, the OR-queries bring also up many irrelevant residues. As the first step in mitigating this problem, we filtered 7,991 abstracts for 328 complexes (hereafter, called the original set of complexes), for which residues were found in the abstracts retrieved by the OR-queries, using three optimal SVM models (MF50L, AF138L and AF24L), trained and validated on the 1,305 abstracts retrieved by the AND-queries (see above). In this approach, an abstract is classified either as positive (publication in the PPI context) or negative (not PPI-relevant context) and then only positive abstracts are retained for the <italic>P</italic><sub>TM</sub> calculation (<xref rid="pcbi.1004630.e001" ref-type="disp-formula">Eq 1</xref>).</p>
+<p>MF50L, AF138L and AF24L models removed at least one abstract for 296, 294 and 302 complexes, respectively, which is ~ 90% of the initial set. Overall performance of the SVM-enhanced TM did not change significantly (middle part of <xref rid="pcbi.1004630.t003" ref-type="table">Table 3</xref> and <xref rid="pcbi.1004630.g005" ref-type="fig">Fig 5A</xref>) compared to the basic TM (upper part of <xref rid="pcbi.1004630.t003" ref-type="table">Table 3</xref> and <xref rid="pcbi.1004630.g002" ref-type="fig">Fig 2</xref>). However, complexes, for which SVM models erroneously remove interface residues (<italic>P</italic><sub>TM</sub> decreases) constitute only ~ 1/3 of the initial set (<xref rid="pcbi.1004630.g005" ref-type="fig">Fig 5B</xref>). The SVM models filtered out all PPI-relevant and all PPI-irrelevant (with non-interface residues) abstracts for ~13% and ~ 7% of the initial dataset, respectively (hatched parts of the Δ<italic>P</italic><sub>TM</sub> &lt; 0 and Δ<italic>P</italic><sub>TM</sub> = 0 bars in <xref rid="pcbi.1004630.g005" ref-type="fig">Fig 5B</xref>).</p>
+<fig id="pcbi.1004630.g005" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004630.g005</object-id>
+<label>Fig 5</label>
+<caption>
+<title>Performance of the best SVM models.</title>
+<p>The abstracts were retrieved by the OR-queries. Distribution of complexes (A) is shown according to the TM performance, <italic>P</italic><sub>TM</sub> (<xref rid="pcbi.1004630.e001" ref-type="disp-formula">Eq 1</xref>). The distribution is normalized by the total number of complexes for which residues were identified (column 2 in <xref rid="pcbi.1004630.t003" ref-type="table">Table 3</xref>). After filtering of abstracts by the optimal models, for a number of complexes (B) <italic>P</italic><sub>TM</sub> improves (Δ<italic>P</italic><sub>TM</sub> &gt; 0), does not change (Δ<italic>P</italic><sub>TM</sub> = 0) and gets worse (Δ<italic>P</italic><sub>TM</sub> &lt; 0). Hatched areas show the number of complexes, for which the optimal models removed all abstracts.</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004630.g005" position="float" xlink:type="simple"/>
+</fig>
+<p>Analysis of performance of the SVM models on several complexes (<xref rid="pcbi.1004630.s003" ref-type="supplementary-material">S1 Table</xref> and <xref rid="pcbi.1004630.s002" ref-type="supplementary-material">S2</xref> Text) revealed somewhat erratic performance of different models, caused by the inconsistency in residue context where interface residues are present in the abstracts with prevailing non-PPI features and vice versa (e.g., Ala11 of TIMP3 was found in the abstract of study about vasoconstricting peptide administration, not directly relevant to this protein binding [<xref rid="pcbi.1004630.ref052" ref-type="bibr">52</xref>]).</p>
+</sec>
+</sec>
+<sec id="sec017">
+<title>Docking with the text mining constraints</title>
+<p>We ran the free docking by GRAMM to model complexes of unbound proteins from the <sc>Dockground</sc> X-ray benchmark 3 [<xref rid="pcbi.1004630.ref046" ref-type="bibr">46</xref>] using constraints generated by the basic TM protocol with OR-queries (see <xref rid="sec002" ref-type="sec">Methods</xref>).</p>
+<p>In the unbound set of 99 complexes, by design the component proteins have both the co-crystallized and separately resolved X-structures, and as such were presumably on average more extensively studied than the complexes from the main bound set of 579 complexes used in this study for TM evaluation. This resulted in a significantly larger pool of publications extracted by the OR-queries (68 abstracts per complex for the unbound set, compared to 32 abstracts per complex for the bound set). Thus, a significantly larger number of residues per complex were identified (<xref rid="pcbi.1004630.s016" ref-type="supplementary-material">S13 Fig</xref>) and the TM performed better on the unbound set than on the larger bound one (last row in <xref rid="pcbi.1004630.t003" ref-type="table">Table 3</xref>). However, the number of irrelevant (non-interface) residues was also significantly larger, reducing TM effectiveness (<xref rid="pcbi.1004630.s017" ref-type="supplementary-material">S14 Fig</xref>). The AND-queries retrieved abstracts with residues for 37 complexes only and TM protocol with the AND-queries was not used here separately. However, for residue ranking (<xref rid="pcbi.1004630.e011" ref-type="disp-formula">Eq 7</xref>), we kept track of which residues were retrieved by the AND-queries. The TM results based on OR-queries for the top 10 residues per complex (5 for each protein, ranked by the frequency of the residue occurrence, <xref rid="pcbi.1004630.e011" ref-type="disp-formula">Eq 7</xref>) were significantly better (<xref rid="pcbi.1004630.s017" ref-type="supplementary-material">S14 Fig</xref>). Thus, these residues were submitted to GRAMM docking program for scoring of the docking scan output.</p>
+<p>To single out the role of the TM constraints, they were applied to re-rank unrefined and otherwise unscored docking models output directly from the GRAMM scan (the baseline for evaluating the impact of the TM constraints). For comparison, the re-ranking was also done separately with the correct interface residues as constraints (see <xref rid="sec002" ref-type="sec">Methods</xref>). We used strict (at least, one model with <italic>i</italic>-RMSD ≤ 5 Å in top 10 predictions) and relaxed (at least, one model with <italic>i</italic>-RMSD ≤ 8 Å in top 100 predictions) success criteria.</p>
+<p>The TM scoring significantly increased docking success rates, by 71% (compared to the baseline shown as blue columns in <xref rid="pcbi.1004630.g006" ref-type="fig">Fig 6</xref>) according to the stricter criterion, and by 32% according to the relaxed one (<xref rid="pcbi.1004630.g006" ref-type="fig">Fig 6</xref>). The results on the reference set of constraints, corresponding to the correct interface residues, showed that 27 complexes have near-native matches in the top 20,000 scan predictions according to the strict criterion, and 62 according to the relaxed one. The RMSD was calculated between the unbound ligand predicted match and the unbound ligand structurally aligned with the bound in the complex. Such alignment has significant mismatches with the receptor in a number of complexes, due to the conformational change upon binding. So the near-native matches for such complexes cannot be predicted by the surface complementarity-based rigid body free docking (this correlates with the docking decoys results [<xref rid="pcbi.1004630.ref053" ref-type="bibr">53</xref>] where a near-native match was found only for 61 complexes in 500,000 top scan matches).</p>
+<fig id="pcbi.1004630.g006" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004630.g006</object-id>
+<label>Fig 6</label>
+<caption>
+<title>Docking with TM constraints.</title>
+<p>The results of benchmarking on the unbound X-ray set from Dockground. A complex was predicted successfully if at least one in top ten matches had ligand C<sup>α</sup> interface RMSD ≤ 5 Å (A), and one in top hundred had RMSD ≤ 8 Å (B). The success rate is the percentage of successfully predicted complexes in the set. The low-resolution geometric scan output (20,000 matches) from GRAMM docking, with no post-processing, except removal of redundant matches, was scored by TM results. The reference bars show scoring by the actual interface residues (see text).</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004630.g006" position="float" xlink:type="simple"/>
+</fig>
+<p>The observed increase of the docking success rate is the result of constraints from the basic TM only. One can assume that the deep parsing/NLP will lead to further improvement of the docking quality, closer to the level of the reference constraints (<xref rid="pcbi.1004630.g006" ref-type="fig">Fig 6</xref>).</p>
+</sec>
+<sec id="sec018" sec-type="conclusions">
+<title>Conclusions</title>
+<p>TM has been widely used in recreating PPI networks, as well as in detecting functional sites (small ligand binding sites) on protein structures. Combining and expanding these two well-developed research areas, we applied TM to structural modeling of protein-protein complexes (protein docking). Abstracts of publications on 579 protein complexes from Dockground were retrieved from PubMed, using AND- and OR-queries (both proteins and at least one protein mentioned in the text, correspondingly). The AND-queries identified more correct residues than the OR-queries, but retrieved abstracts with residues for significantly less complexes. SVM was used to improve the performance of OR-queries. The SVM models generated using simple bag-of-words representation of the text, removed irrelevant information extracted by the OR-queries, albeit not enough for an accurate discrimination of non-interface from the interface residues, as shown by the inconsistent performance of different SVM models. Whereas human expertise can consistently distinguish relevant from non-relevant to the interface information (as shown by our evaluation of a small subset of abstracts), a reliable and accurate automated procedure requires greater sophistication than the basic one used in our study.</p>
+<p>The basic TM was used to generate constraints for docking, and tested on the protein-protein unbound docking benchmark set. TM significantly increased the docking success rates. Contextual analysis by deep parsing on sentence/residue level (an on-going study in our group) should improve the detection of the interface residues, and further increase the docking success rates. The preliminary results in this proof-of-concept study showed that TM is a promising approach to protein docking, with its utility increasing along with the rapidly growing amount of publicly available information on protein complexes.</p>
+</sec>
+</sec>
+<sec id="sec019">
+<title>Supporting Information</title>
+<supplementary-material id="pcbi.1004630.s001" xlink:href="info:doi/10.1371/journal.pcbi.1004630.s001" mimetype="application/pdf" position="float" xlink:type="simple">
+<label>S1 Text</label>
+<caption>
+<title>Performance of basic text mining for specific protein-protein complexes.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004630.s002" xlink:href="info:doi/10.1371/journal.pcbi.1004630.s002" mimetype="application/pdf" position="float" xlink:type="simple">
+<label>S2 Text</label>
+<caption>
+<title>Performance of SVM-enhanced text mining for specific protein-protein complexes.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004630.s003" xlink:href="info:doi/10.1371/journal.pcbi.1004630.s003" mimetype="application/pdf" position="float" xlink:type="simple">
+<label>S1 Table</label>
+<caption>
+<title>Examples of optimal SVM model impact on TM output.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004630.s004" xlink:href="info:doi/10.1371/journal.pcbi.1004630.s004" mimetype="application/pdf" position="float" xlink:type="simple">
+<label>S1 Fig</label>
+<caption>
+<title>Examples of residues extracted by the basic TM.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004630.s005" xlink:href="info:doi/10.1371/journal.pcbi.1004630.s005" mimetype="application/pdf" position="float" xlink:type="simple">
+<label>S2 Fig</label>
+<caption>
+<title>Distribution of complexes according to the quality of the basic TM, accounting for mismatch between residue numbering in PDB and UniProt sequences.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004630.s006" xlink:href="info:doi/10.1371/journal.pcbi.1004630.s006" mimetype="application/pdf" position="float" xlink:type="simple">
+<label>S3 Fig</label>
+<caption>
+<title>Distribution of complexes according to the quality of the basic TM, excluding abstracts published after the paper on the original PDB structure.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004630.s007" xlink:href="info:doi/10.1371/journal.pcbi.1004630.s007" mimetype="application/pdf" position="float" xlink:type="simple">
+<label>S4 Fig</label>
+<caption>
+<title>SVM performance for manual feature selection using linear kernel.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004630.s008" xlink:href="info:doi/10.1371/journal.pcbi.1004630.s008" mimetype="application/pdf" position="float" xlink:type="simple">
+<label>S5 Fig</label>
+<caption>
+<title>SVM performance for manual feature (50_NM) selection using polynomial kernel with different degrees.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004630.s009" xlink:href="info:doi/10.1371/journal.pcbi.1004630.s009" mimetype="application/pdf" position="float" xlink:type="simple">
+<label>S6 Fig</label>
+<caption>
+<title>SVM performance for manual feature selection using RBF kernel with γ = 1.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004630.s010" xlink:href="info:doi/10.1371/journal.pcbi.1004630.s010" mimetype="application/pdf" position="float" xlink:type="simple">
+<label>S7 Fig</label>
+<caption>
+<title>SVM performance for manual feature (20_NM) selection using RBF kernel with various γ.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004630.s011" xlink:href="info:doi/10.1371/journal.pcbi.1004630.s011" mimetype="application/pdf" position="float" xlink:type="simple">
+<label>S8 Fig</label>
+<caption>
+<title>SVM performance for automated feature selection using linear kernel and 0.05 margin.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004630.s012" xlink:href="info:doi/10.1371/journal.pcbi.1004630.s012" mimetype="application/pdf" position="float" xlink:type="simple">
+<label>S9 Fig</label>
+<caption>
+<title>SVM performance for automated feature selection using linear kernel without margin.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004630.s013" xlink:href="info:doi/10.1371/journal.pcbi.1004630.s013" mimetype="application/pdf" position="float" xlink:type="simple">
+<label>S10 Fig</label>
+<caption>
+<title>SVM performance for automated feature selection using polynomial kernel with different degrees and no margin.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004630.s014" xlink:href="info:doi/10.1371/journal.pcbi.1004630.s014" mimetype="application/pdf" position="float" xlink:type="simple">
+<label>S11 Fig</label>
+<caption>
+<title>SVM performance for automated feature selection using RBF kernel with different γ and no margin.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004630.s015" xlink:href="info:doi/10.1371/journal.pcbi.1004630.s015" mimetype="application/pdf" position="float" xlink:type="simple">
+<label>S12 Fig</label>
+<caption>
+<title>Comparison of Matthews correlation coefficient for different approaches to calculate the number of features in abstracts in the training set.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004630.s016" xlink:href="info:doi/10.1371/journal.pcbi.1004630.s016" mimetype="application/pdf" position="float" xlink:type="simple">
+<label>S13 Fig</label>
+<caption>
+<title>Distribution of total number of residues per complex extracted by OR-queries in two sets.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004630.s017" xlink:href="info:doi/10.1371/journal.pcbi.1004630.s017" mimetype="application/pdf" position="float" xlink:type="simple">
+<label>S14 Fig</label>
+<caption>
+<title>Normalized distribution of complexes in the DOCKGROUND benchmark set 3 according to TM performance, PTM (<xref rid="pcbi.1004630.e001" ref-type="disp-formula">Eq 1</xref>).</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1004630.ref001"><label>1</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Sanchez</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Sali</surname> <given-names>A</given-names></name>. <article-title>Advances in comparative protein-structure modeling</article-title>. <source>Curr Opin Struct Biol</source>. <year>1997</year>;<volume>7</volume>:<fpage>206</fpage>–<lpage>14</lpage>. <object-id pub-id-type="pmid">9094331</object-id></mixed-citation></ref>
+<ref id="pcbi.1004630.ref002"><label>2</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Aloy</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Ceulemans</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Stark</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Russell</surname> <given-names>RB</given-names></name>. <article-title>The relationship between sequence and interaction divergence in proteins</article-title>. <source>J Mol Biol</source>. <year>2003</year>;<volume>332</volume>:<fpage>989</fpage>–<lpage>98</lpage>. <object-id pub-id-type="pmid">14499603</object-id></mixed-citation></ref>
+<ref id="pcbi.1004630.ref003"><label>3</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lu</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Lu</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Skolnick</surname> <given-names>J</given-names></name>. <article-title>MULTIPROSPECTOR: An algorithm for the prediction of protein-protein interactions by multimeric threading</article-title>. <source>Proteins</source>. <year>2002</year>;<volume>49</volume>:<fpage>350</fpage>–<lpage>64</lpage>. <object-id pub-id-type="pmid">12360525</object-id></mixed-citation></ref>
+<ref id="pcbi.1004630.ref004"><label>4</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kundrotas</surname> <given-names>PJ</given-names></name>, <name name-style="western"><surname>Zhu</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Janin</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Vakser</surname> <given-names>IA</given-names></name>. <article-title>Templates are available to model nearly all complexes of structurally characterized proteins</article-title>. <source>Proc Natl Acad Sci USA</source>. <year>2012</year>;<volume>109</volume>:<fpage>9438</fpage>–<lpage>41</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.1200678109" xlink:type="simple">10.1073/pnas.1200678109</ext-link></comment> <object-id pub-id-type="pmid">22645367</object-id></mixed-citation></ref>
+<ref id="pcbi.1004630.ref005"><label>5</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Berman</surname> <given-names>HM</given-names></name>, <name name-style="western"><surname>Westbrook</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Feng</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Gilliland</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Bhat</surname> <given-names>TN</given-names></name>, <name name-style="western"><surname>Weissig</surname> <given-names>H</given-names></name>, <etal>et al</etal>. <article-title>The Protein Data Bank</article-title>. <source>Nucleic Acids Res</source>. <year>2000</year>;<volume>28</volume>:<fpage>235</fpage>–<lpage>42</lpage>. <object-id pub-id-type="pmid">10592235</object-id></mixed-citation></ref>
+<ref id="pcbi.1004630.ref006"><label>6</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Dominguez</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Boelens</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Bonvin</surname> <given-names>AMJJ</given-names></name>. <article-title>HADDOCK: A protein-protein docking approach based on biochemical or biophysical information</article-title>. <source>J Am Chem Soc</source>. <year>2003</year>;<volume>125</volume>:<fpage>1731</fpage>–<lpage>7</lpage>. <object-id pub-id-type="pmid">12580598</object-id></mixed-citation></ref>
+<ref id="pcbi.1004630.ref007"><label>7</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Vakser</surname> <given-names>IA</given-names></name>. <article-title>Protein-protein docking: From interaction to interactome</article-title>. <source>Biophys J</source>. <year>2014</year>;<volume>107</volume>:<fpage>1785</fpage>–<lpage>93</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.bpj.2014.08.033" xlink:type="simple">10.1016/j.bpj.2014.08.033</ext-link></comment> <object-id pub-id-type="pmid">25418159</object-id></mixed-citation></ref>
+<ref id="pcbi.1004630.ref008"><label>8</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Moal</surname> <given-names>IH</given-names></name>, <name name-style="western"><surname>Moretti</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Baker</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Fernandez-Recio</surname> <given-names>J</given-names></name>. <article-title>Scoring functions for protein–protein interactions</article-title>. <source>Curr Opin Struct Biol</source>. <year>2013</year>;<volume>23</volume>:<fpage>862</fpage>–<lpage>7</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.sbi.2013.06.017" xlink:type="simple">10.1016/j.sbi.2013.06.017</ext-link></comment> <object-id pub-id-type="pmid">23871100</object-id></mixed-citation></ref>
+<ref id="pcbi.1004630.ref009"><label>9</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lensink</surname> <given-names>MF</given-names></name>, <name name-style="western"><surname>Wodak</surname> <given-names>SJ</given-names></name>. <article-title>Docking, scoring, and affinity prediction in CAPRI</article-title>. <source>Proteins</source>. <year>2013</year>;<volume>81</volume>:<fpage>2082</fpage>–<lpage>95</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1002/prot.24428" xlink:type="simple">10.1002/prot.24428</ext-link></comment> <object-id pub-id-type="pmid">24115211</object-id></mixed-citation></ref>
+<ref id="pcbi.1004630.ref010"><label>10</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Turinsky</surname> <given-names>AL</given-names></name>, <name name-style="western"><surname>Razick</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Turner</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Donaldson</surname> <given-names>IM</given-names></name>, <name name-style="western"><surname>Wodak</surname> <given-names>SJ</given-names></name>. <article-title>Literature curation of protein interactions: Measuring agreement across major public databases</article-title>. <source>Database</source>. <year>2010</year>;<volume>2010</volume>:baq026.</mixed-citation></ref>
+<ref id="pcbi.1004630.ref011"><label>11</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Krallinger</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Valencia</surname> <given-names>A</given-names></name>. <article-title>Text-mining and information-retrieval services for molecular biology</article-title>. <source>Genome Biol</source>. <year>2005</year>;<volume>6</volume>:<fpage>224</fpage>. <object-id pub-id-type="pmid">15998455</object-id></mixed-citation></ref>
+<ref id="pcbi.1004630.ref012"><label>12</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rebholz-Schuhmann</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Oellrich</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Hoehndorf</surname> <given-names>R</given-names></name>. <article-title>Text-mining solutions for biomedical research: Enabling integrative biology</article-title>. <source>Nature Rev Genetics</source>. <year>2012</year>;<volume>13</volume>:<fpage>829</fpage>–<lpage>39</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004630.ref013"><label>13</label><mixed-citation publication-type="other" xlink:type="simple">Seoud AA, Solouma NH, Youssef AM, Kadah YM, editors. Extraction of protein interaction information from unstructured text using a link grammar parser. ICCES '07 International Conference on Computer Engineering &amp; Systems 2007; 2007.</mixed-citation></ref>
+<ref id="pcbi.1004630.ref014"><label>14</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Temkin</surname> <given-names>JMG</given-names></name>, <string-name>M.R.</string-name>. <article-title>Extraction of protein interaction information from unstructured text using a context-free grammar</article-title>. <source>Bioinformatics</source>. <year>2003</year>;<volume>19</volume>:<fpage>2046</fpage>–<lpage>53</lpage>. <object-id pub-id-type="pmid">14594709</object-id></mixed-citation></ref>
+<ref id="pcbi.1004630.ref015"><label>15</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Miwa</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Saetre</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Miyao</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Tsujii</surname> <given-names>J</given-names></name>. <article-title>Protein–protein interaction extraction by leveraging multiple kernels and parsers</article-title>. <source>Int J Med Inform</source>. <year>2009</year>;<volume>78</volume>:<fpage>e39</fpage>–<lpage>e46</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.ijmedinf.2009.04.010" xlink:type="simple">10.1016/j.ijmedinf.2009.04.010</ext-link></comment> <object-id pub-id-type="pmid">19501018</object-id></mixed-citation></ref>
+<ref id="pcbi.1004630.ref016"><label>16</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Krallinger</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Erhardt</surname> <given-names>RAA</given-names></name>, <name name-style="western"><surname>Valencia</surname> <given-names>A</given-names></name>. <article-title>Text-mining approaches in molecular biology and biomedicine</article-title>. <source>Drug Discov Today</source>. <year>2005</year>;<volume>10</volume>:<fpage>439</fpage>–<lpage>45</lpage>. <object-id pub-id-type="pmid">15808823</object-id></mixed-citation></ref>
+<ref id="pcbi.1004630.ref017"><label>17</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Niu</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Otasek</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Jurisica</surname> <given-names>I</given-names></name>. <article-title>Evaluation of linguistic features useful in extraction of interactions from PubMed; Application to annotating known, high-throughput and predicted interactions in I2D</article-title>. <source>Bioinformatics</source>. <year>2010</year>;<volume>26</volume>:<fpage>111</fpage>–<lpage>9</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/bioinformatics/btp602" xlink:type="simple">10.1093/bioinformatics/btp602</ext-link></comment> <object-id pub-id-type="pmid">19850753</object-id></mixed-citation></ref>
+<ref id="pcbi.1004630.ref018"><label>18</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Thieu</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Joshi</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Warren</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Korkin</surname> <given-names>D</given-names></name>. <article-title>Literature mining of host–pathogen interactions: Comparing feature-based supervised learning and language-based approaches</article-title>. <source>Bioinformatics</source>. <year>2012</year>;<volume>28</volume>:<fpage>867</fpage>–<lpage>75</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/bioinformatics/bts042" xlink:type="simple">10.1093/bioinformatics/bts042</ext-link></comment> <object-id pub-id-type="pmid">22285561</object-id></mixed-citation></ref>
+<ref id="pcbi.1004630.ref019"><label>19</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Donaldson</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Martin</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>de Bruijn</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Wolting</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Lay</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Tuekam</surname> <given-names>B</given-names></name>, <etal>et al</etal>. <article-title>PreBIND and Textomy–mining the biomedical literature for protein-protein interactions using a support vector machine</article-title>. <source>BMC Bioinformatics</source>. <year>2003</year>;<volume>4</volume>:<fpage>11</fpage>. <object-id pub-id-type="pmid">12689350</object-id></mixed-citation></ref>
+<ref id="pcbi.1004630.ref020"><label>20</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Blohm</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Frishman</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Smialowski</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Goebels</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Wachinger</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Ruepp</surname> <given-names>A</given-names></name>, <etal>et al</etal>. <article-title>Negatome 2.0: A database of non-interacting proteins derived by literature mining, manual annotation and protein structure analysis</article-title>. <source>Nucl Acid Res</source>. <year>2014</year>;<volume>42</volume>:<fpage>D396</fpage>–<lpage>D400</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004630.ref021"><label>21</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Czarnecki</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Nobeli</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Smith</surname> <given-names>AM</given-names></name>, <name name-style="western"><surname>Shepherd</surname> <given-names>AJ</given-names></name>. <article-title>A text-mining system for extracting metabolic reactions from full-text articles</article-title>. <source>BMC Bioinformatics</source>. <year>2012</year>;<volume>13</volume>:<fpage>172</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/1471-2105-13-172" xlink:type="simple">10.1186/1471-2105-13-172</ext-link></comment> <object-id pub-id-type="pmid">22823282</object-id></mixed-citation></ref>
+<ref id="pcbi.1004630.ref022"><label>22</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Naderi</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Witte</surname> <given-names>R</given-names></name>. <article-title>Automated extraction and semantic analysis of mutation impacts from the biomedical literature</article-title>. <source>BMC Genom</source>. <year>2012</year>;<volume>13</volume>:<fpage>S10</fpage>.</mixed-citation></ref>
+<ref id="pcbi.1004630.ref023"><label>23</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Shatkay</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Brady</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Wong</surname> <given-names>A</given-names></name>. <article-title>Text as data: Using text-based features for proteins representation and for computational prediction of their characteristics</article-title>. <source>Methods</source>. <year>2015</year>;<volume>74</volume>:<fpage>54</fpage>–<lpage>64</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.ymeth.2014.10.027" xlink:type="simple">10.1016/j.ymeth.2014.10.027</ext-link></comment> <object-id pub-id-type="pmid">25448299</object-id></mixed-citation></ref>
+<ref id="pcbi.1004630.ref024"><label>24</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Verspoor</surname> <given-names>KM</given-names></name>, <name name-style="western"><surname>Cohn</surname> <given-names>JD</given-names></name>, <name name-style="western"><surname>Ravikumar</surname> <given-names>KE</given-names></name>, <name name-style="western"><surname>Wal</surname> <given-names>ME</given-names></name>. <article-title>Text mining improves prediction of protein functional sites</article-title>. <source>PloS One</source>. <year>2012</year>;<volume>7</volume>:<fpage>e32171</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pone.0032171" xlink:type="simple">10.1371/journal.pone.0032171</ext-link></comment> <object-id pub-id-type="pmid">22393388</object-id></mixed-citation></ref>
+<ref id="pcbi.1004630.ref025"><label>25</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Papanikolaou</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Pavlopoulos</surname> <given-names>GA</given-names></name>, <name name-style="western"><surname>Theodosiou</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Iliopoulos</surname> <given-names>I</given-names></name>. <article-title>Protein-protein interaction predictions using text mining methods</article-title>. <source>Methods</source>. <year>2014</year>;<volume>74</volume>:<fpage>47</fpage>–<lpage>53</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.ymeth.2014.10.026" xlink:type="simple">10.1016/j.ymeth.2014.10.026</ext-link></comment> <object-id pub-id-type="pmid">25448298</object-id></mixed-citation></ref>
+<ref id="pcbi.1004630.ref026"><label>26</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kim</surname> <given-names>JD</given-names></name>, <name name-style="western"><surname>Ohta</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Tateisi</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Tsujii</surname> <given-names>J</given-names></name>. <article-title>GENIA corpus—a semantically annotated corpus for bio-textmining</article-title>. <source>Bioinformatics</source>. <year>2003</year>;<volume>19</volume>:<fpage>i180</fpage>–<lpage>i2</lpage>. <object-id pub-id-type="pmid">12855455</object-id></mixed-citation></ref>
+<ref id="pcbi.1004630.ref027"><label>27</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Barbosa-Silva</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Fontaine</surname> <given-names>JF</given-names></name>, <name name-style="western"><surname>Donnard</surname> <given-names>ER</given-names></name>, <name name-style="western"><surname>Stussi</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Ortega</surname> <given-names>JM</given-names></name>, <name name-style="western"><surname>Andrade-Navarro</surname> <given-names>MA</given-names></name>. <article-title>PESCADOR, a web-based tool to assist textmining of biointeractions extracted from PubMed queries</article-title>. <source>BMC Bioinformatics</source>. <year>2011</year>;<volume>12</volume>:<fpage>435</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/1471-2105-12-435" xlink:type="simple">10.1186/1471-2105-12-435</ext-link></comment> <object-id pub-id-type="pmid">22070195</object-id></mixed-citation></ref>
+<ref id="pcbi.1004630.ref028"><label>28</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Barbosa-Silva</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Soldatos</surname> <given-names>TG</given-names></name>, <name name-style="western"><surname>Magalhaes</surname> <given-names>IL</given-names></name>, <name name-style="western"><surname>Pavlopoulos</surname> <given-names>GA</given-names></name>, <name name-style="western"><surname>Fontaine</surname> <given-names>JF</given-names></name>, <name name-style="western"><surname>Andrade-Navarro</surname> <given-names>MA</given-names></name>, <etal>et al</etal>. <article-title>LAITOR—Literature Assistant for Identification of Terms co-Occurrences and Relationships</article-title>. <source>BMC Bioinformatics</source>. <year>2010</year>;<volume>11</volume>:<fpage>70</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/1471-2105-11-70" xlink:type="simple">10.1186/1471-2105-11-70</ext-link></comment> <object-id pub-id-type="pmid">20122157</object-id></mixed-citation></ref>
+<ref id="pcbi.1004630.ref029"><label>29</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Korhonen</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Seaghdha</surname> <given-names>DO</given-names></name>, <name name-style="western"><surname>Silins</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Sun</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Hogberg</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Stenius</surname> <given-names>U</given-names></name>. <article-title>Text mining for literature review and knowledge discovery in cancer risk assessment and research</article-title>. <source>PloS One</source>. <year>2012</year>;<volume>7</volume>:<fpage>e33427</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pone.0033427" xlink:type="simple">10.1371/journal.pone.0033427</ext-link></comment> <object-id pub-id-type="pmid">22511921</object-id></mixed-citation></ref>
+<ref id="pcbi.1004630.ref030"><label>30</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kim</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Wilbur</surname> <given-names>WJ</given-names></name>. <article-title>Classifying protein-protein interaction articles using word and syntactic features</article-title>. <source>BMC Bioinformatics</source>. <year>2011</year>;<volume>12</volume>(<issue>Suppl 8</issue>):<fpage>S9</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/1471-2105-12-S8-S9" xlink:type="simple">10.1186/1471-2105-12-S8-S9</ext-link></comment> <object-id pub-id-type="pmid">22151252</object-id></mixed-citation></ref>
+<ref id="pcbi.1004630.ref031"><label>31</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kim</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Kwon</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Shin</surname> <given-names>SY</given-names></name>, <name name-style="western"><surname>Wilbur</surname> <given-names>WJ</given-names></name>. <article-title>PIE the search: Searching PubMed literature for protein interaction information</article-title>. <source>Bioinformatics</source>. <year>2012</year>;<volume>28</volume>:<fpage>597</fpage>–<lpage>8</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/bioinformatics/btr702" xlink:type="simple">10.1093/bioinformatics/btr702</ext-link></comment> <object-id pub-id-type="pmid">22199390</object-id></mixed-citation></ref>
+<ref id="pcbi.1004630.ref032"><label>32</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Tudor</surname> <given-names>CO</given-names></name>, <name name-style="western"><surname>Arighi</surname> <given-names>CN</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>Q</given-names></name>, <name name-style="western"><surname>Wu</surname> <given-names>CH</given-names></name>, <name name-style="western"><surname>Vijay-Shanker</surname> <given-names>K</given-names></name>. <article-title>The eFIP system for text mining of protein interaction networks of phosphorylated proteins</article-title>. <source>Database</source>. <year>2012</year>:bas044.</mixed-citation></ref>
+<ref id="pcbi.1004630.ref033"><label>33</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Raja</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Subramani</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Natarajan</surname> <given-names>J</given-names></name>. <article-title>PPInterFinder—a mining tool for extracting causal relations on human proteins from literature</article-title>. <source>Database</source>. <year>2013</year>:bas052.</mixed-citation></ref>
+<ref id="pcbi.1004630.ref034"><label>34</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kwon</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Kim</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Shin</surname> <given-names>SY</given-names></name>, <name name-style="western"><surname>Chatr-Aryamontri</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Wilbur</surname> <given-names>WJ</given-names></name>. <article-title>Assisting manual literature curation for protein-protein interactions using BioQRator</article-title>. <source>Database</source>. <year>2014</year>:bau067.</mixed-citation></ref>
+<ref id="pcbi.1004630.ref035"><label>35</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Consortium</surname> <given-names>U</given-names></name>. <article-title>Activities at the Universal Protein Resource (UniProt)</article-title>. <source>Nucl Acid Res</source>. <year>2014</year>;<volume>42</volume>:<fpage>D191</fpage>–<lpage>D8</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004630.ref036"><label>36</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Knecht</surname> <given-names>LWS</given-names></name>, <name name-style="western"><surname>Nelson</surname> <given-names>SJ</given-names></name>. <article-title>Mapping in PubMed</article-title>. <source>J Med Lib Assoc</source>. <year>2002</year>;<volume>90</volume>:<fpage>475</fpage>–<lpage>6</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004630.ref037"><label>37</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rose</surname> <given-names>GD</given-names></name>, <name name-style="western"><surname>Geselowitz</surname> <given-names>AR</given-names></name>, <name name-style="western"><surname>Lesser</surname> <given-names>GJ</given-names></name>, <name name-style="western"><surname>Lee</surname> <given-names>RH</given-names></name>, <name name-style="western"><surname>Zehfus</surname> <given-names>MH</given-names></name>. <article-title>Hydrophobicity of amino acid residues in globular proteins</article-title>. <source>Science</source>. <year>1985</year>;<volume>229</volume>:<fpage>834</fpage>–<lpage>8</lpage>. <object-id pub-id-type="pmid">4023714</object-id></mixed-citation></ref>
+<ref id="pcbi.1004630.ref038"><label>38</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Nicholls</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Sharp</surname> <given-names>KA</given-names></name>, <string-name>B. H.</string-name> <article-title>Protein folding and association: Insights from the interfacial and thermodynamic properties of hydrocarbons</article-title>. <source>Proteins</source>. <year>1991</year>;<volume>11</volume>:<fpage>281</fpage>–<lpage>96</lpage>. <object-id pub-id-type="pmid">1758883</object-id></mixed-citation></ref>
+<ref id="pcbi.1004630.ref039"><label>39</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Martin</surname> <given-names>ACR</given-names></name>. <article-title>Mapping PDB chains to UniProtKB entries</article-title>. <source>Bioinformatics</source>. <year>2005</year>;<volume>21</volume>:<fpage>4297</fpage>–<lpage>301</lpage>. <object-id pub-id-type="pmid">16188924</object-id></mixed-citation></ref>
+<ref id="pcbi.1004630.ref040"><label>40</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jiang</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Zhai</surname> <given-names>C</given-names></name>. <article-title>An empirical study of tokenization strategies for biomedical information retrieval</article-title>. <source>Inform Retrieval</source>. <year>2007</year>;<volume>10</volume>:<fpage>341</fpage>–<lpage>63</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004630.ref041"><label>41</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Porter</surname> <given-names>MF</given-names></name>. <article-title>An algorithm for suffix stripping</article-title>. <source>Program-Electon Lib</source>. <year>1980</year>;<volume>14</volume>:<fpage>130</fpage>–<lpage>7</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004630.ref042"><label>42</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Joachims</surname> <given-names>T</given-names></name>. <chapter-title>Making large-scale support vector machine learning practical. Advances in kernel methods</chapter-title>: <publisher-name>MIT Press</publisher-name>; <year>1999</year>. p. <fpage>169</fpage>–<lpage>84</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004630.ref043"><label>43</label><mixed-citation publication-type="other" xlink:type="simple">Morik K, Brockhausen P, Joachims T. Combining statistical learning with a knowledge-based approach: A case study in intensive care monitoring. Technical Report, SFB 475: Komplexitatsreduktion in Multivariaten Datenstrukturen (No. 1999, 24). Universitat Dortmund1999.</mixed-citation></ref>
+<ref id="pcbi.1004630.ref044"><label>44</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Shatkay</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Feldman</surname> <given-names>R</given-names></name>. <article-title>Mining the biomedical literature in the genomic era: An overview</article-title>. <source>J Comp Biol</source>. <year>2003</year>;<volume>10</volume>:<fpage>821</fpage>–<lpage>55</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004630.ref045"><label>45</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Byvatov</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Fechner</surname> <given-names>U</given-names></name>, <name name-style="western"><surname>Sadowski</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Schneider</surname> <given-names>G</given-names></name>. <article-title>Comparison of support vector machine and artificial neural network systems for drug/nondrug classification</article-title>. <source>J Chem Inf Comput Sci</source>. <year>2003</year>;<volume>43</volume>:<fpage>1882</fpage>–<lpage>9</lpage>. <object-id pub-id-type="pmid">14632437</object-id></mixed-citation></ref>
+<ref id="pcbi.1004630.ref046"><label>46</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gao</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Douguet</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Tovchigrechko</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Vakser</surname> <given-names>IA</given-names></name>. <article-title>DOCKGROUND system of databases for protein recognition studies: Unbound structures for docking</article-title>. <source>Proteins</source>. <year>2007</year>;<volume>69</volume>:<fpage>845</fpage>–<lpage>51</lpage>. <object-id pub-id-type="pmid">17803215</object-id></mixed-citation></ref>
+<ref id="pcbi.1004630.ref047"><label>47</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Vakser</surname> <given-names>IA</given-names></name>. <article-title>Protein docking for low-resolution structures</article-title>. <source>Protein Eng</source>. <year>1995</year>;<volume>8</volume>:<fpage>371</fpage>–<lpage>7</lpage>. <object-id pub-id-type="pmid">7567922</object-id></mixed-citation></ref>
+<ref id="pcbi.1004630.ref048"><label>48</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Joachims</surname> <given-names>T</given-names></name>. <chapter-title>Text categorization with Support Vector Machines: Learning with many relevant features</chapter-title>. In: <name name-style="western"><surname>Nedellec</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Rouveirol</surname> <given-names>C</given-names></name>, editors. <source>Machine Learning: ECML-98</source>. <publisher-loc>Berlin Heidelberg</publisher-loc>: <publisher-name>Springer</publisher-name>; <year>1998</year>. p. <fpage>137</fpage>–<lpage>42</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004630.ref049"><label>49</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Ozgur</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Ozgur</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Gungor</surname> <given-names>T</given-names></name>. <chapter-title>Text categorization with class-based and corpus-based keyword selection</chapter-title>. <source>Computer and Information Sciences-ISCIS 2005</source>: <publisher-name>Springer</publisher-name>; <year>2005</year>. p. <fpage>606</fpage>–<lpage>15</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004630.ref050"><label>50</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jamal</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Mohd</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Noah</surname> <given-names>SA</given-names></name>. <article-title>Poetry classification using support vector machines</article-title>. <year>2012</year>;<volume>8</volume>:<fpage>1441</fpage>.</mixed-citation></ref>
+<ref id="pcbi.1004630.ref051"><label>51</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wong</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Shatkay</surname> <given-names>H</given-names></name>. <article-title>Protein function prediction using text-based features extracted from the biomedical literature: The CAFA challenge</article-title>. <source>BMC Bioinformatics</source>. <year>2013</year>;<volume>14</volume>(<issue>Suppl 3</issue>):<fpage>S14</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/1471-2105-14-S3-S14" xlink:type="simple">10.1186/1471-2105-14-S3-S14</ext-link></comment> <object-id pub-id-type="pmid">23514326</object-id></mixed-citation></ref>
+<ref id="pcbi.1004630.ref052"><label>52</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Koyama</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Baba</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Matsuda</surname> <given-names>T</given-names></name>. <article-title>Intracerebroventricular administration of an endothelin ETB receptor agonist increases expression of tissue inhibitor of matrix metalloproteinase-1 and -3 in rat brain</article-title>. <source>Neuroscience</source>. <year>2007</year>;<volume>147</volume>:<fpage>620</fpage>–<lpage>30</lpage>. <object-id pub-id-type="pmid">17555880</object-id></mixed-citation></ref>
+<ref id="pcbi.1004630.ref053"><label>53</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Liu</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Gao</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Vakser</surname> <given-names>IA</given-names></name>. <article-title>DOCKGROUND protein-protein docking decoy set</article-title>. <source>Bioinformatics</source>. <year>2008</year>;<volume>24</volume>:<fpage>2634</fpage>–<lpage>5</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/bioinformatics/btn497" xlink:type="simple">10.1093/bioinformatics/btn497</ext-link></comment> <object-id pub-id-type="pmid">18812365</object-id></mixed-citation></ref>
+</ref-list>
+</back>
+</article>

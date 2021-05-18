@@ -1,0 +1,937 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="3.0" xml:lang="en">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">ploscomp</journal-id>
+<journal-title-group>
+<journal-title>PLOS Computational Biology</journal-title>
+</journal-title-group>
+<issn pub-type="ppub">1553-734X</issn>
+<issn pub-type="epub">1553-7358</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pcbi.1004127</article-id>
+<article-id pub-id-type="publisher-id">PCOMPBIOL-D-14-00924</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+</article-categories>
+<title-group>
+<article-title>Microbial Forensics: Predicting Phenotypic Characteristics and Environmental Conditions from Large-Scale Gene Expression Profiles</article-title>
+<alt-title alt-title-type="running-head">Predicting Environmental Parameters from Gene Expression</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Kim</surname>
+<given-names>Minseung</given-names>
+</name>
+<xref rid="aff001" ref-type="aff"><sup>1</sup></xref>
+<xref rid="aff002" ref-type="aff"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Zorraquino</surname>
+<given-names>Violeta</given-names>
+</name>
+<xref rid="aff002" ref-type="aff"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Tagkopoulos</surname>
+<given-names>Ilias</given-names>
+</name>
+<xref rid="aff001" ref-type="aff"><sup>1</sup></xref>
+<xref rid="aff002" ref-type="aff"><sup>2</sup></xref>
+<xref rid="cor001" ref-type="corresp">*</xref>
+</contrib>
+</contrib-group>
+<aff id="aff001"><label>1</label> <addr-line>Department of Computer Science, University of California, Davis, Davis, California, United States of America</addr-line></aff>
+<aff id="aff002"><label>2</label> <addr-line>UC Davis Genome Center, University of California, Davis, Davis, California, United States of America</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Troyanskaya</surname>
+<given-names>Olga G.</given-names>
+</name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>Princeton University, United States of America</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<fn fn-type="con" id="contrib001">
+<p>Conceived and designed the experiments: IT. Performed the experiments: MK VZ. Analyzed the data: IT MK VZ. Contributed reagents/materials/analysis tools: MK VZ. Wrote the paper: MK VZ IT.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">itagkopoulos@ucdavis.edu</email></corresp>
+</author-notes>
+<pub-date pub-type="epub">
+<day>16</day>
+<month>3</month>
+<year>2015</year>
+</pub-date>
+<pub-date pub-type="collection">
+<month>3</month>
+<year>2015</year>
+</pub-date>
+<volume>11</volume>
+<issue>3</issue>
+<elocation-id>e1004127</elocation-id>
+<history>
+<date date-type="received">
+<day>26</day>
+<month>5</month>
+<year>2014</year>
+</date>
+<date date-type="accepted">
+<day>14</day>
+<month>1</month>
+<year>2015</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2015</copyright-year>
+<copyright-holder>Kim et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pcbi.1004127" xlink:type="simple"/>
+<abstract>
+<p>A tantalizing question in cellular physiology is whether the cellular state and environmental conditions can be inferred by the expression signature of an organism. To investigate this relationship, we created an extensive normalized gene expression compendium for the bacterium <italic>Escherichia coli</italic> that was further enriched with meta-information through an iterative learning procedure. We then constructed an ensemble method to predict environmental and cellular state, including strain, growth phase, medium, oxygen level, antibiotic and carbon source presence. Results show that gene expression is an excellent predictor of environmental structure, with multi-class ensemble models achieving balanced accuracy between 70.0% (±3.5%) to 98.3% (±2.3%) for the various characteristics. Interestingly, this performance can be significantly boosted when environmental and strain characteristics are simultaneously considered, as a composite classifier that captures the inter-dependencies of three characteristics (medium, phase and strain) achieved 10.6% (±1.0%) higher performance than any individual models. Contrary to expectations, only 59% of the top informative genes were also identified as differentially expressed under the respective conditions. Functional analysis of the respective genetic signatures implicates a wide spectrum of Gene Ontology terms and KEGG pathways with condition-specific information content, including iron transport, transferases, and enterobactin synthesis. Further experimental phenotypic-to-genotypic mapping that we conducted for knock-out mutants argues for the information content of top-ranked genes. This work demonstrates the degree at which genome-scale transcriptional information can be predictive of latent, heterogeneous and seemingly disparate phenotypic and environmental characteristics, with far-reaching applications.</p>
+</abstract>
+<abstract abstract-type="summary">
+<title>Author Summary</title>
+<p>The transcriptional profile of an organism contains clues about the environmental context in which it has evolved and currently lives, its behavior and cellular state. It is yet unclear, however, how much information can be efficiently extracted and how it can be used to classify new samples with respect to their environmental and genetic characteristics. Here, we have constructed an extensive transcriptome compendium of <italic>Escherichia coli</italic> that we have further enriched via an iterative learning approach. We then apply an ensemble of various machine learning algorithms to infer environmental and cellular information such as strain, growth phase, medium, oxygen level, antibiotic and carbon source. Functional analysis of the most informative genes provides mechanistic insights and palpable hypotheses regarding their role in each environmental or genetic context. Our work argues that genome-scale gene expression can be a multi-purpose marker for identifying latent, heterogeneous cellular and environmental states and that optimal classification can be achieved with a feature set of a couple hundred genes that might not necessarily have the most pronounced differential expression in the respective conditions.</p>
+</abstract>
+<funding-group>
+<funding-statement>This work was supported by the NSF CAREER award CCF-1254205, MCB-1254205, OCI-0941360 and DOD Army Research Office award W911NF-12-1-023 to IT. The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="5"/>
+<table-count count="2"/>
+<page-count count="21"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability" xlink:type="simple">
+<meta-name>Data Availability</meta-name>
+<meta-value>All relevant data are within the paper and its Supporting Information files.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>Genome-scale transcriptional profiling has become a standard and relatively inexpensive way to identify the overall cellular state and condition-specific cellular responses to external stimuli. For instance, different sets of genes are known to be active in each growth phase and medium [<xref rid="pcbi.1004127.ref001" ref-type="bibr">1</xref>], while strain polymorphisms can result in a remarkably diverse transcriptional repertoire [<xref rid="pcbi.1004127.ref002" ref-type="bibr">2</xref>,<xref rid="pcbi.1004127.ref003" ref-type="bibr">3</xref>]. Similarly, it is known that bacterial organisms undergoing rapid adaptations to varying environments, such as heat-shock and osmotic stress, produce differential expression profiles that are indicative of the corresponding stress [<xref rid="pcbi.1004127.ref004" ref-type="bibr">4</xref>–<xref rid="pcbi.1004127.ref009" ref-type="bibr">9</xref>]. Genome-wide transcriptional profiling can be thought of as a complex representation of all cellular functions and states, with a wealth of multiplexed information that, if decoded efficiently, can provide a fast and quite accurate all-encompassing snapshot of the cell and its environment.</p>
+<p>Despite its obvious correlation with various physiological and cellular states, we lack a clear understanding of the information content related to the manifold phenotypes that can be extracted from the genome-scale transcription profiles. Until now, a significant obstacle was the absence of sufficient transcriptional data to support the training of multi-feature and multi-label classifiers. Indeed, after aggregating all high-throughput transcriptional data that is currently available for <italic>E</italic>. <italic>coli</italic>, the most well-studied model microbe, we are still limited to a few thousands microarray or RNA-Seq experiments that cover more than 30 strains, a dozen different media and a multitude of other genetic (knock-out, over-expressions, re-wirings), or environmental (carbon limitation, chemicals, abiotic factors) perturbations. Although this collection has already increased by an order of magnitude from the roughly two hundred genome-wide transcriptional profiles that we had eight years ago, it is still an inadequate sampling of the relevant experimental space. In addition, since these experiments have been performed in different technological platforms (e.g. Affymetrix <italic>E</italic>. <italic>coli</italic> Genome 2.0, Affymetrix <italic>E</italic>. <italic>coli</italic> Antisense) and technologies (e.g. microarrays vs. RNA-Seq), in different labs and under different environmental conditions, appropriate normalization schemes are both of paramount importance and with an added complexity. As such, efficient training of machine learning methods is hindered due to data complexity, compatibility and the curse of dimensionality that plagues datasets with thousands of features (genes) but only a few samples (conditions).</p>
+<p>The application of high-dimensional prediction algorithms has been widespread in biology ranging from gene function prediction [<xref rid="pcbi.1004127.ref010" ref-type="bibr">10</xref>–<xref rid="pcbi.1004127.ref012" ref-type="bibr">12</xref>], disease risk estimation from inherited variants [<xref rid="pcbi.1004127.ref013" ref-type="bibr">13</xref>], and network inference [<xref rid="pcbi.1004127.ref014" ref-type="bibr">14</xref>–<xref rid="pcbi.1004127.ref018" ref-type="bibr">18</xref>], but the vast majority of these studies are confined to the use of transcriptional data on pathological, pharmacological and clinical predictions [<xref rid="pcbi.1004127.ref019" ref-type="bibr">19</xref>–<xref rid="pcbi.1004127.ref025" ref-type="bibr">25</xref>]. Interestingly, a <italic>Saccharomyces cerevisiae</italic> study that involved tens of data samples was able to predict growth rates [<xref rid="pcbi.1004127.ref026" ref-type="bibr">26</xref>], while a multi-class stressor prediction in rice used five hundred transcription profiles [<xref rid="pcbi.1004127.ref027" ref-type="bibr">27</xref>]. More recently, a probabilistic human tissue and cell type predictor was built based solely on gene expression profiles [<xref rid="pcbi.1004127.ref028" ref-type="bibr">28</xref>].</p>
+<p>In this work, we investigate how well we can predict cellular and environmental state from genome-wide expression, using known gene expression profiles as our only training data. We report the optimal number of features for each classification task, what these features are, and all relevant pathways. To achieve this, we have extended, normalized and annotated a compendium that was compiled recently [<xref rid="pcbi.1004127.ref029" ref-type="bibr">29</xref>] to incorporate all published high-quality Affymetrix microarray and RNA-Seq datasets in <italic>E</italic>. <italic>coli</italic> (2258 samples in total, <xref rid="pcbi.1004127.g001" ref-type="fig">Fig. 1A</xref>). This <italic>E</italic>. <italic>coli</italic> Gene Expression Compendium (<italic>Eco</italic>GEC), consists of publicly available data that were curated from online public databases such as GEO [<xref rid="pcbi.1004127.ref030" ref-type="bibr">30</xref>], ArrayExpress [<xref rid="pcbi.1004127.ref031" ref-type="bibr">31</xref>], SRA [<xref rid="pcbi.1004127.ref032" ref-type="bibr">32</xref>], SMD [<xref rid="pcbi.1004127.ref033" ref-type="bibr">33</xref>], M3D [<xref rid="pcbi.1004127.ref034" ref-type="bibr">34</xref>] and PortEco [<xref rid="pcbi.1004127.ref035" ref-type="bibr">35</xref>]. To increase the compatibility among the various arrays, we adjusted batch-effects across data from different sources and devised a statistical normalization scheme that significantly removed biases (see <xref rid="sec007" ref-type="sec">Methods</xref>; <xref rid="pcbi.1004127.g001" ref-type="fig">Fig. 1B</xref>, <xref rid="pcbi.1004127.t001" ref-type="table">Table 1</xref>). Concomitantly, we developed an iterative learning procedure to impute unannotated or mis-labeled data and used it to increase the quality of the resulting datasets (<xref rid="pcbi.1004127.g002" ref-type="fig">Fig. 2A</xref>). By applying four different machine-learning algorithms on the <italic>Eco</italic>GEC compendium (<xref rid="pcbi.1004127.g002" ref-type="fig">Fig. 2B</xref>), we predicted six different organism and environmental variables from gene expression profiles related to medium, growth phase, strain, aerobic conditions, antibiotics and carbon sources present (<xref rid="pcbi.1004127.g002" ref-type="fig">Fig. 2C</xref>). Functional, network and mechanistic analysis of the highly-informative features provide a comprehensive map of the implicated genes and pathways.</p>
+<fig id="pcbi.1004127.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004127.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>Compendium analysis and normalization.</title>
+<p><bold>(A)</bold> The <italic>E</italic>. <italic>coli</italic> Gene Expression Compendium (<italic>Eco</italic>GEC) is constructed from raw genome-wise transcriptional data <bold>(B)</bold> Principal Component Analysis on the <italic>Eco</italic>GEC before (inset) and after (main) normalization through linear transformation. p1 and p2 represent first and second principal component respectively. Platform biases are corrected by performing platform-specific categorization of gene expression values.</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004127.g001" position="float" xlink:type="simple"/>
+</fig>
+<fig id="pcbi.1004127.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004127.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>Gene expression compendium and classification workflow.</title>
+<p>The workflow is divided into three steps: <bold>(A)</bold> data preprocessing that combines RNA-Seq and microarray datasets. <italic>EcoGEC</italic> is categorized into three differential expression bins (under-expressed, UE; wild-type, WT; over-expressed OE) and pre-processed for batch-effect and bias correction. <bold>(B)</bold> model training, where parameters are trained based on four different machine learning methods for each of the classification tasks, and <bold>(C)</bold> model testing where new samples are assigned to the class labels that have the majority of votes from 4 prediction methods for each of the eight characteristic predictors.</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004127.g002" position="float" xlink:type="simple"/>
+</fig>
+<table-wrap id="pcbi.1004127.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004127.t001</object-id>
+<label>Table 1</label> <caption><title>Class label distributions.</title></caption>
+<alternatives>
+<graphic id="pcbi.1004127.t001g" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004127.t001" xlink:type="simple"/>
+<table>
+<colgroup span="1">
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+</colgroup>
+<thead>
+<tr>
+<th rowspan="2" align="left" colspan="1"/>
+<th colspan="14" align="center" rowspan="1">Classes</th>
+</tr>
+<tr>
+<th colspan="2" align="center" rowspan="1">Medium</th>
+<th colspan="2" align="center" rowspan="1">Strain</th>
+<th colspan="2" align="center" rowspan="1">Phase</th>
+<th colspan="2" align="center" rowspan="1">Oxygen</th>
+<th colspan="2" align="center" rowspan="1">Nor</th>
+<th colspan="2" align="center" rowspan="1">Amp</th>
+<th colspan="2" align="center" rowspan="1">Carbon</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>Class Labels</bold></td>
+<td align="left" rowspan="1" colspan="1">LB</td>
+<td align="left" rowspan="1" colspan="1">1356</td>
+<td align="left" rowspan="1" colspan="1">MG1655</td>
+<td align="left" rowspan="1" colspan="1">1368</td>
+<td align="left" rowspan="1" colspan="1">E-Exp</td>
+<td align="left" rowspan="1" colspan="1">148</td>
+<td align="left" rowspan="1" colspan="1">Y</td>
+<td align="left" rowspan="1" colspan="1">2178</td>
+<td align="left" rowspan="1" colspan="1">Y</td>
+<td align="left" rowspan="1" colspan="1">227</td>
+<td align="left" rowspan="1" colspan="1">Y</td>
+<td align="left" rowspan="1" colspan="1">56</td>
+<td align="left" rowspan="1" colspan="1">Glucose</td>
+<td align="left" rowspan="1" colspan="1">471</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">M9</td>
+<td align="left" rowspan="1" colspan="1">301</td>
+<td align="left" rowspan="1" colspan="1">BW25113</td>
+<td align="left" rowspan="1" colspan="1">148</td>
+<td align="left" rowspan="1" colspan="1">ML-Exp</td>
+<td align="left" rowspan="1" colspan="1">1368</td>
+<td align="left" rowspan="1" colspan="1">N</td>
+<td align="left" rowspan="1" colspan="1">64</td>
+<td align="left" rowspan="1" colspan="1">N</td>
+<td align="left" rowspan="1" colspan="1">2015</td>
+<td align="left" rowspan="1" colspan="1">N</td>
+<td align="left" rowspan="1" colspan="1">2186</td>
+<td align="left" rowspan="1" colspan="1">Glycerol</td>
+<td align="left" rowspan="1" colspan="1">94</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">MOPS</td>
+<td align="left" rowspan="1" colspan="1">86</td>
+<td align="left" rowspan="1" colspan="1">EMG2</td>
+<td align="left" rowspan="1" colspan="1">132</td>
+<td align="left" rowspan="1" colspan="1">Stat</td>
+<td align="left" rowspan="1" colspan="1">132</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Acetate</td>
+<td align="left" rowspan="1" colspan="1">49</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Others</td>
+<td align="left" rowspan="1" colspan="1">499</td>
+<td align="left" rowspan="1" colspan="1">Others</td>
+<td align="left" rowspan="1" colspan="1">594</td>
+<td align="left" rowspan="1" colspan="1">Missing</td>
+<td align="left" rowspan="1" colspan="1">601</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Others</td>
+<td align="left" rowspan="1" colspan="1">1628</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>Baseline</bold></td>
+<td colspan="2" align="left" rowspan="1">60.4%</td>
+<td colspan="2" align="left" rowspan="1">61%</td>
+<td colspan="2" align="left" rowspan="1">61%</td>
+<td colspan="2" align="left" rowspan="1">97.1%</td>
+<td colspan="2" align="left" rowspan="1">89.8%</td>
+<td colspan="2" align="left" rowspan="1">97.5%</td>
+<td colspan="2" align="left" rowspan="1">72%</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+</sec>
+<sec id="sec002" sec-type="results">
+<title>Results</title>
+<sec id="sec003">
+<title>Accurate prediction of genetic and environmental parameters requires a small, informative gene set</title>
+<p>We first investigated how many genes are required to achieve optimal performance and the minimum number of genes with near-optimal performance, defined as 2% reduction from the optimal balanced accuracy. As shown in <xref rid="pcbi.1004127.g003" ref-type="fig">Fig. 3A</xref>, in most cases the cumulative information content is asymptotically approaching a maximal value within a few hundred genes. The balanced accuracy profile of the different predictors spans a large spectrum of behaviors, from profiles that are optimal early on, such as in the case of the <italic>medium</italic> classifier where the 150 first genes are sufficient for accurate classification, to profiles that rise slowly, as in the case of the <italic>composite</italic> classifier, which is defined as the model that classify classifies 3 characteristics of medium, phase, strain altogether. In general, however, our results show that the subset of genes that is needed to achieve high balanced classification accuracy is neither a handful of biomarkers, nor a large gene set, with all cases achieving near-optimal performance with 100 to 400 genes. In the most extreme case of the composite classifier, a near-optimal balanced accuracy (70.26%) can be achieved with less than 400 genes, which is close to its maximum performance (71.55%) that is achieved when considering all 4166 genes. To investigate the relationship of data size with classification performance, we systematically reduced the dataset, keeping a balanced class/label distribution. Our results argue that although there is an expected reduction in classification performance, as the dataset is progressively reduced by up to 75%, the method is quite robust with an average reduction of 6% classification performance per quartile reduction in data size (<xref rid="pcbi.1004127.s005" ref-type="supplementary-material">S1 Table</xref>).</p>
+<fig id="pcbi.1004127.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004127.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title>Classification performance.</title>
+<p><bold>(A)</bold> Balanced accuracy in testing set for the 8 classification tasks as a function of number of genes selected. Genes (x-axis) are ordered by the mutual information of their expression to the predictor variable. For each classifier, the optimal number of features (derived from the training data) and the minimum number of genes at near-optimal (within 2%) classification are shown in the legend (first and second value, respectively). <bold>(B)</bold> Leave-one-batch-out cross-validation, with the training and testing balanced accuracy for each classifier is compared with the baseline. The baseline is estimated by dividing the maximum accuracy (100) by the number of classes for any given characteristic. <bold>(C)</bold> Combined multi-modal predictions using a set of individual classifiers. The parameter k represents the number of characteristics to be classified (two antibiotics, <italic>aerobic or anaerobic respiration, medium, phase</italic> and <italic>strain</italic>), represents all possible combinations and increases from 2 to 7 (x-axis). The average accuracy for each combination of k characteristics to be predicted is reported. <bold>(D)</bold> ROC curve (left) and PR curve (right) for predictor of each characteristic (TPR; true-positive rate, FPR; false-positive rate, E-Exp; early exponential phase, M/L-Exp; mid/late exponential phase, Stat; stationary phase).</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004127.g003" position="float" xlink:type="simple"/>
+</fig>
+<p>In all cases, the classification performance is significantly higher than the balanced baseline (Mann-Whitney-Wilkoxon test, <italic>P</italic> &lt; 2.398 × 10<sup>−3</sup>), with the balanced accuracy of all classifiers ranging between 69.95% (±3.52%) to 98.27% (±2.32%) (<xref rid="pcbi.1004127.g003" ref-type="fig">Fig. 3B</xref>, <xref rid="pcbi.1004127.s006" ref-type="supplementary-material">S2 Table</xref>). For predicting the growth phase, we first imputed any unannotated phase information, which accounted for 34% of the compendium. We used a learning approach in which missing data is inferred iteratively. This preprocessing step was found to substantially increase the classification performance when evaluated across all classification tasks by an average of 7.3% and as much as 22% in some cases (<xref rid="pcbi.1004127.s001" ref-type="supplementary-material">S1 Fig.</xref>, <xref rid="pcbi.1004127.s002" ref-type="supplementary-material">S2A Fig.</xref>, <xref rid="pcbi.1004127.s002" ref-type="supplementary-material">S2C Fig.</xref>, <xref rid="pcbi.1004127.s007" ref-type="supplementary-material">S3 Table</xref>, <xref rid="pcbi.1004127.s008" ref-type="supplementary-material">S4 Table</xref>). Interestingly, by following this approach, we were able to infer the characteristics from 90.6% of the unannotated phase data (<xref rid="pcbi.1004127.s002" ref-type="supplementary-material">S2B Fig.</xref>). The iterative learning method does not significantly decrease the MI levels that are observed when compared to those obtained from the original dataset and the gene ranking is mostly preserved (<xref rid="pcbi.1004127.s009" ref-type="supplementary-material">S5 Table</xref>, <italic>Kendall tau rank</italic> correlation: τ = 0.714, <italic>P</italic> &lt; 2.2 10<sup>−16</sup>). The simultaneous prediction of all seven characteristics of a sample using seven individual classifiers yields an accuracy of 84.21% (±1.39%) (<xref rid="pcbi.1004127.g003" ref-type="fig">Fig. 3C</xref>). To create the necessary training set for the simultaneous prediction of three characteristics (<italic>medium, phase</italic> and <italic>strain</italic>), we had to reduce the amount of classes to 13 due to insufficient data (see <xref rid="sec007" ref-type="sec">Methods</xref>). Interestingly, the composite classifier that simultaneously selects one of the 13 classes, has an increased accuracy (71.55% ± 3.07%) to that of individual classifiers on the same class types (61.23% ± 2.33%) and it is significantly higher than the baseline (37% and 7.14% for balanced and imbalanced baseline accuracy, respectively). Altogether, the results suggest that multiple environmental and cellular features of an organism can be precisely predicted from a set of individual classifiers, by using a small, targeted gene set.</p>
+<p><xref rid="pcbi.1004127.t002" ref-type="table">Table 2</xref> and <xref rid="pcbi.1004127.s010" ref-type="supplementary-material">S6 Table</xref> contain the contingency tables of each classifier and <xref rid="pcbi.1004127.g003" ref-type="fig">Fig. 3D</xref> depicts the corresponding ROC and PR curves [<xref rid="pcbi.1004127.ref036" ref-type="bibr">36</xref>]. The overall AUC of the ROC curves exceeds 0.82, except in the case of stationary phase (0.71). This result is likely due to the high noise level and low sampling size for that class, which dilutes discriminatory features between the mid/late exponential and stationary phases. In the contingency table of the composite classifier (<xref rid="pcbi.1004127.t002" ref-type="table">Table 2</xref>), the lowest classification case was observed in the case of “Others” (58/179 samples). This is expected, since that class corresponds to samples that either are missing data or represent classes that have low sample sizes and are grouped together.</p>
+<table-wrap id="pcbi.1004127.t002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004127.t002</object-id>
+<label>Table 2</label> <caption><title>Contingency table of composite classifier.</title></caption>
+<alternatives>
+<graphic id="pcbi.1004127.t002g" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004127.t002" xlink:type="simple"/>
+<table>
+<colgroup span="1">
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+</colgroup>
+<thead>
+<tr>
+<th rowspan="2" colspan="2" align="center"/>
+<th colspan="14" align="center" rowspan="1">Predicted Medium/Phase/Strain</th>
+</tr>
+<tr>
+<th align="left" rowspan="1" colspan="1">LEM</th>
+<th align="left" rowspan="1" colspan="1">LEB</th>
+<th align="left" rowspan="1" colspan="1">LEE</th>
+<th align="left" rowspan="1" colspan="1">LEO</th>
+<th align="left" rowspan="1" colspan="1">9EM</th>
+<th align="left" rowspan="1" colspan="1">9EB</th>
+<th align="left" rowspan="1" colspan="1">9EO</th>
+<th align="left" rowspan="1" colspan="1">MEM</th>
+<th align="left" rowspan="1" colspan="1">MEB</th>
+<th align="left" rowspan="1" colspan="1">OEM</th>
+<th align="left" rowspan="1" colspan="1">OEE</th>
+<th align="left" rowspan="1" colspan="1">OEO</th>
+<th align="left" rowspan="1" colspan="1">O</th>
+<th align="left" rowspan="1" colspan="1">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>Known Medium/Phase/Strain</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>LEM</bold></td>
+<td align="left" rowspan="1" colspan="1">822</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">1</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">8</td>
+<td align="left" rowspan="1" colspan="1">831</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"><bold>LEB</bold></td>
+<td align="left" rowspan="1" colspan="1">3</td>
+<td align="left" rowspan="1" colspan="1">97</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">1</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">1</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">1</td>
+<td align="left" rowspan="1" colspan="1">1</td>
+<td align="left" rowspan="1" colspan="1">104</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"><bold>LEE</bold></td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">41</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">11</td>
+<td align="left" rowspan="1" colspan="1">54</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"><bold>LEO</bold></td>
+<td align="left" rowspan="1" colspan="1">13</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">250</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">1</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">3</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">271</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"><bold>9EM</bold></td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">1</td>
+<td align="left" rowspan="1" colspan="1">215</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">216</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"><bold>9EB</bold></td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">30</td>
+<td align="left" rowspan="1" colspan="1">1</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">31</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"><bold>9EO</bold></td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">1</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">49</td>
+<td align="left" rowspan="1" colspan="1">1</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">1</td>
+<td align="left" rowspan="1" colspan="1">52</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"><bold>MEM</bold></td>
+<td align="left" rowspan="1" colspan="1">3</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">50</td>
+<td align="left" rowspan="1" colspan="1">3</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">58</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"><bold>MEB</bold></td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">1</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">1</td>
+<td align="left" rowspan="1" colspan="1">22</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">24</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"><bold>OEM</bold></td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">1</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">1</td>
+<td align="left" rowspan="1" colspan="1">1</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">174</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">1</td>
+<td align="left" rowspan="1" colspan="1">8</td>
+<td align="left" rowspan="1" colspan="1">188</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"><bold>OEE</bold></td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">1</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">29</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">5</td>
+<td align="left" rowspan="1" colspan="1">35</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"><bold>OEO</bold></td>
+<td align="left" rowspan="1" colspan="1">4</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">3</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">186</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">199</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"><bold>O</bold></td>
+<td align="left" rowspan="1" colspan="1">31</td>
+<td align="left" rowspan="1" colspan="1">9</td>
+<td align="left" rowspan="1" colspan="1">15</td>
+<td align="left" rowspan="1" colspan="1">18</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">1</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">20</td>
+<td align="left" rowspan="1" colspan="1">3</td>
+<td align="left" rowspan="1" colspan="1">22</td>
+<td align="left" rowspan="1" colspan="1">58</td>
+<td align="left" rowspan="1" colspan="1">179</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"><bold>Total</bold></td>
+<td align="left" rowspan="1" colspan="1">880</td>
+<td align="left" rowspan="1" colspan="1">111</td>
+<td align="left" rowspan="1" colspan="1">57</td>
+<td align="left" rowspan="1" colspan="1">277</td>
+<td align="left" rowspan="1" colspan="1">217</td>
+<td align="left" rowspan="1" colspan="1">30</td>
+<td align="left" rowspan="1" colspan="1">52</td>
+<td align="left" rowspan="1" colspan="1">53</td>
+<td align="left" rowspan="1" colspan="1">25</td>
+<td align="left" rowspan="1" colspan="1">199</td>
+<td align="left" rowspan="1" colspan="1">32</td>
+<td align="left" rowspan="1" colspan="1">213</td>
+<td align="left" rowspan="1" colspan="1">96</td>
+<td align="left" rowspan="1" colspan="1">2242</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t002fn001"><p>(1) LEM, LB medium + mid/late exponential phase + MG1655; (2) LEB, LB medium + mid/late exponential phase + BW25113; (3) LEE, LB medium + mid/late exponential phase + EMG2; (4) LEO, LB medium + mid/late exponential phase + strains other than MG1655, BW25133 and EMG2; (5) 9EM, M9 + mid/late exponential phase + MG1655; (6) 9EB, M9 + mid/late exponential phase + BW25113; (7) 9EO, M9 + mid/late exponential phase + strains other than MG1655, BW25133 and EMG2; (8) MEM, MOPS + mid/late exponential phase + MG1655; (9) MEB, MOPS + mid/late exponential phase + BW25113; (10) OEM, the other medium that is not LB, M9, or MOPS + mid/late exponential phase + MG1655; (11) OEE, the other medium that is not LB, M9, and MOPS + mid/late exponential + EMG2; (12) OEO, the other medium that is not LB, M9, or MOPS + mid/late exponential phase + the other strain that is not MG1655, BW25113, or EMG2; (12) O, the others that don’t belong to any of thirteen classes</p></fn>
+</table-wrap-foot>
+</table-wrap>
+</sec>
+<sec id="sec004">
+<title>Biomarker discovery through functional and network analysis</title>
+<p>Next, we investigated which genes have the highest information content and the respective pathways they belong to. The decrease of mutual information in ranked genes follows an inverse logarithmic relationship (<xref rid="pcbi.1004127.g004" ref-type="fig">Fig. 4A</xref> and <xref rid="pcbi.1004127.s009" ref-type="supplementary-material">S5 Table</xref>). For each classifier, we selected the gene subset that accounts for the top 10% of the mutual information content of all genes, yielding feature sets that range from 49 to 136 genes. The overlap among classifiers is substantial: 141 out of a total 715 informative genes (19.7%) are present in two or more different classifiers (<xref rid="pcbi.1004127.g004" ref-type="fig">Fig. 4B</xref>). Functional enrichment analysis of the most informative genes reveals a rich repertoire of biological processes where their differential enrichment is discriminative of each specific class (<xref rid="pcbi.1004127.g005" ref-type="fig">Fig. 5</xref>, <xref rid="pcbi.1004127.s011" ref-type="supplementary-material">S7 Table</xref>). Not surprisingly, in the case of the aerobic respiration classifier enriched functional categories include cellular respiration (<italic>P</italic> &lt; 3.1 × 10<sup>−4</sup>). Similarly, for phase and strain classifier, organic acid biosynthesis (<italic>P</italic> &lt; 2.7 × 10<sup>−4</sup>) and nitrogen biosynthesis (<italic>P</italic> &lt; 1.2 × 10<sup>−3</sup>) are up-regulated, respectively. Genes that are related to carbohydrate metabolism (<italic>P</italic> &lt; 6.1 × 10<sup>−7</sup>) are noticeably most informative to classify different carbon sources as well as strains. Some functional characteristics were statistically significant across multiple classifiers, including cell wall/peptidoglycan (<italic>P</italic> &lt; 2.7 × 10<sup>−7</sup>) and ATP-binding (<italic>P</italic> &lt; 1.5 × 10<sup>−8</sup>), hydrolases (<italic>P</italic> &lt; 9.1 × 10<sup>−6</sup>), membrane (<italic>P</italic> &lt; 4.1 × 10<sup>−6</sup>), ribosome (<italic>P</italic> &lt; 2.2 × 10<sup>−7</sup>) and transport (<italic>P</italic> &lt; 4.2 × 10<sup>−6</sup>) (<xref rid="pcbi.1004127.g004" ref-type="fig">Fig. 4C</xref>). The global pathway map in <xref rid="pcbi.1004127.g005" ref-type="fig">Fig. 5</xref> depicts that most informative genes that were found to belong in five pathway groups: biosynthesis, signal transduction, degradation, transporter and central metabolism. For the composite classification of medium, strain and phase, relevant pathways are implicated with signal transduction, degradation, and transport (<xref rid="pcbi.1004127.g005" ref-type="fig">Fig. 5A</xref>). Moreover, genes for phase classification are enriched in biosynthesis (<italic>P</italic> &lt; 4.3 × 10<sup>−7</sup>) which is in agreement with previous studies that report the prevalence of phase-dependent transcriptional regulation in a variety of biosynthetic processes [<xref rid="pcbi.1004127.ref037" ref-type="bibr">37</xref>–<xref rid="pcbi.1004127.ref039" ref-type="bibr">39</xref>]. <xref rid="pcbi.1004127.g005" ref-type="fig">Fig. 5B</xref> provides a more detailed view of the regional network involved in biosynthesis and transport, highlighting the pathways that would be most informative to classify various bacterial characteristics. Highly informative genes involved in specific pathways (e.g. glutamate biosynthesis I, histidine, purine, and pyrimidine biosynthesis and glycerol-3-phophate/glycerol phophodiester ABC transporter) have a crucial role from a functional network perspective, either by being a hub or their first-order neighbors in an identical pathway group.</p>
+<fig id="pcbi.1004127.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004127.g004</object-id>
+<label>Fig 4</label>
+<caption>
+<title>Feature and functional enrichment analysis.</title>
+<p><bold>(A)</bold> Mutual information (MI) content for each of the 8 classifiers. The 4166 genes are sorted by decreasing order of their MI. Solid and dashed lines correspond to empirical data and inverse log-linear fitting, respectively. <bold>(B)</bold> The common set of the most informative genes across different classifiers. For each of the 8 classifiers, genes that account for top 10% of MI of all genes are extracted (side bars depict the size of the corresponding gene set). The top histogram depicts the size of the unique features (genes) per classifier. <bold>(C)</bold> Functional annotations of the selected features for each classifier. The six most significantly enriched ontology terms are depicted. As some of functional terms were synonyms, we extract the non-duplicated associated terms. Ratios represent the proportion of the specific ontology terms present in a MI gene set.</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004127.g004" position="float" xlink:type="simple"/>
+</fig>
+<fig id="pcbi.1004127.g005" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004127.g005</object-id>
+<label>Fig 5</label>
+<caption>
+<title>Highly informative genes on a genetic interaction network.</title>
+<p><bold>(A)</bold> Genes are grouped into five separate modules that are distinct from the core network. Ontology of pathways and compositions of transporter complexes are based on EcoCyc for <italic>E</italic>. <italic>coli</italic> K-12 MG1655. Green edges represent genetic interactions identified in [<xref rid="pcbi.1004127.ref047" ref-type="bibr">47</xref>]. Histograms show frequencies of MI genes for different classifiers for 5 pathway modules. <bold>(B)</bold> A higher resolution representation for the biosynthesis and transporter complex pathways that are highly enriched in a number of classifiers. Genes shown are the top-ranked in each classification task. The node color denote the classification task that it is highly informative of (task legend on the upper right of the figure).</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004127.g005" position="float" xlink:type="simple"/>
+</fig>
+<p>The analysis of the most informative genes for the media classifier reveals 14 genes encoding for membrane transporters and 7 involved in nitrogen metabolism (<xref rid="pcbi.1004127.g004" ref-type="fig">Fig. 4</xref>, <xref rid="pcbi.1004127.s011" ref-type="supplementary-material">S7A Table</xref>, <xref rid="pcbi.1004127.s019" ref-type="supplementary-material">S1 Text</xref>). From this set, five are implicated in amino acid transportation and synthesis (<italic>gltK, gltJ, gltL, dppF, glnD</italic>). Different media contain different amounts of amino acids and nutrients required for bacterial growth so the activation of their biosynthesis is expected to be an informative feature about the media where bacteria are growing. Another 3 genes are involved in the enterobactin synthesis (<italic>entA, entE, fepA)</italic>, a siderophore that has been very recently revealed to be related to the growth of <italic>E</italic>. <italic>coli</italic> in M9 [<xref rid="pcbi.1004127.ref040" ref-type="bibr">40</xref>].</p>
+<p>Over the course of the growth curve, the metabolic pathways change in order to optimize the use of the available nutrients and to ensure survival under stress conditions. The major transcriptional regulator for the entry into stationary phase is <italic>RpoS</italic> and, as expected, it is present in the set of genes informative for growth phase, along with several genes belonging to its regulon like <italic>dnaK, clpx, hemL, dps, rpsK, hfq, rplA, crr, rpsE</italic> and <italic>gapA</italic> [<xref rid="pcbi.1004127.ref041" ref-type="bibr">41</xref>]. In this set of genes, there are also genes already described to be differentially expressed in stationary phase, like <italic>hpf, crr</italic> and <italic>sspA</italic> [<xref rid="pcbi.1004127.ref042" ref-type="bibr">42</xref>–<xref rid="pcbi.1004127.ref044" ref-type="bibr">44</xref>]. In addition, ribosomal proteins (<italic>rpsL, rpsQ, rpsE, rplA, rplT, rpmJ, rrsG</italic>) are also implicated to be phase-dependent, which is in agreement with previous reports [<xref rid="pcbi.1004127.ref045" ref-type="bibr">45</xref>].</p>
+<p>In the case of the strain classifier, the analysis displays a wide variety of genes involved in different pathways and cellular processes. Different strains have evolved differentially from their common ancestor and, hence, have developed different regulatory pathways for various processes including carbon assimilation, degradation, and membrane formation. All informative genes for the medium classifier (<xref rid="pcbi.1004127.s011" ref-type="supplementary-material">S7A Table</xref>) are included at the top 10% informative genes of the composite classifier with all remaining genes being part of metabolic processes (<xref rid="pcbi.1004127.s011" ref-type="supplementary-material">S7D Table</xref>).</p>
+<p>Environmental perturbations, such as carbon source and oxygen abundance, give rise to informative genes that are specific to those cellular processes (<xref rid="pcbi.1004127.s011" ref-type="supplementary-material">S7F Table</xref> and <xref rid="pcbi.1004127.s011" ref-type="supplementary-material">S7G Table</xref>, respectively). In the case of oxygen, GO analysis reveals 8 genes involved in the respiratory process, 4 in aerobic respiration (<italic>sucA, acnB, nuoJ, cyoE</italic>) and another 4 in fermentation (<italic>hycC, hycE, hycF, fhlA</italic>). For carbon source prediction, we can find 15 proteins associated with membrane formation, with 6 of them described transporters (<italic>atpC, kgtP, rhtB, lptG, malF, malG</italic>). In addition, 5 differentially expressed genes involved in carbohydrate metabolism also stand out (<italic>malS, kgtP, malF, malG, pta</italic>).</p>
+<p>Regarding antibiotics, we have tested Norfloxacin, which functions by inhibiting DNA gyrase. Unexpectedly, in its informative gene list we cannot find any gene related to DNA repair or SOS response (<xref rid="pcbi.1004127.s011" ref-type="supplementary-material">S7E Table</xref>), possibly because these genes are involved also in other environmental conditions and are not antibiotic-specific. Most of the genes that reveal the presence of Ampicillin are membrane proteins and cell wall proteins which is in agreement with its function as cell membrane inhibitor (<xref rid="pcbi.1004127.s011" ref-type="supplementary-material">S7H Table</xref>), including the membrane protein porin (<italic>ompF</italic>) that is known to bind ampicillin [<xref rid="pcbi.1004127.ref046" ref-type="bibr">46</xref>].</p>
+<p>Interestingly, a substantial subset of the informative genes that were selected as features were not differentially expressed in the respective samples (<xref rid="pcbi.1004127.s006" ref-type="supplementary-material">S2 Table</xref>). A closer look at those genes, which range from 70% to 18% of the corresponding feature set, reveals that they indeed take part in processes that are characteristic of the respective environmental conditions. For instance, the oxygen classifier contains as features genes that are involved in both aerobic (<italic>cyoD, nuoK, sucD, sucC</italic> and <italic>cyoB</italic>) and anaerobic respiration (<italic>hycB, menF, nuoK, nfsA, hypA</italic>), although these genes would not be selected if we ranked based on differential expression. Similarly, in carbon source classification this set includes 11 genes involved in carbohydrate catabolic processes (<italic>dkgB, araG, gatZ, fbaA, malE, murQ, ascF</italic>) and 6 in cellular polysaccharide metabolic processes (<italic>kdsA, kdsD, waaC, waaP, rfaZ, rfa</italic>). The 24 transporters used for the medium classification, the 5 genes involved in translation for phase classification and 72 membrane proteins that are contained in the antibiotic feature set are indeed expected to be informative in the respective classification task, despite not being in the top differentially expressed genes.</p>
+</sec>
+<sec id="sec005">
+<title>Targeted experimentation of informative genes</title>
+<p>The results obtained in this study can be used to decipher novel, condition-specific gene functions. To assess whether biological function can be predicted by targeted experimentation of classifier-specific informative features, we selected one gene with high MI for carbon source classification (<italic>ppiD</italic>) and another gene that is highly ranked for classification between aerobic and anaerobic respiration (<italic>ldcC</italic>). The MI of each gene is only high in the classifier of interest and not in the rest (<xref rid="pcbi.1004127.s012" ref-type="supplementary-material">S8 Table</xref>). We then tested knock-out mutants [<xref rid="pcbi.1004127.ref047" ref-type="bibr">47</xref>] in their respective conditions. As such, both the <italic>ppiD</italic> and <italic>ldcC</italic> mutants and the wild type strain were grown in M9 supplemented with three different carbon sources: glucose, glycerol and lactate. The <italic>ldcC</italic> mutant functions as a negative control in the case of carbon source classification since this mutation is expected to have no effect on medium determination. Indeed, the results (<xref rid="pcbi.1004127.s003" ref-type="supplementary-material">S3 Fig.</xref>, <xref rid="pcbi.1004127.s016" ref-type="supplementary-material">S12 Table</xref>) show that Δ<italic>ppiD</italic> growth is impaired in the presence of the three sugars (<italic>t</italic> – <italic>test, P</italic> &lt; 0.03) while growth with the <italic>ldcC</italic> mutant remains similar to the WT demonstrating the involvement of <italic>ppiD</italic> in the use of different carbon sources (<italic>t</italic> – <italic>test, P</italic> &gt; 0.07). <italic>ppiD</italic> has been described as a membrane-anchored chaperone [<xref rid="pcbi.1004127.ref048" ref-type="bibr">48</xref>] but its specific function has not been discovered. Our result suggest that this protein is involved in sugar metabolism, possibly related to folding activity of membrane sugar transporters. Growth curves for knockout replicates of the top five informative genes for different carbon sources, as well as the growth curves for the genes related to aerobic growth genes (as negative control), are shown in <xref rid="pcbi.1004127.s004" ref-type="supplementary-material">S4 Fig.</xref>. As expected, growth deficits were more pronounced in the first set in both glycerol and lactate (<italic>t</italic> – <italic>test, P</italic> &lt; 0.006 and <italic>P</italic> &lt; 0.008, respectively).</p>
+<p>We performed a similar experiment where the three strains (WT,
+Δ<italic>ppiD</italic> and <italic>ΔldcC</italic>) <italic>were</italic> grown in M9 with glucose in aerobic and anaerobic conditions, in order to assess the influence of the <italic>ldcC</italic> mutation in these conditions. Here, the <italic>ppiD</italic> mutant serves as the negative control and the <italic>ldcC</italic> mutation is indeed informative of the aerobic conditions, although the difference is not as pronounced as in the case of carbon source classification (<italic>P</italic> &lt; 0.029 for <italic>ppiD</italic>; <italic>P</italic> &gt; 0.080 for <italic>ldcC</italic>). A closer look at the MI values show that the informative genes for aerobic respiration are two orders of magnitude lower than those for medium, which suggests that information content is dispersed among a number of genes.</p>
+</sec>
+</sec>
+<sec id="sec006" sec-type="conclusions">
+<title>Discussion</title>
+<p>How much information regarding the life and the present environmental context can be inferred from the global transcription profile of an organism? To address this question, we constructed an extensive, annotated gene expression compendium, where we trained Bayesian models for seven distinct classification tasks. Our models achieved high classification performance that was robust on the number of genes that were used as informative features. Our work demonstrates that bacterial transcriptomes embody rich information regarding the organism and the environment that it inhabits. Recent work demonstrates the power of such datasets to identify data-driven ontologies and rethink the definition of biological processes within them [<xref rid="pcbi.1004127.ref049" ref-type="bibr">49</xref>]. More importantly, multiple characteristics of an organism can be accurately predicted using a set of character-specific classifiers, suggesting practical advantages of this approach over limited datasets.</p>
+<p>Transcriptional activity is not the sole feature type that conveys predictive information regarding environmental conditions and an organism’s characteristics. Like eukaryotes, epigenetic signals regulate transcriptional activity in bacteria, for example, by altering DNA methylation states to control the binding of proteins to DNA [<xref rid="pcbi.1004127.ref050" ref-type="bibr">50</xref>]. Single-molecule real-time (SMRT) sequencing technology has been recently applied to reading of genome-scale methylation states in a pathogenic <italic>E</italic>. <italic>coli</italic> [<xref rid="pcbi.1004127.ref051" ref-type="bibr">51</xref>] and the technology would provide higher-resolution of molecular information of bacteria, enabling fine-scale predictive characterization based on it. Other features related to the genome-scale metabolic state, proteomic biomarkers and cell morphology can be incorporated to increase the predictive capacity of any given classifier. Similarly, while the six characteristics that we evaluated here are fundamental in their role and indicative of global processes, there are several other environmental and organismal characteristics, such as other abiotic factors or other microbial species in the same environment, which can be predicted from these features.</p>
+<p>Multiple characteristics of an organism are interrelated, implying its heterologous transcriptional landscapes in different combinations of phenotypic conditions. These complex dependencies in phenome are not readily analyzable even in the compilation of thousands of publicly available transcriptome profiles as the experimental conditions in published data are often disproportionate, typically skewed in favorable settings (e.g. MG1655 strain over LB medium), which produces small sample sets or even empty sets in combinatorial conditions. Indeed, the results on composite classification argues that with the current <italic>omics</italic> dataset compilation, it is not feasible to explore many of the strain, phase, medium combinations, as we have sufficient data for only 13 classes, out of a total of 48 possible classes (4 for each of medium, phase, strain). Interestingly, the performance of the composite multi-class classifier performs significantly better for the overall classification of these characteristics, than an aggregate of individual classifiers for phenotypes, demonstrating large interdependencies across different conditions.</p>
+<p>By looking at the top informative genes in two classifiers, we demonstrated the involvement of the <italic>ppiD</italic> in the utilization of different carbon sources. Further analysis involves the use of over/under-expressed copies and protein-protein assays to discover quantitative associations and interaction partners. By analyzing the expression levels of the genes in the phase classifier that are not predictable using RT-PCR and transcriptional fusions we can find out novel regulation when growth phase changes from exponential to stationary. Another potential application is in the case of the antibiotics Ampicillin and Norfloxacin where this analysis can be used to identify implicated pathways in lethal and non-lethal concentrations.</p>
+<p>In recent years, the capacity of microorganisms to sense and act upon environmental stimuli [<xref rid="pcbi.1004127.ref052" ref-type="bibr">52</xref>] has sparked renewed interest due to its diverse applications in preventive medicine and synthetic biology [<xref rid="pcbi.1004127.ref053" ref-type="bibr">53</xref>,<xref rid="pcbi.1004127.ref054" ref-type="bibr">54</xref>]. These studies shed light on the adaptive behavior of cells under environmental temporal stimuli [<xref rid="pcbi.1004127.ref055" ref-type="bibr">55</xref>–<xref rid="pcbi.1004127.ref057" ref-type="bibr">57</xref>] and on the decomposition of promoter activity in complex conditions [<xref rid="pcbi.1004127.ref058" ref-type="bibr">58</xref>]. Our work here is the first that attempts to identify and comprehensively interpret the capacity of the transcriptome for characterizing a manifold of environmental conditions using the consensus of multiple statistical learning algorithms. Aside from its intellectual merit, the presented work can help building classifiers and selecting features in a number of practical applications. Detection and characterization of microbes are of great importance in many clinical, environmental, industrial, and agricultural application [<xref rid="pcbi.1004127.ref059" ref-type="bibr">59</xref>]. Data are increasingly become available for the adoption of such classification techniques since high-throughput methods have been recently applied at low cost. From battlefields to agricultural crop management, inexpensive sequencing transforms the landscape of what is possible in a timely, inexpensive manner. Our work paves the way towards the use of high-throughput expression datasets to a broad range of applications including detection and characterization of the environmental conditions and bacterial population that are important for clinical, environmental, industrial, and agricultural applications. Without loss of generality, this work can be described as a data-driven approach to “bacterial forensics”, i.e. the extraction of environmental knowledge from large-scale phenotypic bacterial data, and it can have far-reaching applications in environments that would be challenging to investigate otherwise.</p>
+</sec>
+<sec id="sec007" sec-type="materials|methods">
+<title>Methods</title>
+<sec id="sec008">
+<title>Construction of a microarray and RNA-Seq compendium (EcoGEC)</title>
+<p>We downloaded 83 RNA-Seq <italic>E</italic>. <italic>coli</italic> transcriptional profiles from 17 different GEO entries [<xref rid="pcbi.1004127.ref030" ref-type="bibr">30</xref>] that correspond to 8 strains, LB and MOPS media in wild-type (WT), gene knock-outs (KOs), double KOs and environmental perturbations. When bedGraph format was used in the data, gene expression level was measured in RPKM using the bgrQuantifier program that is part of the RSEQ tool [<xref rid="pcbi.1004127.ref060" ref-type="bibr">60</xref>]. For other formats such as wig, we first converted them into bedGraph. We filtered out samples where the environmental information was not known, which led to 64 samples for further analysis. Data were converted to log2 scale and performed quantile-normalization using MATLAB. The resulting RNA-Seq dataset was composed of 64 samples of 4725 genes. We integrated the RNA-Seq dataset (64 samples) to the <italic>E</italic>. <italic>coli</italic> Microarray Compendium (EcoMAC) that consists of 2198 microarrays of 4189 genes for which raw files were downloaded and normalized by RMA (robust multichip average) method [<xref rid="pcbi.1004127.ref029" ref-type="bibr">29</xref>]. The integrated EcoGEC dataset consists of 2262 samples and 4166 genes (<xref rid="pcbi.1004127.g001" ref-type="fig">Fig. 1A</xref>, <xref rid="pcbi.1004127.s017" ref-type="supplementary-material">S13 Table</xref>, <xref rid="pcbi.1004127.s018" ref-type="supplementary-material">S14 Table</xref>).</p>
+</sec>
+<sec id="sec009">
+<title>Adjustment of batch-effects in the transcriptome compendium</title>
+<p>Although integrative analysis of multiple microarray gene expression (MAGE) datasets allows to distill the maximum relevant biological information from genomic datasets, the unwanted variation, so-called batch-effects arising from data merged from difference sources has been a major challenge to impede such effort [<xref rid="pcbi.1004127.ref061" ref-type="bibr">61</xref>]. To adjust the non-biological experimental variation with the consideration of large number of datasets with a few samples, we used ComBat that is developed under Bayesian framework and is known to be robust to outliers in small sample sizes [<xref rid="pcbi.1004127.ref062" ref-type="bibr">62</xref>]. In the process of adjustment, we took into account experimental conditions as covariates to prevent loss of biological variations.</p>
+</sec>
+<sec id="sec010">
+<title>Categorization of gene expression data</title>
+<p>Prior to building a prediction model, we transformed the adjusted gene expression data into categorical values (under-expressed, UE; wild-type, WT; over-expressed, OE) in order to deal with biases arising from combining different platforms and improve the classification accuracy [<xref rid="pcbi.1004127.ref063" ref-type="bibr">63</xref>]. We first measured the log<sub>2</sub> <italic>Fold Change</italic> (<italic>FC</italic>) of gene expression with respect to the WT expression for each gene. WT samples were identified from experiments that didn’t undergo genetic and environmental perturbations from the three platforms (7 for Affymetrix <italic>E</italic>. <italic>coli</italic> Antisense Genome Array, 6 for Affymetrix <italic>E</italic>. <italic>coli</italic> Genome 2.0 Array, and 6 for RNA-Seq). log<sub>2</sub> <italic>Fold Change</italic> (<italic>FC</italic>) was separately measured for each platform by comparing the mean of WT data. Using transformed data, we estimated a normal distribution <italic>N</italic>(<italic>μ, σ</italic><sup>2</sup>) for each gene and finally converted each log<sub>2</sub> <italic>FC</italic> gene value into one of the 3 categorical values by measuring deviation from the mean (UE when <italic>g</italic><sub><italic>ij</italic></sub> &lt; <italic>μ</italic><sub><italic>i</italic></sub> – <italic>σ</italic><sub><italic>i</italic></sub>; WT when <italic>μi</italic> – <italic>σ</italic><sub><italic>i</italic></sub> ≤ <italic>g</italic><sub><italic>ij</italic></sub> ≤ <italic>μ</italic><sub><italic>i</italic></sub> + <italic>σ</italic><sub><italic>i</italic></sub>; OE when <italic>μ</italic><sub><italic>i</italic></sub> + <italic>σ</italic><sub><italic>i</italic></sub> <italic>&lt; gij; g</italic><sub><italic>ij</italic></sub> is the log<sub>2</sub> <italic>FC</italic> for gene <italic>i</italic> in sample <italic>j, μ</italic><sub><italic>i</italic></sub> is mean of gene <italic>i</italic> and <italic>σ</italic><sub><italic>i</italic></sub> is standard deviation of gene <italic>i</italic>). The platform-specific categorization of gene expression effectively removes platform biases (<xref rid="pcbi.1004127.g001" ref-type="fig">Fig. 1B</xref>).</p>
+</sec>
+<sec id="sec011">
+<title>Inference of missing phase information using iterative learning</title>
+<p>The large fraction of unannotated phase data in the compendium hinders the maximum utilization of such resource. Missing phase information was imputed by iterative learning approach in which prediction model for growth phase is trained using the annotated phase data and inferred data in previous iteration until prediction of unknown data finally reaches at convergence (<xref rid="pcbi.1004127.s001" ref-type="supplementary-material">S1 Fig.</xref>). In each iteration, the experiments that were unannotated <italic>ab initio</italic> were repeatedly inferred. Inference is based on consensus-based approach of four machine learning methods described above. Re-labeled phase information accompanying with annotated data is used for training the consensus model in next iteration. This procedure is halted once the similarity of phase labels between consecutive iterations is convergent when the similarity of phase labels between consecutive iterations converges (change in fraction &lt; ξ, where ξ = 0.01 here). Although the use of inferred labels through iterative learning demonstrates an increased performance, compared with the prediction using known labels only (<xref rid="pcbi.1004127.s006" ref-type="supplementary-material">S2 Table</xref>), we report the performance for phase prediction using annotated labels only throughout the manuscript.</p>
+</sec>
+<sec id="sec012">
+<title>Validation of iterative learning</title>
+<p>To investigate the accuracy (balanced) of inference of unannotated data, we performed the simulation study for each classifier by randomly masking 30% of total labels of each class. First, the accuracy of inferred annotation after iterative learning is measured by comparing with real labels before and after iterative learning (<xref rid="pcbi.1004127.s006" ref-type="supplementary-material">S2 Table</xref>). Then we further evaluate iterative learning for by changing the percentage of unannotated labels (2%, 5%, 10%, 20%) in the total data (<xref rid="pcbi.1004127.s006" ref-type="supplementary-material">S2 Fig.</xref> and <xref rid="pcbi.1004127.s008" ref-type="supplementary-material">S4 Table</xref>).</p>
+</sec>
+<sec id="sec013">
+<title>Class labeling</title>
+<p>A label is assigned for each of the seven classification characteristics (two for antibiotics; Ampicillin and Norfloxacin). We have identified 4 classes for medium (LB, M9, MOPS, others), 3 classes for phase (early-exponential, mid/late-exponential, stationary) having both annotated and predicted data, and 4 classes for strain (MG1655, BW25113, EMG2, others). A class of “others” was added that corresponds to conditions that are unclear or scare in quantity. Classification of the strain, medium, and growth conditions can be integrated also as a multi-class problem. We synthesized a new predictor variable called composite by combining values of 3 characteristics. From the 48 possible classes (combination of 4 labels for medium, 3 labels for phase, 4 labels for strain), only 13 combinations have enough data (more than 5 samples) for training, hence we have encompass all other labels with insufficient data under the label “others”, resulting in a total of 13 classes (<xref rid="pcbi.1004127.t002" ref-type="table">Table 2</xref>).</p>
+</sec>
+<sec id="sec014">
+<title>Consensus-based predictions</title>
+<p>We use Naïve Bayes (NB; [<xref rid="pcbi.1004127.ref064" ref-type="bibr">64</xref>], Decision Trees (DT, [<xref rid="pcbi.1004127.ref065" ref-type="bibr">65</xref>]), K-nearest-neighbors (KNN, [<xref rid="pcbi.1004127.ref066" ref-type="bibr">66</xref>]) and Support Vector Machines (SVM, [<xref rid="pcbi.1004127.ref067" ref-type="bibr">67</xref>]) to construct a consensus classification scheme [<xref rid="pcbi.1004127.ref068" ref-type="bibr">68</xref>]. The class label assigned is the one with the highest number of votes. The predictive power is assessed through Receiver-Operator Characteristic (ROC) and Precision-Recall (PR) curves [<xref rid="pcbi.1004127.ref036" ref-type="bibr">36</xref>]. For multi-class problems, such as in the case of medium, phase and strain classification, we built ROC/PR curves in a one-versus-rest (OVR) approach.</p>
+<p>The leave one batch out cross validation was conducted to verify model performance while removing batch effects. For this, each batch is left out for testing and the rest of data is then used for training. This procedure is iterated until all batches in the dataset are tested. For carbon source, phase, and composite classifier, the profiles having early-exponential phase or acetate are studied in a single project so inevitably, we had to rely on the batch-uncontrolled cross-validation. The classifier performances with and without batch control are compared in <xref rid="pcbi.1004127.s015" ref-type="supplementary-material">S11 Table</xref>. As the high imbalance of class distribution is observable in the dataset as shown in <xref rid="pcbi.1004127.t001" ref-type="table">Table 1</xref>, creating inflated baseline, we show the classifier performance for the original dataset as well as for the dataset with balanced class distribution.</p>
+</sec>
+<sec id="sec015">
+<title>Feature selection by mutual information</title>
+<p>Mutual information is a stochastic measure of dependence [<xref rid="pcbi.1004127.ref069" ref-type="bibr">69</xref>] and it has been widely applied in feature selection in order to find an informative subset for model training [<xref rid="pcbi.1004127.ref070" ref-type="bibr">70</xref>]. In our work, each of the eight models were trained with the top <italic>k</italic>-ranked genes based on their mutual information (MI) to the label where MI is measured by
+<disp-formula id="pcbi.1004127.e001">
+<alternatives>
+<graphic id="pcbi.1004127.e001g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004127.e001" xlink:type="simple"/>
+<mml:math display="block" id="M1" overflow="scroll">
+<mml:mrow><mml:mi>I</mml:mi><mml:mo>(</mml:mo><mml:mi>X</mml:mi><mml:mo>;</mml:mo><mml:mi>Y</mml:mi><mml:mo>)</mml:mo><mml:mo>=</mml:mo><mml:mstyle displaystyle="true"><mml:munderover><mml:mo>∑</mml:mo><mml:mrow/><mml:mrow/></mml:munderover><mml:mrow><mml:mstyle displaystyle="true"><mml:munderover><mml:mo>∑</mml:mo><mml:mrow/><mml:mrow/></mml:munderover><mml:mrow><mml:mi>p</mml:mi><mml:mo>(</mml:mo><mml:mi>x</mml:mi><mml:mo>,</mml:mo><mml:mi>y</mml:mi><mml:mo>)</mml:mo><mml:mi mathvariant="normal">log</mml:mi><mml:mo>(</mml:mo><mml:mi>p</mml:mi><mml:mo>(</mml:mo><mml:mi>x</mml:mi><mml:mo>,</mml:mo><mml:mi>y</mml:mi><mml:mo>)</mml:mo><mml:mo>/</mml:mo><mml:mi>p</mml:mi><mml:mo>(</mml:mo><mml:mi>x</mml:mi><mml:mo>)</mml:mo><mml:mi>p</mml:mi><mml:mo>(</mml:mo><mml:mi>y</mml:mi><mml:mo>)</mml:mo><mml:mo>)</mml:mo></mml:mrow></mml:mstyle></mml:mrow></mml:mstyle></mml:mrow>
+</mml:math>
+</alternatives>
+</disp-formula>
+Where <italic>x</italic> is the gene selected and <italic>y</italic> is the predictor variable. This process is iteratively repeated by increasing <italic>k</italic> with an interval of 10 and the exception of start (10) and end points (all genes). Basically, the selection procedure of <italic>k</italic> features are performed in training data only and <italic>k</italic> showing the highest performance is selected for testing. All the analyses in this study other than the cross-validation of model used the features selected from the complete data.</p>
+</sec>
+<sec id="sec016">
+<title>Selection of most informative genes and functional enrichment analysis</title>
+<p>The most informative genes are selected by measuring the mutual information (in bits) for each of the characteristic variables and then selecting the top 10% genes based on their information content. These top informative genes are then used for finding shared genes across different classifiers (<xref rid="pcbi.1004127.g004" ref-type="fig">Fig. 4B</xref>) and for network analysis (<xref rid="pcbi.1004127.g005" ref-type="fig">Fig. 5</xref>). For functional enrichment analysis, we use all selected genes that optimize the classifier performance. Associated functional annotations for the set of selected genes for each of the classifiers are found by DAVID [<xref rid="pcbi.1004127.ref071" ref-type="bibr">71</xref>]. Various annotations including Gene Ontology terms, KEGG pathways, and InterPro protein domains are investigated. Among them, the 6 most statistically significant terms (<italic>P</italic> &lt; 3.7 10<sup>−4</sup>) for each classifier are displayed in <xref rid="pcbi.1004127.g004" ref-type="fig">Fig. 4</xref>. Global map of genetic interactions for <italic>E</italic>. <italic>coli</italic> is reconstructed from [<xref rid="pcbi.1004127.ref072" ref-type="bibr">72</xref>] with pathway modules that functionally cluster genes based on the Pathway Ontology and transporter complexes curated in EcoCyc [<xref rid="pcbi.1004127.ref073" ref-type="bibr">73</xref>]. Pathway diagrams were re-plotted from the KEGG database [<xref rid="pcbi.1004127.ref074" ref-type="bibr">74</xref>].</p>
+<p>In addition to DAVID, we have performed a GSEA analysis [<xref rid="pcbi.1004127.ref075" ref-type="bibr">75</xref>] where each gene is ranked by its mutual information (<xref rid="pcbi.1004127.s013" ref-type="supplementary-material">S9 Table</xref>). We have also compared the results to those obtained by DAVID and provide this comparison in <xref rid="pcbi.1004127.s014" ref-type="supplementary-material">S10 Table</xref>. On average, 80.5% of DAVID results that correspond to the feature set at optimal classification performance are in the GSEA enriched terms.</p>
+</sec>
+<sec id="sec017">
+<title>Growth curves</title>
+<p>Growth curves of the WT, Δ<italic>ppiD</italic> and Δ<italic>ldcC</italic> were performed in M9 complemented with 0.4% of glucose, glycerol and sodium lactate. For growth curves, the starter cultures of all strains were grown and therefore adapted (B7–9 generations) to M9 glucose for 12 hours at 37C. Cultures were started at OD600 of 0.004. OD600 was measured every 10 minutes on a Tecan Plate Reader. Two independent replicate growth tests were performed for each strain. For the anaerobic and aerobic growth curves bacteria were grown in M9 supplemented with glucose at 37C without shaking. The anaerobic growth was made in an anaerobic chamber where media was inserted 2 days prior to the experiment to extract all the oxygen present in the media. Samples were taken at 2, 8 and 24 hours through a spectrophotometer (<xref rid="pcbi.1004127.s016" ref-type="supplementary-material">S12 Table</xref>).</p>
+</sec>
+<sec id="sec018">
+<title>Parameter settings, implementation, and availability</title>
+<p>For consensus-based prediction using four different classifiers, we used the Statistics Toolbox in MATLAB. For the multi-class SVM, one-versus-rest (OVR) approach was used in which for each class, a binary classifier is built for the class label and the rest. Each binary SVM was built using Gaussian Radial Basis Function (RBF) kernel and the default sigma factor of 1 was used. For soft margin, C parameter showing best performance was selected in the range of 0.5 to 4 in the training phase. For KNN, K was set to one in <italic>knnsearch</italic>. For decision tree and naïve Bayes, the default settings in <italic>ClassificationTree</italic> and <italic>NaiveBayes</italic> were used, respectively. The code used in this study including the imputation by iterative learning and the consensus-based prediction that allows users to reproduce the results is freely available on gitHub (<ext-link ext-link-type="uri" xlink:href="https://github.com/minseven/mForensics.git" xlink:type="simple">https://github.com/minseven/mForensics.git</ext-link>).</p>
+</sec>
+</sec>
+<sec id="sec019">
+<title>Supporting Information</title>
+<supplementary-material id="pcbi.1004127.s001" xlink:href="info:doi/10.1371/journal.pcbi.1004127.s001" mimetype="application/postscript" position="float" xlink:type="simple">
+<label>S1 Fig</label>
+<caption>
+<title>Schematic diagram of iterative learning for phase information.</title>
+<p>Missing phase information was imputed by an iterative learning approach in which the prediction model for growth phase is trained iteratively until convergence. In each iteration, the phase of all samples that were originally unannotated is predicted, based on an ensample of 4 machine learning methods (Naive Bayes, SVM, Decision Tree, KNN) that produce a consensus outcome, as described in the Methods section of the manuscript. We used the fraction of correctly re-annotated data over all unannotated data to measure the similarity of the two vectors. If the confidence level of the prediction does not reach a threshold of 0.75 (i.e. 3 out of the 4 methods agree in the putative annotation), then the sample remains tagged as un-annotated. Otherwise, the imputed phase information is used for training the model during the next iteration. This procedure repeats until the similarity of phase labels between consecutive iterations converges (change in fraction &lt; ξ, where ξ = 0.01 here). For our dataset, this led to annotation of more than 90% of the un-annotated data samples.</p>
+<p>(EPS)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004127.s002" xlink:href="info:doi/10.1371/journal.pcbi.1004127.s002" mimetype="application/postscript" position="float" xlink:type="simple">
+<label>S2 Fig</label>
+<caption>
+<title>Validation of iterative learning and imputation of unannotated phase data.</title>
+<p>(A) Prediction of unknown phase information by using the iterative approach is validated by using testing data that consist of de-labeled samples constructed from each of the 3 phase types (early exponential, mid/late exponential and stationary). Validation of iterative approach to impute missing data is performed by comparing the actual and predicted labels produced by iterative learning. The de-labeled, i.e. artificially un-annotated, data were 2%, 5%, 10% and 20% of the total dataset. For each of the 3 phase classes, the predicted classes for each actual class type is shown. (B) Unannotated portion of phase data in the EcoGEC is inferred by using iterative learning. After four iterations, the similarity of predicted labels between consecutive iterations converge (691 out of the 764 samples). The 72 leftover samples are discarded as unidentified and/or noisy data points. (C) Simulation of iterative learning for all classifiers by randomly masking 30% of all class labels in the original dataset. We set the threshold of confidence of consensus-based prediction to 1 for selecting data that needs to go to next iteration over the iterative learning. In other words, the samples that reach perfect consensus in assigning labels from 4 different methods are finalized for annotation and used for training over the iterative learning. The purpose of the more stringent threshold was to observe the benefit of iterative process in learning. The percentages in the legend indicate the total increase of re-labeled classes after the first iteration.</p>
+<p>(EPS)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004127.s003" xlink:href="info:doi/10.1371/journal.pcbi.1004127.s003" mimetype="image/tiff" position="float" xlink:type="simple">
+<label>S3 Fig</label>
+<caption>
+<title>Targeted experimentation of highly informative genes.</title>
+<p>(A) Growth curves of WT, Δ<italic>ppiD</italic> and Δ<italic>ldcC</italic> for the three carbon source classes in our dataset, glucose, glycerol and sodium lactate, (B) growth curves of WT, Δ<italic>ppiD</italic> and Δ<italic>ldcC</italic> in aerobic and un-anaerobic conditions.</p>
+<p>(TIFF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004127.s004" xlink:href="info:doi/10.1371/journal.pcbi.1004127.s004" mimetype="image/tiff" position="float" xlink:type="simple">
+<label>S4 Fig</label>
+<caption>
+<title>Growth curves of the five most informative genes in the carbon source classifier (left) and oxygen (right) in M9 salt media supplemented with three different carbon sources.</title>
+<p>Each growth curve was made in duplicate and the average was plotted.</p>
+<p>(TIFF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004127.s005" xlink:href="info:doi/10.1371/journal.pcbi.1004127.s005" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" position="float" xlink:type="simple">
+<label>S1 Table</label>
+<caption>
+<title>Classifier performance and sample size.</title>
+<p>The relationship between performance of classifiers and the data size is investigated. The dataset with balanced class distribution is prepared from the original compendium and it is reduced by 25% until only 25% remains. Each dataset is separately trained and tested.</p>
+<p>(XLSX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004127.s006" xlink:href="info:doi/10.1371/journal.pcbi.1004127.s006" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" position="float" xlink:type="simple">
+<label>S2 Table</label>
+<caption>
+<title>Comparison of classification performance between classifiers with the top MI genes and DE genes.</title>
+<p>The intersection of the feature gene set when mutual information (MI) and differential expression (DEG) are used for ranking. Differential expression ranking was determined by ANOVA. In the parenthesis, we report the classification performance when the class labels are uniformly distributed (maximum entropy). The “null” and “dataset” baselines correspond to the base prediction accuracy in the case where the classes are uniformly distributed for each classification task, or the most representative class based on the data (highest prior) for each classification case is selected, respectively.</p>
+<p>(XLSX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004127.s007" xlink:href="info:doi/10.1371/journal.pcbi.1004127.s007" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" position="float" xlink:type="simple">
+<label>S3 Table</label>
+<caption>
+<title>Evaluation of iterative learning on classification performance.</title>
+<p>We assessed the iterative learning (IL) method for each class by randomly masking 30% of the class labels (testing dataset). Accuracy refers to the percentage of the testing dataset that was correctly re-annotated by IL. Classification performance is measured with and without IL being applied to the final dataset. The “null” and “dataset” baselines correspond to the base prediction accuracy in the case where the classes are uniformly distributed for each classification task, or the most representative class based on the data (highest prior) for each classification case is selected, respectively.</p>
+<p>(XLSX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004127.s008" xlink:href="info:doi/10.1371/journal.pcbi.1004127.s008" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" position="float" xlink:type="simple">
+<label>S4 Table</label>
+<caption>
+<title>Performance of iterative learning and unannotated proportion of phase data.</title>
+<p>To evaluate the efficacy of iterative learning to correctly annotate missing phase information, we constructed a testing set where data for all 3 different phase categories (early-exponential, mid/late exponential, and stationary) were de-labeled. We evaluated how many samples in this simulated, artificially un-annotated, dataset were re-labeled to their original phase labels after iterative learning. The iterative learning procedure was performed with testing sets that included 2%, 5%, 10% and 20% of un-annotated samples, as a percentage of all samples available. The tables below (1A-D) show that the contingency tables of simulated inference for different settings.</p>
+<p>(XLSX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004127.s009" xlink:href="info:doi/10.1371/journal.pcbi.1004127.s009" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" position="float" xlink:type="simple">
+<label>S5 Table</label>
+<caption>
+<title>Ranked list of all genes in the EcoGEC compendium based on their mutual information for the phase, growth and aerobic classifier, before and after iterative learning.</title>
+<p>(XLSX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004127.s010" xlink:href="info:doi/10.1371/journal.pcbi.1004127.s010" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" position="float" xlink:type="simple">
+<label>S6 Table</label>
+<caption>
+<title>Contingency table of prediction performance for each classifier.</title>
+<p>(XLSX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004127.s011" xlink:href="info:doi/10.1371/journal.pcbi.1004127.s011" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" position="float" xlink:type="simple">
+<label>S7 Table</label>
+<caption>
+<title>List of most informative genes annotated with known functions.</title>
+<p>(XLSX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004127.s012" xlink:href="info:doi/10.1371/journal.pcbi.1004127.s012" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" position="float" xlink:type="simple">
+<label>S8 Table</label>
+<caption>
+<title>Ranks and mutual information of the genes selected in each classifier of carbon source and oxygen supply.</title>
+<p>(XLSX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004127.s013" xlink:href="info:doi/10.1371/journal.pcbi.1004127.s013" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" position="float" xlink:type="simple">
+<label>S9 Table</label>
+<caption>
+<title>GSEA enriched terms: enriched terms in red are present in DAVID analysis.</title>
+<p>(XLSX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004127.s014" xlink:href="info:doi/10.1371/journal.pcbi.1004127.s014" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" position="float" xlink:type="simple">
+<label>S10 Table</label>
+<caption>
+<title>Proportion of DAVID results in GSEA enriched terms.</title>
+<p>(GO). For DAVID, we use all selected features for each classifier to know associated GO. For GSEA, we use MI of all genes to know enriched GO. The resulting lists are compared and the proportion of DAVID results in GSEA enriched terms are reported.</p>
+<p>(XLSX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004127.s015" xlink:href="info:doi/10.1371/journal.pcbi.1004127.s015" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" position="float" xlink:type="simple">
+<label>S11 Table</label>
+<caption>
+<title>Classification performance with and without batch control.</title>
+<p>The prediction performance with and without batch control is compared for each classifier. For carbon source, phase, and composite classifier, the profiles having early-exponential phase or acetate are studied in a single project. For testing without batch control, typical 5-fold cross-validation was used without considering the batch information. For batch controlled experiments, a leave-one-batch-out cross validation was conducted to verify model performance while removing batch effects.</p>
+<p>(XLSX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004127.s016" xlink:href="info:doi/10.1371/journal.pcbi.1004127.s016" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" position="float" xlink:type="simple">
+<label>S12 Table</label>
+<caption>
+<title>Measured growth data.</title>
+<p>(XLSX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004127.s017" xlink:href="info:doi/10.1371/journal.pcbi.1004127.s017" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" position="float" xlink:type="simple">
+<label>S13 Table</label>
+<caption>
+<title>EcoGEC v1.0 Compendium (part 1).</title>
+<p>(XLSX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004127.s018" xlink:href="info:doi/10.1371/journal.pcbi.1004127.s018" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" position="float" xlink:type="simple">
+<label>S14 Table</label>
+<caption>
+<title>EcoGEC v1.0 Compendium (part 2).</title>
+<p>(XLSX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004127.s019" xlink:href="info:doi/10.1371/journal.pcbi.1004127.s019" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:type="simple">
+<label>S1 Text</label>
+<caption>
+<title>Reference list of <xref rid="pcbi.1004127.s011" ref-type="supplementary-material">S7 Table</xref>.</title>
+<p>The citations on the functional studies of the ranked list of genes in <xref rid="pcbi.1004127.s011" ref-type="supplementary-material">S7 Table</xref> are listed.</p>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ack>
+<p>We thank the Tagkopoulos lab for the helpful discussions.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1004127.ref001"><label>1</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wei</surname> <given-names>Yan</given-names></name>, <etal>et al</etal>. "<article-title>High-density microarray-mediated gene expression profiling of <italic>Escherichia coli</italic></article-title>." <source>Journal of bacteriology</source> <volume>183</volume>.<issue>2</issue> (<year>2001</year>): <fpage>545</fpage>–<lpage>556</lpage>. <object-id pub-id-type="pmid">11133948</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref002"><label>2</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Dugar</surname> <given-names>Gaurav</given-names></name>, <etal>et al</etal>. "<article-title>High-Resolution Transcriptome Maps Reveal Strain-Specific Regulatory Features of Multiple <italic>Campylobacter jejuni</italic> Isolates</article-title>." <source>PLoS genetics</source> <volume>9</volume>.<issue>5</issue> (<year>2013</year>): <fpage>e1003495</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pgen.1003495" xlink:type="simple">10.1371/journal.pgen.1003495</ext-link></comment> <object-id pub-id-type="pmid">23696746</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref003"><label>3</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Freddolino</surname> <given-names>Peter L.</given-names></name>, <name name-style="western"><surname>Goodarzi</surname> <given-names>Hani</given-names></name>, and <name name-style="western"><surname>Tavazoie</surname> <given-names>Saeed</given-names></name>. "<article-title>Fitness landscape transformation through a single amino acid change in the Rho terminator</article-title>." <source>PLoS genetics</source> <volume>8</volume>, no. <issue>5</issue> (<year>2012</year>): <fpage>e1002744</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pgen.1002744" xlink:type="simple">10.1371/journal.pgen.1002744</ext-link></comment> <object-id pub-id-type="pmid">22693458</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref004"><label>4</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gao</surname> <given-names>Haichun</given-names></name>, <etal>et al</etal>. "<article-title>Global transcriptome analysis of the heat shock response of <italic>Shewanella oneidensis</italic></article-title>." <source>Journal of bacteriology</source> <volume>186</volume>.<issue>22</issue> (<year>2004</year>): <fpage>7796</fpage>–<lpage>7803</lpage>. <object-id pub-id-type="pmid">15516594</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref005"><label>5</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Herold</surname> <given-names>Sylvia</given-names></name>, <etal>et al</etal>. "<article-title>Global expression of prophage genes in <italic>Escherichia coli</italic> O157: H7 strain EDL933 in response to norfloxacin</article-title>." <source>Antimicrobial agents and chemotherapy</source> <volume>49</volume>.<issue>3</issue> (<year>2005</year>): <fpage>931</fpage>–<lpage>944</lpage>. <object-id pub-id-type="pmid">15728886</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref006"><label>6</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Franchini</surname> <given-names>Alessandro G.</given-names></name>, and <name name-style="western"><surname>Egli</surname> <given-names>Thomas</given-names></name>. "<article-title>Global gene expression in <italic>Escherichia coli</italic> K-12 during short-term and long-term adaptation to glucose-limited continuous culture conditions</article-title>." <source>Microbiology</source> <volume>152</volume>.<issue>7</issue> (<year>2006</year>): <fpage>2111</fpage>–<lpage>2127</lpage>. <object-id pub-id-type="pmid">16804185</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref007"><label>7</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Baek</surname> <given-names>Jong Hwan</given-names></name>, and <name name-style="western"><surname>Lee</surname> <given-names>Sang Yup</given-names></name>. "<article-title>Transcriptome analysis of phosphate starvation response in <italic>Escherichia coli</italic></article-title>." <source>Journal of microbiology and biotechnology</source> <volume>17</volume>.<issue>2</issue> (<year>2007</year>): <fpage>244</fpage>. <object-id pub-id-type="pmid">18051755</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref008"><label>8</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gunasekera</surname> <given-names>Thusitha S.</given-names></name>, <name name-style="western"><surname>Csonka</surname> <given-names>Laszlo N.</given-names></name>, and <name name-style="western"><surname>Paliy</surname> <given-names>Oleg</given-names></name>. "<article-title>Genome-wide transcriptional responses of <italic>Escherichia coli</italic> K-12 to continuous osmotic and heat stresses</article-title>." <source>Journal of bacteriology</source> <volume>190</volume>.<issue>10</issue> (<year>2008</year>): <fpage>3712</fpage>–<lpage>3720</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1128/JB.01990-07" xlink:type="simple">10.1128/JB.01990-07</ext-link></comment> <object-id pub-id-type="pmid">18359805</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref009"><label>9</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Aguado-Urda</surname> <given-names>Mónica</given-names></name>, <etal>et al</etal>. "<article-title>Global Transcriptome Analysis of <italic>Lactococcus garvieae</italic> Strains in Response to Temperature</article-title>." <source>PloS one</source> <volume>8</volume>.<issue>11</issue> (<year>2013</year>): <fpage>e79692</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pone.0079692" xlink:type="simple">10.1371/journal.pone.0079692</ext-link></comment> <object-id pub-id-type="pmid">24223997</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref010"><label>10</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lanckriet</surname> <given-names>Gert RG</given-names></name>, <etal>et al</etal>. "<article-title>Kernel-based data fusion and its application to protein function prediction in yeast</article-title>." <source>Pacific symposium on biocomputing</source>. Vol. <volume>9</volume>. <year>2004</year>.</mixed-citation></ref>
+<ref id="pcbi.1004127.ref011"><label>11</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Barutcuoglu</surname> <given-names>Zafer</given-names></name>, <name name-style="western"><surname>Schapire</surname> <given-names>Robert E.</given-names></name>, and <name name-style="western"><surname>Troyanskaya</surname> <given-names>Olga G.</given-names></name>. "<article-title>Hierarchical multi-label prediction of gene function</article-title>." <source>Bioinformatics</source> <volume>22</volume>.<issue>7</issue> (<year>2006</year>): <fpage>830</fpage>–<lpage>836</lpage>. <object-id pub-id-type="pmid">16410319</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref012"><label>12</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Borgwardt</surname> <given-names>Karsten M.</given-names></name>, <etal>et al</etal>. "<article-title>Protein function prediction via graph kernels</article-title>." <source>Bioinformatics</source> <volume>21</volume>.<supplement>suppl 1</supplement> (<year>2005</year>): <fpage>i47</fpage>–<lpage>i56</lpage>. <object-id pub-id-type="pmid">15961493</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref013"><label>13</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Kim</surname> <given-names>Minseung</given-names></name>, and <name name-style="western"><surname>Kim</surname> <given-names>Sung-Hou</given-names></name>. "<chapter-title>Empirical prediction of genomic susceptibilities for multiple cancer classes</chapter-title>." <publisher-name>Proceedings of the National Academy of Sciences</publisher-name> (<year>2014</year>): <fpage>201318383</fpage>.</mixed-citation></ref>
+<ref id="pcbi.1004127.ref014"><label>14</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Qian</surname> <given-names>Jiang</given-names></name>, <etal>et al</etal>. "<article-title>Prediction of regulatory networks: genome-wide identification of transcription factor targets from gene expression data</article-title>." <source>Bioinformatics</source> <volume>19</volume>.<issue>15</issue> (<year>2003</year>): <fpage>1917</fpage>–<lpage>1926</lpage>. <object-id pub-id-type="pmid">14555624</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref015"><label>15</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Perrin</surname> <given-names>Bruno-Edouard</given-names></name>, <etal>et al</etal>. "<article-title>Gene networks inference using dynamic Bayesian networks</article-title>." <source>Bioinformatics</source> <volume>19</volume>.<supplement>suppl 2</supplement> (<year>2003</year>): <fpage>ii138</fpage>–<lpage>ii148</lpage>. <object-id pub-id-type="pmid">14534183</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref016"><label>16</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jansen</surname> <given-names>Ronald</given-names></name>, <etal>et al</etal>. "<article-title>A Bayesian networks approach for predicting protein-protein interactions from genomic data</article-title>." <source>Science</source> <volume>302</volume>.<issue>5644</issue> (<year>2003</year>): <fpage>449</fpage>–<lpage>453</lpage>. <object-id pub-id-type="pmid">14564010</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref017"><label>17</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Friedman</surname> <given-names>Nir</given-names></name>, <etal>et al</etal>. "<article-title>Using Bayesian networks to analyze expression data</article-title>." <source>Journal of computational biology</source> <volume>7</volume>.<issue>3–4</issue> (<year>2000</year>): <fpage>601</fpage>–<lpage>620</lpage>. <object-id pub-id-type="pmid">11382366</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref018"><label>18</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Segal</surname> <given-names>Eran</given-names></name>, <etal>et al</etal>. "<article-title>Module networks: identifying regulatory modules and their condition-specific regulators from gene expression data</article-title>." <source>Nature genetics</source> <volume>34</volume>.<issue>2</issue> (<year>2003</year>): <fpage>166</fpage>–<lpage>176</lpage>. <object-id pub-id-type="pmid">12740579</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref019"><label>19</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Xu</surname> <given-names>Min</given-names></name>, <etal>et al</etal>. "<article-title>Automated multidimensional phenotypic profiling using large public microarray repositories</article-title>." <source>Proceedings of the National Academy of Sciences</source> <volume>106</volume>.<issue>30</issue> (<year>2009</year>): <fpage>12323</fpage>–<lpage>12328</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.0900883106" xlink:type="simple">10.1073/pnas.0900883106</ext-link></comment> <object-id pub-id-type="pmid">19590007</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref020"><label>20</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ramaswamy</surname> <given-names>Sridhar</given-names></name>, <etal>et al</etal>. "<article-title>Multiclass cancer diagnosis using tumor gene expression signatures</article-title>." <source>Proceedings of the National Academy of Sciences</source> <volume>98</volume>.<issue>26</issue> (<year>2001</year>): <fpage>15149</fpage>–<lpage>15154</lpage>. <object-id pub-id-type="pmid">11742071</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref021"><label>21</label><mixed-citation publication-type="other" xlink:type="simple">Tan, Aik Choon, and David Gilbert. "Ensemble machine learning on gene expression data for cancer classification." (2003).</mixed-citation></ref>
+<ref id="pcbi.1004127.ref022"><label>22</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Furey</surname> <given-names>Terrence S.</given-names></name>, <etal>et al</etal>. "<article-title>Support vector machine classification and validation of cancer tissue samples using microarray expression data</article-title>.” <source>Bioinformatics</source> <volume>16</volume>.<issue>10</issue> (<year>2000</year>): <fpage>906</fpage>–<lpage>914</lpage>. <object-id pub-id-type="pmid">11120680</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref023"><label>23</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Shipp</surname> <given-names>Margaret A.</given-names></name>, <etal>et al</etal>. "<article-title>Diffuse large B-cell lymphoma outcome prediction by gene-expression profiling and supervised machine learning</article-title>." <source>Nature medicine</source> <volume>8</volume>.<issue>1</issue> (<year>2002</year>): <fpage>68</fpage>–<lpage>74</lpage>. <object-id pub-id-type="pmid">11786909</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref024"><label>24</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ye</surname> <given-names>Qing-Hai</given-names></name>, <etal>et al</etal>. "<article-title>Predicting hepatitis B virus–positive metastatic hepatocellular carcinomas using gene expression profiling and supervised machine learning</article-title>." <source>Nature medicine</source> <volume>9</volume>.<issue>4</issue> (<year>2003</year>): <fpage>416</fpage>–<lpage>423</lpage>. <object-id pub-id-type="pmid">12640447</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref025"><label>25</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Patel</surname> <given-names>Chirag J.</given-names></name>, and <name name-style="western"><surname>Butte</surname> <given-names>Atul J.</given-names></name>. "<article-title>Predicting environmental chemical factors associated with disease-related gene expression data</article-title>." <source>BMC medical genomics</source> <volume>3</volume>.<issue>1</issue> (<year>2010</year>): <fpage>17</fpage>.</mixed-citation></ref>
+<ref id="pcbi.1004127.ref026"><label>26</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Airoldi</surname> <given-names>Edoardo M.</given-names></name>, <etal>et al</etal>. "<article-title>Predicting cellular growth from gene expression signatures</article-title>." <source>PLoS Computational Biology</source> <volume>5</volume>.<issue>1</issue> (<year>2009</year>): <fpage>e1000257</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.1000257" xlink:type="simple">10.1371/journal.pcbi.1000257</ext-link></comment> <object-id pub-id-type="pmid">19119411</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref027"><label>27</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Shaik</surname> <given-names>Rafi</given-names></name>, and <name name-style="western"><surname>Ramakrishna</surname> <given-names>Wusirika</given-names></name>. "<article-title>Machine Learning Approaches Distinguish Multiple Stress Conditions using Stress-Responsive Genes and Identify Candidate Genes for Broad Resistance in Rice</article-title>." <source>Plant physiology</source> <volume>164</volume>.<issue>1</issue> (<year>2014</year>): <fpage>481</fpage>–<lpage>495</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1104/pp.113.225862" xlink:type="simple">10.1104/pp.113.225862</ext-link></comment> <object-id pub-id-type="pmid">24235132</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref028"><label>28</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lee</surname> <given-names>Young-suk</given-names></name>, <etal>et al</etal>. "<article-title>Ontology-aware classification of tissue and cell-type signals in gene expression profiles across platforms and technologies</article-title>." <source>Bioinformatics</source> <volume>29</volume>.<issue>23</issue> (<year>2013</year>): <fpage>3036</fpage>–<lpage>3044</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/bioinformatics/btt529" xlink:type="simple">10.1093/bioinformatics/btt529</ext-link></comment> <object-id pub-id-type="pmid">24037214</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref029"><label>29</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Carrera</surname> <given-names>Javier</given-names></name>, <etal>et al</etal>. "<article-title>An integrative, multi-scale, genome-wide model reveals the phenotypic landscape of <italic>Escherichia coli</italic></article-title>." <source>Molecular systems biology</source> <volume>10</volume>.<issue>7</issue> (<year>2014</year>): <fpage>735</fpage>.</mixed-citation></ref>
+<ref id="pcbi.1004127.ref030"><label>30</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Edgar</surname> <given-names>Ron</given-names></name>, <name name-style="western"><surname>Domrachev</surname> <given-names>Michael</given-names></name>, and <name name-style="western"><surname>Lash</surname> <given-names>Alex E.</given-names></name>. "<article-title>Gene Expression Omnibus: NCBI gene expression and hybridization array data repository</article-title>." <source>Nucleic acids research</source> <volume>30</volume>, no. <issue>1</issue> (<year>2002</year>): <fpage>207</fpage>–<lpage>210</lpage>. <object-id pub-id-type="pmid">11752295</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref031"><label>31</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Parkinson</surname> <given-names>Helen</given-names></name>, <etal>et al</etal>. "<article-title>ArrayExpress update—an archive of microarray and high-throughput sequencing-based functional genomics experiments</article-title>." <source>Nucleic acids research</source> <volume>39</volume>.<supplement>suppl 1</supplement> (<year>2011</year>): <fpage>D1002</fpage>–<lpage>D1004</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004127.ref032"><label>32</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Leinonen</surname> <given-names>Rsako</given-names></name>, <name name-style="western"><surname>Sugawara</surname> <given-names>Hideaki</given-names></name>, and <name name-style="western"><surname>Shumway</surname> <given-names>Martin</given-names></name>. “<article-title>The sequence read archive</article-title>.” <source>Nucleic acids research</source> <volume>39</volume>, no. <supplement>suppl 1</supplement> (<year>2011</year>): <fpage>D19</fpage>–<lpage>D21</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004127.ref033"><label>33</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Demeter</surname> <given-names>Janos</given-names></name>, <etal>et al</etal>. "<article-title>The Stanford Microarray Database: implementation of new analysis tools and open source release of software</article-title>." <source>Nucleic acids research</source> <volume>35</volume>.<supplement>suppl 1</supplement> (<year>2007</year>): <fpage>D766</fpage>–<lpage>D770</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004127.ref034"><label>34</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Faith</surname> <given-names>Jeremiah J.</given-names></name>, <etal>et al</etal>. "<article-title>Many Microbe Microarrays Database: uniformly normalized Affymetrix compendia with structured experimental metadata</article-title>." <source>Nucleic acids research</source> <volume>36</volume>.<supplement>suppl 1</supplement> (<year>2008</year>): <fpage>D866</fpage>–<lpage>D870</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004127.ref035"><label>35</label><mixed-citation publication-type="other" xlink:type="simple">Hu, James C., et al. "PortEco: a resource for exploring bacterial biology through high-throughput data and analysis tools." <italic>Nucleic acids research</italic>(2013): gkt1203.</mixed-citation></ref>
+<ref id="pcbi.1004127.ref036"><label>36</label><mixed-citation publication-type="other" xlink:type="simple">Davis, Jesse, and Mark Goadrich. "The relationship between Precision-Recall and ROC curves." In Proceedings of the 23rd international conference on Machine learning, pp. 233–240. ACM, 2006.</mixed-citation></ref>
+<ref id="pcbi.1004127.ref037"><label>37</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hengge</surname> <given-names>Aronis Regjne</given-names></name>, and <name name-style="western"><surname>Fischer</surname> <given-names>Daniela</given-names></name>. "<article-title>Identification and molecular analysis of <italic>glgS</italic>, a novel growth-phase-regulated and <italic>rpoS</italic>-dependent gene involved in glycogen synthesis in <italic>Escherichia coli</italic></article-title>." <source>Molecular microbiology</source> <volume>6</volume>.<issue>14</issue> (<year>1992</year>): <fpage>1877</fpage>–<lpage>1886</lpage>. <object-id pub-id-type="pmid">1324388</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref038"><label>38</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wang</surname> <given-names>Ai-Yu</given-names></name>, and <name name-style="western"><surname>Cronan</surname> <given-names>John E.</given-names></name>. "<article-title>The growth phase-dependent synthesis of cyclopropane fatty acids in <italic>Escherichia coli</italic> is the result of an RpoS (KatF)-dependent promoter plus enzyme instability</article-title>." <source>Molecular microbiology</source> <volume>11</volume>.<issue>6</issue> (<year>1994</year>): <fpage>1009</fpage>–<lpage>1017</lpage>. <object-id pub-id-type="pmid">8022273</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref039"><label>39</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gutowski-Eckel</surname> <given-names>Z.</given-names></name>, <etal>et al</etal>. "<article-title>Growth phase-dependent regulation and membrane localization of SpaB, a protein involved in biosynthesis of the lantibiotic subtilin</article-title>." <source>Applied and environmental microbiology</source> <volume>60</volume>.<issue>1</issue> (<year>1994</year>): <fpage>1</fpage>–<lpage>11</lpage>. <object-id pub-id-type="pmid">8117069</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref040"><label>40</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Adler</surname> <given-names>Conrado</given-names></name>, <etal>et al</etal>. "<article-title>The Alternative Role of Enterobactin as an Oxidative Stress Protector Allows Escherichia coli Colony Development</article-title>." <source>PloS one</source> <volume>9</volume>.<issue>1</issue> (<year>2014</year>): <fpage>e84734</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pone.0084734" xlink:type="simple">10.1371/journal.pone.0084734</ext-link></comment> <object-id pub-id-type="pmid">24392154</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref041"><label>41</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Dong</surname> <given-names>Tao</given-names></name>, and <name name-style="western"><surname>Schellhorn</surname> <given-names>Herb E.</given-names></name>. "<article-title>Control of RpoS in global gene expression of Escherichia coli in minimal media</article-title>." <source>Molecular Genetics and Genomics</source> <volume>281</volume>.<issue>1</issue> (<year>2009</year>): <fpage>19</fpage>–<lpage>33</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1007/s00438-008-0389-3" xlink:type="simple">10.1007/s00438-008-0389-3</ext-link></comment> <object-id pub-id-type="pmid">18843507</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref042"><label>42</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Polikanov</surname> <given-names>Yury S.</given-names></name>, <name name-style="western"><surname>Blaha</surname> <given-names>Gregor M.</given-names></name>, and <name name-style="western"><surname>Steitz</surname> <given-names>Thomas A.</given-names></name>. "<article-title>How hibernation factors RMF, HPF, and YfiA turn off protein synthesis</article-title>." <source>Science</source> <volume>336</volume>.<issue>6083</issue> (<year>2012</year>): <fpage>915</fpage>–<lpage>918</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/science.1218538" xlink:type="simple">10.1126/science.1218538</ext-link></comment> <object-id pub-id-type="pmid">22605777</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref043"><label>43</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Shankar</surname> <given-names>Sandeep</given-names></name>, <name name-style="western"><surname>Schlictman</surname> <given-names>David</given-names></name>, and <name name-style="western"><surname>Chakrabarty</surname> <given-names>A. M.</given-names></name>. "<article-title>Regulation of nucleoside diphosphate kinase and an alternative kinase in Escherichia coli: role of the sspA and rnk genes in nucleoside triphosphate formation</article-title>." <source>Molecular microbiology</source> <volume>17</volume>.<issue>5</issue> (<year>1995</year>): <fpage>935</fpage>–<lpage>943</lpage>. <object-id pub-id-type="pmid">8596442</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref044"><label>44</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ueguchi</surname> <given-names>Chiharu</given-names></name>, <name name-style="western"><surname>Misonou</surname> <given-names>Naoko</given-names></name>, and <name name-style="western"><surname>Mizuno</surname> <given-names>Takeshi</given-names></name>. "<article-title>Negative Control of rpoS Expression by Phosphoenolpyruvate: Carbohydrate Phosphotransferase System inEscherichia coli</article-title>." <source>Journal of bacteriology</source> <volume>183</volume>.<issue>2</issue> (<year>2001</year>): <fpage>520</fpage>–<lpage>527</lpage>. <object-id pub-id-type="pmid">11133945</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref045"><label>45</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gourse</surname> <given-names>Richard L.</given-names></name>, <etal>et al</etal>. "<article-title>rRNA transcription and growth rate-dependent regulation of ribosome synthesis in <italic>Escherichia coli</italic></article-title>." <source>Annual Reviews in Microbiology</source> <volume>50</volume>.<issue>1</issue> (<year>1996</year>): <fpage>645</fpage>–<lpage>677</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004127.ref046"><label>46</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ziervogel</surname> <given-names>Brigitte K.</given-names></name>, and <name name-style="western"><surname>Roux</surname> <given-names>Benoît</given-names></name>. "<article-title>The binding of antibiotics in OmpF porin</article-title>." <source>Structure</source> <volume>21</volume>.<issue>1</issue> (<year>2013</year>): <fpage>76</fpage>–<lpage>87</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.str.2012.10.014" xlink:type="simple">10.1016/j.str.2012.10.014</ext-link></comment> <object-id pub-id-type="pmid">23201272</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref047"><label>47</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Baba</surname> <given-names>Tomoya</given-names></name>, <etal>et al</etal>. "<article-title>Construction of <italic>Escherichia coli</italic> K-12 in-frame, single-gene knockout mutants: the Keio collection</article-title>." <source>Molecular systems biology</source> <volume>2</volume>.<issue>1</issue> (<year>2006</year>).</mixed-citation></ref>
+<ref id="pcbi.1004127.ref048"><label>48</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Matern</surname> <given-names>Yvonne</given-names></name>, <name name-style="western"><surname>Barion</surname> <given-names>Birgitta</given-names></name>, and <name name-style="western"><surname>Behrens-Kneip</surname> <given-names>Susanne</given-names></name>. "<article-title>PpiD is a player in the network of periplasmic chaperones in <italic>Escherichia coli</italic></article-title>." <source>BMC microbiology</source> <volume>10</volume>.<issue>1</issue> (<year>2010</year>): <fpage>251</fpage>.</mixed-citation></ref>
+<ref id="pcbi.1004127.ref049"><label>49</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Dutkowski</surname> <given-names>Janusz</given-names></name>, <etal>et al</etal>. "<article-title>A gene ontology inferred from molecular networks</article-title>." <source>Nature biotechnology</source> <volume>31</volume>.<issue>1</issue> (<year>2013</year>): <fpage>38</fpage>–<lpage>45</lpage>. <object-id pub-id-type="pmid">23242164</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref050"><label>50</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Casadesús</surname> <given-names>Josep</given-names></name>, and <name name-style="western"><surname>Low</surname> <given-names>David</given-names></name>. "<article-title>Epigenetic gene regulation in the bacterial world</article-title>." <source>Microbiology and molecular biology reviews</source> <volume>70</volume>.<issue>3</issue> (<year>2006</year>): <fpage>830</fpage>–<lpage>856</lpage>. <object-id pub-id-type="pmid">16959970</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref051"><label>51</label><mixed-citation publication-type="other" xlink:type="simple">Fang, Gang, et al. "Genome-wide mapping of methylated adenine residues in pathogenic <italic>Escherichia coli</italic> using single-molecule real-time sequencing." <italic>Nature biotechnology</italic> (2012).</mixed-citation></ref>
+<ref id="pcbi.1004127.ref052"><label>52</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>López-Maury</surname> <given-names>Luis</given-names></name>, <name name-style="western"><surname>Marguerat</surname> <given-names>Samuel</given-names></name>, and <name name-style="western"><surname>Bähler</surname> <given-names>Jürg</given-names></name>. "<article-title>Tuning gene expression to changing environments: from rapid responses to evolutionary adaptation</article-title>." <source>Nature Reviews Genetics</source> <volume>9</volume>.<issue>8</issue> (<year>2008</year>): <fpage>583</fpage>–<lpage>593</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nrg2398" xlink:type="simple">10.1038/nrg2398</ext-link></comment> <object-id pub-id-type="pmid">18591982</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref053"><label>53</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Baliga</surname> <given-names>Nitin S.</given-names></name> "<article-title>The scale of prediction</article-title>." <source>Science</source> <volume>320</volume>.<issue>5881</issue> (<year>2008</year>): <fpage>1297</fpage>–<lpage>1298</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/science.1159485" xlink:type="simple">10.1126/science.1159485</ext-link></comment> <object-id pub-id-type="pmid">18535232</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref054"><label>54</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Khalil</surname> <given-names>Ahmad S.</given-names></name>, and <name name-style="western"><surname>Collins</surname> <given-names>James J.</given-names></name>. "<article-title>Synthetic biology: applications come of age</article-title>." <source>Nature Reviews Genetics</source> <volume>11</volume>.<issue>5</issue> (<year>2010</year>): <fpage>367</fpage>–<lpage>379</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nrg2775" xlink:type="simple">10.1038/nrg2775</ext-link></comment> <object-id pub-id-type="pmid">20395970</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref055"><label>55</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mitchell</surname> <given-names>Amir</given-names></name>, <etal>et al</etal>. "<article-title>Adaptive prediction of environmental changes by microorganisms</article-title>." <source>Nature</source> <volume>460</volume>.<issue>7252</issue> (<year>2009</year>): <fpage>220</fpage>–<lpage>224</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nature08112" xlink:type="simple">10.1038/nature08112</ext-link></comment> <object-id pub-id-type="pmid">19536156</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref056"><label>56</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mitchell</surname> <given-names>Amir</given-names></name>, and <name name-style="western"><surname>Pilpel</surname> <given-names>Yitzhak</given-names></name>. "<article-title>A mathematical model for adaptive prediction of environmental changes by microorganisms</article-title>." <source>Proceedings of the National Academy of Sciences</source> <volume>108</volume>.<issue>17</issue> (<year>2011</year>): <fpage>7271</fpage>–<lpage>7276</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.1019754108" xlink:type="simple">10.1073/pnas.1019754108</ext-link></comment> <object-id pub-id-type="pmid">21487001</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref057"><label>57</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Tagkopoulos</surname> <given-names>Ilias</given-names></name>, <name name-style="western"><surname>Liu</surname> <given-names>Yir-Chung</given-names></name>, and <name name-style="western"><surname>Tavazoie</surname> <given-names>Saeed</given-names></name>. "<article-title>Predictive behavior within microbial genetic networks</article-title>." <source>science</source> <volume>320</volume>.<issue>5881</issue> (<year>2008</year>): <fpage>1313</fpage>–<lpage>1317</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/science.1154456" xlink:type="simple">10.1126/science.1154456</ext-link></comment> <object-id pub-id-type="pmid">18467556</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref058"><label>58</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rothschild</surname> <given-names>Daphna</given-names></name>, <etal>et al</etal>. "<article-title>Linear Superposition and Prediction of Bacterial Promoter Activity Dynamics in Complex Conditions</article-title>." <source>PLoS computational biology</source> <volume>10</volume>.<issue>5</issue> (<year>2014</year>): <fpage>e1003602</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.1003602" xlink:type="simple">10.1371/journal.pcbi.1003602</ext-link></comment> <object-id pub-id-type="pmid">24809350</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref059"><label>59</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bodrossy</surname> <given-names>Levente</given-names></name>, and <name name-style="western"><surname>Sessitsch</surname> <given-names>Angela</given-names></name>. "<article-title>Oligonucleotide microarrays in microbial diagnostics</article-title>." <source>Current opinion in microbiology</source> <volume>7</volume>.<issue>3</issue> (<year>2004</year>): <fpage>245</fpage>–<lpage>254</lpage>. <object-id pub-id-type="pmid">15196491</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref060"><label>60</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Habegger</surname> <given-names>Lukas</given-names></name>, <etal>et al</etal>. "<article-title>RSEQtools: a modular framework to analyze RNA-Seq data using compact, anonymized data summaries</article-title>." <source>Bioinformatics</source> <volume>27</volume>.<issue>2</issue> (<year>2011</year>): <fpage>281</fpage>–<lpage>283</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/bioinformatics/btq643" xlink:type="simple">10.1093/bioinformatics/btq643</ext-link></comment> <object-id pub-id-type="pmid">21134889</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref061"><label>61</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lazar</surname> <given-names>Cosmin</given-names></name>, <etal>et al</etal>. "<article-title>Batch effect removal methods for microarray gene expression data integration: a survey</article-title>." <source>Briefings in bioinformatics</source> <volume>14</volume>.<issue>4</issue> (<year>2013</year>): <fpage>469</fpage>–<lpage>490</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/bib/bbs037" xlink:type="simple">10.1093/bib/bbs037</ext-link></comment> <object-id pub-id-type="pmid">22851511</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref062"><label>62</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Johnson</surname> <given-names>W. Evan</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>Cheng</given-names></name>, and <name name-style="western"><surname>Rabinovic</surname> <given-names>Ariel</given-names></name>. "<article-title>Adjusting batch effects in microarray expression data using empirical Bayes methods</article-title>." <source>Biostatistics</source> <volume>8</volume>.<issue>1</issue> (<year>2007</year>): <fpage>118</fpage>–<lpage>127</lpage>. <object-id pub-id-type="pmid">16632515</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref063"><label>63</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Helman</surname> <given-names>Paul</given-names></name>, <etal>et al</etal>. "<article-title>A Bayesian network classification methodology for gene expression data</article-title>." <source>Journal of computational biology</source> <volume>11</volume>.<issue>4</issue> (<year>2004</year>): <fpage>581</fpage>–<lpage>615</lpage>. <object-id pub-id-type="pmid">15579233</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref064"><label>64</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Kibriya</surname> <given-names>Ashraf M.</given-names></name>, <etal>et al</etal>. "<chapter-title>Multinomial naive bayes for text categorization revisited</chapter-title>." <source>AI 2004: Advances in Artificial Intelligence</source>. <publisher-name>Springer Berlin</publisher-name> <publisher-loc>Heidelberg</publisher-loc>, <year>2005</year>. <fpage>488</fpage>–<lpage>499</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004127.ref065"><label>65</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Safavian</surname> <given-names>S.</given-names></name> <name name-style="western"><surname>Rasoul</surname></name>, and <name name-style="western"><surname>David</surname> <given-names>Landgrebe</given-names></name>. "<article-title>A survey of decision tree classifier methodology</article-title>." <source>Systems, Man and Cybernetics, IEEE Transactions on</source> <volume>21</volume>, no. <issue>3</issue> (<year>1991</year>): <fpage>660</fpage>–<lpage>674</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004127.ref066"><label>66</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cover</surname> <given-names>Thomas</given-names></name>, and <name name-style="western"><surname>Hart</surname> <given-names>Peter</given-names></name>. "<article-title>Nearest neighbor pattern classification</article-title>."<source>Information Theory, IEEE Transactions on</source> <volume>13</volume>, no. <issue>1</issue> (<year>1967</year>): <fpage>21</fpage>–<lpage>27</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004127.ref067"><label>67</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Wang</surname> <given-names>Lipo</given-names></name>, ed. <chapter-title>Support Vector Machines: theory and applications</chapter-title>. Vol. <volume>177</volume>. <publisher-name>Springer</publisher-name>, <year>2005</year>.</mixed-citation></ref>
+<ref id="pcbi.1004127.ref068"><label>68</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Dietterich</surname> <given-names>Thomas G.</given-names></name> "<chapter-title>Ensemble methods in machine learning</chapter-title>." <source>In Multiple classifier systems</source>, pp. <fpage>1</fpage>–<lpage>15</lpage>. <publisher-name>Springer Berlin Heidelberg</publisher-name>, <year>2000</year>.</mixed-citation></ref>
+<ref id="pcbi.1004127.ref069"><label>69</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hong</surname> <given-names>Chong Sun</given-names></name>, and <name name-style="western"><surname>Kim.</surname> <given-names>Beom Jun</given-names></name> “<article-title>Mutual information and redundancy for categorical data</article-title>.” <source>Statistical Papers</source> <volume>52</volume>, no. <issue>1</issue> (<year>2011</year>): <fpage>17</fpage>–<lpage>31</lpage></mixed-citation></ref>
+<ref id="pcbi.1004127.ref070"><label>70</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Battiti</surname> <given-names>Roberto</given-names></name>. "<article-title>Using mutual information for selecting features in supervised neural net learning</article-title>." <source>Neural Networks, IEEE Transactions on</source> <volume>5</volume>.<issue>4</issue> (<year>1994</year>): <fpage>537</fpage>–<lpage>550</lpage>. <object-id pub-id-type="pmid">18267827</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref071"><label>71</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Dennis</surname> <suffix>Jr</suffix></name>, <name name-style="western"><surname>Glynn</surname></name>, <name name-style="western"><surname>Sherman</surname> <given-names>Brad T.</given-names></name>, <name name-style="western"><surname>Hosack</surname> <given-names>Douglas A.</given-names></name>, <name name-style="western"><surname>Yang</surname> <given-names>Jun</given-names></name>, <name name-style="western"><surname>Gao</surname> <given-names>Wei</given-names></name>, <name name-style="western"><surname>Clifford Lane</surname> <given-names>H.</given-names></name>, and <name name-style="western"><surname>Richard</surname> <given-names>A</given-names></name>. <name name-style="western"><surname>Lempicki</surname></name>. "<article-title>DAVID: database for annotation, visualization, and integrated discovery</article-title>." <source>Genome Biol</source> <volume>4</volume>, no. <issue>5</issue> (<year>2003</year>): <fpage>P3</fpage>.</mixed-citation></ref>
+<ref id="pcbi.1004127.ref072"><label>72</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Babu</surname> <given-names>Mohan</given-names></name>, <etal>et al</etal>. "<article-title>Quantitative genome-wide genetic interaction screens reveal global epistatic relationships of protein complexes in <italic>Escherichia coli</italic></article-title>." <source>PLoS genetics</source> <volume>10</volume>.<issue>2</issue> (<year>2014</year>): <fpage>e1004120</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pgen.1004120" xlink:type="simple">10.1371/journal.pgen.1004120</ext-link></comment> <object-id pub-id-type="pmid">24586182</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref073"><label>73</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Keseler</surname> <given-names>Ingrid M.</given-names></name>, <etal>et al</etal>. "<article-title>EcoCyc: fusing model organism databases with systems biology</article-title>." <source>Nucleic acids research</source> <volume>41</volume>.<issue>D1</issue> (<year>2013</year>): <fpage>D605</fpage>–<lpage>D612</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/nar/gks1027" xlink:type="simple">10.1093/nar/gks1027</ext-link></comment> <object-id pub-id-type="pmid">23143106</object-id></mixed-citation></ref>
+<ref id="pcbi.1004127.ref074"><label>74</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kanehisa</surname> <given-names>Minoru</given-names></name>, <etal>et al</etal>. "<article-title>Data, information, knowledge and principle: back to metabolism in KEGG</article-title>." <source>Nucleic acids research</source> <volume>42</volume>.<issue>D1</issue> (<year>2014</year>): <fpage>D199</fpage>–<lpage>D205</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004127.ref075"><label>75</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Subramanian</surname> <given-names>Aravind</given-names></name>, <etal>et al</etal>. "<article-title>Gene set enrichment analysis: a knowledge-based approach for interpreting genome-wide expression profiles</article-title>." <source>Proceedings of the National Academy of Sciences of the United States of America</source> <volume>102</volume>.<issue>43</issue> (<year>2005</year>): <fpage>15545</fpage>–<lpage>15550</lpage>. <object-id pub-id-type="pmid">16199517</object-id></mixed-citation></ref>
+</ref-list>
+</back>
+</article>

@@ -1,0 +1,866 @@
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.1d3 20150301//EN" "http://jats.nlm.nih.gov/publishing/1.1d3/JATS-journalpublishing1.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="1.1d3" xml:lang="en">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">ploscomp</journal-id>
+<journal-title-group>
+<journal-title>PLOS Computational Biology</journal-title>
+</journal-title-group>
+<issn pub-type="ppub">1553-734X</issn>
+<issn pub-type="epub">1553-7358</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pcbi.1005489</article-id>
+<article-id pub-id-type="publisher-id">PCOMPBIOL-D-16-01847</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+<subj-group subj-group-type="Discipline-v3"><subject>Computer and information sciences</subject><subj-group><subject>Network analysis</subject><subj-group><subject>Metabolic networks</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Biochemistry</subject><subj-group><subject>Enzymology</subject><subj-group><subject>Enzyme chemistry</subject><subj-group><subject>Enzyme metabolism</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Genetics</subject><subj-group><subject>Gene expression</subject><subj-group><subject>Gene regulation</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Research and analysis methods</subject><subj-group><subject>Experimental organism systems</subject><subj-group><subject>Model organisms</subject><subj-group><subject>Saccharomyces cerevisiae</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Research and analysis methods</subject><subj-group><subject>Model organisms</subject><subj-group><subject>Saccharomyces cerevisiae</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Organisms</subject><subj-group><subject>Fungi</subject><subj-group><subject>Yeast</subject><subj-group><subject>Saccharomyces</subject><subj-group><subject>Saccharomyces cerevisiae</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Research and analysis methods</subject><subj-group><subject>Experimental organism systems</subject><subj-group><subject>Yeast and fungal models</subject><subj-group><subject>Saccharomyces cerevisiae</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Research and analysis methods</subject><subj-group><subject>Experimental organism systems</subject><subj-group><subject>Yeast and fungal models</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Genetics</subject><subj-group><subject>Gene expression</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Biochemistry</subject><subj-group><subject>Enzymology</subject><subj-group><subject>Enzyme chemistry</subject><subj-group><subject>Enzyme regulation</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Computational biology</subject><subj-group><subject>Gene regulatory networks</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Genetics</subject><subj-group><subject>Gene regulatory networks</subject></subj-group></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>Combining inferred regulatory and reconstructed metabolic networks enhances phenotype prediction in yeast</article-title>
+<alt-title alt-title-type="running-head">Phenotype prediction with IDREAM</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0002-6382-1717</contrib-id>
+<name name-style="western">
+<surname>Wang</surname>
+<given-names>Zhuo</given-names>
+</name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Danziger</surname>
+<given-names>Samuel A.</given-names>
+</name>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+<xref ref-type="aff" rid="aff004"><sup>4</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0003-2898-9044</contrib-id>
+<name name-style="western">
+<surname>Heavner</surname>
+<given-names>Benjamin D.</given-names>
+</name>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+<xref ref-type="aff" rid="aff005"><sup>5</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Ma</surname>
+<given-names>Shuyi</given-names>
+</name>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+<xref ref-type="aff" rid="aff004"><sup>4</sup></xref>
+<xref ref-type="aff" rid="aff006"><sup>6</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Smith</surname>
+<given-names>Jennifer J.</given-names>
+</name>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Li</surname>
+<given-names>Song</given-names>
+</name>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0002-0247-7967</contrib-id>
+<name name-style="western">
+<surname>Herricks</surname>
+<given-names>Thurston</given-names>
+</name>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0001-6153-4493</contrib-id>
+<name name-style="western">
+<surname>Simeonidis</surname>
+<given-names>Evangelos</given-names>
+</name>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Baliga</surname>
+<given-names>Nitin S.</given-names>
+</name>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+<xref ref-type="aff" rid="aff007"><sup>7</sup></xref>
+<xref ref-type="aff" rid="aff008"><sup>8</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Aitchison</surname>
+<given-names>John D.</given-names>
+</name>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+<xref ref-type="aff" rid="aff004"><sup>4</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0002-4157-0267</contrib-id>
+<name name-style="western">
+<surname>Price</surname>
+<given-names>Nathan D.</given-names>
+</name>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+</contrib-group>
+<aff id="aff001"><label>1</label> <addr-line>Key laboratory for the Genetics of Developmental and Neuropsychiatric Disorders (Ministry of Education), Bio-X Institutes, Shanghai Jiao Tong University, Shanghai, China</addr-line></aff>
+<aff id="aff002"><label>2</label> <addr-line>School of Life Sciences and Biotechnology, Shanghai Jiao Tong University, Shanghai, China</addr-line></aff>
+<aff id="aff003"><label>3</label> <addr-line>Institute for Systems Biology, Seattle, Washington, United States of America</addr-line></aff>
+<aff id="aff004"><label>4</label> <addr-line>Center for Infectious Disease Research, Seattle, Washington, United States of America</addr-line></aff>
+<aff id="aff005"><label>5</label> <addr-line>Department of Biostatistics, University of Washington, Seattle, Washington, United States of America</addr-line></aff>
+<aff id="aff006"><label>6</label> <addr-line>Department of Chemical and Biomolecular Engineering, University of Illinois, Urbana-Champaign, Illinois, United States of America</addr-line></aff>
+<aff id="aff007"><label>7</label> <addr-line>Departments of Biology and Microbiology &amp; Molecular and Cellular Biology Program, University of Washington, Seattle, Washington, United States of America</addr-line></aff>
+<aff id="aff008"><label>8</label> <addr-line>Lawrence Berkeley National Lab, Berkeley, California, United States of America</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Nielsen</surname>
+<given-names>Jens</given-names>
+</name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>Chalmers University of Technology, SWEDEN</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<fn fn-type="con">
+<p><list list-type="simple"><list-item>
+<p><bold>Conceptualization:</bold> ZW SAD BDH NSB JDA NDP.</p></list-item> <list-item>
+<p><bold>Formal analysis:</bold> ZW SAD BDH SM.</p></list-item> <list-item>
+<p><bold>Funding acquisition:</bold> NSB JDA NDP.</p></list-item> <list-item>
+<p><bold>Investigation:</bold> ZW SAD BDH SM JJS SL TH ES.</p></list-item> <list-item>
+<p><bold>Methodology:</bold> ZW SAD BDH.</p></list-item> <list-item>
+<p><bold>Project administration:</bold> ES.</p></list-item> <list-item>
+<p><bold>Resources:</bold> JJS SL TH.</p></list-item> <list-item>
+<p><bold>Software:</bold> ZW SAD BDH.</p></list-item> <list-item>
+<p><bold>Supervision:</bold> NSB JDA NDP.</p></list-item> <list-item>
+<p><bold>Writing – original draft:</bold> ZW SAD BDH SM JJS SL TH ES NSB JDA NDP.</p></list-item> <list-item>
+<p><bold>Writing – review &amp; editing:</bold> ZW SAD BDH SM JJS SL TH ES NSB JDA NDP.</p></list-item></list>
+</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">nbaliga@systemsbiology.org</email> (NSB); <email xlink:type="simple">jaitchison@systemsbiology.org</email> (JDA); <email xlink:type="simple">nprice@systemsbiology.org</email> (NDP)</corresp>
+</author-notes>
+<pub-date pub-type="epub">
+<day>17</day>
+<month>5</month>
+<year>2017</year>
+</pub-date>
+<pub-date pub-type="collection">
+<month>5</month>
+<year>2017</year>
+</pub-date>
+<volume>13</volume>
+<issue>5</issue>
+<elocation-id>e1005489</elocation-id>
+<history>
+<date date-type="received">
+<day>10</day>
+<month>11</month>
+<year>2016</year>
+</date>
+<date date-type="accepted">
+<day>30</day>
+<month>3</month>
+<year>2017</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2017</copyright-year>
+<copyright-holder>Wang et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pcbi.1005489"/>
+<abstract>
+<p>Gene regulatory and metabolic network models have been used successfully in many organisms, but inherent differences between them make networks difficult to integrate. Probabilistic Regulation Of Metabolism (PROM) provides a partial solution, but it does not incorporate network inference and underperforms in eukaryotes. We present an Integrated Deduced And Metabolism (IDREAM) method that combines statistically inferred Environment and Gene Regulatory Influence Network (EGRIN) models with the PROM framework to create enhanced metabolic-regulatory network models. We used IDREAM to predict phenotypes and genetic interactions between transcription factors and genes encoding metabolic activities in the eukaryote, <italic>Saccharomyces cerevisiae</italic>. IDREAM models contain many fewer interactions than PROM and yet produce significantly more accurate growth predictions. IDREAM consistently outperformed PROM using any of three popular yeast metabolic models and across three experimental growth conditions. Importantly, IDREAM’s enhanced accuracy makes it possible to identify subtle synthetic growth defects. With experimental validation, these novel genetic interactions involving the pyruvate dehydrogenase complex suggested a new role for fatty acid-responsive factor Oaf1 in regulating acetyl-CoA production in glucose grown cells.</p>
+</abstract>
+<abstract abstract-type="summary">
+<title>Author summary</title>
+<p>The integration of gene regulatory and metabolic network models is an important goal in computational biology, in order to develop methods that can identify the underlying mechanistic links in biological networks and advance metabolic engineering techniques. In this paper, we develop a framework called Integrated Deduced REgulation And Metabolism (IDREAM) that can improve our ability to predict phenotypes of microorganisms, and particularly it can address the challenges in evaluating phenotypic consequence of perturbing transcriptional regulation of metabolism in a eukaryotic cell. We compare the predictive performance of an IDREAM <italic>S</italic>. <italic>cerevisiae</italic> model with a PROM model using a TRN available from the YEASTRACT database. IDREAM outperforms PROM using any of three popular yeast metabolic models and across three experimental growth conditions, making it possible to identify subtle synthetic growth defects, and a new role for Oaf1 in the regulation of acetyl-CoA biosynthesis.</p>
+</abstract>
+<funding-group>
+<award-group id="award001">
+<funding-source>
+<institution>Natural Science Foundation of Shanghai (CN)</institution>
+</funding-source>
+<award-id>16ZR1449700</award-id>
+<principal-award-recipient>
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0002-6382-1717</contrib-id>
+<name name-style="western">
+<surname>Wang</surname>
+<given-names>Zhuo</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award002">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/100000001</institution-id>
+<institution>National Science Foundation</institution>
+</institution-wrap>
+</funding-source>
+<award-id>DGE-1144245</award-id>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Ma</surname>
+<given-names>Shuyi</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award003">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/100000057</institution-id>
+<institution>National Institute of General Medical Sciences</institution>
+</institution-wrap>
+</funding-source>
+<award-id>Center for Systems Biology/P50 GM076547</award-id>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Aitchison</surname>
+<given-names>John D.</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award004">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/100000002</institution-id>
+<institution>National Institutes of Health</institution>
+</institution-wrap>
+</funding-source>
+<award-id>P41 GM109824</award-id>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Aitchison</surname>
+<given-names>John D.</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award005">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/100000001</institution-id>
+<institution>National Science Foundation</institution>
+</institution-wrap>
+</funding-source>
+<award-id>MCB-1330912</award-id>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Baliga</surname>
+<given-names>Nitin S.</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award006">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/100000001</institution-id>
+<institution>National Science Foundation</institution>
+</institution-wrap>
+</funding-source>
+<award-id>DB-1262637</award-id>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Baliga</surname>
+<given-names>Nitin S.</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award007">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/100006133</institution-id>
+<institution>Advanced Research Projects Agency - Energy</institution>
+</institution-wrap>
+</funding-source>
+<award-id>DE-AR0000426</award-id>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Price</surname>
+<given-names>Nathan D.</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<funding-statement>We gratefully acknowledge funding from the Shanghai Natural Science Funding (<ext-link ext-link-type="uri" xlink:href="http://www.stcsm.gov.cn/english/" xlink:type="simple">http://www.stcsm.gov.cn/english/</ext-link>)/ 16ZR1449700 (ZW), the Scientific Research Foundation for the Returned Overseas Chinese Scholars of the State Education Ministry (<ext-link ext-link-type="uri" xlink:href="http://www.cscse.edu.cn/publish/portal0/tab132/default.htm" xlink:type="simple">http://www.cscse.edu.cn/publish/portal0/tab132/default.htm</ext-link>)/ 15Z102050028 (ZW), the National Key Research and Development Plan of China (<ext-link ext-link-type="uri" xlink:href="http://www.most.gov.cn/eng/" xlink:type="simple">http://www.most.gov.cn/eng/</ext-link>)/ 2016YFC0902403 (ZW), the Science Fund for Creative Research Groups of the National Natural Science Foundation of China (<ext-link ext-link-type="uri" xlink:href="http://www.nsfc.gov.cn/publish/portal1/" xlink:type="simple">http://www.nsfc.gov.cn/publish/portal1/</ext-link>)/ 81421061 (ZW), the “SMC-SJTU Chen Xing” Program for Excellent Young Scholars/ 13X100010027 (ZW), the open project from the Computational Biology and Synthetic Biology Key Laboratory of the Chinese Academy of Sciences (ZW), an NSF Graduate Research Fellowship/ DGE-1144245 (SM), a National Institutes of Health (<ext-link ext-link-type="uri" xlink:href="https://www.nih.gov" xlink:type="simple">https://www.nih.gov</ext-link>) Center for Systems Biology/ P50 GM076547 (JDA), the National Institutes of Health National Center for Dynamic Interactome Research/ P41 GM109824 (JDA), U.S. National Science Foundation (<ext-link ext-link-type="uri" xlink:href="https://www.nsf.gov" xlink:type="simple">https://www.nsf.gov</ext-link>) Awards MCB-1330912 and DB-1262637 (NSB), and a United States Department of Energy’s Advanced Research Projects Agency-Energy (<ext-link ext-link-type="uri" xlink:href="https://arpa-e.energy.gov" xlink:type="simple">https://arpa-e.energy.gov</ext-link>) program/ DE-AR0000426 (NDP). The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="6"/>
+<table-count count="2"/>
+<page-count count="23"/>
+</counts>
+<custom-meta-group>
+<custom-meta>
+<meta-name>PLOS Publication Stage</meta-name>
+<meta-value>vor-update-to-uncorrected-proof</meta-value>
+</custom-meta>
+<custom-meta>
+<meta-name>Publication Update</meta-name>
+<meta-value>2017-06-01</meta-value>
+</custom-meta>
+<custom-meta id="data-availability">
+<meta-name>Data Availability</meta-name>
+<meta-value>All relevant data are within the paper and its Supporting Information files.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>A major goal of systems biology is to predict the phenotypic consequences of environmental and genetic perturbations. Metabolism is a fundamental cellular system that strongly influences cell fate, and as such it is important to study the behavior and regulation of metabolic and to build models that integrate its functions with other cellular systems. Despite extensive study of the biochemistry and enzymology of metabolism for over a century, our ability to simulate the functions of metabolic networks and their interactions is still limited by their size and complexity, including their nonlinear dynamic behavior [<xref ref-type="bibr" rid="pcbi.1005489.ref001">1</xref>, <xref ref-type="bibr" rid="pcbi.1005489.ref002">2</xref>]. Traditionally, metabolic simulation has been performed using kinetic modeling, where each reaction and the dynamics of all of its components (reactants, products and enzymes) are modeled in detail. Kinetic modeling is usually applicable to small-scale biological processes and can produce accurate, dynamic predictions for fluxes, concentrations and regulatory states of the system. Kinetic modeling is limited by difficulties in parameterization, as well as the mathematical complexity of the resultant systems of differential equations. Sidestepping these size and knowledge limitations, constraint-based modeling utilizes network topology and thermodynamic constraints to make mechanistic, large-scale predictions for metabolic networks, without being dependent on detailed kinetic parameter knowledge. In recent years, the gap between kinetic and constraint-based modeling has been closing to some extent, as a number of large scale kinetic models have become available [<xref ref-type="bibr" rid="pcbi.1005489.ref003">3</xref>–<xref ref-type="bibr" rid="pcbi.1005489.ref006">6</xref>]. While some of the computational limitations of kinetic modeling are being progressively overcome in well characterized systems, genome-scale models are still predominantly made using the constraint-based approach. Additionally, the dearth of publicly available, experimentally measured kinetic parameters that are necessary to populate these models, as well as their variation across different genetic polymorphisms, remains an issue. In the meantime, constraint-based modeling provides a simple, scalable, and informative method for metabolic network simulation with minimal information requirements.</p>
+<p>Constraint-based modeling techniques [<xref ref-type="bibr" rid="pcbi.1005489.ref007">7</xref>, <xref ref-type="bibr" rid="pcbi.1005489.ref008">8</xref>] were developed to allow researchers to simulate genome-scale metabolic networks despite these challenges, by imposing a steady state assumption. Thus, constraint-based techniques are based on computing what steady states are possible given the stoichiometry of the biochemical reaction network. Applying steady-state reaction network modeling to simulate metabolism has its roots in the 60s [<xref ref-type="bibr" rid="pcbi.1005489.ref009">9</xref>, <xref ref-type="bibr" rid="pcbi.1005489.ref010">10</xref>], but was formalized in the 90s [<xref ref-type="bibr" rid="pcbi.1005489.ref011">11</xref>–<xref ref-type="bibr" rid="pcbi.1005489.ref014">14</xref>] under the label of flux balance analysis (FBA) [<xref ref-type="bibr" rid="pcbi.1005489.ref015">15</xref>]. FBA relies on optimization techniques to identify the optimal achievable value for a particular user-defined objective in the model, such as biomass accumulation.</p>
+<p>FBA is a powerful method for phenotype prediction due to its ability to describe stoichiometrically determined levels of substrate consumption and product production for reactions in very large metabolic systems in the absence of kinetic information or enzyme concentrations. However, one of its main drawbacks is that it does not incorporate constraints imposed upon the network by regulation of gene expression. In fact, metabolic networks are dramatically affected by complex transcriptional regulatory networks (as well as by a host of small molecule regulation processes not to be addressed herein). Changes in transcriptional regulation in response to environmental cues lead to changes in enzyme abundance or activity, which in turn lead to changes in physiological states and growth. Incorporating information about how metabolic genes are differentially regulated to metabolic network models may improve the predictions made by constraint-based analysis. The ability to integrate computational models of transcriptional regulation with models of metabolism would allow us to better describe the impact of mutations and environmental perturbations on functional metabolism. Such integrated models would have the potential to guide rational rewiring of metabolic flux and addition of new metabolic capabilities into a network [<xref ref-type="bibr" rid="pcbi.1005489.ref016">16</xref>, <xref ref-type="bibr" rid="pcbi.1005489.ref017">17</xref>].</p>
+<p>A common strategy for incorporating gene regulatory information into metabolic network models is to use gene expression information to impose condition-specific flux constraints on the metabolic model. This strategy depends upon the assumption that elevated gene expression measurements make it more likely that there is increased activity for the metabolic enzymes encoded by the genes with increased expression, while lower gene expression levels are more likely to correspond to lower activity of the corresponding metabolic enzymes. Methods that impose condition-specific flux constraints on metabolic network models based upon gene expression data include GIMME [<xref ref-type="bibr" rid="pcbi.1005489.ref018">18</xref>], iMAT [<xref ref-type="bibr" rid="pcbi.1005489.ref019">19</xref>], E-Flux [<xref ref-type="bibr" rid="pcbi.1005489.ref020">20</xref>], MADE [<xref ref-type="bibr" rid="pcbi.1005489.ref021">21</xref>], GX-FBA [<xref ref-type="bibr" rid="pcbi.1005489.ref022">22</xref>], MTA [<xref ref-type="bibr" rid="pcbi.1005489.ref023">23</xref>], CoreReg [<xref ref-type="bibr" rid="pcbi.1005489.ref024">24</xref>], mCADRE [<xref ref-type="bibr" rid="pcbi.1005489.ref025">25</xref>] and EXAMO [<xref ref-type="bibr" rid="pcbi.1005489.ref026">26</xref>]. However, in many cases, the predictions obtained by FBA using a growth maximization objective are as good or better than those obtained using methods that incorporate gene expression to provide additional constraints [<xref ref-type="bibr" rid="pcbi.1005489.ref027">27</xref>]. This discordance suggests that gene expression is not directly correlated to the activity of the encoded metabolic enzyme, or that more sophisticated methods must be employed to link gene expression data to metabolic network models. We propose that information about condition-dependent differential regulation of genes expression, such as can be captured with EGRIN [<xref ref-type="bibr" rid="pcbi.1005489.ref028">28</xref>], can provide information that can be used to improve conditional flux predictions by flux balance analysis of metabolic network models.</p>
+<p>In previous work, some of us developed the Probabilistic Regulation of Metabolism (PROM) method for integrating transcriptional regulatory networks (TRNs) and metabolic networks [<xref ref-type="bibr" rid="pcbi.1005489.ref029">29</xref>, <xref ref-type="bibr" rid="pcbi.1005489.ref030">30</xref>]. In order to build an integrated model of a metabolic and transcriptional regulatory network for an organism using PROM, the following components are needed.</p>
+<list list-type="order">
+<list-item><p>The genome-scale reconstruction of the metabolic network of the organism. The simulation of the metabolic network within the PROM method is performed using FBA subject to additional constraints and a penalty function.</p></list-item>
+<list-item><p>A regulatory network structure, which consists of a list of transcription factors, the targets of these transcription factors, and their interactions. These transcriptional regulatory networks have generally been constructed based on high-throughput protein—DNA interaction data and/or statistical inference of functional relationships from genomic and transcriptomic data.</p></list-item>
+<list-item><p>A collection of gene expression data measured under different conditions, which will allow the observation of various phenotypes for the organism under study.</p></list-item>
+</list>
+<p>PROM introduces probabilities to represent gene states and interactions between a gene and a transcription factor. In short, PROM estimates how much less an enzyme encoding gene will be transcribed when a TF is deleted and proportionally reduces the maximum flux through that enzyme. We have previously applied PROM to predict the effects of TF knockout on growth for <italic>Escherichia coli</italic> and <italic>Mycobacterium tuberculosis</italic> [<xref ref-type="bibr" rid="pcbi.1005489.ref029">29</xref>, <xref ref-type="bibr" rid="pcbi.1005489.ref031">31</xref>]. However, to date, there has not been a successful application of a PROM-like semi-automated approach to build integrative regulatory-metabolic models to predict the phenotype of TF mutants for a eukaryotic organism.</p>
+<p>The abundance of transcriptomic data has enabled development of a number of algorithms to infer genome-scale transcriptional regulatory networks in addition to the coexpression frequency approach used in PROM [<xref ref-type="bibr" rid="pcbi.1005489.ref032">32</xref>–<xref ref-type="bibr" rid="pcbi.1005489.ref035">35</xref>]. These methods have been implemented and made gene expression predictions to varying degrees of accuracy. The DREAM project (Dialogue on Reverse Engineering Assessment and Methods) evaluated over 30 network inference methods on <italic>E</italic>. <italic>coli</italic>, <italic>Staphylococcus aureus</italic>, and <italic>S</italic>. <italic>cerevisiae</italic> [<xref ref-type="bibr" rid="pcbi.1005489.ref036">36</xref>]. Several methods performed relatively well for <italic>E</italic>. <italic>coli</italic> data sets, including CLR [<xref ref-type="bibr" rid="pcbi.1005489.ref032">32</xref>], ARACNE [<xref ref-type="bibr" rid="pcbi.1005489.ref037">37</xref>], and ANOVA [<xref ref-type="bibr" rid="pcbi.1005489.ref038">38</xref>], but not well for Yeast. Recently, several more methods were developed. RPNI (Regulation Pattern based Network Inference) defined the co-regulation pattern, indirect-regulation pattern and mixture-regulation pattern as three candidate patterns to guide the selection of candidate genes [<xref ref-type="bibr" rid="pcbi.1005489.ref039">39</xref>]. Zhao et al. [<xref ref-type="bibr" rid="pcbi.1005489.ref040">40</xref>] proposed a new measure, "part mutual information" (PMI), to quantify nonlinearly direct associations in networks more accurately than traditional conditional mutal information (CMI). Another multi-level strategy named GENIMS showed better accuracy and robustness, by comparison with the methods on the DREAM4 and DREAM5 benchmark networks [<xref ref-type="bibr" rid="pcbi.1005489.ref040">40</xref>]. However, significant challenges remain in accurately inferring such networks from gene expression data, particularly given the more complicated eukaryotic regulatory mechanisms in <italic>S</italic>. <italic>cerevisiae</italic> [<xref ref-type="bibr" rid="pcbi.1005489.ref036">36</xref>].</p>
+<p>Environment and Gene Regulatory Influence Network (EGRIN) is an approach to meet those challenges by building a comprehensive model of condition-specific gene regulation [<xref ref-type="bibr" rid="pcbi.1005489.ref028">28</xref>]. EGRIN describes which factors influence gene expression and under what environmental conditions those factors are relevant. It uses the biclustering algorithm, cMonkey [<xref ref-type="bibr" rid="pcbi.1005489.ref041">41</xref>] to find conditionally co-regulated genes from heterogeneous genome-wide datasets, and Inferelator [<xref ref-type="bibr" rid="pcbi.1005489.ref042">42</xref>] to use the mRNA expression levels of TFs or other regulators to predict the expression level of a target gene with linear regression model. EGRIN construction techniques were originally developed to study <italic>Halobacterium salinarum</italic> [<xref ref-type="bibr" rid="pcbi.1005489.ref028">28</xref>], but this approach was further developed for eukaryotic gene expression in the yeast <italic>S</italic>.<italic>cerevisiae</italic> [<xref ref-type="bibr" rid="pcbi.1005489.ref043">43</xref>]. This work demonstrated that the yeast EGRIN accurately predicted condition-specific gene expression, and was able to identify transcription factors that regulate peroxisome-related genes when yeast is grown on oleic acid [<xref ref-type="bibr" rid="pcbi.1005489.ref043">43</xref>].</p>
+<p>Here, we build upon the previous EGRIN and PROM methods to develop a framework called Integrated Deduced REgulation And Metabolism (IDREAM). IDREAM uses bootstrapping-EGRIN inferred transcriptional factor (TF) regulation of enzyme-encoding genes, then applies a PROM-like approach to apply metabolic network constraints in an effort to improve phenotype prediction, as shown in Figs <xref ref-type="fig" rid="pcbi.1005489.g001">1</xref> and <xref ref-type="fig" rid="pcbi.1005489.g002">2</xref>. We compared the predictive performance of an IDREAM <italic>S</italic>. <italic>cerevisiae</italic> model with a PROM model using a TRN available from the YEASTRACT database [<xref ref-type="bibr" rid="pcbi.1005489.ref044">44</xref>, <xref ref-type="bibr" rid="pcbi.1005489.ref045">45</xref>]. This comparison included growth rates predicted for TF deletion mutants, which were tested experimentally, demonstrating that predicted growth phenotypes from IDREAM were more consistent with observed phenotypes than predictions made by the PROM model. Previous work has demonstrated significant variability in growth phenotype prediction among yeast models [<xref ref-type="bibr" rid="pcbi.1005489.ref046">46</xref>], nevertheless IDREAM proved to be robust and to outperform PROM with several metabolic network models and different environmental conditions tested (Figs <xref ref-type="fig" rid="pcbi.1005489.g003">3</xref>, <xref ref-type="fig" rid="pcbi.1005489.g004">4</xref> and <xref ref-type="fig" rid="pcbi.1005489.g005">5</xref>).</p>
+<fig id="pcbi.1005489.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1005489.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>Principle IDREAM illustration of combining EGRIN and PROM for building an integrated model of a metabolic network and its corresponding gene regulatory network.</title>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005489.g001" xlink:type="simple"/>
+</fig>
+<fig id="pcbi.1005489.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1005489.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>Strategy for IDREAM on integration of an EGRIN TRN with a metabolic model.</title>
+<p>A. Comparison of three integrative models: PROM, IDREAM, IDREAM-hybrid. B. Detailed illustration of probability constraints in an IDREAM model. The direct and indirect interactions are represented using solid and dashed lines, respectively. For activators (red), we set the probability to Prob(Gene = ON|Factor = OFF) = FDR. For inhibitors (blue), we set Prob(Gene = ON|Factor = OFF) = 1-FDR. The constraints on the reaction flux were V<sub>max</sub>·Prob. For indirect interactions, no effects of TF knockout on flux constraints.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005489.g002" xlink:type="simple"/>
+</fig>
+<fig id="pcbi.1005489.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1005489.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title>MCCs between predicted and experimental growth changes across different media and at different thresholds for binarizing a call as “growth defect” or “no growth defect”.</title>
+<p>Four conditions are presented in the four panels (A, B, C and D). Under each condition, we calculated the ratio of growth rates between TF knockout and wild-type. When the ratio was lower than some particular threshold, the corresponding TF is considered growth defective. By adjusting the threshold of growth ratio from 0.1 to 0.95, the MCCs between prediction and measurement were derived. A. Glucose minimal medium with ammonium. B. Galatose with ammonium medium. C. Glucose with urea medium. D. Combining the three media.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005489.g003" xlink:type="simple"/>
+</fig>
+<fig id="pcbi.1005489.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1005489.g004</object-id>
+<label>Fig 4</label>
+<caption>
+<title>ROC curves for growth defect predictions using IDREAM and PROM on Yeast6 model.</title>
+<p>A. Threshold is 0.5 for binarizing a call as “growth defect” or “no growth defect” B. Threshold is 0.2 for binarizing a call as “growth defect” or “no growth defect”.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005489.g004" xlink:type="simple"/>
+</fig>
+<fig id="pcbi.1005489.g005" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1005489.g005</object-id>
+<label>Fig 5</label>
+<caption>
+<title>MCCs by different integrative models using different thresholds of growth ratio determining growth defect.</title>
+<p>Y6, Y7, and iMM904 refer to the Yeast metabolic models Yeast 6, Yeast 7, and iMM904 respectively.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005489.g005" xlink:type="simple"/>
+</fig>
+<p>Furthermore, IDREAM enabled predictions of genetic interactions between genes encoding TFs and enzymes of the metabolic network. We experimentally tested the strongest interactions using a quantitative growth assay and validated five novel interactions between the TF Oaf1 and components of the pyruvate dehydrogenase complex. These data reveal an unexpected potential role for Oaf1 in regulating acetyl-CoA production during mitochondrial dysfunction, in addition to its well-characterized role in regulating fatty acid metabolism in the absence of glucose. Therefore, because of the inference component, the integrated network modeling approach IDREAM can uncover previously uncharacterized gene regulation of metabolism.</p>
+</sec>
+<sec id="sec002" sec-type="results">
+<title>Results</title>
+<sec id="sec003">
+<title>Overview of the IDREAM approach for integrative regulatory-metabolic modeling</title>
+<p>The original PROM framework represents the TF influence with a conditional probability derived from analysis of gene expression profiles. This conditional probability estimates the likelihood that an ON/OFF state in a TF will lead to an ON/OFF state in the target genes [<xref ref-type="bibr" rid="pcbi.1005489.ref029">29</xref>]. For IDREAM, the conditional probability was instead represented by the bootstrapping EGRIN-derived FDR values for the subset of EGRIN-discovered regulator interactions that also have evidence for direct interaction in the YEASTRACT database. As shown in <xref ref-type="fig" rid="pcbi.1005489.g002">Fig 2A and 2B</xref> (see details in <xref ref-type="sec" rid="sec013">Methods</xref>), this allows us to represent the TF influence, while leaving the rest of the metabolic reactions unconstrained by regulation. Essentially, IDREAM focuses on our highest confidence set of interactions, where there is both evidence for direct regulation from YEASTRACT and a strong transcriptional influence that is sufficient to be predicted by the inference techniques of EGRIN. In addition, we generated an IDREAM-PROM hybrid model, which is able to adjust the conditional probabilities for the indirect interactions, using the conventional PROM approach coupled with the IDREAM constraints on the high confidence. As above, EGRIN inferred interactions also have evidence for direct interaction in the YEASTRACT database. We compared these two integrated models with a standard PROM model that solely uses interactions from the YEASTRACT database as the regulatory component, without any information from the EGRIN regulatory network model. The strategies for construction of the three integrative models are described in <xref ref-type="fig" rid="pcbi.1005489.g002">Fig 2A</xref>. For all the approaches, we used Yeast6 as the base metabolic model [<xref ref-type="bibr" rid="pcbi.1005489.ref047">47</xref>]. Yeast6 was found to be as accurate as any available yeast reconstruction for growth predictions based on an extensive metabolic comparison across all published models and available datasets [<xref ref-type="bibr" rid="pcbi.1005489.ref046">46</xref>], and also performs best with IDREAM. We compared the network properties and the predictive performance of the resulting three integrative models: PROM, IDREAM, and IDREAM-hybrid. To test the effectiveness of these integrated models, we validated the growth predictions against growth rate data for 119 TF knockouts measured by the Sauer Laboratory [<xref ref-type="bibr" rid="pcbi.1005489.ref048">48</xref>].</p>
+<p>The standard PROM model included 177 TFs and a total of 31,075 regulatory associations from YEASTRACT, of which 7,292 were direct interactions with evidence of TF binding. By mapping the target genes in the TRN with metabolic genes in the MN, we integrated 2588 EGRIN-inferred influences consisting of 91 TFs transcriptionally regulating 794 genes encoding enzymes of the metabolic network with false discovery rates (FDR) ≤ 0.05 (See <xref ref-type="sec" rid="sec013">Methods</xref> for details). There were 307 interactions in the IDREAM model annotated as direct regulatory associations in YEASTRACT for which evidence of TF-chromatin binding has been generated. Although there are many more TFs and interactions in YEASTRACT, 15 out of the 17 TFs observed to cause growth defects upon deletion [<xref ref-type="bibr" rid="pcbi.1005489.ref048">48</xref>] are included in the EGRIN network (shown in <xref ref-type="supplementary-material" rid="pcbi.1005489.s001">S1 Fig</xref>). Additionally, for the total 900 genes encoding enzymes of the metabolic network in the Yeast6 model, PROM and IDREAM included 863 and 794 genes respectively, which suggested that the regulatory network generated by EGRIN captures the part of the network that is most relevant to phenotypic predictions influenced by changes in metabolic flux, while sparing extraneous components.</p>
+</sec>
+<sec id="sec004">
+<title>IDREAM predicted growth phenotypes with significantly better accuracy than PROM</title>
+<p>Predicting gene essentiality is a basic and important task for genome-scale metabolic models [<xref ref-type="bibr" rid="pcbi.1005489.ref049">49</xref>–<xref ref-type="bibr" rid="pcbi.1005489.ref051">51</xref>]. Advanced models that include TF regulators of genes encoding metabolic enzymes (such as IDREAM and PROM) can also predict growth rates when TFs are deleted. We used FBA to calculate the optimal growth rate on glucose-containing minimal medium using the Yeast6 model. Then, using the three regulatory-metabolic models, we simulated the growth rate for each TF knockout. The ratio of mutant vs. wild-type growth rate was compared with the growth ratio for 119 TF knockouts previously measured [<xref ref-type="bibr" rid="pcbi.1005489.ref048">48</xref>]. There are 90 TFs and 52 TFs with corresponding deletion mutant growth ratios in the PROM and IDREAM models, respectively. There were 51 TFs in common between the two integrative models, so we distinguish PROM by TF90 (the whole YEASTRACT-based model) and TF51 (the portion of the YEASTRACT-based model that overlaps with that from IDREAM). As shown in <xref ref-type="table" rid="pcbi.1005489.t001">Table 1</xref>, the Pearson Correlation Coefficient (PCC) between experimental results and predictions by IDREAM is much higher than that by PROM (PCC is 0.43 vs. 0.17), and the normalized sum of squared error is significantly lower for IDREAM (0.12 vs. 0.25). We performed a two-tailed t-test testing the null hypothesis that the mean absolute residuals for IDREAM are the same as the mean absolute residuals for PROM, and obtained p-value = 0.01 (<xref ref-type="table" rid="pcbi.1005489.t002">Table 2</xref>). Interestingly, the performances of IDREAM and IDREAM-hybrid were very similar, suggesting that the core set of direct regulatory interactions predicted from the EGRIN approach plays a key role in affecting phenotype, irrespective of the conditional probabilities calculated for the indirect interactions.</p>
+<table-wrap id="pcbi.1005489.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1005489.t001</object-id>
+<label>Table 1</label> <caption><title>Comparison of PROM and IDREAM predicted growth ratio with experiments under glucose minimal medium.</title> <p>The ratio of mutant vs. wild-type growth rate was compared with the growth ratio for 119 TF knockouts previously measured by Sauer Lab. There were 51 TFs in common between the two integrative models, so we distinguish PROM by TF90 (the whole YEASTRACT-based model) and TF51 (the portion of the YEASTRACT-based model that overlaps with that from IDREAM).</p></caption>
+<alternatives>
+<graphic id="pcbi.1005489.t001g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005489.t001" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left">Integrative model</th>
+<th align="left">Correlation</th>
+<th align="left">p-value</th>
+<th align="left">Sum of squared error</th>
+<th align="left">Normalized sum of squared error / permutation p-value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">PROM_TF90</td>
+<td align="char" char=".">0.2110</td>
+<td align="char" char=".">0.0459</td>
+<td align="char" char=".">4.298</td>
+<td align="center">0.205 / 0.029</td>
+</tr>
+<tr>
+<td align="left">PROM _TF51</td>
+<td align="char" char=".">0.1712</td>
+<td align="char" char=".">0.2297</td>
+<td align="char" char=".">3.566</td>
+<td align="center">0.249 / 0.144</td>
+</tr>
+<tr>
+<td align="left">IDREAM-hybrid</td>
+<td align="char" char=".">0.4183</td>
+<td align="char" char=".">0.0020</td>
+<td align="char" char=".">2.481</td>
+<td align="center">0.118 / 0.004</td>
+</tr>
+<tr>
+<td align="left">IDREAM</td>
+<td align="char" char=".">0.4325</td>
+<td align="char" char=".">0.0014</td>
+<td align="char" char=".">2.506</td>
+<td align="center">0.121 / 0.003</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<table-wrap id="pcbi.1005489.t002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1005489.t002</object-id>
+<label>Table 2</label> <caption><title>Comparison of mean absolute residuals for IDREAM and PROM aggregating different yeast models.</title> <p>The first column shows three different yeast metabolic models, aggregate refers to the predictions for all three models taken together. Column 2–4 show the Pearson correlation coefficient, p-value, and mean absolute residuals difference between predicted and actual growth by IDREAM and IDREAM_hybrid model. Column 5–7 show the Pearson correlation coefficient, p-value, and mean absolute residuals difference by PROM_TF51. Column 8 ‘vs.res.pVal’ represents the significance of difference in correlations between the two IDREAM models and the PROM model. P-values were calculated using a Fisher’s Z transform. IDREAM_h means the IDREAM_hybrid model.</p></caption>
+<alternatives>
+<graphic id="pcbi.1005489.t002g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005489.t002" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<tbody>
+<tr>
+<td align="left">Model</td>
+<td align="left">IDREAM</td>
+<td align="left">IDREAM.p</td>
+<td align="left">IDREAM.meanAbsDif</td>
+<td align="left">PROM</td>
+<td align="left">PROM.p</td>
+<td align="left">PROM.meanAbsDif</td>
+<td align="left">vs.res.pVal</td>
+</tr>
+<tr>
+<td align="left">Y6</td>
+<td align="center">0.4325</td>
+<td align="center">0.0014</td>
+<td align="center">0.1871</td>
+<td align="center">0.1712</td>
+<td align="center">0.2297</td>
+<td align="center">0.3501</td>
+<td align="center">0.0099</td>
+</tr>
+<tr>
+<td align="left">Y7</td>
+<td align="center">0.2724</td>
+<td align="center">0.0507</td>
+<td align="center">0.2388</td>
+<td align="center">0.1386</td>
+<td align="center">0.3321</td>
+<td align="center">0.3739</td>
+<td align="center">0.0447</td>
+</tr>
+<tr>
+<td align="left">iMM</td>
+<td align="center">0.3689</td>
+<td align="center">0.0071</td>
+<td align="center">0.2348</td>
+<td align="center">0.2261</td>
+<td align="center">0.1106</td>
+<td align="center">0.3665</td>
+<td align="center">0.0487</td>
+</tr>
+<tr>
+<td align="left">Aggregate</td>
+<td align="center">0.3546</td>
+<td align="center">0.0000</td>
+<td align="center">0.2202</td>
+<td align="center">0.1781</td>
+<td align="center">0.0276</td>
+<td align="center">0.3635</td>
+<td align="center">0.0001</td>
+</tr>
+<tr>
+<td align="left">Model</td>
+<td align="right">IDREAM_h</td>
+<td align="right">IDREAM_h.p</td>
+<td align="left">IDREAM_h.meanAbsDif</td>
+<td align="right">PROM</td>
+<td align="right">PROM.p</td>
+<td align="left">PROM.meanAbsDif</td>
+<td align="left">vs.res.pVal</td>
+</tr>
+<tr>
+<td align="left">Y6</td>
+<td align="center">0.4183</td>
+<td align="center">0.0020</td>
+<td align="center">0.1972</td>
+<td align="center">0.1712</td>
+<td align="center">0.2297</td>
+<td align="center">0.3501</td>
+<td align="center">0.0139</td>
+</tr>
+<tr>
+<td align="left">Y7</td>
+<td align="center">0.1733</td>
+<td align="center">0.2193</td>
+<td align="center">0.2974</td>
+<td align="center">0.1386</td>
+<td align="center">0.3321</td>
+<td align="center">0.3739</td>
+<td align="center">0.2527</td>
+</tr>
+<tr>
+<td align="left">IMM</td>
+<td align="center">0.3202</td>
+<td align="center">0.0206</td>
+<td align="center">0.2602</td>
+<td align="center">0.2261</td>
+<td align="center">0.1106</td>
+<td align="center">0.3665</td>
+<td align="center">0.1084</td>
+</tr>
+<tr>
+<td align="left">Aggregate</td>
+<td align="center">0.2973</td>
+<td align="center">0.0002</td>
+<td align="center">0.2516</td>
+<td align="center">0.1781</td>
+<td align="center">0.0276</td>
+<td align="center">0.3635</td>
+<td align="center">0.0028</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p>In order to more fully evaluate the generality of these results, we expanded our set of predictions for two additional growth conditions measured previously [<xref ref-type="bibr" rid="pcbi.1005489.ref048">48</xref>]: galactose with ammonium as a nitrogen source, and glucose with urea as a nitrogen source. Additionally, across all three growth conditions, we evaluated the effect of changing the cutoff for binarizing the data into categories of “growth defect” vs. “no growth defect”. We utilized the Matthews correlation coefficient (MCC) [<xref ref-type="bibr" rid="pcbi.1005489.ref052">52</xref>] as it is the common method of choice for statistically assessing performance of binary classifications. The MCC results for the two IDREAM predictions were much better than those for PROM overall (<xref ref-type="fig" rid="pcbi.1005489.g003">Fig 3</xref>). In particular, when the threshold of ratio for growth defect was less than 0.5, the Fisher’s transformation test for the pairs of MCC values showed that IDREAM significantly outperformed PROM across all measured conditions (p &lt;0.05). IDREAM can also decrease the variability of the estimated internal fluxes in addition to predicting reaction essentiality for growth. Applying flux variability analysis (FVA) to the IDREAM model can reveal predicted changes in the reaction flux solution space that result from each TF perturbation. Comparison with the FVA results of the original YEAST6 model showed that the solution space is reduced for IDREAM (<xref ref-type="supplementary-material" rid="pcbi.1005489.s006">S1 Table</xref>).</p>
+<p>We also estimated the significance of the predictive performance by randomly permuting the expression data and TF-gene associations. For the expression dataset, we fixed the number of genes and randomly permuted the expression values 500 times, and then calculated the percentage of permutations that generated higher MCCs than the constructed IDREAM model (designated as a p-value). Additionally, we generated 500 permutated regulatory networks by fixing the number of TFs and genes and randomly permuting their connections, while the expression dataset remained unchanged. The percentage of permuted networks that generated higher MCCs than the constructed IDREAM model was calculated as a p-value. We found that the MCCs from the IDREAM and IDREAM-hybrid model were all significant against the distribution of permutations of expression and network associations (p &lt; 0.05 in each case) (<xref ref-type="supplementary-material" rid="pcbi.1005489.s007">S2 Table</xref>). The predictive accuracy of the EGRIN-derived TF regulatory influences on metabolism was further underscored by the observation that an integrated model that was constructed by integrating TF influences inferred by CLR [<xref ref-type="bibr" rid="pcbi.1005489.ref036">36</xref>] made growth rate predictions that did not correlate with experimental data (<xref ref-type="supplementary-material" rid="pcbi.1005489.s008">S3 Table</xref>).</p>
+<p>To further evaluate the performance of IDREAM compared to PROM, and because growth ratios are continuous values, we tested whether PROM or IDREAM performed better at predicting a range of growth defects. Thus, instead of considering only 50% ratio as defining a growth defect, we considered multiple threshold ranging from severe growth defects (~10% of WT) to virtually normal growth rates and compared the performance of IDREAM and PROM using Receiver Operator Characteristic curves [<xref ref-type="bibr" rid="pcbi.1005489.ref053">53</xref>] (<xref ref-type="fig" rid="pcbi.1005489.g004">Fig 4</xref>, <xref ref-type="supplementary-material" rid="pcbi.1005489.s002">S2 Fig</xref>, and <xref ref-type="supplementary-material" rid="pcbi.1005489.s009">S4 Table</xref>). Overall, the mean Area Under the Curve value [<xref ref-type="bibr" rid="pcbi.1005489.ref054">54</xref>] for this wide range of thresholds was significantly higher for IDREAM than PROM (0.67 vs 0.58, Wilcoxon signed rank p-value &lt; 0.004; <xref ref-type="supplementary-material" rid="pcbi.1005489.s002">S2 Fig</xref>, <xref ref-type="supplementary-material" rid="pcbi.1005489.s009">S4 Table</xref>) indicating that IDREAM more accurately predicted growth defects.</p>
+</sec>
+<sec id="sec005">
+<title>IDREAM outperforms PROM for different yeast metabolic models</title>
+<p>To further validate the performance of IDREAM, we tested our approach with two metabolic reconstructions of yeast other than Yeast6: Yeast7, the latest published reconstruction of yeast [<xref ref-type="bibr" rid="pcbi.1005489.ref055">55</xref>], and iMM904 by the Palsson Lab [<xref ref-type="bibr" rid="pcbi.1005489.ref056">56</xref>], probably the most widely used reconstruction. We compared the MCC between predicted and experimental growth ratios for three representative thresholds (0.2, 0.5, and 0.95) by binarizing a call as either ‘growth defect’ or ‘no growth defect’. As shown in <xref ref-type="fig" rid="pcbi.1005489.g005">Fig 5</xref>, the MCCs for IDREAM were larger than those for PROM for all three metabolic models, especially for thresholds of 0.2 and 0.95. Although the MCCs for Yeast6 were larger for most thresholds, there was no significant difference for ROC curves among the three reconstructions (<xref ref-type="supplementary-material" rid="pcbi.1005489.s003">S3A Fig</xref>). Also, the ROC curves produced by PROM for the three metabolic models did not show significant differences (<xref ref-type="supplementary-material" rid="pcbi.1005489.s003">S3B Fig</xref>), but the AUC values for IDREAM were generally higher than those for PROM. The PCC between predicted and experimental growth ratio by the three models also demonstrated that IDREAM outperformed PROM, two-tailed p-values testing the mean absolute residuals were (in aggregate) significant (p-value &lt; 0.05) across all metabolic models, as shown in <xref ref-type="table" rid="pcbi.1005489.t002">Table 2</xref>.</p>
+<p>We also predicted the growth ratios for the three reconstructions across different conditions, calculated the Pearson's correlation to experimentally determined growth ratios, and determined p-values based on the Fisher's Z transform (see <xref ref-type="sec" rid="sec013">Methods</xref>). As shown in <xref ref-type="supplementary-material" rid="pcbi.1005489.s010">S5 Table</xref>, the aggregate correlation for IDREAM predictions was significantly higher than that for PROM or for IDREAM-hybrid. We conclude that phenotypic predictions were significantly better with IDREAM, whether analyzed with Matthews or Pearson correlation.</p>
+</sec>
+<sec id="sec006">
+<title>IDREAM model effectively predicted phenotypes of double gene deletions</title>
+<p>Using the IDREAM model, we further simulated the growth phenotypes of strains with double-deletions of genes encoding a TF paired with a gene encoding an enzyme of the metabolic network, as shown in supplemental <xref ref-type="supplementary-material" rid="pcbi.1005489.s004">S4 Fig</xref>. The model predicted a dramatically reduced growth rate for several double deletion strains, but predicted no growth defects for the corresponding single deletion strains. Thirty-nine such pairs were predicted to vary by over 90% when comparing predictions for single and double deletion growth rates (see detail in <xref ref-type="sec" rid="sec013">Methods</xref>). <xref ref-type="fig" rid="pcbi.1005489.g006">Fig 6</xref> shows the predicted interacting pairs with the most dramatic reduction in predicted growth rates for the double deletion mutants (&gt; 95% less than each single deletion). For these, deletion of either the TF or metabolic gene individually had no predicted effect on growth, but the double deletion resulted in a predicted growth rate of zero. These predictions are based on global mRNA levels in response to gene deletions and other perturbations, with the assumption that mRNA levels reflect abundance or activities of their encoded proteins. If mRNA levels were perfectly matched with protein levels, we would consider such gene pairs as predicted synthetic essential [<xref ref-type="bibr" rid="pcbi.1005489.ref057">57</xref>]; but as mRNA and protein levels are only partially correlated [<xref ref-type="bibr" rid="pcbi.1005489.ref058">58</xref>], we instead consider these pairs to be candidate negative/aggravating interacting pairs.</p>
+<fig id="pcbi.1005489.g006" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1005489.g006</object-id>
+<label>Fig 6</label>
+<caption>
+<title>Synthetic growth defect interactions identified by IDREAM.</title>
+<p>A. Growth defect confidence scores measured by ODELAY. Beyond the genetic interactions between OAF1 and genes encoding components of the pyruvate dehydrogenase (PDH) complex, ODELAY also validated the predicted genetic interaction between CIN5 and GRX5, but did not confirm the remaining 3 of the 9 predictions. B. ROC curve describing identification of IDREAM or control strains based on ODELAY scores.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005489.g006" xlink:type="simple"/>
+</fig>
+<p>These 9 predicted genetic interactions were tested experimentally along with 8 control pairs (consisting of the same TFs and randomly selected genes encoding metabolic enzymes where the double deletion was predicted to have no synthetic defect) (<xref ref-type="fig" rid="pcbi.1005489.g006">Fig 6</xref>, <xref ref-type="supplementary-material" rid="pcbi.1005489.s005">S5 Fig</xref>). We used a quantitative technology called ODELAY (One-cell doubling evaluation by living arrays of yeast) [<xref ref-type="bibr" rid="pcbi.1005489.ref059">59</xref>] to test each double deletion strain in the presence of 2% glucose, which can track the growth of many individual colonies for each strain over time using high resolution imaging (<xref ref-type="fig" rid="pcbi.1005489.g006">Fig 6A</xref>). The method yields a measure of doubling times for each clone in a population. Synthetic interactions are revealed when the growth defect of the double mutant is greater than the sum of each single mutant. The quantitative approaches showed genetic interactions between OAF1 and five genes encoding components of the pyruvate dehydrogenase (PDH) complex including LAT1, PDA1, PDB1, PDX1 and LPD1. Beyond these genetic interactions between OAF1 and genes encoding components of the pyruvate dehydrogenase (PDH) complex, ODELAY also validated the predicted genetic interaction between CIN5 and GRX5 but did not confirm the remaining 3 of the 9 predictions. Overall, it demonstrated that IDREAM made accurate predictions of synthetic interactions among gene pairs (<xref ref-type="fig" rid="pcbi.1005489.g006">Fig 6B</xref>, AUC = 0.792, Mann-Whitney p-value = 0.018).</p>
+</sec>
+</sec>
+<sec id="sec007" sec-type="conclusions">
+<title>Discussion</title>
+<p>In this study, we developed and applied an approach, IDREAM, which integrated together a network inference algorithm (EGRIN) into the previous constraint-based regulatory-metabolic modeling framework (PROM) to build a combined gene regulatory-metabolic network model for yeast. The major outcomes of this study were (1) the prototyping of the IDREAM approach; (2) demonstrating superior performance of IDREAM compared with PROM across a variety of metrics, where the latter approach had not been successful in building a combined gene regulatory-metabolic network model for a eukaryotic cell; (3) demonstrating direct interaction sets and activation/inhibition status are important factors for generating accurate predictions with IDREAM; (4) predicting genetic interactions, including across joint TF and enzyme perturbations. Importantly, these predictions were experimentally validated, both using existing gene knockout essentiality and growth rate information, as well as in a set of experimental results generated herein and in quantitative growth assessments in the yeast mutants using ODELAY [<xref ref-type="bibr" rid="pcbi.1005489.ref059">59</xref>]. Each of these points will be discussed in detail in the following.</p>
+<sec id="sec008">
+<title>Integration of an inferred regulatory network with a constraint-based metabolic model</title>
+<p>Integration of a gene regulatory network with a metabolic network at genome-scale poses significant challenges, in part because they are distinct network types requiring very different modeling frameworks. While the PROM framework integrates regulatory and metabolic networks at genome-scale, the type of regulatory interactions it has incorporated have typically been limited to those that are supported by physical evidence such as from ChIP-chip/Seq experiments [<xref ref-type="bibr" rid="pcbi.1005489.ref029">29</xref>]. Since a comprehensive map for protein-DNA (P-D) interactions of all TFs and their targets is not typically available for most organisms, this greatly limits the general utility of PROM. Even when they exist, the P-D interaction map for any given organism is incomplete as the interactions are typically mapped in one or few environmental conditions, and all interactions may not have causal consequences on metabolism. EGRIN overcomes this limitation by discovering direct and indirect causal regulatory influences of TFs that act in an environmental condition-dependent manner on their downstream target genes [<xref ref-type="bibr" rid="pcbi.1005489.ref028">28</xref>, <xref ref-type="bibr" rid="pcbi.1005489.ref043">43</xref>]. With IDREAM, we have demonstrated an approach that integrates regulatory influences learned from EGRIN to augment the previous PROM approach for building integrated metabolic-regulatory network models. This approach led to accurate predictions of growth-altering synthetic interactions across the regulatory and metabolic network of <italic>S</italic>. <italic>cerevisiae</italic>. IDREAM is generalizable to any organism with a sequenced genome, reconstructed metabolic model, and sufficient gene expression data. Accuracy of phenotype predictions by IDREAM were significantly better with EGRIN relative to when regulatory interactions from the CLR method was integrated [<xref ref-type="bibr" rid="pcbi.1005489.ref032">32</xref>]. This result demonstrated the importance of incorporating indirect causal influences in accurate phenotype prediction by IDREAM, as the CLR method considers only previously known and mostly direct regulatory interactions supported by evidence of physical P-D interaction of the TF and its target gene promoter (<xref ref-type="table" rid="pcbi.1005489.t001">Table 1</xref>, and <xref ref-type="supplementary-material" rid="pcbi.1005489.s008">S3 Table</xref>).</p>
+</sec>
+<sec id="sec009">
+<title>The integrative IDREAM model predicted phenotypes better than the PROM model</title>
+<p>One of the important roles of constraint-based models is to predict which genes encoding metabolic enzymes are essential for growth in a particular environmental condition, given a set of nutritional inputs. Here, we expanded the scope of our model through integrative regulatory-metabolic modeling of the effects of TF knockout on growth. The Pearson correlation coefficient between predicted and experimental growth ratios for IDREAM was significantly higher than that for PROM (<xref ref-type="table" rid="pcbi.1005489.t002">Table 2</xref>: PCC = 0.43 vs. 0.17 respectively, p-value = 0.01). However, since there was no linear relationship in the distribution of growth ratio for each TF mutant, we also computed the Matthews Correlation Coefficient for model predictions by setting different growth ratio thresholds for categorizing gene deletion strains that have ‘growth defect’ or ‘no growth defect’. Overall, MCCs were much larger for IDREAM-predictions relative to PROM, especially when the growth ratio cutoff was less than or equal to 0.5 (<xref ref-type="fig" rid="pcbi.1005489.g003">Fig 3</xref>). IDREAM also outperformed the standalone metabolic model at predicting gene essentiality (<xref ref-type="fig" rid="pcbi.1005489.g004">Fig 4</xref>): the standalone metabolic model cannot predict the effects of TF knockouts, therefore we assume its ROC curve is the same as random (the diagonal line in <xref ref-type="fig" rid="pcbi.1005489.g004">Fig 4</xref>).</p>
+<p>To examine whether these predictions were sensitive to a particular metabolic reconstruction, we tested IDREAM performance with three distinct models: the consensus reconstructions Yeast6 [<xref ref-type="bibr" rid="pcbi.1005489.ref047">47</xref>], Yeast7 [<xref ref-type="bibr" rid="pcbi.1005489.ref055">55</xref>], and iMM904 [<xref ref-type="bibr" rid="pcbi.1005489.ref056">56</xref>]. Although Yeast6 generated better correlations across several growth ratio thresholds (<xref ref-type="fig" rid="pcbi.1005489.g005">Fig 5</xref>), the AUC for the ROC curves was similar across the three metabolic models. Importantly, IDREAM performed better than PROM, regardless of which metabolic model was used (<xref ref-type="supplementary-material" rid="pcbi.1005489.s003">S3 Fig</xref>). These comparisons demonstrate that IDREAM is significantly better at uncovering the influence of regulation on downstream phenotypes, irrespective of the version of the reconstructed metabolic model.</p>
+</sec>
+<sec id="sec010">
+<title>Direct interaction sets and activation/inhibition status are important factors for generating accurate predictions</title>
+<p>The original PROM method used a gene regulatory network structure from public resources (such as YEASTRACT), including both direct and indirect interactions, and the probabilistic influence for these two different interaction sets was calculated from gene expression correlations between the TFs and their target genes. However, there was poor correlation between PROM model predictions and observed growth ratios (PCC = 0.17, p-value = 0.23). The correlation was even worse when we restricted the PROM model to include just the 7,292 interactions with binding evidence in YEASTRACT (PCC = 0.076, p-value = 0.48). In contrast, there was significant correlation between observed phenotypes and IDREAM model predictions when constraints derived from EGRIN were applied to a core set of regulatory interactions with binding evidence (direct interactions) from YEASTRACT. This correlation was significant whether the TF influences of indirect interactions were constrained using PROM as is done for IDREAM-hybrid (PCC = 0.42, p-value = 0.002) or left unconstrained (PCC = 0.43, p-value = 0.001). Thus, constraints on direct interactions using EGRIN-derived FDR produces much better TF knockout phenotype predictions by IDREAM relative to the standalone PROM approach. Growth rate prediction by IDREAM was further improved by accounting for the activator and inhibitor status of TFs and by using the bootstrapped-EGRIN FDR to guide the probabilistic influence of TFs on their target metabolic genes. These results demonstrated that PROM may overlay unnecessary constraints on indirect TF interactions, and may therefore erroneously predict that a TF deletion will result in decreased growth rate. In contrast, IDREAM can differentiate direct and indirect interactions, and furthermore identify the high confidence TF-interactions that have both evidence of direct regulation from YEASTRACT and EGRIN-predicted influence on downstream target genes.</p>
+</sec>
+<sec id="sec011">
+<title>Predicted genetic interactions with OAF1 were validated and relevant to acetyl-CoA regulation</title>
+<p>The IDREAM-predicted negative interactions of OAF1 (encoding TF Oaf1) with genes PDX1, PDA1, PDB1, LPD1, and LAT1 in the presence of glucose were validated experimentally (<xref ref-type="fig" rid="pcbi.1005489.g006">Fig 6</xref>). These 5 genes encode components of the PDH complex, a mitochondrial enzyme that generates acetyl-CoA from pyruvate. Acetyl-CoA has important roles in various aspects of cell biology and its metabolism is compartmentalized and tightly regulated.</p>
+<p>These predictions were initially surprising as Oaf1 functions primarily in presence of fatty acids to up-regulate genes involved in peroxisome biogenesis and function, including β-oxidation [<xref ref-type="bibr" rid="pcbi.1005489.ref060">60</xref>]. By contrast, glucose represses Oaf1-mediated activation [<xref ref-type="bibr" rid="pcbi.1005489.ref061">61</xref>]. However, acetyl Co-A can also be produced in peroxisomes [<xref ref-type="bibr" rid="pcbi.1005489.ref062">62</xref>], from where it is exported to the cytoplasm for a diverse array of functions in the TCA cycle, amino acid and carbohydrate biosynthesis [<xref ref-type="bibr" rid="pcbi.1005489.ref063">63</xref>], and cell signaling [<xref ref-type="bibr" rid="pcbi.1005489.ref064">64</xref>]. It is likely that Oaf1 plays a role in regulating acetyl CoA production in peroxisomes and compensates for a dysfunctional PDH complex during growth in the presence of glucose. This regulatory interaction is further supported by flux balance analysis, which predicted that biomass production is lower when both the PDH complex and acetyl-CoA producing reactions in the peroxisome are active, relative to biomass produced when only one of these pathways is active. In sum, these data suggest that Oaf1-mediated control of alternate pathways for acetyl-CoA production has significant influence on biomass production.</p>
+<p>This hypothesis implicates communication between the mitochondrion, where the PDH complex is localized, peroxisomal acetyl-CoA production and the nucleus, where Oaf1 controls transcription. Such communication is evident by systems level studies demonstrating coordinated activities between peroxisomes and mitochondria [<xref ref-type="bibr" rid="pcbi.1005489.ref061">61</xref>], shared and differential localization of peroxisomal and mitochondrial proteins [<xref ref-type="bibr" rid="pcbi.1005489.ref063">63</xref>], and the discovery of retrograde signaling molecules controlling communication between peroxisomes, mitochondria and the nucleus [<xref ref-type="bibr" rid="pcbi.1005489.ref065">65</xref>, <xref ref-type="bibr" rid="pcbi.1005489.ref066">66</xref>]. Thus, in response to mitochondrial PDH complex dysfunction, peroxisomes could export acetyl-CoA via the carnitine shuttle or export glyoxylate pathway intermediates such as citrate to the cytoplasm [<xref ref-type="bibr" rid="pcbi.1005489.ref062">62</xref>]. Indeed, peroxisomal citrate synthase (CIT2) is up-regulated in the retrograde response [<xref ref-type="bibr" rid="pcbi.1005489.ref067">67</xref>], and CIT2 has negative genetic interactions with components of the PDH complex (PDA1, PDB1, PDX1, and LAT1) [<xref ref-type="bibr" rid="pcbi.1005489.ref068">68</xref>]. Additionally, YAT2, one of three carnitine acetyltransferases in <italic>S</italic>. <italic>cerevisiae</italic>, is dramatically upregulated in an OAF1 deletion in the presence of glucose (5.2 fold, p-value 0.01773) [<xref ref-type="bibr" rid="pcbi.1005489.ref034">34</xref>].</p>
+<p>OAF1 deletion and PDH dysfunction form synthetic lethal pairs which can be understood by analyzing the glyoxylate pathway. Deletion of OAF1 results in moderate downregulation of 4 of 5 glyoxylate metabolic genes including MDH3, CIT2, ACO1, and ICL1 during growth in glucose [<xref ref-type="bibr" rid="pcbi.1005489.ref034">34</xref>], suggesting Oaf1 normally has a role in promoting the expression of these genes. This suggests that in the absence of Oaf1, cells may be poorly suited to increasing the export of glyoxylate pathway intermediates due to reduced expression of glyoxylate metabolic genes. Oaf1 could also function by upregulating PEX genes involved in peroxisome biogenesis, which could affect localization of peroxisomal metabolic enzymes. Data show that deletion of OAF1 results in reduced expression of 21 of 27 PEX genes measured including greater than 2-fold downregulation of PEX3, PEX12, PEX13, PEX17, PEX19, and PEX34 during growth in 2% glucose [<xref ref-type="bibr" rid="pcbi.1005489.ref034">34</xref>]. Consistent with this, 13 negative genetic interactions have been found between PEX genes and components of PDH complex [<xref ref-type="bibr" rid="pcbi.1005489.ref068">68</xref>] and peroxisomes have been shown to proliferate under conditions of mitochondrial dysfunction [<xref ref-type="bibr" rid="pcbi.1005489.ref069">69</xref>].</p>
+</sec>
+</sec>
+<sec id="sec012" sec-type="conclusions">
+<title>Conclusion</title>
+<p>In conclusion, the IDREAM approach demonstrates that it is possible to predict phenotypic consequence of perturbing transcriptional regulation of metabolism in a eukaryotic cell. This predictive capability of IDREAM revealed a new role for Oaf1 in the regulation of acetyl-CoA biosynthesis, exposing the phenotypic consequence of combinatorial perturbations to this regulatory-metabolic network during growth on glucose. It is notable that IDREAM is capable of making reasonably accurate predictions without explicitly modeling many additional layers of control, such as allosteric regulation and post-translational protein modification, that are known to establish important mechanistic linkages between transcription and metabolism [<xref ref-type="bibr" rid="pcbi.1005489.ref017">17</xref>]. While this capability of IDREAM to predict flow of information from transcription-&gt;metabolism-&gt;phenotype is powerful and useful for directing laboratory experiments, it is important to integrate and model the intervening regulatory processes in order to identify the mechanistic linkages and advance metabolic engineering.</p>
+</sec>
+<sec id="sec013" sec-type="materials|methods">
+<title>Materials and methods</title>
+<sec id="sec014">
+<title>Yeast regulatory network inferred using EGRIN</title>
+<p>We expanded the yeast gene regulatory network derived using EGRIN and presented in [<xref ref-type="bibr" rid="pcbi.1005489.ref043">43</xref>], in order to integrate it with PROM by focusing on predicting regulation for individual genes rather than for gene clusters as had been done previously. The yeast EGRIN was constructed using two computational tools (cMonkey and Inferelator) trained considering 5939 yeast genes in 2929 microarray experiments and evaluating 392 of those genes as possible regulators (i.e. factors). cMonkey identified biclusters of genes that were coherently expressed in some of these experiments, while Inferelator identified regulators of those genes by using (hybrid) linear models [<xref ref-type="bibr" rid="pcbi.1005489.ref042">42</xref>]. To improve the gene level predictions over those in the previously published yeast EGRIN, we made the Inferelator regression more robust by generating additional linear models. For each of the 5939 target genes, we constructed separate models from 200 randomly selected subsets of the 2929 experiments, as well as a 201<sup>st</sup> model constructed using the entire data set. This resulted in 201 generated gene regulatory models for each of the 5939 yeast genes, for a total of 1,193,739 models. For each gene, we estimated a false discovery rate (FDR) for each factor by tallying the fraction of models that identified that factor as a regulator. Thus, if factor X was predicted to regulate gene Y in 191 of 200 models, then X would have an FDR = 1–191/200 = 0.045. We included only those interactions that passed an FDR cutoff of 0.05 and interpreted the remaining FDRs such that the fraction of times that a factor was predicted to regulate a target corresponded to the fraction of that targets activity that was not controlled by that regulator. Therefore, if X is predicted to activate Y with an FDR of 0.045, only 4.5% of Y’s activity would be predicted to remain if X was deleted. If X is predicted to deactivate Y, then we use the much larger 1—FDR (e.g., 95.5% of activity) to represent that Y is somehow disturbed without a significant reduction in activity. We predicted whether a factor was an activator or repressor by testing if its mRNA expression was correlated or anti-correlated (respectively) with the expression of its target under the relevant experimental condition. The interactions between TFs and target genes in EGRIN and YEASTRACT TRN are listed in <xref ref-type="supplementary-material" rid="pcbi.1005489.s011">S6 Table</xref>.</p>
+</sec>
+<sec id="sec015">
+<title>Yeast metabolic model and flux balance analysis</title>
+<p>The genome-scale metabolic model for yeast has been updated through iterative collaborative curation by multiple research groups. We downloaded the yeast consensus reconstruction [<xref ref-type="bibr" rid="pcbi.1005489.ref070">70</xref>] versions 6.06 [<xref ref-type="bibr" rid="pcbi.1005489.ref047">47</xref>] and 7.01 [<xref ref-type="bibr" rid="pcbi.1005489.ref055">55</xref>] from the SourceForge repository (<ext-link ext-link-type="uri" xlink:href="http://yeast.sf.net/" xlink:type="simple">http://yeast.sf.net/</ext-link>), and acquired the iMM904 model from [<xref ref-type="bibr" rid="pcbi.1005489.ref056">56</xref>].</p>
+<p>We used the COBRA Toolbox [<xref ref-type="bibr" rid="pcbi.1005489.ref051">51</xref>] to conduct FBA. Briefly, FBA is a mathematical optimization method for calculating a maximum or minimal achievable metabolic flux, subject to the constraints imposed by metabolic network stoichiometry, thermodynamic information, and capacity constraints [<xref ref-type="bibr" rid="pcbi.1005489.ref051">51</xref>].</p>
+</sec>
+<sec id="sec016">
+<title>IDREAM integrative model construction</title>
+<p>We constructed the IDREAM model by using the inferred EGRIN regulatory network to constrain reactions in yeast metabolic network models. There were 307 interactions in the EGRIN network annotated as direct regulatory associations in YEASTRACT that have binding evidence. If the deleted TF is an activator with binding evidence, the probability of a target gene being ON was set as the bootstrapping Inferelator-derived FDR, i.e. Prob(Gene = ON|Factor = OFF) = FDR. If the deleted TF is an inhibitor with binding evidence, we set Prob(Gene = ON|Factor = OFF) = 1-FDR, as shown in <xref ref-type="fig" rid="pcbi.1005489.g002">Fig 2B</xref>. In contrast, the TF influences of indirect interactions were unconstrained (IDREAM) or had conditional probabilities inferred using the expression datasets (IDREAM-hybrid). Then the constraints on the corresponding reaction flux were V<sub>max</sub>·Prob, where V<sub>max</sub> was derived by flux variability analysis (and thus represents the effective V<sub>max</sub> based on constraints throughout the network). The implementation of the IDREAM method for yeast can be downloaded as supplemental <xref ref-type="supplementary-material" rid="pcbi.1005489.s013">S1 Script</xref>.</p>
+</sec>
+<sec id="sec017">
+<title>Experimental growth rate for TF knockouts in <italic>Saccharomyces cerevisiae</italic></title>
+<p>Fendt et al. [<xref ref-type="bibr" rid="pcbi.1005489.ref048">48</xref>] systematically measured growth rates in 119 transcription factor deletion mutants of <italic>Saccharomyces cerevisiae</italic> under five growth conditions. Since low pH and high osmolarity cannot be simulated with FBA, we took the growth rates of 119 mutants under three conditions: glucose with ammonium as nitrogen source, galactose with ammonium as nitrogen source, and glucose with urea as nitrogen source.</p>
+</sec>
+<sec id="sec018">
+<title>Matthews correlation coefficient for evaluation of gene essentiality prediction</title>
+<p>The agreement between model gene essentiality predictions and the reference lists was quantified using the Matthews Correlation Coefficient (<xref ref-type="disp-formula" rid="pcbi.1005489.e001">Eq 1</xref>) [<xref ref-type="bibr" rid="pcbi.1005489.ref052">52</xref>], a metric that considers true positive, true negative, false positive, and false negative predictions without any assumption of the frequency of observations in the reference dataset. MCC ranges from -1 (when model predictions are the exact opposite of the reference dataset) to +1 (when model predictions match the reference data set).
+<disp-formula id="pcbi.1005489.e001">
+<alternatives>
+<graphic id="pcbi.1005489.e001g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005489.e001" xlink:type="simple"/>
+<mml:math display="block" id="M1">
+<mml:mrow><mml:mtext>MCC</mml:mtext><mml:mo>=</mml:mo><mml:mfrac><mml:mrow><mml:mi>T</mml:mi><mml:mi>P</mml:mi><mml:mo>×</mml:mo><mml:mi>T</mml:mi><mml:mi>N</mml:mi><mml:mo>−</mml:mo><mml:mi>F</mml:mi><mml:mi>P</mml:mi><mml:mo>×</mml:mo><mml:mi>F</mml:mi><mml:mi>N</mml:mi></mml:mrow><mml:mrow><mml:msqrt><mml:mrow><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mi>T</mml:mi><mml:mi>P</mml:mi><mml:mo>+</mml:mo><mml:mi>F</mml:mi><mml:mi>P</mml:mi></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mi>T</mml:mi><mml:mi>P</mml:mi><mml:mo>+</mml:mo><mml:mi>F</mml:mi><mml:mi>N</mml:mi></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mi>T</mml:mi><mml:mi>N</mml:mi><mml:mo>+</mml:mo><mml:mi>F</mml:mi><mml:mi>P</mml:mi></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mi>T</mml:mi><mml:mi>N</mml:mi><mml:mo>+</mml:mo><mml:mi>F</mml:mi><mml:mi>N</mml:mi></mml:mrow><mml:mo>)</mml:mo></mml:mrow></mml:mrow></mml:msqrt></mml:mrow></mml:mfrac></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(1)</label>
+</disp-formula>
+Where true positives (TP), true negatives (TN), false positives (FP), and false negatives (FN) are defined based on the measurement by [<xref ref-type="bibr" rid="pcbi.1005489.ref048">48</xref>]. A true positive prediction is one in which the model predicts that a gene is essential for growth, and the gene has also been annotated as essential.</p>
+</sec>
+<sec id="sec019">
+<title>Pearson correlation coefficient for evaluation of growth predictions</title>
+<p>Experimentally determined yeast growth rates that have been normalized to wild-type growth rates [<xref ref-type="bibr" rid="pcbi.1005489.ref048">48</xref>] were compared to growth rates predicted by the metabolic models. The reported Pearson product-moment correlation [<xref ref-type="bibr" rid="pcbi.1005489.ref071">71</xref>] measures the linear correlation between the predicted and experimentally determined growth rates for yeast strains. Aggregate predictions were made by concatenating the lists of predictions for all three models and comparing to the appropriate experimentally determined growth rates. Thus, if each of the three models makes a different growth rate prediction for the same yeast strain, then that yeast strain will be represented three times in the aggregate calculation.</p>
+</sec>
+<sec id="sec020">
+<title>Prediction of interacting pairs of genes encoding TFs and metabolic genes</title>
+<p>Synthetic lethality or sickness occurs when the combination of two gene deletion results in reduced fitness and can identify buffering relationships where one gene can compensate for the loss of another [<xref ref-type="bibr" rid="pcbi.1005489.ref057">57</xref>]. We predicted these synthetic relationships based on the variation of growth rates between single and double deletions. We calculated the difference in growth rates between single_TF_deletion and double_TF_gene_deletion, represented as Diff1, and the difference in growth rates between single_gene_deletion and double_TF_gene_deletion, represented as Diff2. Then, we defined the variation between single and double deletions by taking the average of Diff1 and Diff2 divided by the wild-type growth rate. The higher variation means that either the particular TF or metabolic gene is not essential for growth, while double deletion of this pair will decrease growth a lot. We identified 39 synthetic lethal or sick pairs of TFs and metabolic genes by setting the variation to greater than 90%. Moreover, most synthetic interacting pairs resulted in no growth, but single deletion of the corresponding TF or gene can maintain at least 95% of the wild-type growth.</p>
+<p>We validated the predicted synthetic lethal or sick pairs by experimental growth assay. <italic>Saccharomyces cerevisiae</italic> single deletion strains were from the yeast deletion haploid collection (BY4742; Invitrogen). All double deletion strains were haploids generated by mating corresponding single deletion strains from the same library or from the BY4741 collection (Invitrogen), followed by tetrad dissection and selection by G418 resistance and PCR.</p>
+</sec>
+<sec id="sec021">
+<title>ODELAY validation of synthetic lethal or sick pairs of TFs and metabolic genes</title>
+<p>ODELAY was used to provide objective measurements of yeast growth defects [<xref ref-type="bibr" rid="pcbi.1005489.ref059">59</xref>]. Yeast strains were cultured in YPD media in 96 well plates overnight. Cultures were diluted to an OD600 of 0.09 and allowed to grow for 6 hours at 30C. The cultures were then diluted to an OD600 of 0.02 and spotted onto YEP agarose media with 2% glucose. In ODELAY, colonies growing from individual cells are imaged and tracked using time-lapse microscopy for 48 hours with 30 minute intervals between images [<xref ref-type="bibr" rid="pcbi.1005489.ref059">59</xref>]. All images were collected on Leica DMI6000 microscopes with a 10X 0.3NA lens using bright field microscopy. Colony area measurements are fit to the Gompertz function to estimate the colony doubling times. Between 100 and 300 cells growing into colonies were observed per strain. Estimated doubling times inform a confidence score identifying double deletion strains with synthetic growth defects (i.e. defects more severe than expected from the growth rates of constitutive single deletion strains). More details about the ODELAY analysis are available in the supplementary table (<xref ref-type="supplementary-material" rid="pcbi.1005489.s005">S5 Fig</xref>) as well as the raw data (<xref ref-type="supplementary-material" rid="pcbi.1005489.s012">S7 Table</xref>) and analysis script (<xref ref-type="supplementary-material" rid="pcbi.1005489.s014">S2 Script</xref>).</p>
+</sec>
+</sec>
+<sec id="sec022">
+<title>Supporting information</title>
+<supplementary-material id="pcbi.1005489.s001" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005489.s001" xlink:type="simple">
+<label>S1 Fig</label>
+<caption>
+<title>Composition of the integrated models PROM and IDREAM.</title>
+<p>A. The number of transcription factors in PROM and IDREAM. ‘Match_measuredTF’ is the number of TFs having a corresponding phenotype in Fendt’s experiment for 119 TF mutants. ‘Match_17defectTF’ is the number of TFs out of the 17 defect-inducing TFs that are involved in the two integrated models. B. The log value of number of regulatory interactions and metabolic genes in PROM and IDREAM.</p>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1005489.s002" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005489.s002" xlink:type="simple">
+<label>S2 Fig</label>
+<caption>
+<title>ROC curves for growth defect predictions with series of different thresholds using IDREAM and PROM on Yeast6 model.</title>
+<p>Across 16 different thresholds, the AUC value is significantly higher for IDREAM (mean = 0.67) than PROM (mean = 0.58).</p>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1005489.s003" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005489.s003" xlink:type="simple">
+<label>S3 Fig</label>
+<caption>
+<title>ROC curve of IDREAM and PROM built on different yeast metabolic models (threshold = 0.5).</title>
+<p>There are no significant differences by the three yeast models.</p>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1005489.s004" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005489.s004" xlink:type="simple">
+<label>S4 Fig</label>
+<caption>
+<title>Predicted growth ratios for double deletions of TFs and metabolic genes using the IDREAM model.</title>
+<p>Each row represents a metabolic gene, and each column represents a gene encoding a TF.</p>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1005489.s005" mimetype="image/png" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005489.s005" xlink:type="simple">
+<label>S5 Fig</label>
+<caption>
+<title>The analysis of double knockout strain phenotypes by ODELAY.</title>
+<p>Estimated doubling times inform a confidence score identifying double deletion strains with synthetic growth defects. The first columns shows the metric and plate, such that ‘Mean.1’ means that for replicate 1, the average growth rate of many colonies was estimated using the mean and ‘Geometric Mean.2’ means that for replicate 2, the average growth rate was calculated using the geometric mean. ‘# Exp’ and ‘# Control’ refers to the number of strains in the experiment and control sets (respectively) where the growth rate in the double deletion was significantly less than that expected by adding together the growth rates for single deletions. ‘Mean Exp’ and ‘Mean Control’ are the mean growth decrease in growth rate beyond that expected from adding together the single deletion decreases in growth rate for the experimental and control sets (respectively). ‘Fisher p-Val’ uses a Fisher’s exact test to compare the ‘# Exp’ to the ‘# Control’ while ‘T-test p-Val’ uses the measured magnitudes of the synergistic growth defects.</p>
+<p>(PNG)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1005489.s006" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005489.s006" xlink:type="simple">
+<label>S1 Table</label>
+<caption>
+<title>Flux variability for models with “frozen” state of fluxes constrained by each TF perturbation.</title>
+<p>(XLSX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1005489.s007" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005489.s007" xlink:type="simple">
+<label>S2 Table</label>
+<caption>
+<title>Significance test on MCC of IDREAM by randomly permuting the expression data and TF-gene interactions.</title>
+<p>(XLSX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1005489.s008" mimetype="application/vnd.ms-excel" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005489.s008" xlink:type="simple">
+<label>S3 Table</label>
+<caption>
+<title>Predicted growth ratio for TF knockouts using CLR-inferred regulatory network to link with the Yeast6 metabolic model.</title>
+<p>(XLS)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1005489.s009" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005489.s009" xlink:type="simple">
+<label>S4 Table</label>
+<caption>
+<title>The comparison of AUC for growth defect predictions with series of different thresholds using IDREAM and PROM on Yeast6 model.</title>
+<p>(XLSX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1005489.s010" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005489.s010" xlink:type="simple">
+<label>S5 Table</label>
+<caption>
+<title>Growth predictions with IDREAM by aggregate correlation.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1005489.s011" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005489.s011" xlink:type="simple">
+<label>S6 Table</label>
+<caption>
+<title>Yeast regulatory network from the YEASTRACT database and inferred by EGRIN.</title>
+<p>(XLSX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1005489.s012" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005489.s012" xlink:type="simple">
+<label>S7 Table</label>
+<caption>
+<title>The raw doubling times for individual colonies as measured by ODELAY.</title>
+<p>(XLSX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1005489.s013" mimetype="application/zip" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005489.s013" xlink:type="simple">
+<label>S1 Script</label>
+<caption>
+<title>The implementation of the IDREAM method.</title>
+<p>(ZIP)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1005489.s014" mimetype="application/zip" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005489.s014" xlink:type="simple">
+<label>S2 Script</label>
+<caption>
+<title>The R script for analysis of the results by ODELAY.</title>
+<p>(ZIP)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ack>
+<p>We thank Dr. Sriram Chandrasekaran and Dr. David Reiss for valuable discussions on the model integration.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1005489.ref001"><label>1</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mendes</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Kell</surname> <given-names>D</given-names></name>. <article-title>Non-linear optimization of biochemical pathways: applications to metabolic engineering and parameter estimation</article-title>. <source>Bioinformatics</source>. <year>1998</year>;<volume>14</volume>(<issue>10</issue>):<fpage>869</fpage>–<lpage>83</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/bioinformatics/14.10.869" xlink:type="simple">10.1093/bioinformatics/14.10.869</ext-link></comment> <object-id pub-id-type="pmid">9927716</object-id></mixed-citation></ref>
+<ref id="pcbi.1005489.ref002"><label>2</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Szallasi</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Stelling</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Periwal</surname> <given-names>V</given-names></name>. <source>System modeling in cellular biology: from concepts to nuts and bolts</source>. <edition>1 ed</edition>. <publisher-loc>Boston</publisher-loc>: <publisher-name>The MIT Press</publisher-name>; <year>2006</year> <month>April</month> <day>3</day>, <volume>2006</volume>. <fpage>452</fpage> p.</mixed-citation></ref>
+<ref id="pcbi.1005489.ref003"><label>3</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Khodayari</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Maranas</surname> <given-names>CD</given-names></name>. <article-title>A genome-scale Escherichia coli kinetic metabolic model k-ecoli457 satisfying flux data for multiple mutant strains</article-title>. <source>Nat Commun</source>. <year>2016</year>;<volume>7</volume>:<fpage>13806</fpage>. Epub 2016/12/21. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/ncomms13806" xlink:type="simple">10.1038/ncomms13806</ext-link>.</comment> <object-id pub-id-type="pmid">27996047</object-id>.</mixed-citation></ref>
+<ref id="pcbi.1005489.ref004"><label>4</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Stanford</surname> <given-names>NJ</given-names></name>, <name name-style="western"><surname>Lubitz</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Smallbone</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Klipp</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Mendes</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Liebermeister</surname> <given-names>W</given-names></name>. <article-title>Systematic construction of kinetic models from genome-scale metabolic networks</article-title>. <source>PLoS One</source>. <year>2013</year>;<volume>8</volume>(<issue>11</issue>):<fpage>e79195</fpage>. Epub 2013/12/11. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pone.0079195" xlink:type="simple">10.1371/journal.pone.0079195</ext-link>.</comment> <object-id pub-id-type="pmid">24324546</object-id>.</mixed-citation></ref>
+<ref id="pcbi.1005489.ref005"><label>5</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chakrabarti</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Miskovic</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Soh</surname> <given-names>KC</given-names></name>, <name name-style="western"><surname>Hatzimanikatis</surname> <given-names>V</given-names></name>. <article-title>Towards kinetic modeling of genome-scale metabolic networks without sacrificing stoichiometric, thermodynamic and physiological constraints</article-title>. <source>Biotechnol J</source>. <year>2013</year>;<volume>8</volume>(<issue>9</issue>):<fpage>1043</fpage>–<lpage>57</lpage>. Epub 2013/07/23. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1002/biot.201300091" xlink:type="simple">10.1002/biot.201300091</ext-link>.</comment> <object-id pub-id-type="pmid">23868566</object-id>.</mixed-citation></ref>
+<ref id="pcbi.1005489.ref006"><label>6</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Smallbone</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Simeonidis</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Swainston</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Mendes</surname> <given-names>P</given-names></name>. <article-title>Towards a genome-scale kinetic model of cellular metabolism</article-title>. <source>BMC Syst Biol</source>. <year>2010</year>;<volume>4</volume>:<fpage>6</fpage>. Epub 2010/01/30. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/1752-0509-4-6" xlink:type="simple">10.1186/1752-0509-4-6</ext-link>.</comment> <object-id pub-id-type="pmid">20109182</object-id>.</mixed-citation></ref>
+<ref id="pcbi.1005489.ref007"><label>7</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Covert</surname> <given-names>MW</given-names></name>, <name name-style="western"><surname>Famili</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name>. <article-title>Identifying constraints that govern cell behavior: a key to converting conceptual to computational models in biology?</article-title> <source>Biotechnol Bioeng</source>. <year>2003</year>;<volume>84</volume>(<issue>7</issue>):<fpage>763</fpage>–<lpage>72</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1002/bit.10849" xlink:type="simple">10.1002/bit.10849</ext-link>.</comment> <object-id pub-id-type="pmid">14708117</object-id>.</mixed-citation></ref>
+<ref id="pcbi.1005489.ref008"><label>8</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Price</surname> <given-names>ND</given-names></name>, <name name-style="western"><surname>Reed</surname> <given-names>JL</given-names></name>, <name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name>. <article-title>Genome-scale models of microbial cells: evaluating the consequences of constraints</article-title>. <source>Nature Rev Microbiol</source>. <year>2004</year>;<volume>2</volume>(<issue>11</issue>):<fpage>886</fpage>–<lpage>97</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/Nrmicro1023" xlink:type="simple">10.1038/Nrmicro1023</ext-link>.</comment></mixed-citation></ref>
+<ref id="pcbi.1005489.ref009"><label>9</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Shapiro</surname> <given-names>HM</given-names></name>. <article-title>Input-output models of biological systems: formulation and applicability</article-title>. <source>Comput Biomed Res</source>. <year>1969</year>;<volume>2</volume>(<issue>5</issue>):<fpage>430</fpage>–<lpage>45</lpage> <object-id pub-id-type="pmid">4902792</object-id></mixed-citation></ref>
+<ref id="pcbi.1005489.ref010"><label>10</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Watson</surname> <given-names>MR</given-names></name>. <article-title>Metabolic maps for the Apple II</article-title>. <source>Biochem Soc Trans</source>. <year>1984</year>;<volume>12</volume>:<fpage>1093</fpage>–<lpage>4</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1005489.ref011"><label>11</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Savinell</surname> <given-names>JM</given-names></name>, <name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name>. <article-title>Optimal selection of metabolic fluxes for in vivo measurement. I. Development of mathematical methods</article-title>. <source>J Theor Biol</source>. <year>1992</year>;<volume>155</volume>(<issue>2</issue>):<fpage>201</fpage>–<lpage>14</lpage>. Epub 1992/03/21 <object-id pub-id-type="pmid">1453697</object-id>.</mixed-citation></ref>
+<ref id="pcbi.1005489.ref012"><label>12</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Savinell</surname> <given-names>JM</given-names></name>, <name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name>. <article-title>Optimal selection of metabolic fluxes for in vivo measurement. II. Application to Escherichia coli and hybridoma cell metabolism</article-title>. <source>J Theor Biol</source>. <year>1992</year>;<volume>155</volume>(<issue>2</issue>):<fpage>215</fpage>–<lpage>42</lpage>. Epub 1992/03/21 <object-id pub-id-type="pmid">1453698</object-id>.</mixed-citation></ref>
+<ref id="pcbi.1005489.ref013"><label>13</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Varma</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name>. <article-title>Stoichiometric flux balance models quantitatively predict growth and metabolic by-product secretion in wild-type Escherichia coli W3110</article-title>. <source>Appl Environ Microbiol</source>. <year>1994</year>;<volume>60</volume>(<issue>10</issue>):<fpage>3724</fpage>–<lpage>31</lpage>. Epub 1994/10/01 <object-id pub-id-type="pmid">7986045</object-id>;</mixed-citation></ref>
+<ref id="pcbi.1005489.ref014"><label>14</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Varma</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name>. <article-title>Metabolic capabilities of Escherichia coli: II. optimal growth patterns</article-title>. <source>J Theor Biol</source>. <year>1993</year>;<volume>165</volume>(<issue>4</issue>):<fpage>503</fpage>–<lpage>22</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1005489.ref015"><label>15</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kauffman</surname> <given-names>KJ</given-names></name>, <name name-style="western"><surname>Prakash</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Edwards</surname> <given-names>JS</given-names></name>. <article-title>Advances in flux balance analysis</article-title>. <source>Current Opinion in Biotechnology</source>. <year>2003</year>;<volume>14</volume>(<issue>5</issue>):<fpage>491</fpage>–<lpage>6</lpage>. Epub 2003/10/29 <object-id pub-id-type="pmid">14580578</object-id>.</mixed-citation></ref>
+<ref id="pcbi.1005489.ref016"><label>16</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gerosa</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Sauer</surname> <given-names>U</given-names></name>. <article-title>Regulation and control of metabolic fluxes in microbes</article-title>. <source>Current Opinion in Biotechnology</source>. <year>2011</year>;<volume>22</volume>(<issue>4</issue>):<fpage>566</fpage>–<lpage>75</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.copbio.2011.04.016" xlink:type="simple">10.1016/j.copbio.2011.04.016</ext-link>.</comment> <object-id pub-id-type="pmid">21600757</object-id>.</mixed-citation></ref>
+<ref id="pcbi.1005489.ref017"><label>17</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chubukov</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Gerosa</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Kochanowski</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Sauer</surname> <given-names>U</given-names></name>. <article-title>Coordination of microbial metabolism</article-title>. <source>Nature Reviews: Microbiology</source>. <year>2014</year>;<volume>12</volume>(<issue>5</issue>):<fpage>327</fpage>–<lpage>40</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nrmicro3238" xlink:type="simple">10.1038/nrmicro3238</ext-link>.</comment> <object-id pub-id-type="pmid">24658329</object-id>.</mixed-citation></ref>
+<ref id="pcbi.1005489.ref018"><label>18</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Becker</surname> <given-names>SA</given-names></name>, <name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name>. <article-title>Context-specific metabolic networks are consistent with experiments</article-title>. <source>PLoS Computational Biology</source>. <year>2008</year>;<volume>4</volume>(<issue>5</issue>):<fpage>e1000082</fpage>. Epub 2008/05/17. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.1000082" xlink:type="simple">10.1371/journal.pcbi.1000082</ext-link>.</comment> <object-id pub-id-type="pmid">18483554</object-id>;</mixed-citation></ref>
+<ref id="pcbi.1005489.ref019"><label>19</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Shlomi</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Cabili</surname> <given-names>MN</given-names></name>, <name name-style="western"><surname>Herrgard</surname> <given-names>MJ</given-names></name>, <name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name>, <name name-style="western"><surname>Ruppin</surname> <given-names>E</given-names></name>. <article-title>Network-based prediction of human tissue-specific metabolism</article-title>. <source>Nature Biotechnology</source>. <year>2008</year>;<volume>26</volume>(<issue>9</issue>):<fpage>1003</fpage>–<lpage>10</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nbt.1487" xlink:type="simple">10.1038/nbt.1487</ext-link>.</comment> <object-id pub-id-type="pmid">18711341</object-id>.</mixed-citation></ref>
+<ref id="pcbi.1005489.ref020"><label>20</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Colijn</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Brandes</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Zucker</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Lun</surname> <given-names>DS</given-names></name>, <name name-style="western"><surname>Weiner</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Farhat</surname> <given-names>MR</given-names></name>, <etal>et al</etal>. <article-title>Interpreting expression data with metabolic flux models: predicting Mycobacterium tuberculosis mycolic acid production</article-title>. <source>PLoS Computational Biology</source>. <year>2009</year>;<volume>5</volume>(<issue>8</issue>):<fpage>e1000489</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.1000489" xlink:type="simple">10.1371/journal.pcbi.1000489</ext-link>.</comment> <object-id pub-id-type="pmid">19714220</object-id>;</mixed-citation></ref>
+<ref id="pcbi.1005489.ref021"><label>21</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jensen</surname> <given-names>PA</given-names></name>, <name name-style="western"><surname>Papin</surname> <given-names>JA</given-names></name>. <article-title>Functional integration of a metabolic network model and expression data without arbitrary thresholding</article-title>. <source>Bioinformatics</source>. <year>2011</year>;<volume>27</volume>(<issue>4</issue>):<fpage>541</fpage>–<lpage>7</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/bioinformatics/btq702" xlink:type="simple">10.1093/bioinformatics/btq702</ext-link>.</comment> <object-id pub-id-type="pmid">21172910</object-id>.</mixed-citation></ref>
+<ref id="pcbi.1005489.ref022"><label>22</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Navid</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Almaas</surname> <given-names>E</given-names></name>. <article-title>Genome-level transcription data of Yersinia pestis analyzed with a new metabolic constraint-based approach</article-title>. <source>BMC Syst Biol</source>. <year>2012</year>;<volume>6</volume>:<fpage>150</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/1752-0509-6-150" xlink:type="simple">10.1186/1752-0509-6-150</ext-link>.</comment> <object-id pub-id-type="pmid">23216785</object-id>;</mixed-citation></ref>
+<ref id="pcbi.1005489.ref023"><label>23</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yizhak</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Gabay</surname> <given-names>O</given-names></name>, <name name-style="western"><surname>Cohen</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Ruppin</surname> <given-names>E</given-names></name>. <article-title>Model-based identification of drug targets that revert disrupted metabolism and its application to ageing</article-title>. <source>Nat Commun</source>. <year>2013</year>;<volume>4</volume>:<fpage>2632</fpage>. Epub 2013/10/25. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/ncomms3632" xlink:type="simple">10.1038/ncomms3632</ext-link>.</comment> <object-id pub-id-type="pmid">24153335</object-id>.</mixed-citation></ref>
+<ref id="pcbi.1005489.ref024"><label>24</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Dash</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Mueller</surname> <given-names>TJ</given-names></name>, <name name-style="western"><surname>Venkataramanan</surname> <given-names>KP</given-names></name>, <name name-style="western"><surname>Papoutsakis</surname> <given-names>ET</given-names></name>, <name name-style="western"><surname>Maranas</surname> <given-names>CD</given-names></name>. <article-title>Capturing the response of Clostridium acetobutylicum to chemical stressors using a regulated genome-scale metabolic model</article-title>. <source>Biotechnol Biofuels</source>. <year>2014</year>;<volume>7</volume>(<issue>1</issue>):<fpage>144</fpage>. Epub 2014/11/08. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/s13068-014-0144-4" xlink:type="simple">10.1186/s13068-014-0144-4</ext-link>.</comment> <object-id pub-id-type="pmid">25379054</object-id>.</mixed-citation></ref>
+<ref id="pcbi.1005489.ref025"><label>25</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wang</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Eddy</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Price</surname> <given-names>ND</given-names></name>. <article-title>Reconstruction of genome-scale metabolic models for 126 human tissues using mCADRE</article-title>. <source>BMC Syst Biol</source>. <year>2012</year>;<volume>6</volume>:<fpage>153</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/1752-0509-6-153" xlink:type="simple">10.1186/1752-0509-6-153</ext-link>.</comment> <object-id pub-id-type="pmid">23234303</object-id>.</mixed-citation></ref>
+<ref id="pcbi.1005489.ref026"><label>26</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rossell</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Huynen</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Notebaart</surname> <given-names>RA</given-names></name>. <article-title>Inferring metabolic states in uncharacterized environments using gene-expression measurements</article-title>. <source>PLoS Computational Biology</source>. <year>2013</year>;<volume>9</volume>(<issue>3</issue>):<fpage>e1002988</fpage>. Epub 2013/04/05. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.1002988" xlink:type="simple">10.1371/journal.pcbi.1002988</ext-link>.</comment> <object-id pub-id-type="pmid">23555222</object-id>;</mixed-citation></ref>
+<ref id="pcbi.1005489.ref027"><label>27</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Machado</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Herrgård</surname> <given-names>M</given-names></name>. <article-title>Systematic evaluation of methods for integration of transcriptomic data into constraint-based models of metabolism</article-title>. <source>PLoS Computational Biology</source>. <year>2014</year>;<volume>10</volume>(<issue>4</issue>):<fpage>e1003580</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.1003580" xlink:type="simple">10.1371/journal.pcbi.1003580</ext-link></comment> <object-id pub-id-type="pmid">24762745</object-id></mixed-citation></ref>
+<ref id="pcbi.1005489.ref028"><label>28</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bonneau</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Facciotti</surname> <given-names>MT</given-names></name>, <name name-style="western"><surname>Reiss</surname> <given-names>DJ</given-names></name>, <name name-style="western"><surname>Schmid</surname> <given-names>AK</given-names></name>, <name name-style="western"><surname>Pan</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Kaur</surname> <given-names>A</given-names></name>, <etal>et al</etal>. <article-title>A predictive model for transcriptional control of physiology in a free living cell</article-title>. <source>Cell</source>. <year>2007</year>;<volume>131</volume>(<issue>7</issue>):<fpage>1354</fpage>–<lpage>65</lpage>. Epub 2007/12/28. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.cell.2007.10.053" xlink:type="simple">10.1016/j.cell.2007.10.053</ext-link>.</comment> <object-id pub-id-type="pmid">18160043</object-id>.</mixed-citation></ref>
+<ref id="pcbi.1005489.ref029"><label>29</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chandrasekaran</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Price</surname> <given-names>ND</given-names></name>. <article-title>Probabilistic integrative modeling of genome-scale metabolic and regulatory networks in Escherichia coli and Mycobacterium tuberculosis</article-title>. <source>Proceedings of the National Academy of Sciences of the United States of America</source>. <year>2010</year>;<volume>107</volume>(<issue>41</issue>):<fpage>17845</fpage>–<lpage>1750</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.1005139107" xlink:type="simple">10.1073/pnas.1005139107</ext-link>.</comment> <object-id pub-id-type="pmid">20876091</object-id>;</mixed-citation></ref>
+<ref id="pcbi.1005489.ref030"><label>30</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Simeonidis</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Chandrasekaran</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Price</surname> <given-names>ND</given-names></name>. <article-title>A guide to integrating transcriptional regulatory and metabolic networks using PROM (probabilistic regulation of metabolism)</article-title>. <source>Methods Mol Biol</source>. <year>2013</year>;<volume>985</volume>:<fpage>103</fpage>–<lpage>12</lpage>. Epub 2013/02/19. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1007/978-1-62703-299-5_6" xlink:type="simple">10.1007/978-1-62703-299-5_6</ext-link>.</comment> <object-id pub-id-type="pmid">23417801</object-id>.</mixed-citation></ref>
+<ref id="pcbi.1005489.ref031"><label>31</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ma</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Minch</surname> <given-names>KJ</given-names></name>, <name name-style="western"><surname>Rustad</surname> <given-names>TR</given-names></name>, <name name-style="western"><surname>Hobbs</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Zhou</surname> <given-names>SL</given-names></name>, <name name-style="western"><surname>Sherman</surname> <given-names>DR</given-names></name>, <etal>et al</etal>. <article-title>Integrated modeling of gene regulatory and metabolic networks in Mycobacterium tuberculosis</article-title>. <source>PLoS Computational Biology</source>. <year>2015</year>;<volume>11</volume>(<issue>11</issue>):<fpage>e1004543</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.1004543" xlink:type="simple">10.1371/journal.pcbi.1004543</ext-link>.</comment> <object-id pub-id-type="pmid">26618656</object-id>;</mixed-citation></ref>
+<ref id="pcbi.1005489.ref032"><label>32</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Faith</surname> <given-names>JJ</given-names></name>, <name name-style="western"><surname>Hayete</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Thaden</surname> <given-names>JT</given-names></name>, <name name-style="western"><surname>Mogno</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Wierzbowski</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Cottarel</surname> <given-names>G</given-names></name>, <etal>et al</etal>. <article-title>Large-scale mapping and validation of Escherichia coli transcriptional regulation from a compendium of expression profiles</article-title>. <source>PLoS Biology</source>. <year>2007</year>;<volume>5</volume>(<issue>1</issue>):<fpage>e8</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pbio.0050008" xlink:type="simple">10.1371/journal.pbio.0050008</ext-link>.</comment> <object-id pub-id-type="pmid">17214507</object-id>;</mixed-citation></ref>
+<ref id="pcbi.1005489.ref033"><label>33</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Geistlinger</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Csaba</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Dirmeier</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Kuffner</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Zimmer</surname> <given-names>R</given-names></name>. <article-title>A comprehensive gene regulatory network for the diauxic shift in Saccharomyces cerevisiae</article-title>. <source>Nucleic Acids Research</source>. <year>2013</year>;<volume>41</volume>(<issue>18</issue>):<fpage>8452</fpage>–<lpage>63</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/nar/gkt631" xlink:type="simple">10.1093/nar/gkt631</ext-link>.</comment> <object-id pub-id-type="pmid">23873954</object-id>;</mixed-citation></ref>
+<ref id="pcbi.1005489.ref034"><label>34</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hu</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Killion</surname> <given-names>PJ</given-names></name>, <name name-style="western"><surname>Iyer</surname> <given-names>VR</given-names></name>. <article-title>Genetic reconstruction of a functional transcriptional regulatory network</article-title>. <source>Nature Genetics</source>. <year>2007</year>;<volume>39</volume>(<issue>5</issue>):<fpage>683</fpage>–<lpage>7</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/ng2012" xlink:type="simple">10.1038/ng2012</ext-link>.</comment> <object-id pub-id-type="pmid">17417638</object-id>.</mixed-citation></ref>
+<ref id="pcbi.1005489.ref035"><label>35</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wu</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Liu</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Hijazi</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Chan</surname> <given-names>C</given-names></name>. <article-title>A multi-layer inference approach to reconstruct condition-specific genes and their regulation</article-title>. <source>Bioinformatics</source>. <year>2013</year>;<volume>29</volume>(<issue>12</issue>):<fpage>1541</fpage>–<lpage>52</lpage>. Epub 2013/04/24. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/bioinformatics/btt186" xlink:type="simple">10.1093/bioinformatics/btt186</ext-link>.</comment> <object-id pub-id-type="pmid">23610368</object-id>;</mixed-citation></ref>
+<ref id="pcbi.1005489.ref036"><label>36</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Marbach</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Costello</surname> <given-names>JC</given-names></name>, <name name-style="western"><surname>Kuffner</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Vega</surname> <given-names>NM</given-names></name>, <name name-style="western"><surname>Prill</surname> <given-names>RJ</given-names></name>, <name name-style="western"><surname>Camacho</surname> <given-names>DM</given-names></name>, <etal>et al</etal>. <article-title>Wisdom of crowds for robust gene network inference</article-title>. <source>Nature Methods</source>. <year>2012</year>;<volume>9</volume>(<issue>8</issue>):<fpage>796</fpage>–<lpage>804</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nmeth.2016" xlink:type="simple">10.1038/nmeth.2016</ext-link>.</comment> <object-id pub-id-type="pmid">22796662</object-id>;</mixed-citation></ref>
+<ref id="pcbi.1005489.ref037"><label>37</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Margolin</surname> <given-names>AA</given-names></name>, <name name-style="western"><surname>Nemenman</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Basso</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Wiggins</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Stolovitzky</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Dalla Favera</surname> <given-names>R</given-names></name>, <etal>et al</etal>. <article-title>ARACNE: an algorithm for the reconstruction of gene regulatory networks in a mammalian cellular context</article-title>. <source>BMC Bioinformatics</source>. <year>2006</year>;<volume>7</volume> <issue>Suppl 1</issue>:<fpage>S7</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/1471-2105-7-S1-S7" xlink:type="simple">10.1186/1471-2105-7-S1-S7</ext-link>.</comment> <object-id pub-id-type="pmid">16723010</object-id>;</mixed-citation></ref>
+<ref id="pcbi.1005489.ref038"><label>38</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kuffner</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Petri</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Tavakkolkhah</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Windhager</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Zimmer</surname> <given-names>R</given-names></name>. <article-title>Inferring gene regulatory networks by ANOVA</article-title>. <source>Bioinformatics</source>. <year>2012</year>;<volume>28</volume>(<issue>10</issue>):<fpage>1376</fpage>–<lpage>82</lpage>. Epub 2012/04/03. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/bioinformatics/bts143" xlink:type="simple">10.1093/bioinformatics/bts143</ext-link>.</comment> <object-id pub-id-type="pmid">22467911</object-id>.</mixed-citation></ref>
+<ref id="pcbi.1005489.ref039"><label>39</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Xiao</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Gao</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Ye</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Hu</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>He</surname> <given-names>R</given-names></name>. <article-title>Inferring gene regulatory networks using conditional regulation pattern to guide candidate genes</article-title>. <source>PLoS One</source>. <year>2016</year>;<volume>11</volume>(<issue>5</issue>):<fpage>e0154953</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pone.0154953" xlink:type="simple">10.1371/journal.pone.0154953</ext-link>.</comment> <object-id pub-id-type="pmid">27171286</object-id>;</mixed-citation></ref>
+<ref id="pcbi.1005489.ref040"><label>40</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wu</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Zhao</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Lin</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Shao</surname> <given-names>Z</given-names></name>. <article-title>Large scale gene regulatory network inference with a multi-level strategy</article-title>. <source>Molecular Biosystems</source>. <year>2016</year>;<volume>12</volume>(<issue>2</issue>):<fpage>588</fpage>–<lpage>97</lpage>. Epub 2015/12/22. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1039/c5mb00560d" xlink:type="simple">10.1039/c5mb00560d</ext-link>.</comment> <object-id pub-id-type="pmid">26687446</object-id>.</mixed-citation></ref>
+<ref id="pcbi.1005489.ref041"><label>41</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Reiss</surname> <given-names>DJ</given-names></name>, <name name-style="western"><surname>Baliga</surname> <given-names>NS</given-names></name>, <name name-style="western"><surname>Bonneau</surname> <given-names>R</given-names></name>. <article-title>Integrated biclustering of heterogeneous genome-wide datasets for the inference of global regulatory networks</article-title>. <source>BMC Bioinformatics</source>. <year>2006</year>;<volume>7</volume>:<fpage>280</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/1471-2105-7-280" xlink:type="simple">10.1186/1471-2105-7-280</ext-link>.</comment> <object-id pub-id-type="pmid">16749936</object-id>;</mixed-citation></ref>
+<ref id="pcbi.1005489.ref042"><label>42</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bonneau</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Reiss</surname> <given-names>DJ</given-names></name>, <name name-style="western"><surname>Shannon</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Facciotti</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Hood</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Baliga</surname> <given-names>NS</given-names></name>, <etal>et al</etal>. <article-title>The Inferelator: an algorithm for learning parsimonious regulatory networks from systems-biology data sets de novo</article-title>. <source>Genome Biology</source>. <year>2006</year>;<volume>7</volume>(<issue>5</issue>):<fpage>R36</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/gb-2006-7-5-r36" xlink:type="simple">10.1186/gb-2006-7-5-r36</ext-link>.</comment> <object-id pub-id-type="pmid">16686963</object-id>;</mixed-citation></ref>
+<ref id="pcbi.1005489.ref043"><label>43</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Danziger</surname> <given-names>SA</given-names></name>, <name name-style="western"><surname>Ratushny</surname> <given-names>AV</given-names></name>, <name name-style="western"><surname>Smith</surname> <given-names>JJ</given-names></name>, <name name-style="western"><surname>Saleem</surname> <given-names>RA</given-names></name>, <name name-style="western"><surname>Wan</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Arens</surname> <given-names>CE</given-names></name>, <etal>et al</etal>. <article-title>Molecular mechanisms of system responses to novel stimuli are predictable from public data</article-title>. <source>Nucleic Acids Research</source>. <year>2014</year>;<volume>42</volume>(<issue>3</issue>):<fpage>1442</fpage>–<lpage>60</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/nar/gkt938" xlink:type="simple">10.1093/nar/gkt938</ext-link>.</comment> <object-id pub-id-type="pmid">24185701</object-id>;</mixed-citation></ref>
+<ref id="pcbi.1005489.ref044"><label>44</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Abdulrehman</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Monteiro</surname> <given-names>PT</given-names></name>, <name name-style="western"><surname>Teixeira</surname> <given-names>MC</given-names></name>, <name name-style="western"><surname>Mira</surname> <given-names>NP</given-names></name>, <name name-style="western"><surname>Lourenco</surname> <given-names>AB</given-names></name>, <name name-style="western"><surname>dos Santos</surname> <given-names>SC</given-names></name>, <etal>et al</etal>. <article-title>YEASTRACT: providing a programmatic access to curated transcriptional regulatory associations in Saccharomyces cerevisiae through a web services interface</article-title>. <source>Nucleic Acids Research</source>. <year>2011</year>;<volume>39</volume>(<issue>Database issue</issue>):<fpage>D136</fpage>–<lpage>40</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/nar/gkq964" xlink:type="simple">10.1093/nar/gkq964</ext-link>.</comment> <object-id pub-id-type="pmid">20972212</object-id>;</mixed-citation></ref>
+<ref id="pcbi.1005489.ref045"><label>45</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Teixeira</surname> <given-names>MC</given-names></name>, <name name-style="western"><surname>Monteiro</surname> <given-names>PT</given-names></name>, <name name-style="western"><surname>Guerreiro</surname> <given-names>JF</given-names></name>, <name name-style="western"><surname>Goncalves</surname> <given-names>JP</given-names></name>, <name name-style="western"><surname>Mira</surname> <given-names>NP</given-names></name>, <name name-style="western"><surname>dos Santos</surname> <given-names>SC</given-names></name>, <etal>et al</etal>. <article-title>The YEASTRACT database: an upgraded information system for the analysis of gene and genomic transcription regulation in Saccharomyces cerevisiae</article-title>. <source>Nucleic Acids Research</source>. <year>2014</year>;<volume>42</volume>(<issue>Database issue</issue>):<fpage>D161</fpage>–<lpage>6</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/nar/gkt1015" xlink:type="simple">10.1093/nar/gkt1015</ext-link>.</comment> <object-id pub-id-type="pmid">24170807</object-id>;</mixed-citation></ref>
+<ref id="pcbi.1005489.ref046"><label>46</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Heavner</surname> <given-names>BD</given-names></name>, <name name-style="western"><surname>Price</surname> <given-names>ND</given-names></name>. <article-title>Comparative analysis of yeast metabolic network models highlights progress, opportunities for metabolic reconstruction</article-title>. <source>PLoS Computational Biology</source>. <year>2015</year>;<volume>11</volume>(<issue>11</issue>):<fpage>e1004530</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.1004530" xlink:type="simple">10.1371/journal.pcbi.1004530</ext-link>.</comment> <object-id pub-id-type="pmid">26566239</object-id>;</mixed-citation></ref>
+<ref id="pcbi.1005489.ref047"><label>47</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Heavner</surname> <given-names>BD</given-names></name>, <name name-style="western"><surname>Smallbone</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Price</surname> <given-names>ND</given-names></name>, <name name-style="western"><surname>Walker</surname> <given-names>LP</given-names></name>. <article-title>Version 6 of the consensus yeast metabolic network refines biochemical coverage and improves model performance</article-title>. <source>Database</source>. <year>2013</year>;<volume>2013</volume>:bat059. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/database/bat059" xlink:type="simple">10.1093/database/bat059</ext-link>.</comment> <object-id pub-id-type="pmid">23935056</object-id>;</mixed-citation></ref>
+<ref id="pcbi.1005489.ref048"><label>48</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fendt</surname> <given-names>SM</given-names></name>, <name name-style="western"><surname>Oliveira</surname> <given-names>AP</given-names></name>, <name name-style="western"><surname>Christen</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Picotti</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Dechant</surname> <given-names>RC</given-names></name>, <name name-style="western"><surname>Sauer</surname> <given-names>U</given-names></name>. <article-title>Unraveling condition-dependent networks of transcription factors that control metabolic pathway activity in yeast</article-title>. <source>Molecular Systems Biology</source>. <year>2010</year>;<volume>6</volume>:<fpage>432</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/msb.2010.91" xlink:type="simple">10.1038/msb.2010.91</ext-link>.</comment> <object-id pub-id-type="pmid">21119627</object-id>;</mixed-citation></ref>
+<ref id="pcbi.1005489.ref049"><label>49</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Guzman</surname> <given-names>GI</given-names></name>, <name name-style="western"><surname>Utrilla</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Nurk</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Brunk</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Monk</surname> <given-names>JM</given-names></name>, <name name-style="western"><surname>Ebrahim</surname> <given-names>A</given-names></name>, <etal>et al</etal>. <article-title>Model-driven discovery of underground metabolic functions in Escherichia coli</article-title>. <source>Proceedings of the National Academy of Sciences of the United States of America</source>. <year>2015</year>;<volume>112</volume>(<issue>3</issue>):<fpage>929</fpage>–<lpage>34</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.1414218112" xlink:type="simple">10.1073/pnas.1414218112</ext-link>.</comment> <object-id pub-id-type="pmid">25564669</object-id>.</mixed-citation></ref>
+<ref id="pcbi.1005489.ref050"><label>50</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Monk</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name>. <article-title>Genetics. Predicting microbial growth</article-title>. <source>Science</source>. <year>2014</year>;<volume>344</volume>(<issue>6191</issue>):<fpage>1448</fpage>–<lpage>9</lpage>. Epub 2014/06/28. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/science.1253388" xlink:type="simple">10.1126/science.1253388</ext-link>.</comment> <object-id pub-id-type="pmid">24970063</object-id>.</mixed-citation></ref>
+<ref id="pcbi.1005489.ref051"><label>51</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schellenberger</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Que</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Fleming</surname> <given-names>RM</given-names></name>, <name name-style="western"><surname>Thiele</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Orth</surname> <given-names>JD</given-names></name>, <name name-style="western"><surname>Feist</surname> <given-names>AM</given-names></name>, <etal>et al</etal>. <article-title>Quantitative prediction of cellular metabolism with constraint-based models: the COBRA Toolbox v2.0</article-title>. <source>Nature Protocols</source>. <year>2011</year>;<volume>6</volume>(<issue>9</issue>):<fpage>1290</fpage>–<lpage>307</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nprot.2011.308" xlink:type="simple">10.1038/nprot.2011.308</ext-link>.</comment> <object-id pub-id-type="pmid">21886097</object-id>;</mixed-citation></ref>
+<ref id="pcbi.1005489.ref052"><label>52</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Matthews</surname> <given-names>BW</given-names></name>. <article-title>Comparison of the predicted and observed secondary structure of T4 phage lysozyme</article-title>. <source>Biochimica et Biophysica Acta</source>. <year>1975</year>;<volume>405</volume>(<issue>2</issue>):<fpage>442</fpage>–<lpage>51</lpage>. Epub 1975/10/20 <object-id pub-id-type="pmid">1180967</object-id>.</mixed-citation></ref>
+<ref id="pcbi.1005489.ref053"><label>53</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rockwell</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Guido</surname> <given-names>NJ</given-names></name>, <name name-style="western"><surname>Church</surname> <given-names>GM</given-names></name>. <article-title>Redirector: designing cell factories by reconstructing the metabolic objective</article-title>. <source>PLoS Computational Biology</source>. <year>2013</year>;<volume>9</volume>(<issue>1</issue>):<fpage>e1002882</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.1002882" xlink:type="simple">10.1371/journal.pcbi.1002882</ext-link>.</comment> <object-id pub-id-type="pmid">23341769</object-id>;</mixed-citation></ref>
+<ref id="pcbi.1005489.ref054"><label>54</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Beck</surname> <given-names>AH</given-names></name>, <name name-style="western"><surname>Knoblauch</surname> <given-names>NW</given-names></name>, <name name-style="western"><surname>Hefti</surname> <given-names>MM</given-names></name>, <name name-style="western"><surname>Kaplan</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Schnitt</surname> <given-names>SJ</given-names></name>, <name name-style="western"><surname>Culhane</surname> <given-names>AC</given-names></name>, <etal>et al</etal>. <article-title>Significance analysis of prognostic signatures</article-title>. <source>PLoS Computational Biology</source>. <year>2013</year>;<volume>9</volume>(<issue>1</issue>):<fpage>e1002875</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.1002875" xlink:type="simple">10.1371/journal.pcbi.1002875</ext-link>.</comment> <object-id pub-id-type="pmid">23365551</object-id>;</mixed-citation></ref>
+<ref id="pcbi.1005489.ref055"><label>55</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Aung</surname> <given-names>HW</given-names></name>, <name name-style="western"><surname>Henry</surname> <given-names>SA</given-names></name>, <name name-style="western"><surname>Walker</surname> <given-names>LP</given-names></name>. <article-title>Revising the representation of fatty acid, glycerolipid, and glycerophospholipid metabolism in the consensus model of yeast metabolism</article-title>. <source>Industrial biotechnology</source>. <year>2013</year>;<volume>9</volume>(<issue>4</issue>):<fpage>215</fpage>–<lpage>28</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1089/ind.2013.0013" xlink:type="simple">10.1089/ind.2013.0013</ext-link>.</comment> <object-id pub-id-type="pmid">24678285</object-id>;</mixed-citation></ref>
+<ref id="pcbi.1005489.ref056"><label>56</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mo</surname> <given-names>ML</given-names></name>, <name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name>, <name name-style="western"><surname>Herrgard</surname> <given-names>MJ</given-names></name>. <article-title>Connecting extracellular metabolomic measurements to intracellular flux states in yeast</article-title>. <source>BMC Syst Biol</source>. <year>2009</year>;<volume>3</volume>:<fpage>37</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/1752-0509-3-37" xlink:type="simple">10.1186/1752-0509-3-37</ext-link>.</comment> <object-id pub-id-type="pmid">19321003</object-id>;</mixed-citation></ref>
+<ref id="pcbi.1005489.ref057"><label>57</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lee</surname> <given-names>JW</given-names></name>, <name name-style="western"><surname>Na</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Park</surname> <given-names>JM</given-names></name>, <name name-style="western"><surname>Lee</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Choi</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Lee</surname> <given-names>SY</given-names></name>. <article-title>Systems metabolic engineering of microorganisms for natural and non-natural chemicals</article-title>. <source>Nature Chemical Biology</source>. <year>2012</year>;<volume>8</volume>(<issue>6</issue>):<fpage>536</fpage>–<lpage>46</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nchembio.970" xlink:type="simple">10.1038/nchembio.970</ext-link>.</comment> <object-id pub-id-type="pmid">22596205</object-id>.</mixed-citation></ref>
+<ref id="pcbi.1005489.ref058"><label>58</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Whitehead</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Kish</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Pan</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Kaur</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Reiss</surname> <given-names>DJ</given-names></name>, <name name-style="western"><surname>King</surname> <given-names>N</given-names></name>, <etal>et al</etal>. <article-title>An integrated systems approach for understanding cellular responses to gamma radiation</article-title>. <source>Molecular Systems Biology</source>. <year>2006</year>;<volume>2</volume>:<fpage>47</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/msb4100091" xlink:type="simple">10.1038/msb4100091</ext-link>.</comment> <object-id pub-id-type="pmid">16969339</object-id>;</mixed-citation></ref>
+<ref id="pcbi.1005489.ref059"><label>59</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Herricks</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Dilworth</surname> <given-names>DJ</given-names></name>, <name name-style="western"><surname>Mast</surname> <given-names>FD</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Smith</surname> <given-names>JJ</given-names></name>, <name name-style="western"><surname>Ratushny</surname> <given-names>AV</given-names></name>, <etal>et al</etal>. <article-title>One-cell doubling evaluation by living arrays of yeast, ODELAY!</article-title> <source>G3 (Bethesda)</source>. <year>2016</year>;<volume>7</volume>(<issue>1</issue>):<fpage>279</fpage>–<lpage>88</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1101/069724" xlink:type="simple">10.1101/069724</ext-link></comment></mixed-citation></ref>
+<ref id="pcbi.1005489.ref060"><label>60</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Smith</surname> <given-names>JJ</given-names></name>, <name name-style="western"><surname>Ramsey</surname> <given-names>SA</given-names></name>, <name name-style="western"><surname>Marelli</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Marzolf</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Hwang</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Saleem</surname> <given-names>RA</given-names></name>, <etal>et al</etal>. <article-title>Transcriptional responses to fatty acid are coordinated by combinatorial control</article-title>. <source>Molecular Systems Biology</source>. <year>2007</year>;<volume>3</volume>:<fpage>115</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/msb4100157" xlink:type="simple">10.1038/msb4100157</ext-link>.</comment> <object-id pub-id-type="pmid">17551510</object-id>;</mixed-citation></ref>
+<ref id="pcbi.1005489.ref061"><label>61</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schuller</surname> <given-names>HJ</given-names></name>. <article-title>Transcriptional control of nonfermentative metabolism in the yeast Saccharomyces cerevisiae</article-title>. <source>Current Genetics</source>. <year>2003</year>;<volume>43</volume>(<issue>3</issue>):<fpage>139</fpage>–<lpage>60</lpage> <object-id pub-id-type="pmid">12715202</object-id>.</mixed-citation></ref>
+<ref id="pcbi.1005489.ref062"><label>62</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Van Roermund</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Elgersma</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Singh</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Wanders</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Tabak</surname> <given-names>H</given-names></name>. <article-title>The membrane of peroxisomes in Saccharomyces cerevisiae is impermeable to NAD (H) and acetyl-CoA under in vivo conditions</article-title>. <source>EMBO J</source>. <year>1995</year>;<volume>14</volume>(<issue>14</issue>):<fpage>3480</fpage> <object-id pub-id-type="pmid">7628449</object-id></mixed-citation></ref>
+<ref id="pcbi.1005489.ref063"><label>63</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kunze</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Pracharoenwattana</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Smith</surname> <given-names>SM</given-names></name>, <name name-style="western"><surname>Hartig</surname> <given-names>A</given-names></name>. <article-title>A central role for the peroxisomal membrane in glyoxylate cycle function</article-title>. <source>Biochimica et Biophysica Acta</source>. <year>2006</year>;<volume>1763</volume>(<issue>12</issue>):<fpage>1441</fpage>–<lpage>52</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.bbamcr.2006.09.009" xlink:type="simple">10.1016/j.bbamcr.2006.09.009</ext-link>.</comment> <object-id pub-id-type="pmid">17055076</object-id>.</mixed-citation></ref>
+<ref id="pcbi.1005489.ref064"><label>64</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Choudhary</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Weinert</surname> <given-names>BT</given-names></name>, <name name-style="western"><surname>Nishida</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Verdin</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Mann</surname> <given-names>M</given-names></name>. <article-title>The growing landscape of lysine acetylation links metabolism and cell signalling</article-title>. <source>Nature Reviews: Molecular Cell Biology</source>. <year>2014</year>;<volume>15</volume>(<issue>8</issue>):<fpage>536</fpage>–<lpage>50</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nrm3841" xlink:type="simple">10.1038/nrm3841</ext-link>.</comment> <object-id pub-id-type="pmid">25053359</object-id>.</mixed-citation></ref>
+<ref id="pcbi.1005489.ref065"><label>65</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Liao</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Butow</surname> <given-names>RA</given-names></name>. <article-title>RTG1 and RTG2: two yeast genes required for a novel path of communication from mitochondria to the nucleus</article-title>. <source>Cell</source>. <year>1993</year>;<volume>72</volume>(<issue>1</issue>):<fpage>61</fpage>–<lpage>71</lpage> <object-id pub-id-type="pmid">8422683</object-id></mixed-citation></ref>
+<ref id="pcbi.1005489.ref066"><label>66</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chelstowska</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Butow</surname> <given-names>RA</given-names></name>. <article-title>RTG genes in yeast that function in communication between mitochondria and the nucleus are also required for expression of genes encoding peroxisomal proteins</article-title>. <source>J Biol Chem</source>. <year>1995</year>;<volume>270</volume>(<issue>30</issue>):<fpage>18141</fpage>–<lpage>6</lpage> <object-id pub-id-type="pmid">7629125</object-id></mixed-citation></ref>
+<ref id="pcbi.1005489.ref067"><label>67</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Liao</surname> <given-names>XS</given-names></name>, <name name-style="western"><surname>Small</surname> <given-names>WC</given-names></name>, <name name-style="western"><surname>Srere</surname> <given-names>PA</given-names></name>, <name name-style="western"><surname>Butow</surname> <given-names>RA</given-names></name>. <article-title>Intramitochondrial functions regulate nonmitochondrial citrate synthase (CIT2) expression in Saccharomyces cerevisiae</article-title>. <source>Molecular and Cellular Biology</source>. <year>1991</year>;<volume>11</volume>(<issue>1</issue>):<fpage>38</fpage>–<lpage>46</lpage>. Epub 1991/01/01 <object-id pub-id-type="pmid">1986232</object-id>;</mixed-citation></ref>
+<ref id="pcbi.1005489.ref068"><label>68</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Stark</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Breitkreutz</surname> <given-names>BJ</given-names></name>, <name name-style="western"><surname>Reguly</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Boucher</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Breitkreutz</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Tyers</surname> <given-names>M</given-names></name>. <article-title>BioGRID: a general repository for interaction datasets</article-title>. <source>Nucleic Acids Research</source>. <year>2006</year>;<volume>34</volume>(<issue>Database issue</issue>):<fpage>D535</fpage>–<lpage>9</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/nar/gkj109" xlink:type="simple">10.1093/nar/gkj109</ext-link>.</comment> <object-id pub-id-type="pmid">16381927</object-id>;</mixed-citation></ref>
+<ref id="pcbi.1005489.ref069"><label>69</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Epstein</surname> <given-names>CB</given-names></name>, <name name-style="western"><surname>Waddle</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Hale</surname> <given-names>Wt</given-names></name>, <name name-style="western"><surname>Dave</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Thornton</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Macatee</surname> <given-names>TL</given-names></name>, <etal>et al</etal>. <article-title>Genome-wide responses to mitochondrial dysfunction</article-title>. <source>Molecular Biology of the Cell</source>. <year>2001</year>;<volume>12</volume>(<issue>2</issue>):<fpage>297</fpage>–<lpage>308</lpage>. Epub 2001/02/17 <object-id pub-id-type="pmid">11179416</object-id>;</mixed-citation></ref>
+<ref id="pcbi.1005489.ref070"><label>70</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Herrgard</surname> <given-names>MJ</given-names></name>, <name name-style="western"><surname>Swainston</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Dobson</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Dunn</surname> <given-names>WB</given-names></name>, <name name-style="western"><surname>Arga</surname> <given-names>KY</given-names></name>, <name name-style="western"><surname>Arvas</surname> <given-names>M</given-names></name>, <etal>et al</etal>. <article-title>A consensus yeast metabolic network reconstruction obtained from a community approach to systems biology</article-title>. <source>Nature Biotechnology</source>. <year>2008</year>;<volume>26</volume>(<issue>10</issue>):<fpage>1155</fpage>–<lpage>60</lpage>. Epub 2008/10/11. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nbt1492" xlink:type="simple">10.1038/nbt1492</ext-link>.</comment> <object-id pub-id-type="pmid">18846089</object-id>.</mixed-citation></ref>
+<ref id="pcbi.1005489.ref071"><label>71</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pearson</surname> <given-names>K</given-names></name>. <article-title>Note on regression and inheritance in the case of two parents</article-title>. <source>Proc R Soc Lond</source>. <year>1895</year>;<volume>58</volume>:<fpage>240</fpage>–<lpage>2</lpage>.</mixed-citation></ref>
+</ref-list>
+</back>
+</article>

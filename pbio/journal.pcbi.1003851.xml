@@ -1,0 +1,925 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="3.0" xml:lang="en">
+<front>
+<journal-meta>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id>
+<journal-id journal-id-type="pmc">ploscomp</journal-id><journal-title-group>
+<journal-title>PLoS Computational Biology</journal-title></journal-title-group>
+<issn pub-type="ppub">1553-734X</issn>
+<issn pub-type="epub">1553-7358</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, USA</publisher-loc></publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="publisher-id">PCOMPBIOL-D-14-00456</article-id>
+<article-id pub-id-type="doi">10.1371/journal.pcbi.1003851</article-id>
+<article-categories><subj-group subj-group-type="heading"><subject>Research Article</subject></subj-group><subj-group subj-group-type="Discipline-v2"><subject>Biology and life sciences</subject><subj-group><subject>Computational biology</subject></subj-group></subj-group><subj-group subj-group-type="Discipline-v2"><subject>Medicine and health sciences</subject><subj-group><subject>Epidemiology</subject><subj-group><subject>Disease informatics</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v2"><subject>Research and analysis methods</subject><subj-group><subject>Database and informatics methods</subject><subj-group><subject>Bioinformatics</subject></subj-group></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>A Novel Model to Combine Clinical and Pathway-Based Transcriptomic Information for the Prognosis Prediction of Breast Cancer</article-title>
+<alt-title alt-title-type="running-head">A Novel Combined Model for the Prognosis Prediction of Breast Cancer</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Huang</surname><given-names>Sijia</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff2"><sup>2</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Yee</surname><given-names>Cameron</given-names></name><xref ref-type="aff" rid="aff3"><sup>3</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Ching</surname><given-names>Travers</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff2"><sup>2</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Yu</surname><given-names>Herbert</given-names></name><xref ref-type="aff" rid="aff2"><sup>2</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Garmire</surname><given-names>Lana X.</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff2"><sup>2</sup></xref><xref ref-type="corresp" rid="cor1"><sup>*</sup></xref></contrib>
+</contrib-group>
+<aff id="aff1"><label>1</label><addr-line>Molecular Biosciences and Bioengineering Graduate Program, University of Hawaii at Manoa, Honolulu, Hawaii, United States of America</addr-line></aff>
+<aff id="aff2"><label>2</label><addr-line>Epidemiology Program, University of Hawaii Cancer Center, Honolulu, Hawaii, United States of America</addr-line></aff>
+<aff id="aff3"><label>3</label><addr-line>Neurobiology Program of Biology Department, University of Washington, Seattle, Washington, United States of America</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple"><name name-style="western"><surname>Rzhetsky</surname><given-names>Andrey</given-names></name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/></contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>University of Chicago, United States of America</addr-line></aff>
+<author-notes>
+<corresp id="cor1">* E-mail: <email xlink:type="simple">lgarmire@cc.hawaii.edu</email></corresp>
+<fn fn-type="conflict"><p>The authors have declared that no competing interests exist.</p></fn>
+<fn fn-type="con"><p>Conceived and designed the experiments: LXG. Performed the experiments: SH CY. Analyzed the data: SH CY LXG. Contributed reagents/materials/analysis tools: TC HY. Contributed to the writing of the manuscript: SH LXG.</p></fn>
+</author-notes>
+<pub-date pub-type="collection"><year>2014</year></pub-date>
+<pub-date pub-type="epub"><day>18</day><month>9</month><year>2014</year></pub-date>
+<volume>10</volume>
+<issue>9</issue>
+<elocation-id>e1003851</elocation-id>
+<history>
+<date date-type="received"><day>17</day><month>3</month><year>2014</year></date>
+<date date-type="accepted"><day>8</day><month>8</month><year>2014</year></date>
+</history>
+<permissions>
+<copyright-year>2014</copyright-year>
+<copyright-holder>Huang et al</copyright-holder><license xlink:type="simple"><license-p>This is an open-access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license></permissions>
+<abstract>
+<p>Breast cancer is the most common malignancy in women worldwide. With the increasing awareness of heterogeneity in breast cancers, better prediction of breast cancer prognosis is much needed for more personalized treatment and disease management. Towards this goal, we have developed a novel computational model for breast cancer prognosis by combining the Pathway Deregulation Score (PDS) based pathifier algorithm, Cox regression and L1-LASSO penalization method. We trained the model on a set of 236 patients with gene expression data and clinical information, and validated the performance on three diversified testing data sets of 606 patients. To evaluate the performance of the model, we conducted survival analysis of the dichotomized groups, and compared the areas under the curve based on the binary classification. The resulting prognosis genomic model is composed of fifteen pathways (e.g. P53 pathway) that had previously reported cancer relevance, and it successfully differentiated relapse in the training set (log rank p-value = 6.25e-12) and three testing data sets (log rank p-value&lt;0.0005). Moreover, the pathway-based genomic models consistently performed better than gene-based models on all four data sets. We also find strong evidence that combining genomic information with clinical information improved the p-values of prognosis prediction by at least three orders of magnitude in comparison to using either genomic or clinical information alone. In summary, we propose a novel prognosis model that harnesses the pathway-based dysregulation as well as valuable clinical information. The selected pathways in our prognosis model are promising targets for therapeutic intervention.</p>
+</abstract>
+<abstract abstract-type="summary"><title>Author Summary</title>
+<p>With the increasing awareness of heterogeneity in breast cancers, better prediction of breast cancer prognosis is much needed early on for more personalized treatment and management. Towards this goal we propose in this study a novel pathway-based prognosis prediction model, which emphasizes on individualized pathway-based risk measurement using the pathway dysregulation score (PDS). In combination with the L1-LASSO penalized feature selection and the COX-Proportional Hazards regression model, we have identified fifteen cancer relevant pathways using the pathway-based genomic model that successfully differentiated the relapse in the training set as well as three diversified test sets. Moreover, given the debate whether higher-order representative features, such as GO sets, pathways and network modules are superior to the gene-level features in the genomic models, we demonstrate that pathway-based genomic models consistently performed better than gene-based models in all four data sets. Last but not least, we show strong evidence that models that combine genomic information with clinical information improves the prognosis prediction significantly, in comparison to models that use either genomic or clinical information alone.</p>
+</abstract>
+<funding-group><funding-statement>The funding to LXG was provided by the University of Hawaii Cancer Center as Faculty Startup Grant. The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement></funding-group><counts><page-count count="15"/></counts></article-meta>
+</front>
+<body><sec id="s1">
+<title>Introduction</title>
+<p>Breast cancer is the second (after skin cancer) most frequently diagnosed cancer in women, and ranks second (after lung cancer) in the deaths of women in year 2013 <xref ref-type="bibr" rid="pcbi.1003851-Society1">[1]</xref>. Most clinical studies categorize breast cancer into four molecular subtypes: Luminal A, Luminal B, Triple Negative/Basal like and Her2 <xref ref-type="bibr" rid="pcbi.1003851-Carey1">[2]</xref>, <xref ref-type="bibr" rid="pcbi.1003851-OBrien1">[3]</xref>. The survival outcomes differ significantly among the clinical subtypes. Luminal A and B subtypes have a relatively good prognosis, whereas triple negative or basal like tumors, and Her2 tumors have very poor prognosis with much higher recurrence and metastasis rates <xref ref-type="bibr" rid="pcbi.1003851-Carey1">[2]</xref>–<xref ref-type="bibr" rid="pcbi.1003851-Haque1">[4]</xref>. Furthermore, it is increasingly being realized that breast cancers are much more heterogeneous diseases than what is determined by the clinical subtypes, and that better prediction of prognosis is needed early on for more personalized treatment and management. Towards this goal, prognosis biomarkers of breast cancers have been investigated in many studies <xref ref-type="bibr" rid="pcbi.1003851-CancerGenomeAtlas1">[5]</xref>–<xref ref-type="bibr" rid="pcbi.1003851-vandeVijver1">[7]</xref>, based on signatures from high-throughput platforms such as gene expression profiles. Some signature panels such as the NKI 70 test are currently in commercial use with decent prediction of metastasis <xref ref-type="bibr" rid="pcbi.1003851-vantVeer1">[8]</xref>.</p>
+<p>However, transcriptomic data are usually poorly dimensioned with many more genes than the number of samples, thus methods that reduce the dimension by incorporating higher-order information of functional units, such as gene sets, pathways and network modules, have been recently explored <xref ref-type="bibr" rid="pcbi.1003851-Abraham1">[9]</xref>–<xref ref-type="bibr" rid="pcbi.1003851-Subramanian1">[16]</xref>. This methodology is based on the observation that multiple genes involved in the same biological processes are often dysfunctional all together in cancers <xref ref-type="bibr" rid="pcbi.1003851-Bild1">[17]</xref>, therefore features selected from representative functional units are presumably more robust with better biological annotations <xref ref-type="bibr" rid="pcbi.1003851-vandenAkker1">[10]</xref>,<xref ref-type="bibr" rid="pcbi.1003851-Bild1">[17]</xref>. Currently, two main approaches to define functional units have been proposed. One approach is to identify <italic>de novo</italic> functional units from the data. For example, van Vliet used an unsupervised module discovery method to identify gene modules, scored them and use them as features in a Bayes classifier <xref ref-type="bibr" rid="pcbi.1003851-vanVliet1">[18]</xref>. Teschendorff et al. reported improved prognostic classification of breast cancers via a novel strategy to discover the activated pathways from the modules of “expression relevance network” <xref ref-type="bibr" rid="pcbi.1003851-Teschendorff1">[12]</xref>. Similarly, network analysis with combination of all the useful gene information has been developed and utilized to measure the coordination among the genes <xref ref-type="bibr" rid="pcbi.1003851-Ma1">[13]</xref>. The other main approach uses the existing pathway information to build functional units. For example, Lee et al used the MsigDB C2 gene sets to select feature sets using the t-test, and represented the pathway activity level by a subset of genes whose combined expression delivered optimal discriminative power for the disease phenotype <xref ref-type="bibr" rid="pcbi.1003851-Lee1">[14]</xref>. Abraham et. al used a set statistic that aggregated the expression levels of all genes in a set, and constructed prognostic gene sets that were as predictive as individual genes, yet more stable and interpretable within the biological context <xref ref-type="bibr" rid="pcbi.1003851-Abraham1">[9]</xref>.</p>
+<p>However, most of these methods model the prognosis as binary outcomes, and <italic>post hoc</italic> analyze the performance of the methods using survival information; or individualized information of pathway deregulation is lost during information extraction before deriving statistical metrics. More importantly, the merits of combining clinical features and genomic features together have not been adequately addressed in most studies, where the models were only built upon the genomic information. In this study, we use a novel pathway-based deregulation scoring matrix to transform the gene-based genomic features in combination with the Cox regression and L1-LASSO regularization to model survivals. With this pathway deregulation score matrix as inputs, we constructed a pathway-based genomic model consisting of fifteen cancer relevant pathways that successfully predicted relapse difference (log rank p-value = 6.25e-12, and AUC = 0.80) and validated them on three breast cancer data sets with diversified clinical profiles (log rank p-value&lt;0.0005, and average AUC = 0.68). The pathway-based genomic models consistently performed better than gene-based models on all four data sets. Moreover, combining genomic level information with clinical information improved prognosis prediction and classification by at least three orders of magnitudes of p-values, in comparison to either genomic or clinical information alone.</p>
+</sec><sec id="s3">
+<title>Results</title>
+<sec id="s3a">
+<title>Data Summary</title>
+<p>We used four individual gene expression microarray data sets for the testing and validation of the pathway-based prognosis model (<xref ref-type="table" rid="pcbi-1003851-t001">Table 1</xref>), all of which were measured by Affymetrix HG-U133A array and had relapse and survival information. We used the data set of 236 patients in Miller et. al. <xref ref-type="bibr" rid="pcbi.1003851-Miller1">[19]</xref> as the training data mainly because this data set contains the most abundant clinical information, including ER status, PG status, tumor size, grade, lymph node status and P53 mutation.</p>
+<table-wrap id="pcbi-1003851-t001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003851.t001</object-id><label>Table 1</label><caption>
+<title>Summary of patient and tumor characteristics.</title>
+</caption><alternatives><graphic id="pcbi-1003851-t001-1" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003851.t001" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1">Characteristics</td>
+<td align="left" rowspan="1" colspan="1">Training Miller LD</td>
+<td align="left" rowspan="1" colspan="1">Testing Set1 Pawitan Y</td>
+<td align="left" rowspan="1" colspan="1">Testing Set2 Ivshina AV</td>
+<td align="left" rowspan="1" colspan="1">Testing Set3 Desmedt D</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="5" align="left" rowspan="1">No. of patients</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">236</td>
+<td align="left" rowspan="1" colspan="1">159</td>
+<td align="left" rowspan="1" colspan="1">249</td>
+<td align="left" rowspan="1" colspan="1">198</td>
+</tr>
+<tr>
+<td colspan="5" align="left" rowspan="1">Relapse, No. (%)</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Relapse</td>
+<td align="left" rowspan="1" colspan="1">55 (23%)</td>
+<td align="left" rowspan="1" colspan="1">40 (25%)</td>
+<td align="left" rowspan="1" colspan="1">89 (35%)</td>
+<td align="left" rowspan="1" colspan="1">91 (46%)</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Non-relapse</td>
+<td align="left" rowspan="1" colspan="1">181 (77%)</td>
+<td align="left" rowspan="1" colspan="1">119 (75%)</td>
+<td align="left" rowspan="1" colspan="1">160 (64%)</td>
+<td align="left" rowspan="1" colspan="1">107 (54%)</td>
+</tr>
+<tr>
+<td colspan="5" align="left" rowspan="1">Mean Relapse Free Survival (y)</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">8.167</td>
+<td align="left" rowspan="1" colspan="1">5.959</td>
+<td align="left" rowspan="1" colspan="1">7.142</td>
+<td align="left" rowspan="1" colspan="1">9.312</td>
+</tr>
+<tr>
+<td colspan="5" align="left" rowspan="1">Mean Age (year)</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">62.51</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">62.12</td>
+<td align="left" rowspan="1" colspan="1">46.39</td>
+</tr>
+<tr>
+<td colspan="5" align="left" rowspan="1">ER status, No. (%)</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Positive</td>
+<td align="left" rowspan="1" colspan="1">201 (85%)</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">211 (85%)</td>
+<td align="left" rowspan="1" colspan="1">134 (67%)</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Negative</td>
+<td align="left" rowspan="1" colspan="1">31 (13%)</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">34 (13%)</td>
+<td align="left" rowspan="1" colspan="1">64 (33%)</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">NA</td>
+<td align="left" rowspan="1" colspan="1">4 (2%)</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">4 (2%)</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+</tr>
+<tr>
+<td colspan="5" align="left" rowspan="1">PG status, No. (%)</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Positive</td>
+<td align="left" rowspan="1" colspan="1">57 (24%)</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Negative</td>
+<td align="left" rowspan="1" colspan="1">179 (76%)</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">NA</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td colspan="5" align="left" rowspan="1">Tumor Size(mm)</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">&lt;10 (<italic>T</italic><sub>1<italic>a</italic></sub>, <italic>T</italic><sub>1<italic>b</italic></sub>)</td>
+<td align="left" rowspan="1" colspan="1">13 (6%)</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">14 (6%)</td>
+<td align="left" rowspan="1" colspan="1">9 (4%)</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">10–20 (<italic>T</italic><sub>1<italic>c</italic></sub>)</td>
+<td align="left" rowspan="1" colspan="1">92 (40%)</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">95 (38%)</td>
+<td align="left" rowspan="1" colspan="1">59 (30%)</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">20–50 (<italic>T</italic><sub>2</sub>)</td>
+<td align="left" rowspan="1" colspan="1">123 (52%)</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">129 (52%)</td>
+<td align="left" rowspan="1" colspan="1">129 (65%)</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">&gt;50 (<italic>T</italic><sub>3</sub>)</td>
+<td align="left" rowspan="1" colspan="1">5 (2%)</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">10 (4%)</td>
+<td align="left" rowspan="1" colspan="1">1 (1%)</td>
+</tr>
+<tr>
+<td colspan="5" align="left" rowspan="1">Grade, No. (%)</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">1</td>
+<td align="left" rowspan="1" colspan="1">62 (26%)</td>
+<td align="left" rowspan="1" colspan="1">28 (18%)</td>
+<td align="left" rowspan="1" colspan="1">68 (27%)</td>
+<td align="left" rowspan="1" colspan="1">30 (15%)</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">121 (51%)</td>
+<td align="left" rowspan="1" colspan="1">58 (36%)</td>
+<td align="left" rowspan="1" colspan="1">126 (51%)</td>
+<td align="left" rowspan="1" colspan="1">83 (42%)</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">3</td>
+<td align="left" rowspan="1" colspan="1">51 (22%)</td>
+<td align="left" rowspan="1" colspan="1">61 (38%)</td>
+<td align="left" rowspan="1" colspan="1">55 (22%)</td>
+<td align="left" rowspan="1" colspan="1">83 (42%)</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">NA</td>
+<td align="left" rowspan="1" colspan="1">2 (1%)</td>
+<td align="left" rowspan="1" colspan="1">12 (8%)</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">2 (1%)</td>
+</tr>
+<tr>
+<td colspan="5" align="left" rowspan="1">Lymph Node Status, No. (%)</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Positive</td>
+<td align="left" rowspan="1" colspan="1">78 (33%)</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">81 (32%)</td>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Negative</td>
+<td align="left" rowspan="1" colspan="1">149 (63%)</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">159 (64%)</td>
+<td align="left" rowspan="1" colspan="1">198 (100%)</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">NA</td>
+<td align="left" rowspan="1" colspan="1">9 (4%)</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">9 (4%)</td>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td colspan="5" align="left" rowspan="1">P53 Mutation Status, No. (%)</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Mutated</td>
+<td align="left" rowspan="1" colspan="1">55 (23%)</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">58 (23%)</td>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Wild Type</td>
+<td align="left" rowspan="1" colspan="1">181 (77%)</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">189 (76%)</td>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">NA</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">2 (1%)</td>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+</tbody>
+</table>
+</alternatives></table-wrap>
+<p>PAM50 is a list of 50 genes initially proposed to successfully differentiate the breast cancer subtypes and it was later found that PAM50 also harbors good prognosis information on breast cancer <xref ref-type="bibr" rid="pcbi.1003851-Chia1">[20]</xref>. Therefore, we first present the testing data summary results and correlate relapse with PAM50 and other clinical factors (<xref ref-type="fig" rid="pcbi-1003851-g001">Figure 1</xref>). Although tumor molecular subtypes are unknown due to the missing Her2 marker information, we nevertheless observed a good correlation between PAM50 matrix and relapse. Based on the hierarchical clustering results of PAM50 heatmap, we dichotomized the samples into high and low risk groups, This grouping approach, without any supervised learning, results in a fairly good association to relapse status (Chi-square test p = 7.46e-5). Additionally, grade and lymph node have significant associations to relapse, with Chi-square test p-values of 0.018 and 9.146e-6 respectively. Single clinical factor based survival analysis also confirms such significant relevance to relapse: p-values of Wilcoxon log rank tests for the p53, grade, tumor size and lymph node status based survival differences are 0.0152, 0.00181, 1.92e-7 and 4.93e-8, respectively. Similar to previous observations <xref ref-type="bibr" rid="pcbi.1003851-Fan1">[21]</xref>, ER and PG status are not good prognosis indicators, with the log rank test p-values of 0.819 and 0.227, respectively.</p>
+<fig id="pcbi-1003851-g001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003851.g001</object-id><label>Figure 1</label><caption>
+<title>The PAM50 gene signatures and their association with clinical information in the training data set.</title>
+<p>A, The heatmap of the log2 transformed gene expression for PAM50 signatures. Green and red colors represent higher and lower expression levels, respectively. The samples are further categorized into two major groups based on the hierarchical clustering. The p-values of the clinical features such as ER, PG, P53, Grade, lymph node (LN) and dichotomized groups with relation to relapse status are calculated using Chi-square tests. B–E, Kaplan Meier survival estimates of relapse free survivals according to major clinical features: (B) Lymph node status, (C) Grade, (D) P53 mutation status and (E) Tumor size. P-values are calculated using Wilcoxon log-rank tests and (+) denotes the censored observations in the study.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003851.g001" position="float" xlink:type="simple"/></fig>
+<p>There are a total of around 600 samples in the three testing data sets, 2.5 times the size of samples in the training set. Testing set 1 (Ivshina data) <xref ref-type="bibr" rid="pcbi.1003851-Ivshina1">[22]</xref> and testing set 2 (Pawitan data) <xref ref-type="bibr" rid="pcbi.1003851-Pawitan1">[23]</xref> have very similar distribution pattern to the training data (Miller data) <xref ref-type="bibr" rid="pcbi.1003851-Miller1">[19]</xref>. However testing set 3 (Desmedt data) <xref ref-type="bibr" rid="pcbi.1003851-Desmedt1">[24]</xref> has very different distribution compared to other three data sets, as the samples were all lymph node negative tumors. We include set 3 as an extension to the other two testing data sets to exam the performance of the pathway-based genomic model for prognosis.</p>
+</sec><sec id="s3b">
+<title>Building the Pathway-Based Genomic Model</title>
+<p>We have developed a novel pathway-based prognosis prediction model, unlike most other models that are gene-based (<xref ref-type="fig" rid="pcbi-1003851-g002">Figure 2</xref>). We transformed a conventional gene-based matrix into a new pathway-based matrix of reduced numbers of rows, where each row represents a KEGG or BIOCARTA pathway-based scores over all samples (columns). Instead of using log2 transformed intensities as elements of the matrix, we used Pathway Dysregulation Scores (PDS) <xref ref-type="bibr" rid="pcbi.1003851-Drier1">[25]</xref> that measure the distance of a particular pathway to the “normal condition” curve in a hyperspace. PDS ranges from 0 to 1, and the higher PDS score signifies more “abnormity”. This pathway-based PDS matrix was used as the initial input to select featuring pathways that are predictive of survival, based on the multi-variate Cox-PH model <xref ref-type="bibr" rid="pcbi.1003851-Gill1">[26]</xref>. We used L1-LASSO penalization method <xref ref-type="bibr" rid="pcbi.1003851-Tibshirani1">[27]</xref>–<xref ref-type="bibr" rid="pcbi.1003851-Goeman1">[29]</xref> to constrain the featuring pathways to be selected. To be consistent, we conducted 250 simulations to select the best set of pathways.</p>
+<fig id="pcbi-1003851-g002" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003851.g002</object-id><label>Figure 2</label><caption>
+<title>The workflow of the pathway-based genomic model.</title>
+<p>Step 1. Transform the input data in the training set: the gene-based expression data are transformed into the pathway-based data input through the <italic>pathifier</italic> algorithm, using the pathway information from KEGG and BIOCARTA. The new input matrix is represented by Pathway Deregulation Scores (PDS). Step 2. Build the prognosis prediction model. The PDS matrix is integrated with the survival information via a Cox-PH model under penalized feature selection using the L1- LASSO method. Featuring pathways are selected and the coefficients (or weights) of these pathways are estimated using log likelihood cross validation. Step 3. Set the relapse risk threshold from the model. The prognostic index (PI) cutoff value is determined from the model to match the ratio of relapse/non-relapse in the training set. This PI is used as the relapse risk threshold on all the testing sets where the sum of weighted PDS is calculated on the pathways selected in Step 2. The input PDS matrices of testing data sets are computed the same as in Step 1. Step 4. Evaluate the performance of the prognostic model. The performance is evaluated through Kaplan-Meier curves of the dichotomized risk groups by PI scores, as well as the ROC curves and AUC values.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003851.g002" position="float" xlink:type="simple"/></fig>
+<p>We first evaluated the featuring pathways selected by the model, in relation to other clinical factors and relapse status in the training data set (<xref ref-type="fig" rid="pcbi-1003851-g003">Figure 3</xref>). Comparing the heatmap of selected featuring pathways to that of the PAM 50 genes (<xref ref-type="fig" rid="pcbi-1003851-g003">Figure 3A</xref>), the selected pathways are more prognostic for relapse. This is supported by two observations: (1) Dichotomized samples of high risk and low risk groups through hierarchical clustering of PDS scores have a higher correlation to relapse status (Chi-square test p = 1.99e-6), compared to those of PAM50 gene matrix (Chi-square test p = 7.46e-5) and (2) The median PDS scores over fifteen selected pathways have a correlation coefficient of 0.17 to relapse, in comparison to 0.08 for the median expression intensities over PAM50 genes. Thus the selected pathways by our model are better prognostic features than PAM50 genes, in terms of the correlation to disease relapse.</p>
+<fig id="pcbi-1003851-g003" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003851.g003</object-id><label>Figure 3</label><caption>
+<title>The selected pathway signatures and their association with clinical information in the training data set.</title>
+<p>The heatmap shows the patterns of Pathway Deregulation Score (PDS) of selected pathways in the genomic model. Green and red colors represent higher and lower PDS scores, respectively. The samples are further categorized into two major groups from hierarchical clustering, as in <xref ref-type="fig" rid="pcbi-1003851-g001">Figure 1</xref>. The p-values of the clinical features such as ER, PG, P53, Grade, lymph node (LN) and dichotomized groups with relation to relapse status are calculated using Chi-square tests.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003851.g003" position="float" xlink:type="simple"/></fig>
+<p>To investigate the performance of the model, we used the PI value which is the logarithm of hazard ratio from the fitted Cox-PH model to dichotomize the samples, similar to others <xref ref-type="bibr" rid="pcbi.1003851-Fan1">[21]</xref> <xref ref-type="bibr" rid="pcbi.1003851-Sveen1">[30]</xref>. We divided the samples into higher and lower risk groups with a 3 to 1 ratio (3<sup>rd</sup> quartile in PI), in order to match the relapse versus non-relapse sample ratio in the training data. Samples with larger PDS scores are expected to have higher PI scores, and are more likely to have relapsed diseases. The same PI threshold was applied to dichotomize the training data set as well as multiple independent testing data sets. The performance of the genomic model was then evaluated by two approaches: (1) the Wilcoxon log rank test p-values of the Kaplan-Meier survival curves from the two risk groups in each data set, and (2) the AUCs of ROC curve based on binary classification.</p>
+</sec><sec id="s3c">
+<title>The Pathway-Based Genomic Model Is Predictive on Multiple Testing Data Sets</title>
+<p>Instead of combining all four data sets for meta-analysis, we kept them as individual data sets to validate the robustness of our model. As expected, the pathway-based genomic model is highly accurate at differentiating the risks of breast cancer relapse within the training data, with a Wilcoxon log rank p-value of 6.25e-12 (<xref ref-type="fig" rid="pcbi-1003851-g004">Figure 4A</xref>). The model yields very decent predictive results with the p-value of 1.52e-4 in testing set 1 and 3.91e-5 in testing set 2 (<xref ref-type="fig" rid="pcbi-1003851-g004">Figure 4B and 4C</xref>). The predictive performances are expected to drop in the testing data sets, since they have different patient populations and clinical characteristics from the training set (<xref ref-type="table" rid="pcbi-1003851-t001">Table 1</xref>). Impressively, the model gives a very significant p-value of 3.73e-4 for testing data set 3 (<xref ref-type="fig" rid="pcbi-1003851-g004">Figure 4D</xref>), which are all early stage lymph node negative tumors whose prognosis is very difficult to predict. Additionally, we evaluated the performance of models using binary classification. We used the relapse/non-relapse information in the data sets as truth measures, and the model's high vs. low risk classification as predictions. As shown in <xref ref-type="fig" rid="pcbi-1003851-g004">Figure 4E</xref>, the ROC curve in the training set gives an AUC value of 0.80, and AUCs of 0.73 (testing set 1, Pawitan data), 0.67 (testing set 2, Ivshina data), 0.65 (testing set 3, Desmedt data), consistent with the results in Kaplan-Meier curves (<xref ref-type="fig" rid="pcbi-1003851-g004">Figure 4A–D</xref>).</p>
+<fig id="pcbi-1003851-g004" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003851.g004</object-id><label>Figure 4</label><caption>
+<title>Prognosis performance of the pathway-based genomic model.</title>
+<p>A–D. A prognosis index (PI) is calculated from the training data set and applied to dichotomize samples in training (A) and testing data sets (B–D). Higher risk and lower risk groups determined by the PI cutoff are compared by Kaplan-Meier curves. P-values of the survival difference between the two groups are calculated using Wilcoxon log-rank tests and (+) denotes the censored observations in the study. E. ROC curves are generated using PI values as predictions in comparison to the relapse/non-relapse information. AUCs are listed as the insert.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003851.g004" position="float" xlink:type="simple"/></fig>
+<p>To examine the effect of total number of input pathways on model performance, we randomly kept 1/2, 1/4, 1/8 and 1/16 of all input KEGG and BioCarta pathways in the training dataset, and then generated the PDS Matrices for 18 simulations under each scenario. For each simulation, we built the model with the same workflow as in <xref ref-type="fig" rid="pcbi-1003851-g002">Figure 2</xref> and computed the Wilcoxon log-rank test p-value between the survival curves of the two risk groups, as well as the AUCs of the classification results. The boxplot in <xref ref-type="supplementary-material" rid="pcbi.1003851.s001">Figure S1</xref> shows a gradual decrease of AUCs due to the input pathways, in the order of 1/2&gt;1/4&gt;1/8&gt;1/16 pathway-based models. The difference between 1/2 and 1/4 pathways is significant (p-value&lt;0.05). All AUCs, however, are in the range between 0.69 and 0.81.</p>
+</sec><sec id="s3d">
+<title>The Pathway-Based Genomic Model Is Superior to the Gene-Based Genomic Model</title>
+<p>Our earlier results of selected pathway features vs. PAM 50 genes suggested that pathway-based features may be better than gene-based features. To validate this, we trained the four data sets individually and compared within the same data set the performance of pathway-based models and gene-based genomic models which do not have the PDS matrix generation step (<xref ref-type="fig" rid="pcbi-1003851-g002">Figure 2</xref>). In order to test the risk differentiation power of the model, the cutoff PI value in each data set was set to match the ratio of relapse vs. non-relapse patients in that particular set. The results of Kaplan-Meier survival curves and ROC plots based on classification all consistently show that pathway-based genomic models are superior to the gene-based models (<xref ref-type="fig" rid="pcbi-1003851-g005">Figure 5A–H</xref>). For example, in Miller data set the log-rank p-value is 6.25e-12 for the pathway-based model (<xref ref-type="fig" rid="pcbi-1003851-g005">Figure 5B</xref>), compared to that of 1.75e-9 for the gene-based model (<xref ref-type="fig" rid="pcbi-1003851-g005">Figure 5A</xref>). In the Desmedt data set, the p-value of the pathway-based model is even more significant than that of gene-based model (5.12e-36 vs. 8.84e-12, <xref ref-type="fig" rid="pcbi-1003851-g005">Figure 5H and 5G</xref>). Similarly, pathway-based genomic models have better ROC curves than gene-based genomic models (<xref ref-type="fig" rid="pcbi-1003851-g005">Figure 5I</xref>), with AUCs of 0.80 vs. 0.78 in Miller data, 0.85 vs. 0.77 in Pawitan data, 0.74 vs. 0.70 in Ivshina data, and 0.92 vs. 0.76 in Desmedt data. To estimate the statistical significance of comparisons among the pathway-based and gene-based models, we performed leave-one-out cross validation (LOOCV) simulations to compute the Wilcoxon log-rank test p-values and AUCs of ROC classification curves. The cross validation results show that statistically the pathway-based models perform better than the gene-based models (<xref ref-type="supplementary-material" rid="pcbi.1003851.s002">Figure S2</xref>, all t-test p-values&lt;0.001). These results are consistent with the observations from previous studies <xref ref-type="bibr" rid="pcbi.1003851-Teschendorff1">[12]</xref>,<xref ref-type="bibr" rid="pcbi.1003851-Lee1">[14]</xref>, and support the hypothesis that including higher-order secondary information yields better prognostic values.</p>
+<fig id="pcbi-1003851-g005" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003851.g005</object-id><label>Figure 5</label><caption>
+<title>Comparing the prognosis performance between the gene-based and the pathway-based genomic models.</title>
+<p>A–H. Gene-based and pathway-based genomic models are trained individually on the data sets. The PI is calculated to match the ratio of relapse to non-relapse on each data set and used to dichotomize the samples into higher risk and lower risk groups, similar to <xref ref-type="fig" rid="pcbi-1003851-g004">Figure 4</xref>. The associated p-values in Kaplan Meier curves are calculated using the Wilcoxon log-rank tests, as in <xref ref-type="fig" rid="pcbi-1003851-g004">Figure 4</xref>. Pathway-based genomic models consistently outperform alternative gene-based genomic models in all data sets. I. ROC curves are generated from PI based classification predictions in comparison to reported relapse information, similar to <xref ref-type="fig" rid="pcbi-1003851-g004">Figure 4</xref>. AUCs are listed as the insert. The ROC curves and AUC results also show that pathway-based models are better than gene-based models.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003851.g005" position="float" xlink:type="simple"/></fig>
+<p>NKI70 (Mammaprint) is one of the most commonly used model for breast cancer prognosis prediction, and it has been approved by FDA for commercially use in clinics. To demonstrate the potential clinical utilities of our model, we compared the NKI70 method with ours, and applied the NKI70 method to our training data set (Miller data). We first mapped the NKI70 gene signatures <xref ref-type="bibr" rid="pcbi.1003851-vantVeer1">[8]</xref> to the genes in the U133A array, then correlated the gene-expression profile with the good-prognosis/poor prognosis data from the NKI study and classified the samples into good and poor clusters as done previously <xref ref-type="bibr" rid="pcbi.1003851-vandeVijver1">[7]</xref>. The NKI70 test gives a Wilcoxon log-rank test p-value of 2.58e-3 for the survival analysis, in contrast to the p-value of 6.25e-12 obtained by our pathway-based model; it only yields an AUC of 0.62 for classification, in contrast to 0.80 from our model (<xref ref-type="supplementary-material" rid="pcbi.1003851.s003">Figure S3</xref>).</p>
+</sec><sec id="s3e">
+<title>The Combined Model with Pathway-Based Genomic and Clinical Features Is Superior to the Genomic or Clinical Model Alone</title>
+<p>Previous studies suggested that clinical information of breast cancers provides additional values to a genomic model that was built on lists of genes <xref ref-type="bibr" rid="pcbi.1003851-Fan1">[21]</xref>. To test if such merit of clinical information also applies to our genomic model of fifteen pathway features, we investigated the performances of the genomic, clinical and genomic-clinical combined models.</p>
+<p>Since the scales of PDS and clinical features vary significantly, we re- normalized PDS and clinical features independently to have the standard normal distribution, so that they are subject to the same selection criteria. The resulting clinical model is composed of four selected features: grade, tumor size, p53 and lymph node. This is not surprising, as they are also significant factors in the univariate Cox-PH models (<xref ref-type="table" rid="pcbi-1003851-t002">Table 2</xref> and <xref ref-type="fig" rid="pcbi-1003851-g001">Figure 1B–E</xref>). The combined model keeps ten of the fifteen pathways (<xref ref-type="table" rid="pcbi-1003851-t002">Table 2</xref>) and about 60% of genes that were selected by the genomic model. It also selects tumor size and lymph node status as additional features (<xref ref-type="table" rid="pcbi-1003851-t002">Table 2</xref>). This is expected given their highly significant p-values (1.92e-7 and 4.93e-8, respectively) in the univariate Cox-PH models (<xref ref-type="fig" rid="pcbi-1003851-g001">Figure 1B and 1E</xref>), as well as relatively large coefficients in the clinical model (0.27 and 0.36, respectively). Since only testing data set 2 has both tumor size and lymph node information, we used this data set and the testing data set to demonstrate the performances of genomic, clinical, and combined models.</p>
+<table-wrap id="pcbi-1003851-t002" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003851.t002</object-id><label>Table 2</label><caption>
+<title>Selected features in the models.</title>
+</caption><alternatives><graphic id="pcbi-1003851-t002-2" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003851.t002" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1">Features</td>
+<td align="left" rowspan="1" colspan="1">Coefficients</td>
+<td align="left" rowspan="1" colspan="1">Hazard Ratio</td>
+<td align="left" rowspan="1" colspan="1">p-values in univariate COX-PH model</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="4" align="left" rowspan="1">Pathway-based genomic model</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">KEGG_MELANOGENESIS<xref ref-type="table-fn" rid="nt101">*</xref></td>
+<td align="left" rowspan="1" colspan="1">1.075908</td>
+<td align="left" rowspan="1" colspan="1">2.93266</td>
+<td align="left" rowspan="1" colspan="1">0.00188</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">BIOCARTA_SRCRPTP_PATHWAY<xref ref-type="table-fn" rid="nt101">*</xref></td>
+<td align="left" rowspan="1" colspan="1">0.914698</td>
+<td align="left" rowspan="1" colspan="1">2.49602</td>
+<td align="left" rowspan="1" colspan="1">1.01e-7</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">BIOCARTA_AKAP13_PATHWAY<xref ref-type="table-fn" rid="nt101">*</xref></td>
+<td align="left" rowspan="1" colspan="1">0.828364</td>
+<td align="left" rowspan="1" colspan="1">2.28957</td>
+<td align="left" rowspan="1" colspan="1">0.00351</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">BIOCARTA_RARRXR_PATHWAY<xref ref-type="table-fn" rid="nt101">*</xref></td>
+<td align="left" rowspan="1" colspan="1">0.670795</td>
+<td align="left" rowspan="1" colspan="1">1.95579</td>
+<td align="left" rowspan="1" colspan="1">9.58e-6</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">BIOCARTA_VIP_PATHWAY<xref ref-type="table-fn" rid="nt101">*</xref></td>
+<td align="left" rowspan="1" colspan="1">0.635108</td>
+<td align="left" rowspan="1" colspan="1">1.88723</td>
+<td align="left" rowspan="1" colspan="1">2.15e-5</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">KEGG_FATTY_ACID_METABOLISM <xref ref-type="table-fn" rid="nt101">*</xref></td>
+<td align="left" rowspan="1" colspan="1">0.520653</td>
+<td align="left" rowspan="1" colspan="1">1.68313</td>
+<td align="left" rowspan="1" colspan="1">2.53e-6</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">BIOCARTA_G1_PATHWAY<xref ref-type="table-fn" rid="nt101">*</xref></td>
+<td align="left" rowspan="1" colspan="1">0.520446</td>
+<td align="left" rowspan="1" colspan="1">1.68278</td>
+<td align="left" rowspan="1" colspan="1">2.66e-6</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">KEGG_LINOLEIC_ACID_METABOLISM</td>
+<td align="left" rowspan="1" colspan="1">0.368615</td>
+<td align="left" rowspan="1" colspan="1">1.44573</td>
+<td align="left" rowspan="1" colspan="1">3.55e-4</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">KEGG_LYSOSOME</td>
+<td align="left" rowspan="1" colspan="1">0.300587</td>
+<td align="left" rowspan="1" colspan="1">1.35065</td>
+<td align="left" rowspan="1" colspan="1">2.2e-6</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">BIOCARTA_P53_PATHWAY<xref ref-type="table-fn" rid="nt101">*</xref></td>
+<td align="left" rowspan="1" colspan="1">0.239062</td>
+<td align="left" rowspan="1" colspan="1">1.27006</td>
+<td align="left" rowspan="1" colspan="1">8.74e-4</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">BIOCARTA_PYK2_PATHWAY<xref ref-type="table-fn" rid="nt101">*</xref></td>
+<td align="left" rowspan="1" colspan="1">0.158405</td>
+<td align="left" rowspan="1" colspan="1">1.17164</td>
+<td align="left" rowspan="1" colspan="1">1.29e-4</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">BIOCARTA_GABA_PATHWAY</td>
+<td align="left" rowspan="1" colspan="1">0.139229</td>
+<td align="left" rowspan="1" colspan="1">1.14939</td>
+<td align="left" rowspan="1" colspan="1">0.0162</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">BIOCARTA_FEEDER_PATHWAY</td>
+<td align="left" rowspan="1" colspan="1">0.110334</td>
+<td align="left" rowspan="1" colspan="1">1.11665</td>
+<td align="left" rowspan="1" colspan="1">0.0218</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">BIOCARTA_RNA_PATHWAY<xref ref-type="table-fn" rid="nt101">*</xref></td>
+<td align="left" rowspan="1" colspan="1">0.037978</td>
+<td align="left" rowspan="1" colspan="1">1.03871</td>
+<td align="left" rowspan="1" colspan="1">7.67e-5</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">BIOCARTA_IL5_PATHWAY</td>
+<td align="left" rowspan="1" colspan="1">0.012039</td>
+<td align="left" rowspan="1" colspan="1">1.01211</td>
+<td align="left" rowspan="1" colspan="1">0.00895</td>
+</tr>
+<tr>
+<td colspan="4" align="left" rowspan="1">Clinical model</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Lymph Node Status<xref ref-type="table-fn" rid="nt101">*</xref></td>
+<td align="left" rowspan="1" colspan="1">0.375874</td>
+<td align="left" rowspan="1" colspan="1">1.456264</td>
+<td align="left" rowspan="1" colspan="1">4.46e-7</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Tumor Size<xref ref-type="table-fn" rid="nt101">*</xref></td>
+<td align="left" rowspan="1" colspan="1">0.270893</td>
+<td align="left" rowspan="1" colspan="1">1.311135</td>
+<td align="left" rowspan="1" colspan="1">6.03e-7</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Grade</td>
+<td align="left" rowspan="1" colspan="1">0.126814</td>
+<td align="left" rowspan="1" colspan="1">1.135206</td>
+<td align="left" rowspan="1" colspan="1">4.92e-4</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">P53</td>
+<td align="left" rowspan="1" colspan="1">0.043517</td>
+<td align="left" rowspan="1" colspan="1">1.044478</td>
+<td align="left" rowspan="1" colspan="1">0.0171</td>
+</tr>
+</tbody>
+</table>
+</alternatives><table-wrap-foot><fn id="nt101"><label/><p>*: these pathways and clinical parameters are also selected by the combined model.</p></fn></table-wrap-foot></table-wrap>
+<p>The comparisons present the compelling advantage of combining clinical and genomic information in a model (<xref ref-type="fig" rid="pcbi-1003851-g006">Figure 6</xref>). As shown in the training data, selected clinical features are undoubtedly important: the Wilcoxon log rank test p-value of the clinical model is 2.21e-10 (<xref ref-type="fig" rid="pcbi-1003851-g006">Figure 6E</xref>), slightly less significant than the pathway-based genomic features by two orders of magnitude. Most importantly, the combined model is much better than either genomic model (p-value = 6.25e-12) or clinical model alone, with a p-value of 1.88e-24 (<xref ref-type="fig" rid="pcbi-1003851-g006">Figure 6C</xref>). This trend of significances is consistent in the testing set 2, with the p-values of 1.12e-7 in the combined model (<xref ref-type="fig" rid="pcbi-1003851-g006">Figure 6D</xref>), 1.52e-4 in the genomic model (<xref ref-type="fig" rid="pcbi-1003851-g006">Figure 6B</xref>), and 2.7e-3 in the clinical model (<xref ref-type="fig" rid="pcbi-1003851-g006">Figure 6F</xref>). Moreover, the ROC curve comparisons of these three models also show the same order of performances: combined model&gt;genomic model&gt;clinical model, with AUCs of 0.83, 0.80, and 0.74 in the training set, and 0.71, 0.68 and 0.65 in the testing set 2 (<xref ref-type="fig" rid="pcbi-1003851-g006">Figure 6G</xref>).</p>
+<fig id="pcbi-1003851-g006" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003851.g006</object-id><label>Figure 6</label><caption>
+<title>Comparing the prognosis performance from the pathway-based genomic model, the clinical model, and the combined model.</title>
+<p>Higher risk and lower risk group are determined by the same PI cutoff as in <xref ref-type="fig" rid="pcbi-1003851-g004">Figure 4</xref>. The p-values in Kaplan-Meier curves are calculated using the Wilcoxon log-rank tests. In both the training data set and testing data set 2 (Ivshina data) that have full clinical information, the combined models outperform the pathway-based genomic model, and the pathway-based genomic model outperform the clinical model.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003851.g006" position="float" xlink:type="simple"/></fig>
+<p>To demonstrate the statistical significance of comparisons among the pathway-based, clinical and combined model in the training set and the testing set 2, we performed leave-one-out cross validation (LOOCV) simulations to compute the Wilcoxon log-rank test p-values and AUCs of ROC classification curves. The cross validation results show that statistically the combined model performs better than the pathway-based model, and the pathway-based model performs better than the clinic model (<xref ref-type="supplementary-material" rid="pcbi.1003851.s004">Figure S4</xref>, all p-values&lt;0.001 between pathway-base/clinical models and combined models).</p>
+</sec><sec id="s3f">
+<title>Biological Relevance of Featured Pathways and Genes</title>
+<p>We expect that the consensus pathways selected both in our genomic model and combined model convey important cancer-related functions. To test this we examed the annotations of this subset of ten pathways (<xref ref-type="table" rid="pcbi-1003851-t002">Table 2</xref>). Interestingly, KEGG_MELANOGENESIS is selected as a feature, probably due to inclusion of many cancer relevant genes in this pathway: such as protein kinase genes PRKACB, PRKACG, PRKCB, PRKCA; phosphorylase kinase genes CALM1, CALM2, CALM3; G-protein related gene GNAQ, HRAS; mitogen-activated protein kinases MAPK1, MAPK3, MAP2K1; and other oncogenes like RAS <xref ref-type="bibr" rid="pcbi.1003851-Yong1">[31]</xref>,<xref ref-type="bibr" rid="pcbi.1003851-Tian1">[32]</xref>. Many of these genes have been shown to function in breast cancer progression <xref ref-type="bibr" rid="pcbi.1003851-Yong1">[31]</xref>. Impressively, multiple signaling pathways are selected, including BIOCARTA_P53_PATHWAY, BIOCARTA_SRCRPTP_PATHWAY, BIOCARTA_PYK2_PATHWAY, BIOCARTA_VIP_PATHWAY, BIOCARTA_RARRXR_PATHWAY, and BIOCARTA_AKAP13_PATHWAY. They are well-known to be associated with breast cancers prognosis <xref ref-type="bibr" rid="pcbi.1003851-Fu1">[33]</xref>–<xref ref-type="bibr" rid="pcbi.1003851-Driggers1">[39]</xref>. The best example is BIOCARTA_P53_PATHWAY, the dysregulation of p53 Signaling Pathway is well-documented, and the tumor-suppressor gene p53 has one of the highest mutation rates in breast cancer <xref ref-type="bibr" rid="pcbi.1003851-CancerGenomeAtlas1">[5]</xref>,<xref ref-type="bibr" rid="pcbi.1003851-Miller1">[19]</xref>.</p>
+<p>In addition, some pathways related to basic cell functions are selected as prognostic features. For example, G1_PATHWAY is selected, and the G1/S cell cycle checkpoint controls are well known to be dysfunctional in many cancers including breast cancer <xref ref-type="bibr" rid="pcbi.1003851-Guille1">[40]</xref>. FATTY_ACID_METABOLISM is also selected by the model, and many studies have showed that fatty acid metabolism is involved in breast cancer <xref ref-type="bibr" rid="pcbi.1003851-Puig1">[41]</xref>. In particular, Fatty acid synthase (FASN) is highly expressed in breast cancer with a poor prognosis compared to others <xref ref-type="bibr" rid="pcbi.1003851-Puig1">[41]</xref>. Interestingly, BIOCARTA_RNA_PATHWAY is also selected, largely due to its members TP53 and MAP3K14 that are closely related to breast cancer.</p>
+<p>A total of 265 genes are overlapped between the selected pathways of the genomic model and the combined model. <xref ref-type="table" rid="pcbi-1003851-t003">Table 3</xref> summarizes the top 30 genes that are involved in the selected pathways. They are ranked by weighted sum of both occurrences in selected pathways (counts) and weights measured by the hazard ratio of each pathway. Among them, many genes encode protein kinases that are well-known to be involved in breast cancers, such as PRKACB, PRKACG, MAPK1 and CALM1. Some other genes encode transcription factors that are well-known for their close relationship to cancer, such TP53, RB1, HRAS, RAF1, GRB2, E2F1, and SRC <xref ref-type="bibr" rid="pcbi.1003851-Tian1">[32]</xref>,<xref ref-type="bibr" rid="pcbi.1003851-Hagan1">[42]</xref>–<xref ref-type="bibr" rid="pcbi.1003851-Fan2">[44]</xref>. We therefore conclude that the selected pathways are prognostic features of significant cancer relevance.</p>
+<table-wrap id="pcbi-1003851-t003" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003851.t003</object-id><label>Table 3</label><caption>
+<title>Top 30 most frequent genes in the pathways of the genomic model and the combined model.</title>
+</caption><alternatives><graphic id="pcbi-1003851-t003-3" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003851.t003" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1">Gene ID</td>
+<td align="left" rowspan="1" colspan="1">Genomic Model Counts</td>
+<td align="left" rowspan="1" colspan="1">Combined Model Counts</td>
+<td align="left" rowspan="1" colspan="1">Weighted Genomic Model Counts*</td>
+<td align="left" rowspan="1" colspan="1">Weighted Combined Model Counts*</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">PRKACB</td>
+<td align="left" rowspan="1" colspan="1">3</td>
+<td align="left" rowspan="1" colspan="1">4</td>
+<td align="left" rowspan="1" colspan="1">7.109452</td>
+<td align="left" rowspan="1" colspan="1">4.46549683</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">PRKACG</td>
+<td align="left" rowspan="1" colspan="1">3</td>
+<td align="left" rowspan="1" colspan="1">4</td>
+<td align="left" rowspan="1" colspan="1">7.109452</td>
+<td align="left" rowspan="1" colspan="1">4.46549683</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">PRKCB</td>
+<td align="left" rowspan="1" colspan="1">3</td>
+<td align="left" rowspan="1" colspan="1">6</td>
+<td align="left" rowspan="1" colspan="1">6.600318</td>
+<td align="left" rowspan="1" colspan="1">6.54794229</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">PRKCA</td>
+<td align="left" rowspan="1" colspan="1">3</td>
+<td align="left" rowspan="1" colspan="1">6</td>
+<td align="left" rowspan="1" colspan="1">6.600318</td>
+<td align="left" rowspan="1" colspan="1">6.54794229</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">CALM1</td>
+<td align="left" rowspan="1" colspan="1">3</td>
+<td align="left" rowspan="1" colspan="1">6</td>
+<td align="left" rowspan="1" colspan="1">5.991523</td>
+<td align="left" rowspan="1" colspan="1">6.32738762</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">CALM2</td>
+<td align="left" rowspan="1" colspan="1">3</td>
+<td align="left" rowspan="1" colspan="1">6</td>
+<td align="left" rowspan="1" colspan="1">5.991523</td>
+<td align="left" rowspan="1" colspan="1">6.32738762</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">CALM3</td>
+<td align="left" rowspan="1" colspan="1">3</td>
+<td align="left" rowspan="1" colspan="1">6</td>
+<td align="left" rowspan="1" colspan="1">5.991523</td>
+<td align="left" rowspan="1" colspan="1">6.32738762</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">GNAQ</td>
+<td align="left" rowspan="1" colspan="1">3</td>
+<td align="left" rowspan="1" colspan="1">4</td>
+<td align="left" rowspan="1" colspan="1">5.991523</td>
+<td align="left" rowspan="1" colspan="1">4.26250968</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">SRC</td>
+<td align="left" rowspan="1" colspan="1">3</td>
+<td align="left" rowspan="1" colspan="1">5</td>
+<td align="left" rowspan="1" colspan="1">4.817049</td>
+<td align="left" rowspan="1" colspan="1">5.3291015</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">GSK3B</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">3</td>
+<td align="left" rowspan="1" colspan="1">4.615435</td>
+<td align="left" rowspan="1" colspan="1">3.23989145</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">CDC25A</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">4.178799</td>
+<td align="left" rowspan="1" colspan="1">2.25477095</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">CDK1</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">4.178799</td>
+<td align="left" rowspan="1" colspan="1">2.25477095</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">PRKAR2A</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">3</td>
+<td align="left" rowspan="1" colspan="1">4.176796</td>
+<td align="left" rowspan="1" colspan="1">3.26764027</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">PRKAR2B</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">3</td>
+<td align="left" rowspan="1" colspan="1">4.176796</td>
+<td align="left" rowspan="1" colspan="1">3.26764027</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">HRAS</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">4</td>
+<td align="left" rowspan="1" colspan="1">4.104297</td>
+<td align="left" rowspan="1" colspan="1">4.27393317</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">MAP2K1</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">4</td>
+<td align="left" rowspan="1" colspan="1">4.104297</td>
+<td align="left" rowspan="1" colspan="1">4.27393317</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">MAPK1</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">4</td>
+<td align="left" rowspan="1" colspan="1">4.104297</td>
+<td align="left" rowspan="1" colspan="1">4.27393317</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">MAPK3</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">4</td>
+<td align="left" rowspan="1" colspan="1">4.104297</td>
+<td align="left" rowspan="1" colspan="1">4.27393317</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">RAF1</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">4</td>
+<td align="left" rowspan="1" colspan="1">4.104297</td>
+<td align="left" rowspan="1" colspan="1">4.27393317</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">MAP2K2</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">4</td>
+<td align="left" rowspan="1" colspan="1">4.104297</td>
+<td align="left" rowspan="1" colspan="1">4.27393317</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">TP53</td>
+<td align="left" rowspan="1" colspan="1">3</td>
+<td align="left" rowspan="1" colspan="1">3</td>
+<td align="left" rowspan="1" colspan="1">3.991545</td>
+<td align="left" rowspan="1" colspan="1">3.03875447</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">GRB2</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">4</td>
+<td align="left" rowspan="1" colspan="1">3.667662</td>
+<td align="left" rowspan="1" colspan="1">4.32604023</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">CYCSP35</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">5</td>
+<td align="left" rowspan="1" colspan="1">3.058867</td>
+<td align="left" rowspan="1" colspan="1">5.12953106</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">PLCG1</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">4</td>
+<td align="left" rowspan="1" colspan="1">3.058867</td>
+<td align="left" rowspan="1" colspan="1">4.13411496</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">MAP3K1</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">3</td>
+<td align="left" rowspan="1" colspan="1">3.058867</td>
+<td align="left" rowspan="1" colspan="1">3.06465312</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">E2F1</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">2.952836</td>
+<td align="left" rowspan="1" colspan="1">2.0232666</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">RB1</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">2.952836</td>
+<td align="left" rowspan="1" colspan="1">2.0232666</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">CCND1</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">2.952836</td>
+<td align="left" rowspan="1" colspan="1">2.0232666</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">CDK4</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">2.952836</td>
+<td align="left" rowspan="1" colspan="1">2.0232666</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">CCNE1</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">2.952836</td>
+<td align="left" rowspan="1" colspan="1">2.0232666</td>
+</tr>
+</tbody>
+</table>
+</alternatives></table-wrap></sec></sec><sec id="s4">
+<title>Discussion</title>
+<p>The heterogeneity of cancers is being increasingly recognized, suggesting more personalized care decisions with treatment for individual patients are needed. As a result, prognosis prediction of breast cancers with high-throughput data has been a growing topic in recent years. Many statistical and machine learning methods have been developed to analyze various types of high-throughput cancer genomics data, by taking advantage of higher-order relationships among genes. The hypothesis is that the highly correlated gene-based markers often represent identical biological processes; therefore by including higher-order representative features, such as Gene Ontology sets, pathways and network modules, the prediction will be more stable <xref ref-type="bibr" rid="pcbi.1003851-Abraham1">[9]</xref>–<xref ref-type="bibr" rid="pcbi.1003851-Lee1">[14]</xref>,<xref ref-type="bibr" rid="pcbi.1003851-Goeman2">[45]</xref>. Our novel method of prognosis prediction presented in this study belongs to this class of methods. However, unlike some other methods where individual pathway information is lost due to summarization or transformation, the pathway features proposed in this study explicitly measure the degrees of pathway dysregulation for cancer recurrence. Comparing selected pathways and the PAM50 genes which were demonstrated to be prognostic <xref ref-type="bibr" rid="pcbi.1003851-Chia1">[20]</xref>, the PDS-based pathway approach has better correlation to breast cancer relapses. Moreover, when comparing gene-based with the pathway-based genomic models, where the only difference between them was the input matrix, pathway-based models uniformly performed better than gene-based models in all the data sets we tested. Our results are consistent with several other gene-set/pathway-based models <xref ref-type="bibr" rid="pcbi.1003851-Abraham1">[9]</xref>,<xref ref-type="bibr" rid="pcbi.1003851-Lee1">[14]</xref>, where different summarization metrics were used. It will be very interesting to compare the prediction results based on these different metrics in a follow-up study.</p>
+<p>To demonstrate the robustness in predicting differential risks of relapse from the pathway-based genomic model, we chose to train and test on independent study samples, rather than combining them together as a large data set <xref ref-type="bibr" rid="pcbi.1003851-Fan1">[21]</xref>,<xref ref-type="bibr" rid="pcbi.1003851-Fan3">[46]</xref>, which would diminish the effect of population heterogeneity. Despite population difference and much bigger testing data size relative to the training data size, the method still achieved good performance on all three testing data sets, including a data set of all early stage lymph node negative tumors where prognosis is particularly difficult to predict. Another merit of our method is that it enables combining the important clinical information with the pathway-based genomic information. Even though the clinical model by itself is the least predictive, compared to the genomic model and the combined model, it is nevertheless significant and informative, as shown by tumor size and lymph node status. The genomic model is better than clinical model alone. However, the combined model of clinical and genomic features performs the best. Our conclusions agree and extend the earlier work from Fan et al. <xref ref-type="bibr" rid="pcbi.1003851-Fan1">[21]</xref> who focused on prognosis prediction of all node-negative and systemically untreated breast cancer patients, since we include both node-negative and node-positive samples. The results of the genomic model (AUC = 0.80 and p-value = 6.25e-12 in training data, and AUC = 0.68 and p-value = 1.52e-4 in test data 2) and the combined model (AUC = 0.83 and p-value = 1.88e-24 in the training set, and AUC = 0.79 and p-value = 1.12e-7 in test data set 2) are better than what was recently reported by Vilinia S et al <xref ref-type="bibr" rid="pcbi.1003851-Volinia1">[47]</xref>. They obtained an AUC = 0.74 for the training set and 0.65 for the testing set, in a model that combined signatures of mRNA and microRNAs deriving from the TCGA IDC cohort sequencing data. This suggests the advantages of combining PDS based pathway score inputs with a Cox-PH model and LASSO penalization approach: even though the genomic data in our study are based on microarrays that have more noise and smaller sample sizes, they still yield better predictive results in comparison to the combined mRNA and microRNA sequencing signatures obtained from a larger sample size. It will be of great interest to apply our models to the TCGA breast cancer mRNA and microRNA sequencing data in the future.</p>
+<p>The pathways selected by the model show biological relevance to breast cancer prognosis. The fatty acid metabolism pathway is found to be crucial to maintain the cancer cell malignant phenotype, and higher expression of fatty acid synthase has been discovered as a common phenotype in breast cancer with a poorer prognosis <xref ref-type="bibr" rid="pcbi.1003851-Puig1">[41]</xref>; As another example, Src kinase activation by protein tyrosine phosphatase alpha (SRCRPTP_PATHWAY), has been discovered in invasive breast cancer with compelling evidences. Src inhibitors are being considered as potential therapy to treat invasive breast cancers, as inhibition of c-src was recently found to be involved in E2-induced stress which would finally result in apoptosis in breast cancer cells <xref ref-type="bibr" rid="pcbi.1003851-Fu1">[33]</xref>. Increasing evidence shows that vasoactive intestinal peptide (VIP) in BIOCARTA_VIP_PATHWAY is highly expressed in breast cancer cells along with its receptor <xref ref-type="bibr" rid="pcbi.1003851-Fu1">[33]</xref>, and VIP-targeted nanomedicine is under study as therapy for breast cancer <xref ref-type="bibr" rid="pcbi.1003851-Valdehita1">[34]</xref>. Pyk2 in BIOCARTA_PYK2_PATHWAY is linked to map kinases MAPK, which has wealthy records in breast cancer studies <xref ref-type="bibr" rid="pcbi.1003851-Lee2">[35]</xref>. RARRXR_PATHWAY is the RAR/RAR nuclear receptor complex that is co-activators to facilitate initiation of transcription in carcinoma cells <xref ref-type="bibr" rid="pcbi.1003851-Tao1">[37]</xref>. And BRX, the truncated form of Rho-Selective Guanine Exchange Factor AKAP13 in the BIOCARTA_AKAP13_PATHWAY, has been identified to function as an ER cofactor <xref ref-type="bibr" rid="pcbi.1003851-Driggers1">[39]</xref>.</p>
+<p>Although the workflow proposed in this study is generic and the pathway features are clearly significant, we should point out a few potential limitations of the model. First of all, the pathway-based model is trained and tested on gene expression data from the U133A platform. We suspect that direct application of the model to other platforms, such as RNA-Seq, is not desirable, and some additional re-processing work has to be done additionally. The reason is that data distributions maybe very different between various platforms. One notorious example is that biomarkers identified by high-throughput microarray platform often had poor correlations in qPCR platform. Thus we recommend that when researchers use the workflow in <xref ref-type="fig" rid="pcbi-1003851-g002">Figure 2</xref> on different data types, they may increase the predictive power by retraining the model with their own data. Another limit of our approach is that we only used the information from genes that compose the 403 pathways that we considered, thus some gene-level information is unavoidably lost. In our case, over 4500 genes were enlisted in the pathways, and among them over 3200 genes are probably expressed (averaged log 2 expression intensities &gt;7). On the other hand, the raw U133A array has results of over 14,000 genes within which over 10,000 genes are probably expressed. Therefore our model captures about 1/3 of the gene-level information overall. One can certainly use other curated gene sets, such as the MsigDB C2 gene sets, to increase the coverage of the genes by the pathways. However, from the sensitivity analysis that we have performed (<xref ref-type="supplementary-material" rid="pcbi.1003851.s001">Figure S1</xref>), we only observed a slight decrease of model performance based on AUCs, which are in the range of 0.69 and 0.81.</p>
+<p>In conclusion, we propose a novel pathway-based genomic model that measures the pathway-based deregulation score and shows significant prognosis values. This pathway-based genomic model performs better than the gene-based genomic model. Additionally, we found that combining the clinical information of lymph node status and tumor size improves the performance of the prognosis model. Many selected pathways in our study present values for breast cancer prognosis prediction, and they are also promising therapeutic targets for future investigations.</p>
+</sec><sec id="s5" sec-type="materials|methods">
+<title>Materials and Methods</title>
+<sec id="s5a">
+<title>Study Population</title>
+<p>We used four publicly available data sets of breast cancer samples from National Center for Biotechnology Information (NCBI) Gene Expression Omnibus (GEO) GSE4922 <xref ref-type="bibr" rid="pcbi.1003851-Ivshina1">[22]</xref>, GSE1456 <xref ref-type="bibr" rid="pcbi.1003851-Pawitan1">[23]</xref>, GSE3494 <xref ref-type="bibr" rid="pcbi.1003851-Miller1">[19]</xref> and GSE7390 <xref ref-type="bibr" rid="pcbi.1003851-Desmedt1">[24]</xref>. All four data sets are based on Affymetrix HG-U133A microarray platform, and have relapse-free survival information as well as some other clinical information, as shown in <xref ref-type="table" rid="pcbi-1003851-t001">Table 1</xref>. For data set GSE7390 <xref ref-type="bibr" rid="pcbi.1003851-Desmedt1">[24]</xref>, all patients are lymph node negative. The GSE3494 data set was used as the training set as it has more clinical information, and all others were used as testing data sets.</p>
+</sec><sec id="s5b">
+<title>Microarray Gene Expression Data Processing and Analysis</title>
+<p>We mapped original probe IDs to Gene IDs using R package <italic>biomaRt</italic> <xref ref-type="bibr" rid="pcbi.1003851-Kasprzyk1">[48]</xref>. In order to relate the probe ID to the Gene ID, we downloaded the array annotation file and used the RefSeq IDs as the intermediates to map to the Gene ID. When a gene has multiple probes, we computed the geometric mean of log2 transformed probe intensities as the gene expression. All the data sets were normalized independently between array using <italic>limma</italic> package <xref ref-type="bibr" rid="pcbi.1003851-Smyth1">[49]</xref>. To minimize batch effects across different data sets, we used the CONOR package with the Bayesian method <xref ref-type="bibr" rid="pcbi.1003851-Rudy1">[50]</xref>.</p>
+<p>We generated the PAM50 heatmap of the gene expression data and the correlation heatmap with hierarchical clustering, where Euclidean distance measure was employed. For the clinical factors, we correlated their associations with the relapse in the training data set with both Chi-square test and Wilcoxon log-rank test for survival curves.</p>
+</sec><sec id="s5c">
+<title>Prognostic Pathway-Based Classifier Selection</title>
+<p>The pathway information was obtained from the GSEA (<ext-link ext-link-type="uri" xlink:href="http://www.broadinstitute.org/gsea/" xlink:type="simple">http://www.broadinstitute.org/gsea/</ext-link>) curated gene sets that include a total of 403 pathways from Biocarta (<ext-link ext-link-type="uri" xlink:href="http://www.biocarta.com" xlink:type="simple">http://www.biocarta.com</ext-link>) <xref ref-type="bibr" rid="pcbi.1003851-Nishimura1">[51]</xref>and KEGG <xref ref-type="bibr" rid="pcbi.1003851-Kanehisa1">[52]</xref>. To perform gene sets analysis, we used R package <italic>Pathifier</italic> <xref ref-type="bibr" rid="pcbi.1003851-Drier1">[25]</xref>, an algorithm that transforms the information from the gene level to pathway level and infers pathway deregulation scores for each pathway within each sample. The pathway deregulation score (PDS) in each sample is a measure of degrees of the deviation of a specific pathway from the “normal status” located on the principle curve. The concept of principle curve was proposed by Hastie and Stuetzle <xref ref-type="bibr" rid="pcbi.1003851-Hastie1">[53]</xref> as a nonparametric nonlinear extension of the PCA (Principle Component Analysis) in which the assumptions of dependence in the data are avoided. A principle curve is a one-dimensional curve that is derived from the local average of p-dimensional points and goes through the cluster of p-dimensional principle components. It sensibly captures the information of variation in all the samples. Specifically, the single parameter <italic>λ</italic> varies tracing the whole data along the curve <xref ref-type="bibr" rid="pcbi.1003851-Hastie1">[53]</xref>. The curve <italic>f</italic>(<italic>λ</italic>) is defined to be a principal curve if <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003851.e001" xlink:type="simple"/></inline-formula> for arbitrary <italic>λ</italic>. The principle curve is built through iterations of smoothed procedure in the local average of data points. If one sample differs from others in one specific pathway, the distance to the curve is further and it leads to a higher PDS score and vice versa.</p>
+<p>In the model selection stage, we used Cox-Proportional Hazards (Cox-PH) model based on L1 – penalized (LASSO) estimation <xref ref-type="bibr" rid="pcbi.1003851-Tibshirani1">[27]</xref>–<xref ref-type="bibr" rid="pcbi.1003851-Goeman1">[29]</xref>, with the R package <italic>penalized</italic> <xref ref-type="bibr" rid="pcbi.1003851-Goeman1">[29]</xref>. With the input of both PDS score containing the gene sets information and survival information of time and relapse, a tuning parameter lambda was used to restrict the number of parameters in the model. The optimal lambda was selected after running 250 simulations through likelihood cross-validation. A prognostic genomic model was thus generated with specific pathways and coefficients. We then computed a Prognosis Index (PI) score which is the logarithm of hazard ratio. We divided the samples into two groups of higher risk and lower risk with a 3 to 1 ratio, based on the 3rd quartile of PI. We used this cutoff to reflect the relapse/non-relapse ratio in the training data set.</p>
+<p>We tested the above model in three other data sets. To do so we used the same PI cutoff above and separated samples into predicted high risk and low risk groups. We then used Kaplan-Meier curve together with Wilcoxon log rank test to evaluate the performance of our model. To generate the receiver operating characteristic (ROC) curves, PIs are used as predicted values in comparison to the “truth” values of relapse/non-relapse information. The confusion matrix with sensitivity and 1- specificity is calculated for each division in ROC curves and the areas under the curve (AUC) is shown along with the ROC plot.</p>
+</sec><sec id="s5d">
+<title>Combined Molecular and Clinical Model</title>
+<p>To determine whether the clinical factors improve the prognosis of genomic pathway-based model, we re-normalize the clinical factors and molecular PDS independently to ensure that each factor has the standard normal distribution. We then combined the normalized clinical and molecular factors into the LASSO penalized step and built the combined model using the optimized lambda through 250 simulations, similar to the construction of the genomic model as described earlier. The model performance comparisons were also done similarly to those of the genomic model.</p>
+</sec><sec id="s5e">
+<title>Survival Analysis</title>
+<p>We used survival analysis to compare the relapse-free-survival results in the training and testing data sets. Patients without these events during the study were considered censored. We used the Cox-PH model to associate the risk of relapse to selected pathway features and clinical features by L1- LASSO. The Cox model is a semi-parametric model that is widely used to analyze the survival data. The non-parametric portion comes from the fact that no assumptions are made about the form of the baseline hazard. However, it has the assumption that the log hazard ratios are constant over the time for each feature. Assume that we obtained <italic>p</italic> features to be related with breast cancer relapse for each patient <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003851.e002" xlink:type="simple"/></inline-formula>, Cox-PH model represents the relationship between the risk of relapse and <italic>X</italic> features as:<disp-formula><graphic xlink:href="info:doi/10.1371/journal.pcbi.1003851.e003" position="float" xlink:type="simple"/></disp-formula>Here <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003851.e004" xlink:type="simple"/></inline-formula> is the baseline hazard (instantaneous risk) which only depends on time. The ratio of hazard (HR) between two pathway or clinical features <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003851.e005" xlink:type="simple"/></inline-formula> and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003851.e006" xlink:type="simple"/></inline-formula> is:<disp-formula><graphic xlink:href="info:doi/10.1371/journal.pcbi.1003851.e007" position="float" xlink:type="simple"/></disp-formula>The relative hazard between any two features is constant over time and only depends on the differences of the values in features. The PI for each patient J's features is calculated as<disp-formula><graphic xlink:href="info:doi/10.1371/journal.pcbi.1003851.e008" position="float" xlink:type="simple"/></disp-formula>This risk factor can be easily transformed to hazard ratio for different features, assuming that we have a baseline feature. The weights <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003851.e009" xlink:type="simple"/></inline-formula> for different features were calculated from the training data set using the Cox-LASSO model.</p>
+<p>For the genomic, clinical and combined models, we used Kaplan Meier curves to present the prognosis performance in classified high risk and low risk groups. The data set was dichotomized into two groups, and the higher risk group is assumed to have higher hazard of relapse compared to the lower risk group. We used the Wilcoxon log-rank test to check the survival difference between these two groups. To find the significance of an individual factor's impact on relapse, we fit individual predictor with a univariate Cox-PH model. We then calculated the hazard ratio by computing the exponential of the coefficients in the Cox-PH model. All survival analysis was conducted using the R package <italic>Survival</italic> <xref ref-type="bibr" rid="pcbi.1003851-Li1">[54]</xref>.</p>
+</sec><sec id="s5f">
+<title>Sensitivity Analysis of Pathway-Based Models</title>
+<p>To examine the effect of input pathways on model performance, We randomly select 1/2, 1/4, 1/8 and 1/16 of all input KEGG and BioCarta pathways, then generated the PDS Matrices for 18 times under each case. For each simulation, we built the model with the workflow in <xref ref-type="fig" rid="pcbi-1003851-g002">Figure 2</xref> and computed the Wilcoxon log-rank test p-value between the survival curves of two risk groups, as well as the AUC of the classification results. We then used boxplots to demonstrate the differences of –log10 (p-values) and AUCs due to different total pathway counts.</p>
+<p>To estimate the statistical confidence of comparisons of each model, we used leave one out cross validation (LOOCV) to compute p-values and AUCs across all simulations. In the <italic>i</italic>th simulation (<italic>i</italic> = 1,…,total sample size of the data set), we deleted the <italic>i</italic>th patient sample, modified the PI threshold by the remaining sample ratio of recurrence to non-recurrence and finally calculated the Wilcoxon log-rank test p-value as well as the AUC of the classification results. We then used boxplots to demonstrate the comparisons between the pathway-based and the gene-based models, and among the genomic, clinical, and the combined models.</p>
+</sec><sec id="s5g">
+<title>Comparison to the NKI70 Model</title>
+<p>We tested the NKI70 method to our training data set (Miller data). We mapped the NKI70 gene signatures from to the genes in the U133A array. We correlated the gene-expression profile with the good-prognosis/poor prognosis data from the NKI study <xref ref-type="bibr" rid="pcbi.1003851-vantVeer1">[8]</xref>, and then classified the samples into good and poor clusters as done by others <xref ref-type="bibr" rid="pcbi.1003851-vandeVijver1">[7]</xref>. For consistency, we used the Wilcoxon log-rank test p-value from survival analysis and the AUC of the ROC classification to assess the results.</p>
+</sec></sec><sec id="s6">
+<title>Supporting Information</title>
+<supplementary-material id="pcbi.1003851.s001" mimetype="image/tiff" xlink:href="info:doi/10.1371/journal.pcbi.1003851.s001" position="float" xlink:type="simple"><label>Figure S1</label><caption>
+<p><bold>The effect of removing pathways on model performance (both P-values and AUCs).</bold> A fraction (1/2, 1/4, 1/8 and 1/16) of the initial 403 pathways are randomly selected to generate PDS matrices over 18 simulations, followed by the flowchart in <xref ref-type="fig" rid="pcbi-1003851-g002">Figure 2</xref>. Boxplots of AUCs from ROC curves are shown.</p>
+<p>(TIF)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1003851.s002" mimetype="image/tiff" xlink:href="info:doi/10.1371/journal.pcbi.1003851.s002" position="float" xlink:type="simple"><label>Figure S2</label><caption>
+<p><bold>Cross validation results to compare the pathway-based and gene-based models on the 4 data sets in </bold><xref ref-type="fig" rid="pcbi-1003851-g005"><bold>Figure 5</bold></xref><bold>.</bold> Leave-one-out cross validation (LOOCV) was performed to compute the Wilcoxon log-rank test p-values (A) and AUCs (B) across all simulations. All pairs have t-test p-values&lt;0.001.</p>
+<p>(TIF)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1003851.s003" mimetype="image/tiff" xlink:href="info:doi/10.1371/journal.pcbi.1003851.s003" position="float" xlink:type="simple"><label>Figure S3</label><caption>
+<p><bold>Comparison of ROC performance between the NKI70 method and our method on Miller dataset.</bold></p>
+<p>(TIF)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1003851.s004" mimetype="image/tiff" xlink:href="info:doi/10.1371/journal.pcbi.1003851.s004" position="float" xlink:type="simple"><label>Figure S4</label><caption>
+<p><bold>Cross validation results to compare the genomic, clinical, and combined models on the 2 data sets in </bold><xref ref-type="fig" rid="pcbi-1003851-g006"><bold>Figure 6</bold></xref><bold>.</bold> Leave-one-out cross validation (LOOCV) was performed to compute the Wilcoxon log-rank test p-values (A) and AUCs (B) across all simulations. All pairs have t-test p-values&lt;0.001.</p>
+<p>(TIF)</p>
+</caption></supplementary-material></sec></body>
+<back><ref-list>
+<title>References</title>
+<ref id="pcbi.1003851-Society1"><label>1</label>
+<mixed-citation publication-type="other" xlink:type="simple">Society AC (2013) Cancer Facts &amp; Figures 2013. Atlanta: American Cancer Society.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Carey1"><label>2</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Carey</surname><given-names>LA</given-names></name>, <name name-style="western"><surname>Perou</surname><given-names>CM</given-names></name>, <name name-style="western"><surname>Livasy</surname><given-names>CA</given-names></name>, <name name-style="western"><surname>Dressler</surname><given-names>LG</given-names></name>, <name name-style="western"><surname>Cowan</surname><given-names>D</given-names></name>, <etal>et al</etal>. (<year>2006</year>) <article-title>Race, breast cancer subtypes, and survival in the Carolina Breast Cancer Study</article-title>. <source>JAMA</source> <volume>295</volume>: <fpage>2492</fpage>–<lpage>2502</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-OBrien1"><label>3</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>O'Brien</surname><given-names>KM</given-names></name>, <name name-style="western"><surname>Cole</surname><given-names>SR</given-names></name>, <name name-style="western"><surname>Tse</surname><given-names>CK</given-names></name>, <name name-style="western"><surname>Perou</surname><given-names>CM</given-names></name>, <name name-style="western"><surname>Carey</surname><given-names>LA</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>Intrinsic breast tumor subtypes, race, and long-term survival in the Carolina Breast Cancer Study</article-title>. <source>Clin Cancer Res</source> <volume>16</volume>: <fpage>6100</fpage>–<lpage>6110</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Haque1"><label>4</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Haque</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Ahmed</surname><given-names>SA</given-names></name>, <name name-style="western"><surname>Inzhakova</surname><given-names>G</given-names></name>, <name name-style="western"><surname>Shi</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Avila</surname><given-names>C</given-names></name>, <etal>et al</etal>. (<year>2012</year>) <article-title>Impact of breast cancer subtypes and treatment on survival: an analysis spanning two decades</article-title>. <source>Cancer Epidemiol Biomarkers Prev</source> <volume>21</volume>: <fpage>1848</fpage>–<lpage>1855</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-CancerGenomeAtlas1"><label>5</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cancer Genome Atlas</surname><given-names>N</given-names></name> (<year>2012</year>) <article-title>Comprehensive molecular portraits of human breast tumours</article-title>. <source>Nature</source> <volume>490</volume>: <fpage>61</fpage>–<lpage>70</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Wang1"><label>6</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wang</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Klijn</surname><given-names>JG</given-names></name>, <name name-style="western"><surname>Zhang</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Sieuwerts</surname><given-names>AM</given-names></name>, <name name-style="western"><surname>Look</surname><given-names>MP</given-names></name>, <etal>et al</etal>. (<year>2005</year>) <article-title>Gene-expression profiles to predict distant metastasis of lymph-node-negative primary breast cancer</article-title>. <source>Lancet</source> <volume>365</volume>: <fpage>671</fpage>–<lpage>679</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-vandeVijver1"><label>7</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>van de Vijver</surname><given-names>MJ</given-names></name>, <name name-style="western"><surname>He</surname><given-names>YD</given-names></name>, <name name-style="western"><surname>van't Veer</surname><given-names>LJ</given-names></name>, <name name-style="western"><surname>Dai</surname><given-names>H</given-names></name>, <name name-style="western"><surname>Hart</surname><given-names>AA</given-names></name>, <etal>et al</etal>. (<year>2002</year>) <article-title>A gene-expression signature as a predictor of survival in breast cancer</article-title>. <source>N Engl J Med</source> <volume>347</volume>: <fpage>1999</fpage>–<lpage>2009</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-vantVeer1"><label>8</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>van 't Veer</surname><given-names>LJ</given-names></name>, <name name-style="western"><surname>Dai</surname><given-names>H</given-names></name>, <name name-style="western"><surname>van de Vijver</surname><given-names>MJ</given-names></name>, <name name-style="western"><surname>He</surname><given-names>YD</given-names></name>, <name name-style="western"><surname>Hart</surname><given-names>AA</given-names></name>, <etal>et al</etal>. (<year>2002</year>) <article-title>Gene expression profiling predicts clinical outcome of breast cancer</article-title>. <source>Nature</source> <volume>415</volume>: <fpage>530</fpage>–<lpage>536</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Abraham1"><label>9</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Abraham</surname><given-names>G</given-names></name>, <name name-style="western"><surname>Kowalczyk</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Loi</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Haviv</surname><given-names>I</given-names></name>, <name name-style="western"><surname>Zobel</surname><given-names>J</given-names></name> (<year>2010</year>) <article-title>Prediction of breast cancer prognosis using gene set statistics provides signature stability and biological context</article-title>. <source>BMC Bioinformatics</source> <volume>11</volume>: <fpage>277</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-vandenAkker1"><label>10</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>van den Akker</surname><given-names>EB</given-names></name>, <name name-style="western"><surname>Passtoors</surname><given-names>WM</given-names></name>, <name name-style="western"><surname>Jansen</surname><given-names>R</given-names></name>, <name name-style="western"><surname>van Zwet</surname><given-names>EW</given-names></name>, <name name-style="western"><surname>Goeman</surname><given-names>JJ</given-names></name>, <etal>et al</etal>. (<year>2013</year>) <article-title>Meta-analysis on blood transcriptomic studies identifies consistently coexpressed protein-protein interaction modules as robust markers of human aging</article-title>. <source>Aging Cell</source> <volume>13</volume>: <fpage>216</fpage>–<lpage>25</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1111/acel.12160" xlink:type="simple">10.1111/acel.12160</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Reyal1"><label>11</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Reyal</surname><given-names>F</given-names></name>, <name name-style="western"><surname>van Vliet</surname><given-names>MH</given-names></name>, <name name-style="western"><surname>Armstrong</surname><given-names>NJ</given-names></name>, <name name-style="western"><surname>Horlings</surname><given-names>HM</given-names></name>, <name name-style="western"><surname>de Visser</surname><given-names>KE</given-names></name>, <etal>et al</etal>. (<year>2008</year>) <article-title>A comprehensive analysis of prognostic signatures reveals the high predictive capacity of the proliferation, immune response and RNA splicing modules in breast cancer</article-title>. <source>Breast Cancer Res</source> <volume>10</volume>: <fpage>R93</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Teschendorff1"><label>12</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Teschendorff</surname><given-names>AE</given-names></name>, <name name-style="western"><surname>Gomez</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Arenas</surname><given-names>A</given-names></name>, <name name-style="western"><surname>El-Ashry</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Schmidt</surname><given-names>M</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>Improved prognostic classification of breast cancer defined by antagonistic activation patterns of immune response pathway modules</article-title>. <source>BMC Cancer</source> <volume>10</volume>: <fpage>604</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Ma1"><label>13</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ma</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Kosorok</surname><given-names>MR</given-names></name>, <name name-style="western"><surname>Huang</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Dai</surname><given-names>Y</given-names></name> (<year>2011</year>) <article-title>Incorporating higher-order representative features improves prediction in network-based cancer prognosis analysis</article-title>. <source>BMC Med Genomics</source> <volume>4</volume>: <fpage>5</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Lee1"><label>14</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lee</surname><given-names>E</given-names></name>, <name name-style="western"><surname>Chuang</surname><given-names>HY</given-names></name>, <name name-style="western"><surname>Kim</surname><given-names>JW</given-names></name>, <name name-style="western"><surname>Ideker</surname><given-names>T</given-names></name>, <name name-style="western"><surname>Lee</surname><given-names>D</given-names></name> (<year>2008</year>) <article-title>Inferring pathway activity toward precise disease classification</article-title>. <source>PLoS Comput Biol</source> <volume>4</volume>: <fpage>e1000217</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Efron1"><label>15</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Efron</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Tibshirani</surname><given-names>R</given-names></name> (<year>2007</year>) <article-title>On Testing the Significance of Sets of Genes</article-title>. <source>Annals of Applied Statistics</source> <volume>1</volume>: <fpage>107</fpage>–<lpage>129</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Subramanian1"><label>16</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Subramanian</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Tamayo</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Mootha</surname><given-names>VK</given-names></name>, <name name-style="western"><surname>Mukherjee</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Ebert</surname><given-names>BL</given-names></name>, <etal>et al</etal>. (<year>2005</year>) <article-title>Gene set enrichment analysis: a knowledge-based approach for interpreting genome-wide expression profiles</article-title>. <source>Proc Natl Acad Sci U S A</source> <volume>102</volume>: <fpage>15545</fpage>–<lpage>15550</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Bild1"><label>17</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bild</surname><given-names>AH</given-names></name>, <name name-style="western"><surname>Yao</surname><given-names>G</given-names></name>, <name name-style="western"><surname>Chang</surname><given-names>JT</given-names></name>, <name name-style="western"><surname>Wang</surname><given-names>Q</given-names></name>, <name name-style="western"><surname>Potti</surname><given-names>A</given-names></name>, <etal>et al</etal>. (<year>2006</year>) <article-title>Oncogenic pathway signatures in human cancers as a guide to targeted therapies</article-title>. <source>Nature</source> <volume>439</volume>: <fpage>353</fpage>–<lpage>357</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-vanVliet1"><label>18</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>van Vliet</surname><given-names>MH</given-names></name>, <name name-style="western"><surname>Horlings</surname><given-names>HM</given-names></name>, <name name-style="western"><surname>van de Vijver</surname><given-names>MJ</given-names></name>, <name name-style="western"><surname>Reinders</surname><given-names>MJ</given-names></name>, <name name-style="western"><surname>Wessels</surname><given-names>LF</given-names></name> (<year>2012</year>) <article-title>Integration of clinical and gene expression data has a synergetic effect on predicting breast cancer outcome</article-title>. <source>PLoS One</source> <volume>7</volume>: <fpage>e40358</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Miller1"><label>19</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Miller</surname><given-names>LD</given-names></name>, <name name-style="western"><surname>Smeds</surname><given-names>J</given-names></name>, <name name-style="western"><surname>George</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Vega</surname><given-names>VB</given-names></name>, <name name-style="western"><surname>Vergara</surname><given-names>L</given-names></name>, <etal>et al</etal>. (<year>2005</year>) <article-title>An expression signature for p53 status in human breast cancer predicts mutation status, transcriptional effects, and patient survival</article-title>. <source>Proc Natl Acad Sci U S A</source> <volume>102</volume>: <fpage>13550</fpage>–<lpage>13555</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Chia1"><label>20</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chia</surname><given-names>SK</given-names></name>, <name name-style="western"><surname>Bramwell</surname><given-names>VH</given-names></name>, <name name-style="western"><surname>Tu</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Shepherd</surname><given-names>LE</given-names></name>, <name name-style="western"><surname>Jiang</surname><given-names>S</given-names></name>, <etal>et al</etal>. (<year>2012</year>) <article-title>A 50-gene intrinsic subtype classifier for prognosis and prediction of benefit from adjuvant tamoxifen</article-title>. <source>Clin Cancer Res</source> <volume>18</volume>: <fpage>4465</fpage>–<lpage>4472</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Fan1"><label>21</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fan</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Prat</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Parker</surname><given-names>JS</given-names></name>, <name name-style="western"><surname>Liu</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Carey</surname><given-names>LA</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>Building prognostic models for breast cancer patients using clinical variables and hundreds of gene expression signatures</article-title>. <source>BMC Med Genomics</source> <volume>4</volume>: <fpage>3</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Ivshina1"><label>22</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ivshina</surname><given-names>AV</given-names></name>, <name name-style="western"><surname>George</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Senko</surname><given-names>O</given-names></name>, <name name-style="western"><surname>Mow</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Putti</surname><given-names>TC</given-names></name>, <etal>et al</etal>. (<year>2006</year>) <article-title>Genetic reclassification of histologic grade delineates new clinical subtypes of breast cancer</article-title>. <source>Cancer Res</source> <volume>66</volume>: <fpage>10292</fpage>–<lpage>10301</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Pawitan1"><label>23</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pawitan</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Bjohle</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Amler</surname><given-names>L</given-names></name>, <name name-style="western"><surname>Borg</surname><given-names>AL</given-names></name>, <name name-style="western"><surname>Egyhazi</surname><given-names>S</given-names></name>, <etal>et al</etal>. (<year>2005</year>) <article-title>Gene expression profiling spares early breast cancer patients from adjuvant therapy: derived and validated in two population-based cohorts</article-title>. <source>Breast Cancer Res</source> <volume>7</volume>: <fpage>R953</fpage>–<lpage>964</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Desmedt1"><label>24</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Desmedt</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Piette</surname><given-names>F</given-names></name>, <name name-style="western"><surname>Loi</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Wang</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Lallemand</surname><given-names>F</given-names></name>, <etal>et al</etal>. (<year>2007</year>) <article-title>Strong time dependence of the 76-gene prognostic signature for node-negative breast cancer patients in the TRANSBIG multicenter independent validation series</article-title>. <source>Clin Cancer Res</source> <volume>13</volume>: <fpage>3207</fpage>–<lpage>3214</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Drier1"><label>25</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Drier</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Sheffer</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Domany</surname><given-names>E</given-names></name> (<year>2013</year>) <article-title>Pathway-based personalized analysis of cancer</article-title>. <source>Proc Natl Acad Sci U S A</source> <volume>110</volume>: <fpage>6388</fpage>–<lpage>6393</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Gill1"><label>26</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gill</surname><given-names>RD</given-names></name> (<year>1992</year>) <article-title>Multistate life-tables and regression models</article-title>. <source>Math Popul Stud</source> <volume>3</volume>: <fpage>259</fpage>–<lpage>276</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Tibshirani1"><label>27</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Tibshirani</surname><given-names>R</given-names></name> (<year>1997</year>) <article-title>The lasso method for variable selection in the Cox model</article-title>. <source>Stat Med</source> <volume>16</volume>: <fpage>385</fpage>–<lpage>395</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Tibshirani2"><label>28</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Tibshirani</surname><given-names>R</given-names></name> (<year>2011</year>) <article-title>Regression shrinkage and selection via the lasso: a retrospective</article-title>. <source>Journal of the Royal Statistical Society Series B (Statistical Methodology)</source> <volume>73</volume>: <fpage>273</fpage>–<lpage>282</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Goeman1"><label>29</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Goeman</surname><given-names>JJ</given-names></name> (<year>2009</year>) <article-title>L1 penalized estimation in the Cox proportional hazards model</article-title>. <source>Biom J</source> <volume>52</volume>: <fpage>70</fpage>–<lpage>84</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Sveen1"><label>30</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Sveen</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Agesen</surname><given-names>TH</given-names></name>, <name name-style="western"><surname>Nesbakken</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Meling</surname><given-names>GI</given-names></name>, <name name-style="western"><surname>Rognum</surname><given-names>TO</given-names></name>, <etal>et al</etal>. (<year>2012</year>) <article-title>ColoGuidePro: a prognostic 7-gene expression signature for stage III colorectal cancer patients</article-title>. <source>Clin Cancer Res</source> <volume>18</volume>: <fpage>6001</fpage>–<lpage>6010</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Yong1"><label>31</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yong</surname><given-names>H-Y</given-names></name>, <name name-style="western"><surname>Hwang</surname><given-names>J-S</given-names></name>, <name name-style="western"><surname>Son</surname><given-names>H</given-names></name>, <name name-style="western"><surname>Park</surname><given-names>H-I</given-names></name>, <name name-style="western"><surname>Oh</surname><given-names>E-S</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>Identification of H-Ras-Specific Motif for the Activation of Invasive Signaling Program in Human Breast Epithelial Cells</article-title>. <source>Neoplasia (New York, NY)</source> <volume>13</volume>: <fpage>98</fpage>–<lpage>107</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Tian1"><label>32</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Tian</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Simon</surname><given-names>I</given-names></name>, <name name-style="western"><surname>Moreno</surname><given-names>V</given-names></name>, <name name-style="western"><surname>Roepman</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Tabernero</surname><given-names>J</given-names></name>, <etal>et al</etal>. (<year>2013</year>) <article-title>A combined oncogenic pathway signature of BRAF, KRAS and PI3KCA mutation improves colorectal cancer classification and cetuximab treatment prediction</article-title>. <source>Gut</source> <volume>62</volume>: <fpage>540</fpage>–<lpage>549</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Fu1"><label>33</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fu</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Maresh</surname><given-names>EL</given-names></name>, <name name-style="western"><surname>Helguera</surname><given-names>G</given-names></name>, <name name-style="western"><surname>Kiyohara</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Qin</surname><given-names>Y</given-names></name>, <etal>et al</etal>. (<year>2014</year>) <article-title>Rationale and pre-clinical efficacy of a novel anti-EMP2 antibody for the treatment of invasive breast cancer</article-title>. <source>Mol Cancer Ther</source> <volume>13</volume>: <fpage>902</fpage>–<lpage>15</lpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1158/1535-7163.MCT-13-0199" xlink:type="simple">10.1158/1535-7163.MCT-13-0199</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Valdehita1"><label>34</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Valdehita</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Bajo</surname><given-names>AM</given-names></name>, <name name-style="western"><surname>Fernández-Martínez</surname><given-names>AB</given-names></name>, <name name-style="western"><surname>Arenas</surname><given-names>MI</given-names></name>, <name name-style="western"><surname>Vacas</surname><given-names>E</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>Nuclear localization of vasoactive intestinal peptide (VIP) receptors in human breast cancer</article-title>. <source>Peptides</source> <volume>31</volume>: <fpage>2035</fpage>–<lpage>2045</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Lee2"><label>35</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lee</surname><given-names>KH</given-names></name>, <name name-style="western"><surname>Ho</surname><given-names>WY</given-names></name>, <name name-style="western"><surname>Wu</surname><given-names>SJ</given-names></name>, <name name-style="western"><surname>Omar</surname><given-names>HA</given-names></name>, <name name-style="western"><surname>Huang</surname><given-names>PJ</given-names></name>, <etal>et al</etal>. (<year>2014</year>) <article-title>Modulation of Cyclins, p53 and Mitogen-Activated Protein Kinases Signaling in Breast Cancer Cell Lines by 4-(3,4,5-Trimethoxyphenoxy)benzoic Acid</article-title>. <source>Int J Mol Sci</source> <volume>15</volume>: <fpage>743</fpage>–<lpage>757</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Pham1"><label>36</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pham</surname><given-names>TT</given-names></name>, <name name-style="western"><surname>Angus</surname><given-names>SP</given-names></name>, <name name-style="western"><surname>Johnson</surname><given-names>GL</given-names></name> (<year>2013</year>) <article-title>MAP3K1: Genomic Alterations in Cancer and Function in Promoting Cell Survival or Apoptosis</article-title>. <source>Genes &amp; cancer</source> <volume>4</volume>: <fpage>419</fpage>–<lpage>426</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Tao1"><label>37</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Tao</surname><given-names>MH</given-names></name>, <name name-style="western"><surname>Mason</surname><given-names>JB</given-names></name>, <name name-style="western"><surname>Marian</surname><given-names>C</given-names></name>, <name name-style="western"><surname>McCann</surname><given-names>SE</given-names></name>, <name name-style="western"><surname>Platek</surname><given-names>ME</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>Promoter methylation of E-cadherin, p16, and RAR-beta(2) genes in breast tumors and dietary intake of nutrients important in one-carbon metabolism</article-title>. <source>Nutr Cancer</source> <volume>63</volume>: <fpage>1143</fpage>–<lpage>1150</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Rubino1"><label>38</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rubino</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Driggers</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Arbit</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Kemp</surname><given-names>L</given-names></name>, <name name-style="western"><surname>Miller</surname><given-names>B</given-names></name>, <etal>et al</etal>. (<year>1998</year>) <article-title>Characterization of Brx, a novel Dbl family member that modulates estrogen receptor action</article-title>. <source>Oncogene</source> <volume>16</volume>: <fpage>2513</fpage>–<lpage>2526</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Driggers1"><label>39</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Driggers</surname><given-names>PH</given-names></name>, <name name-style="western"><surname>Segars</surname><given-names>JH</given-names></name>, <name name-style="western"><surname>Rubino</surname><given-names>DM</given-names></name> (<year>2001</year>) <article-title>The proto-oncoprotein Brx activates estrogen receptor beta by a p38 mitogen-activated protein kinase pathway</article-title>. <source>J Biol Chem</source> <volume>276</volume>: <fpage>46792</fpage>–<lpage>46797</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Guille1"><label>40</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Guille</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Chaffanet</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Birnbaum</surname><given-names>D</given-names></name> (<year>2013</year>) <article-title>Signaling pathway switch in breast cancer</article-title>. <source>Cancer cell international</source> <volume>13</volume>: <fpage>66</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Puig1"><label>41</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Puig</surname><given-names>T</given-names></name>, <name name-style="western"><surname>Vázquez-Martín</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Relat</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Pétriz</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Menéndez</surname><given-names>JA</given-names></name>, <etal>et al</etal>. (<year>2008</year>) <article-title>Fatty acid metabolism in breast cancer cells: differential inhibitory effects of epigallocatechin gallate (EGCG) and C75</article-title>. <source>Breast cancer research and treatment</source> <volume>109</volume>: <fpage>471</fpage>–<lpage>479</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Hagan1"><label>42</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hagan</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Al-Mulla</surname><given-names>F</given-names></name>, <name name-style="western"><surname>Mallon</surname><given-names>E</given-names></name>, <name name-style="western"><surname>Oien</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Ferrier</surname><given-names>R</given-names></name>, <etal>et al</etal>. (<year>2005</year>) <article-title>Reduction of Raf-1 kinase inhibitor protein expression correlates with breast cancer metastasis</article-title>. <source>Clinical cancer research: an official journal of the American Association for Cancer Research</source> <volume>11</volume>: <fpage>7392</fpage>–<lpage>7397</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Engelmann1"><label>43</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Engelmann</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Pützer</surname><given-names>BM</given-names></name> (<year>2012</year>) <article-title>The Dark Side of E2F1: In Transit beyond Apoptosis</article-title>. <source>Cancer Research</source> <volume>72</volume>: <fpage>571</fpage>–<lpage>575</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Fan2"><label>44</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fan</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Agboke</surname><given-names>FA</given-names></name>, <name name-style="western"><surname>McDaniel</surname><given-names>RE</given-names></name>, <name name-style="western"><surname>Sweeney</surname><given-names>EE</given-names></name>, <name name-style="western"><surname>Zou</surname><given-names>X</given-names></name>, <etal>et al</etal>. (<year>2014</year>) <article-title>Inhibition of c-Src blocks oestrogen-induced apoptosis and restores oestrogen-stimulated growth in long-term oestrogen-deprived breast cancer cells</article-title>. <source>Eur J Cancer</source> <volume>50</volume>: <fpage>457</fpage>–<lpage>468</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Goeman2"><label>45</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Goeman</surname><given-names>JJ</given-names></name>, <name name-style="western"><surname>Buhlmann</surname><given-names>P</given-names></name> (<year>2007</year>) <article-title>Analyzing gene expression data in terms of gene sets: methodological issues</article-title>. <source>Bioinformatics</source> <volume>23</volume>: <fpage>980</fpage>–<lpage>987</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Fan3"><label>46</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fan</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Oh</surname><given-names>DS</given-names></name>, <name name-style="western"><surname>Wessels</surname><given-names>L</given-names></name>, <name name-style="western"><surname>Weigelt</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Nuyten</surname><given-names>DS</given-names></name>, <etal>et al</etal>. (<year>2006</year>) <article-title>Concordance among gene-expression-based predictors for breast cancer</article-title>. <source>N Engl J Med</source> <volume>355</volume>: <fpage>560</fpage>–<lpage>569</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Volinia1"><label>47</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Volinia</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Croce</surname><given-names>CM</given-names></name> (<year>2013</year>) <article-title>Prognostic microRNA/mRNA signature from the integrated analysis of patients with invasive breast cancer</article-title>. <source>Proc Natl Acad Sci U S A</source> <volume>110</volume>: <fpage>7413</fpage>–<lpage>7417</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Kasprzyk1"><label>48</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kasprzyk</surname><given-names>A</given-names></name> (<year>2011</year>) <article-title>BioMart: driving a paradigm change in biological data management</article-title>. <source>Database (Oxford)</source> <volume>2011</volume>: <fpage>bar049</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Smyth1"><label>49</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Smyth</surname><given-names>GK</given-names></name> (<year>2004</year>) <article-title>Linear models and empirical bayes methods for assessing differential expression in microarray experiments</article-title>. <source>Stat Appl Genet Mol Biol</source> <volume>3</volume>: <fpage>Article3</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Rudy1"><label>50</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rudy</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Valafar</surname><given-names>F</given-names></name> (<year>2011</year>) <article-title>Empirical comparison of cross-platform normalization methods for gene expression data</article-title>. <source>Bmc Bioinformatics</source> <volume>12</volume>: <fpage>467</fpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/1471-2105-12-467" xlink:type="simple">10.1186/1471-2105-12-467</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Nishimura1"><label>51</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Nishimura</surname><given-names>D</given-names></name> (<year>2001</year>) <article-title>BioCarta</article-title>. <source>Biotech Software &amp; Internet Report</source> <volume>2</volume>: <fpage>4</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Kanehisa1"><label>52</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kanehisa</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Goto</surname><given-names>S</given-names></name> (<year>2000</year>) <article-title>KEGG: kyoto encyclopedia of genes and genomes</article-title>. <source>Nucleic Acids Res</source> <volume>28</volume>: <fpage>27</fpage>–<lpage>30</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Hastie1"><label>53</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hastie</surname><given-names>T</given-names></name>, <name name-style="western"><surname>Stuetzle</surname><given-names>W</given-names></name> (<year>1989</year>) <article-title>Principal Curves</article-title>. <source>Journal of the American Statistical Association</source> <volume>84</volume>: <fpage>502</fpage>–<lpage>516</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003851-Li1"><label>54</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Li</surname><given-names>JCA</given-names></name> (<year>2003</year>) <article-title>Modeling survival data: Extending the Cox model</article-title>. <source>Sociological Methods &amp; Research</source> <volume>32</volume>: <fpage>117</fpage>–<lpage>120</lpage>.</mixed-citation>
+</ref>
+</ref-list></back>
+</article>

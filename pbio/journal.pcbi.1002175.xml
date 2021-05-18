@@ -1,0 +1,743 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="3.0" xml:lang="EN">
+  <front>
+    <journal-meta><journal-id journal-id-type="publisher-id">plos</journal-id><journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id><journal-id journal-id-type="pmc">ploscomp</journal-id><!--===== Grouping journal title elements =====--><journal-title-group><journal-title>PLoS Computational Biology</journal-title></journal-title-group><issn pub-type="ppub">1553-734X</issn><issn pub-type="epub">1553-7358</issn><publisher>
+        <publisher-name>Public Library of Science</publisher-name>
+        <publisher-loc>San Francisco, USA</publisher-loc>
+      </publisher></journal-meta>
+    <article-meta><article-id pub-id-type="publisher-id">PCOMPBIOL-D-11-00129</article-id><article-id pub-id-type="doi">10.1371/journal.pcbi.1002175</article-id><article-categories>
+        <subj-group subj-group-type="heading">
+          <subject>Research Article</subject>
+        </subj-group>
+        <subj-group subj-group-type="Discipline-v2">
+          <subject>Biology</subject>
+          <subj-group>
+            <subject>Computational biology</subject>
+            <subj-group>
+              <subject>Genomics</subject>
+              <subj-group>
+                <subject>Structure prediction</subject>
+              </subj-group>
+            </subj-group>
+          </subj-group>
+        </subj-group>
+        <subj-group subj-group-type="Discipline">
+          <subject>Computational Biology</subject>
+        </subj-group>
+      </article-categories><title-group><article-title>Using Structure to Explore the Sequence Alignment Space of Remote Homologs</article-title><alt-title alt-title-type="running-head">Using Structure to Explore Alignment Space</alt-title></title-group><contrib-group>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Kuziemko</surname>
+            <given-names>Andrew</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+          <xref ref-type="aff" rid="aff2">
+            <sup>2</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Honig</surname>
+            <given-names>Barry</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+          <xref ref-type="aff" rid="aff2">
+            <sup>2</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Petrey</surname>
+            <given-names>Donald</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+          <xref ref-type="aff" rid="aff2">
+            <sup>2</sup>
+          </xref>
+          <xref ref-type="corresp" rid="cor1">
+            <sup>*</sup>
+          </xref>
+        </contrib>
+      </contrib-group><aff id="aff1"><label>1</label><addr-line>Howard Hughes Medical Institute, Department of Biochemistry and Molecular Biophysics, Columbia University, New York, New York, United States of America</addr-line>       </aff><aff id="aff2"><label>2</label><addr-line>Center for Computational Biology and Bioinformatics, Columbia University, New York, New York, United States of America</addr-line>       </aff><contrib-group>
+        <contrib contrib-type="editor" xlink:type="simple">
+          <name name-style="western">
+            <surname>Bourne</surname>
+            <given-names>Philip E.</given-names>
+          </name>
+          <role>Editor</role>
+          <xref ref-type="aff" rid="edit1"/>
+        </contrib>
+      </contrib-group><aff id="edit1">University of California San Diego, United States of America</aff><author-notes>
+        <corresp id="cor1">* E-mail: <email xlink:type="simple">dsp18@columbia.edu</email></corresp>
+        <fn fn-type="con">
+          <p>Conceived and designed the experiments: AK BH DP. Performed the experiments: AK. Analyzed the data: AK BH DP. Contributed reagents/materials/analysis tools: AK DP. Wrote the paper: AK BH DP.</p>
+        </fn>
+      <fn fn-type="conflict">
+        <p>The authors have declared that no competing interests exist.</p>
+      </fn></author-notes><pub-date pub-type="collection">
+        <month>10</month>
+        <year>2011</year>
+      </pub-date><pub-date pub-type="epub">
+        <day>6</day>
+        <month>10</month>
+        <year>2011</year>
+      </pub-date><volume>7</volume><issue>10</issue><elocation-id>e1002175</elocation-id><history>
+        <date date-type="received">
+          <day>1</day>
+          <month>2</month>
+          <year>2011</year>
+        </date>
+        <date date-type="accepted">
+          <day>14</day>
+          <month>7</month>
+          <year>2011</year>
+        </date>
+      </history><!--===== Grouping copyright info into permissions =====--><permissions><copyright-year>2011</copyright-year><copyright-holder>Kuziemko et al</copyright-holder><license><license-p>This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license></permissions><abstract>
+        <p>Protein structure modeling by homology requires an accurate sequence alignment between the query protein and its structural template. However, sequence alignment methods based on dynamic programming (DP) are typically unable to generate accurate alignments for remote sequence homologs, thus limiting the applicability of modeling methods. A central problem is that the alignment that is “optimal” in terms of the DP score does not necessarily correspond to the alignment that produces the most accurate structural model. That is, the correct alignment based on structural superposition will generally have a lower score than the optimal alignment obtained from sequence. Variations of the DP algorithm have been developed that generate alternative alignments that are “suboptimal” in terms of the DP score, but these still encounter difficulties in detecting the correct structural alignment. We present here a new alternative sequence alignment method that relies heavily on the structure of the template. By initially aligning the query sequence to individual fragments in secondary structure elements and combining high-scoring fragments that pass basic tests for “modelability”, we can generate accurate alignments within a small ensemble. Our results suggest that the set of sequences that can currently be modeled by homology can be greatly extended.</p>
+      </abstract><abstract abstract-type="summary">
+        <title>Author Summary</title>
+        <p>It has been suggested that, for nearly every protein sequence, there is already a protein with a similar structure in current protein structure databases. However, with poor or undetectable sequence relationships, it is expected that accurate alignments and models cannot be generated. Here we show that this is not the case, and that whenever structural relationship exists, there are usually local sequence relationships that can be used to generate an accurate alignment, no matter what the global sequence identity. However, this requires an alternative to the traditional dynamic programming algorithm and the consideration of a small ensemble of alignments. We present an algorithm, S4, and demonstrate that it is capable of generating accurate alignments in nearly all cases where a structural relationship exists between two proteins. Our results thus constitute an important advance in the full exploitation of the information in structural databases. That is, the expectation of an accurate alignment suggests that a meaningful model can be generated for nearly every sequence for which a suitable template exists.</p>
+      </abstract><funding-group><funding-statement>This research was funded through grants from NIH (<ext-link ext-link-type="uri" xlink:href="http://www.nih.gov" xlink:type="simple">www.nih.gov</ext-link>): GM008281 GM030518. The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement></funding-group><counts>
+        <page-count count="11"/>
+      </counts></article-meta>
+  </front>
+  <body>
+    <sec id="s1">
+      <title>Introduction</title>
+      <p>Most protein sequences do not have an experimentally determined structure and at least 40% do not even have a sequence homolog with a known structure <xref ref-type="bibr" rid="pcbi.1002175-Bork1">[1]</xref>. Nevertheless, the current Protein Data Bank (PDB) <xref ref-type="bibr" rid="pcbi.1002175-Berman1">[2]</xref> is thought to represent structure space nearly exhaustively <xref ref-type="bibr" rid="pcbi.1002175-Kihara1">[3]</xref>–<xref ref-type="bibr" rid="pcbi.1002175-Zhang2">[5]</xref>. Therefore, for most proteins, a structural homolog that can serve as a “template” for modeling at least part of its structure is likely to exist. However, the degree of sequence similarity will generally be too low to allow a template to be detected or for an accurate sequence alignment to be found <xref ref-type="bibr" rid="pcbi.1002175-Rost1">[6]</xref>. A central problem is that current alignment methods based on dynamic programming (DP) <xref ref-type="bibr" rid="pcbi.1002175-Waterman1">[7]</xref> generate the unique “optimal” alignment (the alignment producing the highest score based on a residue-residue similarity score and a gap penalty), while the “correct” alignment (producing the most accurate model) is not guaranteed to be optimal in terms of this score at low sequence identity ranges.</p>
+      <p>Numerous variations of both the residue-residue similarity score and gap penalty have been developed to address these issues. Individual residue-based scoring functions have been replaced with more complex profile-profile <xref ref-type="bibr" rid="pcbi.1002175-Edgar1">[8]</xref>–<xref ref-type="bibr" rid="pcbi.1002175-Tang1">[10]</xref> and environment-dependent methods <xref ref-type="bibr" rid="pcbi.1002175-Bowie1">[11]</xref>–<xref ref-type="bibr" rid="pcbi.1002175-Shi1">[13]</xref>. Recognizing that affine gap penalties typically over-penalize long gaps, several studies have described the probability of a gap as a function of its length or location in the structure with the goal of penalizing it appropriately <xref ref-type="bibr" rid="pcbi.1002175-Barton1">[14]</xref>–<xref ref-type="bibr" rid="pcbi.1002175-Goonesekere1">[19]</xref>. Threading methods <xref ref-type="bibr" rid="pcbi.1002175-Jones1">[20]</xref>, <xref ref-type="bibr" rid="pcbi.1002175-Panchenko1">[21]</xref> incorporate an energy term into the alignment procedure, but they face the drawback of not being compatible with the traditional DP algorithm <xref ref-type="bibr" rid="pcbi.1002175-Madej1">[22]</xref>.</p>
+      <p>Even with these more sophisticated approaches, there are still many issues that will confound the generation of an accurate alignment. Moreover, it is generally necessary to consider an ensemble of alternative alignments in order to produce an accurate model at low sequence identity ranges. Such ensembles are frequently called “suboptimal” since by necessity they have lower scores than the optimal alignment produced by DP. A variety of suboptimal sequence alignment schemes have been reported. Waterman <xref ref-type="bibr" rid="pcbi.1002175-Waterman2">[23]</xref> produced an ensemble of alternative alignments by changing the dynamic programming algorithm to return all alignments with scores within a small difference, δ, from that of the optimal alignment. However, the difference between the DP scores of the correct alignment and the optimal sequence alignment can be significant, especially for remote homologues. Increasing δ until it encompasses the correct alignment often produces an unmanageably large ensemble. Keeping δ small returns a more reasonable number, but the alignments tend to deviate negligibly from the optimal alignment.</p>
+      <p>Saqi and Sternberg <xref ref-type="bibr" rid="pcbi.1002175-Saqi1">[24]</xref> adapted this approach to return a more diverse ensemble by penalizing an alignment that is similar to one previously determined. John and Sali <xref ref-type="bibr" rid="pcbi.1002175-John1">[25]</xref> used genetic algorithm operators to splice and re-combine alignments in order to achieve the same goal. Chivian and Baker <xref ref-type="bibr" rid="pcbi.1002175-Chivian1">[26]</xref> produced alternative alignments by systematically varying the parameters in their optimal alignment method. Each alignment in their returned ensemble was therefore “optimal” (<italic>ie.</italic> highest-scoring) under a different set of conditions. One problem faced by all suboptimal methods is how to adequately sample the gigantic space of possibilities. Jaroszewski <italic>et al</italic> <xref ref-type="bibr" rid="pcbi.1002175-Jaroszewski1">[27]</xref> sought to explore the size of alignment space by examining pairs of small and medium-sized proteins (seven or fewer template secondary structures). Even though only “significantly different” alignments were enumerated by disallowing gaps in template secondary structures and ignoring alignment variations in loop regions, tens of millions of alternative alignments were required in some cases to generate the correct one.</p>
+      <p>We describe here a new method to generate suboptimal alignments, S4 (<bold>S</bold>ampling <bold>S</bold>hifts in <bold>S</bold>econdary <bold>S</bold>tructures), that takes an approach that is fundamentally different from the standard dynamic programming algorithm. In validation tests that we describe below, we show that S4 is highly effective at producing an accurate alignment within a set of 100 top-ranked alternatives and can almost always produce such an alignment within a set of 1000 alternative alignments. The utility of the S4 approach is most evident when the query/template sequence identities are low, but S4 also improves accuracy when the homology is clear. Our results are shown to constitute a significant improvement over DP-based alternative alignment methods, which we show is due to unique features of the algorithm, in particular to the effective use of the 3-dimensional structure of the template. The ability to generate a small set of alignments likely to contain the correct one suggests that S4 offers the possibility of significantly improving the accuracy of homology models, extending the number of sequences that can currently be modeled based on existing structures in the PDB.</p>
+    </sec>
+    <sec id="s2">
+      <title>Results</title>
+      <p>A flowchart for the S4 algorithm is shown in <xref ref-type="fig" rid="pcbi-1002175-g001">Figure 1</xref>. The method starts by searching the DP matrix for a set of short, ungapped alignments bounded by individual template secondary structure elements (SSEs). The rationale is that whatever sequence similarity may exist between query and template will more likely be in SSEs than loop regions. To generate a global alignment, pairs from a high-scoring set of “primary” fragments are connected with lower-scoring “secondary” fragments. This is a crucial feature of S4. In particular, we find that correctly aligned fragments can generally be identified within a very small set of primary fragments, significantly reducing the combinatorial complexity of the alignment problem. This characteristic, combined with the requirement that alignments containing the fragments be structurally plausible (see <xref ref-type="sec" rid="s4">Materials and Methods</xref>), improves accuracy in regions where the relationship between the query and template is less clear. The constraints also allow S4 to remove many alignments from consideration through the application of filters that identify geometrically or energetically unreasonable alignments based on knowledge of the template structure. Filters are also applied to check for redundancy in order to ensure that the alignments represent unique regions of alignment space. (A detailed description of each step of the S4 algorithm and the filters applied is provided in the <xref ref-type="sec" rid="s4">Materials and Methods</xref>.)</p>
+      <fig id="pcbi-1002175-g001" position="float">
+        <object-id pub-id-type="doi">10.1371/journal.pcbi.1002175.g001</object-id>
+        <label>Figure 1</label>
+        <caption>
+          <title>The S4 algorithm.</title>
+          <p>An alignment matrix is depicted with the template sequence and its SSEs on the horizontal axis and the query sequence on the vertical. (1) The algorithm begins by finding high-scoring primary fragments (black, see text for a definition of high-scoring), one primary fragment for each template SSE (not all shown here). (2) To fill in the gaps between primary fragments (such as PF1 and PF2), “secondary” fragments (gray) are identified. Secondary fragments are chosen based on different criteria: if they are in an SSE that neighbors a primary fragment and on a similar diagonal (Adjacent); if they satisfy alignment rules, such as filling a gap in a β-sheet, (Core, see <xref ref-type="sec" rid="s4">Materials and Methods</xref>); or simply being high-scoring (Score). (3) Starting at the N-terminus, the algorithm enumerates all connections to downstream primary and secondary fragments, resulting in a large ensemble of “fragment alignments”. Alignment rules are tested (see <xref ref-type="sec" rid="s4">Materials and Methods</xref>) whenever any fragment is added to an alignment. (4) The number of fragment alignments is reduced by filtering with thresholds based on statistical energies, core contacts and a redundancy measure (see <xref ref-type="sec" rid="s4">Materials and Methods</xref>). (5) To generate a final global alignment from a set of fragments (e.g. the green line, a boundary is defined around each remaining fragment alignment (dashed lines) within which the traditional a DP-based suboptimal algorithm is used to find an ensemble of full alignments. DFIRE then selects the alignment with the lowest/best energy to represent the set of fragments. (6) The process continues until it has returned the top N alignments, ranked by their residue similarity score.</p>
+        </caption>
+        <graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002175.g001" xlink:type="simple"/>
+      </fig>
+      <sec id="s2a">
+        <title>Improvement in alignment accuracy</title>
+        <p>S4 was tested on a set of target sequences from the CASP <xref ref-type="bibr" rid="pcbi.1002175-Moult1">[28]</xref> experiments (T0129–T0359). Potential templates for each target/query sequence were identified by structurally aligning the native structure to other proteins in the PDB using the ska program <xref ref-type="bibr" rid="pcbi.1002175-Petrey1">[29]</xref>, <xref ref-type="bibr" rid="pcbi.1002175-Yang1">[30]</xref>. Templates were then selected based on a set of criteria (see <xref ref-type="sec" rid="s4">Materials and Methods</xref>) to ensure that an alignment existed between the template and query structure that would produce a model with a TM-score <xref ref-type="bibr" rid="pcbi.1002175-Zhang3">[31]</xref> &gt;0.5, and also that S4 would not be run on sequences longer than 350 residues. The resulting test set contained 3,342 query sequence/template pairs and was heavily populated by those with low sequence identity: over 90% of all pairs had less than 20% identity and more than 60% had less than 10% identity. Overall, there were 137 queries with an average of 24 templates each that satisfied all the criteria. The queries represented at least 65 different SCOP folds (some targets are not classified in SCOP).</p>
+        <p>We define the correct alignment to be the structure-based sequence alignment between the query and template and evaluate the performance of S4 by comparing it to three DP-based approaches, HMAP <xref ref-type="bibr" rid="pcbi.1002175-Tang1">[10]</xref>, hhalign <xref ref-type="bibr" rid="pcbi.1002175-Sding1">[32]</xref>, and SP3 <xref ref-type="bibr" rid="pcbi.1002175-Zhou1">[33]</xref>. We also compare against a DP-based suboptimal alignment method <xref ref-type="bibr" rid="pcbi.1002175-Waterman2">[23]</xref>. We calculate the accuracy of an alignment in different ways. While an alignment algorithm should ideally be able to reproduce the structure-based sequence alignment residue-by-residue, several issues make this an overly sensitive measure of success. For example, consider a situation in which a template contains a helix with an axis that is at an angle with respect to that of the topologically equivalent helix in the query. Because of such differences between the template and query structures, no alignment in this region can be considered strictly correct even though there may be residues in the query and template that occupy roughly equivalent positions in space. The same difficulty occurs in the alignment of loop regions and also in β-strands, where β-bulges can affect alignment accuracy. However, it is clearly desirable for an alignment algorithm to pair residues in topologically equivalent SSEs, even if this pairing does not exactly correspond to the structure-based sequence alignment because of conformational differences.</p>
+        <p>Because of these issues, we use three measures that reflect a variety of characteristics. We first use a measure called “inter-alignment distance” (IAD). As described in <xref ref-type="sec" rid="s4">Materials and Methods</xref>, IAD corresponds to the average deviation of the position of residues in a given alignment from their correct position in the structure-based alignment. An IAD of 2 implies that, on average, each residue is shifted by two away from its position in the correct alignment, but also implies that topologically equivalent SSEs in the template and query have been correctly paired. Thus IAD is a measure of overall alignment quality. To calculate how well the correct alignment is generated on a residue-by-residue level, we use a measure that we call FDS2, adapted from the FD measure of Sauder <italic>et al.</italic> <xref ref-type="bibr" rid="pcbi.1002175-Sauder1">[34]</xref>. This measure is simply the percentage of residues that are within 2 from their position in the correct alignment, with the restriction that this is calculated only in regions corresponding to template SSEs. This restriction results in a more informative alignment metric, since measuring accuracy in the structurally equivalent—but conformationally dissimilar—loop regions of remote homologs imposes a correspondence of residues that is not necessarily meaningful. Finally, to determine whether the models produced from the alignments are actually useful, we directly compare models to the native structure using the TM-score <xref ref-type="bibr" rid="pcbi.1002175-Zhang3">[31]</xref>.</p>
+        <p><xref ref-type="fig" rid="pcbi-1002175-g002">Figure 2</xref> plots IAD for the best alignment generated by S4 and the single optimal alignment produced by HMAP, hhalign, and SP3. Points in the figure represent individual query/template pairs and are ordered according to the IAD of the optimal alignment generated by the different methods (i.e., moving left-to-right in the graph corresponds roughly with query/template pairs that range from higher to lower sequence identity). <xref ref-type="fig" rid="pcbi-1002175-g002">Figure 2</xref> illustrates a central difficulty with most DP-based alignment methods. That is, at the higher range of sequence identities, most methods produce a reasonably accurate alignment, but there appears to be a threshold beyond which an accurate alignment becomes impossible when considering a single, optimal alignment. On the other hand, S4 generates an alignment with improved accuracy at all sequence identity levels and the improvement is quite dramatic at lower identities when the optimal alignment is severely flawed.</p>
+        <fig id="pcbi-1002175-g002" position="float">
+          <object-id pub-id-type="doi">10.1371/journal.pcbi.1002175.g002</object-id>
+          <label>Figure 2</label>
+          <caption>
+            <title>Accuracy of S4 compared to optimal DP-based alignments.</title>
+            <p>For each query/template pair in our benchmark set, we plot two points: one representing the accuracy of the alignment generated by a DP-based method (black squares) and one representing the accuracy of the best alignment from an ensemble generated by S4 (green diamonds and red triangles). Accuracy is calculated using “inter-alignment distance” (IAD, y-axis) from the correct, structure-based sequence alignment and the query/template pairs are ordered along the x-axis according to IAD of the DP-based alignment (lower IAD implies higher accuracy). We take the best S4 alignment from two different ensembles and compare to three DP-based methods indicated in each graph (e.g., the graph labeled “hhalign vs. S4 1000” compares hhalign to the best S4 alignment from an ensemble of 1000 and “SP3 vs. S4 100” compares SP3 to the best S4 alignment from an ensemble of 100, etc.) The green diamonds represent query/template pairs where the template was identified by the DP-based method. Red triangles represent those pairs where the template could only be found by structural comparison to the native structure. Each graph contains data only for those query/template pairs for which an alignment could be generated by the DP-based method (3,343 pairs for HMAP, 2,952 for hhalign and 1,654 for SP3).</p>
+          </caption>
+          <graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002175.g002" xlink:type="simple"/>
+        </fig>
+        <p><xref ref-type="table" rid="pcbi-1002175-t001">Table 1</xref> presents this explicitly, showing IAD values for the different methods averaged over all pairs in several ranges of sequence identity. In the 0–5% identity range, the average IAD for the optimal alignment is over 13, implying that many topologically equivalent SSEs are not correctly paired. In contrast the average IAD for the best S4 alignment found in the top 1000 is 2.3, indicating that S4 is able to find good alignments even in the low identity regime. We note that this is true whether or not the template is identified as a significant hit by the individual methods (E-value&lt;10 for HMAP, E-value&lt;0.001 for hhalign and Z-score&lt;−0.5 for SP3). In <xref ref-type="fig" rid="pcbi-1002175-g002">Figure 2</xref>, the IAD's for the best S4 alignments are colored in light or dark green if the template for that case was identified as significant by the corresponding alignment method, and in red for those templates that are not considered significant.</p>
+        <table-wrap id="pcbi-1002175-t001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1002175.t001</object-id><label>Table 1</label><caption>
+            <title>Accuracy of S4 alignments at different levels of sequence identity.</title>
+          </caption><!--===== Grouping alternate versions of objects =====--><alternatives><graphic id="pcbi-1002175-t001-1" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002175.t001" xlink:type="simple"/><table>
+            <colgroup span="1">
+              <col align="left" span="1"/>
+              <col align="center" span="1"/>
+              <col align="center" span="1"/>
+              <col align="center" span="1"/>
+              <col align="center" span="1"/>
+            </colgroup>
+            <thead>
+              <tr>
+                <td align="left" colspan="1" rowspan="1"/>
+                <td align="left" colspan="1" rowspan="1"/>
+                <td align="left" colspan="3" rowspan="1">Average IAD</td>
+              </tr>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">ID Range (%)</td>
+                <td align="left" colspan="1" rowspan="1"># Pairs</td>
+                <td align="left" colspan="1" rowspan="1">S4 1000</td>
+                <td align="left" colspan="1" rowspan="1">S4 100</td>
+                <td align="left" colspan="1" rowspan="1">HMAP</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">0–5</td>
+                <td align="left" colspan="1" rowspan="1">567</td>
+                <td align="left" colspan="1" rowspan="1">2.3</td>
+                <td align="left" colspan="1" rowspan="1">4.3</td>
+                <td align="left" colspan="1" rowspan="1">13.6</td>
+              </tr>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">5–10</td>
+                <td align="left" colspan="1" rowspan="1">1460</td>
+                <td align="left" colspan="1" rowspan="1">1.5</td>
+                <td align="left" colspan="1" rowspan="1">2.3</td>
+                <td align="left" colspan="1" rowspan="1">6.2</td>
+              </tr>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">10–15</td>
+                <td align="left" colspan="1" rowspan="1">585</td>
+                <td align="left" colspan="1" rowspan="1">0.9</td>
+                <td align="left" colspan="1" rowspan="1">1.0</td>
+                <td align="left" colspan="1" rowspan="1">1.9</td>
+              </tr>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">15–20</td>
+                <td align="left" colspan="1" rowspan="1">275</td>
+                <td align="left" colspan="1" rowspan="1">0.5</td>
+                <td align="left" colspan="1" rowspan="1">0.5</td>
+                <td align="left" colspan="1" rowspan="1">0.7</td>
+              </tr>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">20–30</td>
+                <td align="left" colspan="1" rowspan="1">167</td>
+                <td align="left" colspan="1" rowspan="1">0.4</td>
+                <td align="left" colspan="1" rowspan="1">0.4</td>
+                <td align="left" colspan="1" rowspan="1">0.4</td>
+              </tr>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">30–50</td>
+                <td align="left" colspan="1" rowspan="1">84</td>
+                <td align="left" colspan="1" rowspan="1">0.3</td>
+                <td align="left" colspan="1" rowspan="1">0.3</td>
+                <td align="left" colspan="1" rowspan="1">0.3</td>
+              </tr>
+            </tbody>
+          </table><table>
+            <colgroup span="1">
+              <col align="left" span="1"/>
+              <col align="center" span="1"/>
+              <col align="center" span="1"/>
+              <col align="center" span="1"/>
+              <col align="center" span="1"/>
+            </colgroup>
+            <thead>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">ID Range (%)</td>
+                <td align="left" colspan="1" rowspan="1"># Pairs</td>
+                <td align="left" colspan="1" rowspan="1">S4 1000</td>
+                <td align="left" colspan="1" rowspan="1">S4 100</td>
+                <td align="left" colspan="1" rowspan="1">hhalign</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">0–5</td>
+                <td align="left" colspan="1" rowspan="1">507</td>
+                <td align="left" colspan="1" rowspan="1">2.2</td>
+                <td align="left" colspan="1" rowspan="1">4.1</td>
+                <td align="left" colspan="1" rowspan="1">11.8</td>
+              </tr>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">5–10</td>
+                <td align="left" colspan="1" rowspan="1">1273</td>
+                <td align="left" colspan="1" rowspan="1">1.5</td>
+                <td align="left" colspan="1" rowspan="1">2.1</td>
+                <td align="left" colspan="1" rowspan="1">6.2</td>
+              </tr>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">10–15</td>
+                <td align="left" colspan="1" rowspan="1">629</td>
+                <td align="left" colspan="1" rowspan="1">0.9</td>
+                <td align="left" colspan="1" rowspan="1">1.0</td>
+                <td align="left" colspan="1" rowspan="1">2.6</td>
+              </tr>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">15–20</td>
+                <td align="left" colspan="1" rowspan="1">314</td>
+                <td align="left" colspan="1" rowspan="1">0.5</td>
+                <td align="left" colspan="1" rowspan="1">0.5</td>
+                <td align="left" colspan="1" rowspan="1">1.2</td>
+              </tr>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">20–30</td>
+                <td align="left" colspan="1" rowspan="1">160</td>
+                <td align="left" colspan="1" rowspan="1">0.3</td>
+                <td align="left" colspan="1" rowspan="1">0.4</td>
+                <td align="left" colspan="1" rowspan="1">0.6</td>
+              </tr>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">30–50</td>
+                <td align="left" colspan="1" rowspan="1">76</td>
+                <td align="left" colspan="1" rowspan="1">0.3</td>
+                <td align="left" colspan="1" rowspan="1">0.3</td>
+                <td align="left" colspan="1" rowspan="1">0.3</td>
+              </tr>
+            </tbody>
+          </table><table>
+            <colgroup span="1">
+              <col align="left" span="1"/>
+              <col align="center" span="1"/>
+              <col align="center" span="1"/>
+              <col align="center" span="1"/>
+              <col align="center" span="1"/>
+            </colgroup>
+            <thead>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">ID Range (%)</td>
+                <td align="left" colspan="1" rowspan="1"># Pairs</td>
+                <td align="left" colspan="1" rowspan="1">S4 1000</td>
+                <td align="left" colspan="1" rowspan="1">S4 100</td>
+                <td align="left" colspan="1" rowspan="1">SP3</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">0–5</td>
+                <td align="left" colspan="1" rowspan="1">271</td>
+                <td align="left" colspan="1" rowspan="1">2.4</td>
+                <td align="left" colspan="1" rowspan="1">4.8</td>
+                <td align="left" colspan="1" rowspan="1">15.7</td>
+              </tr>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">5–10</td>
+                <td align="left" colspan="1" rowspan="1">701</td>
+                <td align="left" colspan="1" rowspan="1">1.5</td>
+                <td align="left" colspan="1" rowspan="1">2.3</td>
+                <td align="left" colspan="1" rowspan="1">7.0</td>
+              </tr>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">10–15</td>
+                <td align="left" colspan="1" rowspan="1">370</td>
+                <td align="left" colspan="1" rowspan="1">0.9</td>
+                <td align="left" colspan="1" rowspan="1">1.1</td>
+                <td align="left" colspan="1" rowspan="1">2.1</td>
+              </tr>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">15–20</td>
+                <td align="left" colspan="1" rowspan="1">183</td>
+                <td align="left" colspan="1" rowspan="1">0.5</td>
+                <td align="left" colspan="1" rowspan="1">0.5</td>
+                <td align="left" colspan="1" rowspan="1">0.6</td>
+              </tr>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">20–30</td>
+                <td align="left" colspan="1" rowspan="1">96</td>
+                <td align="left" colspan="1" rowspan="1">0.3</td>
+                <td align="left" colspan="1" rowspan="1">0.3</td>
+                <td align="left" colspan="1" rowspan="1">0.3</td>
+              </tr>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">30–50</td>
+                <td align="left" colspan="1" rowspan="1">36</td>
+                <td align="left" colspan="1" rowspan="1">0.3</td>
+                <td align="left" colspan="1" rowspan="1">0.3</td>
+                <td align="left" colspan="1" rowspan="1">0.3</td>
+              </tr>
+            </tbody>
+          </table></alternatives><table-wrap-foot>
+            <fn id="nt101">
+              <label/>
+              <p>The average accuracy of S4 alignments compared to the DP-based optimal alignment programs HMAP, hhalign, and SP3, measured using inter-alignment distance (IAD). The IAD for S4 is based on the best available in an ensemble of either 1,000 or 100 alignments.</p>
+            </fn>
+          </table-wrap-foot></table-wrap>
+        <p>Of course, there is an inherent difficulty in comparing the performance of a method which generates an ensemble to a method which generates a single alignment. In fact, the optimal alignment is the most accurate in many cases (about 30% of the time for hhalign and 21% for SP3) and is more often than not in the top 5% in a set of 1,000 alignments ranked by IAD. The average rank is ∼200 however, so there is generally room for improvement, and our main point here is not that the optimal alignment shouldn't be used, but that an ensemble is necessary to generate an alignment that makes an accurate model, especially for highly remote/query template pairs. In practice, the optimal alignment would always be part of such an ensemble.</p>
+        <p>To determine the extent to which the improvement in alignment quality of S4 relative to the optimal alignment is due simply to the increased number of alignments generated, we also compared S4 to two versions of the conventional DP-based Waterman algorithm for generating alternative alignments <xref ref-type="bibr" rid="pcbi.1002175-Waterman2">[23]</xref>, which have been implemented in-house as part of HMAP <xref ref-type="bibr" rid="pcbi.1002175-Tang1">[10]</xref>. <xref ref-type="fig" rid="pcbi-1002175-g003">Figure 3</xref> shows the results. As discussed above, while the IAD is effective at measuring overall alignment accuracy, it does not define the fraction of residues that are within a specified distance from their position in the correct alignment, and thus in <xref ref-type="fig" rid="pcbi-1002175-g003">Figure 3</xref> we use the FDS2 measure. We also compare to two versions of the DP-based suboptimal alignment algorithm. A problem with the strict implementation of this algorithm is that alternate alignments can be generated that are not meaningfully different because variations in loop regions produce essentially equivalent models. Thus, we also implemented a modified algorithm which ignores such alignment variations. In the Figure the standard implementation of the algorithm is referred to as “unconstrained Waterman” and the modified version is referred to as “constrained Waterman” (see <xref ref-type="sec" rid="s4">Materials and Methods</xref> and Figure S6 in <xref ref-type="supplementary-material" rid="pcbi.1002175.s001">Text S1</xref> for more detail).</p>
+        <fig id="pcbi-1002175-g003" position="float">
+          <object-id pub-id-type="doi">10.1371/journal.pcbi.1002175.g003</object-id>
+          <label>Figure 3</label>
+          <caption>
+            <title>Accuracy of S4 compared to other suboptimal alignment methods.</title>
+            <p>The graphs compare S4 to two versions of a DP-based suboptimal alignment method (see <xref ref-type="sec" rid="s4">Materials and Methods</xref>). In the first panel, the query/template pairs are grouped based on the FDS2 of the optimal alignment (0.0–0.1, 0.1–0.2 … 0.9–1.0), and in the second panel the groupings reflect the sequence identity of the pair (0–5%, 5–10% … 30–40%, 40–50%). In these graphs, a higher FDS2 correlates with a more accurate model. The data points represent the average FDS2 over all pairs in each group, plotted as a function of the IAD of the optimal alignment. The averages are based on the best alignment in the ensemble generated by each method for a query/template pair. For S4, we examined the different ensemble sizes given in the inset legend and used an ensemble of 1,000 for the Waterman based approaches.</p>
+          </caption>
+          <graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002175.g003" xlink:type="simple"/>
+        </fig>
+        <p><xref ref-type="fig" rid="pcbi-1002175-g003">Figure 3</xref> depicts the best FDS2 in the ensemble from each method as a function of the FDS2 of the optimal alignment. The vertical distance above the dotted line represents the improvement over optimal for the best alternative alignment generated. S4 is seen to significantly outperform the DP-based optimal and suboptimal algorithms, particularly when the optimal alignment is flawed. Even the best alignment out of the top 100 S4 alignments is significantly better than the best out of 1000 from the other DP-based methods. A further improvement in accuracy can be obtained by modeling the ensemble of 1000 alignments and using the pG score <xref ref-type="bibr" rid="pcbi.1002175-Mirkovic1">[35]</xref>, <xref ref-type="bibr" rid="pcbi.1002175-Sanchez1">[36]</xref>, to select the top 100 alignments based on the quality of the models they produce. <xref ref-type="fig" rid="pcbi-1002175-g003">Figure 3</xref> also shows the same data as a function of sequence identity. Again, we see that S4 offers a significant improvement compared to all DP-based methods for aligning remote homologs, even when using an ensemble one-tenth as large.</p>
+      </sec>
+      <sec id="s2b">
+        <title>Evaluation of models from S4 alignments</title>
+        <p>The results shown in <xref ref-type="fig" rid="pcbi-1002175-g002">Figure 2</xref> suggest that S4 generates alignments that are much improved over DP-based optimal methods, but since the IADs of the best S4 alignments are not 0 (i.e., the S4 alignments are not identical to the correct alignment) an important question is whether these improved alignments produce improved 3-dimensional models. To examine this, we made models from the optimal alignment, the correct, structure-based alignment and all alignments in each S4 ensemble for each pair in the data set. The models were then compared to the native structure using the TM-score <xref ref-type="bibr" rid="pcbi.1002175-Zhang3">[31]</xref> with results shown in <xref ref-type="fig" rid="pcbi-1002175-g004">Figure 4</xref>. It is evident from the figure that many of the models produced by S4 constitute a significant improvement over the one produced by dynamic programming. The improvement in model quality is most dramatic when the model produced by the optimal alignment is inaccurate. Notably, the best models from S4 are often quite close to the accuracy of the model from the correct alignment. The line labeled “S4 90%” represents the 90<sup>th</sup> percentile cutoff within each segment, indicating that S4 produced a model for 10% of the pairs that was as accurate as possible, i.e., as good as the model produced by the correct, structure-based alignment.</p>
+        <fig id="pcbi-1002175-g004" position="float">
+          <object-id pub-id-type="doi">10.1371/journal.pcbi.1002175.g004</object-id>
+          <label>Figure 4</label>
+          <caption>
+            <title>Comparison of model quality.</title>
+            <p>The data set was divided into nine groups based on the quality (as measured by TM-score) of the model from the optimal alignment. The divisions between groups were 0.0–0.2, 0.2–0.3, 0.3–0.4 … 0.9–1.0. The data points represent the average TM-score over all pairs in each group and are plotted as a function of the TM-score of the model based on the optimal alignment. “S4 1000” shows the average TM-score of the best models in the ensemble for each pair. “S4 100 (pG)” is the best out of the 100 models in the ensemble with the highest model evaluation scores. “S4 90%” depicts the 90<sup>th</sup> percentile of the best S4 models within each group. That is, for 10% of the pairs in each group, S4 produced ensembles in which the best model had a TM-score above the point on “S4 90%”.</p>
+          </caption>
+          <graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002175.g004" xlink:type="simple"/>
+        </fig>
+        <p><xref ref-type="fig" rid="pcbi-1002175-g004">Figure 4</xref> also shows that evaluating models can significantly reduce the number of models that need to be considered. “S4 100 (pG)” represents the best model of the 100 top-ranked models in the ensemble as determined by the pG score. The proximity of this line to “S4 1000” demonstrates that the pG score consistently ranks the best model from the entire ensemble in the top 100. It is important to be able to reduce the ensemble size in this manner without removing the best models, if further processing of the models is to be carried out (i.e., refinement, minimization, etc.)</p>
+      </sec>
+      <sec id="s2c">
+        <title>Sampling of alignment space</title>
+        <p>Since they use the same scoring function, the improved performance of S4 compared to HMAP seen in <xref ref-type="fig" rid="pcbi-1002175-g003">Figure 3</xref> is not due to better scoring, but to a broader sampling of alignment space while also avoiding regions that would produce poor alignments. The latter feature is achieved with the rules and filters discussed in <xref ref-type="sec" rid="s4">Materials and Methods</xref>. The ability of S4 to sample broadly should manifest itself in greater sampling at both the residue and whole alignment levels. Indeed, in <xref ref-type="fig" rid="pcbi-1002175-g005">Figure 5A</xref>, we see that S4 samples 3–5 times as many different query residues at each template position compared to the DP-based methods with the same ensemble size.</p>
+        <fig id="pcbi-1002175-g005" position="float">
+          <object-id pub-id-type="doi">10.1371/journal.pcbi.1002175.g005</object-id>
+          <label>Figure 5</label>
+          <caption>
+            <title>Diversity of alignments in the S4 ensemble.</title>
+            <p>In the top panel we plot on the vertical axis the number of unique query residues sampled at each template residue position in the S4, unconstrained Waterman and constrained Waterman alignment ensembles. For comparison, the optimal alignment sampling, which is necessarily at most one query position per template residue, is also shown. In the bottom panel, we instead plot the standard deviation of the IAD from the correct alignment for each ensemble. A greater standard deviation implies a larger portion of alignment space sampled. In both graphs, the data points represent averages for query/template pairs grouped on the horizontal axis according to sequence identity as in <xref ref-type="fig" rid="pcbi-1002175-g003">Figure 3</xref>. The different ensemble sizes used for S4 are shown in the inset legend and an ensemble size of 1,000 was used for the Waterman based approaches.</p>
+          </caption>
+          <graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002175.g005" xlink:type="simple"/>
+        </fig>
+        <p>In <xref ref-type="fig" rid="pcbi-1002175-g005">Figure 5B</xref>, we choose the structure-based sequence alignment as a reference and report the standard deviation of the IAD for all alignments in an ensemble. A low standard deviation indicates that many of the alignments in the ensemble are clustered around a particular distance from the correct alignment, which implies that they are in a narrow region of alignment space. For DP-based methods that region will be centered on the optimal alignment (see <xref ref-type="sec" rid="s3">Discussion</xref> below). We see in <xref ref-type="fig" rid="pcbi-1002175-g005">Figure 5B</xref> that S4 samples broadly within its small ensemble, but can still return an alignment closer to the correct alignment than the DP-based methods (see <xref ref-type="fig" rid="pcbi-1002175-g003">Figure 3</xref>).</p>
+      </sec>
+    </sec>
+    <sec id="s3">
+      <title>Discussion</title>
+      <p>A specific example illustrates S4's approach to sampling alignment space. <xref ref-type="fig" rid="pcbi-1002175-g006">Figure 6</xref> depicts a query/template structure alignment along with a listing of their respective SSEs and several ways they are matched in the alignments produced by different methods. The query is the N-terminal domain of KaiA, a non-enzyme circadian clock protein <xref ref-type="bibr" rid="pcbi.1002175-Williams1">[37]</xref> and the template is a single domain of DXR, which is a reductoisomerase <xref ref-type="bibr" rid="pcbi.1002175-MacSweeney1">[38]</xref>. The two proteins are classified as belonging to different folds in SCOP <xref ref-type="bibr" rid="pcbi.1002175-Murzin1">[39]</xref> and have less than 2% sequence identity.</p>
+      <fig id="pcbi-1002175-g006" position="float">
+        <object-id pub-id-type="doi">10.1371/journal.pcbi.1002175.g006</object-id>
+        <label>Figure 6</label>
+        <caption>
+          <title>Example of finding the correct alignment between remote homologs.</title>
+          <p>Top: The structural alignment of template DXR (purple) and query KaiA (yellow). Close structural homology clearly exists among the common portion (four structurally equivalent strands and four structurally equivalent helices, loops are not represented for clarity) despite a significant deletion of 4 SSEs in DXR (shown in grey). Bottom: With helices depicted as rectangles and strands as arrows, the top two rows depict the correct correspondence of template and query SSEs based on the structure-based sequence alignment. The next row shows the same correspondence is found in the best alignment in the S4 ensemble. The last line shows the optimal alignment which pairs four SSEs incorrectly.</p>
+        </caption>
+        <graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002175.g006" xlink:type="simple"/>
+      </fig>
+      <p>Despite being classified as different folds, these two proteins have high overall structural similarity and thus an alignment exists that would generate an accurate model. The structural alignment for this pair describes the proper correspondence of all eight of the SSEs that are common between the template and query, as depicted in the first two rows of the alignment shown in <xref ref-type="fig" rid="pcbi-1002175-g006">Figure 6</xref>. The DP-based optimal alignment contains major flaws and only four out of eight SSEs are in proper correspondence. The poor performance of the DP-based approach is due more to issues with sampling alignment space than to the absence of a detectible sequence relationship between the two proteins. In fact, the eight fragments representing correct correspondences of query and template SSEs were all highly-ranked fragments (or “primary” fragments, in the terminology used in <xref ref-type="sec" rid="s4">Materials and Methods</xref>) as determined by the same HMAP scoring function. All eight correct fragments were chosen within the first 58 (out of a total of 122 used). This local similarity between the profiles is consistent with other local structural, functional and sequence similarities that have recently been described between proteins that have significantly different topologies <xref ref-type="bibr" rid="pcbi.1002175-Petrey2">[40]</xref>, <xref ref-type="bibr" rid="pcbi.1002175-Friedberg1">[41]</xref>.</p>
+      <p>Overall, out of an ensemble of 1,000 alignments, the best alignment from S4 has an IAD of 0.56 and an FDS2 of 97% compared to the correct alignment and the TM-score of the corresponding model is 0.50 (compared to a TM-score of 0.57 for the model built from the structure-based alignment). In contrast, the best alignment generated by the constrained Waterman approach (out of an ensemble of 1,000) had an IAD of 15.4. That the improvement in accuracy of S4 is due to differences in sampling can clearly be seen by calculating average IADs of the alignments in each ensemble, but here with respect to the DP-based optimal alignment instead of the correct alignment. The constrained Waterman approach is “trapped” near this incorrect alignment (average IAD of 0.3 and standard deviation of 0.8). Even though S4 samples the DP-based optimal alignment, it also searches far from this alignment (average IAD of 9.4, standard deviation of 4.6, and a maximum IAD of 25.4).</p>
+      <p>Though we have shown that S4 generates accurate alignments to almost every template appropriate for a given query sequence, we have not discussed how to identify these templates or how to select the correct alignment from the S4 ensemble. However, the results shown in <xref ref-type="fig" rid="pcbi-1002175-g002">Figure 2</xref> suggest that S4 can be a valuable component of currently used homology modeling strategies. That is, based on the results in <xref ref-type="fig" rid="pcbi-1002175-g002">Figure 2</xref>, most of the appropriate templates that we identify based only on structural similarity to the native structure are recognized as significant using the scoring function associated with the different methods we compare to in the figure. But for a significant majority of these templates an accurate alignment is not possible, at least considering a single alignment generated based on the techniques and information used in the different alignment strategies. This severely limits the number of templates which can be considered useful even if they are recognized.</p>
+      <p>By building models from templates selected by other methods, but based on alignments generated by S4, these templates can be exploited assuming an accurate model evaluation procedure can be applied. There is a wide array of such tools that range from measures of the suitability for residues to be in a given environment (e.g., Verify3D <xref ref-type="bibr" rid="pcbi.1002175-Eisenberg1">[42]</xref>), to statistical potentials such as D-FIRE, Prosa, or Anolea <xref ref-type="bibr" rid="pcbi.1002175-Melo1">[43]</xref>, to all-atom molecular dynamic simulations to estimate the thermodynamic stability of the model (GROMOS <xref ref-type="bibr" rid="pcbi.1002175-Scott1">[44]</xref>). The choice of the best method of evaluation is a complicated one and goes beyond the scope of the current paper where we have focused on S4 as an alignment tool. Nevertheless, for a third of the cases used in our benchmarking, the model with the lowest pG score differs negligibly from the best possible model available from the ensemble (i.e., the best model and the model selected based on pG have TM-scores with respect to the native structure that are within 0.05 of each other). Further, it has been shown that construction of 3D models followed by evaluation using a statistical potential can be used to distinguish true from false homologs when the sequence relationship is ambiguous <xref ref-type="bibr" rid="pcbi.1002175-Mirkovic1">[35]</xref>, <xref ref-type="bibr" rid="pcbi.1002175-Lee1">[45]</xref>. These results suggest that more accurate alignments obtained using S4 should significantly expand the number of good templates and models that can be found.</p>
+      <p>Since S4 produces accurate alignments in nearly every case where there is a structural similarity that leads to an accurate model, this suggests that, using a model-building and evaluation procedure, templates with scores that are outside the range of what is usually considered significant for a particular method could also be identified. Using the widely used tool PSI-BLAST as an example, about half of the templates in our data set were identified as significant (where we define this loosely as E-value&lt;10). As shown in <xref ref-type="table" rid="pcbi-1002175-t002">Table 2</xref>, in these cases S4 can generate more accurate alignments, in terms of the FDS2 score, than PSI-BLAST. Even for those templates with E-values that are not typically considered useful, (10<sup>−3</sup>&lt;E-value&lt;10), S4 is able to find an alignment that is more than twice as accurate and S4's performance decreases only slightly among the pairs that are not detected at all by PSI-BLAST, which comprise over half the benchmark set. The results shown in <xref ref-type="fig" rid="pcbi-1002175-g002">Figure 2</xref> indicate that the same conclusion holds no matter what the method used to identify templates. Moreover, preliminary work using a protocol in which templates are selected by PSI-BLAST, models are built from every alignment in the S4 ensemble and evaluated using the pG score as well as other criteria suggests that good templates in this E-value range can be identified with high precision.</p>
+      <table-wrap id="pcbi-1002175-t002" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1002175.t002</object-id><label>Table 2</label><caption>
+          <title>Accuracy of S4 alignments for templates identified by PSI-BLAST.</title>
+        </caption><!--===== Grouping alternate versions of objects =====--><alternatives><graphic id="pcbi-1002175-t002-2" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002175.t002" xlink:type="simple"/><table>
+          <colgroup span="1">
+            <col align="left" span="1"/>
+            <col align="center" span="1"/>
+            <col align="center" span="1"/>
+            <col align="center" span="1"/>
+            <col align="center" span="1"/>
+          </colgroup>
+          <thead>
+            <tr>
+              <td align="left" colspan="1" rowspan="1">Psi-Blast E-value</td>
+              <td align="left" colspan="1" rowspan="1"># Pairs</td>
+              <td align="left" colspan="1" rowspan="1">S4 FDS2 (1000)</td>
+              <td align="left" colspan="1" rowspan="1">S4 FDS2 (100)</td>
+              <td align="left" colspan="1" rowspan="1">Psi FDS2</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td align="left" colspan="1" rowspan="1">EV&lt;10<sup>−6</sup></td>
+              <td align="left" colspan="1" rowspan="1">902</td>
+              <td align="left" colspan="1" rowspan="1">95.6</td>
+              <td align="left" colspan="1" rowspan="1">94.9</td>
+              <td align="left" colspan="1" rowspan="1">83.4</td>
+            </tr>
+            <tr>
+              <td align="left" colspan="1" rowspan="1">10<sup>−6</sup>&lt;EV&lt;10<sup>−3</sup></td>
+              <td align="left" colspan="1" rowspan="1">164</td>
+              <td align="left" colspan="1" rowspan="1">92.1</td>
+              <td align="left" colspan="1" rowspan="1">91.4</td>
+              <td align="left" colspan="1" rowspan="1">62.1</td>
+            </tr>
+            <tr>
+              <td align="left" colspan="1" rowspan="1">10<sup>−3</sup>&lt;EV&lt;10</td>
+              <td align="left" colspan="1" rowspan="1">316</td>
+              <td align="left" colspan="1" rowspan="1">88.8</td>
+              <td align="left" colspan="1" rowspan="1">86.1</td>
+              <td align="left" colspan="1" rowspan="1">41.9</td>
+            </tr>
+            <tr>
+              <td align="left" colspan="1" rowspan="1">No Hit</td>
+              <td align="left" colspan="1" rowspan="1">1516</td>
+              <td align="left" colspan="1" rowspan="1">82.0</td>
+              <td align="left" colspan="1" rowspan="1">76.0</td>
+              <td align="left" colspan="1" rowspan="1">N/A</td>
+            </tr>
+          </tbody>
+        </table></alternatives><table-wrap-foot>
+          <fn id="nt102">
+            <label/>
+            <p>Alignment pairs have been separated into three regions: clear homology (E-value&lt;10<sup>−6</sup>), intermediate homology (10<sup>−6</sup>&lt;E-value&lt;10<sup>−3</sup>), remote homology (10<sup>−3</sup>&lt;E-value&lt;10) and undetectable homology (template not among PSI-BLAST hits). A default maximum E-value of 10 was used in PSI-BLAST for all queries.</p>
+          </fn>
+        </table-wrap-foot></table-wrap>
+      <p>As shown in <xref ref-type="fig" rid="pcbi-1002175-g005">Figure 5</xref>, the primary difference between S4 and other alternative alignment methods is the manner in which alignment space is sampled. The central advantages of S4's sampling are that it generates enough diversity in a small ensemble so that an accurate alignment can be found, while limiting on the number of <italic>potential</italic> alignments that need to be considered (&lt;10 million, see <xref ref-type="sec" rid="s4">Materials and Methods</xref>). In contrast, as we show in <xref ref-type="fig" rid="pcbi-1002175-g005">Figure 5</xref>, DP-based sampling is highly local as a result of the fact that DP must start with the optimal alignment and successively generate other alignments in decreasing order based on their score. This severely limits the amount of diversity that DP can generate and ensures that many more alignments would need to be considered (at least an order of magnitude and probably more) when the DP-based score of the correct alignment is far below the optimal. A low DP score is typical for the more remote query/template pairs in our benchmark, since the correct alignments frequently require long indels or pass through low-scoring regions of the alignment matrix. Moreover, application of the structural filters used in S4 would not be expected to improve this situation, since there are a significant number of inaccurate alignments that satisfy them. Again, if an inaccurate alignment had a better DP-score than the correct one, a DP-generated ensemble would be trapped near the inaccurate alignment, since the local sampling inherent in DP would most likely not generate alignments that break the structural rules in any manageably small ensemble.</p>
+      <p>While it appears necessary based on our results to consider an ensemble in order to find an accurate alignment, especially for highly remote query/template pairs, it is clearly beneficial to consider the optimal alignment as well. As mentioned above, the optimal DP-based alignment is the most accurate (in an ensemble of 1,000 S4 alignments and 1 optimal alignment) for many cases in our benchmark. An ideal modeling strategy then would be one that generates an ensemble with S4 and simply adds the optimal alignment to that ensemble. This would ensure the best of both worlds at no increase in computational cost. Moreover, the S4 algorithm is independent of the underlying residue-residue scoring function employed. In the work presented here, the HMAP profile-profile method was used, but the sampling algorithm used in S4 could be applied using any other residue-residue scoring function. Therefore, if better scoring functions are available or if future improvements to scoring functions are able to raise the level of accuracy of the DP-based methods, S4's performance using the same scoring function should improve as well.</p>
+    </sec>
+    <sec id="s4" sec-type="materials|methods">
+      <title>Materials and Methods</title>
+      <sec id="s4a">
+        <title>Template selection for CASP targets</title>
+        <p>To ensure that a meaningful structural relationship existed within each query-template pair, several conditions had to be met: the protein structural distance (PSD) <xref ref-type="bibr" rid="pcbi.1002175-Yang1">[30]</xref> could not exceed 0.5 (corresponding to a maximum RMSD of about 3.5 for aligned residues); the sequence identity was less than 50%; and a “pseudomodel” of the query built from the aligned portions of the structure-based sequence alignment and based on the template structure had to return a TM-score <xref ref-type="bibr" rid="pcbi.1002175-Zhang3">[31]</xref> of 0.5 or greater compared against the native query structure. A pseudomodel is constructed by simply copying the backbone and Cβ coordinates of residues of the template mutated to the identities of the corresponding aligned residues in the query (unaligned residues are ignored). Also, proteins of length greater than 350 residues were not considered.</p>
+      </sec>
+      <sec id="s4b">
+        <title>The Algorithm: Overview</title>
+        <p>The S4 algorithm is described in detail as six distinct steps below (see <xref ref-type="fig" rid="pcbi-1002175-g001">Figure 1</xref>). Overall, the algorithm proceeds as follows. First (Steps 1 and 2), short ungapped alignments entirely contained within template SSEs (‘fragments’) are selected based on their sequence similarity. Any subset of fragments, listed in order from N to C-terminal, is called a fragment alignment. Next, all fragment alignments are exhaustively enumerated and those that pass a set of tests for modelability, are kept. Finally, full alignments are constructed from fragment alignments. The full alignments are generated by standard dynamic programming with the constraint that DP is applied only to a narrow region (defined by the fragment alignment) of the dynamic program scoring matrix. A schematic for the different steps in the process is provided in <xref ref-type="supplementary-material" rid="pcbi.1002175.s001">Text S1</xref>, as well as a specific example of how S4's features lead to improvement in alignment accuracy.</p>
+      </sec>
+      <sec id="s4c">
+        <title>The Algorithm: Selecting fragments (Steps 1 &amp; 2)</title>
+        <p><xref ref-type="fig" rid="pcbi-1002175-g001">Figure 1</xref> shows a typical dynamic programming matrix with the query sequence along the side and the template sequence across the top. The template sequence is divided into columns defined by its secondary structure elements. A diagonal contained within a column is called a “fragment” and represents a short ungapped alignment of the query to the template. To start the alignment process, an initial set of “primary” fragments is identified as follows. Each fragment, (i.e., every diagonal in every column) is examined and is assigned a score that is the sum of the residue-residue similarity scores of the aligned pairs it contains, calculated based on the HMAP profiles <xref ref-type="bibr" rid="pcbi.1002175-Tang1">[10]</xref> of the query and template sequences. The fragment from each column with the highest normalized score (the profile-profile similarity score divided by the length of the fragment) is added to the list of “primary” fragments (black lines in <xref ref-type="fig" rid="pcbi-1002175-g001">Figure 1</xref>). Each template SSE will contain at least one primary fragment and usually several more.</p>
+        <p>For every pair of primary fragments we perform a recursive search for “secondary” fragments to fill in the region defined by the fragment endpoints, if the fragments in the pair belong to non-consecutive SSE's. For example, in <xref ref-type="fig" rid="pcbi-1002175-g001">Figure 1</xref>, two secondary fragments are chosen for being the highest scoring secondary fragments that are “adjacent” to primary fragments PF1 and PF2. (An adjacent fragment is contained in a neighboring SSE and is on the same or a nearby diagonal.) Other secondary fragments are chosen by virtue of being high-scoring or in an SSE whose deletion would violate the alignment rules (e.g., a missing core strand, see below). This process continues recursively until all regions between non-consecutive fragments in a subset have been filled in.</p>
+      </sec>
+      <sec id="s4d">
+        <title>The Algorithm: Enumerating and filtering fragment alignments (Steps 3 &amp; 4)</title>
+        <p>A “fragment alignment” is a list of primary and secondary fragments in order from the N- to C-terminal. Two examples of fragment alignments are shown in <xref ref-type="fig" rid="pcbi-1002175-g001">Figure 1</xref>. The blue and green lines both run alongside two sets of four fragments (which share a common first member). Fragment alignments such as these will later form the basis of full alignments (constructed as described below).</p>
+        <p>To enumerate all fragment alignments that are possible within our set of primary and secondary fragments, S4 connects the N-terminal pseudo-fragment (upper-left corner of <xref ref-type="fig" rid="pcbi-1002175-g001">Figure 1</xref>) to each downstream primary fragment (either directly or through subalignments of secondary fragments). This process progresses to further downstream fragments until all alignments end at the C-terminal pseudo-fragment (bottom-right corner of <xref ref-type="fig" rid="pcbi-1002175-g001">Figure 1</xref>). After any connection between fragments is established, a set of conditions must be met. If an alignment fails to meet one of these conditions (described below), the enumeration process is discontinued for that particular path. (Some conditions can only be applied when the C-terminal is reached). It should be noted the total number of possible fragment alignment can be calculated efficiently during the above process, and no new fragments are added once the total number of alignments exceeds 10 million.</p>
+        <p>Some of the conditions placed on the fragment alignments are based on the properties of the alignment itself and some are based on a 3D pseudomodel of the query. The conditions that must be met by each alignment/pseudomodel are described below.</p>
+        <sec id="s4d1">
+          <title>Coverage</title>
+          <p>We are generally not interested in alignments that pair a very small number of residues. Therefore, only alignments where at least 10% of the shorter sequence is aligned to the longer sequence are retained. Since only residues in template SSEs are counted in S4, this fraction represents a somewhat more stringent condition than it may initially appear.</p>
+        </sec>
+        <sec id="s4d2">
+          <title>Contact order</title>
+          <p>The contact order for a pseudomodel is defined here as the percentage of its SSE residues containing a Cβ that lie within 6 Å of a Cβ from a residue in a different SSE. Fragment alignments whose pseudomodel has a contact order less than 65% of the contact order of the template itself are rejected. Making this threshold relative to the template ensures that “extended” models will not be built from compact templates, but if the template itself is extended, the fragment alignment will be kept.</p>
+        </sec>
+        <sec id="s4d3">
+          <title>Strand pairing</title>
+          <p>There are two general rules governing the pairing of beta strands in homologous proteins that can be used to eliminate bad alignments <xref ref-type="bibr" rid="pcbi.1002175-Russell1">[46]</xref>. First, a paired strand in the template should not become unpaired in the pseudomodel. Second, a core strand of a beta sheet in the template must be present in the pseudomodel if its flanking strands are also present.</p>
+        </sec>
+        <sec id="s4d4">
+          <title>Loop lengths</title>
+          <p>Fragment alignments are rejected if there are not enough residues in the query sequence to bridge the gap between any two consecutive fragments. Specifically, we require that <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1002175.e001" xlink:type="simple"/></inline-formula>, where <italic>q<sub>p</sub></italic> is the index of the final query residue of the fragment preceding the loop, <italic>q<sub>f</sub></italic> is the index of the first query residue following the loop, and <italic>d(t<sub>p</sub>,t<sub>f</sub>)</italic> denotes the distance (in Å) in the template structure between the Cα atoms of the corresponding, aligned template residues. The factor of 3.3 was determined by studying a database of several hundred high-resolution structures. It was found that the maximum distance traversed by a loop was slightly over 3 Å per residue, which is, of course, roughly the length of an individual amino acid. We used 3.3 to allow our algorithm to keep some pairings of fragments whose loops would normally be ‘over-stretched’. The purpose of this test was to remove only blatantly incorrect fragment pairings, since loops that were just slightly over-stretched may be fixed when the full alignment is found in Step 5 of the algorithm.</p>
+          <p>Three other measures were used to eliminate fragment alignments that are unlikely to produce good models: preserved core contacts, query energy and template energy. For an alignment to be kept, all three of these measures must have values above the 66<sup>th</sup>-percentile for each measure and one of these three values had to surpass the 90<sup>th</sup>-percentile. The measures are listed below.</p>
+        </sec>
+        <sec id="s4d5">
+          <title>Preserved core contacts</title>
+          <p>A pair of residues in the template structure is considered to be a “core contact” if both residues in the pair are buried (60% or more of surface area inaccessible), have Cβ atoms that are within 6 Å and are both hydrophobic (amino acid types A, F, G, I, L, M, P, W, V and Y). An alignment that pairs hydrophobic amino acids in the query with template residues in a core contact generates a preserved core contact.</p>
+        </sec>
+        <sec id="s4d6">
+          <title>Statistical energy of query residues</title>
+          <p>An implementation of the DFIRE statistical potential <xref ref-type="bibr" rid="pcbi.1002175-Zhou2">[47]</xref> was used to evaluate each alignment by using the Cα and Cβ positions from the template with the amino acid types of the aligned query residues. A pseudo-Cβ position was determined for glycine residues based on the Cβ position in alanine. Loop residues were not considered in either the calculation of the statistical energies or in the tabulation of inter-residue distances that form the basis of this implementation of DFIRE. The value thus calculated, called the “query energy”, and the proximity of the alignment to the correct one were found to be highly correlated.</p>
+        </sec>
+        <sec id="s4d7">
+          <title>Statistical energy of template residues</title>
+          <p>Similar to evaluating the statistical energy of the pseudomodel, we calculate the energy of the aligned template residues, which we term the “template energy”. In effect, this is the statistical energy of a subset of the template structure. The motivation behind this is to recognize and remove alignments that pair query residues with an unlikely combination of template SSEs. This often occurs when the template is a multi-domain protein and the query is a single domain. In these cases, the highest scoring fragments may be spread out across multiple domains of the template in a structure that does not resemble a folded protein. Calculating this value allows S4 to eliminate many such alignments.</p>
+        </sec>
+        <sec id="s4d8">
+          <title>Redundancy</title>
+          <p>Lastly, to decrease the redundancy of the final results, some fragment alignments are removed due to their similarity to a higher-scoring alignment. Fragment alignments are considered redundant if they align to the same template SSEs, have all corresponding fragments within a shift of 4, and an inter-alignment distance (IAD) of less than 1.</p>
+        </sec>
+      </sec>
+      <sec id="s4e">
+        <title>The Algorithm: Constructing full alignments (Steps 5 &amp; 6)</title>
+        <p>At this stage in the process, no full alignments in the normal sense have been created, only fragment alignments, which are just lists of fragments. A round of alignment sampling using the full sequences of the query and template is used to generate a final alignment from each fragment alignment. In this final step, alignments are restricted to a specific region of the dynamic program matrix. The boundaries of the region extend 3 residues above and below the fragments in each fragment alignment. The loop regions are constrained only by the boundaries of the surrounding fragments (dashed lines in <xref ref-type="fig" rid="pcbi-1002175-g001">Figure 1</xref>). Alignment sampling is carried out using the constrained Waterman approach. That is, we apply this algorithm in regions of alignment space that we expect to be unique based on the structure of the template. Again, a pseudomodel is constructed for each alignment which is scored with DFIRE <xref ref-type="bibr" rid="pcbi.1002175-Zhou2">[47]</xref> as described above. The alignment with the best/lowest energy is selected to represent the original fragment alignment.</p>
+        <p>The S4 algorithm typically generates thousands of fragment alignments. A single, full alignment is generated for each one, starting with the highest-scoring, until N unique alignments have been found, where N is the ensemble size chosen by the user. The score of an alignment is simply the sum of the similarity scores of the paired residues in the original fragment alignment minus a flat penalty for each inserted residue. The insertion penalty only applies to residues inserted between template residues and is therefore used to encourage insertions at the termini. Deletions are not penalized since we found that structural considerations enabled us to disallow unreasonable gaps without an explicit penalty. A worked example illustrating each step is provided in <xref ref-type="supplementary-material" rid="pcbi.1002175.s001">Text S1</xref>.</p>
+      </sec>
+      <sec id="s4f">
+        <title>Inter-alignment distance (IAD)</title>
+        <p>We calculate the distance between any two alignments using a measure similar to the gALD measure developed by Chen and Kihara <xref ref-type="bibr" rid="pcbi.1002175-Chen1">[48]</xref>. If we plot two alignments of the same two sequences on the dynamic programming matrix (<xref ref-type="fig" rid="pcbi-1002175-g001">Figure 1</xref>, blue and green lines) there is a region between them for which we can calculate the area. Dividing this area by the length of the template yields an average height of this region, which can be interpreted as the average distance that a query residue in one alignment is shifted from its position in the other. This average distance we have termed the IAD and it should be considered to have units of residues. This measure is quick to calculate and useful for determining if two alignments occupy the same region of alignment space.</p>
+      </sec>
+      <sec id="s4g">
+        <title>The standard DP-based alternative alignment methods</title>
+        <p>The unconstrained Waterman and constrained Waterman in <xref ref-type="fig" rid="pcbi-1002175-g003">Figures 3</xref> and <xref ref-type="fig" rid="pcbi-1002175-g005">5</xref> are implementations of the method described by Waterman. <xref ref-type="bibr" rid="pcbi.1002175-Waterman2">[23]</xref>. The “unconstrained Waterman” approach is an unmodified version of that algorithm that that use the HMAP scoring function and gap penalty and generates alternate alignments by allowing the DP procedure to branch to an alternate path at any point in the DP matrix where doing so will lead to an alignment with a score within δ of optimal. However, in the constrained Waterman approach, branching to alternate paths is allowed only when moving between SSE and loop regions (see Figure S6 in <xref ref-type="supplementary-material" rid="pcbi.1002175.s001">Text S1</xref> for more details). For both methods, it is impossible to know which value of δ will generate an ensemble of a desired size. To generate the alignments for comparison, we started with very small values for δ and increased it until the ensemble size exceeded 1000. We then sorted the alignments by their DP-based score and kept only the top 1000.</p>
+      </sec>
+      <sec id="s4h">
+        <title>Model building and model accuracy</title>
+        <p>Models were built with the program Nest <xref ref-type="bibr" rid="pcbi.1002175-Petrey1">[29]</xref> for all S4 alignments, the optimal HMAP alignment and the correct/structure-based alignment. TM-score <xref ref-type="bibr" rid="pcbi.1002175-Zhang3">[31]</xref> was used to evaluate the accuracy of the model compared to the native query structure.</p>
+      </sec>
+    </sec>
+    <sec id="s5">
+      <title>Supporting Information</title>
+      <supplementary-material id="pcbi.1002175.s001" mimetype="application/msword" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002175.s001" xlink:type="simple">
+        <label>Text S1</label>
+        <caption>
+          <p>Supplemental information for “Using structure to explore the sequence alignment space of remote homologs”.</p>
+          <p>(DOC)</p>
+        </caption>
+      </supplementary-material>
+    </sec>
+  </body>
+  <back>
+    <ref-list>
+      <title>References</title>
+      <ref id="pcbi.1002175-Bork1">
+        <label>1</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Bork</surname><given-names>P</given-names></name></person-group>             <year>2000</year>             <article-title>Powers and pitfalls in sequence analysis: the 70% hurdle.</article-title>             <source>Genome Res</source>             <volume>10</volume>             <fpage>398</fpage>             <lpage>400</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Berman1">
+        <label>2</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Berman</surname><given-names>HM</given-names></name><name name-style="western"><surname>Westbrook</surname><given-names>J</given-names></name><name name-style="western"><surname>Feng</surname><given-names>Z</given-names></name><name name-style="western"><surname>Gilliland</surname><given-names>G</given-names></name><name name-style="western"><surname>Bhat</surname><given-names>TN</given-names></name><etal/></person-group>             <year>2000</year>             <article-title>The Protein Data Bank.</article-title>             <source>Nucleic Acids Res</source>             <volume>28</volume>             <fpage>235</fpage>             <lpage>242</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Kihara1">
+        <label>3</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Kihara</surname><given-names>D</given-names></name><name name-style="western"><surname>Skolnick</surname><given-names>J</given-names></name></person-group>             <year>2003</year>             <article-title>The PDB is a covering set of small protein structures.</article-title>             <source>J Mol Biol</source>             <volume>334</volume>             <fpage>793</fpage>             <lpage>802</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Zhang1">
+        <label>4</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Zhang</surname><given-names>Y</given-names></name><name name-style="western"><surname>Hubner</surname><given-names>IA</given-names></name><name name-style="western"><surname>Arakaki</surname><given-names>AK</given-names></name><name name-style="western"><surname>Shakhnovich</surname><given-names>E</given-names></name><name name-style="western"><surname>Skolnick</surname><given-names>J</given-names></name></person-group>             <year>2006</year>             <article-title>On the origin and highly likely completeness of single-domain protein structures.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>103</volume>             <fpage>2605</fpage>             <lpage>2610</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Zhang2">
+        <label>5</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Zhang</surname><given-names>Y</given-names></name><name name-style="western"><surname>Skolnick</surname><given-names>J</given-names></name></person-group>             <year>2005</year>             <article-title>The protein structure prediction problem could be solved using the current PDB library.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>102</volume>             <fpage>1029</fpage>             <lpage>1034</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Rost1">
+        <label>6</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Rost</surname><given-names>B</given-names></name></person-group>             <year>1999</year>             <article-title>Twilight zone of protein sequence alignments.</article-title>             <source>Protein Eng</source>             <volume>12</volume>             <fpage>85</fpage>             <lpage>94</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Waterman1">
+        <label>7</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Waterman</surname><given-names>MS</given-names></name><name name-style="western"><surname>Smith</surname><given-names>TF</given-names></name><name name-style="western"><surname>Beyer</surname><given-names>WA</given-names></name></person-group>             <year>1976</year>             <article-title>Some Biological Sequence Metrics.</article-title>             <source>Advances in Mathematics</source>             <volume>20</volume>             <fpage>367</fpage>             <lpage>387</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Edgar1">
+        <label>8</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Edgar</surname><given-names>RC</given-names></name><name name-style="western"><surname>Sjolander</surname><given-names>K</given-names></name></person-group>             <year>2004</year>             <article-title>A comparison of scoring functions for protein sequence profile alignment.</article-title>             <source>Bioinformatics</source>             <volume>20</volume>             <fpage>1301</fpage>             <lpage>1308</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-MartiRenom1">
+        <label>9</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Marti-Renom</surname><given-names>MA</given-names></name><name name-style="western"><surname>Madhusudhan</surname><given-names>MS</given-names></name><name name-style="western"><surname>Sali</surname><given-names>A</given-names></name></person-group>             <year>2004</year>             <article-title>Alignment of protein sequences by their profiles.</article-title>             <source>Protein Sci</source>             <volume>13</volume>             <fpage>1071</fpage>             <lpage>1087</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Tang1">
+        <label>10</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Tang</surname><given-names>CL</given-names></name><name name-style="western"><surname>Xie</surname><given-names>L</given-names></name><name name-style="western"><surname>Koh</surname><given-names>IY</given-names></name><name name-style="western"><surname>Posy</surname><given-names>S</given-names></name><name name-style="western"><surname>Alexov</surname><given-names>E</given-names></name><etal/></person-group>             <year>2003</year>             <article-title>On the role of structural information in remote homology detection and sequence alignment: new methods using hybrid sequence profiles.</article-title>             <source>J Mol Biol</source>             <volume>334</volume>             <fpage>1043</fpage>             <lpage>1062</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Bowie1">
+        <label>11</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Bowie</surname><given-names>JU</given-names></name><name name-style="western"><surname>Luthy</surname><given-names>R</given-names></name><name name-style="western"><surname>Eisenberg</surname><given-names>D</given-names></name></person-group>             <year>1991</year>             <article-title>A method to identify protein sequences that fold into a known three-dimensional structure.</article-title>             <source>Science</source>             <volume>253</volume>             <fpage>164</fpage>             <lpage>170</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Liu1">
+        <label>12</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Liu</surname><given-names>S</given-names></name><name name-style="western"><surname>Zhang</surname><given-names>C</given-names></name><name name-style="western"><surname>Liang</surname><given-names>S</given-names></name><name name-style="western"><surname>Zhou</surname><given-names>Y</given-names></name></person-group>             <year>2007</year>             <article-title>Fold recognition by concurrent use of solvent accessibility and residue depth.</article-title>             <source>Proteins</source>             <volume>68</volume>             <fpage>636</fpage>             <lpage>645</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Shi1">
+        <label>13</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Shi</surname><given-names>J</given-names></name><name name-style="western"><surname>Blundell</surname><given-names>TL</given-names></name><name name-style="western"><surname>Mizuguchi</surname><given-names>K</given-names></name></person-group>             <year>2001</year>             <article-title>FUGUE: sequence-structure homology recognition using environment-specific substitution tables and structure-dependent gap penalties.</article-title>             <source>J Mol Biol</source>             <volume>310</volume>             <fpage>243</fpage>             <lpage>257</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Barton1">
+        <label>14</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Barton</surname><given-names>GJ</given-names></name><name name-style="western"><surname>Sternberg</surname><given-names>MJ</given-names></name></person-group>             <year>1987</year>             <article-title>Evaluation and improvements in the automatic alignment of protein sequences.</article-title>             <source>Protein Eng</source>             <volume>1</volume>             <fpage>89</fpage>             <lpage>94</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Lesk1">
+        <label>15</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Lesk</surname><given-names>AM</given-names></name><name name-style="western"><surname>Levitt</surname><given-names>M</given-names></name><name name-style="western"><surname>Chothia</surname><given-names>C</given-names></name></person-group>             <year>1986</year>             <article-title>Alignment of the amino acid sequences of distantly related proteins using variable gap penalties.</article-title>             <source>Protein Eng</source>             <volume>1</volume>             <fpage>77</fpage>             <lpage>78</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Madhusudhan1">
+        <label>16</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Madhusudhan</surname><given-names>MS</given-names></name><name name-style="western"><surname>Marti-Renom</surname><given-names>MA</given-names></name><name name-style="western"><surname>Sanchez</surname><given-names>R</given-names></name><name name-style="western"><surname>Sali</surname><given-names>A</given-names></name></person-group>             <year>2006</year>             <article-title>Variable gap penalty for protein sequence-structure alignment.</article-title>             <source>Protein Eng Des Sel</source>             <volume>19</volume>             <fpage>129</fpage>             <lpage>133</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Benner1">
+        <label>17</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Benner</surname><given-names>SA</given-names></name><name name-style="western"><surname>Cohen</surname><given-names>MA</given-names></name><name name-style="western"><surname>Gonnet</surname><given-names>GH</given-names></name></person-group>             <year>1993</year>             <article-title>Empirical and structural models for insertions and deletions in the divergent evolution of proteins.</article-title>             <source>J Mol Biol</source>             <volume>229</volume>             <fpage>1065</fpage>             <lpage>1082</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Qian1">
+        <label>18</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Qian</surname><given-names>B</given-names></name><name name-style="western"><surname>Goldstein</surname><given-names>RA</given-names></name></person-group>             <year>2001</year>             <article-title>Distribution of Indel lengths.</article-title>             <source>Proteins</source>             <volume>45</volume>             <fpage>102</fpage>             <lpage>104</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Goonesekere1">
+        <label>19</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Goonesekere</surname><given-names>NC</given-names></name><name name-style="western"><surname>Lee</surname><given-names>B</given-names></name></person-group>             <year>2004</year>             <article-title>Frequency of gaps observed in a structurally aligned protein pair database suggests a simple gap penalty function.</article-title>             <source>Nucleic Acids Res</source>             <volume>32</volume>             <fpage>2838</fpage>             <lpage>2843</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Jones1">
+        <label>20</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Jones</surname><given-names>DT</given-names></name><name name-style="western"><surname>Taylor</surname><given-names>WR</given-names></name><name name-style="western"><surname>Thornton</surname><given-names>JM</given-names></name></person-group>             <year>1992</year>             <article-title>A new approach to protein fold recognition.</article-title>             <source>Nature</source>             <volume>358</volume>             <fpage>86</fpage>             <lpage>89</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Panchenko1">
+        <label>21</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Panchenko</surname><given-names>AR</given-names></name><name name-style="western"><surname>Marchler-Bauer</surname><given-names>A</given-names></name><name name-style="western"><surname>Bryant</surname><given-names>SH</given-names></name></person-group>             <year>2000</year>             <article-title>Combination of threading potentials and sequence profiles improves fold recognition.</article-title>             <source>J Mol Biol</source>             <volume>296</volume>             <fpage>1319</fpage>             <lpage>1331</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Madej1">
+        <label>22</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Madej</surname><given-names>T</given-names></name><name name-style="western"><surname>Gibrat</surname><given-names>JF</given-names></name><name name-style="western"><surname>Bryant</surname><given-names>SH</given-names></name></person-group>             <year>1995</year>             <article-title>Threading a database of protein cores.</article-title>             <source>Proteins</source>             <volume>23</volume>             <fpage>356</fpage>             <lpage>369</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Waterman2">
+        <label>23</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Waterman</surname><given-names>MS</given-names></name></person-group>             <year>1983</year>             <article-title>Sequence alignments in the neighborhood of the optimum with general application to dynamic programming.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>80</volume>             <fpage>3123</fpage>             <lpage>3124</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Saqi1">
+        <label>24</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Saqi</surname><given-names>MA</given-names></name><name name-style="western"><surname>Sternberg</surname><given-names>MJ</given-names></name></person-group>             <year>1991</year>             <article-title>A simple method to generate non-trivial alternate alignments of protein sequences.</article-title>             <source>J Mol Biol</source>             <volume>219</volume>             <fpage>727</fpage>             <lpage>732</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-John1">
+        <label>25</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>John</surname><given-names>B</given-names></name><name name-style="western"><surname>Sali</surname><given-names>A</given-names></name></person-group>             <year>2003</year>             <article-title>Comparative protein structure modeling by iterative alignment, model building and model assessment.</article-title>             <source>Nucleic Acids Res</source>             <volume>31</volume>             <fpage>3982</fpage>             <lpage>3992</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Chivian1">
+        <label>26</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Chivian</surname><given-names>D</given-names></name><name name-style="western"><surname>Baker</surname><given-names>D</given-names></name></person-group>             <year>2006</year>             <article-title>Homology modeling using parametric alignment ensemble generation with consensus and energy-based model selection.</article-title>             <source>Nucleic Acids Res</source>             <volume>34</volume>             <fpage>e112</fpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Jaroszewski1">
+        <label>27</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Jaroszewski</surname><given-names>L</given-names></name><name name-style="western"><surname>Li</surname><given-names>W</given-names></name><name name-style="western"><surname>Godzik</surname><given-names>A</given-names></name></person-group>             <year>2002</year>             <article-title>In search for more accurate alignments in the twilight zone.</article-title>             <source>Protein Sci</source>             <volume>11</volume>             <fpage>1702</fpage>             <lpage>1713</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Moult1">
+        <label>28</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Moult</surname><given-names>J</given-names></name><name name-style="western"><surname>Fidelis</surname><given-names>K</given-names></name><name name-style="western"><surname>Kryshtafovych</surname><given-names>A</given-names></name><name name-style="western"><surname>Rost</surname><given-names>B</given-names></name><name name-style="western"><surname>Hubbard</surname><given-names>T</given-names></name><etal/></person-group>             <year>2007</year>             <article-title>Critical assessment of methods of protein structure prediction-Round VII.</article-title>             <source>Proteins</source>             <volume>69</volume>             <supplement>Suppl 8</supplement>             <fpage>3</fpage>             <lpage>9</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Petrey1">
+        <label>29</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Petrey</surname><given-names>D</given-names></name><name name-style="western"><surname>Xiang</surname><given-names>Z</given-names></name><name name-style="western"><surname>Tang</surname><given-names>CL</given-names></name><name name-style="western"><surname>Xie</surname><given-names>L</given-names></name><name name-style="western"><surname>Gimpelev</surname><given-names>M</given-names></name><etal/></person-group>             <year>2003</year>             <article-title>Using multiple structure alignments, fast model building, and energetic analysis in fold recognition and homology modeling.</article-title>             <source>Proteins</source>             <volume>53</volume>             <supplement>Suppl 6</supplement>             <fpage>430</fpage>             <lpage>435</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Yang1">
+        <label>30</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Yang</surname><given-names>AS</given-names></name><name name-style="western"><surname>Honig</surname><given-names>B</given-names></name></person-group>             <year>2000</year>             <article-title>An integrated approach to the analysis and modeling of protein sequences and structures. I. Protein structural alignment and a quantitative measure for protein structural distance.</article-title>             <source>J Mol Biol</source>             <volume>301</volume>             <fpage>665</fpage>             <lpage>678</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Zhang3">
+        <label>31</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Zhang</surname><given-names>Y</given-names></name><name name-style="western"><surname>Skolnick</surname><given-names>J</given-names></name></person-group>             <year>2004</year>             <article-title>Scoring function for automated assessment of protein structure template quality.</article-title>             <source>Proteins</source>             <volume>57</volume>             <fpage>702</fpage>             <lpage>710</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Sding1">
+        <label>32</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Söding</surname><given-names>J</given-names></name></person-group>             <year>2005</year>             <article-title>Protein homology detection by HMM–HMM comparison.</article-title>             <source>Bioinformatics</source>             <volume>21</volume>             <fpage>951</fpage>             <lpage>960</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Zhou1">
+        <label>33</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Zhou</surname><given-names>H</given-names></name><name name-style="western"><surname>Zhou</surname><given-names>Y</given-names></name></person-group>             <year>2005</year>             <article-title>Fold recognition by combining sequence profiles derived from evolution and from depth-dependent structural alignment of fragments.</article-title>             <source>Proteins</source>             <volume>58</volume>             <fpage>321</fpage>             <lpage>328</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Sauder1">
+        <label>34</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Sauder</surname><given-names>JM</given-names></name><name name-style="western"><surname>Arthur</surname><given-names>JW</given-names></name><name name-style="western"><surname>Dunbrack</surname><given-names>RL</given-names><suffix>Jr</suffix></name></person-group>             <year>2000</year>             <article-title>Large-scale comparison of protein sequence alignment algorithms with structure alignments.</article-title>             <source>Proteins</source>             <volume>40</volume>             <fpage>6</fpage>             <lpage>22</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Mirkovic1">
+        <label>35</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Mirkovic</surname><given-names>N</given-names></name><name name-style="western"><surname>Li</surname><given-names>Z</given-names></name><name name-style="western"><surname>Parnassa</surname><given-names>A</given-names></name><name name-style="western"><surname>Murray</surname><given-names>D</given-names></name></person-group>             <year>2007</year>             <article-title>Strategies for high-throughput comparative modeling: applications to leverage analysis in structural genomics and protein family organization.</article-title>             <source>Proteins</source>             <volume>66</volume>             <fpage>766</fpage>             <lpage>777</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Sanchez1">
+        <label>36</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Sanchez</surname><given-names>R</given-names></name><name name-style="western"><surname>Sali</surname><given-names>A</given-names></name></person-group>             <year>1998</year>             <article-title>Large-scale protein structure modeling of the Saccharomyces cerevisiae genome.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>95</volume>             <fpage>13597</fpage>             <lpage>13602</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Williams1">
+        <label>37</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Williams</surname><given-names>SB</given-names></name><name name-style="western"><surname>Vakonakis</surname><given-names>I</given-names></name><name name-style="western"><surname>Golden</surname><given-names>SS</given-names></name><name name-style="western"><surname>LiWang</surname><given-names>AC</given-names></name></person-group>             <year>2002</year>             <article-title>Structure and function from the circadian clock protein KaiA of Synechococcus elongatus: a potential clock input mechanism.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>99</volume>             <fpage>15357</fpage>             <lpage>15362</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-MacSweeney1">
+        <label>38</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Mac Sweeney</surname><given-names>A</given-names></name><name name-style="western"><surname>Lange</surname><given-names>R</given-names></name><name name-style="western"><surname>Fernandes</surname><given-names>RP</given-names></name><name name-style="western"><surname>Schulz</surname><given-names>H</given-names></name><name name-style="western"><surname>Dale</surname><given-names>GE</given-names></name><etal/></person-group>             <year>2005</year>             <article-title>The crystal structure of E.coli 1-deoxy-D-xylulose-5-phosphate reductoisomerase in a ternary complex with the antimalarial compound fosmidomycin and NADPH reveals a tight-binding closed enzyme conformation.</article-title>             <source>J Mol Biol</source>             <volume>345</volume>             <fpage>115</fpage>             <lpage>127</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Murzin1">
+        <label>39</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Murzin</surname><given-names>AG</given-names></name><name name-style="western"><surname>Brenner</surname><given-names>SE</given-names></name><name name-style="western"><surname>Hubbard</surname><given-names>T</given-names></name><name name-style="western"><surname>Chothia</surname><given-names>C</given-names></name></person-group>             <year>1995</year>             <article-title>SCOP: a structural classification of proteins database for the investigation of sequences and structures.</article-title>             <source>J Mol Biol</source>             <volume>247</volume>             <fpage>536</fpage>             <lpage>540</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Petrey2">
+        <label>40</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Petrey</surname><given-names>D</given-names></name><name name-style="western"><surname>Fischer</surname><given-names>M</given-names></name><name name-style="western"><surname>Honig</surname><given-names>B</given-names></name></person-group>             <year>2009</year>             <article-title>Structural relationships among proteins with different global topologies and their implications for function annotation strategies.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>106</volume>             <fpage>17377</fpage>             <lpage>17382</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Friedberg1">
+        <label>41</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Friedberg</surname><given-names>I</given-names></name><name name-style="western"><surname>Godzik</surname><given-names>A</given-names></name></person-group>             <year>2005</year>             <article-title>Fragnostic: walking through protein structure space.</article-title>             <source>Nucleic Acids Res</source>             <volume>33</volume>             <fpage>W249</fpage>             <lpage>251</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Eisenberg1">
+        <label>42</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Eisenberg</surname><given-names>D</given-names></name><name name-style="western"><surname>Luthy</surname><given-names>R</given-names></name><name name-style="western"><surname>Bowie</surname><given-names>JU</given-names></name></person-group>             <year>1997</year>             <article-title>VERIFY3D: assessment of protein models with three-dimensional profiles.</article-title>             <source>Methods enzymol</source>             <volume>277</volume>             <fpage>396</fpage>             <lpage>404</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Melo1">
+        <label>43</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Melo</surname><given-names>F</given-names></name><name name-style="western"><surname>Feytmans</surname><given-names>E</given-names></name></person-group>             <year>1998</year>             <article-title>Assessing protein structures with a non-local atomic interaction energy.</article-title>             <source>J Mol Biol</source>             <volume>277</volume>             <fpage>1141</fpage>             <lpage>1152</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Scott1">
+        <label>44</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Scott</surname><given-names>WRP</given-names></name><name name-style="western"><surname>Hünenberger</surname><given-names>PH</given-names></name><name name-style="western"><surname>Tironi</surname><given-names>IG</given-names></name><name name-style="western"><surname>Mark</surname><given-names>AE</given-names></name><name name-style="western"><surname>Billeter</surname><given-names>SR</given-names></name><etal/></person-group>             <year>1999</year>             <article-title>The GROMOS Biomolecular Simulation Program Package.</article-title>             <source>J Phys Chem A</source>             <volume>103</volume>             <fpage>3596</fpage>             <lpage>3607</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Lee1">
+        <label>45</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Lee</surname><given-names>H</given-names></name><name name-style="western"><surname>Li</surname><given-names>Z</given-names></name><name name-style="western"><surname>Silkov</surname><given-names>A</given-names></name><name name-style="western"><surname>Fischer</surname><given-names>M</given-names></name><name name-style="western"><surname>Petrey</surname><given-names>D</given-names></name><etal/></person-group>             <year>2010</year>             <article-title>High-throughput computational structure-based characterization of protein families: START domains and implications for structural genomics.</article-title>             <source>J Struct Funct Genomics</source>             <volume>11</volume>             <fpage>51</fpage>             <lpage>59</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Russell1">
+        <label>46</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Russell</surname><given-names>RB</given-names></name><name name-style="western"><surname>Copley</surname><given-names>RR</given-names></name><name name-style="western"><surname>Barton</surname><given-names>GJ</given-names></name></person-group>             <year>1996</year>             <article-title>Protein fold recognition by mapping predicted secondary structures.</article-title>             <source>J Mol Biol</source>             <volume>259</volume>             <fpage>349</fpage>             <lpage>365</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Zhou2">
+        <label>47</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Zhou</surname><given-names>H</given-names></name><name name-style="western"><surname>Zhou</surname><given-names>Y</given-names></name></person-group>             <year>2002</year>             <article-title>Distance-scaled, finite ideal-gas reference state improves structure-derived potentials of mean force for structure selection and stability prediction.</article-title>             <source>Protein Sci</source>             <volume>11</volume>             <fpage>2714</fpage>             <lpage>2726</lpage>          </element-citation>
+      </ref>
+      <ref id="pcbi.1002175-Chen1">
+        <label>48</label>
+        <element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author"><name name-style="western"><surname>Chen</surname><given-names>H</given-names></name><name name-style="western"><surname>Kihara</surname><given-names>D</given-names></name></person-group>             <year>2008</year>             <article-title>Estimating quality of template-based protein models by alignment stability.</article-title>             <source>Proteins</source>             <volume>71</volume>             <fpage>1255</fpage>             <lpage>1274</lpage>          </element-citation>
+      </ref>
+    </ref-list>
+    
+  </back>
+</article>

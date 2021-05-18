@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="3.0" xml:lang="en">
+<front>
+<journal-meta>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id>
+<journal-id journal-id-type="pmc">ploscomp</journal-id><journal-title-group>
+<journal-title>PLoS Computational Biology</journal-title></journal-title-group>
+<issn pub-type="ppub">1553-734X</issn>
+<issn pub-type="epub">1553-7358</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, USA</publisher-loc></publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="publisher-id">PCOMPBIOL-D-12-01682</article-id>
+<article-id pub-id-type="doi">10.1371/journal.pcbi.1003093</article-id>
+<article-categories><subj-group subj-group-type="heading"><subject>Research Article</subject></subj-group><subj-group subj-group-type="Discipline-v2"><subject>Biology</subject><subj-group><subject>Computational biology</subject></subj-group><subj-group><subject>Genetics</subject></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>Leveraging Prior Information to Detect Causal Variants via Multi-Variant Regression</article-title>
+<alt-title alt-title-type="running-head">Use Prior Information for Causal Variant Detection</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Long</surname><given-names>Nanye</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="corresp" rid="cor1"><sup>*</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Dickson</surname><given-names>Samuel P.</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Maia</surname><given-names>Jessica M.</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Kim</surname><given-names>Hee Shin</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Zhu</surname><given-names>Qianqian</given-names></name><xref ref-type="aff" rid="aff2"><sup>2</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Allen</surname><given-names>Andrew S.</given-names></name><xref ref-type="aff" rid="aff3"><sup>3</sup></xref></contrib>
+</contrib-group>
+<aff id="aff1"><label>1</label><addr-line>Center for Human Genome Variation, Duke University School of Medicine, Durham, North Carolina, United States of America</addr-line></aff>
+<aff id="aff2"><label>2</label><addr-line>Department of Biostatistics, Roswell Park Cancer Institute, Buffalo, New York, United States of America</addr-line></aff>
+<aff id="aff3"><label>3</label><addr-line>Department of Biostatistics and Bioinformatics, Duke University School of Medicine, Durham, North Carolina, United States of America</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple"><name name-style="western"><surname>Wasserman</surname><given-names>Wyeth W.</given-names></name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/></contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>University of British Columbia, Canada</addr-line></aff>
+<author-notes>
+<corresp id="cor1">* E-mail: <email xlink:type="simple">n.long@duke.edu</email></corresp>
+<fn fn-type="conflict"><p>The authors have declared that no competing interests exist.</p></fn>
+<fn fn-type="con"><p>Conceived and designed the experiments: NL. Performed the experiments: NL. Analyzed the data: NL. Contributed reagents/materials/analysis tools: ASA SPD JMM HSK QZ. Wrote the paper: NL ASA.</p></fn>
+</author-notes>
+<pub-date pub-type="collection"><month>6</month><year>2013</year></pub-date>
+<pub-date pub-type="epub"><day>6</day><month>6</month><year>2013</year></pub-date>
+<volume>9</volume>
+<issue>6</issue>
+<elocation-id>e1003093</elocation-id>
+<history>
+<date date-type="received"><day>23</day><month>10</month><year>2012</year></date>
+<date date-type="accepted"><day>29</day><month>4</month><year>2013</year></date>
+</history>
+<permissions>
+<copyright-year>2013</copyright-year>
+<copyright-holder>Long et al</copyright-holder><license xlink:type="simple"><license-p>This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license></permissions>
+<abstract>
+<p>Although many methods are available to test sequence variants for association with complex diseases and traits, methods that specifically seek to identify causal variants are less developed. Here we develop and evaluate a Bayesian hierarchical regression method that incorporates prior information on the likelihood of variant causality through weighting of variant effects. By simulation studies using both simulated and real sequence variants, we compared a standard single variant test for analyzing variant-disease association with the proposed method using different weighting schemes. We found that by leveraging linkage disequilibrium of variants with known GWAS signals and sequence conservation (phastCons), the proposed method provides a powerful approach for detecting causal variants while controlling false positives.</p>
+</abstract>
+<abstract abstract-type="summary"><title>Author Summary</title>
+<p>The decline in DNA sequencing cost permits the interrogation of potentially all variants across the entire allele frequency spectrum for their associations with complex human diseases and traits. However, the identification of causal variants remains challenging. Existing single variant tests do not distinguish between causal association and association induced by linkage disequilibrium and tend to be underpowered for rare or low-frequency variants, whereas variant grouping methods do not identify individual causal variants. We propose a novel Bayesian hierarchical regression approach that estimates effects of multiple variants on a disease trait simultaneously and incorporates prior information on the likelihood of causality. By simulation, we show that by combining linkage disequilibrium with known genome wide association signals and functional conservation, the proposed method, the first of its kind, is powerful to correctly detect causal variants.</p>
+</abstract>
+<funding-group><funding-statement>This work was supported by the Duke Center for Human Genome Variation fund. The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement></funding-group><counts><page-count count="11"/></counts></article-meta>
+</front>
+<body><sec id="s1">
+<title>Introduction</title>
+<p>Next-generation DNA sequencing technologies allow discovery of genetic variants across the full spectrum of allele frequencies, thereby enabling exhaustive screens for association between diseases and variants. Numerous statistical methods <xref ref-type="bibr" rid="pcbi.1003093-Stitziel1">[1]</xref> have been developed for analyzing sequence variants. Recently, these methods have increasingly focused on rare variants because of their functional implications <xref ref-type="bibr" rid="pcbi.1003093-Kryukov1">[2]</xref>, <xref ref-type="bibr" rid="pcbi.1003093-Zhu1">[3]</xref>, documented roles in disease etiology <xref ref-type="bibr" rid="pcbi.1003093-Fearnhead1">[4]</xref>–<xref ref-type="bibr" rid="pcbi.1003093-Nejentsev1">[7]</xref>, potential contributions to missing heritability <xref ref-type="bibr" rid="pcbi.1003093-Manolio1">[8]</xref>, and to the associations reported between common diseases and common variants <xref ref-type="bibr" rid="pcbi.1003093-Dickson1">[9]</xref>. Testing rare variants one at a time tends to have low power with a realistic sample size, especially in the presence of low penetrance and allelic heterogeneity (multiple variants at the same locus conferring risk). In an attempt to overcome this problem, grouping-based strategies have been proposed. These approaches typically involve grouping qualifying variants based on their location within a gene or pathway and testing the aggregated effect of the resulting set of variants. Several strategies for aggregating variant effects have been proposed: from simply collapsing rare variants <xref ref-type="bibr" rid="pcbi.1003093-Li1">[10]</xref> to summing weighted counts of minor alleles <xref ref-type="bibr" rid="pcbi.1003093-Madsen1">[11]</xref>–<xref ref-type="bibr" rid="pcbi.1003093-Hoffmann1">[13]</xref>, and to more sophisticated approaches that attempt to incorporate the effect of both protective and neutral alleles <xref ref-type="bibr" rid="pcbi.1003093-IonitaLaza1">[14]</xref>–<xref ref-type="bibr" rid="pcbi.1003093-Wu1">[18]</xref>. Grouping-based testing remains an active area of methodological research and new methods continue to be developed. However, there are two significant limitations of any grouping-based test. First, the performance is critically dependent on the extent to which the grouping strategy reflects the genetic architecture of the disease being investigated. In order for grouping to be an effective strategy one must put ‘weight’ on those variants that are truly important. Putting ‘weight’ on unimportant or null variants will add noise to the statistic resulting in a loss of power. Since the genetic architecture of any disease is unknown, it is not always obvious which grouping strategy to prefer. Second, a significant grouping-based test implicates a genomic region or pathway and not specific genetic variants. Thus, the ultimate goal of identifying individual causative mutations remains elusive. For these reasons, some are reconsidering association testing of rare variation via grouping-based tests <xref ref-type="bibr" rid="pcbi.1003093-Kinnamon1">[19]</xref>.</p>
+<p>Here we introduce a Bayesian multi-variant liability regression model that does not involve grouping and tracks directly to individual variants. More generally, this model falls into a broader framework of Bayesian hierarchical modeling, which attempts to estimate all regression coefficients (variant effects) simultaneously by imposing variant-specific shrinkage on the estimated effects. This class of approaches has seen wide and successful applications in predicting quantitative traits, particularly in agricultural species <xref ref-type="bibr" rid="pcbi.1003093-Meuwissen1">[20]</xref>–<xref ref-type="bibr" rid="pcbi.1003093-Yi1">[22]</xref>. However, its effectiveness in the analysis of sequence data in human disease studies is yet to be investigated.</p>
+<p>There are two attractive features of the proposed approach. The first is that all variants are jointly analyzed so as to reduce bias of estimated effects by borrowing information from and/or accounting for other variants. The second feature is its ability to quantitatively incorporate prior information to weight individual variants based on their prior likelihoods of causality. Both features are expected to enhance power and reduce false discoveries. The weighting scheme is entirely customizable and can represent multiple sources of information. Here we have explored weighting schemes that incorporate two sources of information: sequence conservation (a natural measure of functionality of mutations <xref ref-type="bibr" rid="pcbi.1003093-Cooper1">[23]</xref>, <xref ref-type="bibr" rid="pcbi.1003093-Cooper2">[24]</xref>), and linkage disequilibrium (LD) with significant SNPs detected by a genome wide association study (GWAS). The motivation to utilize LD between candidate variants and prior GWAS results is an attempt to mimic the real situation for most common diseases where large scale GWAS have been performed before any sequence data are analyzed and to effectively leverage that prior information. GWAS signals can guide the search for causal variants from sequence data both by defining candidate regions and by ‘tagging’ causal variants. The latter is the very assumption behind GWAS and has been recently shown to happen relatively often, even between rare causal variants and common tags <xref ref-type="bibr" rid="pcbi.1003093-Dickson1">[9]</xref>.</p>
+<p>We first tested the proposed Bayesian approach in fully simulated scenarios. We focused on causal variants at low and intermediate frequency (five MAF intervals between 0.2%–5%) and an intermediate genotypic relative risk (GRR) of 3 under a dominant model, which is when single variant tests would likely underperform given a realistic sequencing sample size. We evaluated performance by the power of the methods to correctly identify the precise causal variants (as opposed to association signals) and their false positive rates.</p>
+<p>We then performed the Bayesian analysis on a set of exome sequencing samples, for which we assigned case/control statuses according to well-documented disease causing variants. We considered Crohn's disease and hepatitis C virus (HCV) treatment induced anemia. For Crohn's disease, there are two SNPs (rs2066844, MAF = 5.29%; rs2066845, MAF = 1.10%) in the <italic>NOD2</italic> gene that are known to be causal <xref ref-type="bibr" rid="pcbi.1003093-Hugot1">[25]</xref>, <xref ref-type="bibr" rid="pcbi.1003093-Ogura1">[26]</xref>. Furthermore, GWAS run by the Wellcome Trust Case Control Consortium <xref ref-type="bibr" rid="pcbi.1003093-The1">[27]</xref> found a signal (rs17221417, MAF = 25.41%) in the <italic>NOD2</italic> locus that is significantly (<italic>p</italic> = 9.4×10<sup>−12</sup>) associated with Crohn's disease. For HCV treatment induced anemia, rs6051702 was identified as the most significant signal (MAF = 17.81%, <italic>p</italic> = 1.1×10<sup>−45</sup>) in a GWAS scan <xref ref-type="bibr" rid="pcbi.1003093-Fellay1">[28]</xref>, and in the same study, two functional variants (rs1127354, MAF = 7.55%; rs7270101, MAF = 13.85%) in the <italic>ITPA</italic> gene were also identified as causal. A subsequent biochemical study confirmed that these variants are indeed causal and described biochemically how they protect against treatment induced anemia <xref ref-type="bibr" rid="pcbi.1003093-Hitomi1">[29]</xref>. Using these confirmed causal variants and GWAS signal for a given trait, we simulated case/control data from the available exomes, assuming heritability (on liability scale) = 10%, and assessed performance of the Bayesian approach.</p>
+</sec><sec id="s2" sec-type="methods">
+<title>Methods</title>
+<sec id="s2a">
+<title>Simulation study</title>
+<sec id="s2a1">
+<title>Simulation of genotypes</title>
+<p>The coalescent-based software GENOME <xref ref-type="bibr" rid="pcbi.1003093-Liang1">[30]</xref> was used to generate a population of 15,000 haploid ‘genomes’ (effective population size ×2), each consisting of two 500 Kb-long independently assorting ‘chromosomes’. Mutation rate and recombination rate per base were set to 10<sup>−8</sup> and 10<sup>−8</sup> respectively. Causal variants were chosen within the central 100 Kb region of the first chromosome. To distinguish between the two chromosomes, the first was termed ‘causal chromosome’ and the second was termed ‘null chromosome’. Under this design, among variants being interrogated approximately a half of them were linked to causal variants to varying degrees and the other half were unlinked to any causal variant.</p>
+<p>We simulated a three-locus dominant genetic model and a baseline disease risk of 1%. The presence of one or more causal (always minor) alleles increased the risk by a factor of GRR = 3. We were interested in the performance of the methods among different scenarios of causal variant MAF. We considered five MAF intervals: 0.2%–1%, 1%–2%, 2%–3%, 3%–4%, and 4%–5%.</p>
+</sec><sec id="s2a2">
+<title>Overview of the simulation study</title>
+<p>A diagram of the procedure of analysis is shown in <xref ref-type="fig" rid="pcbi-1003093-g001">Figure 1</xref>. Briefly, a large GWAS cohort (3000 cases and 3000 controls) was simulated to identify significant association signals (<italic>p</italic>&lt;10<sup>−8</sup>) and a smaller sequencing sample (500 cases and 500 controls) was used to detect causal variants among candidate variants.</p>
+<fig id="pcbi-1003093-g001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003093.g001</object-id><label>Figure 1</label><caption>
+<title>Workflow of the simulation study.</title>
+<p>Before carrying out these steps, a large pool of haplotypes (<italic>n</italic> = 15,000) was simulated. Given GRR and MAF of causal variants, cases and controls were simulated by randomly choosing pairs of haplotypes and calculating the risk of each individual to probabilistically assign phenotype.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003093.g001" position="float" xlink:type="simple"/></fig>
+<p>We used a two-stage approach. In the GWAS stage, tests were limited to common SNPs (MAF&gt;5%), since rare variants are typically underrepresented on GWAS arrays. On the other hand, in the sequencing data analysis, we focused on variants of MAF lower than 5% (step 1 in <xref ref-type="fig" rid="pcbi-1003093-g001">Figure 1</xref>), including the causal variants.</p>
+<p>We considered two types of statistical methods for identification of causal variants. A univariate logistic regression model (step 3 in <xref ref-type="fig" rid="pcbi-1003093-g001">Figure 1</xref>), which tests one variant at a time, was used as a benchmark. In particular we fitted a genotypic model that typically results in a χ<sup>2</sup> test with two degrees of freedom (or only one when the variant is too rare for minor allele homozygotes to be observed). This type of test cannot distinguish between causal variants and variants that are in LD with causal variants.</p>
+<p>The Bayesian regression approach we implemented incorporates information from GWAS signals and sequence conservation (step 2 in <xref ref-type="fig" rid="pcbi-1003093-g001">Figure 1</xref>). We incorporated this information quantitatively into the Bayesian multi-variant model by assigning a weight to each candidate variant. Three types of weights were considered. First, based on the assumption that GWAS signals are in LD with at least one causal variant, the degree of LD between GWAS signals and a candidate variant is likely correlated with the likelihood of the candidate variant being causal. Therefore, for a given variant, we defined the ‘<bold><italic>r</italic></bold><bold> weight</bold>’ as the maximum of <italic>r</italic> values (square root of the LD measure <italic>r</italic><sup>2</sup>) between the candidate variant and all GWAS signals. Here, <italic>r</italic> was calculated using the 3000 GWAS controls (because LD is usually based on large control samples and can be obtained from the HapMap data set, for example). To prevent the <italic>r</italic> weights that enter the model from getting too small, we set a minimum value at 0.01 so that all <italic>r</italic> values less than that were forced to be 0.01. Second, we defined a composite ‘<bold>phastCons weight</bold>’ as the weighted average of phastCons among different lineages (1/2*vertebrateCons+1/3*mammalCons+1/6*primateCons) based on the consideration that conservation among a broader lineage scope implies potentially stronger functionality. phastCons scores for causal variants were drawn from the empirical distribution of ‘pathogenic’ SNPs in the dbSNP database; and phastCons scores for non-causal variants were drawn from the empirical distribution of all variants on chromosome 20 in a whole-genome sequence data set (161 samples) in our laboratory. As with <italic>r</italic> weight, the minimum composite phastCons value was set to be 0.01. Third, besides ‘<italic>r</italic> weight’ and ‘phastCons weight’ individually, we also calculated the product of the two, ‘<bold><italic>r</italic></bold>×<bold>phastCons weight</bold>’. Finally, an uninformative weight (all variants receiving the same weight, one, or ‘<bold>no weight</bold>’ as we called it) was also considered for comparison. All weights were scaled to be between 0.01 and 1 by dividing by the maximum.</p>
+</sec><sec id="s2a3">
+<title>Bayesian multi-variant liability model</title>
+<p>In a liability model, it is assumed that a continuous latent variable (i.e. liability) underlies case/control status, and the liability follows a Normal distribution. A case (control) corresponds to a situation when an individual's liability is larger (smaller) than a threshold. A formal description is provided below.</p>
+<p>Let <italic>d<sub>i</sub></italic> and <italic>y<sub>i</sub></italic> denote the disease status and liability, respectively, of individual <italic>i</italic> (<italic>i</italic> = 1,…,<italic>n</italic>); there is a fixed threshold <italic>t</italic> such that <italic>d<sub>i</sub></italic> = 1 if <italic>y<sub>i</sub></italic>&gt;<italic>t</italic> and <italic>d<sub>i</sub></italic> = 0 otherwise. Moreover, the liability is related to a set of variants by the Normal regression model:<disp-formula id="pcbi.1003093.e001"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003093.e001" xlink:type="simple"/></disp-formula>where <italic>p</italic> is the total number of variants; <italic>μ</italic> is the population mean; <italic>x<sub>ij</sub></italic> is the genotype of variant <italic>j</italic> in individual <italic>i</italic>, coded as 0, 1 or 2 for aa, Aa or AA, where A is the minor allele of variant <italic>j</italic>. The genetic effect of variant <italic>j</italic> is given by <italic>β<sub>j</sub></italic>, an unknown quantity which we wish to make inference about. Finally, <italic>e<sub>i</sub></italic> is the random error with a Normal distribution <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003093.e002" xlink:type="simple"/></inline-formula>. To ensure model identifiability, a standard choice is to set the threshold <italic>t</italic> = 0 and the error variance <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003093.e003" xlink:type="simple"/></inline-formula>.</p>
+<p>In the above-mentioned liability model, the observed data consists of the binary response variables <italic>d<sub>i</sub></italic> (<italic>i</italic> = 1,…,<italic>n</italic>) and genotypes <italic>x<sub>ij</sub></italic> (<italic>i</italic> = 1,…,<italic>n; j</italic> = 1,…,<italic>p</italic>); the unknown parameters consist of <italic>y<sub>i</sub></italic> (<italic>i</italic> = 1,…,<italic>n</italic>), <italic>μ</italic> and <italic>β<sub>j</sub></italic> (<italic>j</italic> = 1,…,<italic>p</italic>). The central idea of a Bayesian analysis is to combine what is known about parameters before data are observed (represented by a prior probability distribution) with the information coming from the data (represented by a likelihood function) to arrive at a posterior probability distribution. Once the posterior distribution is known, one can make inference on parameters of interest (in our case, <italic>β<sub>j</sub></italic>'s) using an appropriate Markov chain Monte Carlo sampling method.</p>
+<p>Our belief of a variant being causal <italic>a priori</italic> enters the Bayesian modeling process through the specification of the prior distributions of <italic>β<sub>j</sub></italic>'s. That is, we assume a Normal prior for <italic>β<sub>j</sub></italic>: <italic>N</italic>(0, <italic>w<sub>j</sub>σ</italic><sup>2</sup>), where <italic>w<sub>j</sub></italic> is the predefined weight of variant <italic>j</italic>, as noted earlier. According to this distribution, the larger the weight, the more likely that the variant has an effect. To complete the posterior distribution, we also need to write the likelihood function as well as prior distributions for <italic>μ</italic> and <italic>σ</italic><sup>2</sup>. Following common practice, we choose a flat prior for <italic>μ</italic> (<italic>p</italic>(<italic>μ</italic>)∝1), and a scaled inverted Chi-square distribution for <italic>σ</italic><sup>2</sup>, with both the degrees of freedom (<italic>υ</italic>) and scale (<italic>S<sup>2</sup></italic>) being equal to 0.1. The final joint posterior distribution (up to proportionality) can then be written as<disp-formula id="pcbi.1003093.e004"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003093.e004" xlink:type="simple"/></disp-formula>Using an iterative Gibbs sampler, one can draw values from each unknown parameter's conditional posterior distribution. Details regarding sampling procedure are outlined in <xref ref-type="supplementary-material" rid="pcbi.1003093.s007">Text S1</xref>. A single chain of Gibbs sampler was implemented, and the total number of iterations was 100,000 with the first 50,000 being discarded. After that, the chain was thinned by taking every 50<sup>th</sup> value. Empirical evaluation of several random replicates of our simulated data showed that the posterior estimates of variant effects were robust to different initializations in the Gibbs sampling. For each variant effect, we recorded its posterior mean and standard deviation for significance test as described in the next section. A C++ program was coded for the Bayesian analysis. With a sample size of 1000 (500 cases and 500 controls) and a total number of 1000 variants, a complete run with 100,000 iterations took approximately 1 CPU hour on a 64-bit, 2.5 GHz Linux workstation.</p>
+</sec><sec id="s2a4">
+<title>Permutation-based significance test</title>
+<p>Phenotype permutation was employed to determine an empirical significance threshold for statistically significant effects (causal). This method has been theoretically justified in controlling family-wise type I error <xref ref-type="bibr" rid="pcbi.1003093-Churchill1">[31]</xref>, <xref ref-type="bibr" rid="pcbi.1003093-Nichols1">[32]</xref> and applied in multi-marker based QTL mapping <xref ref-type="bibr" rid="pcbi.1003093-Mutshinda1">[33]</xref>. The first step is to randomly shuffle case/control statuses across individuals while keeping their genotypes unchanged, in order to conserve LD structure. Suppose that the data are shuffled <italic>B</italic> times. The second step is to apply a statistical test on each of the <italic>B</italic> shuffled data sets and obtain a corresponding test statistic. For single variant logistic regression, we chose the minimum model <italic>p</italic>-value across all variants as the test statistic. For the Bayesian multi-variant regression, we chose the maximum absolute standardized effect size (the posterior mean of an effect divided by its posterior standard deviation) across all variants as the test statistic. The second step yields an empirical distribution of the test statistic under the null hypothesis of no variant-disease association. Finally, we compute a permutation <italic>p</italic>-value for each variant as (<italic>B<sub>0</sub></italic>+1)/(<italic>B</italic>+1), where <italic>B<sub>0</sub></italic> is the number of permutations that yield a test statistic at least as extreme as the one from unshuffled data. We used a significance threshold of <italic>p</italic> = 0.01 for all analyses throughout. Because of the computational burden with the Bayesian method and the need to replicate the study in different scenarios, we ran <italic>B</italic> = 500 permutations, which corresponded to a binomial standard error of <italic>p</italic> values of approximately 0.004 (<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003093.e005" xlink:type="simple"/></inline-formula>).</p>
+</sec><sec id="s2a5">
+<title>Power and false positive rate</title>
+<p>The entire procedure (data simulation and statistical analysis) was fully and independently repeated 200 times. Power of detecting a causal variant was the proportion of the 200 replicates in which it was declared to be significant. For non-causal variants, we calculated the proportion of them that were incorrectly identified as causal, i.e., the false positive rate (FPR). In each replicate, FPR was calculated separately for non-causal variants on the causal chromosome and those on the null chromosome. It was then averaged over the 200 replicates. Due to LD with causal variants, it may be inappropriate to call a non-causal variant on the causal chromosome a false positive if it was identified as causal. However, we loosely used the term FPR for convenience.</p>
+</sec></sec><sec id="s2b">
+<title>Exome sequencing data analysis</title>
+<sec id="s2b1">
+<title>Genotype data</title>
+<p>753 individuals of European ancestry were whole-exome sequenced in our laboratory. A series of quality control (QC) filtering (including read depth, base calling quality, missing rate per SNP and per sample, genotype imputation accuracy, Hardy-Weinberg equilibrium test and MAF) were applied to remove SNPs and individuals. After QC, the <italic>NOD2</italic> data included 728 individuals and 100 candidate variants, and the <italic>ITPA</italic> data included 715 individuals and 338 candidate variants (<xref ref-type="supplementary-material" rid="pcbi.1003093.s008">Text S2</xref>). We next describe briefly the way we obtained these variants.</p>
+<p>In the three well-known <italic>NOD2</italic> mutations on chromosome 16 for Crohn's disease, we focused on rs2066844 and rs2066845 only, because the third one (rs2066847) is an insertion variation and absent from our exome data. In addition, the GWAS signal in <italic>NOD2</italic>, rs17221417, was also unavailable in our data. However, we found another SNP, rs2066842, located 5 Kb downstream of rs17221417, is in complete LD with rs17221417 (both <italic>r</italic><sup>2</sup> and <italic>D</italic>′ are equal to one as verified in HapMap data) and is present in the data, making it a perfect proxy for rs17221417. Attention was then restricted to 1 Mb region centered around the position of rs17221417. Within this region, variants with MAF≥0.2% were chosen as candidate (proxy SNP rs2066842 was excluded), resulting in a total of 100 variants. While the overall LD pattern showed small linkage disequilibrium among the variants, there were a handful of SNP pairs in high or even complete LD (<xref ref-type="supplementary-material" rid="pcbi.1003093.s001">1</xref>, upper panel). However, we did not observe SNPs in strong LD with the two causal variants in this region.</p>
+<p>The two <italic>ITPA</italic> variants on chromosome 20 responsible for HCV treatment induced anemia, rs1127354 and rs7270101, as well as the associated GWAS signal (rs6051702) were dealt with in exactly the same way as the <italic>NOD2</italic> variants. A perfect proxy was used in lieu of the original GWAS signal, which was absent from our data. Within 1 Mb region centered around rs6051702, there were 338 variants with MAF≥0.2% and chosen for analysis. Inspection of LD plot (<xref ref-type="supplementary-material" rid="pcbi.1003093.s002">Figure S2</xref>, upper panel) revealed a few LD blocks among the 338 variants. In particular, there was one SNP in complete LD (<italic>r</italic><sup>2</sup> = 1) with causal variant rs1127354 and two SNPs in almost complete LD (<italic>r</italic><sup>2</sup> = 0.9) with causal variant rs7270101.</p>
+</sec><sec id="s2b2">
+<title>Phenotype simulation</title>
+<p>To simulate case/control phenotypes, we started by generating a quantitative liability for each individual. Symbolically, <italic>l</italic> (liability) = <italic>g</italic> (genetic value)+<italic>e</italic> (error), as noted from our previous description of liability model. Assuming a dominance model as above, we set <italic>g</italic> = 1 when a risk allele (always minor) was seen at any of the two causal sites, and <italic>g</italic> = 0 otherwise. The error was drawn from a Normal distribution with mean zero and variance <italic>V<sub>e</sub></italic>; value of <italic>V<sub>e</sub></italic> was chosen such that heritability, <italic>V<sub>g</sub></italic>/(<italic>V<sub>g</sub></italic>+<italic>V<sub>e</sub></italic>), was equal 10%, where <italic>V<sub>g</sub></italic> was estimated by the empirical variance of <italic>g</italic>'s across samples. To achieve an equal number of cases and controls, we used the median of all samples' liability as a threshold so that a half of samples below the threshold were designated as controls and the other half as cases. Since only a small fraction of individuals carried risk alleles, the entire liability distribution was dominated by that of non-carriers. Also, as we assumed a low heritability (10%), the error variance was therefore large, leading to a wide overlap between liability distribution of carriers and of non-carriers (<xref ref-type="supplementary-material" rid="pcbi.1003093.s003">Figure S3</xref>). As a result, a small portion of carriers contributed to the control population whereas almost a half of non-carriers contributed to the case population.</p>
+</sec><sec id="s2b3">
+<title>Analysis</title>
+<p>Since the genotypes were from real data and thus fixed, we were unable to assess statistical power and FPR systematically as in the full simulation. On the other hand, there will be uncertainty in the results from simulating only one set of phenotypes given the genotype data and applying the test method. To address this issue, we generated 100 sets of phenotypes using the same causal effects, giving rise to 100 replicated data sets, although each had the same genotype data. In each replicate, statistical analyses followed previous description for fully simulated data set, except that the number of permutations was increased to 1000. This way, ‘average’ performance of a method can be evaluated.</p>
+</sec></sec></sec><sec id="s3">
+<title>Results</title>
+<sec id="s3a">
+<title>Full simulation study</title>
+<p>Across the 200 replicates, the number of candidate variants ranged from 862 to 1150, with a mean number 991. Each data replicate was analyzed by the single variant test (benchmark) and the Bayesian multi-variant liability regression model with ‘no weight’, ‘<italic>r</italic> weight’, ‘phastCons weight’, and ‘<italic>r</italic>×phastCons weight’.</p>
+<p>As expected, increasing causal MAF led to an increase in the power of all methods (<xref ref-type="table" rid="pcbi-1003093-t001">Table 1</xref>). Notably, even in the lowest MAF range (0.2–1%), the best method, Bayesian model with ‘<italic>r</italic>×phastCons’ weight, achieved an average (of the three causal variants) power of 0.34 and was able to detect at least one causal variant 67% of the time. When MAF was raised to 4–5%, the average power was 0.4 for single variant test, 0.7 for Bayesian models with <italic>r</italic> weight and no weight, and 0.9 for Bayesian models with phastCons and <italic>r</italic>×phastCons weight.</p>
+<table-wrap id="pcbi-1003093-t001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003093.t001</object-id><label>Table 1</label><caption>
+<title>Power of different methods in the simulation analysis.</title>
+</caption><alternatives><graphic id="pcbi-1003093-t001-1" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003093.t001" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1">Causal MAF</td>
+<td align="left" rowspan="1" colspan="1">Number of causal variants detected</td>
+<td align="left" rowspan="1" colspan="1">Single variant test</td>
+<td align="left" rowspan="1" colspan="1">Bayesian w/o wt</td>
+<td align="left" rowspan="1" colspan="1">Bayesian wt = <italic>r</italic></td>
+<td align="left" rowspan="1" colspan="1">Bayesian wt = phastCons</td>
+<td align="left" rowspan="1" colspan="1">Bayesian wt = <italic>r</italic> × phastCons</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">0.2–1%</td>
+<td align="left" rowspan="1" colspan="1">At least one<xref ref-type="table-fn" rid="nt102">1</xref></td>
+<td align="left" rowspan="1" colspan="1">0.120</td>
+<td align="left" rowspan="1" colspan="1">0.010</td>
+<td align="left" rowspan="1" colspan="1">0.085</td>
+<td align="left" rowspan="1" colspan="1">0.220</td>
+<td align="left" rowspan="1" colspan="1">0.670</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">At least two<xref ref-type="table-fn" rid="nt103">2</xref></td>
+<td align="left" rowspan="1" colspan="1">0.005</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0.070</td>
+<td align="left" rowspan="1" colspan="1">0.310</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">All three<xref ref-type="table-fn" rid="nt104">3</xref></td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0.020</td>
+<td align="left" rowspan="1" colspan="1">0.050</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Average<xref ref-type="table-fn" rid="nt105">4</xref></td>
+<td align="left" rowspan="1" colspan="1">0.042</td>
+<td align="left" rowspan="1" colspan="1">0.003</td>
+<td align="left" rowspan="1" colspan="1">0.028</td>
+<td align="left" rowspan="1" colspan="1">0.103</td>
+<td align="left" rowspan="1" colspan="1">0.343</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">1–2%</td>
+<td align="left" rowspan="1" colspan="1">At least one</td>
+<td align="left" rowspan="1" colspan="1">0.445</td>
+<td align="left" rowspan="1" colspan="1">0.270</td>
+<td align="left" rowspan="1" colspan="1">0.420</td>
+<td align="left" rowspan="1" colspan="1">0.845</td>
+<td align="left" rowspan="1" colspan="1">0.945</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">At least two</td>
+<td align="left" rowspan="1" colspan="1">0.085</td>
+<td align="left" rowspan="1" colspan="1">0.020</td>
+<td align="left" rowspan="1" colspan="1">0.075</td>
+<td align="left" rowspan="1" colspan="1">0.590</td>
+<td align="left" rowspan="1" colspan="1">0.685</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">All three</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">0.015</td>
+<td align="left" rowspan="1" colspan="1">0.260</td>
+<td align="left" rowspan="1" colspan="1">0.285</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Average</td>
+<td align="left" rowspan="1" colspan="1">0.177</td>
+<td align="left" rowspan="1" colspan="1">0.097</td>
+<td align="left" rowspan="1" colspan="1">0.170</td>
+<td align="left" rowspan="1" colspan="1">0.565</td>
+<td align="left" rowspan="1" colspan="1">0.638</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">2–3%</td>
+<td align="left" rowspan="1" colspan="1">At least one</td>
+<td align="left" rowspan="1" colspan="1">0.660</td>
+<td align="left" rowspan="1" colspan="1">0.700</td>
+<td align="left" rowspan="1" colspan="1">0.795</td>
+<td align="left" rowspan="1" colspan="1">0.990</td>
+<td align="left" rowspan="1" colspan="1">1</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">At least two</td>
+<td align="left" rowspan="1" colspan="1">0.180</td>
+<td align="left" rowspan="1" colspan="1">0.220</td>
+<td align="left" rowspan="1" colspan="1">0420</td>
+<td align="left" rowspan="1" colspan="1">0.875</td>
+<td align="left" rowspan="1" colspan="1">0.895</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">All three</td>
+<td align="left" rowspan="1" colspan="1">0.010</td>
+<td align="left" rowspan="1" colspan="1">0.040</td>
+<td align="left" rowspan="1" colspan="1">0.130</td>
+<td align="left" rowspan="1" colspan="1">0.515</td>
+<td align="left" rowspan="1" colspan="1">0.535</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Average</td>
+<td align="left" rowspan="1" colspan="1">0.283</td>
+<td align="left" rowspan="1" colspan="1">0.320</td>
+<td align="left" rowspan="1" colspan="1">0.448</td>
+<td align="left" rowspan="1" colspan="1">0.793</td>
+<td align="left" rowspan="1" colspan="1">0.810</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">3–4%</td>
+<td align="left" rowspan="1" colspan="1">At least one</td>
+<td align="left" rowspan="1" colspan="1">0.795</td>
+<td align="left" rowspan="1" colspan="1">0.885</td>
+<td align="left" rowspan="1" colspan="1">0.935</td>
+<td align="left" rowspan="1" colspan="1">1</td>
+<td align="left" rowspan="1" colspan="1">1</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">At least two</td>
+<td align="left" rowspan="1" colspan="1">0.290</td>
+<td align="left" rowspan="1" colspan="1">0.510</td>
+<td align="left" rowspan="1" colspan="1">0.625</td>
+<td align="left" rowspan="1" colspan="1">0.950</td>
+<td align="left" rowspan="1" colspan="1">0.940</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">All three</td>
+<td align="left" rowspan="1" colspan="1">0.030</td>
+<td align="left" rowspan="1" colspan="1">0.100</td>
+<td align="left" rowspan="1" colspan="1">0.145</td>
+<td align="left" rowspan="1" colspan="1">0.610</td>
+<td align="left" rowspan="1" colspan="1">0.570</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Average</td>
+<td align="left" rowspan="1" colspan="1">0.372</td>
+<td align="left" rowspan="1" colspan="1">0.498</td>
+<td align="left" rowspan="1" colspan="1">0.568</td>
+<td align="left" rowspan="1" colspan="1">0.853</td>
+<td align="left" rowspan="1" colspan="1">0.837</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">4–5%</td>
+<td align="left" rowspan="1" colspan="1">At least one</td>
+<td align="left" rowspan="1" colspan="1">0.835</td>
+<td align="left" rowspan="1" colspan="1">0.980</td>
+<td align="left" rowspan="1" colspan="1">0.990</td>
+<td align="left" rowspan="1" colspan="1">0.995</td>
+<td align="left" rowspan="1" colspan="1">0.995</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">At least two</td>
+<td align="left" rowspan="1" colspan="1">0.380</td>
+<td align="left" rowspan="1" colspan="1">0.785</td>
+<td align="left" rowspan="1" colspan="1">0.785</td>
+<td align="left" rowspan="1" colspan="1">0.975</td>
+<td align="left" rowspan="1" colspan="1">0.950</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">All three</td>
+<td align="left" rowspan="1" colspan="1">0.060</td>
+<td align="left" rowspan="1" colspan="1">0.285</td>
+<td align="left" rowspan="1" colspan="1">0.320</td>
+<td align="left" rowspan="1" colspan="1">0.720</td>
+<td align="left" rowspan="1" colspan="1">0.660</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Average</td>
+<td align="left" rowspan="1" colspan="1">0.425</td>
+<td align="left" rowspan="1" colspan="1">0.683</td>
+<td align="left" rowspan="1" colspan="1">0.698</td>
+<td align="left" rowspan="1" colspan="1">0.897</td>
+<td align="left" rowspan="1" colspan="1">0.868</td>
+</tr>
+</tbody>
+</table>
+</alternatives><table-wrap-foot><fn id="nt101"><p>Results were based on 200 replicates. In each replicate, 500 cases and 500 controls were used to identify three causal variants from a total of ∼1000 variants, with each method being evaluated. We assumed causal variants have a constant GRR of 3 and render disease susceptibility under a dominant model.</p></fn><fn id="nt102"><label>1</label><p>The proportion of replicate simulations in which at least one causal variant was detected.</p></fn><fn id="nt103"><label>2</label><p>The proportion of replicate simulations in which at least two causal variants were detected.</p></fn><fn id="nt104"><label>3</label><p>The proportion of replicate simulations in which all three causal variants were detected.</p></fn><fn id="nt105"><label>4</label><p>The average power of three causal variants.</p></fn></table-wrap-foot></table-wrap>
+<p>FPR was overall controlled at a very low level (<xref ref-type="supplementary-material" rid="pcbi.1003093.s004">Figure S4</xref>). Across all scenarios, the maximum averaged FPR was about 7 out of 1000, as produced by single variant test on non-causal variants on the causal chromosome. As expected, FPR on the causal chromosome was consistently higher than that on the null chromosome.</p>
+<p>Next we describe in more detail results from the comparison among different methods.</p>
+<list list-type="order"><list-item>
+<p><bold>Bayesian multi-variant model with </bold><bold><italic>r</italic></bold><bold> weight consistently improved power over the one without weight.</bold> The percentage of increase was especially appreciable in low MAF ranges. For example, the average power under MAF = 1–2% was 0.097 and 0.17 for no weight and <italic>r</italic> weight, respectively, corresponding to a 75% increase from no weight to <italic>r</italic> weight (Fisher's exact test <italic>p</italic> = 0.038). Likewise, under MAF = 2–3%, we found a 41% increase in power from no weight (0.32) to <italic>r</italic> weight (0.45) (Fisher's exact test <italic>p</italic> = 0.01). The advantage of using <italic>r</italic> weight was attributed to its discriminative ability between causal and non-casual variants (see the first two rows in <xref ref-type="fig" rid="pcbi-1003093-g002">Figure 2</xref>). Despite substantial overlap observed between <italic>r</italic> distributions for non-causal variants on the causal chromosome and for causal variants, their difference was rather distinct. Moreover, for non-causal variants residing on the null chromosome, the difference became much more profound, since <italic>r</italic> values of the vast majority of the non-causal variants with GWAS signals were close to zero. These indicate that causal variants were indeed preferentially in LD with GWAS signals <xref ref-type="bibr" rid="pcbi.1003093-Zhu2">[34]</xref> and, more importantly, such information is beneficial for detecting causal variants.</p>
+</list-item><list-item>
+<p><bold><italic>r</italic></bold><bold>×phastCons weight greatly boosted power as compared with </bold><bold><italic>r</italic></bold><bold> weight alone.</bold> As noted earlier, there was a substantial fraction of low <italic>r</italic> weight causal variants, especially at low causal MAF. This is because common GWAS signals cannot adequately tag a rare causal variant. Moreover, due to LD with causal variants, it is likely for some non-causal variants to receive <italic>r</italic> weights as high as those for causal variants, thereby further attenuating the contrast between causal and non-causal variants. Collectively, these results suggest that <italic>r</italic> alone is not informative enough and explain why it is underpowered at low causal MAF. On the other hand, phastCons appeared to distinguish causal variants from non-causal variants considerably better than <italic>r</italic> did and, by design, was independent of MAF. As a result, when using the product of <italic>r</italic> and phastCons as weight, the power was significantly boosted over <italic>r</italic> weight across all MAF ranges (Fisher's exact test <italic>p</italic> all smaller than 10<sup>−5</sup>).</p>
+</list-item><list-item>
+<p><bold><italic>r</italic></bold><bold>×phastCons weight had higher power than phastCons alone when MAF&lt;2% and similar power when MAF&gt;2%.</bold> Comparing phastCons against <italic>r</italic>×phastCons, it was found that both weights rendered the Bayesian model equivalent average power (about 0.8∼0.9) when causal MAF was greater than 2%. Below 2%, however, the advantage of <italic>r</italic>×phastCons was remarkable. In particular, when MAF was between 0.2% and 1%, Bayesian with the <italic>r</italic>×phastCons weight was markedly better powered than that with phastCons (0.34 <italic>vs.</italic> 0.10, Fisher's exact test <italic>p</italic> = 9.6×10<sup>−9</sup>). A closer examination of the distribution of effect sizes (first row of <xref ref-type="supplementary-material" rid="pcbi.1003093.s005">Figure S5</xref>) revealed that estimated effects of causal variants were generally larger with <italic>r</italic>×phastCons weight than with phastCons, especially for MAF between 0.2–1%. The increase of causal MAF resulted in increased effect sizes for both weights and, in the meantime, lessened their difference as well.</p>
+</list-item><list-item>
+<p><bold>Bayesian with </bold><bold><italic>r</italic></bold><bold>×phastCons weight outperformed other methods in controlling FPR</bold>. As causal variants became more common, the degree of LD as measured by <italic>r</italic> between them and linked non-causal variants also increased, resulting in elevated FPR in general (first column of <xref ref-type="supplementary-material" rid="pcbi.1003093.s004">Figure S4</xref>). Single variant test could not control FPR well on the causal chromosome; many more false positives were discovered, particularly at higher causal MAF's. The same was found for Bayesian models with no weight and <italic>r</italic> weight. In contrast, Bayesian models with phastCons and <italic>r</italic>×phastCons weights were relatively more robust to causal MAF in maintaining FPR. This was most clear in the two highest MAF ranges (3–4% and 4–5%), where FPR by these two weights were substantially lower than that by other methods.</p>
+<p>We next examined FPR of non-causal variants on the null chromosome (second column of <xref ref-type="supplementary-material" rid="pcbi.1003093.s004">Figure S4</xref>). Not surprisingly, the average FPR of these null variants was close to zero by all methods. However, if we consider the proportion of the 200 replicates where false positives occurred, Bayesian model with phastCons weight appeared to produce the greatest FPR. We were particularly interested in the relative performance of <italic>r</italic> × phastCons <italic>vs.</italic> phastCons, and compared their effect estimates at these null variants (second row of <xref ref-type="supplementary-material" rid="pcbi.1003093.s005">Figure S5</xref>). While the estimated null effects were all concentrated around 0 distributionally, <italic>r</italic>×phastCons weight presented a much sharper peak around 0. There was a ‘heavier’ tail on nonzero values for estimated effects using the phastCons weight, making this method more prone to false discoveries. Such difference in the sizes of estimated effects between the two weights may be explained by the underlying distributions of the weights. Indeed, while the vast majority of phastCons (4<sup>th</sup> row of <xref ref-type="supplementary-material" rid="pcbi.1003093.s006">Figure S6</xref>) of the null variants was concentrated on the smallest value (−2 on the log scale, or 0.01 on the original scale), there was a fair amount of probability mass within range −1 to 0 (0.1 to 1 on the original scale). In contrast, we found virtually zero mass for the <italic>r</italic>×phastCons weight (last row) beyond −1, and the entire distribution was shifted to the left as compared to phastCons weight. These results indicated that the incorporation of <italic>r</italic> into variant weighting suppressed false positives effectively, making <italic>r</italic>×phastCons weight the method of choice when considering both power and FPR.</p>
+</list-item></list>
+<fig id="pcbi-1003093-g002" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003093.g002</object-id><label>Figure 2</label><caption>
+<title>Distributions of three informative weights (<italic>r</italic>, phastCons and <italic>r</italic>×phastCons) for causal variants and non-causal variants on the causal and null chromosomes in the simulation study.</title>
+<p>In each MAF range, weights were collected from 200 replicates, and weights in each replicate were scaled by dividing each by the maximal value so as to bound final weight between 0 and 1.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003093.g002" position="float" xlink:type="simple"/></fig>
+<p>In summary, by simulation we showed that Bayesian multi-variant liability regression model with informative weight assigned to variants substantially improved the power to detect causal variants, compared with single variant test and unweighted Bayesian model. In particular, we found that the product of <italic>r</italic> and phastCons constitutes a better weight than either alone in terms of power and FPR, especially at low causal MAF.</p>
+</sec><sec id="s3b">
+<title>Exome sequencing data analysis</title>
+<p>We then applied our method to real exome sequence data with simulated phenotypes. Information about the two <italic>NOD2</italic> causal variants (rs2066844 and rs2066845) and the two <italic>ITPA</italic> variants (rs1127354 and rs7270101) is given in <xref ref-type="table" rid="pcbi-1003093-t002">Table 2</xref>. In both data sets, while LD of causal variants with GWAS signal was higher than most of the non-causal variants, there existed non-causal variants with higher LD (<xref ref-type="supplementary-material" rid="pcbi.1003093.s001">Figure S1</xref>, <xref ref-type="supplementary-material" rid="pcbi.1003093.s002">S2</xref>, lower panel). Such occasional high LD with GWAS signal for non-causal variants was also observed in the previous simulated genomes data. Similarly, for some non-causal variants their phastCons scores were higher than those of causal variants. This is not surprising because variants not causal for one disease may be causal for other diseases. For example, in the <italic>NOD2</italic> data, 28% of non-causal variants had higher composite phastCons scores than the causal variant rs2066844 (0.32), and in the <italic>ITPA</italic> data 34% of non-causal variants had higher scores than the causal variant rs7270101 (0.17). However, it was rare for non-causal variants to have both high <italic>r</italic> and high phastCons. This made <italic>r</italic>×phastCons an attractive weighting scheme because it incorporates both measures to discriminate causal from non-causal variants.</p>
+<table-wrap id="pcbi-1003093-t002" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003093.t002</object-id><label>Table 2</label><caption>
+<title><italic>NOD2</italic> and <italic>ITPA</italic> causal variants in the exome sequencing data.</title>
+</caption><alternatives><graphic id="pcbi-1003093-t002-2" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003093.t002" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1">Gene</td>
+<td align="left" rowspan="1" colspan="1">Causal variant</td>
+<td align="left" rowspan="1" colspan="1">Chromosome</td>
+<td align="left" rowspan="1" colspan="1">Build 37 position (bp)</td>
+<td align="left" rowspan="1" colspan="1">MAF</td>
+<td align="left" rowspan="1" colspan="1">LD (<italic>r</italic>) with GWAS signal</td>
+<td align="left" rowspan="1" colspan="1">Composite phastCons score</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1"><italic>NOD2</italic></td>
+<td align="left" rowspan="1" colspan="1">rs2066844</td>
+<td align="left" rowspan="1" colspan="1">16</td>
+<td align="left" rowspan="1" colspan="1">50745926</td>
+<td align="left" rowspan="1" colspan="1">5.29%</td>
+<td align="left" rowspan="1" colspan="1">0.39</td>
+<td align="left" rowspan="1" colspan="1">0.32 (0.16, 0.24, 0.95)</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">rs2066845</td>
+<td align="left" rowspan="1" colspan="1">16</td>
+<td align="left" rowspan="1" colspan="1">50756540</td>
+<td align="left" rowspan="1" colspan="1">1.10%</td>
+<td align="left" rowspan="1" colspan="1">0.16</td>
+<td align="left" rowspan="1" colspan="1">0.99 (1, 1, 0.96)</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><italic>ITPA</italic></td>
+<td align="left" rowspan="1" colspan="1">rs1127354</td>
+<td align="left" rowspan="1" colspan="1">20</td>
+<td align="left" rowspan="1" colspan="1">3193842</td>
+<td align="left" rowspan="1" colspan="1">7.55%</td>
+<td align="left" rowspan="1" colspan="1">0.34</td>
+<td align="left" rowspan="1" colspan="1">0.99 (1, 1, 0.99)</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">rs7270101</td>
+<td align="left" rowspan="1" colspan="1">20</td>
+<td align="left" rowspan="1" colspan="1">3193893</td>
+<td align="left" rowspan="1" colspan="1">13.85%</td>
+<td align="left" rowspan="1" colspan="1">0.58</td>
+<td align="left" rowspan="1" colspan="1">0.17(0.016, 0, 0.95)</td>
+</tr>
+</tbody>
+</table>
+</alternatives><table-wrap-foot><fn id="nt106"><p>The composite phastCons is weighted sum of vertebrate cons, mammal cons and primate cons (shown in parenthesis), with weight 1/2, 1/3 and 1/6, respectively.</p></fn></table-wrap-foot></table-wrap>
+<p>In <xref ref-type="fig" rid="pcbi-1003093-g003">Figure 3 (A) and (B)</xref>, we first show a Manhattan plot from single variant test and one from Bayesian liability model with <italic>r</italic>×phastCons weight, based on one representative example out of the 100 simulated data sets. We then summarize results from both methods by displaying for each candidate variant the proportion of the 100 simulations where it was detected (i.e., being declared as significant).</p>
+<fig id="pcbi-1003093-g003" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003093.g003</object-id><label>Figure 3</label><caption>
+<title>Causal variant detection in the exome sequencing data analysis.</title>
+<p>(A): <italic>NOD2</italic> data; (B): <italic>ITPA</italic> data. The two top panels are from one replicate of the simulation. For single variant test, SNP effect size was represented by −log10 of <italic>p</italic> value from logistic regression model; for Bayesian liability model, it was represented by the standardized effect estimated at each SNP. Red dots indicate two causal variants (see <xref ref-type="table" rid="pcbi-1003093-t001">Table 1</xref> for more information). Blue vertical bars show values of SNP weights (<italic>r</italic> × phastCons). The horizontal dashed line indicates effect size at the significance threshold (permutation <italic>p</italic> value = 0.01). The bottom panel shows proportion of simulations where a variant was detected (i.e., significant at permutation <italic>p</italic> = 0.01 level). Causal variants are marked in red color.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003093.g003" position="float" xlink:type="simple"/></fig>
+<p>As seen in <xref ref-type="fig" rid="pcbi-1003093-g003">Figure 3 (A)</xref>, <italic>r</italic>×phastCons weights had a clear pattern in the <italic>NOD2</italic> sequence variants: the two causal variants ranked 4<sup>th</sup> and 5<sup>th</sup> among all 100 variants; with a few exceptions, almost all non-causal variants had very small weights. The last panel illustrates by replicating simulations how well each method identified causal <italic>vs.</italic> non-causal variants. For the relatively common causal variant rs2066844 (MAF = 5%), it was almost always identified by both methods across the 100 simulations. For the low-frequency causal variant rs2066845 (MAF = 1%), however, proportion of detection was about 40% and 20% by the Bayesian model and single variant test, respectively. Considering the low heritability (10%) and modest sample size (∼700), 40% is a substantial improvement over 20% for detecting causal variant at an allele frequency of 1%. In the meantime, false detection among non-causal variants produced by either method was negligible, likely a result of the absence of linkage disequilibrium in this region.</p>
+<p>Compared with variants in the <italic>NOD2</italic> region, variants in the <italic>ITPA</italic> region had a less clear pattern in <italic>r</italic>×phastCons (<xref ref-type="fig" rid="pcbi-1003093-g003">Figure 3(B)</xref>): causal variant rs1127354 ranked at the 4<sup>th</sup> whereas causal variant rs7270101 ranked at the 21<sup>st</sup>. The lower weight of rs7270101 had to do with the fact that it was an intronic SNP and was less conserved. While the Bayesian model outperformed single variant test for rs1127354 (MAF = 7.55%) by a large margin (80% <italic>vs.</italic> 30%), for rs7270101 (MAF = 13.85%) the pattern was opposite: the proportion of single variant far exceeded that of the Bayesian model (80% <italic>vs.</italic> 40%). However, the higher power of single variant test was accompanied by a large number of false positives, as opposed to virtually no false positives by the Bayesian model. This is in fact a strength of our Bayesian model in that it is able to select the correct causal variants out of many SNPs in LD. In addition, the two causal variants were always the top ranked variants in the Bayesian results while they were lower ranked in the single variant test. This makes prioritization much more accurate and efficient by the Bayesian model.</p>
+</sec></sec><sec id="s4">
+<title>Discussion</title>
+<p>Here we developed and evaluated a Bayesian multi-variant regression approach for detecting causal variants in sequence data. We first tested its performance in simulated data using an intermediate risk (GRR = 3), a moderate and realistic sample size (500 cases and 500 controls), and a range of minor allele frequencies for the causal variants. Compared with the standard single variant test, our method, when coupled with informative prior weights, showed a clear advantage in statistical power. Application of the method to real exome sequence data in order to identify known causal variants implicated through GWAS showed similar results. In particular, while the high LD among variants in the <italic>ITPA</italic> data created great ambiguity in interpreting the results from single variant test, the Bayesian model using <italic>r</italic>×phastCons to weigh variants was able to effectively discriminate causal from non-causal variants in terms of their effect size estimates.</p>
+<p>The Bayesian multi-variant regression model entails leveraging informative prior information on variants so as to better distinguish causal variants from non-causal variants. In this study, the uses of different kinds of weights give rise to different prior specifications (shrinkage) of variant effects, which in turn affect posterior estimation of variant effects and their statistical significance. As we have shown in the Results section, power and FPR of the Bayesian regression model were greatly dependent on the choice of prior weighting scheme. A good weighting scheme is data-dependent and often requires combining different pieces of information. In the full simulation study, which served as a proof of concept, we generated data assuming that variant causality is correlated with its conservation as encoded by phastCons. We found that the combination of significant associations from GWAS and variant phastCons rendered the Bayesian model a highly improved performance in power than one without weighting. However, while there is a tendency for causal variants to be evolutionarily more conserved for many diseases, this may not be always true, especially for late on-set diseases that are not subject to natural selection. In such scenarios, some form of prediction for variant effect, such as the PolyPhen scores <xref ref-type="bibr" rid="pcbi.1003093-Ramensky1">[35]</xref> for coding variants would be a more appropriate functional measure.</p>
+<p>Using prior biological knowledge in genetic association studies has increasingly been adopted recently. Several studies have proposed using variable significance threshold for variants. For example, the Prioritized Subset Analysis (PSA) <xref ref-type="bibr" rid="pcbi.1003093-Li3">[36]</xref> partitions variants to two subsets, a ‘prioritized set’ and a ‘complementary set’, where the prioritized set contains variants that are more likely to harbor causative loci. It then controls false discovery rate in each set separately, resulting in different thresholds on nominal p values for prioritized and complementary variants. The partitioning of variants into two different priority sets can also be iteratively optimized given the data <xref ref-type="bibr" rid="pcbi.1003093-Li4">[37]</xref>. Alternatively, a more sophisticated method is to have variant specific threshold or weight based on their functionality <xref ref-type="bibr" rid="pcbi.1003093-Darnell1">[38]</xref>. In addition, grouping-based association tests can also aggregate variants differentially according to some prior knowledge <xref ref-type="bibr" rid="pcbi.1003093-Price1">[12]</xref>, <xref ref-type="bibr" rid="pcbi.1003093-Sul1">[39]</xref>. One essential difference between our method and previous methods is that we fit all variants simultaneously while the variable threshold methods often estimate significance for variants individually.</p>
+<p>As in the common theme of Bayesian shrinkage regression methods, our knowledge on variant effect appears only in its prior variance, since all effects are shrunk toward a single prior mean, which is zero. As such, the weight only indicates magnitude of variant effect but not direction. Indeed, for variants with high phastCons weights, it is unlikely for their minor alleles to have a protective role in disease liability. Thus, it is desirable to assign a positive prior mean for these variants in order to enhance the power of discovery. On the other hand, for variants with near zero weights, we still can use zero mean as prior. These considerations require a different prior specification than presented here as well as more complicated posterior computations <xref ref-type="bibr" rid="pcbi.1003093-Maclehose1">[40]</xref>, which will be explored in further extension of the present work.</p>
+<p>An alternative Bayesian approach to identifying variants associated with disease is Bayesian model selection via Bayes factor. A representative example under this framework is the Bayesian risk index method <xref ref-type="bibr" rid="pcbi.1003093-Quintana1">[41]</xref>, which allows for uncertainty of inclusion of variants and the direction of the effect. As opposed to fixing the number of variants, this feature offers the method some advantage when the proportion of causal variants is low in a region under study. Specifically, it provides a global evidence of a set of variants for their association with the disease and, if there is a global association, it furthers asks which variants are driving the association. Our method differs from the Bayesian risk index in the following essential ways. First, in our multi-variant regression model, a fully Bayesian treatment is used for the estimation of variant effects, whereas the computation of Bayes factor (as in Bayesian risk index) relies on approximation of marginal likelihood using maximum likelihood estimates of variant effects. That is, our method captures the uncertainty of variant effects through prior distributions. Second, variant-specific weights can be readily incorporated in our regression model, which has not been made possible in the Bayesian risk index. Furthermore, Bayes factor is a quantity that evaluates evidence in favor of a specific model; typically a value greater than 3.2 is interpreted as positive support. However, deciding upon a significant threshold for Bayes factor and thereby making decision is non-trivial and requires assumptions such as the relative cost of type II error to type I error <xref ref-type="bibr" rid="pcbi.1003093-Wakefield1">[42]</xref>. Hence, our choice of using a test statistic followed by permutation test to control family wise type I error appears to be more convenient for declaring significance of a variant.</p>
+<p>We tested our method on a relative small candidate region (1 Mb) around GWAS signals for convenient demonstration of the method, mainly for computational feasibility as many replicates needed to be run in the simulation study. The method can be extended to a larger candidate region to account for the situation that some causal variants could be far away from GWAS signals. Also, while we focused on low frequency candidate variants in our analyses, the method can readily encompass both common and rare variations. In both cases where the number of variants to be fitted in the model would be increased substantially, sample size needs to be increased accordingly to ensure accurate estimation of variant effects. On the other hand, as computing time grows when a large number of variants are analyzed, it may be useful to prescreen variants based on one or more criteria (e.g., exonic versus intergenic). In addition, another incentive for prescreening is that, with a limited sample size, adding more non-causal variants to the model would lead to less accurate effect size estimation for causal variants. In fact, the same argument holds for single variant test where prescreening can alleviate the burden of multiple testing.</p>
+<p>A common problem with a multiple regression model is multicollinearity among variables. In our context, this is caused by high LD between variants. In particular, variances of effect estimates increase for variants that are in LD with at least one other variant in the same model. This often leads to false rejection of a true association. In our method, this problem is mitigated by differential shrinkage on variant effects through differential weighting. That is, despite being highly correlated in their genotypes, variants in high LD can still be distinguished by additional information such as the phastCons score. This may explain why the supplement of phastCons to ‘<italic>r</italic> weight’ improved power substantially. We also performed a small experiment (<xref ref-type="supplementary-material" rid="pcbi.1003093.s009">Text S3</xref>) where highly correlated variants were clustered and tagged. We tested the ability of the Bayesian model with ‘no weight’ to detect variant clusters that contained the causal variant as opposed to its ability to detect individual causal variants without clustering and tagging. Interestingly, clustering improved the power from 56% to 96% for causal MAF between 4–5%. However, the resolution to individual variants was lost by clustering and tagging. Nonetheless, when an informative weight is not available, this provides an efficient way to narrow down to variant clusters that contain causal variants.</p>
+<p>Our method is implemented to be able to include covariates such as principal components of SNP genotypes. However, an open issue exists with the permutation procedure in its validity in the presence of confounding covariates. In this case, naive shuffling of disease statuses would break the confounding structure observed in the original data. There are existing methods that can effectively preserve relationships between confounding covariates and genotypes as well as between covariates and disease statuses <xref ref-type="bibr" rid="pcbi.1003093-Epstein1">[43]</xref>.</p>
+</sec><sec id="s5">
+<title>Supporting Information</title>
+<supplementary-material id="pcbi.1003093.s001" mimetype="application/pdf" xlink:href="info:doi/10.1371/journal.pcbi.1003093.s001" position="float" xlink:type="simple"><label>Figure S1</label><caption>
+<p>Upper: pairwise LD (<italic>r</italic><sup>2</sup>) of the 100 candidate variants in <italic>NOD2</italic> region in the exome sequencing data. Lower: LD (<italic>r</italic>) between each candidate variant and the GWAS signal. Causal variants are marked in red color.</p>
+<p>(PDF)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1003093.s002" mimetype="application/pdf" xlink:href="info:doi/10.1371/journal.pcbi.1003093.s002" position="float" xlink:type="simple"><label>Figure S2</label><caption>
+<p>Same as <xref ref-type="supplementary-material" rid="pcbi.1003093.s001">Figure S1</xref> but for the 338 candidate variants in <italic>ITPA</italic> region.</p>
+<p>(PDF)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1003093.s003" mimetype="application/pdf" xlink:href="info:doi/10.1371/journal.pcbi.1003093.s003" position="float" xlink:type="simple"><label>Figure S3</label><caption>
+<p>Distributions of the simulated liability values for exome sequencing samples. Dashed line marks median of the distribution of all samples, which was used to classify samples to cases and controls. (A): <italic>NOD2</italic> data, where 12% of samples were risk allele carriers. (B): <italic>ITPA</italic> data, where 39% of samples were risk allele carriers.</p>
+<p>(PDF)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1003093.s004" mimetype="application/pdf" xlink:href="info:doi/10.1371/journal.pcbi.1003093.s004" position="float" xlink:type="simple"><label>Figure S4</label><caption>
+<p>Heatmap plots showing the number of non-causal variants that were falsely identified as causal in each of the 200 replicates. Numbers on the right side of each plot are false positive rates averaged across replicates for different methods.</p>
+<p>(PDF)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1003093.s005" mimetype="application/pdf" xlink:href="info:doi/10.1371/journal.pcbi.1003093.s005" position="float" xlink:type="simple"><label>Figure S5</label><caption>
+<p>Distributions of standardized variant effect estimates from Bayesian liability model with phastCons weight and with <italic>r</italic>×phastCons weight. In each scenario (plot), effect estimates of Bayesian with phastCons weight (or <italic>r</italic>×phastCons) were collected from 200 replicates to form a distribution density.</p>
+<p>(PDF)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1003093.s006" mimetype="application/pdf" xlink:href="info:doi/10.1371/journal.pcbi.1003093.s006" position="float" xlink:type="simple"><label>Figure S6</label><caption>
+<p>Same as <xref ref-type="fig" rid="pcbi-1003093-g002">Figure 2</xref> except that weight is shown on the log10 scale.</p>
+<p>(PDF)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1003093.s007" mimetype="application/pdf" xlink:href="info:doi/10.1371/journal.pcbi.1003093.s007" position="float" xlink:type="simple"><label>Text S1</label><caption>
+<p>Gibbs sampling in Bayesian liability regression model.</p>
+<p>(PDF)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1003093.s008" mimetype="application/pdf" xlink:href="info:doi/10.1371/journal.pcbi.1003093.s008" position="float" xlink:type="simple"><label>Text S2</label><caption>
+<p>Exome sequencing data processing and quality control.</p>
+<p>(PDF)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1003093.s009" mimetype="application/pdf" xlink:href="info:doi/10.1371/journal.pcbi.1003093.s009" position="float" xlink:type="simple"><label>Text S3</label><caption>
+<p>Using simulation to demonstrate effect of clustering variants on power.</p>
+<p>(PDF)</p>
+</caption></supplementary-material></sec></body>
+<back>
+<ack>
+<p>The authors acknowledge Dr. David Goldstein for discussion, suggestions and encouragement.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1003093-Stitziel1"><label>1</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Stitziel</surname><given-names>NO</given-names></name>, <name name-style="western"><surname>Kiezun</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Sunyaev</surname><given-names>S</given-names></name> (<year>2011</year>) <article-title>Computational and statistical approaches to analyzing variants identified by exome sequencing</article-title>. <source>Genome Biol</source> <volume>12</volume>: <fpage>227</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Kryukov1"><label>2</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kryukov</surname><given-names>GV</given-names></name>, <name name-style="western"><surname>Pennacchio</surname><given-names>LA</given-names></name>, <name name-style="western"><surname>Sunyaev</surname><given-names>SR</given-names></name> (<year>2007</year>) <article-title>Most rare missense alleles are deleterious in humans: implications for complex disease and association studies</article-title>. <source>Am J Hum Genet</source> <volume>80</volume>: <fpage>727</fpage>–<lpage>739</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Zhu1"><label>3</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zhu</surname><given-names>Q</given-names></name>, <name name-style="western"><surname>Ge</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Maia</surname><given-names>JM</given-names></name>, <name name-style="western"><surname>Zhu</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Petrovski</surname><given-names>S</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>A Genome-wide Comparison of the Functional Properties of Rare and Common Genetic Variants in Humans</article-title>. <source>Am J Hum Genet</source> <volume>88</volume>: <fpage>458</fpage>–<lpage>468</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Fearnhead1"><label>4</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fearnhead</surname><given-names>NS</given-names></name>, <name name-style="western"><surname>Wilding</surname><given-names>JL</given-names></name>, <name name-style="western"><surname>Winney</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Tonks</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Bartlett</surname><given-names>S</given-names></name>, <etal>et al</etal>. (<year>2004</year>) <article-title>Multiple rare variants in different genes account for multifactorial inherited susceptibility to colorectal adenomas</article-title>. <source>Proc Natl Acad Sci U S A</source> <volume>101</volume>: <fpage>15992</fpage>–<lpage>15997</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Helbig1"><label>5</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Helbig</surname><given-names>I</given-names></name>, <name name-style="western"><surname>Mefford</surname><given-names>HC</given-names></name>, <name name-style="western"><surname>Sharp</surname><given-names>AJ</given-names></name>, <name name-style="western"><surname>Guipponi</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Fichera</surname><given-names>M</given-names></name>, <etal>et al</etal>. (<year>2009</year>) <article-title>15q13.3 microdeletions increase risk of idiopathic generalized epilepsy</article-title>. <source>Nat Genet</source> <volume>41</volume>: <fpage>160</fpage>–<lpage>162</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Holm1"><label>6</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Holm</surname><given-names>H</given-names></name>, <name name-style="western"><surname>Gudbjartsson</surname><given-names>DF</given-names></name>, <name name-style="western"><surname>Sulem</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Masson</surname><given-names>G</given-names></name>, <name name-style="western"><surname>Helgadottir</surname><given-names>HT</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>A rare variant in MYH6 is associated with high risk of sick sinus syndrome</article-title>. <source>Nat Genet</source> <volume>43</volume>: <fpage>316</fpage>–<lpage>320</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Nejentsev1"><label>7</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Nejentsev</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Walker</surname><given-names>N</given-names></name>, <name name-style="western"><surname>Riches</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Egholm</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Todd</surname><given-names>JA</given-names></name> (<year>2009</year>) <article-title>Rare variants of IFIH1, a gene implicated in antiviral responses, protect against type 1 diabetes</article-title>. <source>Science</source> <volume>324</volume>: <fpage>387</fpage>–<lpage>389</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Manolio1"><label>8</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Manolio</surname><given-names>TA</given-names></name>, <name name-style="western"><surname>Collins</surname><given-names>FS</given-names></name>, <name name-style="western"><surname>Cox</surname><given-names>NJ</given-names></name>, <name name-style="western"><surname>Goldstein</surname><given-names>DB</given-names></name>, <name name-style="western"><surname>Hindorff</surname><given-names>LA</given-names></name>, <etal>et al</etal>. (<year>2009</year>) <article-title>Finding the missing heritability of complex diseases</article-title>. <source>Nature</source> <volume>461</volume>: <fpage>747</fpage>–<lpage>753</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Dickson1"><label>9</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Dickson</surname><given-names>SP</given-names></name>, <name name-style="western"><surname>Wang</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Krantz</surname><given-names>I</given-names></name>, <name name-style="western"><surname>Hakonarson</surname><given-names>H</given-names></name>, <name name-style="western"><surname>Goldstein</surname><given-names>DB</given-names></name> (<year>2010</year>) <article-title>Rare variants create synthetic genome-wide associations</article-title>. <source>PLoS Biol</source> <volume>8</volume>: <fpage>e1000294</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Li1"><label>10</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Li</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Leal</surname><given-names>SM</given-names></name> (<year>2008</year>) <article-title>Methods for detecting associations with rare variants for common diseases: application to analysis of sequence data</article-title>. <source>Am J Hum Genet</source> <volume>83</volume>: <fpage>311</fpage>–<lpage>321</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Madsen1"><label>11</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Madsen</surname><given-names>BE</given-names></name>, <name name-style="western"><surname>Browning</surname><given-names>SR</given-names></name> (<year>2009</year>) <article-title>A groupwise association test for rare mutations using a weighted sum statistic</article-title>. <source>PLoS Genet</source> <volume>5</volume>: <fpage>e1000384</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Price1"><label>12</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Price</surname><given-names>AL</given-names></name>, <name name-style="western"><surname>Kryukov</surname><given-names>GV</given-names></name>, <name name-style="western"><surname>de Bakker</surname><given-names>PI</given-names></name>, <name name-style="western"><surname>Purcell</surname><given-names>SM</given-names></name>, <name name-style="western"><surname>Staples</surname><given-names>J</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>Pooled association tests for rare variants in exon-resequencing studies</article-title>. <source>Am J Hum Genet</source> <volume>86</volume>: <fpage>832</fpage>–<lpage>838</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Hoffmann1"><label>13</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hoffmann</surname><given-names>TJ</given-names></name>, <name name-style="western"><surname>Marini</surname><given-names>NJ</given-names></name>, <name name-style="western"><surname>Witte</surname><given-names>JS</given-names></name> (<year>2010</year>) <article-title>Comprehensive approach to analyzing rare genetic variants</article-title>. <source>PLoS One</source> <volume>5</volume>: <fpage>e13584</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-IonitaLaza1"><label>14</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ionita-Laza</surname><given-names>I</given-names></name>, <name name-style="western"><surname>Buxbaum</surname><given-names>JD</given-names></name>, <name name-style="western"><surname>Laird</surname><given-names>NM</given-names></name>, <name name-style="western"><surname>Lange</surname><given-names>C</given-names></name> (<year>2011</year>) <article-title>A new testing strategy to identify rare variants with either risk or protective effect on disease</article-title>. <source>PLoS Genet</source> <volume>7</volume>: <fpage>e1001289</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Li2"><label>15</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Li</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Byrnes</surname><given-names>AE</given-names></name>, <name name-style="western"><surname>Li</surname><given-names>M</given-names></name> (<year>2010</year>) <article-title>To identify associations with rare variants, just WHaIT: Weighted haplotype and imputation-based tests</article-title>. <source>Am J Hum Genet</source> <volume>87</volume>: <fpage>728</fpage>–<lpage>735</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Neale1"><label>16</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Neale</surname><given-names>BM</given-names></name>, <name name-style="western"><surname>Rivas</surname><given-names>MA</given-names></name>, <name name-style="western"><surname>Voight</surname><given-names>BF</given-names></name>, <name name-style="western"><surname>Altshuler</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Devlin</surname><given-names>B</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>Testing for an unusual distribution of rare variants</article-title>. <source>PLoS Genet</source> <volume>7</volume>: <fpage>e1001322</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Pan1"><label>17</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pan</surname><given-names>W</given-names></name>, <name name-style="western"><surname>Shen</surname><given-names>X</given-names></name> (<year>2011</year>) <article-title>Adaptive tests for association analysis of rare variants</article-title>. <source>Genet Epidemiol</source> <volume>35</volume>: <fpage>381</fpage>–<lpage>388</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Wu1"><label>18</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wu</surname><given-names>MC</given-names></name>, <name name-style="western"><surname>Lee</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Cai</surname><given-names>T</given-names></name>, <name name-style="western"><surname>Li</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Boehnke</surname><given-names>M</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>Rare-variant association testing for sequencing data with the sequence kernel association test</article-title>. <source>Am J Hum Genet</source> <volume>89</volume>: <fpage>82</fpage>–<lpage>93</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Kinnamon1"><label>19</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kinnamon</surname><given-names>DD</given-names></name>, <name name-style="western"><surname>Hershberger</surname><given-names>RE</given-names></name>, <name name-style="western"><surname>Martin</surname><given-names>ER</given-names></name> (<year>2012</year>) <article-title>Reconsidering association testing methods using single-variant test statistics as alternatives to pooling tests for sequence data with rare variants</article-title>. <source>PLoS One</source> <volume>7</volume>: <fpage>e30238</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Meuwissen1"><label>20</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Meuwissen</surname><given-names>THE</given-names></name>, <name name-style="western"><surname>Hayes</surname><given-names>BJ</given-names></name>, <name name-style="western"><surname>Goddard</surname><given-names>ME</given-names></name> (<year>2001</year>) <article-title>Prediction of total genetic value using genome-wide dense marker maps</article-title>. <source>Genetics</source> <volume>157</volume>: <fpage>1819</fpage>–<lpage>1829</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Sorensen1"><label>21</label>
+<mixed-citation publication-type="other" xlink:type="simple">Sorensen D, Gianola D (2002) Likelihood, Bayesian and MCMC Methods in Quantitative Genetics. New York, NY: Springer.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Yi1"><label>22</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yi</surname><given-names>N</given-names></name>, <name name-style="western"><surname>Xu</surname><given-names>S</given-names></name> (<year>2008</year>) <article-title>Bayesian LASSO for quantitative trait loci mapping</article-title>. <source>Genetics</source> <volume>179</volume>: <fpage>1045</fpage>–<lpage>1055</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Cooper1"><label>23</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cooper</surname><given-names>GM</given-names></name>, <name name-style="western"><surname>Goode</surname><given-names>DL</given-names></name>, <name name-style="western"><surname>Ng</surname><given-names>SB</given-names></name>, <name name-style="western"><surname>Sidow</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Bamshad</surname><given-names>MJ</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>Single-nucleotide evolutionary constraint scores highlight disease-causing mutations</article-title>. <source>Nat Methods</source> <volume>7</volume>: <fpage>250</fpage>–<lpage>251</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Cooper2"><label>24</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cooper</surname><given-names>GM</given-names></name>, <name name-style="western"><surname>Shendure</surname><given-names>J</given-names></name> (<year>2011</year>) <article-title>Needles in stacks of needles: finding disease-causal variants in a wealth of genomic data</article-title>. <source>Nat Rev Genet</source> <volume>12</volume>: <fpage>628</fpage>–<lpage>640</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Hugot1"><label>25</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hugot</surname><given-names>JP</given-names></name>, <name name-style="western"><surname>Chamaillard</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Zouali</surname><given-names>H</given-names></name>, <name name-style="western"><surname>Lesage</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Cezard</surname><given-names>JP</given-names></name>, <etal>et al</etal>. (<year>2001</year>) <article-title>Association of NOD2 leucine-rich repeat variants with susceptibility to Crohn's disease</article-title>. <source>Nature</source> <volume>411</volume>: <fpage>599</fpage>–<lpage>603</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Ogura1"><label>26</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ogura</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Bonen</surname><given-names>DK</given-names></name>, <name name-style="western"><surname>Inohara</surname><given-names>N</given-names></name>, <name name-style="western"><surname>Nicolae</surname><given-names>DL</given-names></name>, <name name-style="western"><surname>Chen</surname><given-names>FF</given-names></name>, <etal>et al</etal>. (<year>2001</year>) <article-title>A frameshift mutation in NOD2 associated with susceptibility to Crohn's disease</article-title>. <source>Nature</source> <volume>411</volume>: <fpage>603</fpage>–<lpage>606</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-The1"><label>27</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><collab xlink:type="simple">The Wellcome Trust Case Control Consortium</collab> (<year>2007</year>) <article-title>Genome-wide association study of 14,000 cases of seven common diseases and 3,000 shared controls</article-title>. <source>Nature</source> <volume>447</volume>: <fpage>661</fpage>–<lpage>678</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Fellay1"><label>28</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fellay</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Thompson</surname><given-names>AJ</given-names></name>, <name name-style="western"><surname>Ge</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Gumbs</surname><given-names>CE</given-names></name>, <name name-style="western"><surname>Urban</surname><given-names>TJ</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>ITPA gene variants protect against anaemia in patients treated for chronic hepatitis C</article-title>. <source>Nature</source> <volume>464</volume>: <fpage>405</fpage>–<lpage>408</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Hitomi1"><label>29</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hitomi</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Cirulli</surname><given-names>ET</given-names></name>, <name name-style="western"><surname>Fellay</surname><given-names>J</given-names></name>, <name name-style="western"><surname>McHutchison</surname><given-names>JG</given-names></name>, <name name-style="western"><surname>Thompson</surname><given-names>AJ</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>Inosine triphosphate protects against ribavirin-induced adenosine triphosphate loss by adenylosuccinate synthase function</article-title>. <source>Gastroenterology</source> <volume>140</volume>: <fpage>1314</fpage>–<lpage>1321</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Liang1"><label>30</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Liang</surname><given-names>L</given-names></name>, <name name-style="western"><surname>Zollner</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Abecasis</surname><given-names>GR</given-names></name> (<year>2007</year>) <article-title>GENOME: a rapid coalescent-based whole genome simulator</article-title>. <source>Bioinformatics</source> <volume>23</volume>: <fpage>1565</fpage>–<lpage>1567</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Churchill1"><label>31</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Churchill</surname><given-names>GA</given-names></name>, <name name-style="western"><surname>Doerge</surname><given-names>RW</given-names></name> (<year>1994</year>) <article-title>Empirical threshold values for quantitative trait mapping</article-title>. <source>Genetics</source> <volume>138</volume>: <fpage>963</fpage>–<lpage>971</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Nichols1"><label>32</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Nichols</surname><given-names>TE</given-names></name>, <name name-style="western"><surname>Holmes</surname><given-names>AP</given-names></name> (<year>2001</year>) <article-title>Nonparametric permutation tests for functional neuroimaging: a primer with examples</article-title>. <source>Hum Brain Mapp</source> <volume>15</volume>: <fpage>1</fpage>–<lpage>25</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Mutshinda1"><label>33</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mutshinda</surname><given-names>CM</given-names></name>, <name name-style="western"><surname>Sillanpaa</surname><given-names>MJ</given-names></name> (<year>2011</year>) <article-title>Bayesian shrinkage analysis of QTLs under shape-adaptive shrinkage priors, and accurate re-estimation of genetic effects</article-title>. <source>Heredity (Edinb)</source> <volume>107</volume>: <fpage>405</fpage>–<lpage>412</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Zhu2"><label>34</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zhu</surname><given-names>Q</given-names></name>, <name name-style="western"><surname>Ge</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Heinzen</surname><given-names>EL</given-names></name>, <name name-style="western"><surname>Dickson</surname><given-names>SP</given-names></name>, <name name-style="western"><surname>Urban</surname><given-names>TJ</given-names></name>, <etal>et al</etal>. (<year>2012</year>) <article-title>Prioritizing genetic variants for causality based on preferential linkage disequilibrium</article-title>. <source>Am J Hum Genet</source> <volume>91</volume>: <fpage>422</fpage>–<lpage>434</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Ramensky1"><label>35</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ramensky</surname><given-names>V</given-names></name>, <name name-style="western"><surname>Bork</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Sunyaev</surname><given-names>S</given-names></name> (<year>2002</year>) <article-title>Human non-synonymous SNPs: server and survey</article-title>. <source>Nucleic Acids Res</source> <volume>30</volume>: <fpage>3894</fpage>–<lpage>3900</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Li3"><label>36</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Li</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Li</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Lange</surname><given-names>EM</given-names></name>, <name name-style="western"><surname>Watanabe</surname><given-names>RM</given-names></name> (<year>2008</year>) <article-title>Prioritized subset analysis: improving power in genome-wide association studies</article-title>. <source>Hum Hered</source> <volume>65</volume>: <fpage>129</fpage>–<lpage>141</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Li4"><label>37</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Li</surname><given-names>MX</given-names></name>, <name name-style="western"><surname>Sham</surname><given-names>PC</given-names></name>, <name name-style="western"><surname>Cherny</surname><given-names>SS</given-names></name>, <name name-style="western"><surname>Song</surname><given-names>YQ</given-names></name> (<year>2010</year>) <article-title>A knowledge-based weighting framework to boost the power of genome-wide association studies</article-title>. <source>PLoS One</source> <volume>5</volume>: <fpage>e14480</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Darnell1"><label>38</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Darnell</surname><given-names>G</given-names></name>, <name name-style="western"><surname>Duong</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Han</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Eskin</surname><given-names>E</given-names></name> (<year>2012</year>) <article-title>Incorporating prior information into association studies</article-title>. <source>Bioinformatics</source> <volume>28</volume>: <fpage>i147</fpage>–<lpage>153</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Sul1"><label>39</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Sul</surname><given-names>JH</given-names></name>, <name name-style="western"><surname>Han</surname><given-names>B</given-names></name>, <name name-style="western"><surname>He</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Eskin</surname><given-names>E</given-names></name> (<year>2011</year>) <article-title>An optimal weighted aggregated association test for identification of rare variants involved in common diseases</article-title>. <source>Genetics</source> <volume>188</volume>: <fpage>181</fpage>–<lpage>188</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Maclehose1"><label>40</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Maclehose</surname><given-names>RF</given-names></name>, <name name-style="western"><surname>Dunson</surname><given-names>DB</given-names></name> (<year>2010</year>) <article-title>Bayesian semiparametric multiple shrinkage</article-title>. <source>Biometrics</source> <volume>66</volume>: <fpage>455</fpage>–<lpage>462</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Quintana1"><label>41</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Quintana</surname><given-names>MA</given-names></name>, <name name-style="western"><surname>Berstein</surname><given-names>JL</given-names></name>, <name name-style="western"><surname>Thomas</surname><given-names>DC</given-names></name>, <name name-style="western"><surname>Conti</surname><given-names>DV</given-names></name> (<year>2011</year>) <article-title>Incorporating model uncertainty in detecting rare variants: the Bayesian risk index</article-title>. <source>Genet Epidemiol</source> <volume>35</volume>: <fpage>638</fpage>–<lpage>649</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Wakefield1"><label>42</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wakefield</surname><given-names>J</given-names></name> (<year>2012</year>) <article-title>Commentary: Genome-wide significance thresholds via Bayes factors</article-title>. <source>Int J Epidemiol</source> <volume>41</volume>: <fpage>286</fpage>–<lpage>291</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003093-Epstein1"><label>43</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Epstein</surname><given-names>MP</given-names></name>, <name name-style="western"><surname>Duncan</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Jiang</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Conneely</surname><given-names>KN</given-names></name>, <name name-style="western"><surname>Allen</surname><given-names>AS</given-names></name>, <etal>et al</etal>. (<year>2012</year>) <article-title>A permutation procedure to correct for confounders in case-control studies, including tests of rare variation</article-title>. <source>Am J Hum Genet</source> <volume>91</volume>: <fpage>215</fpage>–<lpage>223</lpage>.</mixed-citation>
+</ref>
+</ref-list></back>
+</article>

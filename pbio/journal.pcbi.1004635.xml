@@ -1,0 +1,874 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" dtd-version="3.0" xml:lang="en" article-type="research-article">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">ploscomp</journal-id>
+<journal-title-group>
+<journal-title>PLOS Computational Biology</journal-title>
+</journal-title-group>
+<issn pub-type="ppub">1553-734X</issn>
+<issn pub-type="epub">1553-7358</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="publisher-id">PCOMPBIOL-D-15-01048</article-id>
+<article-id pub-id-type="doi">10.1371/journal.pcbi.1004635</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+</article-categories>
+<title-group>
+<article-title>Melanoma Cell Colony Expansion Parameters Revealed by Approximate Bayesian Computation</article-title>
+<alt-title alt-title-type="running-head">Interpret Melanoma Assays Using ABC</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Vo</surname> <given-names>Brenda N.</given-names></name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Drovandi</surname> <given-names>Christopher C.</given-names></name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Pettitt</surname> <given-names>Anthony N.</given-names></name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Pettet</surname> <given-names>Graeme J.</given-names></name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+</contrib-group>
+<aff id="aff001">
+<label>1</label>
+<addr-line>School of Mathematical Sciences, Queensland University of Technology (QUT), Brisbane, Australia</addr-line>
+</aff>
+<aff id="aff002">
+<label>2</label>
+<addr-line>ARC Centre of Excellence for Mathematical &amp; Statistical Frontiers (ACEMS), QUT, Brisbane, Australia</addr-line>
+</aff>
+<aff id="aff003">
+<label>3</label>
+<addr-line>Institute for Future Environments, Science and Engineering Centre, QUT, Brisbane, Australia</addr-line>
+</aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Byrne</surname> <given-names>Helen</given-names></name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1">
+<addr-line>University of Oxford, UNITED KINGDOM</addr-line>
+</aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<fn fn-type="con" id="contrib001">
+<p>Conceived and designed the experiments: BNV CCD ANP GJP. Performed the experiments: BNV CCD ANP GJP. Analyzed the data: BNV CCD ANP GJP. Contributed reagents/materials/analysis tools: BNV CCD ANP GJP. Wrote the paper: BNV CCD ANP GJP.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">n1.vo@qut.edu.au</email></corresp>
+</author-notes>
+<pub-date pub-type="collection">
+<month>12</month>
+<year>2015</year>
+</pub-date>
+<pub-date pub-type="epub">
+<day>7</day>
+<month>12</month>
+<year>2015</year>
+</pub-date>
+<volume>11</volume>
+<issue>12</issue>
+<elocation-id>e1004635</elocation-id>
+<history>
+<date date-type="received">
+<day>29</day>
+<month>6</month>
+<year>2015</year>
+</date>
+<date date-type="accepted">
+<day>28</day>
+<month>10</month>
+<year>2015</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2015</copyright-year>
+<copyright-holder>Vo et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pcbi.1004635" xlink:type="simple"/>
+<abstract>
+<p><italic>In vitro</italic> studies and mathematical models are now being widely used to study the underlying mechanisms driving the expansion of cell colonies. This can improve our understanding of cancer formation and progression. Although much progress has been made in terms of developing and analysing mathematical models, far less progress has been made in terms of understanding how to estimate model parameters using experimental <italic>in vitro</italic> image-based data. To address this issue, a new approximate Bayesian computation (ABC) algorithm is proposed to estimate key parameters governing the expansion of melanoma cell (MM127) colonies, including cell diffusivity, <italic>D</italic>, cell proliferation rate, <italic>λ</italic>, and cell-to-cell adhesion, <italic>q</italic>, in two experimental scenarios, namely with and without a chemical treatment to suppress cell proliferation. Even when little prior biological knowledge about the parameters is assumed, all parameters are precisely inferred with a small posterior coefficient of variation, approximately 2–12%. The ABC analyses reveal that the posterior distributions of <italic>D</italic> and <italic>q</italic> depend on the experimental elapsed time, whereas the posterior distribution of <italic>λ</italic> does not. The posterior mean values of <italic>D</italic> and <italic>q</italic> are in the ranges 226–268 µm<sup>2</sup>h<sup>−1</sup>, 311–351 µm<sup>2</sup>h<sup>−1</sup> and 0.23–0.39, 0.32–0.61 for the experimental periods of 0–24 h and 24–48 h, respectively. Furthermore, we found that the posterior distribution of <italic>q</italic> also depends on the initial cell density, whereas the posterior distributions of <italic>D</italic> and <italic>λ</italic> do not. The ABC approach also enables information from the two experiments to be combined, resulting in greater precision for all estimates of <italic>D</italic> and <italic>λ</italic>.</p>
+</abstract>
+<abstract abstract-type="summary">
+<title>Author Summary</title>
+<p>Quantifying the underlying parameters that drive the expansion of melanoma cell colonies such as the cell diffusivity, cell proliferation rate and cell-to-cell adhesion strength can improve our understanding of melanoma biology and its response to treatment. We combine a simulation-based model of collective cell spreading with a novel Bayesian computational algorithm to estimate these parameters from carefully chosen summaries of collective cell image data and to quantify their associated uncertainty across different experimental conditions. Our summarisation of the image data leads to precise estimates for all parameters. Our analysis reveals that the cell diffusivity and the cell-to-cell adhesion strength estimates depend on experimental elapsed time. Furthermore, the cell-to-cell adhesion strength estimate appears to depend on the initial cell density, whereas the cell proliferation rate estimate is approximately the same over different experimental conditions.</p>
+</abstract>
+<funding-group>
+<funding-statement>ANP, CCD and BNV received funding from the Australian Research Council (Grant number: DP110100159). The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="9"/>
+<table-count count="3"/>
+<page-count count="22"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability" xlink:type="simple">
+<meta-name>Data Availability</meta-name>
+<meta-value>All relevant data are within the paper and its Supporting Information files.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>Skin cancer consists of two groups: melanoma and non-melanoma. Melanoma is the least common, approximately 5% of all skin cancer occurrences, but it is responsible for most skin cancer deaths [<xref ref-type="bibr" rid="pcbi.1004635.ref001">1</xref>]. It is estimated that 132,000 new cases of melanoma are reported worldwide each year, with more than 12,500 of these cases reported in Australia [<xref ref-type="bibr" rid="pcbi.1004635.ref002">2</xref>]. During the early stage of the disease, melanoma colonies grow and spread laterally within the epidermis. Thus, quantifying the underlying mechanisms that drive the expansion of melanoma cell colonies such as motility, proliferation, and cell-to-cell adhesion can improve our understanding of melanoma biology and its response to treatment.</p>
+<p>Although much progress has been made in terms of developing and analysing mathematical models of expanding cell colonies, far less progress has been made in terms of understanding how to estimate model parameters including the cell diffusivity, <italic>D</italic>, the cell proliferation rate, <italic>λ</italic>, and the cell-to-cell adhesion, <italic>q</italic>, from experimental <italic>in vitro</italic> image-based data. Obtaining precise estimates of <italic>D</italic>, <italic>q</italic> and <italic>λ</italic> is important for developing a systematic approach to assessing the effectiveness of a potential treatment [<xref ref-type="bibr" rid="pcbi.1004635.ref003">3</xref>]. Several studies have investigated the <italic>in vitro</italic> expansion of cell colonies using partial differential equations [<xref ref-type="bibr" rid="pcbi.1004635.ref004">4</xref>–<xref ref-type="bibr" rid="pcbi.1004635.ref007">7</xref>]. These approaches are limited in that they provide point estimates, and the uncertainty in the estimate is not quantified. An alternative modelling approach uses discrete, individual-based models [<xref ref-type="bibr" rid="pcbi.1004635.ref008">8</xref>–<xref ref-type="bibr" rid="pcbi.1004635.ref010">10</xref>], which can incorporate several important biological factors such as cell heterogeneity [<xref ref-type="bibr" rid="pcbi.1004635.ref011">11</xref>]. Discrete models can also produce discrete image-based and video-based information which is ideally suited to collaborative investigations involving applied mathematicians and experimental cell biologists. However, the likelihood functions for these discrete models are generally intractable, so standard statistical inferential methods for these models are not applicable.</p>
+<p>To overcome these issues, an approximate Bayesian computation (ABC) approach is developed to jointly infer the values of <italic>D</italic>, <italic>q</italic> and <italic>λ</italic> from a discrete stochastic model describing the expansion of cell colonies. ABC is a well established method that has been successfully applied in a wide range of areas such as population genetics [<xref ref-type="bibr" rid="pcbi.1004635.ref012">12</xref>], infectious diseases [<xref ref-type="bibr" rid="pcbi.1004635.ref013">13</xref>, <xref ref-type="bibr" rid="pcbi.1004635.ref014">14</xref>], astronomical model analysis [<xref ref-type="bibr" rid="pcbi.1004635.ref015">15</xref>] and cell biology [<xref ref-type="bibr" rid="pcbi.1004635.ref016">16</xref>]. Generally, ABC approximates the likelihood function by model simulations, the outcomes of which are compared with the observed data [<xref ref-type="bibr" rid="pcbi.1004635.ref016">16</xref>, <xref ref-type="bibr" rid="pcbi.1004635.ref017">17</xref>]. In this paper, we propose a new ABC algorithm that is shown to be more efficient than state-of-the-art algorithms available in the literature [<xref ref-type="bibr" rid="pcbi.1004635.ref017">17</xref>–<xref ref-type="bibr" rid="pcbi.1004635.ref020">20</xref>] by developing a new sequential Monte Carlo approach. ABC requires the specification of a set of summary statistics to compare the observed and simulated data. Each of our experimental datasets is initially summarised using a high dimensional vector of summary statistics (hereafter referred to as the pilot summary statistics). Unfortunately, ABC is not able to handle high dimensional summary statistics in an efficient manner [<xref ref-type="bibr" rid="pcbi.1004635.ref021">21</xref>], so we adopt a semi-automatic approach [<xref ref-type="bibr" rid="pcbi.1004635.ref022">22</xref>] to reduce the dimension of the pilot summary statistics. Using a synthetically generated dataset, we demonstrate that combining our new ABC algorithm and the derived set of summary statistics can precisely recover all parameters.</p>
+<p>We apply this procedure to the experimental data of human malignant melanoma cells (MM127) in a barrier assay [<xref ref-type="bibr" rid="pcbi.1004635.ref023">23</xref>] in two different experimental scenarios: (1) Mitomycin-C is applied as a treatment to suppress cell proliferation, and (2) no treatment is applied. We aim to obtain a joint approximate posterior distribution for <italic>D</italic>, <italic>q</italic> and <italic>λ</italic> for different combinations of initial cell densities, <italic>C</italic>(0), and experimental times, <italic>T</italic>, in each scenario. Through the ABC analyses, the associated uncertainty in the parameter values is quantified and interpreted in terms of the coefficient of variation (CV) and probability intervals of the posterior distribution. Thus, our work adds significant extra information about model parameters relative to the previous analysis [<xref ref-type="bibr" rid="pcbi.1004635.ref023">23</xref>], which obtained point estimates of <italic>D</italic>, <italic>q</italic> and <italic>λ</italic> separately. In the previous analysis [<xref ref-type="bibr" rid="pcbi.1004635.ref023">23</xref>], <italic>D</italic> and <italic>q</italic> were estimated only from the experiments with cell proliferation suppressed.</p>
+<p>Previous approaches often assume that these parameter values are the same over different experimental conditions [<xref ref-type="bibr" rid="pcbi.1004635.ref003">3</xref>, <xref ref-type="bibr" rid="pcbi.1004635.ref023">23</xref>, <xref ref-type="bibr" rid="pcbi.1004635.ref024">24</xref>]. The findings from this study show that the posterior estimate of <italic>D</italic> appears to depend on experimental time and weakly depend on the initial cell density, which is consistent with the results reported in Vo et al. [<xref ref-type="bibr" rid="pcbi.1004635.ref016">16</xref>] for 3T3 fibroblast cells. A similar trend of dependency is also found for <italic>q</italic>; but in contrast the posterior estimates of <italic>λ</italic> remain similar over time. These results suggest that a more complicated model might be warranted. However, this finding could not have been achieved without first exploring the suitability of the standard model under consideration here.</p>
+<p>The experimental data analysed in Vo et al. [<xref ref-type="bibr" rid="pcbi.1004635.ref016">16</xref>] also consists of two separate scenarios, with and without Mitomycin-C pre-treatment. Vo et al. [<xref ref-type="bibr" rid="pcbi.1004635.ref016">16</xref>] demonstrate that <italic>λ</italic> cannot be identified by leading edge data solely, unless prior information about <italic>D</italic> (obtained from the experiment with the treatment applied) is incorporated via a sequential Bayesian learning approach. In this paper, we show that all parameters (including <italic>λ</italic>) can be estimated precisely through the inclusion of additional summary statistics (cell densities and percentages of isolated cells) even when only vague prior information is specified for parameter values. Nonetheless, we show that the Bayesian sequential learning approach [<xref ref-type="bibr" rid="pcbi.1004635.ref016">16</xref>] is still useful here as we are able to obtain greater precision of the parameter values.</p>
+</sec>
+<sec id="sec002" sec-type="materials|methods">
+<title>Materials and Methods</title>
+<sec id="sec003">
+<title>Experimental data and image analysis</title>
+<p>The details of the experimental method were described previously [<xref ref-type="bibr" rid="pcbi.1004635.ref023">23</xref>]. Briefly, monolayers of human malignant melanoma cells (MM127, [<xref ref-type="bibr" rid="pcbi.1004635.ref025">25</xref>, <xref ref-type="bibr" rid="pcbi.1004635.ref026">26</xref>]) were cultured in 24-well tissue culture plates, where each well had a diameter of 15.6 mm. Experiments were conducted in two different experimental scenarios: (1) with Mitomycin-C pre-treatment to suppress cell proliferation, and (2) without Mitomycin-C pre-treatment. Mitomycin-C, an alkylating antibiotic, is used to block DNA and RNA replication and protein synthesis. Thus, given an appropriate concentration, Mitomycin-C inhibits mitosis and proliferation of several cell types [<xref ref-type="bibr" rid="pcbi.1004635.ref027">27</xref>]. For the melanoma experiments here, 10 µg ml<sup>−1</sup> Mitomycin-C was added to the cells one hour prior to transfer to the wells [<xref ref-type="bibr" rid="pcbi.1004635.ref023">23</xref>].</p>
+<p>To initiate each experiment, either 20,000 or 30,000 cells were approximately evenly distributed within a circular barrier, of diameter 6.0 mm, located at the centre of the well. After allowing the cells to attach for 1 h, the barriers were lifted and population-scale images were recorded at either 24 h or 48 h, independently. To extract detailed information about the location of individual cells in the population, high magnification images of a transect across the centre of the cell population were also acquired, where the nuclei were stained with Propidium Iodide (PI). Furthermore, each experimental scenario, for each initial cell density and each termination time, was repeated three times. Thus, a 2 × 2 × 2 balanced experimental design was conducted with three replicates, producing a total of 24 independent experimental images of expanding cell colonies and the corresponding transect images.</p>
+<p>From preliminary analysis, we note that cell colonies maintain an approximately circular shape during the experiments. Thus, for each population-scale image, which shows the spatial expansion of the entire melanoma cell colony, we detect the position of the leading edge, then estimate the radius of the colony by converting the area enclosed by the leading edge to the equivalent circular radius, <italic>R</italic>, using a segmentation algorithm written with the Matlab Image Processing Toolbox [<xref ref-type="bibr" rid="pcbi.1004635.ref016">16</xref>, <xref ref-type="bibr" rid="pcbi.1004635.ref028">28</xref>] (Table S1 in <xref ref-type="supplementary-material" rid="pcbi.1004635.s001">S1 Text</xref>). We use the exact same edge detection algorithm for both our experimental data and the images produced by the discrete simulation model described in the next section. Images in <xref ref-type="fig" rid="pcbi.1004635.g001">Fig 1A–1C</xref> show the entire expanding cell colonies for the 30,000 initial cell experiments at time 0 h and 48 h where cells were pre-treated with Mitomycin-C, and 48 h without the treatment, respectively, together with the estimated leading edge superimposed.</p>
+<fig id="pcbi.1004635.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004635.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>Experimental data, discrete model simulations and image analysis.</title>
+<p>Subfigures A-C correspond to experimental images of entire melanoma cell colonies for 30,000 cell experiments at time 0 h, 48 h in Scenario 1 (with Mitomycin-C pre-treatment) and 48 h in Scenario 2, respectively, with the detected leading edges superimposed (red curve). The scale bar in A represents 2 mm. Subfigures D–F are the snapshots of the discrete models with the same experimental condition as A–C. Subfigure G shows the positions of six sub-regions (red rectangles) in a simulated experiment, each red rectangle contains 39 × 28 lattice sites. An experimental snapshot which shows positions of individual cells, is presented in subfigure H. This image is from a 30,000 cell experiment, terminated at 48 h, in Scenario 1. The scale bar in H corresponds to 50 µm. The cell positions are then mapped to a square lattice in subfigure I with blue dots identifying the isolated cells.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004635.g001"/>
+</fig>
+<p>To extract cell densities and measure cell clustering, we mapped the position of the cells to a square lattice with spacing Δ = 18 µm (<xref ref-type="fig" rid="pcbi.1004635.g001">Fig 1H and 1I</xref>), which corresponds to an average diameter of the cell nucleus [<xref ref-type="bibr" rid="pcbi.1004635.ref023">23</xref>]. For each experiment, we analyse six sub-regions along a transect image (<xref ref-type="fig" rid="pcbi.1004635.g001">Fig 1G</xref>). Each sub-region has size 700 × 500 µm or 39 × 28 lattice sites. We then count the number of cells in each sub-region, <inline-formula id="pcbi.1004635.e001"><alternatives><graphic id="pcbi.1004635.e001g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004635.e001"/><mml:math id="M1" display="inline" overflow="scroll"><mml:msubsup><mml:mrow><mml:mo>{</mml:mo> <mml:msub><mml:mi>c</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>}</mml:mo></mml:mrow> <mml:mrow><mml:mi>i</mml:mi> <mml:mo>=</mml:mo> <mml:mn>1</mml:mn></mml:mrow> <mml:mn>6</mml:mn></mml:msubsup></mml:math></alternatives></inline-formula>, together with the proportion of isolated cells, <inline-formula id="pcbi.1004635.e002"><alternatives><graphic id="pcbi.1004635.e002g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004635.e002"/><mml:math id="M2" display="inline" overflow="scroll"><mml:msubsup><mml:mrow><mml:mo>{</mml:mo> <mml:msub><mml:mi>p</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>}</mml:mo></mml:mrow> <mml:mrow><mml:mi>i</mml:mi> <mml:mo>=</mml:mo> <mml:mn>1</mml:mn></mml:mrow> <mml:mn>6</mml:mn></mml:msubsup></mml:math></alternatives></inline-formula>. A cell is identified as isolated if all of its nearest neighbours (north, south, east and west) are unoccupied. For each experiment at each initial cell density and termination time, at each sub-region, we average <italic>c</italic><sub><italic>i</italic></sub> and <italic>p</italic><sub><italic>i</italic></sub> over three replicates (Tables S2 and S3 in <xref ref-type="supplementary-material" rid="pcbi.1004635.s001">S1 Text</xref>).</p>
+<p>Summaries of <inline-formula id="pcbi.1004635.e003"><alternatives><graphic id="pcbi.1004635.e003g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004635.e003"/><mml:math id="M3" display="inline" overflow="scroll"><mml:msubsup><mml:mrow><mml:mo>{</mml:mo> <mml:msub><mml:mi>c</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>}</mml:mo></mml:mrow> <mml:mrow><mml:mi>i</mml:mi> <mml:mo>=</mml:mo> <mml:mn>1</mml:mn></mml:mrow> <mml:mn>6</mml:mn></mml:msubsup></mml:math></alternatives></inline-formula> and <inline-formula id="pcbi.1004635.e004"><alternatives><graphic id="pcbi.1004635.e004g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004635.e004"/><mml:math id="M4" display="inline" overflow="scroll"><mml:msubsup><mml:mrow><mml:mo>{</mml:mo> <mml:msub><mml:mi>p</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>}</mml:mo></mml:mrow> <mml:mrow><mml:mi>i</mml:mi> <mml:mo>=</mml:mo> <mml:mn>1</mml:mn></mml:mrow> <mml:mn>6</mml:mn></mml:msubsup></mml:math></alternatives></inline-formula> (average over the three replicates) for experiments initialised with 20,000 cells are given in <xref ref-type="fig" rid="pcbi.1004635.g002">Fig 2</xref>. We observe that, for experiments where cells were not pre-treated with Mitomycin-C (<xref ref-type="fig" rid="pcbi.1004635.g002">Fig 2B</xref>), <inline-formula id="pcbi.1004635.e005"><alternatives><graphic id="pcbi.1004635.e005g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004635.e005"/><mml:math id="M5" display="inline" overflow="scroll"><mml:msubsup><mml:mrow><mml:mo>{</mml:mo> <mml:msub><mml:mi>c</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>}</mml:mo></mml:mrow> <mml:mrow><mml:mi>i</mml:mi> <mml:mo>=</mml:mo> <mml:mn>1</mml:mn></mml:mrow> <mml:mn>6</mml:mn></mml:msubsup></mml:math></alternatives></inline-formula> increases significantly over time, whereas the differences in <inline-formula id="pcbi.1004635.e006"><alternatives><graphic id="pcbi.1004635.e006g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004635.e006"/><mml:math id="M6" display="inline" overflow="scroll"><mml:msubsup><mml:mrow><mml:mo>{</mml:mo> <mml:msub><mml:mi>c</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>}</mml:mo></mml:mrow> <mml:mrow><mml:mi>i</mml:mi> <mml:mo>=</mml:mo> <mml:mn>1</mml:mn></mml:mrow> <mml:mn>6</mml:mn></mml:msubsup></mml:math></alternatives></inline-formula> for the corresponding experiments (<xref ref-type="fig" rid="pcbi.1004635.g002">Fig 2A</xref>), where cell proliferation was suppressed, are minimal. Furthermore, <inline-formula id="pcbi.1004635.e007"><alternatives><graphic id="pcbi.1004635.e007g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004635.e007"/><mml:math id="M7" display="inline" overflow="scroll"><mml:msubsup><mml:mrow><mml:mo>{</mml:mo> <mml:msub><mml:mi>p</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>}</mml:mo></mml:mrow> <mml:mrow><mml:mi>i</mml:mi> <mml:mo>=</mml:mo> <mml:mn>1</mml:mn></mml:mrow> <mml:mn>6</mml:mn></mml:msubsup></mml:math></alternatives></inline-formula> (<xref ref-type="fig" rid="pcbi.1004635.g002">Fig 2C and 2D</xref>) appear to decrease over time which suggests that melanoma cells possibly form more clusters as the experiments proceed. These trends are consistent with previous research [<xref ref-type="bibr" rid="pcbi.1004635.ref023">23</xref>], which shows that cell-to-cell adhesion plays an important role in the melanoma expanding colonies.</p>
+<fig id="pcbi.1004635.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004635.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>Cell counts and percentages of isolated cells.</title>
+<p>Results correspond to experiments initiated with 20,000 cells. Subfigures A–B, C–D show the cell counts and the percentages of isolated cells for the six sub-regions after averaging over the three replicates, for the experiments with and without Mitomycin-C pre-treatment, respectively. The dashed line (circle markers), the solid line (triangle markers) and the dashed dotted line (square markers) correspond to the experiment at initial time, 0 h, terminated at 24 h and 48 h, respectively.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004635.g002"/>
+</fig>
+</sec>
+<sec id="sec004">
+<title>Discrete stochastic model</title>
+<p>To describe the expansion of a single layer of melanoma cell colonies, we employ a discrete lattice based model that incorporates cell migration (unbiased random walk), cell proliferation and cell-to-cell adhesion. The discrete model here is similar to the model used in [<xref ref-type="bibr" rid="pcbi.1004635.ref009">9</xref>, <xref ref-type="bibr" rid="pcbi.1004635.ref016">16</xref>, <xref ref-type="bibr" rid="pcbi.1004635.ref023">23</xref>]. We incorporate a volume exclusion process and realistic crowding effects [<xref ref-type="bibr" rid="pcbi.1004635.ref008">8</xref>, <xref ref-type="bibr" rid="pcbi.1004635.ref009">9</xref>, <xref ref-type="bibr" rid="pcbi.1004635.ref029">29</xref>], so each lattice site can be occupied by at most one agent.</p>
+<p>To simulate the experiments, we use a two-dimensional square lattice of size 867 × 867, with lattice spacing Δ = 18 µm, so that the width of the lattice corresponds to the diameter of the well, 15.6 mm (15600 µm/18 µm = 867). Let <italic>C</italic>(<italic>t</italic>) be the number of agents in the discrete model at time <italic>t</italic>, <italic>P</italic><sub><italic>m</italic></sub> ∈ [0, 1] be the probability that an isolated agent will attempt to step a distance Δ within a time step of duration <italic>τ</italic>, and <italic>P</italic><sub><italic>p</italic></sub> ∈ [0, 1] represent the probability that an agent will attempt to proliferate and deposit a daughter within a time step of duration <italic>τ</italic>. The strength of cell-to-cell adhesion is represented by <italic>q</italic> ∈ [0, 1].</p>
+<p>Initially, <italic>C</italic>(0) agents (20,000 or 30,000 agents) are placed randomly inside a circle which has a radius of 177 lattice sites, corresponding to the mean radius of the experimental observations at time <italic>t</italic> = 0 h. We use an approximate random sequential update (RSU) algorithm [<xref ref-type="bibr" rid="pcbi.1004635.ref030">30</xref>, <xref ref-type="bibr" rid="pcbi.1004635.ref031">31</xref>] to perform the simulations. To step from time <italic>t</italic> to time <italic>t</italic> + <italic>τ</italic>, <italic>C</italic>(<italic>t</italic>) agents are sampled, with replacement, and given the opportunity to move with probability <italic>P</italic><sub><italic>m</italic></sub> × (1 − <italic>q</italic>)<sup><italic>n</italic></sup>, where 0 ≤ <italic>n</italic> ≤ 4 is the number of occupied nearest neighbour sites. If an agent is at position (<italic>x</italic>, <italic>y</italic>) and has an opportunity to move, it will attempt to step to either (<italic>x</italic> ± Δ, <italic>y</italic>) or (<italic>x</italic>, <italic>y</italic> ± Δ), with each target site chosen with equal probability. The higher the value of <italic>q</italic>, the more difficult it is for an agent to move away from its neighbours.</p>
+<p>A similar mechanism is employed for proliferation events. A proliferative agent at position (<italic>x</italic>, <italic>y</italic>) will attempt to deposit a daughter agent at (<italic>x</italic> ± Δ, <italic>y</italic>) or (<italic>x</italic>, <italic>y</italic> ± Δ), with each target site chosen with equal probability. Since the model is an exclusion process, any attempted motility or proliferation event that would place an agent on an occupied site is aborted (<xref ref-type="supplementary-material" rid="pcbi.1004635.s001">S1 Text</xref>, Algorithm S1). We do not consider any death mechanism in this model since there was no evidence of any cell death in the experiment [<xref ref-type="bibr" rid="pcbi.1004635.ref023">23</xref>]. Given the termination time, <italic>T</italic> (24 h or 48 h), the model requires <italic>T</italic>/<italic>τ</italic> time steps.</p>
+<p>The cell expanding colonies are governed by three parameters (<italic>P</italic><sub><italic>m</italic></sub>, <italic>q</italic>, <italic>P</italic><sub><italic>p</italic></sub>). These parameters are related to the cell diffusivity, <italic>D</italic>, and the proliferation rate, <italic>λ</italic>, by <italic>D</italic> = <italic>P</italic><sub><italic>m</italic></sub> Δ<sup>2</sup>/4<italic>τ</italic> and <italic>λ</italic> = <italic>P</italic><sub><italic>p</italic></sub>/<italic>τ</italic>, respectively [<xref ref-type="bibr" rid="pcbi.1004635.ref029">29</xref>], with Δ and <italic>τ</italic> set fixed. In this work, we apply our new ABC algorithm to obtain joint posterior distributions for (<italic>P</italic><sub><italic>m</italic></sub>, <italic>q</italic>, <italic>P</italic><sub><italic>p</italic></sub>), then use these relationships and the values of Δ and <italic>τ</italic>, to rescale posterior distributions of <italic>P</italic><sub><italic>m</italic></sub> and <italic>P</italic><sub><italic>p</italic></sub> into posterior distributions of <italic>D</italic> and <italic>λ</italic>, respectively.</p>
+<p>We note that the RSU algorithm is an approximation of the exact, continuous time Gillespie algorithm [<xref ref-type="bibr" rid="pcbi.1004635.ref032">32</xref>]. The value of the time duration <italic>τ</italic> is a trade-off between the accuracy of the approximation and the computational time to simulate the experiments. To choose a suitable value for <italic>τ</italic>, we perform 100 model simulations using the same diffusion coefficient <italic>D</italic> = 220 µm<sup>2</sup>h<sup>−1</sup>, obtained with different pairs of parameters (<italic>τ</italic> = 0.1 h, <italic>P</italic><sub><italic>m</italic></sub> = 0.2716), (<italic>τ</italic> = 0.08 h, <italic>P</italic><sub><italic>m</italic></sub> = 0.2173), (<italic>τ</italic> = 0.06 h, <italic>P</italic><sub><italic>m</italic></sub> = 0.1630), (<italic>τ</italic> = 0.04h, <italic>P</italic><sub><italic>m</italic></sub> = 0.1086) and (<italic>τ</italic> = 0.02 h, <italic>P</italic><sub><italic>m</italic></sub> = 0.0543). We then compare the plots of the probability density of the resulting radii, percentages of isolated cells and total number of cells in six sub-regions. We found that there is a negligible difference between results from simulations with <italic>τ</italic> = 0.04 h and <italic>τ</italic> = 0.02 h. This means that <italic>τ</italic> = 0.04 h is small enough to produce reasonably accurate simulations. Therefore, for all model simulations hereafter, we use <italic>τ</italic> = 0.04 h. Snapshots of the discrete stochastic models initialised with 30,000 agents and termination time at 0 h, 48 h in Scenario 1, and 48 h in Scenario 2 are shown in <xref ref-type="fig" rid="pcbi.1004635.g001">Fig 1D–1F</xref>, respectively.</p>
+<p>In this paper, we do not have any measurement for the uncertainty in <italic>C</italic>(0). Thus, all of the simulations from the discrete models use the same initial values of <italic>C</italic>(0), i.e. 20,000 cells or 30,000 cells. However, if we have this measurement, we can easily incorporate it in the ABC algorithms by drawing the value of <italic>C</italic>(0) from its distribution before proceeding to simulate a realisation of the model.</p>
+</sec>
+<sec id="sec005">
+<title>Approximate Bayesian computation</title>
+<p>The discrete models described above can incorporate realistic cell behaviour. However, their likelihood functions are not available in an analytical form and are not computationally tractable, so standard statistical inferential methods for these models are not applicable. Combining ABC and the discrete stochastic model is a promising approach since ABC bypasses the evaluation of the likelihood by a simulation-based procedure [<xref ref-type="bibr" rid="pcbi.1004635.ref012">12</xref>, <xref ref-type="bibr" rid="pcbi.1004635.ref017">17</xref>]. The aim of the ABC approach is to find the joint approximate posterior distributions, which are the distributions of the unknown parameters given the observed summarisation of the data and the prior information. All inferences about the parameters including point estimates and probability intervals are made from the posterior distributions.</p>
+<p>Let <italic>y</italic><sub><italic>obs</italic></sub> and <italic>y</italic><sub><italic>sim</italic></sub> represent the observed and the simulated data, <italic>θ</italic> = (<italic>P</italic><sub><italic>m</italic></sub>, <italic>q</italic>, <italic>P</italic><sub><italic>p</italic></sub>) represent the vector of unknown parameters and <italic>π</italic>(<italic>θ</italic>) be the prior distribution for <italic>θ</italic>. We define a distance metric <italic>ρ</italic> which is a function of <italic>y</italic><sub><italic>obs</italic></sub> and <italic>y</italic><sub><italic>sim</italic></sub>, <italic>ρ</italic> = <italic>ρ</italic>(<italic>y</italic><sub><italic>obs</italic></sub>, <italic>y</italic><sub><italic>sim</italic></sub>). ABC approaches consist of four major steps: sampling a proposed parameter <italic>θ</italic><sup>⋆</sup>, simulating data as per the observed data structure from the model with <italic>θ</italic><sup>⋆</sup>, comparing <italic>y</italic><sub><italic>sim</italic></sub> with <italic>y</italic><sub><italic>obs</italic></sub> by computing <italic>ρ</italic> = <italic>ρ</italic>(<italic>y</italic><sub><italic>obs</italic></sub>, <italic>y</italic><sub><italic>sim</italic></sub>) and accepting the proposed <italic>θ</italic><sup>⋆</sup> if <italic>ρ</italic>(<italic>y</italic><sub><italic>obs</italic></sub>, <italic>y</italic><sub><italic>sim</italic></sub>) ≤ <italic>ϵ</italic>, where <italic>ϵ</italic> ≥ 0 is a tolerance value. The accepted sample of parameter values forms the approximation of the posterior distribution of the model parameters. The choice of <italic>ϵ</italic> is a trade-off between accuracy and computational effort. In practice, different ABC algorithms have different approaches to sample the values of <italic>θ</italic><sup>⋆</sup>.</p>
+<p>ABC rejection is the simplest ABC algorithm, which generally samples <italic>θ</italic><sup>⋆</sup> from the prior distribution. This algorithm is easy to implement and is embarrassingly parallel. However, for complex models where the prior distribution is substantially different from the posterior, this approach results in low acceptance rates and is computationally inefficient. Vo et al. [<xref ref-type="bibr" rid="pcbi.1004635.ref016">16</xref>] employed the ABC rejection algorithm to estimate <italic>D</italic> and <italic>λ</italic>, using the leading edge data of 3T3 fibroblast cell populations. This study samples a large number of proposed parameters from the prior, each with a corresponding artificial dataset and a value of discrepancy <italic>ρ</italic>. These parameters are then sorted by their discrepancies and only a small proportion of parameters with the lowest discrepancy are retained. In the study of Vo et al. [<xref ref-type="bibr" rid="pcbi.1004635.ref016">16</xref>], a uniform prior was used, suggesting that for a reasonably low <italic>ϵ</italic>, the proportion of parameters being kept is very small, approximately 0.1%. Thus, this study suggests that it is necessary to generate 10<sup>6</sup> model simulations to obtain an ABC posterior sample of size 1,000.</p>
+<p>Several studies [<xref ref-type="bibr" rid="pcbi.1004635.ref033">33</xref>–<xref ref-type="bibr" rid="pcbi.1004635.ref035">35</xref>] proposed a Markov chain Monte Carlo approach to ABC (MCMC-ABC). MCMC-ABC algorithms make local proposals in high (ABC) posterior support regions, thus they can improve the acceptance rates. However, the posterior samples are highly correlated and the algorithms can easily be trapped in regions of low posterior density [<xref ref-type="bibr" rid="pcbi.1004635.ref035">35</xref>]. Another class of ABC is SMC-ABC which was pioneered by [<xref ref-type="bibr" rid="pcbi.1004635.ref036">36</xref>] to overcome the problems associated with ABC rejection and MCMC-ABC. SMC-ABC algorithms involve sampling from a sequence of ABC posterior distributions with a non-increasing sequence of tolerances, <inline-formula id="pcbi.1004635.e008"><alternatives><graphic id="pcbi.1004635.e008g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004635.e008"/><mml:math id="M8" display="inline" overflow="scroll"><mml:msubsup><mml:mrow><mml:mo>{</mml:mo> <mml:msub><mml:mi>ϵ</mml:mi> <mml:mi>k</mml:mi></mml:msub> <mml:mo>}</mml:mo></mml:mrow> <mml:mrow><mml:mi>k</mml:mi> <mml:mo>=</mml:mo> <mml:mn>1</mml:mn></mml:mrow> <mml:mi>M</mml:mi></mml:msubsup></mml:math></alternatives></inline-formula>. Thus, this last class of ABC only draws proposed parameters in sequentially higher posterior support regions, rather than the entire parameter space. A review of ABC algorithms can be found in [<xref ref-type="bibr" rid="pcbi.1004635.ref037">37</xref>].</p>
+<p>In this paper, we only focus on SMC-ABC algorithms. Instead of drawing a proposed value <italic>θ</italic><sup>⋆</sup> one at a time, the SMC algorithms work with a large set of parameter values simultaneously and treat each parameter vector as a particle. The particles are moved and filtered at each stage of the algorithm. Initially, a set of <italic>N</italic> particles, <inline-formula id="pcbi.1004635.e009"><alternatives><graphic id="pcbi.1004635.e009g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004635.e009"/><mml:math id="M9" display="inline" overflow="scroll"><mml:msubsup><mml:mrow><mml:mo>{</mml:mo> <mml:msub><mml:mi>θ</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>}</mml:mo></mml:mrow> <mml:mrow><mml:mi>i</mml:mi> <mml:mo>=</mml:mo> <mml:mn>1</mml:mn></mml:mrow> <mml:mi>N</mml:mi></mml:msubsup></mml:math></alternatives></inline-formula>, is often sampled from the prior distribution <italic>π</italic>(<italic>θ</italic>) and each sampled particle has an equal weight of 1/<italic>N</italic>. To propagate a particle from iteration <italic>k</italic> − 1 to iteration <italic>k</italic>, SMC-ABC algorithms involve three steps: (i) re-sampling: a sampled particle candidate <italic>θ</italic><sup>⋆</sup> is chosen randomly from the set of particles at <italic>k</italic> − 1 with probability proportional to their weights, <inline-formula id="pcbi.1004635.e010"><alternatives><graphic id="pcbi.1004635.e010g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004635.e010"/><mml:math id="M10" display="inline" overflow="scroll"><mml:mrow><mml:msup><mml:mi>θ</mml:mi> <mml:mo>⋆</mml:mo></mml:msup> <mml:mo>∼</mml:mo> <mml:msubsup><mml:mrow><mml:mo>{</mml:mo> <mml:msubsup><mml:mi>θ</mml:mi> <mml:mi>i</mml:mi> <mml:mrow><mml:mi>k</mml:mi> <mml:mo>-</mml:mo> <mml:mn>1</mml:mn></mml:mrow></mml:msubsup> <mml:mo>,</mml:mo> <mml:msubsup><mml:mi>W</mml:mi> <mml:mi>i</mml:mi> <mml:mrow><mml:mi>k</mml:mi> <mml:mo>-</mml:mo> <mml:mn>1</mml:mn></mml:mrow></mml:msubsup> <mml:mo>}</mml:mo></mml:mrow> <mml:mrow><mml:mi>i</mml:mi> <mml:mo>=</mml:mo> <mml:mn>1</mml:mn></mml:mrow> <mml:mi>N</mml:mi></mml:msubsup></mml:mrow></mml:math></alternatives></inline-formula>; (ii) perturbing: the particle candidate <italic>θ</italic><sup>⋆</sup> is perturbed by a transition kernel to propose a new particle <italic>θ</italic><sup>⋆⋆</sup>, <italic>θ</italic><sup>⋆⋆</sup> ∼ <italic>K</italic><sup><italic>k</italic></sup>(⋅|<italic>θ</italic><sup>⋆</sup>), and (iii) simulating <italic>y</italic><sub><italic>sim</italic></sub> from the model, <italic>y</italic><sub><italic>sim</italic></sub> ∼ <italic>f</italic>(⋅|<italic>θ</italic><sup>⋆⋆</sup>). To maintain <italic>N</italic> particles throughout the algorithm, the steps (i-iii) are repeated until a parameter value is found such that the condition <italic>ρ</italic>(<italic>y</italic><sub><italic>obs</italic></sub>, <italic>y</italic><sub><italic>sim</italic></sub>) ≤ <italic>ϵ</italic><sub><italic>k</italic></sub> is satisfied. Different SMC algorithms can be distinguished by the transition kernel, the schedule of the tolerances and how sampling weights are assigned to the particles.</p>
+<p>In the literature, there are several versions of SMC-ABC algorithms. For example, SMC-ABC algorithms of [<xref ref-type="bibr" rid="pcbi.1004635.ref018">18</xref>, <xref ref-type="bibr" rid="pcbi.1004635.ref019">19</xref>, <xref ref-type="bibr" rid="pcbi.1004635.ref038">38</xref>] use a Gaussian Markov kernel with a covariance matrix as twice the empirical covariance matrix of the current set of particles. These algorithms also assign to each particle <italic>θ</italic><sup><italic>k</italic></sup> a weight given by:
+<disp-formula id="pcbi.1004635.e011"><alternatives><graphic id="pcbi.1004635.e011g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004635.e011"/><mml:math id="M11" display="block" overflow="scroll"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:msup><mml:mi>W</mml:mi> <mml:mi>k</mml:mi></mml:msup> <mml:mo>∝</mml:mo> <mml:mfrac><mml:mrow><mml:mi>π</mml:mi> <mml:mo>(</mml:mo> <mml:msup><mml:mi>θ</mml:mi> <mml:mi>k</mml:mi></mml:msup> <mml:mo>)</mml:mo></mml:mrow> <mml:mrow><mml:msubsup><mml:mo>∑</mml:mo> <mml:mrow><mml:mi>j</mml:mi> <mml:mo>=</mml:mo> <mml:mn>1</mml:mn></mml:mrow> <mml:mi>N</mml:mi></mml:msubsup> <mml:msubsup><mml:mi>W</mml:mi> <mml:mi>j</mml:mi> <mml:mrow><mml:mi>k</mml:mi> <mml:mo>-</mml:mo> <mml:mn>1</mml:mn></mml:mrow></mml:msubsup> <mml:msup><mml:mi>K</mml:mi> <mml:mi>k</mml:mi></mml:msup> <mml:mrow><mml:mo>(</mml:mo> <mml:msup><mml:mi>θ</mml:mi> <mml:mi>k</mml:mi></mml:msup> <mml:mo stretchy="false">|</mml:mo> <mml:msubsup><mml:mi>θ</mml:mi> <mml:mi>j</mml:mi> <mml:mrow><mml:mi>k</mml:mi> <mml:mo>-</mml:mo> <mml:mn>1</mml:mn></mml:mrow></mml:msubsup> <mml:mo>)</mml:mo></mml:mrow></mml:mrow></mml:mfrac> <mml:mo>.</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives> <label>(1)</label></disp-formula>
+These algorithms have the advantage that they require fewer model simulations, although the sequence of tolerances in these algorithms is determined manually. Drovandi et al. [<xref ref-type="bibr" rid="pcbi.1004635.ref017">17</xref>] and Del Moral et al. [<xref ref-type="bibr" rid="pcbi.1004635.ref039">39</xref>] proposed an adaptive SMC algorithm that can determine a decreasing set of tolerances dynamically. This can be achieved by sorting the particles by their discrepancies and then dropping a proportion of the particles with the highest discrepancy. However, these algorithms use an MCMC kernel which has a drawback of replications of particles. To reduce this problem, Drovandi et al. [<xref ref-type="bibr" rid="pcbi.1004635.ref017">17</xref>] suggest to repeat the MCMC step (steps (ii) and (iii) above) a number of times, which also can lead to a large number of unused model simulations.</p>
+<p>We take the advantage of fewer model simulations from SMC-ABC algorithms [<xref ref-type="bibr" rid="pcbi.1004635.ref018">18</xref>, <xref ref-type="bibr" rid="pcbi.1004635.ref019">19</xref>, <xref ref-type="bibr" rid="pcbi.1004635.ref036">36</xref>] and the advantage of automatically determining tolerance values from [<xref ref-type="bibr" rid="pcbi.1004635.ref017">17</xref>] (also named the SMC replenishment (RSMC) algorithm) and incorporate these in one algorithm, hereafter referred to as ASMC (<xref ref-type="supplementary-material" rid="pcbi.1004635.s001">S1 Text</xref>, Algorithm S2). Our ASMC algorithm is similar to that proposed in [<xref ref-type="bibr" rid="pcbi.1004635.ref020">20</xref>] (also named adaptive population Monte Carlo (APMC) algorithm) who also determine the sequence of tolerances adaptively and use the re-weighting scheme above. However, in each iteration, the APMC algorithm [<xref ref-type="bibr" rid="pcbi.1004635.ref020">20</xref>] only performs steps (i-iii) above once and keeps all the <italic>N</italic> particles, so the particle’s discrepancy value is not enforced to be below a particular tolerance.</p>
+<p>In the APMC algorithm, the sequence of tolerances fluctuate, whereas the sequence of tolerances in the RSMC and ASMC algorithms is always non-increasing. Therefore, we cannot use a single indicator to compare the performance of the three algorithms. We suggest comparing the RSMC and ASMC using the final tolerance, and comparing the ASMC and APMC using the same computational effort. Using synthetically generated data, we show that our algorithm requires fewer model simulations than the RSMC algorithm [<xref ref-type="bibr" rid="pcbi.1004635.ref017">17</xref>], given the same target tolerance <italic>ϵ</italic><sub><italic>final</italic></sub>. In addition, given the same number of simulations, our algorithm is shown to produce a lower tolerance value (thus higher accuracy) relative to the APMC algorithm [<xref ref-type="bibr" rid="pcbi.1004635.ref020">20</xref>].</p>
+<sec id="sec006">
+<title>Summary statistics</title>
+<p>In the ABC framework, direct comparison between the observed and the simulated datasets is often inefficient, especially when the data is high dimensional [<xref ref-type="bibr" rid="pcbi.1004635.ref021">21</xref>]. Thus, several authors have considered comparing a summary statistic of the data, <italic>S</italic>(<italic>y</italic>), which has smaller dimension than the full data. The choice of summary statistics is a crucial step in the ABC approach since it involves a trade-off between information loss and dimension reduction [<xref ref-type="bibr" rid="pcbi.1004635.ref040">40</xref>].</p>
+<p>For the application, it is impossible to use the information of the entire assay. Thus for each assay, we only estimate the leading edge and analyse six sub-regions along the transect. Our pilot summary statistic of the data <inline-formula id="pcbi.1004635.e012"><alternatives><graphic id="pcbi.1004635.e012g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004635.e012"/><mml:math id="M12" display="inline" overflow="scroll"><mml:mrow><mml:mi>L</mml:mi> <mml:mo>=</mml:mo> <mml:mo>{</mml:mo> <mml:msub><mml:mi>R</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:mn>1</mml:mn> <mml:mo>)</mml:mo></mml:mrow></mml:msub> <mml:mo>,</mml:mo> <mml:msub><mml:mi>R</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:mn>2</mml:mn> <mml:mo>)</mml:mo></mml:mrow></mml:msub> <mml:mo>,</mml:mo> <mml:msub><mml:mi>R</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:mn>3</mml:mn> <mml:mo>)</mml:mo></mml:mrow></mml:msub> <mml:mo>,</mml:mo> <mml:msubsup><mml:mrow><mml:mo>{</mml:mo> <mml:msub><mml:mi>c</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>}</mml:mo></mml:mrow> <mml:mrow><mml:mi>i</mml:mi> <mml:mo>=</mml:mo> <mml:mn>1</mml:mn></mml:mrow> <mml:mn>6</mml:mn></mml:msubsup> <mml:mo>,</mml:mo> <mml:msubsup><mml:mrow><mml:mo>{</mml:mo> <mml:msub><mml:mi>p</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>}</mml:mo></mml:mrow> <mml:mrow><mml:mi>i</mml:mi> <mml:mo>=</mml:mo> <mml:mn>1</mml:mn></mml:mrow> <mml:mn>6</mml:mn></mml:msubsup> <mml:mo>}</mml:mo></mml:mrow></mml:math></alternatives></inline-formula>, where <italic>R</italic><sub>(1)</sub> &lt; <italic>R</italic><sub>(2)</sub> &lt; <italic>R</italic><sub>(3)</sub> are the ordered radii of the expanding cell colonies for three experimental replicates, is too high dimensional. This leads to a computational challenge in matching the observed and simulated summary statistics. This problem is also referred to as the curse dimensionality [<xref ref-type="bibr" rid="pcbi.1004635.ref021">21</xref>], and so the dimension of the summary statistics should be kept as small as possible to improve computational efficiency. Therefore, we employ the dimension reduction procedure [<xref ref-type="bibr" rid="pcbi.1004635.ref022">22</xref>] to generate one summary statistic (estimate of the posterior mean) per parameter. The posterior means of the parameters are estimated via regression.</p>
+<p>The procedure is as follows: (i) perform a pilot run of ABC, using the pilot summary statistics, to find the regions of non-negligible posterior density, (ii) draw <italic>M</italic> samples of <inline-formula id="pcbi.1004635.e013"><alternatives><graphic id="pcbi.1004635.e013g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004635.e013"/><mml:math id="M13" display="inline" overflow="scroll"><mml:msubsup><mml:mrow><mml:mo>{</mml:mo> <mml:msub><mml:mi>θ</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>}</mml:mo></mml:mrow> <mml:mrow><mml:mi>i</mml:mi> <mml:mo>=</mml:mo> <mml:mn>1</mml:mn></mml:mrow> <mml:mi>M</mml:mi></mml:msubsup></mml:math></alternatives></inline-formula> from the parameter space resulting from the pilot run, each with a corresponding artificial dataset <inline-formula id="pcbi.1004635.e014"><alternatives><graphic id="pcbi.1004635.e014g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004635.e014"/><mml:math id="M14" display="inline" overflow="scroll"><mml:msubsup><mml:mrow><mml:mo>{</mml:mo> <mml:msub><mml:mi>y</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>}</mml:mo></mml:mrow> <mml:mrow><mml:mi>i</mml:mi> <mml:mo>=</mml:mo> <mml:mn>1</mml:mn></mml:mrow> <mml:mi>M</mml:mi></mml:msubsup></mml:math></alternatives></inline-formula> and a summary statistic <inline-formula id="pcbi.1004635.e015"><alternatives><graphic id="pcbi.1004635.e015g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004635.e015"/><mml:math id="M15" display="inline" overflow="scroll"><mml:msubsup><mml:mrow><mml:mo>{</mml:mo> <mml:msub><mml:mi>L</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>}</mml:mo></mml:mrow> <mml:mrow><mml:mi>i</mml:mi> <mml:mo>=</mml:mo> <mml:mn>1</mml:mn></mml:mrow> <mml:mi>M</mml:mi></mml:msubsup></mml:math></alternatives></inline-formula>, and (iii) fit a multiple linear regression model (<xref ref-type="disp-formula" rid="pcbi.1004635.e016">Eq (2)</xref>) to each component of <italic>θ</italic> in turn:
+<disp-formula id="pcbi.1004635.e016"><alternatives><graphic id="pcbi.1004635.e016g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004635.e016"/><mml:math id="M16" display="block" overflow="scroll"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:msub><mml:mi>θ</mml:mi> <mml:mrow><mml:mi>i</mml:mi> <mml:mo>,</mml:mo> <mml:mi>j</mml:mi></mml:mrow></mml:msub> <mml:mo>=</mml:mo> <mml:msub><mml:mi>α</mml:mi> <mml:mi>j</mml:mi></mml:msub> <mml:mo>+</mml:mo> <mml:msubsup><mml:mi>β</mml:mi> <mml:mrow><mml:mi>j</mml:mi></mml:mrow> <mml:mi>T</mml:mi></mml:msubsup> <mml:msub><mml:mi>g</mml:mi> <mml:mi>j</mml:mi></mml:msub> <mml:mrow><mml:mo>(</mml:mo> <mml:msub><mml:mi>L</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>+</mml:mo> <mml:msub><mml:mi>ξ</mml:mi> <mml:mrow><mml:mi>i</mml:mi> <mml:mo>,</mml:mo> <mml:mi>j</mml:mi></mml:mrow></mml:msub> <mml:mo>,</mml:mo> <mml:mspace width="3.33333pt"/><mml:mi>i</mml:mi> <mml:mo>=</mml:mo> <mml:mn>1</mml:mn> <mml:mo>,</mml:mo> <mml:mo>⋯</mml:mo> <mml:mo>,</mml:mo> <mml:mi>M</mml:mi> <mml:mo>,</mml:mo> <mml:mi>j</mml:mi> <mml:mo>=</mml:mo> <mml:mn>1</mml:mn> <mml:mo>,</mml:mo> <mml:mo>⋯</mml:mo> <mml:mo>,</mml:mo> <mml:mi>J</mml:mi> <mml:mo>,</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives> <label>(2)</label></disp-formula>
+where <italic>J</italic> is the number of parameters. In the regression model, the error terms, <italic>ξ</italic><sub><italic>i</italic>,<italic>j</italic></sub>, have mean zero and <italic>g</italic><sub><italic>j</italic></sub>(⋅) is a vector-valued function, so that <italic>g</italic><sub><italic>j</italic></sub>(<italic>L</italic>) is a vector of transformations of the pilot summary statistics. For the application in our model, we choose <italic>g</italic><sub><italic>j</italic></sub>(<italic>L</italic>) = (<italic>L</italic>, <italic>L</italic><sup>2</sup>) and <italic>M</italic> = 5,000. However, for other applications, other choices of <italic>g</italic><sub><italic>j</italic></sub>(⋅) could be considered to obtain a better fit in the regression. Here, <italic>α</italic><sub><italic>j</italic></sub> is the intercept parameter and <italic>β</italic><sub><italic>j</italic></sub> is the vector of regression coefficients. The expected value of <italic>θ</italic><sub><italic>j</italic></sub> given the simulated summary statistic <italic>L</italic><sub><italic>i</italic></sub>, <italic>E</italic>[<italic>θ</italic><sub><italic>j</italic></sub>|<italic>L</italic><sub><italic>i</italic></sub>], is then estimated by <inline-formula id="pcbi.1004635.e017"><alternatives><graphic id="pcbi.1004635.e017g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004635.e017"/><mml:math id="M17" display="inline" overflow="scroll"><mml:mrow><mml:mover accent="true"><mml:msub><mml:mi>α</mml:mi> <mml:mi>j</mml:mi></mml:msub> <mml:mo>^</mml:mo></mml:mover> <mml:mo>+</mml:mo> <mml:msup><mml:mover accent="true"><mml:msub><mml:mi>β</mml:mi> <mml:mi>j</mml:mi></mml:msub> <mml:mo>^</mml:mo></mml:mover> <mml:mi>T</mml:mi></mml:msup> <mml:msub><mml:mi>g</mml:mi> <mml:mi>j</mml:mi></mml:msub> <mml:mrow><mml:mo>(</mml:mo> <mml:msub><mml:mi>L</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>)</mml:mo></mml:mrow></mml:mrow></mml:math></alternatives></inline-formula>. To find the best regression model, we employ a stepwise (bidirectional) regression method and the Bayesian information criterion (BIC) for model selection. The derived summary statistic for each parameter is then defined by <inline-formula id="pcbi.1004635.e018"><alternatives><graphic id="pcbi.1004635.e018g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004635.e018"/><mml:math id="M18" display="inline" overflow="scroll"><mml:mrow><mml:msub><mml:mi>S</mml:mi> <mml:mi>j</mml:mi></mml:msub> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>y</mml:mi> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>=</mml:mo> <mml:msup><mml:mover accent="true"><mml:msub><mml:mi>β</mml:mi> <mml:mi>j</mml:mi></mml:msub> <mml:mo>^</mml:mo></mml:mover> <mml:mi>T</mml:mi></mml:msup> <mml:msub><mml:mi>g</mml:mi> <mml:mi>j</mml:mi></mml:msub> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>L</mml:mi> <mml:mo>)</mml:mo></mml:mrow></mml:mrow></mml:math></alternatives></inline-formula>, <italic>j</italic> = 1, …, <italic>J</italic>, where <inline-formula id="pcbi.1004635.e019"><alternatives><graphic id="pcbi.1004635.e019g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004635.e019"/><mml:math id="M19" display="inline" overflow="scroll"><mml:mover accent="true"><mml:msub><mml:mi>β</mml:mi> <mml:mi>j</mml:mi></mml:msub> <mml:mo>^</mml:mo></mml:mover></mml:math></alternatives></inline-formula> is the estimated coefficients from the best regression model. Thus, there is only one summary statistic per parameter.</p>
+</sec>
+<sec id="sec007">
+<title>Discrepancy function</title>
+<p>In an attempt to accommodate summary statistics with different scales and correlations between summary statistics, we consider the Mahalanobis distance to compare <italic>S</italic><sub><italic>obs</italic></sub> and <italic>S</italic><sub><italic>sim</italic></sub>, where <inline-formula id="pcbi.1004635.e020"><alternatives><graphic id="pcbi.1004635.e020g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004635.e020"/><mml:math id="M20" display="inline" overflow="scroll"><mml:mrow><mml:msub><mml:mi>S</mml:mi> <mml:mrow><mml:mi>o</mml:mi> <mml:mi>b</mml:mi> <mml:mi>s</mml:mi></mml:mrow></mml:msub> <mml:mspace width="3.33333pt"/><mml:mo>=</mml:mo> <mml:mspace width="3.33333pt"/><mml:msubsup><mml:mrow><mml:mo>{</mml:mo> <mml:msub><mml:mi>S</mml:mi> <mml:mi>j</mml:mi></mml:msub> <mml:mrow><mml:mo>(</mml:mo> <mml:msub><mml:mi>y</mml:mi> <mml:mrow><mml:mi>o</mml:mi> <mml:mi>b</mml:mi> <mml:mi>s</mml:mi></mml:mrow></mml:msub> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>}</mml:mo></mml:mrow> <mml:mrow><mml:mi>j</mml:mi> <mml:mo>=</mml:mo> <mml:mn>1</mml:mn></mml:mrow> <mml:mi>J</mml:mi></mml:msubsup></mml:mrow></mml:math></alternatives></inline-formula> and <inline-formula id="pcbi.1004635.e021"><alternatives><graphic id="pcbi.1004635.e021g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004635.e021"/><mml:math id="M21" display="inline" overflow="scroll"><mml:mrow><mml:msub><mml:mi>S</mml:mi> <mml:mrow><mml:mi>s</mml:mi> <mml:mi>i</mml:mi> <mml:mi>m</mml:mi></mml:mrow></mml:msub> <mml:mspace width="3.33333pt"/><mml:mo>=</mml:mo> <mml:mspace width="3.33333pt"/><mml:msubsup><mml:mrow><mml:mo>{</mml:mo> <mml:msub><mml:mi>S</mml:mi> <mml:mi>j</mml:mi></mml:msub> <mml:mrow><mml:mo>(</mml:mo> <mml:msub><mml:mi>y</mml:mi> <mml:mrow><mml:mi>s</mml:mi> <mml:mi>i</mml:mi> <mml:mi>m</mml:mi></mml:mrow></mml:msub> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>}</mml:mo></mml:mrow> <mml:mrow><mml:mi>j</mml:mi> <mml:mo>=</mml:mo> <mml:mn>1</mml:mn></mml:mrow> <mml:mi>J</mml:mi></mml:msubsup></mml:mrow></mml:math></alternatives></inline-formula>. This discrepancy function is given by
+<disp-formula id="pcbi.1004635.e022"><alternatives><graphic id="pcbi.1004635.e022g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004635.e022"/><mml:math id="M22" display="block" overflow="scroll"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:mi>ρ</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:msub><mml:mi>y</mml:mi> <mml:mrow><mml:mi>o</mml:mi> <mml:mi>b</mml:mi> <mml:mi>s</mml:mi></mml:mrow></mml:msub> <mml:mo>,</mml:mo> <mml:msub><mml:mi>y</mml:mi> <mml:mrow><mml:mi>s</mml:mi> <mml:mi>i</mml:mi> <mml:mi>m</mml:mi></mml:mrow></mml:msub> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>=</mml:mo> <mml:msup><mml:mrow><mml:mo>(</mml:mo> <mml:msub><mml:mi>S</mml:mi> <mml:mrow><mml:mi>o</mml:mi> <mml:mi>b</mml:mi> <mml:mi>s</mml:mi></mml:mrow></mml:msub> <mml:mo>-</mml:mo> <mml:msub><mml:mi>S</mml:mi> <mml:mrow><mml:mi>s</mml:mi> <mml:mi>i</mml:mi> <mml:mi>m</mml:mi></mml:mrow></mml:msub> <mml:mo>)</mml:mo></mml:mrow> <mml:mi>T</mml:mi></mml:msup> <mml:mo>×</mml:mo> <mml:msup><mml:mi>W</mml:mi> <mml:mrow><mml:mo>-</mml:mo> <mml:mn>1</mml:mn></mml:mrow></mml:msup> <mml:mo>×</mml:mo> <mml:mrow><mml:mo>(</mml:mo> <mml:msub><mml:mi>S</mml:mi> <mml:mrow><mml:mi>o</mml:mi> <mml:mi>b</mml:mi> <mml:mi>s</mml:mi></mml:mrow></mml:msub> <mml:mo>-</mml:mo> <mml:msub><mml:mi>S</mml:mi> <mml:mrow><mml:mi>s</mml:mi> <mml:mi>i</mml:mi> <mml:mi>m</mml:mi></mml:mrow></mml:msub> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>,</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives> <label>(3)</label></disp-formula>
+where <italic>W</italic> is an estimate of the covariance matrix of the summary statistics <inline-formula id="pcbi.1004635.e023"><alternatives><graphic id="pcbi.1004635.e023g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004635.e023"/><mml:math id="M23" display="inline" overflow="scroll"><mml:msubsup><mml:mrow><mml:mo>{</mml:mo> <mml:msub><mml:mi>S</mml:mi> <mml:mi>j</mml:mi></mml:msub> <mml:mo>}</mml:mo></mml:mrow> <mml:mrow><mml:mi>j</mml:mi> <mml:mo>=</mml:mo> <mml:mn>1</mml:mn></mml:mrow> <mml:mi>J</mml:mi></mml:msubsup></mml:math></alternatives></inline-formula>. To estimate <italic>W</italic>, we simulate 100 simulated datasets <inline-formula id="pcbi.1004635.e024"><alternatives><graphic id="pcbi.1004635.e024g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004635.e024"/><mml:math id="M24" display="inline" overflow="scroll"><mml:msubsup><mml:mrow><mml:mo>{</mml:mo> <mml:msub><mml:mi>y</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo stretchy="false">|</mml:mo> <mml:msubsup><mml:mrow><mml:mo>{</mml:mo> <mml:mover accent="true"><mml:msub><mml:mi>θ</mml:mi> <mml:mi>j</mml:mi></mml:msub> <mml:mo>^</mml:mo></mml:mover> <mml:mo>}</mml:mo></mml:mrow> <mml:mrow><mml:mi>j</mml:mi> <mml:mo>=</mml:mo> <mml:mn>1</mml:mn></mml:mrow> <mml:mi>J</mml:mi></mml:msubsup> <mml:mo>}</mml:mo></mml:mrow> <mml:mrow><mml:mi>i</mml:mi> <mml:mo>=</mml:mo> <mml:mn>1</mml:mn></mml:mrow> <mml:mn>100</mml:mn></mml:msubsup></mml:math></alternatives></inline-formula>, using the estimated posterior mean <inline-formula id="pcbi.1004635.e025"><alternatives><graphic id="pcbi.1004635.e025g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004635.e025"/><mml:math id="M25" display="inline" overflow="scroll"><mml:mrow><mml:mover accent="true"><mml:msub><mml:mi>θ</mml:mi> <mml:mi>j</mml:mi></mml:msub> <mml:mo>^</mml:mo></mml:mover> <mml:mspace width="3.33333pt"/><mml:mo>=</mml:mo> <mml:mspace width="3.33333pt"/><mml:mover accent="true"><mml:msub><mml:mi>α</mml:mi> <mml:mi>j</mml:mi></mml:msub> <mml:mo>^</mml:mo></mml:mover> <mml:mspace width="3.33333pt"/><mml:mo>+</mml:mo> <mml:mspace width="3.33333pt"/><mml:msup><mml:mover accent="true"><mml:msub><mml:mi>β</mml:mi> <mml:mi>j</mml:mi></mml:msub> <mml:mo>^</mml:mo></mml:mover> <mml:mi>T</mml:mi></mml:msup> <mml:msub><mml:mi>g</mml:mi> <mml:mi>j</mml:mi></mml:msub> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>L</mml:mi> <mml:mo>)</mml:mo></mml:mrow></mml:mrow></mml:math></alternatives></inline-formula>, <italic>j</italic> = 1, …, <italic>J</italic>, obtained from the regression step above. For each simulated dataset <italic>y</italic><sub><italic>i</italic></sub>, we compute the pilot summary statistics, then obtain the derived summary statistics <inline-formula id="pcbi.1004635.e026"><alternatives><graphic id="pcbi.1004635.e026g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004635.e026"/><mml:math id="M26" display="inline" overflow="scroll"><mml:msubsup><mml:mrow><mml:mo>{</mml:mo> <mml:msub><mml:mi>S</mml:mi> <mml:mrow><mml:mi>i</mml:mi> <mml:mo>,</mml:mo> <mml:mi>j</mml:mi></mml:mrow></mml:msub> <mml:mo>}</mml:mo></mml:mrow> <mml:mrow><mml:mi>j</mml:mi> <mml:mo>=</mml:mo> <mml:mn>1</mml:mn></mml:mrow> <mml:mi>J</mml:mi></mml:msubsup></mml:math></alternatives></inline-formula>, <italic>i</italic> = 1, …, 100. <italic>W</italic> is subsequently estimated by <italic>cov</italic>{<italic>S</italic><sub><italic>i</italic>,<italic>j</italic></sub>}, <italic>i</italic> = 1, …, 100 and <italic>j</italic> = 1, …, <italic>J</italic>.</p>
+</sec>
+</sec>
+</sec>
+<sec id="sec008" sec-type="results">
+<title>Results</title>
+<sec id="sec009">
+<title>Validation and comparing algorithms’ performance</title>
+<p>To examine the utility of our new ABC algorithm and to investigate whether the derived set of summary statistics is informative for parameter inferences, we simulated a dataset with biologically relevant parameter values (<italic>P</italic><sub><italic>m</italic></sub> = 0.1, <italic>q</italic> = 0.2, <italic>P</italic><sub><italic>p</italic></sub> = 0.0012), which corresponds to (<italic>D</italic> = 202.5 µm<sup>2</sup>h<sup>−1</sup>, <italic>q</italic> = 0.2, <italic>λ</italic> = 0.03h<sup>−1</sup>). The synthetic dataset has <italic>C</italic>(0) = 20,000 cells, <italic>T</italic> = 24 h and is replicated three times. This dataset represents experiments in Scenario 2.</p>
+<p>We first summarise the synthetic dataset in terms of the pilot summary statistics, including three radii of the expanding cell colonies for three replicates (order statistics), the numbers of cells and the percentages of isolated cells in six sub-regions along a transect after averaging over three replicates. The ABC posterior distributions resulting from the pilot run with the pilot summary statistics have significant spread. So, a multiple linear regression procedure is performed to generate one summary statistic for each parameter. We then apply the new ABC algorithm with the derived set of summary statistics and uniform priors for all parameters, <italic>P</italic><sub><italic>m</italic></sub> ∼ <italic>U</italic>(0,1), <italic>q</italic> ∼ <italic>U</italic>(0,1) and <italic>P</italic><sub><italic>p</italic></sub> ∼ <italic>U</italic>(0,1). The resulting posterior distributions for (<italic>P</italic><sub><italic>m</italic></sub>, <italic>q</italic>, <italic>P</italic><sub><italic>p</italic></sub>) are presented in <xref ref-type="fig" rid="pcbi.1004635.g003">Fig 3</xref>. These results show well-defined posterior distributions with narrow spread and posterior means close to the true values. The posterior correlation coefficients of (<italic>P</italic><sub><italic>m</italic></sub>, <italic>q</italic>), (<italic>q</italic>, <italic>P</italic><sub><italic>p</italic></sub>) and (<italic>P</italic><sub><italic>m</italic></sub>, <italic>P</italic><sub><italic>p</italic></sub>) are between −0.2 to 0.3. Thus, it is evident that our new ABC algorithm combined with our method for determining summary statistics allows us to recover all parameters rather precisely.</p>
+<fig id="pcbi.1004635.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004635.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title>Results for synthetic data.</title>
+<p>Subfigures A–C correspond to the ABC posterior distributions of <italic>P</italic><sub><italic>m</italic></sub>, <italic>q</italic> and <italic>P</italic><sub><italic>p</italic></sub>, respectively. Uniform priors are placed on all parameters, <italic>P</italic><sub><italic>m</italic></sub> ∼ <italic>U</italic>(0,1), <italic>q</italic> ∼ <italic>U</italic>(0,1) and <italic>P</italic><sub><italic>p</italic></sub> ∼ <italic>U</italic>(0,1). The posterior means are plotted as black vertical dashed lines and the true parameter values are shown as red squares.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004635.g003"/>
+</fig>
+<p>Using the synthetically generated data, we also compare the performance of the three algorithms: RSMC, APMC and ASMC. For all algorithms, we set <italic>N</italic> = 1000 particles and run each algorithm 10 times to compare the resulting posterior distributions, the total number of model simulations and the generalized variance (GV, or the determinant of the posterior variance-covariance matrix). A comparison of ABC posterior distributions from the three algorithms is shown in <xref ref-type="fig" rid="pcbi.1004635.g004">Fig 4</xref>. For RSMC and ASMC, we set <italic>ϵ</italic><sub><italic>final</italic></sub> = 0.1. For all cases, the posterior distributions from RSMC (the dashed black curves) and ASMC (the solid red curves) are almost indistinguishable, however, the RSMC requires approximately 2.5 times more model simulations than the ASMC algorithm (<xref ref-type="fig" rid="pcbi.1004635.g005">Fig 5A</xref>).</p>
+<fig id="pcbi.1004635.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004635.g004</object-id>
+<label>Fig 4</label>
+<caption>
+<title>Comparing the performance of the three SMC-ABC algorithms.</title>
+<p>Subfigures A, B and C correspond to the ABC posterior distributions of <italic>P</italic><sub><italic>m</italic></sub>, <italic>q</italic> and <italic>P</italic><sub><italic>p</italic></sub>, respectively. In all subfigures, the (dashed) black, the (solid, with markers) blue and the (solid) red curves correspond to the RSMC, the APMC and the ASMC algorithms, respectively.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004635.g004"/>
+</fig>
+<fig id="pcbi.1004635.g005" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004635.g005</object-id>
+<label>Fig 5</label>
+<caption>
+<title>Comparing the number of model simulations and GV.</title>
+<p>(A) Boxplot of the number of model simulations for RSMC and ASMC, given the same <italic>ϵ</italic><sub><italic>final</italic></sub>. (B) Boxplot of the GV for the resulting ABC posterior distributions from ASMC and APMC based on a similar number of model simulations.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004635.g005"/>
+</fig>
+<p>For the APMC algorithm, we use 62 iterations (giving the total number of model simulations similar to the number of model simulations for ASMC, 62,000). Results in <xref ref-type="fig" rid="pcbi.1004635.g004">Fig 4</xref> suggest that the posterior distributions from the ASMC algorithm has smaller variance than the results from the APMC algorithm (the blue curves with markers) due to the ability of ASMC in getting to a smaller value of <italic>ϵ</italic> with a similar computational effort. We then compute the GV of the resulting ABC joint posterior distributions from the ASMC and APMC algorithms from the 10 runs (<xref ref-type="fig" rid="pcbi.1004635.g005">Fig 5B</xref>). We observed that the GVs for the resulting posterior distributions from APMC are approximately three times larger than the corresponding GV from the ASMC algorithm. Thus, for this application, our algorithm performs better than the RSMC and the APMC algorithms. We now apply the ASMC algorithm to the experimental data in the two scenarios and interpret the results in terms of the biologically relevant parameters <italic>D</italic>, <italic>q</italic> and <italic>λ</italic>.</p>
+</sec>
+<sec id="sec010">
+<title>Scenario 1: Experiments with Mitomycin-C pre-treatment</title>
+<p>This section presents the results for <italic>D</italic> and <italic>q</italic> for all experimental conditions in Scenario 1, where cells were pre-treated with Mitomycin-C to suppress cell proliferation. Uniform priors are placed on all parameters, <italic>P</italic><sub><italic>m</italic></sub> ∼ <italic>U</italic>(0,1) and <italic>q</italic> ∼ <italic>U</italic>(0,1). From the regression procedure to generate one summary statistic <italic>S</italic> for each parameter, for all cases, we observe that all pilot summary statistics (<italic>R</italic><sub>(1)</sub>, <italic>R</italic><sub>(2)</sub>, <italic>R</italic><sub>(3)</sub>, <inline-formula id="pcbi.1004635.e027"><alternatives><graphic id="pcbi.1004635.e027g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004635.e027"/><mml:math id="M27" display="inline" overflow="scroll"><mml:msubsup><mml:mrow><mml:mo>{</mml:mo> <mml:msub><mml:mi>c</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>}</mml:mo></mml:mrow> <mml:mrow><mml:mi>i</mml:mi> <mml:mo>=</mml:mo> <mml:mn>1</mml:mn></mml:mrow> <mml:mn>6</mml:mn></mml:msubsup></mml:math></alternatives></inline-formula> and <inline-formula id="pcbi.1004635.e028"><alternatives><graphic id="pcbi.1004635.e028g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004635.e028"/><mml:math id="M28" display="inline" overflow="scroll"><mml:msubsup><mml:mrow><mml:mo>{</mml:mo> <mml:msub><mml:mi>p</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>}</mml:mo></mml:mrow> <mml:mrow><mml:mi>i</mml:mi> <mml:mo>=</mml:mo> <mml:mn>1</mml:mn></mml:mrow> <mml:mn>6</mml:mn></mml:msubsup></mml:math></alternatives></inline-formula>) are informative about <italic>D</italic>. However, to obtain estimates for <italic>q</italic>, only <italic>R</italic><sub>(1)</sub>, <inline-formula id="pcbi.1004635.e029"><alternatives><graphic id="pcbi.1004635.e029g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004635.e029"/><mml:math id="M29" display="inline" overflow="scroll"><mml:msubsup><mml:mrow><mml:mo>{</mml:mo> <mml:msub><mml:mi>c</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>}</mml:mo></mml:mrow> <mml:mrow><mml:mi>i</mml:mi> <mml:mo>=</mml:mo> <mml:mn>1</mml:mn></mml:mrow> <mml:mn>6</mml:mn></mml:msubsup></mml:math></alternatives></inline-formula> and <inline-formula id="pcbi.1004635.e030"><alternatives><graphic id="pcbi.1004635.e030g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004635.e030"/><mml:math id="M30" display="inline" overflow="scroll"><mml:msubsup><mml:mrow><mml:mo>{</mml:mo> <mml:msub><mml:mi>p</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>}</mml:mo></mml:mrow> <mml:mrow><mml:mi>i</mml:mi> <mml:mo>=</mml:mo> <mml:mn>1</mml:mn></mml:mrow> <mml:mn>6</mml:mn></mml:msubsup></mml:math></alternatives></inline-formula> were significant in the regression.</p>
+<p>The ABC estimate of the posterior expected value of <italic>D</italic> and <italic>q</italic>, <italic>E</italic>[<italic>D</italic>] and <italic>E</italic>[<italic>q</italic>], 90% credible intervals, CI, the coefficient of variation, CV, and the correlation coefficient, <italic>r</italic>, from all experimental conditions, are given in <xref ref-type="table" rid="pcbi.1004635.t001">Table 1</xref>. To assess the accuracy of our resulting estimates from the true ABC posteriors, we computed the Monte Carlo standard error, MCSE, for <italic>E</italic>[<italic>D</italic>] and <italic>E</italic>[<italic>q</italic>] in all experimental conditions, MCSE = <inline-formula id="pcbi.1004635.e031"><alternatives><graphic id="pcbi.1004635.e031g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004635.e031"/><mml:math id="M31" display="inline" overflow="scroll"><mml:mrow><mml:mi>σ</mml:mi> <mml:mo>/</mml:mo> <mml:msqrt><mml:mtext>ESS</mml:mtext></mml:msqrt></mml:mrow></mml:math></alternatives></inline-formula> [<xref ref-type="bibr" rid="pcbi.1004635.ref041">41</xref>]. Here, <italic>σ</italic> is the posterior standard deviation and ESS is the effective sample size. We use Kish’s approximation method [<xref ref-type="bibr" rid="pcbi.1004635.ref042">42</xref>] to compute the ESS, ESS = <inline-formula id="pcbi.1004635.e032"><alternatives><graphic id="pcbi.1004635.e032g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004635.e032"/><mml:math id="M32" display="inline" overflow="scroll"><mml:mrow><mml:mn>1</mml:mn> <mml:mo>/</mml:mo> <mml:msubsup><mml:mo>∑</mml:mo> <mml:mrow><mml:mi>i</mml:mi> <mml:mo>=</mml:mo> <mml:mn>1</mml:mn></mml:mrow> <mml:mi>N</mml:mi></mml:msubsup> <mml:msubsup><mml:mi>W</mml:mi> <mml:mi>i</mml:mi> <mml:mn>2</mml:mn></mml:msubsup></mml:mrow></mml:math></alternatives></inline-formula>, where <italic>W</italic><sub><italic>i</italic></sub> is the normalised weight for the <italic>i</italic><sup><italic>th</italic></sup> parameter value. For all cases, the ABC posterior consists of 1,000 parameter values, which leads to an ESS usually in the range 700–850. Our posterior sample size leads to a small MCSE for both <italic>E</italic>[<italic>D</italic>] and <italic>E</italic>[<italic>q</italic>], less than 0.2% and 0.4% of the estimate of their expected values, respectively.</p>
+<table-wrap id="pcbi.1004635.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004635.t001</object-id>
+<label>Table 1</label>
+<caption>
+<title>ABC posterior summary for <italic>D</italic> and <italic>q</italic> for all experiments in Scenario 1.</title>
+<p>Results shown include the posterior mean (and the 90% CI in the parentheses), the coefficient of variation, CV, and the correlation coefficient, <italic>r</italic>.</p>
+</caption>
+<alternatives>
+<graphic id="pcbi.1004635.t001g" mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004635.t001"/>
+<table frame="box" rules="all" border="0">
+<colgroup span="1">
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+</colgroup>
+<thead>
+<tr>
+<th align="center" rowspan="1" colspan="1"><italic>C</italic>(0)</th>
+<th align="center" rowspan="1" colspan="1"><italic>T</italic>(<italic>h</italic>)</th>
+<th align="left" rowspan="1" colspan="1"><italic>E</italic>[<italic>D</italic>] (90%CI) µm<sup>2</sup>h<sup>−1</sup></th>
+<th align="left" rowspan="1" colspan="1">CV(<italic>D</italic>)(%)</th>
+<th align="left" rowspan="1" colspan="1"><italic>E</italic>[<italic>q</italic>] (90%CI)</th>
+<th align="left" rowspan="1" colspan="1">CV(<italic>q</italic>)(%)</th>
+<th align="left" rowspan="1" colspan="1"><italic>r</italic></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center" rowspan="3" colspan="1">20 000</td>
+<td align="center" rowspan="1" colspan="1">0—24</td>
+<td align="left" rowspan="1" colspan="1">225.9 (212.1, 240.3)</td>
+<td align="char" char="." rowspan="1" colspan="1">4.0</td>
+<td align="left" rowspan="1" colspan="1">0.23 (0.19, 0.27)</td>
+<td align="char" char="." rowspan="1" colspan="1">9.9</td>
+<td align="char" char="." rowspan="1" colspan="1">0.4</td>
+</tr>
+<tr>
+<td align="center" rowspan="1" colspan="1">0—48</td>
+<td align="left" rowspan="1" colspan="1">288.3 (273.7, 304.9)</td>
+<td align="char" char="." rowspan="1" colspan="1">3.3</td>
+<td align="left" rowspan="1" colspan="1">0.29 (0.25, 0.32)</td>
+<td align="char" char="." rowspan="1" colspan="1">6.7</td>
+<td align="char" char="." rowspan="1" colspan="1">0.4</td>
+</tr>
+<tr>
+<td align="center" rowspan="1" colspan="1">24—48</td>
+<td align="left" rowspan="1" colspan="1">335.9 (309.9, 366.9)</td>
+<td align="char" char="." rowspan="1" colspan="1">5.6</td>
+<td align="left" rowspan="1" colspan="1">0.32 (0.28, 0.35)</td>
+<td align="char" char="." rowspan="1" colspan="1">6.3</td>
+<td align="char" char="." rowspan="1" colspan="1">0.2</td>
+</tr>
+<tr>
+<td align="center" rowspan="3" colspan="1">30 000</td>
+<td align="center" rowspan="1" colspan="1">0—24</td>
+<td align="left" rowspan="1" colspan="1">251.8 (235.9, 269.6)</td>
+<td align="char" char="." rowspan="1" colspan="1">4.1</td>
+<td align="left" rowspan="1" colspan="1">0.36 (0.33, 0.39)</td>
+<td align="char" char="." rowspan="1" colspan="1">5.4</td>
+<td align="char" char="." rowspan="1" colspan="1">0.5</td>
+</tr>
+<tr>
+<td align="center" rowspan="1" colspan="1">0—48</td>
+<td align="left" rowspan="1" colspan="1">297.0 (279.1, 316.4)</td>
+<td align="char" char="." rowspan="1" colspan="1">4.1</td>
+<td align="left" rowspan="1" colspan="1">0.47 (0.45, 0.50)</td>
+<td align="char" char="." rowspan="1" colspan="1">3.0</td>
+<td align="char" char="." rowspan="1" colspan="1">0.6</td>
+</tr>
+<tr>
+<td align="center" rowspan="1" colspan="1">24—48</td>
+<td align="left" rowspan="1" colspan="1">317.7 (293.8, 344.9)</td>
+<td align="char" char="." rowspan="1" colspan="1">4.9</td>
+<td align="left" rowspan="1" colspan="1">0.50 (0.47, 0.52)</td>
+<td align="char" char="." rowspan="1" colspan="1">3.2</td>
+<td align="char" char="." rowspan="1" colspan="1">0.4</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p>From <xref ref-type="table" rid="pcbi.1004635.t001">Table 1</xref>, we observe that the CV for <italic>D</italic> and <italic>q</italic> are also quite small, approximately 6% and 10%, respectively, which means that we can obtain reasonably precise estimates for <italic>D</italic> and <italic>q</italic> using the derived summary statistics. The correlation coefficient between <italic>D</italic> and <italic>q</italic> for all combinations is between 0.2 to 0.6. This suggests that multiple combinations of values of <italic>D</italic> and <italic>q</italic> can generate similar expanding cell colonies in terms of our pilot summary statistics.</p>
+<p>For both initial cell densities (20,000 and 30,000 cells), we observe that the values of <italic>E</italic>[<italic>D</italic>] for the experiments terminated after 48 h are higher than those values for experiments terminated after 24 h. This finding suggests that estimates of <italic>D</italic> appear to depend on the experimental time, <italic>T</italic>, which is consistent with the results reported in [<xref ref-type="bibr" rid="pcbi.1004635.ref016">16</xref>] for 3T3 fibroblast cells. It is conjectured that some amount of time could be required for the cells to adjust to their new or modified environments encountered as part of the experimental protocol. The cell motility, therefore, could be reduced during this transition phase. A similar trend of dependency is also found for <italic>q</italic>. This motivates us to investigate the values of <italic>D</italic> and <italic>q</italic> for the period 24–48 h.</p>
+<p>Let {<italic>D</italic><sub>(0–24)</sub>, <italic>q</italic><sub>(0–24)</sub>}, {<italic>D</italic><sub>(24–48)</sub>, <italic>q</italic><sub>(24–48)</sub>} and {<italic>D</italic><sub>(0–48)</sub>, <italic>q</italic><sub>(0–48)</sub>} represent the cell motility coefficient and strength of cell-to-cell adhesion for the period 0–24 h, 24–48 h and 0–48 h, respectively. Estimates of posterior distributions for {<italic>D</italic><sub>(0–24)</sub>, <italic>q</italic><sub>(0–24)</sub>} and {<italic>D</italic><sub>(0–48)</sub>, <italic>q</italic><sub>(0–48)</sub>} have already been obtained from experimental data at 24 h and 48 h, respectively. To obtain estimates for {<italic>D</italic><sub>(24–48)</sub>, <italic>q</italic><sub>(24–48)</sub>}, two stages of simulations are required, from 0–24 h and from 24–48 h. In the first stage, model simulations use parameter sets that are drawn from the distributions of {<italic>D</italic><sub>(0–24)</sub>, <italic>q</italic><sub>(0–24)</sub>}; whereas, in the second stage, the model simulations update the cell colonies with parameter sets that are drawn from the distributions of {<italic>D</italic><sub>(24–48)</sub>, <italic>q</italic><sub>(24–48)</sub>}. We consider two approaches to infer the values of {<italic>D</italic><sub>(24–48)</sub>, <italic>q</italic><sub>(24–48)</sub>}.
+<list list-type="bullet"><list-item><p>Approach 1: We jointly infer the values of {<italic>D</italic><sub>(0–24)</sub>, <italic>q</italic><sub>(0–24)</sub>} and {<italic>D</italic><sub>(24–48)</sub>, <italic>q</italic><sub>(24−48)</sub>} by simultaneously comparing experimental data that are terminated at 24 h and 48 h with the simulated data at the corresponding terminated times. In this approach, we place a uniform prior on both parameter sets {<italic>D</italic><sub>(0–24)</sub>, <italic>q</italic><sub>(0–24)</sub>} and {<italic>D</italic><sub>(24–48)</sub>, <italic>q</italic><sub>(24–48)</sub>}. We observe that the ABC posterior distributions of {<italic>D</italic><sub>(0–24)</sub>, <italic>q</italic><sub>(0–24)</sub>} in this approach are indistinguishable with the estimates previously obtained by using the experiments terminated at 24 h.</p></list-item> <list-item><p>Approach 2: We make use of the ABC posterior of {<italic>D</italic><sub>(0–24)</sub>, <italic>q</italic><sub>(0–24)</sub>} previously obtained from the experiments terminated at 24 h, and only infer the values of {<italic>D</italic><sub>(24–48)</sub>, <italic>q</italic><sub>(24–48)</sub>} by matching on the summary statistics at 48 h. To achieve this, for each initial cell density, we fit a bivariate normal distribution to the ABC joint posterior distributions of {<italic>D</italic><sub>(0–24)</sub>, <italic>q</italic><sub>(0–24)</sub>}. To perform a model simulation, we draw a parameter set from the bivariate normal distribution for the first stage, and another parameter set from the uniform prior for {<italic>D</italic><sub>(24–48)</sub>, <italic>q</italic><sub>(24–48)</sub>} for the second stage.</p></list-item></list></p>
+<p>We use the same uniform prior for {<italic>D</italic><sub>(24–48)</sub>, <italic>q</italic><sub>(24–48)</sub>} in the two approaches. The second approach has the advantage that the SMC-ABC algorithm only needs to search over the parameter space of 24–48 h, {<italic>D</italic><sub>(24–48)</sub>, <italic>q</italic><sub>(24–48)</sub>}. Thus, we expect the second approach to be faster and more efficient. For each joint posterior distribution of {<italic>D</italic><sub>(0–24)</sub>, <italic>q</italic><sub>(0–24)</sub>}, we assess the bivariate normality assumption using a Q-Q plot of chi-square quantiles against the squared Mahalanobis distance [<xref ref-type="bibr" rid="pcbi.1004635.ref043">43</xref>]. The Q-Q plots suggest that the bivariate normality assumption is reasonable for both initial cell densities.</p>
+<p>We found that the ABC posterior distributions of {<italic>D</italic><sub>(24–48)</sub>, <italic>q</italic><sub>(24–48)</sub>} in the two approaches are indistinguishable. However, the second approach is more efficient in terms of computational time. Therefore, for all experimental conditions in the two scenarios, we first obtain estimates for periods 0–24 h and 0–48 h then use the second approach to obtain estimates for 24–48 h.</p>
+<p>A comparison of <italic>D</italic> and <italic>q</italic> for different time periods is shown in <xref ref-type="fig" rid="pcbi.1004635.g006">Fig 6</xref>. Results in <xref ref-type="fig" rid="pcbi.1004635.g006">Fig 6A–6D</xref> correspond to experiments initiated with 20,000 and 30,000 cells, respectively. We observe that the estimated posterior distributions of <italic>D</italic><sub>(0–24)</sub> and <italic>D</italic><sub>(24–48)</sub> are non-overlapping, which implies that estimates of cell diffusivity are significantly different for the two periods of the experiment.</p>
+<fig id="pcbi.1004635.g006" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004635.g006</object-id>
+<label>Fig 6</label>
+<caption>
+<title>ABC posterior distributions for <italic>D</italic> and <italic>q</italic> for experiments in Scenario 1.</title>
+<p>Subfigures A–B and C–D correspond to the experiments initialised with 20,000 and 30,000 cells, respectively. In all subfigures, the blue curve with markers, the black dashed and the red solid curves correspond to the ABC posteriors for 0–24 h, 24–48 h and 0–48 h, respectively.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004635.g006"/>
+</fig>
+<p>Comparing the posterior estimates of <italic>D</italic> for different <italic>C</italic>(0) suggests that values of <italic>D</italic> for the 30,000 initial cell density experiment is higher than for those in the 20,000 initial cell density experiment during the period 0–24 h. However, the difference is insignificant for the period 24–48 h and for the entire period 0–48 h. These findings indicate that estimates of cell diffusivity depend less on the initial cell density for longer experiments.</p>
+<p>In contrast, the posterior estimates of cell-to-cell adhesion strength, <italic>q</italic>, for different <italic>C</italic>(0) are substantially different for all three periods. In particular, the estimates of <italic>q</italic> for the experiments initiated with 30,000 cells are higher than the corresponding values from the experiments initiated with 20,000 cells. This implies that estimates of cell-to-cell adhesiveness depend on initial cell densities. The higher the initial density, the stronger the cell-to-cell adhesion strength. In the literature, several studies have investigated the role of cell-to-cell adhesion in collective cell spreading [<xref ref-type="bibr" rid="pcbi.1004635.ref044">44</xref>–<xref ref-type="bibr" rid="pcbi.1004635.ref046">46</xref>] by matching the cell density profiles between the experimental data and the model simulation with several values of <italic>q</italic>. The previous approach is limited in that it can only give a point estimate of <italic>q</italic> and provide no insight into the uncertainty in the estimate or the correlation between <italic>D</italic> and <italic>q</italic>. Therefore, this study is the first attempt to provide a systematic approach to jointly infer the values of <italic>D</italic> and <italic>q</italic>, and compare the distributions of <italic>D</italic> and <italic>q</italic> for different experimental conditions.</p>
+</sec>
+<sec id="sec011">
+<title>Scenario 2: Experiments without Mitomycin-C pre-treatment</title>
+<p>To analyse the second set of experiments, we consider two approaches: (i) assuming that the values of <italic>D</italic> and <italic>q</italic> in the two experimental scenarios are completely unrelated, and thus, inferences of <italic>D</italic>, <italic>q</italic> and <italic>λ</italic> are based solely on the experimental data in Scenario 2, and (ii) assuming that the values of <italic>D</italic> and <italic>q</italic> from Scenario 1 are equal to those of <italic>D</italic> and <italic>q</italic> in Scenario 2. For the latter approach, we adopt a Bayesian sequential learning approach and use the posterior distribution of <italic>D</italic> and <italic>q</italic> from Scenario 1 as the prior for <italic>D</italic> and <italic>q</italic> for the corresponding experiments in Scenario 2.</p>
+<sec id="sec012">
+<title>Uninformative priors for <italic>D</italic>, <italic>q</italic> and <italic>λ</italic></title>
+<p>We aim to obtain an approximate joint posterior distribution for our model parameters when little prior biological knowledge about them is assumed. For all cases, we observe that all the pilot summary statistics are informative for <italic>D</italic>, however, for <italic>q</italic> and <italic>λ</italic>, the largest two radii were not significant in the regression.</p>
+<p>A summary of the ABC posterior distributions of <italic>D</italic>, <italic>q</italic> and <italic>λ</italic> resulting from the ABC analyses with the derived summary statistics and uniform priors, <italic>P</italic><sub><italic>m</italic></sub> ∼ <italic>U</italic>(0,1), <italic>q</italic> ∼ <italic>U</italic>(0,1) and <italic>P</italic><sub><italic>p</italic></sub> ∼ <italic>U</italic>(0,1), corresponding to <italic>D</italic> ∼ <italic>U</italic>(0,2025) µm<sup>2</sup>h<sup>−1</sup> and <italic>λ</italic> ∼ <italic>U</italic>(0,25)h<sup>−1</sup>, are given in <xref ref-type="table" rid="pcbi.1004635.t002">Table 2</xref> and a comparison of <italic>D</italic>, <italic>q</italic> and <italic>λ</italic> for the three time periods (0–24 h, 24–48 h and 0–48 h) are presented in <xref ref-type="fig" rid="pcbi.1004635.g007">Fig 7</xref>. Results in <xref ref-type="fig" rid="pcbi.1004635.g007">Fig 7A–7F</xref> correspond to the experiments initiated with 20,000 and 30,000 cells, respectively. The MCSE, for all cases, for <italic>E</italic>[<italic>D</italic>], <italic>E</italic>[<italic>q</italic>] and <italic>E</italic>[<italic>λ</italic>] are relatively small, less than 0.3%, 0.5% and 0.2% of the estimate of its expected values, respectively.</p>
+<table-wrap id="pcbi.1004635.t002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004635.t002</object-id>
+<label>Table 2</label>
+<caption>
+<title>ABC posterior summary for <italic>D</italic>, <italic>q</italic> and <italic>λ</italic> for all experiments in Scenario 2, using uninformative priors for <italic>D</italic>, <italic>q</italic> and <italic>λ</italic>.</title>
+<p>Results shown include the posterior mean (and the 90% CI in the parentheses) and the coefficient of variation, CV.</p>
+</caption>
+<alternatives>
+<graphic id="pcbi.1004635.t002g" mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004635.t002"/>
+<table frame="box" rules="all" border="0">
+<colgroup span="1">
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+</colgroup>
+<thead>
+<tr>
+<th align="center" rowspan="1" colspan="1"><italic>C</italic>(0)</th>
+<th align="center" rowspan="1" colspan="1"><italic>T</italic>(<italic>h</italic>)</th>
+<th align="left" rowspan="1" colspan="1"><italic>E</italic>[<italic>D</italic>] (90% CI) (µm<sup>2</sup>h<sup>−1</sup>)</th>
+<th align="left" rowspan="1" colspan="1">CV(<italic>D</italic>)(%)</th>
+<th align="left" rowspan="1" colspan="1"><italic>E</italic>[<italic>q</italic>]</th>
+<th align="left" rowspan="1" colspan="1">CV(<italic>q</italic>)(%)</th>
+<th align="left" rowspan="1" colspan="1"><italic>E</italic>[<italic>λ</italic>] (90% CI) ×10<sup>−2</sup> (h<sup>−1</sup>)</th>
+<th align="left" rowspan="1" colspan="1">CV(<italic>λ</italic>)(%)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center" rowspan="3" colspan="1">20,000</td>
+<td align="center" rowspan="1" colspan="1">0—24</td>
+<td align="left" rowspan="1" colspan="1">234.0 (215.4, 253.9)</td>
+<td align="char" char="." rowspan="1" colspan="1">4.9</td>
+<td align="left" rowspan="1" colspan="1">0.25 (0.21, 0.29)</td>
+<td align="char" char="." rowspan="1" colspan="1">10.7</td>
+<td align="left" rowspan="1" colspan="1">3.83 (3.58, 4.08)</td>
+<td align="char" char="." rowspan="1" colspan="1">4.0</td>
+</tr>
+<tr>
+<td align="center" rowspan="1" colspan="1">0—48</td>
+<td align="left" rowspan="1" colspan="1">292.9 (267.8, 321.2)</td>
+<td align="char" char="." rowspan="1" colspan="1">5.5</td>
+<td align="left" rowspan="1" colspan="1">0.34 (0.25, 0.42)</td>
+<td align="char" char="." rowspan="1" colspan="1">15.3</td>
+<td align="left" rowspan="1" colspan="1">3.89 (3.69, 4.09)</td>
+<td align="char" char="." rowspan="1" colspan="1">3.2</td>
+</tr>
+<tr>
+<td align="center" rowspan="1" colspan="1">24—48</td>
+<td align="left" rowspan="1" colspan="1">336.9 (299.7, 377.1)</td>
+<td align="char" char="." rowspan="1" colspan="1">7.2</td>
+<td align="left" rowspan="1" colspan="1">0.38 (0.29, 0.44)</td>
+<td align="char" char="." rowspan="1" colspan="1">11.8</td>
+<td align="left" rowspan="1" colspan="1">3.90 (3.66, 4.18)</td>
+<td align="char" char="." rowspan="1" colspan="1">3.9</td>
+</tr>
+<tr>
+<td align="center" rowspan="3" colspan="1">30,000</td>
+<td align="center" rowspan="1" colspan="1">0—24</td>
+<td align="left" rowspan="1" colspan="1">267.8 (245.1, 291.2)</td>
+<td align="char" char="." rowspan="1" colspan="1">5.2</td>
+<td align="left" rowspan="1" colspan="1">0.39 (0.34, 0.44)</td>
+<td align="char" char="." rowspan="1" colspan="1">7.9</td>
+<td align="left" rowspan="1" colspan="1">3.97 (3.72, 4.20)</td>
+<td align="char" char="." rowspan="1" colspan="1">3.6</td>
+</tr>
+<tr>
+<td align="center" rowspan="1" colspan="1">0—48</td>
+<td align="left" rowspan="1" colspan="1">332.0 (293.1, 373.8)</td>
+<td align="char" char="." rowspan="1" colspan="1">7.9</td>
+<td align="left" rowspan="1" colspan="1">0.51 (0.47, 0.63)</td>
+<td align="char" char="." rowspan="1" colspan="1">12.4</td>
+<td align="left" rowspan="1" colspan="1">4.04 (3.80, 4.30)</td>
+<td align="char" char="." rowspan="1" colspan="1">3.8</td>
+</tr>
+<tr>
+<td align="center" rowspan="1" colspan="1">24—48</td>
+<td align="left" rowspan="1" colspan="1">351.2 (296.8, 395.1)</td>
+<td align="char" char="." rowspan="1" colspan="1">8.1</td>
+<td align="left" rowspan="1" colspan="1">0.61 (0.52, 0.69)</td>
+<td align="char" char="." rowspan="1" colspan="1">8.8</td>
+<td align="left" rowspan="1" colspan="1">4.06 (3.77, 4.38)</td>
+<td align="char" char="." rowspan="1" colspan="1">4.2</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<fig id="pcbi.1004635.g007" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004635.g007</object-id>
+<label>Fig 7</label>
+<caption>
+<title>ABC posterior distributions for <italic>D</italic>, <italic>q</italic> and <italic>λ</italic> for experiments in Scenario 2, using uninformative priors for all parameters.</title>
+<p>Subfigures A–C and D–F correspond to the ABC posterior estimates for the experiments initiated with 20,000 and 30,000 cells, respectively. In all subfigures, the blue curve with markers, the black dashed and the red solid curves represent the ABC posterior distribution for 0–24 h, 0–48 h and 24–48 h, respectively.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004635.g007"/>
+</fig>
+<p>The results in <xref ref-type="table" rid="pcbi.1004635.t002">Table 2</xref> indicate that we are able to obtain reasonably precise estimates for all <italic>D</italic>, <italic>q</italic> and <italic>λ</italic> based on the information incorporated initially through our pilot summary statistics. The CV for <italic>λ</italic> is fairly small, less than 5%, for all cases. This proposed method, therefore, overcomes the limitation in the previous work [<xref ref-type="bibr" rid="pcbi.1004635.ref016">16</xref>], which demonstrated that <italic>λ</italic> cannot be identified when precise prior information about the parameters is unavailable. The reason is that, here, for each experiment, we include information about the percentages of isolated cells and the cell counts for six sub-regions, whereas the previous analyses [<xref ref-type="bibr" rid="pcbi.1004635.ref016">16</xref>] solely used the leading edge. This also provides another strategy to obtain precise estimates of <italic>λ</italic> besides the technique proposed in [<xref ref-type="bibr" rid="pcbi.1004635.ref016">16</xref>] by incorporating information from experiments with and without Mitomycin C pre-treatment. The latter approach assumes that the common parameters are the same for different experimental scenarios, which may not be appropriate for all types of cells. The CV for <italic>D</italic> and <italic>q</italic> for all experimental conditions are also small, between 5—10% and 8—16%, respectively.</p>
+<p>We observe a similar trend of time-dependence for <italic>D</italic> and <italic>q</italic> as in <xref ref-type="fig" rid="pcbi.1004635.g006">Fig 6</xref> for Scenario 1. In summary, in both experimental scenarios, we observe a consistent time-dependence in our estimate of <italic>D</italic> and <italic>q</italic> suggesting that cell motility is slower in the first day duration relative to the second day. Interestingly, the values of <italic>λ</italic> remain similar over time, for both initial cell densities. The estimates of <italic>E</italic>[<italic>λ</italic>] are in the range 3.83 − 4.04 × 10<sup>−2</sup> h<sup>−1</sup>. This gives an expected doubling time for melanoma cells of 17–18 h. It is also noted that our estimates of <italic>λ</italic> for the 20,000 initial cell experiments are slightly higher than the previously reported estimates [<xref ref-type="bibr" rid="pcbi.1004635.ref023">23</xref>], although the estimates of <italic>λ</italic> for the experiments initiated with 30,000 cells are similar.</p>
+<p>We also found a similar trend of density-dependence for estimates of <italic>D</italic> and <italic>q</italic> as observed in Scenario 1. Comparing the posterior estimates of <italic>λ</italic> for different values of initial cells suggests that the estimates of <italic>λ</italic> for the 30,000 initial cell experiments are slightly higher than the 20,000 initial cell experiments. However, the differences are quite small.</p>
+</sec>
+<sec id="sec013">
+<title>Informative priors for <italic>D</italic>, <italic>q</italic> and an uninformative prior for <italic>λ</italic></title>
+<p>Although we are able to obtain reasonably precise estimates of <italic>D</italic>, <italic>q</italic> and <italic>λ</italic> using uninformative priors on all parameters, we wish to investigate whether additional information about model parameters is obtained when we combine information from the two experimental scenarios. The Bayesian sequential learning approach allows us to incorporate information from previous experiments in a principled way. This is similar to the approach used in [<xref ref-type="bibr" rid="pcbi.1004635.ref016">16</xref>]. Assuming that the values of <italic>D</italic> and <italic>q</italic> are the same in the two experimental scenarios, we use the posterior distributions of <italic>D</italic> and <italic>q</italic> in the first experimental scenario as informative priors for <italic>D</italic> and <italic>q</italic> in the second experimental scenario. To achieve this, we fit a bivariate normal distribution to each joint posterior distribution of <italic>D</italic> and <italic>q</italic> reported in Scenario 1, and use this bivariate normal distribution as an informative prior for <italic>D</italic> and <italic>q</italic> for the corresponding experiment in Scenario 2. For each joint posterior distribution of <italic>D</italic> and <italic>q</italic>, we assess the bivariate normality assumption using a Q-Q plot of chi-square quantiles against the squared Mahalanobis distance [<xref ref-type="bibr" rid="pcbi.1004635.ref043">43</xref>]. The Q-Q plots indicate that the bivariate normality assumption is reasonable for all cases (results not shown).</p>
+<p>A summary of the ABC posteriors for <italic>D</italic>, <italic>q</italic> and <italic>λ</italic> for all experimental combinations is presented in <xref ref-type="table" rid="pcbi.1004635.t003">Table 3</xref>. The MCSE, for all cases, for <italic>E</italic>[<italic>D</italic>], <italic>E</italic>[<italic>q</italic>] and <italic>E</italic>[<italic>λ</italic>] are relatively small, less than 0.3% of the mean value estimates. Our results show that, for all cases, the CV for <italic>D</italic> and <italic>λ</italic> using the bivariate normal prior is smaller than the corresponding CV reported using the previous approach (uninformative priors for all parameters). This implies that we obtain more precision for all <italic>D</italic> and <italic>λ</italic> by incorporating information from the two experimental scenarios.</p>
+<table-wrap id="pcbi.1004635.t003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004635.t003</object-id>
+<label>Table 3</label>
+<caption>
+<title>ABC posterior summary for <italic>D</italic>, <italic>q</italic> and <italic>λ</italic> for all experiments in Scenario 2, using informative priors for <italic>D</italic>, <italic>q</italic> and an uninformative prior for <italic>λ</italic>.</title>
+<p>Results shown include the posterior mean (and the 90% CI in the parentheses) and the coefficient of variation, CV.</p>
+</caption>
+<alternatives>
+<graphic id="pcbi.1004635.t003g" mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004635.t003"/>
+<table frame="box" rules="all" border="0">
+<colgroup span="1">
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+</colgroup>
+<thead>
+<tr>
+<th align="center" rowspan="1" colspan="1"><italic>C</italic>(0)</th>
+<th align="center" rowspan="1" colspan="1"><italic>T</italic>(<italic>h</italic>)</th>
+<th align="left" rowspan="1" colspan="1"><italic>E</italic>[<italic>D</italic>] (90% CI)µm<sup>2</sup>h<sup>−1</sup></th>
+<th align="left" rowspan="1" colspan="1">CV(<italic>D</italic>)(%)</th>
+<th align="left" rowspan="1" colspan="1"><italic>E</italic>[<italic>q</italic>] (90% CI)</th>
+<th align="left" rowspan="1" colspan="1">CV(<italic>q</italic>)(%)</th>
+<th align="left" rowspan="1" colspan="1"><italic>E</italic>[<italic>λ</italic>] (90% CI) ×10<sup>−2</sup>h<sup>−1</sup></th>
+<th align="left" rowspan="1" colspan="1">CV(<italic>λ</italic>)(%)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center" rowspan="3" colspan="1">20,000</td>
+<td align="center" rowspan="1" colspan="1">0—24</td>
+<td align="left" rowspan="1" colspan="1">231.9 (220.6, 243.0)</td>
+<td align="char" char="." rowspan="1" colspan="1">3.0</td>
+<td align="left" rowspan="1" colspan="1">0.24 (0.21, 0.27)</td>
+<td align="char" char="." rowspan="1" colspan="1">7.5</td>
+<td align="left" rowspan="1" colspan="1">3.83 (3.62, 4.04)</td>
+<td align="char" char="." rowspan="1" colspan="1">3.2</td>
+</tr>
+<tr>
+<td align="center" rowspan="1" colspan="1">0—48</td>
+<td align="left" rowspan="1" colspan="1">286.5 (274.3, 301.1)</td>
+<td align="char" char="." rowspan="1" colspan="1">2.8</td>
+<td align="left" rowspan="1" colspan="1">0.29 (0.26, 0.34)</td>
+<td align="char" char="." rowspan="1" colspan="1">8.0</td>
+<td align="left" rowspan="1" colspan="1">3.81 (3.71, 3.93)</td>
+<td align="char" char="." rowspan="1" colspan="1">1.8</td>
+</tr>
+<tr>
+<td align="center" rowspan="1" colspan="1">24—48</td>
+<td align="left" rowspan="1" colspan="1">334.9 (311.6, 356.7)</td>
+<td align="char" char="." rowspan="1" colspan="1">4.1</td>
+<td align="left" rowspan="1" colspan="1">0.33 (0.29, 0.37)</td>
+<td align="char" char="." rowspan="1" colspan="1">6.7</td>
+<td align="left" rowspan="1" colspan="1">3.90 (3.69, 4.10)</td>
+<td align="char" char="." rowspan="1" colspan="1">3.2</td>
+</tr>
+<tr>
+<td align="center" rowspan="3" colspan="1">30,000</td>
+<td align="center" rowspan="1" colspan="1">0—24</td>
+<td align="left" rowspan="1" colspan="1">260.2 (246.3, 274.9)</td>
+<td align="char" char="." rowspan="1" colspan="1">3.4</td>
+<td align="left" rowspan="1" colspan="1">0.37 (0.34, 0.41)</td>
+<td align="char" char="." rowspan="1" colspan="1">5.2</td>
+<td align="left" rowspan="1" colspan="1">3.94 (3.75, 4.13)</td>
+<td align="char" char="." rowspan="1" colspan="1">2.9</td>
+</tr>
+<tr>
+<td align="center" rowspan="1" colspan="1">0—48</td>
+<td align="left" rowspan="1" colspan="1">300.9 (284.9, 316.2)</td>
+<td align="char" char="." rowspan="1" colspan="1">3.2</td>
+<td align="left" rowspan="1" colspan="1">0.48 (0.46, 0.51)</td>
+<td align="char" char="." rowspan="1" colspan="1">3.7</td>
+<td align="left" rowspan="1" colspan="1">3.95 (3.81, 4.09)</td>
+<td align="char" char="." rowspan="1" colspan="1">2.1</td>
+</tr>
+<tr>
+<td align="center" rowspan="1" colspan="1">24—48</td>
+<td align="left" rowspan="1" colspan="1">329.2 (307.6, 352.0)</td>
+<td align="char" char="." rowspan="1" colspan="1">4.3</td>
+<td align="left" rowspan="1" colspan="1">0.50 (0.47, 0.53)</td>
+<td align="char" char="." rowspan="1" colspan="1">4.0</td>
+<td align="left" rowspan="1" colspan="1">3.90 (3.66, 4.10)</td>
+<td align="char" char="." rowspan="1" colspan="1">3.5</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p>Comparing the posterior distributions of <italic>D</italic> obtained using the previous approach (uninformative priors for all parameters) and those results obtained by specifying an uninformative prior for <italic>λ</italic> and an informative bivariate normal prior for <italic>D</italic> and <italic>q</italic> show that we infer <italic>D</italic> reasonably well for both sets of priors. The estimates of <italic>E</italic>[<italic>D</italic>] are very similar regardless of these choices of priors (<xref ref-type="table" rid="pcbi.1004635.t003">Table 3</xref>); however, the CV for <italic>D</italic> is smallest when we combine the information from the two experiments. A similar trend is also observed for the experiments initiated with 30,000 cells.</p>
+<p>Regarding the cell-to-cell adhesion, we observe additional information about <italic>q</italic> only for the period of 0–24 h. For the periods of 24–48 h and 0–48 h, there is an indication that the posterior estimates of <italic>q</italic> from the two experiments are slightly different. The posteriors of <italic>q</italic> resulting from the bivariate normal prior for <italic>D</italic> and <italic>q</italic> are shifted toward the posteriors obtained by using uninformative priors (<xref ref-type="fig" rid="pcbi.1004635.g008">Fig 8B, 8E and 8H</xref>). This could be explained by noting that the densities of the two experiments are potentially different after 24 h, since the second experiment involves cell proliferation. Thus, the posterior estimates of cell-to-cell adhesion strength in the second experiments are suggested to be slightly higher than those in the first experiment.</p>
+<fig id="pcbi.1004635.g008" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004635.g008</object-id>
+<label>Fig 8</label>
+<caption>
+<title>ABC posterior distributions for <italic>D</italic>, <italic>q</italic> and <italic>λ</italic> for experiments in Scenario 2.</title>
+<p>These results correspond to <italic>C</italic>(0) = 20,000. Subfigures A–C, D–F and G–I correspond to the ABC posterior estimates for the experiments at 0–24 h, 24–48 h and 0–48 h, respectively. In all subfigures, the blue curves with markers, P1, correspond to the approach using uninformative priors for all parameters. The red solid curves, P2, correspond to the approach using informative priors for <italic>D</italic>, <italic>q</italic> and an uninformative prior for <italic>λ</italic>. The fitted bivariate normal priors, bvn prior, are shown as black dashed curves.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004635.g008"/>
+</fig>
+<p>The ABC posteriors for <italic>λ</italic> (<xref ref-type="fig" rid="pcbi.1004635.g008">Fig 8C, 8F and 8I</xref>) obtained from the two approaches are similar, except that the posteriors obtained by placing an informative bivariate normal prior on <italic>D</italic> and <italic>q</italic> are narrower. In summary, these results suggest that, for melanoma cells, if we are given some information about <italic>D</italic> and <italic>q</italic>, we can gain more precision in all estimations of <italic>D</italic> and <italic>λ</italic>. However, without some prior information about <italic>D</italic> and <italic>q</italic>, the proposed ABC approach and the summarisation of the experimental images used can produce reasonably precise estimates for <italic>D</italic>, <italic>q</italic> and <italic>λ</italic> from a single assay. A similar trend is also observed for the 30,000 cell experiments (<xref ref-type="supplementary-material" rid="pcbi.1004635.s002">S1 Fig</xref>).</p>
+<p>
+<xref ref-type="fig" rid="pcbi.1004635.g009">Fig 9</xref> shows a comparison of ABC posterior distributions of <italic>D</italic>, <italic>q</italic> and <italic>λ</italic> with respect to different time periods. We observe a similar trend of time-dependency and density-dependency to that observed in Figs <xref ref-type="fig" rid="pcbi.1004635.g006">6</xref> and <xref ref-type="fig" rid="pcbi.1004635.g007">7</xref>. For both initial cell densities, <italic>D</italic> and <italic>q</italic> appear to depend on the time period, whereas the values of <italic>λ</italic> remain almost constant over time.</p>
+<fig id="pcbi.1004635.g009" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004635.g009</object-id>
+<label>Fig 9</label>
+<caption>
+<title>ABC posterior distributions for <italic>D</italic>, <italic>q</italic> and <italic>λ</italic> for experiments in Scenario 2, using informative priors for <italic>D</italic>, <italic>q</italic> and an uninformative prior for <italic>λ</italic>.</title>
+<p>Subfigures A–C and D–F correspond to the ABC posterior estimates for the experiments initiated with 20,000 and 30,000 cells, respectively. In all subfigures, the blue curve with markers, the black dashed and the red solid curves represent the ABC posterior distribution for 0–24 h, 0–48 h and 24–48 h, respectively.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004635.g009"/>
+</fig>
+</sec>
+</sec>
+</sec>
+<sec id="sec014" sec-type="conclusions">
+<title>Discussion</title>
+<p>Quantifying the underlying mechanisms that drive the expansion of melanoma cell colonies such as migration, proliferation, and cell-to-cell adhesion is important for developing a systematic approach to assessing the effectiveness of a potential treatment. Typical approaches to parameter estimation often use a deterministic framework [<xref ref-type="bibr" rid="pcbi.1004635.ref004">4</xref>–<xref ref-type="bibr" rid="pcbi.1004635.ref007">7</xref>, <xref ref-type="bibr" rid="pcbi.1004635.ref023">23</xref>] and only produce point estimates. There is, therefore, a risk that future model projections based on such point estimates could be made with undue confidence.</p>
+<p>In this paper, we present a new ABC algorithm to estimate <italic>D</italic>, <italic>q</italic> and <italic>λ</italic> which represent the cell motility, the cell-to-cell adhesion strength and the cell proliferation rate, respectively. To the best of our knowledge, this is the first time that joint inferences have been obtained for all three parameters in a discrete stochastic model describing expanding melanoma cell colonies, using data from a single assay. The new ABC algorithm shows favourable performance relative to state-of-the-art algorithms and together with our derived summary statistics, we can estimate all model parameters precisely across different scenarios, even when a vague prior is used (Tables <xref ref-type="table" rid="pcbi.1004635.t001">1</xref> and <xref ref-type="table" rid="pcbi.1004635.t002">2</xref>). This emulates a situation in which virtually no biological knowledge about <italic>D</italic>, <italic>q</italic> and <italic>λ</italic> is assumed. Furthermore, the methodology developed here overcomes the limitation in the previous work [<xref ref-type="bibr" rid="pcbi.1004635.ref016">16</xref>], which demonstrated that without prior information about <italic>D</italic>, <italic>λ</italic> cannot be identified using solely leading edge data.</p>
+<p>The methodology proposed here allows us to obtain inferences for <italic>D</italic>, <italic>q</italic> and <italic>λ</italic> in a fully Bayesian framework. The resulting posterior distributions enable us to quantify the associated uncertainty with the parameter estimates which can not be achieved using a deterministic approach. Furthermore, comparing the distributions of <italic>D</italic>, <italic>q</italic> and <italic>λ</italic> (Figs <xref ref-type="fig" rid="pcbi.1004635.g006">6</xref>, <xref ref-type="fig" rid="pcbi.1004635.g007">7</xref> and <xref ref-type="fig" rid="pcbi.1004635.g009">9</xref>) provides insight into the dependency of the parameter posterior estimates on the experimental elapsed time and on the initial number of cells. Thus, our work adds significant extra information about the parameters relative to the previous analyses [<xref ref-type="bibr" rid="pcbi.1004635.ref023">23</xref>]. Another advantage of using an ABC approach is the possibility of combining information from the two experiments in a principled way. This approach is shown to be useful in our previous work [<xref ref-type="bibr" rid="pcbi.1004635.ref016">16</xref>]. Here, it also enables us to gain additional information for <italic>D</italic> and <italic>λ</italic>.</p>
+<p>We acknowledge that our discrete individual-based model, which is straightforward to implement and computationally cheap, makes an assumption that cell diffusivity is constant. Although the density dependence is less pronounced for experiments terminated at 48 h, it suggests that the underlying assumption of a constant diffusion coefficient <italic>D</italic> is violated. Thus, it is suggested that the use of a non-linear diffusion coefficient, where <italic>D</italic> is a function of cell density, <italic>D</italic>(<italic>C</italic>), may be more appropriate. In particular, using non-linear diffusion coefficients is shown to provide a better description of the collective behaviour of a cell population in a lattice-free model [<xref ref-type="bibr" rid="pcbi.1004635.ref047">47</xref>] and a model with complex contact interactions [<xref ref-type="bibr" rid="pcbi.1004635.ref048">48</xref>]. We expect that implementation of the ABC approach for these models will lead to further research.</p>
+<p>It should also be noted that [<xref ref-type="bibr" rid="pcbi.1004635.ref023">23</xref>] obtained point estimates of <italic>D</italic>, <italic>q</italic> and <italic>λ</italic> separately; <italic>D</italic> and <italic>q</italic> from the experiments with cell proliferation suppressed, and <italic>λ</italic> from experiments with cell proliferation. Thus, this approach may not be applicable if one does not have access to this kind of detailed experimental data sets. Furthermore, results from our analyses also indicate that cell-to-cell adhesion may differ between the two scenarios. In particular, the values of cell-to-cell adhesion is slightly higher for the experiments with cell proliferation occurring, due to the increasing cell population. Thus, we suggest that future studies should consider estimating all parameters simultaneously.</p>
+<p>One particular finding from our analysis is that the posterior distributions of <italic>D</italic> and <italic>q</italic> consistently depend on the experimental time period, whereas the posterior distribution of <italic>λ</italic> is approximately time constant. This finding is in agreement with the results of [<xref ref-type="bibr" rid="pcbi.1004635.ref016">16</xref>] for 3T3 fibroblast cells, however, this feature has not been investigated elsewhere. As demonstrated earlier, this effect is significant and should be included when modelling mechanisms governing the expansion of cell colonies in future research. To achieve this, we suggest that experimental data should be collected at several time points and to optimally do this we leave for future research.</p>
+<p>In addition, our ABC algorithm together with the derived summary statistics could also be implemented in a model selection algorithm to distinguish between discrete lattice-based and lattice-free models describing the expansion of cell colonies. In lattice-free models, agents are allowed to migrate and proliferate in a continuous domain, and the direction of movement is a continuous variable [<xref ref-type="bibr" rid="pcbi.1004635.ref010">10</xref>]. Thus this model is considered to be more realistic than the lattice-based model.</p>
+</sec>
+<sec id="sec015">
+<title>Supporting Information</title>
+<supplementary-material id="pcbi.1004635.s001" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004635.s001" mimetype="application/pdf" xlink:type="simple">
+<label>S1 Text</label>
+<caption>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004635.s002" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004635.s002" mimetype="application/eps" xlink:type="simple">
+<label>S1 Fig</label>
+<caption>
+<p>(EPS)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ack>
+<p>We thank Dr Katrina Treloar for access to the experimental data and appreciate the assistance of the high performance computing team at QUT.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1004635.ref001">
+<label>1</label>
+<mixed-citation xlink:type="simple" publication-type="other">American Cancer Society, Cancer Facts &amp; Figures (2011). <comment>Available: <ext-link ext-link-type="uri" xlink:type="simple" xlink:href="http://www.cancer.org/Research/CancerFactsFigures/cancer-facts-figures-2011">http://www.cancer.org/Research/CancerFactsFigures/cancer-facts-figures-2011</ext-link></comment> Retrieved: June 29, 2015.</mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref002">
+<label>2</label>
+<mixed-citation xlink:type="simple" publication-type="other">Australian Institute of Health and Welfare and Australasian Associate of Cancer Registries (2012). Cancer in Australia: an overview. Cancer series no. 74. Cat. no. CAN 70. Canberra: AIHW.</mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref003">
+<label>3</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Decaestecker</surname> <given-names>C.</given-names></name>, <name name-style="western"><surname>Debeir</surname> <given-names>O.</given-names></name>, <name name-style="western"><surname>Van Ham</surname> <given-names>P.</given-names></name> and <name name-style="western"><surname>Kiss</surname> <given-names>R</given-names></name>. (<year>2007</year>). <article-title>Can anti-migratory drugs be screened in vitro?</article-title> <source>A review of 2D and 3D assays for the quantitative analysis of cell migration. Medicinal Research Reviews</source>, <volume>27</volume>(<issue>2</issue>):<fpage>149</fpage>–<lpage>176</lpage>. <object-id pub-id-type="pmid">16888756</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref004">
+<label>4</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Pettet</surname> <given-names>G. J.</given-names></name>, <name name-style="western"><surname>Byrne</surname> <given-names>H. M.</given-names></name>, <name name-style="western"><surname>McElwain</surname> <given-names>D. L. S.</given-names></name> and <name name-style="western"><surname>Norburry</surname> <given-names>J</given-names></name>. (<year>1996</year>). <article-title>A model of wound-healing angiogenesis in soft tissue</article-title>. <source>Mathematical Biosciences</source>, <volume>136</volume>(<issue>1</issue>):<fpage>35</fpage>–<lpage>63</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/0025-5564(96)00044-2" xlink:type="simple">10.1016/0025-5564(96)00044-2</ext-link></comment> <object-id pub-id-type="pmid">8755336</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref005">
+<label>5</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Savla</surname> <given-names>U.</given-names></name>, <name name-style="western"><surname>Olson</surname> <given-names>L. E.</given-names></name> and <name name-style="western"><surname>Waters</surname> <given-names>C. M.</given-names></name> (<year>2004</year>). <article-title>Mathematical modeling of airway epithelial wound closure</article-title>. <source>Journal of Applied Physiology</source>, <volume>96</volume>(<issue>2</issue>):<fpage>566</fpage>–<lpage>574</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1152/japplphysiol.00510.2003" xlink:type="simple">10.1152/japplphysiol.00510.2003</ext-link></comment> <object-id pub-id-type="pmid">14715680</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref006">
+<label>6</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Maini</surname> <given-names>P. K.</given-names></name>, <name name-style="western"><surname>McElwain</surname> <given-names>D. L. S.</given-names></name> and <name name-style="western"><surname>Leavesley</surname> <given-names>D. I.</given-names></name> (<year>2004</year>). <article-title>Traveling wave model to interpret a wound-healing cell migration assay for human peritoneal mesothelial cells</article-title>. <source>Tissue Engineering</source>, <volume>10</volume>(<issue>3-4</issue>):<fpage>475</fpage>–<lpage>482</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1089/107632704323061834" xlink:type="simple">10.1089/107632704323061834</ext-link></comment> <object-id pub-id-type="pmid">15165464</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref007">
+<label>7</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Swanson</surname> <given-names>K. R.</given-names></name> (<year>2008</year>). <article-title>Quantifying glioma cell growth and invasion in vitro</article-title>. <source>Mathematical and Computer Modelling</source>, <volume>47</volume>(<issue>5</issue>):<fpage>638</fpage>–<lpage>648</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.mcm.2007.02.024" xlink:type="simple">10.1016/j.mcm.2007.02.024</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref008">
+<label>8</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Callaghan</surname> <given-names>T.</given-names></name>, <name name-style="western"><surname>Khain</surname> <given-names>E.</given-names></name>, <name name-style="western"><surname>Sander</surname> <given-names>L. M.</given-names></name> and <name name-style="western"><surname>Ziff</surname> <given-names>R. M.</given-names></name> (<year>2006</year>). <article-title>A stochastic model for wound healing</article-title>. <source>Journal of Statistical Physics</source>, <volume>122</volume>(<issue>5</issue>):<fpage>909</fpage>–<lpage>924</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1007/s10955-006-9022-1" xlink:type="simple">10.1007/s10955-006-9022-1</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref009">
+<label>9</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Khain</surname> <given-names>E.</given-names></name>, <name name-style="western"><surname>Sander</surname> <given-names>L. M.</given-names></name> and <name name-style="western"><surname>Schneider-Mizell</surname> <given-names>C. M.</given-names></name> (<year>2007</year>). <article-title>The role of cell-cell adhesion in wound healing</article-title>. <source>Journal of Statistical Physics</source>, <volume>128</volume>(<issue>1</issue>):<fpage>209</fpage>–<lpage>218</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1007/s10955-006-9194-8" xlink:type="simple">10.1007/s10955-006-9194-8</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref010">
+<label>10</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Plank</surname> <given-names>M. J.</given-names></name> and <name name-style="western"><surname>Simpson</surname> <given-names>M. J.</given-names></name> (<year>2012</year>). <article-title>Models of collective cell behaviour with crowding effects: comparing lattice-based and lattice-free approaches</article-title>. <source>Journal of the Royal Society Interface</source>, <volume>9</volume>(<issue>76</issue>):<fpage>2983</fpage>–<lpage>2996</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1098/rsif.2012.0319" xlink:type="simple">10.1098/rsif.2012.0319</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref011">
+<label>11</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Murray</surname> <given-names>P. J.</given-names></name>, <name name-style="western"><surname>Walter</surname> <given-names>A.</given-names></name>, <name name-style="western"><surname>Fletcher</surname> <given-names>A. G.</given-names></name>, <name name-style="western"><surname>Edwards</surname> <given-names>C. M.</given-names></name>, <name name-style="western"><surname>Tindall</surname> <given-names>M. J.</given-names></name> and <name name-style="western"><surname>Maini</surname> <given-names>P. K.</given-names></name> (<year>2011</year>). <article-title>Comparing a discrete and continuum model of the intestinal crypt</article-title>. <source>Physical Biology</source>, <volume>8</volume>(<issue>2</issue>):<fpage>026011</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1088/1478-3975/8/2/026011" xlink:type="simple">10.1088/1478-3975/8/2/026011</ext-link></comment> <object-id pub-id-type="pmid">21411869</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref012">
+<label>12</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Beaumont</surname> <given-names>M. A.</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>W.</given-names></name>, and <name name-style="western"><surname>Balding</surname> <given-names>D. J.</given-names></name> (<year>2002</year>). <article-title>Approximate Bayesian computation in population genetics</article-title>. <source>Genetics</source>, <volume>162</volume>(<issue>4</issue>):<fpage>2025</fpage>–<lpage>2035</lpage>. <object-id pub-id-type="pmid">12524368</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref013">
+<label>13</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Drovandi</surname> <given-names>C. C.</given-names></name> and <name name-style="western"><surname>Pettitt</surname> <given-names>A. N.</given-names></name> (<year>2011</year>). <article-title>Using approximate Bayesian computation to estimate transmission rates of nosocomial pathogens</article-title>. <source>Statistical Communications in Infectious Diseases</source>, <volume>3</volume>(<issue>1</issue>):<fpage>2</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.2202/1948-4690.1025" xlink:type="simple">10.2202/1948-4690.1025</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref014">
+<label>14</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Tanaka</surname> <given-names>M. M.</given-names></name> and <name name-style="western"><surname>Francis</surname> <given-names>A. R.</given-names></name> and <name name-style="western"><surname>Luciani</surname> <given-names>F.</given-names></name> and <name name-style="western"><surname>Sisson</surname> <given-names>S. A.</given-names></name> (<year>2006</year>). <article-title>Using approximate Bayesian computation to estimate tuberculosis transmission parameters from genotype data</article-title>. <source>Genetics</source>, <volume>173</volume>(<issue>3</issue>):<fpage>1511</fpage>–<lpage>1520</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1534/genetics.106.055574" xlink:type="simple">10.1534/genetics.106.055574</ext-link></comment> <object-id pub-id-type="pmid">16624908</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref015">
+<label>15</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Cameron</surname> <given-names>E.</given-names></name> and <name name-style="western"><surname>Pettitt</surname> <given-names>A.</given-names></name> (<year>2012</year>). <article-title>Approximate Bayesian computation for astronomical model analysis: A case study in galaxy demographics and morphological transformation at high Redshift</article-title>. <source>Monthly notices of the Royal Astronomical Society</source>, <volume>425</volume>(<issue>1</issue>):<fpage>44</fpage>–<lpage>65</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1111/j.1365-2966.2012.21371.x" xlink:type="simple">10.1111/j.1365-2966.2012.21371.x</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref016">
+<label>16</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Vo</surname> <given-names>B. N.</given-names></name>, <name name-style="western"><surname>Drovandi</surname> <given-names>C. C</given-names></name>, <name name-style="western"><surname>Pettitt</surname> <given-names>A. N.</given-names></name> and <name name-style="western"><surname>Simpson</surname> <given-names>M. J.</given-names></name> (<year>2015</year>). <article-title>Quantifying uncertainty in parameter estimates for stochastic models of collective cell spreading using approximate Bayesian computation</article-title>. <source>Mathematical Biosciences</source>, <volume>263</volume>:<fpage>133</fpage>–<lpage>142</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.mbs.2015.02.010" xlink:type="simple">10.1016/j.mbs.2015.02.010</ext-link></comment> <object-id pub-id-type="pmid">25747415</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref017">
+<label>17</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Drovandi</surname> <given-names>C. C.</given-names></name> and <name name-style="western"><surname>Pettitt</surname> <given-names>A. N.</given-names></name> (<year>2011</year>). <article-title>Estimation of parameters for macroparasite population evolution using approximate Bayesian computation</article-title>. <source>Biometrics</source>, <volume>67</volume>(<issue>1</issue>):<fpage>225</fpage>–<lpage>233</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1111/j.1541-0420.2010.01410.x" xlink:type="simple">10.1111/j.1541-0420.2010.01410.x</ext-link></comment> <object-id pub-id-type="pmid">20345496</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref018">
+<label>18</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Beaumont</surname> <given-names>M. A.</given-names></name>, <name name-style="western"><surname>Cornuet</surname> <given-names>J.</given-names></name>, <name name-style="western"><surname>Marin</surname> <given-names>J.</given-names></name> and <name name-style="western"><surname>Robert</surname> <given-names>C. P.</given-names></name> (<year>2009</year>). <article-title>Adaptive approximate Bayesian computation</article-title>. <source>Biometrika</source>, <volume>96</volume>(<issue>4</issue>):<fpage>983</fpage>–<lpage>990</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/biomet/asp052" xlink:type="simple">10.1093/biomet/asp052</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref019">
+<label>19</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Toni</surname> <given-names>T.</given-names></name>, <name name-style="western"><surname>Welch</surname> <given-names>D.</given-names></name>, <name name-style="western"><surname>Strelkowa</surname> <given-names>N.</given-names></name>, <name name-style="western"><surname>Ipsen</surname> <given-names>A</given-names></name>. and <name name-style="western"><surname>Stumpf</surname> <given-names>M. P. H.</given-names></name> (<year>2009</year>). <article-title>Approximate Bayesian computation scheme for parameter inference and model selection in dynamical systems</article-title>. <source>Journal of the Royal Society Interface</source>, <volume>6</volume>(<issue>31</issue>):<fpage>187</fpage>–<lpage>202</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1098/rsif.2008.0172" xlink:type="simple">10.1098/rsif.2008.0172</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref020">
+<label>20</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Lenormand</surname> <given-names>M.</given-names></name>, <name name-style="western"><surname>Jabot</surname> <given-names>F</given-names></name>. and <name name-style="western"><surname>Deffuant</surname> <given-names>G</given-names></name>. (<year>2013</year>). <article-title>Adaptive approximate Bayesian computation for complex models</article-title>. <source>Computational Statistics</source>, <volume>28</volume>(<issue>6</issue>):<fpage>2777</fpage>–<lpage>2796</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1007/s00180-013-0428-3" xlink:type="simple">10.1007/s00180-013-0428-3</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref021">
+<label>21</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Blum</surname> <given-names>M. G. B.</given-names></name> (<year>2010</year>). <article-title>Approximate Bayesian Computation: a non-parametric perspective</article-title>. <source>Journal of the American Statistical Association</source>, <volume>105</volume>(<issue>491</issue>):<fpage>1178</fpage>–<lpage>1187</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1198/jasa.2010.tm09448" xlink:type="simple">10.1198/jasa.2010.tm09448</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref022">
+<label>22</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Fearnhead</surname> <given-names>P</given-names></name>. and <name name-style="western"><surname>Prangle</surname> <given-names>D</given-names></name>. (<year>2012</year>). <article-title>Constructing summary statistics for approximate Bayesian computation: Semi-automatic ABC (with discussion)</article-title>. <source>Journal of the Royal Statistical Society: Series B (Statistical Methodology)</source>, <volume>74</volume>(<issue>3</issue>):<fpage>419</fpage>–<lpage>474</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref023">
+<label>23</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Treloar</surname> <given-names>K. K.</given-names></name>, <name name-style="western"><surname>Simpson</surname> <given-names>M. J.</given-names></name>, <name name-style="western"><surname>Haridas</surname> <given-names>P.</given-names></name>, <name name-style="western"><surname>Manton</surname> <given-names>K. J.</given-names></name>, <name name-style="western"><surname>Leavesley</surname> <given-names>D. I.</given-names></name>, <name name-style="western"><surname>McElwain</surname> <given-names>D. L. S.</given-names></name> and <name name-style="western"><surname>Baker</surname> <given-names>R. E.</given-names></name> (<year>2013</year>). <article-title>Multiple types of data are required to identify the mechanisms influencing the spatial expansion of melanoma cell colonies</article-title>. <source>BMC Systems Biology</source>, <volume>7</volume>:<fpage>137</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/1752-0509-7-137" xlink:type="simple">10.1186/1752-0509-7-137</ext-link></comment> <object-id pub-id-type="pmid">24330479</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref024">
+<label>24</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Debeir</surname> <given-names>O.</given-names></name>, <name name-style="western"><surname>Mégalizzi</surname> <given-names>V.</given-names></name>, <name name-style="western"><surname>Warzée</surname> <given-names>N.</given-names></name>, <name name-style="western"><surname>Kiss</surname> <given-names>R</given-names></name>. and <name name-style="western"><surname>Decaestecker</surname> <given-names>C</given-names></name>. (<year>2008</year>). <article-title>Videomicroscopic extraction of specific information on cell proliferation and migration in vitro</article-title>. <source>Experimental Cell Research</source>, <volume>314</volume>(<issue>16</issue>):<fpage>2985</fpage>–<lpage>2998</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.yexcr.2008.06.010" xlink:type="simple">10.1016/j.yexcr.2008.06.010</ext-link></comment> <object-id pub-id-type="pmid">18598694</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref025">
+<label>25</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Pope</surname> <given-names>J. H.</given-names></name>, <name name-style="western"><surname>Morrison</surname> <given-names>L.</given-names></name>, <name name-style="western"><surname>Moss</surname> <given-names>D. J.</given-names></name>, <name name-style="western"><surname>Parsons</surname> <given-names>P. G.</given-names></name> and <name name-style="western"><surname>Mary</surname> <given-names>S. R.</given-names></name> (<year>1979</year>). <article-title>Human malignant melanoma cell lines</article-title>. <source>Pathology</source>, <volume>11</volume>(<issue>2</issue>):<fpage>191</fpage>–<lpage>195</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.3109/00313027909061945" xlink:type="simple">10.3109/00313027909061945</ext-link></comment> <object-id pub-id-type="pmid">460945</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref026">
+<label>26</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Whitehead</surname> <given-names>R</given-names></name>. and <name name-style="western"><surname>Little</surname> <given-names>J. H.</given-names></name> (<year>1973</year>). <article-title>Tissue culture studies on human malignant melanoma</article-title>. <source>Pigment Cell</source>, <volume>1</volume>:<fpage>382</fpage>–<lpage>389</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref027">
+<label>27</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Sadeghi</surname> <given-names>M.</given-names></name>, <name name-style="western"><surname>Seitz</surname> <given-names>B.</given-names></name>, <name name-style="western"><surname>Hayashi</surname> <given-names>S</given-names></name>. <name name-style="western"><surname>LaBree</surname> <given-names>L</given-names></name>. and <name name-style="western"><surname>McDonnell</surname> <given-names>P</given-names></name>. (<year>1998</year>). <article-title>In vitro effects of Mitomycin-C on human keratocytes</article-title>. <source>Journal of Refractive Surgery</source>, <volume>14</volume>:<fpage>534</fpage>–<lpage>540</lpage>. <object-id pub-id-type="pmid">9791820</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref028">
+<label>28</label>
+<mixed-citation xlink:type="simple" publication-type="other">MathWorks, Image processing toolbox. (2012). Retrieved: January 5, 2015.</mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref029">
+<label>29</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Simpson</surname> <given-names>M. J.</given-names></name>, <name name-style="western"><surname>Landman</surname> <given-names>K. A.</given-names></name>, and <name name-style="western"><surname>Hughes</surname> <given-names>B. D.</given-names></name> (<year>2010</year>). <article-title>Cell invasion with proliferation mechanisms motivated by time-lapse data</article-title>. <source>Physica A: Statistical Mechanics and its Applications</source>, <volume>389</volume>(<issue>18</issue>):<fpage>3779</fpage>–<lpage>3790</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.physa.2010.05.020" xlink:type="simple">10.1016/j.physa.2010.05.020</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref030">
+<label>30</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Chowdhury</surname> <given-names>D.</given-names></name>, <name name-style="western"><surname>Schadschneider</surname> <given-names>A</given-names></name>. and <name name-style="western"><surname>Nishinari</surname> <given-names>K</given-names></name>. (<year>2005</year>). <article-title>Physics of transport and traffic phenomena in biology: from molecular motors and cells to organisms</article-title>. <source>Physics of Life Reviews</source>, <volume>2</volume>(<issue>4</issue>):<fpage>318</fpage>–<lpage>352</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.plrev.2005.09.001" xlink:type="simple">10.1016/j.plrev.2005.09.001</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref031">
+<label>31</label>
+<mixed-citation xlink:type="simple" publication-type="book">
+<name name-style="western"><surname>Wilkinson</surname> <given-names>D. J.</given-names></name> (<year>2011</year>). <source>Stochastic Modelling for Systems Biology</source>. <publisher-name>CRC Press</publisher-name>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref032">
+<label>32</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Gillespie</surname> <given-names>D. T.</given-names></name> (<year>1997</year>). <article-title>Exact stochastic simulation of coupled chemical reactions</article-title>. <source>Journal of Physical Chemistry</source>, <volume>81</volume>(<issue>25</issue>):<fpage>2340</fpage>–<lpage>2361</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1021/j100540a008" xlink:type="simple">10.1021/j100540a008</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref033">
+<label>33</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Marjoram</surname> <given-names>P.</given-names></name>, <name name-style="western"><surname>Molitor</surname> <given-names>J.</given-names></name>, <name name-style="western"><surname>Plagnol</surname> <given-names>V.</given-names></name>, and <name name-style="western"><surname>Tavaré</surname> <given-names>S</given-names></name>. (<year>2003</year>). <article-title>Markov chain Monte Carlo without likelihoods</article-title>. <source>Proceedings of the National Academy of Sciences of the United States of America</source>, <volume>100</volume>(<issue>26</issue>):<fpage>15324</fpage>–<lpage>15328</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.0306899100" xlink:type="simple">10.1073/pnas.0306899100</ext-link></comment> <object-id pub-id-type="pmid">14663152</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref034">
+<label>34</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Bortot</surname> <given-names>P.</given-names></name>, <name name-style="western"><surname>Coles</surname> <given-names>S. G.</given-names></name> and <name name-style="western"><surname>Sisson</surname> <given-names>S. A.</given-names></name> (<year>2007</year>). <article-title>Inference for stereological extremes</article-title>. <source>Journal of the American Statistical Association</source>, <volume>102</volume>(<issue>477</issue>):<fpage>84</fpage>–<lpage>92</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1198/016214506000000988" xlink:type="simple">10.1198/016214506000000988</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref035">
+<label>35</label>
+<mixed-citation xlink:type="simple" publication-type="book">
+<name name-style="western"><surname>Sisson</surname> <given-names>S. A.</given-names></name> and <name name-style="western"><surname>Fan</surname> <given-names>Y</given-names></name>. (<year>2011</year>). <source>MCMC handbook, chapter Likelihood-free Markov chain Monte Carlo</source>, pages <fpage>313</fpage>–<lpage>335</lpage>. <publisher-name>Chapman &amp; Hall</publisher-name>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref036">
+<label>36</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Sisson</surname> <given-names>S. A.</given-names></name>, <name name-style="western"><surname>Fan</surname> <given-names>Y.</given-names></name>, and <name name-style="western"><surname>Tanaka</surname> <given-names>M. M.</given-names></name> (<year>2007</year>). <article-title>Sequential Monte Carlo without likelihoods</article-title>. <source>Proceedings of the National Academy of Sciences of the United States of America</source>, <volume>104</volume>(<issue>6</issue>):<fpage>1760</fpage>–<lpage>1765</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.0607208104" xlink:type="simple">10.1073/pnas.0607208104</ext-link></comment> <object-id pub-id-type="pmid">17264216</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref037">
+<label>37</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Csilléry</surname> <given-names>K.</given-names></name>, <name name-style="western"><surname>Blum</surname> <given-names>M. G. B.</given-names></name>, <name name-style="western"><surname>Gaggiotti</surname> <given-names>O. E.</given-names></name> and <name name-style="western"><surname>François</surname> <given-names>O</given-names></name>. (<year>2010</year>). <article-title>Approximate Bayesian computation (ABC) in practice</article-title>. <source>Trends in Ecology &amp; Evolution</source>, <volume>25</volume>(<issue>7</issue>):<fpage>410</fpage>–<lpage>418</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.tree.2010.04.001" xlink:type="simple">10.1016/j.tree.2010.04.001</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref038">
+<label>38</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Sisson</surname> <given-names>S. A.</given-names></name>, <name name-style="western"><surname>Fan</surname> <given-names>Y</given-names></name>. and <name name-style="western"><surname>Tanaka</surname> <given-names>M. M.</given-names></name> (<year>2009</year>). <article-title>Correction for Sisson et al., Sequential Monte Carlo without likelihoods</article-title>. <source>Proceedings of the National Academy of Sciences of the United States of America</source>, <volume>106</volume>(<issue>39</issue>):<fpage>16889</fpage>–<lpage>16890</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.0908847106" xlink:type="simple">10.1073/pnas.0908847106</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref039">
+<label>39</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Del Moral</surname> <given-names>P.</given-names></name>, <name name-style="western"><surname>Doucet</surname> <given-names>A</given-names></name>. and <name name-style="western"><surname>Jasra</surname> <given-names>A</given-names></name>. (<year>2012</year>). <article-title>An adaptive sequential Monte Carlo method for approximate Bayesian computation</article-title>. <source>Statistics and Computing</source>, <volume>22</volume>(<issue>5</issue>):<fpage>1009</fpage>–<lpage>1020</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1007/s11222-011-9271-y" xlink:type="simple">10.1007/s11222-011-9271-y</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref040">
+<label>40</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Blum</surname> <given-names>M. G. B.</given-names></name>, <name name-style="western"><surname>Nunes</surname> <given-names>M. A.</given-names></name>, <name name-style="western"><surname>Prangle</surname> <given-names>D</given-names></name>. and <name name-style="western"><surname>Sisson</surname> <given-names>S. A.</given-names></name> (<year>2013</year>). <article-title>A comparative review of dimension reduction methods in approximate Bayesian computation</article-title>. <source>Statistical Science</source>, <volume>28</volume>(<issue>2</issue>):<fpage>189</fpage>–<lpage>208</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1214/12-STS406" xlink:type="simple">10.1214/12-STS406</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref041">
+<label>41</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Geyer</surname> <given-names>C. J.</given-names></name> (<year>1992</year>). <article-title>Practical Markov chain Monte Carlo</article-title>. <source>Statistical Science</source>, <volume>7</volume>(<issue>4</issue>):<fpage>473</fpage>–<lpage>483</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1214/ss/1177011147" xlink:type="simple">10.1214/ss/1177011147</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref042">
+<label>42</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Doucet</surname> <given-names>A</given-names></name>. and <name name-style="western"><surname>Godsill</surname> <given-names>S</given-names></name>. and <name name-style="western"><surname>Andrieu</surname> <given-names>C</given-names></name>. (<year>2000</year>). <article-title>On sequential Monte Carlo sampling methods for Bayesian filtering</article-title>. <source>Statistics and Computing</source>, <volume>10</volume>(<issue>3</issue>):<fpage>197</fpage>–<lpage>208</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1023/A:1008935410038" xlink:type="simple">10.1023/A:1008935410038</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref043">
+<label>43</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Korkmaz</surname> <given-names>S.</given-names></name>, <name name-style="western"><surname>Goksuluk</surname> <given-names>D</given-names></name>. and <name name-style="western"><surname>Zararsiz</surname> <given-names>G</given-names></name>. (<year>2014</year>). <article-title>MVN: an R package for assessing multivariate normality</article-title>. <source>R Journal</source>, <volume>6</volume>(<issue>2</issue>):<fpage>151</fpage>–<lpage>162</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref044">
+<label>44</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Deroulers</surname> <given-names>C.</given-names></name>, <name name-style="western"><surname>Aubert</surname> <given-names>M.</given-names></name>, <name name-style="western"><surname>Badoual</surname> <given-names>M</given-names></name>. and <name name-style="western"><surname>Grammaticos</surname> <given-names>B</given-names></name>. (<year>2009</year>). <article-title>Modeling tumor cell migration: from microscopic to macroscopic models</article-title>. <source>Physical Review E</source>, <volume>79</volume>(<issue>3</issue>):<fpage>031917</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1103/PhysRevE.79.031917" xlink:type="simple">10.1103/PhysRevE.79.031917</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref045">
+<label>45</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Anderson</surname> <given-names>A. R. A.</given-names></name> (<year>2005</year>). <article-title>A hybrid mathematical model of solid tumour invasion: The importance of cell adhesion</article-title>. <source>Mathematical Medicine and Biology</source>, <volume>22</volume>(<issue>2</issue>):<fpage>163</fpage>–<lpage>186</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/imammb/dqi005" xlink:type="simple">10.1093/imammb/dqi005</ext-link></comment> <object-id pub-id-type="pmid">15781426</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref046">
+<label>46</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Simpson</surname> <given-names>M. J.</given-names></name>, <name name-style="western"><surname>Towne</surname> <given-names>C.</given-names></name>, <name name-style="western"><surname>McElwain</surname> <given-names>D. L. S.</given-names></name> and <name name-style="western"><surname>Upton</surname> <given-names>Z</given-names></name>. (<year>2010</year>). <article-title>Migration of breast cancer cells: Understanding the roles of volume exclusion and cell-to-cell adhesion</article-title>. <source>Physical Review E</source>, <volume>82</volume>:<fpage>041901</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1103/PhysRevE.82.041901" xlink:type="simple">10.1103/PhysRevE.82.041901</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref047">
+<label>47</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Dyson</surname> <given-names>L.</given-names></name>, <name name-style="western"><surname>Maini</surname> <given-names>P. K.</given-names></name> and <name name-style="western"><surname>Baker</surname> <given-names>R. E.</given-names></name> (<year>2012</year>). <article-title>Macroscopic limits of individual-based models for motile cell populations with volume exclusion</article-title>. <source>Physical Review E</source>, <volume>86</volume>:<fpage>031903</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1103/PhysRevE.86.031903" xlink:type="simple">10.1103/PhysRevE.86.031903</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004635.ref048">
+<label>48</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Fernando</surname> <given-names>A. E.</given-names></name>, <name name-style="western"><surname>Landman</surname> <given-names>K. A</given-names></name> and <name name-style="western"><surname>Simpson</surname> <given-names>M. J.</given-names></name> (<year>2010</year>). <article-title>Nonlinear diffusion and exclusion processes with contact interactions</article-title>. <source>Physical Review E</source>, <volume>81</volume>:<fpage>011903</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1103/PhysRevE.81.011903" xlink:type="simple">10.1103/PhysRevE.81.011903</ext-link></comment></mixed-citation>
+</ref>
+</ref-list>
+</back>
+</article>

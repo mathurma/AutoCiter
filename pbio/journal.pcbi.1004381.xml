@@ -1,0 +1,876 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="3.0" xml:lang="en">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">ploscomp</journal-id>
+<journal-title-group>
+<journal-title>PLOS Computational Biology</journal-title>
+</journal-title-group>
+<issn pub-type="ppub">1553-734X</issn>
+<issn pub-type="epub">1553-7358</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pcbi.1004381</article-id>
+<article-id pub-id-type="publisher-id">PCOMPBIOL-D-15-00278</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+</article-categories>
+<title-group>
+<article-title>Multiscale Estimation of Binding Kinetics Using Brownian Dynamics, Molecular Dynamics and Milestoning</article-title>
+<alt-title alt-title-type="running-head">Multiscale Estimation of Binding Kinetics</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Votapka</surname>
+<given-names>Lane W.</given-names>
+</name>
+<xref rid="aff001" ref-type="aff"/>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Amaro</surname>
+<given-names>Rommie E.</given-names>
+</name>
+<xref rid="cor001" ref-type="corresp">*</xref>
+<xref rid="aff001" ref-type="aff"/>
+</contrib>
+</contrib-group>
+<aff id="aff001"><addr-line>Department of Chemistry and Biochemistry and National Biomedical Computation Resource, University of California, San Diego, San Diego, California, United States of America</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Shehu</surname>
+<given-names>Amarda</given-names>
+</name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>George Mason University, UNITED STATES</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<fn fn-type="con" id="contrib001">
+<p>Conceived and designed the experiments: LWV REA. Performed the experiments: LWV. Analyzed the data: LWV. Contributed reagents/materials/analysis tools: LWV REA. Wrote the paper: LWV REA.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">ramaro@ucsd.edu</email></corresp>
+</author-notes>
+<pub-date pub-type="epub">
+<day>27</day>
+<month>10</month>
+<year>2015</year>
+</pub-date>
+<pub-date pub-type="collection">
+<month>10</month>
+<year>2015</year>
+</pub-date>
+<volume>11</volume>
+<issue>10</issue>
+<elocation-id>e1004381</elocation-id>
+<history>
+<date date-type="received">
+<day>20</day>
+<month>2</month>
+<year>2015</year>
+</date>
+<date date-type="accepted">
+<day>4</day>
+<month>6</month>
+<year>2015</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2015</copyright-year>
+<copyright-holder>Votapka, Amaro</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pcbi.1004381" xlink:type="simple"/>
+<abstract>
+<p>The kinetic rate constants of binding were estimated for four biochemically relevant molecular systems by a method that uses milestoning theory to combine Brownian dynamics simulations with more detailed molecular dynamics simulations. The rate constants found using this method agreed well with experimentally and theoretically obtained values. We predicted the association rate of a small charged molecule toward both a charged and an uncharged spherical receptor and verified the estimated value with Smoluchowski theory. We also calculated the k<sub>on</sub> rate constant for superoxide dismutase with its natural substrate, O<sub>2</sub><sup>−</sup>, in a validation of a previous experiment using similar methods but with a number of important improvements. We also calculated the k<sub>on</sub> for a new system: the N-terminal domain of Troponin C with its natural substrate Ca<sup>2+</sup>. The k<sub>on</sub> calculated for the latter two systems closely resemble experimentally obtained values. This novel multiscale approach is computationally cheaper and more parallelizable when compared to other methods of similar accuracy. We anticipate that this methodology will be useful for predicting kinetic rate constants and for understanding the process of binding between a small molecule and a protein receptor.</p>
+</abstract>
+<abstract abstract-type="summary">
+<title>Author Summary</title>
+<p>We estimated the k<sub>on</sub> rate constant of four biochemically relevant ligand-receptor systems using milestoning theory. All results closely resemble experimentally and theoretically determined results, indicating that this technique may be applied toward accurate estimation of binding rate constants for additional ligand-receptor systems of biomedical interest.</p>
+</abstract>
+<funding-group>
+<funding-statement>This material is based upon work supported by the National Science Foundation Graduate Research Fellowship Program under Grant No. DGE-1144086. This work was funded in part by the National Institutes of Health (NIH) through the NIH Director’s New Innovator Award Program DP2-OD007237 and through the NSF XSEDE Supercomputer resources grant RAC CHE060073N to REA. Additional funding from the National Biomedical Computation Resource, NIH P41 GM103426, is gratefully acknowledged. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation. The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="9"/>
+<table-count count="4"/>
+<page-count count="24"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability" xlink:type="simple">
+<meta-name>Data Availability</meta-name>
+<meta-value>The authors confirm that all data underlying the findings are fully available without restriction. All files are available from the University of California, San Diego Research Data Curation Program. URL: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.6075/J02Z13F5" xlink:type="simple">http://dx.doi.org/10.6075/J02Z13F5</ext-link>.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<disp-quote>
+<p>This is a <italic>PLOS Computational Biology</italic> Methods paper</p>
+</disp-quote>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>Estimating kinetics is an important and challenging task in computational biophysics. The kinetic rate constants of ligand-receptor interactions, in particular the k<sub>on</sub> and k<sub>off</sub> values, play an important role in enzymology[<xref rid="pcbi.1004381.ref001" ref-type="bibr">1</xref>] and drug discovery[<xref rid="pcbi.1004381.ref002" ref-type="bibr">2</xref>]. Kinetic rate constants of ligand-receptor association and dissociation are important determinants of drug efficacy[<xref rid="pcbi.1004381.ref002" ref-type="bibr">2</xref>], and the optimization of these quantities is an important problem in medicinal chemistry. Although these values may often be measured experimentally, an accurate computational estimate would be attractive in cases where experimental measurement is expensive or difficult. In addition, advances in computational power, particularly in parallel computing, offer great potential for methods that take advantage of the vast and increasing power of computation.</p>
+<p>As indicated in <xref rid="pcbi.1004381.e001" ref-type="disp-formula">Eq 1</xref>, ligands typically bind to receptors according to a second order reaction process with a rate constant of k<sub>on</sub>. Unless a nonreversible reaction occurs, ligands typically unbind from their receptors according to a first order process with a rate constant of k<sub>off</sub>.</p>
+<disp-formula id="pcbi.1004381.e001">
+<alternatives>
+<graphic id="pcbi.1004381.e001g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004381.e001" xlink:type="simple"/>
+<mml:math display="block" id="M1" overflow="scroll">
+<mml:mrow><mml:mi>R</mml:mi><mml:mo>+</mml:mo><mml:mi>L</mml:mi><mml:mtext> </mml:mtext><mml:munderover><mml:mo>⇄</mml:mo><mml:mrow><mml:msub><mml:mi>k</mml:mi><mml:mrow><mml:mi>o</mml:mi><mml:mi>f</mml:mi><mml:mi>f</mml:mi></mml:mrow></mml:msub></mml:mrow><mml:mrow><mml:msub><mml:mi>k</mml:mi><mml:mrow><mml:mi>o</mml:mi><mml:mi>n</mml:mi></mml:mrow></mml:msub></mml:mrow></mml:munderover><mml:mtext> </mml:mtext><mml:mi>R</mml:mi><mml:mi>L</mml:mi></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(1)</label>
+</disp-formula>
+<p>A number of computational techniques exist to predict rate constants. The timescale of kinetic events vary wildly in biomolecular systems, and can extend between 10<sup>8</sup> events per second to less than 1 event per hour[<xref rid="pcbi.1004381.ref001" ref-type="bibr">1</xref>] for a single reaction event at physiological concentrations of reactants. For computational methods that estimate kinetic quantities, there is typically a high correlation between accuracy and computational cost. Explicit all-atom molecular dynamics (MD) is one approach to estimate the k<sub>on</sub> between a protein and a small molecule[<xref rid="pcbi.1004381.ref003" ref-type="bibr">3</xref>–<xref rid="pcbi.1004381.ref006" ref-type="bibr">6</xref>]. Though it offers a relatively high degree of accuracy, this technique involves extensive cyberinfrastructure overhead or access to specialized hardware such as the Anton machine[<xref rid="pcbi.1004381.ref007" ref-type="bibr">7</xref>]. To our knowledge, the longest MD simulations to date are limited to the low millisecond range[<xref rid="pcbi.1004381.ref008" ref-type="bibr">8</xref>].</p>
+<p>Various theories and algorithms offer cheaper alternatives to making kinetic approximations using brute-force, all-atom explicit MD simulations. Examples include two closely related techniques: Markov state models (MSM)[<xref rid="pcbi.1004381.ref009" ref-type="bibr">9</xref>–<xref rid="pcbi.1004381.ref017" ref-type="bibr">17</xref>] and milestoning[<xref rid="pcbi.1004381.ref018" ref-type="bibr">18</xref>–<xref rid="pcbi.1004381.ref023" ref-type="bibr">23</xref>] among many others.</p>
+<p>Brownian dynamics (BD) is a simulation method used to model macromolecular diffusion in an aqueous solvent[<xref rid="pcbi.1004381.ref024" ref-type="bibr">24</xref>]. Compared to MD simulations of intermolecular encounters, BD simulations typically require far less computation to simulate an association event. Due to various approximations, including rigid body dynamics, reduced point-charge interactions, implicit solvent, and a relatively large timestep, millions of protein/small molecule binding or association events can be simulated in 24 hours using modest parallelization. However, the approximations and assumptions made when using BD to simulate molecular binding can also introduce inaccuracies. BD can be used alone to model ligand association[<xref rid="pcbi.1004381.ref025" ref-type="bibr">25</xref>]. However, an accurate recovery of experimentally determined observables related to a binding process frequently requires additional models to approximate physical effects due to solvation shells and polarization, solvent entropic effects, and solute internal degrees of freedom. Some schemes to include these factors in BD simulations have been implemented[<xref rid="pcbi.1004381.ref026" ref-type="bibr">26</xref>–<xref rid="pcbi.1004381.ref029" ref-type="bibr">29</xref>].</p>
+<p>Methods for combining the speed of rigid body BD simulations with the precision of all-atom MD simulations to predict kinetics have been used in the past. In a technique invented by Luty, El Amrani, &amp; McCammon, the k<sub>on</sub> of superoxide dismutase (SOD) with its natural substrate O<sub>2</sub><sup>−</sup> was estimated by partitioning space into a region close to the binding site for simulation with MD, and a region far from the binding site where simulation with BD was more appropriate[<xref rid="pcbi.1004381.ref030" ref-type="bibr">30</xref>,<xref rid="pcbi.1004381.ref031" ref-type="bibr">31</xref>]. The statistics of each were combined into a k<sub>on</sub> estimate using a MSM.</p>
+<p>Although Luty et. al.’s original method dramatically decreased the cost to estimate binding kinetics compared to brute-force MD, a number of optimizations can be made to the procedure. Though proportionally smaller, the MD regime was disproportionally more expensive than the BD in Luty et. al.’s initial implementation. In this work, we used milestoning theory instead of a MSM to utilize the transition probabilities and incubation times between states. We modified Luty et. al.’s method by further partitioning the MD component with additional milestones. We also used a first hitting point distribution (FHPD) as the starting phase space points for the milestoning trajectories rather than an equilibrium distribution[<xref rid="pcbi.1004381.ref020" ref-type="bibr">20</xref>,<xref rid="pcbi.1004381.ref022" ref-type="bibr">22</xref>], a required procedure in milestoning theory. It is interesting to note that Luty et. al.’s method was remarkably similar to milestoning. Their use of surface states in phase space and a transition matrix to represent traversal between the states was somewhat prescient. However, Luty et. al. did not go so far as to integrate time information into the method to estimate mean first passage times (MFPT), nor did they did use FHPDs. Milestoning proper came later[<xref rid="pcbi.1004381.ref018" ref-type="bibr">18</xref>] and the formalism has since been extensively developed by others[<xref rid="pcbi.1004381.ref018" ref-type="bibr">18</xref>–<xref rid="pcbi.1004381.ref022" ref-type="bibr">22</xref>]. A milestoning model is very similar to a MSM; so much so that milestoning techniques have been used to perform MSM calculations[<xref rid="pcbi.1004381.ref032" ref-type="bibr">32</xref>], and a number of papers provide extensive comparisons of the two approaches[<xref rid="pcbi.1004381.ref019" ref-type="bibr">19</xref>,<xref rid="pcbi.1004381.ref033" ref-type="bibr">33</xref>,<xref rid="pcbi.1004381.ref034" ref-type="bibr">34</xref>].</p>
+<p>In addition to repeating the analysis of SOD made by Luty et. al. with our new method, we also estimated k<sub>on</sub> values for three additional systems. We calculated k<sub>on</sub>s for two simple, theoretically verifiable “spherical receptor” systems: the rate that a Na<sup>+</sup> particle crosses an uncharged sphere of radius 6.0Å, and the rate the same particle crosses a charged sphere of radius 6.0Å (<xref rid="pcbi.1004381.g001" ref-type="fig">Fig 1</xref>). We also estimated the k<sub>on</sub> of binding between the N-domain of Troponin C (TnC) and its natural substrate Ca<sup>2+</sup>. Since experimentally measured k<sub>on</sub>s existed for each of the two protein systems mentioned above, we attempted to closely recreate the experimental conditions within our simulations and subsequently recapture the correct k<sub>on</sub>s to validate our methods. Armed with this technique, one can make new attempts to estimate kinetic values for biologically or pathogenically interesting systems.</p>
+<fig id="pcbi.1004381.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004381.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>A cartoon depiction of a hypothetical path taken by a ligand as it diffuses in the vicinity of its binding site in the MD simulation regime.</title>
+<p>As the ligand travels, it crosses a series of milestones. Upon crossing, the ligand is considered to be in the crossed milestone’s state until it diffuses across a different milestone. The trajectory is terminated when the ligand crosses the “binding surface”, where it is considered bound, or when it crosses the BD surface, thus exiting the MD simulation regime.</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004381.g001" position="float" xlink:type="simple"/>
+</fig>
+<sec id="sec002">
+<title>Theory</title>
+<p><bold>Molecular dynamics</bold> is a simulation technique that uses Newton’s or Langevin’s equations of motion in combination with a specified molecular bond structure, parametrized force fields, and a starting conformation of atomic positions and velocities in order to propagate the dynamics of atoms within a molecular system. Ensembles of conformations or trajectories can be sampled to estimate thermodynamic or kinetic quantities[<xref rid="pcbi.1004381.ref020" ref-type="bibr">20</xref>,<xref rid="pcbi.1004381.ref035" ref-type="bibr">35</xref>,<xref rid="pcbi.1004381.ref036" ref-type="bibr">36</xref>].</p>
+<sec id="sec003">
+<title>Brownian dynamics</title>
+<p>In addition to MD, BD simulation is another technique that can be used to model macromolecular diffusion in an aqueous solvent[<xref rid="pcbi.1004381.ref024" ref-type="bibr">24</xref>,<xref rid="pcbi.1004381.ref025" ref-type="bibr">25</xref>,<xref rid="pcbi.1004381.ref037" ref-type="bibr">37</xref>,<xref rid="pcbi.1004381.ref038" ref-type="bibr">38</xref>]. BD can also be used to model the association of biomolecules in solution[<xref rid="pcbi.1004381.ref039" ref-type="bibr">39</xref>]. BD simulations rely on the assumptions inherent to the theory of Brownian motion[<xref rid="pcbi.1004381.ref024" ref-type="bibr">24</xref>,<xref rid="pcbi.1004381.ref039" ref-type="bibr">39</xref>,<xref rid="pcbi.1004381.ref040" ref-type="bibr">40</xref>]. In the simplest form of BD, these assumptions include: a solvent whose atoms may be approximated by a dielectric and ionic continuum and whose hydrodynamic properties can be described using diffusion coefficients or tensors, solute molecules that can be adequately represented as rigid bodies, and forces that can be reduced to electrostatics, steric hindrances, and other inter-solute interactions. BD simulations are propagated according to the general equation of Brownian motion[<xref rid="pcbi.1004381.ref027" ref-type="bibr">27</xref>] (<xref rid="pcbi.1004381.e002" ref-type="disp-formula">Eq 2</xref>) which has been derived from the N-particle Fokker-Planck Equation[<xref rid="pcbi.1004381.ref041" ref-type="bibr">41</xref>,<xref rid="pcbi.1004381.ref042" ref-type="bibr">42</xref>].
+<disp-formula id="pcbi.1004381.e002">
+<alternatives>
+<graphic id="pcbi.1004381.e002g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004381.e002" xlink:type="simple"/>
+<mml:math display="block" id="M2" overflow="scroll">
+<mml:mrow><mml:mi>d</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mtable><mml:mtr><mml:mtd><mml:mrow><mml:msub><mml:mi mathvariant="bold-italic">x</mml:mi><mml:mi>i</mml:mi></mml:msub></mml:mrow></mml:mtd></mml:mtr><mml:mtr><mml:mtd><mml:mrow><mml:msub><mml:mi>φ</mml:mi><mml:mi>i</mml:mi></mml:msub></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mo>=</mml:mo><mml:mfrac><mml:mrow><mml:mi>d</mml:mi><mml:mi>t</mml:mi></mml:mrow><mml:mrow><mml:msub><mml:mi>k</mml:mi><mml:mi>B</mml:mi></mml:msub><mml:mi>T</mml:mi></mml:mrow></mml:mfrac><mml:mstyle mathvariant="bold" mathsize="normal"><mml:mi>D</mml:mi></mml:mstyle><mml:mo>⋅</mml:mo><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mtable><mml:mtr><mml:mtd><mml:mrow><mml:msub><mml:mstyle mathvariant="bold" mathsize="normal"><mml:mi>F</mml:mi></mml:mstyle><mml:mi>i</mml:mi></mml:msub></mml:mrow></mml:mtd></mml:mtr><mml:mtr><mml:mtd><mml:mrow><mml:msub><mml:mi>Τ</mml:mi><mml:mi>i</mml:mi></mml:msub></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mo>+</mml:mo><mml:msqrt><mml:mrow><mml:mn>2</mml:mn><mml:mi>d</mml:mi><mml:mi>t</mml:mi></mml:mrow></mml:msqrt><mml:mstyle mathvariant="bold" mathsize="normal"><mml:mi>S</mml:mi></mml:mstyle><mml:mo>⋅</mml:mo><mml:mi mathvariant="bold-italic">w</mml:mi><mml:mo>+</mml:mo><mml:mo>∇</mml:mo><mml:mo>⋅</mml:mo><mml:mstyle mathvariant="bold" mathsize="normal"><mml:mi>D</mml:mi></mml:mstyle><mml:mi>d</mml:mi><mml:mi>t</mml:mi></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(2)</label>
+</disp-formula>
+Where <italic>i</italic> is the index of a particle in the system. The values <bold><italic>x</italic></bold><sub><bold><italic>i</italic></bold></sub>, <italic>φ</italic><sub><italic>i</italic></sub>, <bold><italic>F</italic></bold><sub><bold><italic>i</italic></bold></sub>, <bold><italic>T</italic></bold><sub><bold><italic>i</italic></bold></sub> are the position, rotation, force, and torque of particle <italic>i</italic> respectively, <bold>D</bold> is the diffusion tensor, <bold>S</bold> is matrix square root of <bold>D</bold>, <bold>w</bold> is a random vector whose components are Gaussian variables with unit variance and zero mean. The Northrup-Allison-McCammon algorithm[<xref rid="pcbi.1004381.ref025" ref-type="bibr">25</xref>] solves these equations numerically, and can be used to propagate timesteps within a BD simulation.</p>
+<p>When BD is used to estimate the k<sub>on</sub> of a ligand-receptor association reaction, the k<sub>on</sub> rate constant can be split into two terms. (<xref rid="pcbi.1004381.e003" ref-type="disp-formula">Eq 3</xref>)
+<disp-formula id="pcbi.1004381.e003">
+<alternatives>
+<graphic id="pcbi.1004381.e003g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004381.e003" xlink:type="simple"/>
+<mml:math display="block" id="M3" overflow="scroll">
+<mml:mrow><mml:msub><mml:mi>k</mml:mi><mml:mrow><mml:mi>o</mml:mi><mml:mi>n</mml:mi></mml:mrow></mml:msub><mml:mo>=</mml:mo><mml:msub><mml:mi>k</mml:mi><mml:mi>b</mml:mi></mml:msub><mml:mi>β</mml:mi></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(3)</label>
+</disp-formula>
+Where <italic>k</italic><sub><italic>b</italic></sub> is the rate of diffusion of the ligand to a spherical surface of radius <italic>b</italic> (b-surface) centered on the ligand. The <italic>k</italic><sub><italic>b</italic></sub> can be calculated by using <xref rid="pcbi.1004381.e004" ref-type="disp-formula">Eq 4</xref>.
+<disp-formula id="pcbi.1004381.e004">
+<alternatives>
+<graphic id="pcbi.1004381.e004g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004381.e004" xlink:type="simple"/>
+<mml:math display="block" id="M4" overflow="scroll">
+<mml:mrow><mml:msub><mml:mi>k</mml:mi><mml:mi>b</mml:mi></mml:msub><mml:mo>=</mml:mo><mml:mn>4</mml:mn><mml:mi>π</mml:mi><mml:msup><mml:mrow><mml:mrow><mml:mo>[</mml:mo><mml:mrow><mml:munderover><mml:mstyle mathsize="140%" displaystyle="true"><mml:mo stretchy="false">∫</mml:mo></mml:mstyle><mml:mtext>b</mml:mtext><mml:mi>∞</mml:mi></mml:munderover><mml:mfrac><mml:mrow><mml:mtext>exp</mml:mtext><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mtext>U</mml:mtext><mml:mrow><mml:mo>(</mml:mo><mml:mtext>r</mml:mtext><mml:mo>)</mml:mo></mml:mrow><mml:mo>/</mml:mo><mml:msub><mml:mi>k</mml:mi><mml:mi>B</mml:mi></mml:msub><mml:mi>T</mml:mi></mml:mrow><mml:mo>)</mml:mo></mml:mrow></mml:mrow><mml:mrow><mml:msup><mml:mi>r</mml:mi><mml:mn>2</mml:mn></mml:msup><mml:mi>D</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mi>r</mml:mi><mml:mo>)</mml:mo></mml:mrow></mml:mrow></mml:mfrac><mml:mi>d</mml:mi><mml:mi>r</mml:mi></mml:mrow><mml:mo>]</mml:mo></mml:mrow></mml:mrow><mml:mrow><mml:mo>−</mml:mo><mml:mn>1</mml:mn></mml:mrow></mml:msup></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(4)</label>
+</disp-formula>
+Where <italic>U(r)</italic> is the effective potential energy between the receptor and the substrate at a distance <italic>r</italic> from the center of the receptor, <italic>k</italic><sub><italic>B</italic></sub> is Boltzmann’s constant, and <italic>T</italic> is temperature, and <italic>D(r)</italic> is the spatially-varying diffusion coefficient. <italic>β</italic> is the probability that a ligand located on the b-surface will continue on to react with the enzyme rather than escaping to an infinite distance. Normally, <italic>β</italic> can be determined by running BD simulations started from random locations on the b-surface and then counting the proportion of trajectories that lead to binding. In this study, <italic>β</italic> was determined by combining BD with MD using milestoning.</p>
+</sec>
+<sec id="sec004">
+<title>Milestoning theory</title>
+<p>Milestoning computationally models the kinetics as well as the thermodynamics of chemical processes, with the benefit of extensive parallelizability [<xref rid="pcbi.1004381.ref018" ref-type="bibr">18</xref>,<xref rid="pcbi.1004381.ref019" ref-type="bibr">19</xref>,<xref rid="pcbi.1004381.ref022" ref-type="bibr">22</xref>,<xref rid="pcbi.1004381.ref043" ref-type="bibr">43</xref>]. Using milestoning techniques, the stationary flux distribution <bold>q</bold> and the probability distribution <bold>p</bold> can be found across a reaction coordinate along which a number of milestones have been defined. Milestoning can also be used to find the mean first passage time (MFPT) of a transport process starting from one milestone and ending at another. The methods within milestoning theory provide a flexible approach to investigate a wide range of dynamics, including non-equilibrium conditions [<xref rid="pcbi.1004381.ref021" ref-type="bibr">21</xref>,<xref rid="pcbi.1004381.ref023" ref-type="bibr">23</xref>] and has been applied in a variety of contexts [<xref rid="pcbi.1004381.ref023" ref-type="bibr">23</xref>,<xref rid="pcbi.1004381.ref032" ref-type="bibr">32</xref>,<xref rid="pcbi.1004381.ref033" ref-type="bibr">33</xref>,<xref rid="pcbi.1004381.ref044" ref-type="bibr">44</xref>,<xref rid="pcbi.1004381.ref045" ref-type="bibr">45</xref>]. Milestoning does not rely on any assumption concerning system damping [<xref rid="pcbi.1004381.ref018" ref-type="bibr">18</xref>], and thus can be applied to Newtonian, Langevin, and Brownian systems alike [<xref rid="pcbi.1004381.ref018" ref-type="bibr">18</xref>,<xref rid="pcbi.1004381.ref019" ref-type="bibr">19</xref>,<xref rid="pcbi.1004381.ref022" ref-type="bibr">22</xref>].</p>
+<p>In our implementation, we defined a number of concentric spherical surfaces in phase space that encircle the binding site on each receptor. These surfaces in phase space are termed “milestones” and are roughly perpendicular to the reaction coordinate (<xref rid="pcbi.1004381.g001" ref-type="fig">Fig 1</xref>).</p>
+<p>In a typical milestoning procedure, unbiased simulations are initiated from a set of equilibrium distributions along the milestones, which one obtains using umbrella sampling. Each of these simulations is independent from the others, and the ligand center of mass is positioned at or very near the milestoning surface. As the simulations progress, transitions between milestones are recorded to construct a proper FHPD across the milestones, and then used to construct a transition kernel matrix with elements <bold>K</bold>, whose entries describe the probability that a ligand in one of the milestones will subsequently transition to another. An incubation time vector 〈<italic>t</italic>〉 is also obtained by determining the average time the system takes to transition from each milestone to an adjacent one. Given these quantities, stationary fluxes <bold>q</bold> across each milestone, the probability distribution <bold>p</bold>, and MFPT 〈<italic>τ</italic>〉 are found using eqs <xref rid="pcbi.1004381.e005" ref-type="disp-formula">5</xref>–<xref rid="pcbi.1004381.e007" ref-type="disp-formula">7</xref>.
+<disp-formula id="pcbi.1004381.e005">
+<alternatives>
+<graphic id="pcbi.1004381.e005g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004381.e005" xlink:type="simple"/>
+<mml:math display="block" id="M5" overflow="scroll">
+<mml:mrow><mml:msub><mml:mi mathvariant="bold-italic">q</mml:mi><mml:mrow><mml:mi>s</mml:mi><mml:mi>t</mml:mi><mml:mi>a</mml:mi><mml:mi>t</mml:mi></mml:mrow></mml:msub><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mstyle mathvariant="bold" mathsize="normal"><mml:mi>I</mml:mi></mml:mstyle><mml:mo>−</mml:mo><mml:mstyle mathvariant="bold" mathsize="normal"><mml:mi>K</mml:mi></mml:mstyle></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mo>=</mml:mo><mml:mn>0</mml:mn></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(5)</label>
+</disp-formula>
+<disp-formula id="pcbi.1004381.e006">
+<alternatives>
+<graphic id="pcbi.1004381.e006g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004381.e006" xlink:type="simple"/>
+<mml:math display="block" id="M6" overflow="scroll">
+<mml:mrow><mml:msub><mml:mi>p</mml:mi><mml:mrow><mml:mi>i</mml:mi><mml:mo>,</mml:mo><mml:mo> </mml:mo><mml:mi>s</mml:mi><mml:mi>t</mml:mi><mml:mi>a</mml:mi><mml:mi>t</mml:mi></mml:mrow></mml:msub><mml:mo>=</mml:mo><mml:msub><mml:mi>q</mml:mi><mml:mrow><mml:mi>i</mml:mi><mml:mo>,</mml:mo><mml:mi>s</mml:mi><mml:mi>t</mml:mi><mml:mi>a</mml:mi><mml:mi>t</mml:mi></mml:mrow></mml:msub><mml:mo>⋅</mml:mo><mml:msub><mml:mi>t</mml:mi><mml:mi>i</mml:mi></mml:msub></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(6)</label>
+</disp-formula>
+<disp-formula id="pcbi.1004381.e007">
+<alternatives>
+<graphic id="pcbi.1004381.e007g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004381.e007" xlink:type="simple"/>
+<mml:math display="block" id="M7" overflow="scroll">
+<mml:mrow><mml:mrow><mml:mo>〈</mml:mo><mml:mi mathvariant="bold-italic">τ</mml:mi><mml:mo>〉</mml:mo></mml:mrow><mml:mo>=</mml:mo><mml:mstyle mathvariant="bold" mathsize="normal"><mml:mi>p</mml:mi></mml:mstyle><mml:mo>⋅</mml:mo><mml:msup><mml:mrow><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mstyle mathvariant="bold" mathsize="normal"><mml:mi>I</mml:mi></mml:mstyle><mml:mo>−</mml:mo><mml:mstyle mathvariant="bold" mathsize="normal"><mml:mover accent="true"><mml:mi>K</mml:mi><mml:mo>˜</mml:mo></mml:mover></mml:mstyle></mml:mrow><mml:mo>)</mml:mo></mml:mrow></mml:mrow><mml:mrow><mml:mo>−</mml:mo><mml:mn>1</mml:mn></mml:mrow></mml:msup><mml:mrow><mml:mo>〈</mml:mo><mml:mstyle mathvariant="bold" mathsize="normal"><mml:mtext mathvariant="bold">t</mml:mtext></mml:mstyle><mml:mo>〉</mml:mo></mml:mrow></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(7)</label>
+</disp-formula>
+where <bold>I</bold> is the identity matrix, <italic>i</italic> is the index of a particular milestone, and <inline-formula id="pcbi.1004381.e008"><alternatives><graphic id="pcbi.1004381.e008g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004381.e008" xlink:type="simple"/><mml:math display="inline" id="M8" overflow="scroll"><mml:mstyle mathvariant="bold" mathsize="normal"><mml:mover accent="true"><mml:mi>K</mml:mi><mml:mo>˜</mml:mo></mml:mover></mml:mstyle></mml:math></alternatives></inline-formula> is the transition kernel with one or more absorbing ‘sink’ states.</p>
+<p>Milestoning theory, as well as the method employed by Luty et. al., defines states using surfaces in phase space. The current state of the simulated system is the surface that has been most recently crossed. Each of the surfaces must be sufficiently far apart from one another in order to ensure that velocity is decorrelated between transitions. In our implementation, we defined our milestones as concentric spheres in order to closely approximate isosurfaces of the committor function. For a rigorous discussion of ‘surface’ states and their requirements and assumptions, the reader is referred to additional publications on milestoning theory[<xref rid="pcbi.1004381.ref018" ref-type="bibr">18</xref>–<xref rid="pcbi.1004381.ref020" ref-type="bibr">20</xref>,<xref rid="pcbi.1004381.ref022" ref-type="bibr">22</xref>].</p>
+<p>In our implementation, all trajectories used to populate the statistics in the milestoning model are started from FHPDs calculated on each of the surface states. The FHPD represents the distribution of system conformations that have just crossed a surface state and that had previously been in a different state. The difference between the FHPD and an equilibrium distribution is that the latter also includes conformations whose last crossing event was the same as the current state. A trajectory is started from the FHPD and allowed to propagate according to the simulation dynamics, crossing surfaces as it diffuses (<xref rid="pcbi.1004381.g001" ref-type="fig">Fig 1</xref>). If the trajectory ever crosses the surface of a sink state, such as the bound state or a state leading to another simulation regime, the trajectory is halted. As surfaces are crossed, the counts are tallied to construct the transition matrix <bold>K</bold> and the average incubation time vector 〈<italic>t</italic>〉. In our implementation, <italic>β</italic> was found by summing the stationary fluxes of all bound milestones according to <xref rid="pcbi.1004381.e009" ref-type="disp-formula">Eq 8</xref>.
+<disp-formula id="pcbi.1004381.e009">
+<alternatives>
+<graphic id="pcbi.1004381.e009g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004381.e009" xlink:type="simple"/>
+<mml:math display="block" id="M9" overflow="scroll">
+<mml:mrow><mml:mi>β</mml:mi><mml:mo>=</mml:mo><mml:munder><mml:mstyle mathsize="140%" displaystyle="true"><mml:mo>Σ</mml:mo></mml:mstyle><mml:mi>z</mml:mi></mml:munder><mml:msub><mml:mi>q</mml:mi><mml:mrow><mml:mi>z</mml:mi><mml:mo>,</mml:mo><mml:mi>s</mml:mi><mml:mi>t</mml:mi><mml:mi>a</mml:mi><mml:mi>t</mml:mi></mml:mrow></mml:msub></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(8)</label>
+</disp-formula>
+Where <italic>z</italic> is the index of a milestone that represents a bound state.</p>
+<p>Error estimation of computed values were made using a Monte Carlo method to sample matrix distributions defined in milestoning[<xref rid="pcbi.1004381.ref022" ref-type="bibr">22</xref>,<xref rid="pcbi.1004381.ref034" ref-type="bibr">34</xref>] similar to one used in MSM theory[<xref rid="pcbi.1004381.ref046" ref-type="bibr">46</xref>]. Details of error estimation are outlined in the Supplementary Information (<xref rid="pcbi.1004381.s001" ref-type="supplementary-material">S1 Text</xref>)(<xref rid="pcbi.1004381.s002" ref-type="supplementary-material">S1 Fig</xref>).</p>
+</sec>
+<sec id="sec005">
+<title>Theoretical determination of k<sub>on</sub></title>
+<p>The flux rate <italic>k(r)</italic> of a particle across a sphere of radius <italic>r</italic> may be estimated analytically for some simple systems. The value <italic>k(r)</italic> is equivalent to k<sub>on</sub> if a sphere of radius <italic>r</italic> is modeled as a binding surface. In the uncharged spherical receptor system, there are no average forces on the substrate and the <italic>k(r)</italic> can be obtained by solving the Smoluchowski equation[<xref rid="pcbi.1004381.ref047" ref-type="bibr">47</xref>].
+<disp-formula id="pcbi.1004381.e010">
+<alternatives>
+<graphic id="pcbi.1004381.e010g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004381.e010" xlink:type="simple"/>
+<mml:math display="block" id="M10" overflow="scroll">
+<mml:mrow><mml:mi>k</mml:mi><mml:mo stretchy="false">(</mml:mo><mml:mi>r</mml:mi><mml:mo stretchy="false">)</mml:mo><mml:mo>=</mml:mo><mml:mn>4</mml:mn><mml:mi>π</mml:mi><mml:mi>r</mml:mi><mml:mi>D</mml:mi></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(9)</label>
+</disp-formula>
+Where <italic>r</italic> is the radius of the reacting sphere, and <italic>D</italic> is the diffusion coefficient of the substrate. The <italic>k(r)</italic> can also be calculated for systems with centrosymmetric forces by solving the Smoluchowski equation in spherical coordinates[<xref rid="pcbi.1004381.ref047" ref-type="bibr">47</xref>,<xref rid="pcbi.1004381.ref048" ref-type="bibr">48</xref>]. The result is expressed as <xref rid="pcbi.1004381.e004" ref-type="disp-formula">Eq 4</xref>. Assuming a constant diffusion coefficient and that the effective potential energy is defined by Coulomb’s Law in a uniform dielectric, <xref rid="pcbi.1004381.e004" ref-type="disp-formula">Eq 4</xref> can be reduced and solved exactly for the charged spherical receptor system (<xref rid="pcbi.1004381.e011" ref-type="disp-formula">Eq 10</xref>):
+<disp-formula id="pcbi.1004381.e011">
+<alternatives>
+<graphic id="pcbi.1004381.e011g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004381.e011" xlink:type="simple"/>
+<mml:math display="block" id="M11" overflow="scroll">
+<mml:mrow><mml:mi>k</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mi>r</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>=</mml:mo><mml:mo>−</mml:mo><mml:mfrac><mml:mrow><mml:mi>D</mml:mi><mml:msub><mml:mi>Q</mml:mi><mml:mi>c</mml:mi></mml:msub><mml:msub><mml:mi>Q</mml:mi><mml:mi>s</mml:mi></mml:msub></mml:mrow><mml:mrow><mml:mrow><mml:mo>[</mml:mo><mml:mrow><mml:mn>1</mml:mn><mml:mo>−</mml:mo><mml:mi>e</mml:mi><mml:mi>x</mml:mi><mml:mi>p</mml:mi><mml:mrow><mml:mo>{</mml:mo><mml:mrow><mml:mfrac><mml:mrow><mml:msub><mml:mi>Q</mml:mi><mml:mi>c</mml:mi></mml:msub><mml:msub><mml:mi>Q</mml:mi><mml:mi>s</mml:mi></mml:msub></mml:mrow><mml:mrow><mml:mn>4</mml:mn><mml:mi>π</mml:mi><mml:msub><mml:mi>ε</mml:mi><mml:mn>0</mml:mn></mml:msub><mml:msub><mml:mi>ε</mml:mi><mml:mi>r</mml:mi></mml:msub><mml:msub><mml:mi>k</mml:mi><mml:mi>B</mml:mi></mml:msub><mml:mi>T</mml:mi><mml:mi>r</mml:mi></mml:mrow></mml:mfrac></mml:mrow><mml:mo>}</mml:mo></mml:mrow></mml:mrow><mml:mo>]</mml:mo></mml:mrow><mml:msub><mml:mi>ε</mml:mi><mml:mn>0</mml:mn></mml:msub><mml:msub><mml:mi>ε</mml:mi><mml:mi>r</mml:mi></mml:msub><mml:msub><mml:mi>k</mml:mi><mml:mi>B</mml:mi></mml:msub><mml:mi>T</mml:mi></mml:mrow></mml:mfrac></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(10)</label>
+</disp-formula>
+Where <italic>Q</italic><sub><italic>s</italic></sub> is the charge of the diffusing particle, <italic>Q</italic><sub><italic>c</italic></sub> is the charge in the center of the receptor sphere, <italic>ε</italic><sub><italic>0</italic></sub> is the permittivity of a vacuum, and <italic>ε</italic><sub><italic>r</italic></sub> is the dielectric constant of the solvent. The derivation of <xref rid="pcbi.1004381.e011" ref-type="disp-formula">Eq 10</xref> from <xref rid="pcbi.1004381.e004" ref-type="disp-formula">Eq 4</xref> is described in the SI(<xref rid="pcbi.1004381.s001" ref-type="supplementary-material">S1 Text</xref>). A solution to a more complicated scenario can also be derived numerically[<xref rid="pcbi.1004381.ref049" ref-type="bibr">49</xref>].</p>
+<p>In addition to the flux rate <italic>k(r)</italic> across spheres, the MFPT that a particle remains within a certain domain of space can also be obtained. For a system that obeys Smoluchowski theory, <xref rid="pcbi.1004381.e012" ref-type="disp-formula">Eq 11</xref> describes how the MFPT relates to a stationary distribution in that domain.
+<disp-formula id="pcbi.1004381.e012">
+<alternatives>
+<graphic id="pcbi.1004381.e012g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004381.e012" xlink:type="simple"/>
+<mml:math display="block" id="M12" overflow="scroll">
+<mml:mrow><mml:mi>τ</mml:mi><mml:mo>=</mml:mo><mml:mfrac><mml:mi>N</mml:mi><mml:mi>J</mml:mi></mml:mfrac><mml:mo>=</mml:mo><mml:mfrac><mml:mrow><mml:msubsup><mml:mstyle mathsize="140%" displaystyle="true"><mml:mo stretchy="false">∫</mml:mo></mml:mstyle><mml:mi>V</mml:mi><mml:mrow/></mml:msubsup><mml:mi>u</mml:mi><mml:mi>d</mml:mi><mml:mi>V</mml:mi></mml:mrow><mml:mrow><mml:mi>D</mml:mi><mml:msubsup><mml:mstyle mathsize="140%" displaystyle="true"><mml:mo>Σ</mml:mo></mml:mstyle><mml:mrow><mml:mi>i</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow><mml:mi>k</mml:mi></mml:msubsup><mml:msubsup><mml:mstyle mathsize="140%" displaystyle="true"><mml:mo stretchy="false">∫</mml:mo></mml:mstyle><mml:mrow><mml:msub><mml:mi>A</mml:mi><mml:mi>i</mml:mi></mml:msub></mml:mrow><mml:mrow/></mml:msubsup><mml:mo stretchy="false">(</mml:mo><mml:mo>∇</mml:mo><mml:mi>u</mml:mi><mml:mo stretchy="false">)</mml:mo><mml:mi>d</mml:mi><mml:msub><mml:mi>A</mml:mi><mml:mi>i</mml:mi></mml:msub></mml:mrow></mml:mfrac></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(11)</label>
+</disp-formula>
+Where 〈<italic>τ</italic>〉 is the MFPT, <italic>N</italic> is the total number of particles present in the system, <italic>J</italic> is the total flux of particles across all absorbing boundaries at any given time, <italic>u</italic> is the stationary distribution of particles, <italic>V</italic> is the volume of the system, <italic>D</italic> is the diffusion coefficient of the particle, <italic>k</italic> is the number of absorbing boundaries, and <italic>i</italic> is the index of a particular absorbing boundary <italic>A</italic><sub><italic>i</italic></sub>[<xref rid="pcbi.1004381.ref050" ref-type="bibr">50</xref>].</p>
+</sec>
+</sec>
+</sec>
+<sec id="sec006" sec-type="materials|methods">
+<title>Materials and Methods</title>
+<sec id="sec007">
+<title>Preparation of MD</title>
+<p>All MD simulations were carried out using NAMD 2.9[<xref rid="pcbi.1004381.ref051" ref-type="bibr">51</xref>]. The MD FHPDs were made with the help of MDAnalysis[<xref rid="pcbi.1004381.ref052" ref-type="bibr">52</xref>]. All calculations were performed on the Gordon supercomputer at the San Diego Supercomputer Center, the Stampede supercomputer at the Texas Advanced Computing Center, and on local machines.</p>
+</sec>
+<sec id="sec008">
+<title>Spherical receptor systems</title>
+<p>MD simulations of the charged and uncharged spherical receptor simulations were prepared using a simple 40 Å x 40 Å x 40 Å TIP3P[<xref rid="pcbi.1004381.ref053" ref-type="bibr">53</xref>] water box, we placed a Cl<sup>-</sup> in the center of the box for the charged spherical receptor. Both systems contain approximately 7600 atoms. Na<sup>+</sup> and Cl<sup>-</sup> parameters were obtained from the ions94 library of the AMBER ff03 forcefield[<xref rid="pcbi.1004381.ref054" ref-type="bibr">54</xref>]. The spherical receptor systems were minimized for 10000 steps to allow the water molecules to relax in relation to each other and to the Cl<sup>-</sup>. Both systems were then equilibrated for 20 ns at a constant temperature of 300K using the Langevin thermostat and constant pressure using the Langevin piston at 1 atm with a damping coefficient of 5 ps<sup>−1</sup>. The Cl<sup>-</sup> was constrained to a stationary position in the center of the charged spherical receptor system.</p>
+<p>Following this equilibration, four copies were made of the systems, and a Na<sup>+</sup> was placed at the milestones located at 7 Å, 8 Å, 9 Å and 10 Å from the center of the water box in the uncharged system (<xref rid="pcbi.1004381.g002" ref-type="fig">Fig 2</xref>), and from the Cl<sup>-</sup> in the charged system. Two additional milestones were also placed at 6Å and 11 Å. Waters clashing with the Na<sup>+</sup> were removed. The system was once again allowed to minimize for another 5000 steps to relax the waters around the ions. Then the system was heated in 10 K increments up to 350 K and then reduced back to 300 K at 2 ps intervals each at constant volume. Then, in order to obtain an ensemble distribution, the systems were simulated at constant temperature at 300 K at constant volume for 20 ns. To this point, all ions have been constrained. In order to obtain a FHPD, 900 position/velocity configurations were uniformly chosen between the 2 ns and 20 ns marks in the ensemble simulations. Velocities were reversed, and the trajectories were allowed to propagate backwards. If the trajectory struck another milestone before re-crossing the one it came from, that trajectory was considered part of the FHPD. All members of the FHPD were then allowed to proceed with their velocities in the forward direction. Each transition event was monitored for future milestoning analysis. Reverse simulations were carried out using a special plugin for NAMD 2.9[<xref rid="pcbi.1004381.ref055" ref-type="bibr">55</xref>], which allows velocities to be reversed at arbitrary timesteps.</p>
+<fig id="pcbi.1004381.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004381.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>A cartoon depiction of the two spherical receptor systems drawn approximately to scale.</title>
+<p>The uncharged system in panel A has no central charged molecule. The charged system in panel B has a Cl<sup>-</sup> constrained to the center of the spherical milestones. Both systems contain the escape milestone (light blue curves), four intermediate milestones (curves in shades of orange and yellow), and binding milestone (dark red curves). Two hypothetical paths are also depicted per system. The upper path shows a trajectory where Na<sup>+</sup> diffuses within the simulation region, crossing surfaces and finally reacting with the 6Å spherical milestone. The bottom path shows Na<sup>+</sup> diffusing across a few states before escaping to the 11Å milestone.</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004381.g002" position="float" xlink:type="simple"/>
+</fig>
+<p>For comparison with the milestoning results, brute-force MD simulations were run and Smoluchowski theory was used to estimate a <italic>β</italic>, k<sub>on</sub>, and MFPT for the spherical receptor systems. All brute-force MD simulations were set up with the same parameters as for milestoning above, except that the system was equilibrated for 40 ns and 10000 frames were sampled between the 20 and 40 ns time. Each of the 10000 simulations were started with the Na<sup>+</sup> placed on the 10Å milestone and monitored for a crossing event at either the 6Å or the 11Å milestone. The value <italic>β</italic> was simply the number that crossed the 6Å milestone out of the total number of simulations. The MFPT was the average amount of time that all the simulations lasted before a crossing event.</p>
+</sec>
+<sec id="sec009">
+<title>SOD system</title>
+<p>MD force field (FF) parameters for SOD were obtained as a generous gift from Branco et. al.[<xref rid="pcbi.1004381.ref056" ref-type="bibr">56</xref>] The system was surrounded by a TIP3P[<xref rid="pcbi.1004381.ref053" ref-type="bibr">53</xref>] water box with 150 mM NaCl solution. The simulation contained approx. 44,000 atoms. The SOD system was then equilibrated for 80 ns at a constant temperature of 300 K using the Langevin thermostat and constant pressure using the Langevin piston at 1 atm using a damping coefficient of 5 ps<sup>−1</sup>.</p>
+<p>Following equilibration, ten copies were made of the apo system, and O<sub>2</sub><sup>−</sup> was inserted at eight different milestones (located at 4Å-11Å in 1Å increments) from each of the two copper ions in SOD’s two active sites, yielding a total of sixteen different milestones simulated (<xref rid="pcbi.1004381.g003" ref-type="fig">Fig 3</xref>). Waters clashing with O<sub>2</sub><sup>−</sup> were removed. The solvent molecules in the system were minimized for another 5000 steps to relax around the newly placed ions. Then the system was heated in 10 K increments up to 350 K and then reduced back to 295 K at 2 ps intervals each at constant volume. The protein and O<sub>2</sub><sup>−</sup> atom positions were constrained during the minimizations and heating/cooling. In order to obtain an ensemble distribution, the systems were simulated at a constant temperature of 300 K and constant volume for 200 ns each with an imposed harmonic “spring” force of 300 kcal mol<sup>−1</sup> Å<sup>−2</sup> that constrained O<sub>2</sub><sup>−</sup> close to a spherical milestone at each system’s proper distance from the SOD active site catalytic copper. In order to obtain a FHPD, 700 position/velocity configurations were uniformly chosen between the 60 ns and 200 ns marks in the ensemble simulations. Velocities were reversed, and the trajectories were allowed to propagate backwards in time. If the trajectory struck another milestone before recrossing the one it came from, that trajectory was considered part of the FHPD. The autoimage function in CPPTraj[<xref rid="pcbi.1004381.ref057" ref-type="bibr">57</xref>] was used to center the ligand in the waterbox before the reversal stage. All members of the FHPD were then allowed to proceed in the forward direction. Each crossing event was monitored for future analysis. The reversal phases were simulated using a custom plugin for NAMD 2.9[<xref rid="pcbi.1004381.ref055" ref-type="bibr">55</xref>].</p>
+<fig id="pcbi.1004381.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004381.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title>A cartoon depiction of the SOD system.</title>
+<p>The system has two binding sites, b-surface (dark blue circle), BD milestones (light blue curves), MD milestones (curves in shades of orange and yellow), and the binding milestone (dark red curves). The catalytic coppers at the center of the spherical surfaces are also depicted as tan circles in the bottom of each active site.</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004381.g003" position="float" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec010">
+<title>TnC system</title>
+<p>FF parameters for TnC were prepared according to the protocol followed by Lindert et. al.[<xref rid="pcbi.1004381.ref058" ref-type="bibr">58</xref>] The system was surrounded by a TIP3P[<xref rid="pcbi.1004381.ref053" ref-type="bibr">53</xref>] waterbox with 100 mM KCl solution. The simulation contained approximately 27,000 atoms. The TnC system was then equilibrated for 100 ns at a constant temperature of 288 K using the Langevin thermostat and pressure using the Langevin piston at 1 atm using a damping coefficient of 5 ps<sup>−1</sup>.</p>
+<p>Following this equilibration, twelve copies were made of the systems, and the Ca<sup>2+</sup> was inserted on the binding side of the TnC site II loop at 1 Å increments from 2 Å to 9 Å from the center of mass of the alpha carbons of residues ASP 65, ASP 67, SER 69, THR 71, and GLU 76 (<xref rid="pcbi.1004381.g004" ref-type="fig">Fig 4</xref>). Waters clashing with Ca<sup>2+</sup> were removed. The solvent molecules in the system were minimized for another 5000 steps to relax around the newly placed ions. Then the system was heated in 10 K increments up to 350 K and then reduced back to 295 K at 2 ps intervals each at constant volume. The protein and Ca<sup>2+</sup> atoms were constrained during the minimizations and heating/cooling cycles. In order to obtain an ensemble distribution, the systems were simulated at a constant temperature of 300 K and constant volume for 100 ns each with an imposed harmonic force of 300 kcal mol<sup>−1</sup> Å<sup>−2</sup> that constrained Ca<sup>2+</sup> close to the spherical surface at each system’s proper distance from the active site center of mass. In order to obtain a FHPD, 700 position/velocity configurations were uniformly chosen between the 30 ns and 100 ns marks in the ensemble simulations. The reversal phase of the TnC system was performed in an identical procedure as the SOD system.</p>
+<fig id="pcbi.1004381.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004381.g004</object-id>
+<label>Fig 4</label>
+<caption>
+<title>A cartoon depiction of TnC.</title>
+<p>The system contains a b-surface (dark blue circle), a BD surface (light blue curve), MD surfaces (curves in shades of orange and yellow), and a binding surface (dark red curve) located in the Ca<sup>2+</sup> binding site (site II). Each curve represents a milestone.</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004381.g004" position="float" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec011">
+<title>Preparation of BD</title>
+<p>All Brownian dynamics simulations were performed using BrownDye[<xref rid="pcbi.1004381.ref027" ref-type="bibr">27</xref>] with desolvation forces and hydrodynamic interactions activated. All electrostatics calculations were performed using the Poisson-Boltzmann Equation solver APBS[<xref rid="pcbi.1004381.ref059" ref-type="bibr">59</xref>]. The solvent dielectric was left at the default of 78, and the permittivity of a vacuum was left at the default of 8.854×10<sup>−12</sup> C<sup>2</sup>N<sup>−1</sup>m<sup>−2</sup>. All macromolecular dielectrics were set to 2, while the dielectrics of Ca<sup>2+</sup> and O<sub>2</sub><sup>−</sup> were set to 1. A 6–12 hard sphere Lennard-Jones interaction was used. Simulations were distributed across 10 to 20 threads on a local computing node. The BrownDye program bd_top was used to prepare all systems for simulation. A phantom atom of zero charge and zero radius was placed at the center of the active sites in order to detect crossings of spherical milestones. The phantom atom has no effect on the dynamics, but is merely a convenient way to detect surface-crossing events. The BrownDye program nam_simulation was used for simulation, and the program compute_rate_constant was used to aid in the calculation of the association rate constants. Trajectories were processed using the BrownDye programs process_trajectories and xyz_trajectory in combination with in-house Python scripts.</p>
+</sec>
+<sec id="sec012">
+<title>BD for SOD</title>
+<p>A PQR file for SOD was prepared from the crystal structure PDB ID: 1CBJ[<xref rid="pcbi.1004381.ref060" ref-type="bibr">60</xref>] using LEaP[<xref rid="pcbi.1004381.ref061" ref-type="bibr">61</xref>] and DelEE[<xref rid="pcbi.1004381.ref062" ref-type="bibr">62</xref>] with the AMBER forcefield[<xref rid="pcbi.1004381.ref063" ref-type="bibr">63</xref>,<xref rid="pcbi.1004381.ref064" ref-type="bibr">64</xref>] and PROPKA<sup>,47</sup> assigned protonation states at a pH of 7.0. A PQR file for O<sub>2</sub><sup>−</sup> was made by hand, with each oxygen given a partial charge of -0.5 and a radius of 1.5 Å. APBS[<xref rid="pcbi.1004381.ref059" ref-type="bibr">59</xref>] was then used to calculate the electrostatic field at 295 K and a NaCl concentration of 150 mM to approximate conditions used during the experimental measurement of k<sub>on</sub> for SOD[<xref rid="pcbi.1004381.ref065" ref-type="bibr">65</xref>]. BrownDye was used to prepare and run 1×10<sup>6</sup> BD simulations at 295 K with the ligand starting from a b-surface at ~61 Å from the SOD center of mass. Based on experimentally determined diffusion coefficient[<xref rid="pcbi.1004381.ref066" ref-type="bibr">66</xref>] of 1.5×10<sup>−5</sup> cm<sup>2</sup>s<sup>−1</sup>, a hydrodynamic radius of 1.45 Å was used for O<sub>2</sub><sup>−</sup> in the simulations (See <xref rid="pcbi.1004381.s001" ref-type="supplementary-material">S1 Text</xref>). We used the Browndye default water viscosity of 1.00×10<sup>−3</sup> kg m<sup>−1</sup>s<sup>−1</sup> for all BD simulations of SOD. Reactions with both active sites, and also escape events were counted. 1000 configurations of ligand encounters with both active sites (12 Å from catalytic copper) were extracted to make two additional FHPD distributions. 1000 simulations were started from each configuration (2×10<sup>6</sup> total). These were allowed to react with a surface further down the site (11 Å from the catalytic copper) react with the surface around the other site (12 Å from the other catalytic copper) or escape to infinity. All reaction and escape events were counted to construct the statistics of the transition kernel <bold>K</bold> and incubation time vector 〈<italic>t</italic>〉.</p>
+</sec>
+<sec id="sec013">
+<title>BD for Troponin C</title>
+<p>A PQR file for TnC was prepared from the NMR structure 1SPY[<xref rid="pcbi.1004381.ref067" ref-type="bibr">67</xref>]. Partial charges were assigned according the AMBER forcefield[<xref rid="pcbi.1004381.ref061" ref-type="bibr">61</xref>] using LEaP [<xref rid="pcbi.1004381.ref063" ref-type="bibr">63</xref>]and DelEE[<xref rid="pcbi.1004381.ref062" ref-type="bibr">62</xref>] and PROPKA[<xref rid="pcbi.1004381.ref064" ref-type="bibr">64</xref>] assigned protonation states at a pH of 7.0. A PQR file for Ca<sup>2+</sup> was made by hand, given a charge of 2.0 e and an atomic radius of 1.14 Å. APBS[<xref rid="pcbi.1004381.ref059" ref-type="bibr">59</xref>] was then used to calculate the electrostatic field at 288 K and a KCl concentration of 100 mM to approximate conditions used during the experimental measurement of k<sub>on</sub> and k<sub>off</sub> for TnC[<xref rid="pcbi.1004381.ref068" ref-type="bibr">68</xref>]. A hydrodynamic radius of 3.0 Å was assigned based on an experimentally determined diffusion coefficient[<xref rid="pcbi.1004381.ref069" ref-type="bibr">69</xref>] of 6.73×10<sup>−6</sup> cm<sup>2</sup>s<sup>−1</sup> at 291 K (See SI <xref rid="pcbi.1004381.s001" ref-type="supplementary-material">S1 Text</xref>). BD simulations of TnC used an experimentally determined water viscosity of 1.138×10<sup>−3</sup> kg m<sup>−1</sup>s<sup>−1</sup> at 288 K[<xref rid="pcbi.1004381.ref070" ref-type="bibr">70</xref>]. BrownDye was used to prepare and run 1×10<sup>6</sup> BD simulations at 288K with the ligand starting from a b-surface at ~57 Å from the TnC center of mass. Diffusion to the active site surface, and escapes were counted. 1000 configurations of ligand encounters with the active site (10 Å from binding site center of mass of residues ASP 65, ASP 67, SER 69, THR 71, and GLU 76) were extracted to make a FHPD distribution. 1000 simulations were started from each configuration (1×10<sup>6</sup> total). These were allowed to react with a surface further down the site (7 Å from binding site center) or escape to an infinite distance. All reaction and escape events were counted to construct the milestoning model.</p>
+</sec>
+<sec id="sec014">
+<title>Theoretical calculations</title>
+<p>For our spherical receptor calculations, we used a dielectric of 92 to mimic the dielectric of TIP3P water[<xref rid="pcbi.1004381.ref071" ref-type="bibr">71</xref>], a permittivity of 8.854×10<sup>12</sup> C<sup>2</sup>N<sup>−1</sup>m<sup>−2</sup>, and a diffusion coefficient[<xref rid="pcbi.1004381.ref069" ref-type="bibr">69</xref>] of 1.33×10<sup>−5</sup> cm<sup>2</sup>s<sup>−1</sup> for Na<sup>+</sup>. Although the dielectric of 92 for water is obtained from MD and was not experimentally measured, the spherical receptors were intended more for demonstration purposes rather than physical realism, and a dielectric of 92 was chosen in an attempt to allow the values obtained using Smoluchowski theory to match what we observe in the brute-force and milestoning MD simulations.</p>
+<p>The rate constants <italic>k(a)</italic>, <italic>k(b)</italic>, and <italic>k(q)</italic> were calculated using <xref rid="pcbi.1004381.e010" ref-type="disp-formula">Eq 9</xref> for the uncharged spherical receptor and <xref rid="pcbi.1004381.e011" ref-type="disp-formula">Eq 10</xref> for the charged spherical receptor for the reaction surface, b-surface, and q-surface, respectively. The rate constant <italic>k(a)</italic> is the theoretical model of the spherical receptor association. For comparison, we deduced <italic>k(a)</italic> using only <italic>k(b)</italic>, and <italic>k(q)</italic> by using a transition matrix <bold>K</bold> obtained from monitoring transitions of the spherical receptor systems in a series of MD simulations. A binding probability <italic>β</italic> was calculated using <xref rid="pcbi.1004381.e009" ref-type="disp-formula">Eq 8</xref>. The k<sub>on</sub> for each spherical receptor system was calculated using <xref rid="pcbi.1004381.e013" ref-type="disp-formula">Eq 12</xref>.</p>
+<disp-formula id="pcbi.1004381.e013">
+<alternatives>
+<graphic id="pcbi.1004381.e013g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004381.e013" xlink:type="simple"/>
+<mml:math display="block" id="M13" overflow="scroll">
+<mml:mrow><mml:msub><mml:mi>k</mml:mi><mml:mrow><mml:mi>o</mml:mi><mml:mi>n</mml:mi></mml:mrow></mml:msub><mml:mo>=</mml:mo><mml:mi>k</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mi>b</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mfrac><mml:mi>β</mml:mi><mml:mrow><mml:mn>1</mml:mn><mml:mo>−</mml:mo><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mn>1</mml:mn><mml:mo>−</mml:mo><mml:mi>β</mml:mi></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mfrac><mml:mrow><mml:mi>k</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mi>b</mml:mi><mml:mo>)</mml:mo></mml:mrow></mml:mrow><mml:mrow><mml:mi>k</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mi>q</mml:mi><mml:mo>)</mml:mo></mml:mrow></mml:mrow></mml:mfrac></mml:mrow><mml:mo>)</mml:mo></mml:mrow></mml:mrow></mml:mfrac></mml:mrow><mml:mo>)</mml:mo></mml:mrow></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(12)</label>
+</disp-formula>
+<p>The MFPT represents the mean time taken by a particle started on the b-surface and allowed to diffuse before touching either the reaction surface or the q-surface. The MFPT was calculated using <xref rid="pcbi.1004381.e013" ref-type="disp-formula">Eq 12</xref>. The values <italic>k(b)</italic> and <italic>k(q)</italic> are obtained using <xref rid="pcbi.1004381.e010" ref-type="disp-formula">Eq 9</xref> or <xref rid="pcbi.1004381.e011" ref-type="disp-formula">Eq 10</xref>, depending respectively on the absence of presence of a receptor charge.</p>
+</sec>
+<sec id="sec015">
+<title>Milestoning calculations</title>
+<p>For each system, the milestoning calculations were performed using custom scripts that used Numpy 1.7, Scipy 0.9.0 and the GNU Parallel tool[<xref rid="pcbi.1004381.ref072" ref-type="bibr">72</xref>].</p>
+</sec>
+</sec>
+<sec id="sec016" sec-type="results">
+<title>Results</title>
+<p>Using Smoluchowski theory, milestoning, and brute force MD simulations, the probability <italic>β</italic> of each system starting on the b-surface and continuing on to touch the reaction surface is listed in <xref rid="pcbi.1004381.t001" ref-type="table">Table 1</xref> along with the resulting k<sub>on</sub>. The MFPT is also listed for the spherical receptor systems. It is important to note that Smoluchowski theory, as we implemented it, makes use of an idealized model of the system where waters are not modeled explicitly, and therefore the MD and milestoning implementations have different diffusion properties from the theoretical model.</p>
+<table-wrap id="pcbi.1004381.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004381.t001</object-id>
+<label>Table 1</label> <caption><title>Computationally and theoretically determined results for the charged and uncharged spherical receptor system.</title></caption>
+<alternatives>
+<graphic id="pcbi.1004381.t001g" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004381.t001" xlink:type="simple"/>
+<table>
+<colgroup span="1">
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+</colgroup>
+<thead>
+<tr>
+<th align="justify" rowspan="1" colspan="1">Spherical Receptor System</th>
+<th align="justify" rowspan="1" colspan="1">Method</th>
+<th align="justify" rowspan="1" colspan="1"><italic>β</italic></th>
+<th align="justify" rowspan="1" colspan="1">k<sub>on</sub> (M<sup>−1</sup>s<sup>−1</sup>)</th>
+<th align="justify" rowspan="1" colspan="1">MFPT (ps)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">Uncharged</td>
+<td align="left" rowspan="1" colspan="1">Milestoning MD</td>
+<td align="left" rowspan="1" colspan="1">0.113±0.012</td>
+<td align="left" rowspan="1" colspan="1">5.9±0.9×10<sup>9</sup></td>
+<td align="left" rowspan="1" colspan="1">7.4±0.5</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Theoretical model (using <xref rid="pcbi.1004381.e007" ref-type="disp-formula">Eq 7</xref>)</td>
+<td align="left" rowspan="1" colspan="1">0.12</td>
+<td align="left" rowspan="1" colspan="1">6.039×10<sup>9</sup></td>
+<td align="left" rowspan="1" colspan="1">13.5</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Brute-force MD</td>
+<td align="left" rowspan="1" colspan="1">0.114±0.013</td>
+<td align="left" rowspan="1" colspan="1">5.9±0.9×10<sup>9</sup></td>
+<td align="left" rowspan="1" colspan="1">7.2±0.3</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Charged</td>
+<td align="left" rowspan="1" colspan="1">Milestoning MD</td>
+<td align="left" rowspan="1" colspan="1">0.127±0.013</td>
+<td align="left" rowspan="1" colspan="1">9.1±1.3×10<sup>9</sup></td>
+<td align="left" rowspan="1" colspan="1">7.6±0.4</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Theoretical model (using <xref rid="pcbi.1004381.e010" ref-type="disp-formula">Eq 9</xref>)</td>
+<td align="left" rowspan="1" colspan="1">0.146</td>
+<td align="left" rowspan="1" colspan="1">9.589×10<sup>9</sup></td>
+<td align="left" rowspan="1" colspan="1">14.2</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Brute-force MD</td>
+<td align="left" rowspan="1" colspan="1">0.135±0.012</td>
+<td align="left" rowspan="1" colspan="1">9.3±1.2×10<sup>9</sup></td>
+<td align="left" rowspan="1" colspan="1">8.3±0.3</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t001fn001"><p>All simulations were carried out in a dilute aqueous environment. <italic>β</italic> is the probability of a particle starting on the b-surface to reach the bound state before touching the q-surface. MFPT refers to the mean first passage time of a particle started on the b-surface to reach either the reaction surface or the q-surface.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+<p>Using the stationary probabilities obtained with milestoning of SOD, <xref rid="pcbi.1004381.e005" ref-type="disp-formula">Eq 5</xref>, <xref rid="pcbi.1004381.e006" ref-type="disp-formula">Eq 6</xref> and <xref rid="pcbi.1004381.e014" ref-type="disp-formula">Eq 13</xref> below, we constructed a free energy profile for the approach of O<sub>2</sub><sup>−</sup> to the SOD binding site (<xref rid="pcbi.1004381.g005" ref-type="fig">Fig 5</xref>) setting the 10Å milestone to zero energy as a reference.
+<disp-formula id="pcbi.1004381.e014">
+<alternatives>
+<graphic id="pcbi.1004381.e014g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004381.e014" xlink:type="simple"/>
+<mml:math display="block" id="M14" overflow="scroll">
+<mml:mrow><mml:mi>Δ</mml:mi><mml:msub><mml:mi>G</mml:mi><mml:mi>i</mml:mi></mml:msub><mml:mo>=</mml:mo><mml:mo>−</mml:mo><mml:msub><mml:mi>k</mml:mi><mml:mi>b</mml:mi></mml:msub><mml:mi>T</mml:mi><mml:mi>l</mml:mi><mml:mi>n</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mfrac><mml:mrow><mml:msub><mml:mi>p</mml:mi><mml:mrow><mml:mi>i</mml:mi><mml:mo>,</mml:mo><mml:mi>s</mml:mi><mml:mi>t</mml:mi><mml:mi>a</mml:mi><mml:mi>t</mml:mi></mml:mrow></mml:msub></mml:mrow><mml:mrow><mml:msub><mml:mi>p</mml:mi><mml:mrow><mml:mi>r</mml:mi><mml:mi>e</mml:mi><mml:mi>f</mml:mi><mml:mo>,</mml:mo><mml:mo> </mml:mo><mml:mo> </mml:mo><mml:mi>s</mml:mi><mml:mi>t</mml:mi><mml:mi>a</mml:mi><mml:mi>t</mml:mi></mml:mrow></mml:msub></mml:mrow></mml:mfrac></mml:mrow><mml:mo>)</mml:mo></mml:mrow></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(13)</label>
+</disp-formula>
+Where <italic>ΔG</italic><sub><italic>i</italic></sub> is the estimated free energy of milestone <italic>i</italic>, <italic>k</italic><sub><italic>B</italic></sub> is Boltzmann’s constant, <italic>T</italic> is temperature, and <italic>p</italic><sub><italic>i</italic>,<italic>stat</italic></sub> and <italic>p</italic><sub><italic>ref</italic>,<italic>stat</italic></sub> are the stationary probabilities of milestone <italic>i</italic> and the reference milestone at 10Å, respectively, obtained using <xref rid="pcbi.1004381.e006" ref-type="disp-formula">Eq 6</xref>.</p>
+<fig id="pcbi.1004381.g005" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004381.g005</object-id>
+<label>Fig 5</label>
+<caption>
+<title>SOD system free energy profile.</title>
+<p>This plot depicts the free energy in kcal/mol at each milestone along the reaction coordinate in the SOD system relative to the 10Å milestone, the nearest to the bulk solution. These free energies were computed using milestoning theory according to <xref rid="pcbi.1004381.e013" ref-type="disp-formula">Eq 12</xref>. A slight local minimum occurs at 6Å and we assume this to be the bound state.</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004381.g005" position="float" xlink:type="simple"/>
+</fig>
+<p>Luty et. al. assumed that the bound state was a spherical surface of radius 6Å centered on the catalytic copper. This location does appear to have a shallow local minimum at 6Å in the free energy as depicted in <xref rid="pcbi.1004381.g005" ref-type="fig">Fig 5</xref>. Because Luty et. al. assumed that the 6Å sphere was the bound state, and because it is the location of a shallow local minimum in the free energy profile in <xref rid="pcbi.1004381.g005" ref-type="fig">Fig 5</xref>, we assume that the catalytic copper and O<sub>2</sub><sup>−</sup> are in a close enough proximity to one another at 6Å that the rapid and essentially irreversible dismutation reaction occurs. <xref rid="pcbi.1004381.t002" ref-type="table">Table 2</xref> lists the estimated k<sub>on</sub> rate constants obtained in this study for the SOD system.</p>
+<table-wrap id="pcbi.1004381.t002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004381.t002</object-id>
+<label>Table 2</label> <caption><title>Computationally and experimentally determined k<sub>on</sub>s for SOD by us and others.</title></caption>
+<alternatives>
+<graphic id="pcbi.1004381.t002g" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004381.t002" xlink:type="simple"/>
+<table>
+<colgroup span="1">
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+</colgroup>
+<thead>
+<tr>
+<th align="justify" rowspan="1" colspan="1">Researchers</th>
+<th align="justify" rowspan="1" colspan="1">k<sub>on</sub> (M<sup>−1</sup>s<sup>−1</sup>)</th>
+<th align="justify" rowspan="1" colspan="1">Temp. (K)</th>
+<th align="justify" rowspan="1" colspan="1">Ion Conc. (mM)</th>
+<th align="justify" rowspan="1" colspan="1">Method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">This study</td>
+<td align="left" rowspan="1" colspan="1">1.23±0.09×10<sup>9</sup></td>
+<td align="left" rowspan="1" colspan="1">295</td>
+<td align="left" rowspan="1" colspan="1">150 NaCl</td>
+<td align="left" rowspan="1" colspan="1">MD/BD/milestoning</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Cudd, et. al.</td>
+<td align="left" rowspan="1" colspan="1">8.5×10<sup>8</sup></td>
+<td align="left" rowspan="1" colspan="1">300</td>
+<td align="left" rowspan="1" colspan="1">140 NaCl</td>
+<td align="left" rowspan="1" colspan="1">Pulse-Radiolysis</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Argese, et. al.</td>
+<td align="left" rowspan="1" colspan="1">1.6×10<sup>9</sup></td>
+<td align="left" rowspan="1" colspan="1">295</td>
+<td align="left" rowspan="1" colspan="1">160 NaClO<sub>4</sub></td>
+<td align="left" rowspan="1" colspan="1">Polarographic method of catalytic currents &amp; NMR</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Luty, et. al.</td>
+<td align="left" rowspan="1" colspan="1">1.62±0.86×10<sup>9</sup></td>
+<td align="left" rowspan="1" colspan="1">300</td>
+<td align="left" rowspan="1" colspan="1">0</td>
+<td align="left" rowspan="1" colspan="1">MD/BD, 7-state MSM</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t002fn001"><p>The experimental value that this study attempted to emulate[<xref rid="pcbi.1004381.ref065" ref-type="bibr">65</xref>] measured a k<sub>on</sub> is listed along with an additional experiment[<xref rid="pcbi.1004381.ref073" ref-type="bibr">73</xref>] and the k<sub>on</sub> that Luty et. al. [<xref rid="pcbi.1004381.ref030" ref-type="bibr">30</xref>] determined for SOD using different simulation conditions and model setup.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+<p>As with the SOD system, we used the stationary probabilities obtained with milestoning of TnC, <xref rid="pcbi.1004381.e005" ref-type="disp-formula">Eq 5</xref>, <xref rid="pcbi.1004381.e006" ref-type="disp-formula">Eq 6</xref> and <xref rid="pcbi.1004381.e013" ref-type="disp-formula">Eq 12</xref> to construct a free energy profile for Ca<sup>2+</sup> in its approach to the TnC binding site (<xref rid="pcbi.1004381.g006" ref-type="fig">Fig 6</xref>) with the 10Å milestone free energy as the reference. According to this profile, the lowest energy state is located at 3Å from the binding site center. We assume that when the Ca<sup>2+</sup> has reached this distance, it is in the bound state. We use a 3Å binding surface for all subsequence milestoning calculations on TnC. The estimated k<sub>on</sub> rate constants for the TnC system are listed in <xref rid="pcbi.1004381.t003" ref-type="table">Table 3</xref>.</p>
+<fig id="pcbi.1004381.g006" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004381.g006</object-id>
+<label>Fig 6</label>
+<caption>
+<title>TnC system free energy profile.</title>
+<p>This plot depicts the free energy profile of TnC binding (in kcal/mol) relative to the 10Å milestone at each milestone along the reaction coordinate of the TnC system. These free energies were computed using milestoning theory according to <xref rid="pcbi.1004381.e013" ref-type="disp-formula">Eq 12</xref>. The lowest relative free energy is at the 3Å milestone, the location we assume to be the bound state of the TnC system.</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004381.g006" position="float" xlink:type="simple"/>
+</fig>
+<table-wrap id="pcbi.1004381.t003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004381.t003</object-id>
+<label>Table 3</label> <caption><title>Computationally and experimentally determined k<sub>on</sub>s for TnC by us and others.</title></caption>
+<alternatives>
+<graphic id="pcbi.1004381.t003g" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004381.t003" xlink:type="simple"/>
+<table>
+<colgroup span="1">
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+</colgroup>
+<thead>
+<tr>
+<th align="justify" rowspan="1" colspan="1">Researchers</th>
+<th align="justify" rowspan="1" colspan="1">K<sub>on</sub> (M<sup>−1</sup>s<sup>−1</sup>)</th>
+<th align="justify" rowspan="1" colspan="1">Temp. (K)</th>
+<th align="justify" rowspan="1" colspan="1">Ion Conc. (mM)</th>
+<th align="justify" rowspan="1" colspan="1">Method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">This study</td>
+<td align="left" rowspan="1" colspan="1">9.0±2.0×10<sup>8</sup></td>
+<td align="left" rowspan="1" colspan="1">288</td>
+<td align="left" rowspan="1" colspan="1">100 KCl</td>
+<td align="left" rowspan="1" colspan="1">MD/BD/milestoning</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Tikunova, et. al.</td>
+<td align="left" rowspan="1" colspan="1">1.7±0.3×10<sup>8</sup></td>
+<td align="left" rowspan="1" colspan="1">288</td>
+<td align="left" rowspan="1" colspan="1">90 KCl</td>
+<td align="left" rowspan="1" colspan="1">Stopped-flow</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Hazard, et. al.</td>
+<td align="left" rowspan="1" colspan="1">2–4×10<sup>8</sup></td>
+<td align="left" rowspan="1" colspan="1">277</td>
+<td align="left" rowspan="1" colspan="1">90 KCl</td>
+<td align="left" rowspan="1" colspan="1">Stopped-flow</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Ogawa, et. al.</td>
+<td align="left" rowspan="1" colspan="1">&gt;4.0×10<sup>7</sup></td>
+<td align="left" rowspan="1" colspan="1">293</td>
+<td align="left" rowspan="1" colspan="1">100 KCl</td>
+<td align="left" rowspan="1" colspan="1">Stopped-flow</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t003fn001"><p>The k<sub>on</sub> we predicted is listed along with that of the experimental value that this study attempted to emulate[<xref rid="pcbi.1004381.ref068" ref-type="bibr">68</xref>], along with additional experimental k<sub>on</sub>s[<xref rid="pcbi.1004381.ref074" ref-type="bibr">74</xref>,<xref rid="pcbi.1004381.ref075" ref-type="bibr">75</xref>].</p></fn>
+</table-wrap-foot>
+</table-wrap>
+<p>In addition to the calculation of k<sub>on</sub> rate constants, the milestoning models and distributions across the states can be used to visualize the path of the ligand in its approach to association within the binding site. The FHPD for SOD at 12 Å is displayed in <xref rid="pcbi.1004381.g007" ref-type="fig">Fig 7</xref> and the FHPD for TnC at 10 Å is displayed in <xref rid="pcbi.1004381.g008" ref-type="fig">Fig 8</xref>.</p>
+<fig id="pcbi.1004381.g007" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004381.g007</object-id>
+<label>Fig 7</label>
+<caption>
+<title>The FHPD for O<sub>2</sub><sup>−</sup> encounter on the 12Å around the active site of SOD.</title>
+<p>Blue indicates zero crossing events per square Å, and the color scale increases to red, indicating up to 1.2×10<sup>5</sup> crossing events among all 1×10<sup>6</sup> simulations. The distribution suggests that O<sub>2</sub><sup>−</sup> approaches directly from the solvent instead of approaching laterally from another portion of the protein surface. The image was generated using VMD[<xref rid="pcbi.1004381.ref076" ref-type="bibr">76</xref>] with an MSMS surface[<xref rid="pcbi.1004381.ref077" ref-type="bibr">77</xref>].</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004381.g007" position="float" xlink:type="simple"/>
+</fig>
+<fig id="pcbi.1004381.g008" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004381.g008</object-id>
+<label>Fig 8</label>
+<caption>
+<title>The FHPD for Ca<sup>2+</sup> encounter on the 10Å around the binding site of TnC.</title>
+<p>Blue indicates zero crossing events per square Å, and the color scale increases to red, indicating up to 8.8×10<sup>4</sup> crossing events among all 1×10<sup>6</sup> simulations. The distribution suggests that Ca<sup>2+</sup> approaches the site directly from the solvent instead of approaching laterally from another portion of the protein surface. The region of the sphere where no ligands crossed was removed to reveal the site II loop over the binding site, though the binding site itself is concealed by the FHPD. The image was generated using VMD[<xref rid="pcbi.1004381.ref076" ref-type="bibr">76</xref>] with an MSMS surface[<xref rid="pcbi.1004381.ref077" ref-type="bibr">77</xref>].</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004381.g008" position="float" xlink:type="simple"/>
+</fig>
+<sec id="sec017">
+<title>Computational performance</title>
+<p>The total computational cost of all systems simulated in this study for both MD and BD was approximately 65,000 CPU hours. Computational costs of each simulated system and simulation regime are listed in <xref rid="pcbi.1004381.t004" ref-type="table">Table 4</xref>. The cost of performing all non-simulation calculations was negligible. <xref rid="pcbi.1004381.t004" ref-type="table">Table 4</xref> includes all computer time spent on the supercomputer as well as on local machines. The <italic>β</italic>, k<sub>on</sub>s and error estimates for all systems were well converged and are reported in the SI (<xref rid="pcbi.1004381.s003" ref-type="supplementary-material">S2</xref>–<xref rid="pcbi.1004381.s010" ref-type="supplementary-material">S9</xref> Figs).</p>
+<table-wrap id="pcbi.1004381.t004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004381.t004</object-id>
+<label>Table 4</label> <caption><title>The computational cost of calculating kinetics for each system using milestoning.</title></caption>
+<alternatives>
+<graphic id="pcbi.1004381.t004g" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004381.t004" xlink:type="simple"/>
+<table>
+<colgroup span="1">
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+</colgroup>
+<thead>
+<tr>
+<th align="justify" rowspan="1" colspan="1">System</th>
+<th align="justify" rowspan="1" colspan="1">Cost of MD (CPU- hours)</th>
+<th align="justify" rowspan="1" colspan="1">Length of MD (ns)</th>
+<th align="justify" rowspan="1" colspan="1">Cost of BD (CPU- hours)</th>
+<th align="justify" rowspan="1" colspan="1">Computer used for MD</th>
+<th align="justify" rowspan="1" colspan="1">Computer used for BD</th>
+<th align="justify" rowspan="1" colspan="1">Cost of Brute-force MD (CPU- hours)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">Uncharged spherical receptor system</td>
+<td align="left" rowspan="1" colspan="1">~600</td>
+<td align="left" rowspan="1" colspan="1">~100</td>
+<td align="left" rowspan="1" colspan="1">-</td>
+<td align="left" rowspan="1" colspan="1">Linux desktop</td>
+<td align="left" rowspan="1" colspan="1">-</td>
+<td align="left" rowspan="1" colspan="1">~1350</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Charged spherical receptor system</td>
+<td align="left" rowspan="1" colspan="1">~600</td>
+<td align="left" rowspan="1" colspan="1">~100</td>
+<td align="left" rowspan="1" colspan="1">-</td>
+<td align="left" rowspan="1" colspan="1">Linux desktop</td>
+<td align="left" rowspan="1" colspan="1">-</td>
+<td align="left" rowspan="1" colspan="1">~1450</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">SOD</td>
+<td align="left" rowspan="1" colspan="1">~53,000</td>
+<td align="left" rowspan="1" colspan="1">~1630</td>
+<td align="left" rowspan="1" colspan="1">~100</td>
+<td align="left" rowspan="1" colspan="1">Stampede Supercomputer</td>
+<td align="left" rowspan="1" colspan="1">Linux desktop</td>
+<td align="left" rowspan="1" colspan="1">-</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">TnC</td>
+<td align="left" rowspan="1" colspan="1">~5100</td>
+<td align="left" rowspan="1" colspan="1">~900</td>
+<td align="left" rowspan="1" colspan="1">~100</td>
+<td align="left" rowspan="1" colspan="1">Gordon Supercomputer</td>
+<td align="left" rowspan="1" colspan="1">Linux desktop</td>
+<td align="left" rowspan="1" colspan="1">-</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t004fn001"><p>BD simulations were not run for the spherical receptor systems, so no costs are listed. Also, brute force MD simulations were not run for SOD and TnC.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+</sec>
+</sec>
+<sec id="sec018" sec-type="conclusions">
+<title>Discussion</title>
+<sec id="sec019">
+<title>Idealized systems</title>
+<p>The k<sub>on</sub> calculated using milestoning for the uncharged spherical receptor system matches within 3% to the theoretically determined value and 0.3% to the brute-force MD value. These estimates are well within the bounds of uncertainty introduced by the milestoning model. As a system that can diffuse freely without forces or solvation shells, it is expected that Smoluchowski theory would yield such a close result to simulation. This similarity to a value obtained using well-established theory is a good validation of our basic methodology. The large difference between the MFPT predicted by theory and the MFPTs predicted by milestoning and brute force MD could be due to a difference between the experimentally measured diffusion coefficient of Na<sup>+</sup>, and the diffusion coefficient that is observed in an MD simulation using the AMBER forcefield.</p>
+<p>The k<sub>on</sub> calculated using milestoning for the charged spherical receptor system differs by 13% from the k<sub>on</sub> predicted by Smoluchowski theory and by only 6% from the k<sub>on</sub> obtained by brute force MD simulation. This difference between the simulation-obtained values and the value obtained by theory is likely due to effects caused by the explicit solvent in our simulations, for which this simple implementation of Smoluchowski theory does not account. Very likely, solvation shells have formed around the Cl<sup>-</sup> placed in the center of the system, as well as the diffusing Na<sup>+</sup>. Solvation shells create unevenness in the potential of mean force and the position-dependent diffusion coefficient of <xref rid="pcbi.1004381.e004" ref-type="disp-formula">Eq 4</xref>. As such, using Coulomb’s law for the electrostatic potential and a constant diffusion coefficient may not be sufficiently valid assumptions for ions in solution at such close proximity. Previous studies on close NaCl ion pair interactions in dilute solvent show oscillations in the mean force potential of the interionic distance that extend several molecular layers into the solvent[<xref rid="pcbi.1004381.ref078" ref-type="bibr">78</xref>–<xref rid="pcbi.1004381.ref080" ref-type="bibr">80</xref>]. Accounting for these factors and using an alternative solution to <xref rid="pcbi.1004381.e004" ref-type="disp-formula">Eq 4</xref> would likely result in a calculated value much closer to what we obtained using milestoning and the brute force MD. The fact that the milestoning results and the brute-force MD results are so similar supports the validity of the milestoning methodology. Similarly, with the charged receptor, the large difference in the MFPT predicted by theory and the MFPTs predicted by milestoning and brute force MD could be due to a difference between the experimentally measured diffusion coefficient of Na<sup>+</sup>, and the diffusion coefficient that would be observed in an MD simulation using the AMBER forcefield. It could also be due to the same effects observed on <italic>β</italic> caused by the aforementioned solvation shells.</p>
+</sec>
+<sec id="sec020">
+<title>Superoxide Dismutase (SOD)</title>
+<p>SOD is an enzyme found in a wide variety of organisms[<xref rid="pcbi.1004381.ref073" ref-type="bibr">73</xref>]. It is a homodimer that makes use of a catalytic copper bound in its active site to catalyze the dismutation of the superoxide ion O<sub>2</sub><sup>−</sup> into O<sub>2</sub> and H<sub>2</sub>O<sub>2</sub> [<xref rid="pcbi.1004381.ref065" ref-type="bibr">65</xref>,<xref rid="pcbi.1004381.ref073" ref-type="bibr">73</xref>]. SOD was the subject of many early enzymology experiments[<xref rid="pcbi.1004381.ref081" ref-type="bibr">81</xref>] and ligand-receptor binding simulations[<xref rid="pcbi.1004381.ref038" ref-type="bibr">38</xref>,<xref rid="pcbi.1004381.ref082" ref-type="bibr">82</xref>].</p>
+<p>The SOD k<sub>on</sub> estimated using milestoning is within a factor of ~1.5 of the experimentally measured k<sub>on</sub> that this study attempted to emulate. Although this value falls outside the uncertainty bracket calculated for the milestoning model, it is still within the range of k<sub>on</sub>s measured in other studies[<xref rid="pcbi.1004381.ref073" ref-type="bibr">73</xref>]. The k<sub>on</sub> we calculated is also close to the value obtained by Luty, et. al. in their seminal study of SOD kinetics[<xref rid="pcbi.1004381.ref030" ref-type="bibr">30</xref>]. It is well understood that a higher salt concentration slows the rate of O<sub>2</sub><sup>−</sup> binding to SOD[<xref rid="pcbi.1004381.ref073" ref-type="bibr">73</xref>]. Therefore, the k<sub>on</sub> measured in this study is likely smaller than the value measured by Luty, et. al. because they simulated MD and BD with a solvent salt concentration of zero. The discrepancy could also be due to differences used by Luty et. al. in their implementations of atomic constraints on the protein, different boundary conditions in the MD phase, and the lack of desolvation forces in the BD phase.</p>
+<p>While it is not clear how much error is introduced by using an equilibrium distribution across the milestones, our use of a FHPD should, theoretically, provide a more accurate treatment due to its consistency with formal milestoning theory[<xref rid="pcbi.1004381.ref018" ref-type="bibr">18</xref>,<xref rid="pcbi.1004381.ref019" ref-type="bibr">19</xref>]. The insertion of additional states in the MD region also allowed us to obtain much better sampling of transition events than would be available for a comparable computation time if the MD region had been composed of only a single milestone. The FHPD of SOD at 12Å (<xref rid="pcbi.1004381.g007" ref-type="fig">Fig 7</xref>) indicates that O<sub>2</sub><sup>−</sup> approaches directly from the solvent and does not seem to sample much of the protein surface before entering the active site. Although a k<sub>on</sub> has already been obtained for this system by Luty et. al. using similar methods, our approach offers a number of key improvements and more closely resembles the experimentally obtained rate constant; both insofar as the conditions that the system was exposed to, as well as the final result.</p>
+</sec>
+<sec id="sec021">
+<title>Troponin C (TnC)</title>
+<p>In order to try this milestoning method on a new system, we also calculated the k<sub>on</sub> of TnC. The troponin complex is a set of proteins that regulates muscle contraction in skeletal and cardiac muscles[<xref rid="pcbi.1004381.ref067" ref-type="bibr">67</xref>,<xref rid="pcbi.1004381.ref068" ref-type="bibr">68</xref>,<xref rid="pcbi.1004381.ref075" ref-type="bibr">75</xref>]. One of the subunits, TnC is attached to the thin filaments of a muscle fiber, and regulates the binding of Ca<sup>2+</sup> to the N-terminal domain of TnC[<xref rid="pcbi.1004381.ref083" ref-type="bibr">83</xref>]. Ca<sup>2+</sup> binding triggers changes within the complex, allowing myosin to latch onto the thin filaments and induce muscle contraction. TnC has been extensively studied due to its critical involvement with heart function and failure, and has been marked as a therapeutic target in heart disease and other disorders[<xref rid="pcbi.1004381.ref068" ref-type="bibr">68</xref>].</p>
+<p>Our method is able to determine the k<sub>on</sub> to a value that is within a factor of ~5 of the experimentally measured k<sub>on</sub> that our study attempted to emulate. Although this discrepancy falls outside of both the experimental uncertainty as well as the uncertainty of the milestoning calculation, the value is not unreasonable when compared to k<sub>on</sub> values measured in other studies[<xref rid="pcbi.1004381.ref074" ref-type="bibr">74</xref>,<xref rid="pcbi.1004381.ref075" ref-type="bibr">75</xref>]. The FHPD of TnC at 10 Å (<xref rid="pcbi.1004381.g008" ref-type="fig">Fig 8</xref>) indicates that Ca<sup>2+</sup> approaches directly from the solvent, probably due to the high desolvation penalty incurred when the highly charged Ca<sup>2+</sup> is removed from its aqueous environment. The surface map seems to indicate two close but distinct minima on the FHPD, suggesting that Ca<sup>2+</sup> may have two possible routes to binding (<xref rid="pcbi.1004381.g008" ref-type="fig">Fig 8</xref>).</p>
+<p>In total, the entire project, including all simulations of all systems analyzed in this study, cost approximately 65,000 hours of CPU usage. The vast majority of this computation was spread across hundreds or thousands of cores at any one time due to the highly parallel nature of milestoning. The total length of MD simulation for our systems required anywhere between 100 and 1600 ns of total MD time each with relatively low uncertainty due to the high rate of sampling along the milestones leading to binding. The cost is significantly less per target than brute force MD simulations run in past studies to observe kinetic events while yielding similar or superior resemblance to experiment[<xref rid="pcbi.1004381.ref004" ref-type="bibr">4</xref>,<xref rid="pcbi.1004381.ref005" ref-type="bibr">5</xref>], which were indicated to require between 600 and 15000 ns of MD simulation to achieve even just a single binding event, with some simulations never even yielding a binding event.</p>
+<p>Our multiscale MD-BD-milestoning method offers many advantages; yielding predictive k<sub>on</sub> estimates for biologically relevant molecular systems within a range of experimental measurements at a cost much less than brute-force MD alone and at accuracy much greater than could be obtained using BD alone. This method also benefits from high parallelism due to the spread of MD computation across multiple states. Given a large number of cores and sufficient CPU hours, the MD portion of the calculation can be completed rapidly. Another advantage of this method is its flexibility, giving the user the ability to adjust the cost-to-accuracy balance by performing additional simulation and adding trajectory samples to increase result convergence. Theoretically, this milestoning framework could be used to investigate any biomolecular association where MD and BD simulation methods can adequately model the process. Estimating the binding kinetics between proteins, DNA, small molecules, or any combination thereof ought to be possible, assuming that sufficient sampling effectively constructs the proper FHPD.</p>
+<p>The main disadvantage of this method lies in its complexity of concept and implementation (<xref rid="pcbi.1004381.g009" ref-type="fig">Fig 9</xref>), particularly in the maintenance of large numbers of simultaneous simulations. However, with sufficiently robust software-based automation, the burden of maintaining many parallel instances of simulation, as well as simulation preparation and analysis, can be greatly reduced. Another disadvantage of the milestoning framework is that the simulations are still relatively expensive at this time; requiring a supercomputer or cluster to obtain sufficient sampling within a reasonable time frame, although GPU-based MD could potentially alleviate this burden.</p>
+<fig id="pcbi.1004381.g009" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004381.g009</object-id>
+<label>Fig 9</label>
+<caption>
+<title>A schematic of the MD/BD/milestoning workflow.</title>
+<p>This workflow illustrates how MD and BD simulations are prepared, run, and unified using milestoning. The number of arrows in this workflow are intended to be metaphorical, and do not correspond to actual numbers of simulation instances. Splits into multiple arrows indicate that a large number of simulations are commenced from a distribution generated at the previous step.</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004381.g009" position="float" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec022">
+<title>Conclusions</title>
+<p>We present a new method to estimate kinetic rates. This method uses milestoning to leverage the strengths and minimize the weaknesses of MD and BD, thereby offering an efficient, high-accuracy estimation of k<sub>on</sub> rate constants. This multiscale method has been successfully used to estimate the k<sub>on</sub> rate constant for both idealized and realistically sized, biologically relevant systems. Our work demonstrates that milestoning can be used to obtain kinetic quantities of interest with a high resemblance to experiment. We anticipate that this multiscale approach can be used to determine rate constants of interest as well as system-specific binding details that are applicable to drug discovery, biomolecular modeling, and protein-ligand interactions.</p>
+</sec>
+</sec>
+<sec id="sec023">
+<title>Supporting Information</title>
+<supplementary-material id="pcbi.1004381.s001" xlink:href="info:doi/10.1371/journal.pcbi.1004381.s001" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:type="simple">
+<label>S1 Text</label>
+<caption>
+<title>Supporting Information.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004381.s002" xlink:href="info:doi/10.1371/journal.pcbi.1004381.s002" mimetype="image/tiff" position="float" xlink:type="simple">
+<label>S1 Fig</label>
+<caption>
+<title>Plot illustrating the sampling of rate matrix.</title>
+<p>(TIF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004381.s003" xlink:href="info:doi/10.1371/journal.pcbi.1004381.s003" mimetype="application/eps" position="float" xlink:type="simple">
+<label>S2 Fig</label>
+<caption>
+<title>Convergence of error estimate for the β of the uncharged spherical receptor.</title>
+<p>(EPS)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004381.s004" xlink:href="info:doi/10.1371/journal.pcbi.1004381.s004" mimetype="application/eps" position="float" xlink:type="simple">
+<label>S3 Fig</label>
+<caption>
+<title>Convergence of error estimate for the β of the charged spherical receptor.</title>
+<p>(EPS)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004381.s005" xlink:href="info:doi/10.1371/journal.pcbi.1004381.s005" mimetype="application/eps" position="float" xlink:type="simple">
+<label>S4 Fig</label>
+<caption>
+<title>Convergence of error estimate for the β of SOD.</title>
+<p>(EPS)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004381.s006" xlink:href="info:doi/10.1371/journal.pcbi.1004381.s006" mimetype="application/eps" position="float" xlink:type="simple">
+<label>S5 Fig</label>
+<caption>
+<title>Convergence of error estimate for the β of TnC.</title>
+<p>(EPS)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004381.s007" xlink:href="info:doi/10.1371/journal.pcbi.1004381.s007" mimetype="application/eps" position="float" xlink:type="simple">
+<label>S6 Fig</label>
+<caption>
+<title>Convergence of the results of the uncharged spherical receptor system.</title>
+<p>(EPS)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004381.s008" xlink:href="info:doi/10.1371/journal.pcbi.1004381.s008" mimetype="application/eps" position="float" xlink:type="simple">
+<label>S7 Fig</label>
+<caption>
+<title>Convergence of the results of the charged spherical receptor system.</title>
+<p>(EPS)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004381.s009" xlink:href="info:doi/10.1371/journal.pcbi.1004381.s009" mimetype="application/eps" position="float" xlink:type="simple">
+<label>S8 Fig</label>
+<caption>
+<title>Convergence of the results of SOD system.</title>
+<p>(EPS)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004381.s010" xlink:href="info:doi/10.1371/journal.pcbi.1004381.s010" mimetype="application/eps" position="float" xlink:type="simple">
+<label>S9 Fig</label>
+<caption>
+<title>Convergence of the results of TnC system.</title>
+<p>(EPS)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ack>
+<p>The authors thank Drs. Adam Van Wynhsberghe, Cameron Abrams, J. Andrew McCammon, Gary Huber, Ron Elber, Rob Swift, Pete Kekenes-Huskey, Steffen Lindert, Robert Malmstrom, Victoria Feher, Adam VanWart, Katherine Votapka, and Frank Noe for helpful contributions and/or discussion relating to this work.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1004381.ref001"><label>1</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bar-Even</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Noor</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Savir</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Liebermeister</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Davidi</surname> <given-names>D</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>The Moderately Efficient Enzyme: Evolutionary and Physicochemical Trends Shaping Enzyme Parameters</article-title>. <source>Biochemistry</source> <volume>50</volume>: <fpage>4402</fpage>–<lpage>4410</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1021/bi2002289" xlink:type="simple">10.1021/bi2002289</ext-link></comment> <object-id pub-id-type="pmid">21506553</object-id></mixed-citation></ref>
+<ref id="pcbi.1004381.ref002"><label>2</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Copeland</surname> <given-names>RA</given-names></name>, <name name-style="western"><surname>Pompliano</surname> <given-names>DL</given-names></name>, <name name-style="western"><surname>Meek</surname> <given-names>TD</given-names></name> (<year>2007</year>) <article-title>Drug-target residence time and its implications for lead optimization (vol 5, pg 730, 2006)</article-title>. <source>Nature Reviews Drug Discovery</source> <volume>6</volume>: <fpage>249</fpage>–<lpage>249</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref003"><label>3</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jorgensen</surname> <given-names>WL</given-names></name> (<year>2013</year>) <article-title>Foundations of Biomolecular Modeling</article-title>. <source>Cell</source> <volume>155</volume>: <fpage>1199</fpage>–<lpage>1202</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.cell.2013.11.023" xlink:type="simple">10.1016/j.cell.2013.11.023</ext-link></comment> <object-id pub-id-type="pmid">24315087</object-id></mixed-citation></ref>
+<ref id="pcbi.1004381.ref004"><label>4</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Shan</surname> <given-names>YB</given-names></name>, <name name-style="western"><surname>Kim</surname> <given-names>ET</given-names></name>, <name name-style="western"><surname>Eastwood</surname> <given-names>MP</given-names></name>, <name name-style="western"><surname>Dror</surname> <given-names>RO</given-names></name>, <name name-style="western"><surname>Seeliger</surname> <given-names>MA</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>How Does a Drug Molecule Find Its Target Binding Site?</article-title> <source>Journal of the American Chemical Society</source> <volume>133</volume>: <fpage>9181</fpage>–<lpage>9183</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1021/ja202726y" xlink:type="simple">10.1021/ja202726y</ext-link></comment> <object-id pub-id-type="pmid">21545110</object-id></mixed-citation></ref>
+<ref id="pcbi.1004381.ref005"><label>5</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Shan</surname> <given-names>YB</given-names></name>, <name name-style="western"><surname>Eastwood</surname> <given-names>MP</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>XW</given-names></name>, <name name-style="western"><surname>Kim</surname> <given-names>ET</given-names></name>, <name name-style="western"><surname>Arkhipov</surname> <given-names>A</given-names></name>, <etal>et al</etal>. (<year>2012</year>) <article-title>Oncogenic Mutations Counteract Intrinsic Disorder in the EGFR Kinase and Promote Receptor Dimerization</article-title>. <source>Cell</source> <volume>149</volume>: <fpage>860</fpage>–<lpage>870</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.cell.2012.02.063" xlink:type="simple">10.1016/j.cell.2012.02.063</ext-link></comment> <object-id pub-id-type="pmid">22579287</object-id></mixed-citation></ref>
+<ref id="pcbi.1004381.ref006"><label>6</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Dror</surname> <given-names>RO</given-names></name>, <name name-style="western"><surname>Pan</surname> <given-names>AC</given-names></name>, <name name-style="western"><surname>Arlow</surname> <given-names>DH</given-names></name>, <name name-style="western"><surname>Borhani</surname> <given-names>DW</given-names></name>, <name name-style="western"><surname>Maragakis</surname> <given-names>P</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>Pathway and mechanism of drug binding to G-protein-coupled receptors</article-title>. <source>Proceedings of the National Academy of Sciences of the United States of America</source> <volume>108</volume>: <fpage>13118</fpage>–<lpage>13123</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.1104614108" xlink:type="simple">10.1073/pnas.1104614108</ext-link></comment> <object-id pub-id-type="pmid">21778406</object-id></mixed-citation></ref>
+<ref id="pcbi.1004381.ref007"><label>7</label><mixed-citation publication-type="other" xlink:type="simple">Shaw DE, Deneroff MM, Dror RO, Kuskin JS, Larson RH, et al. (2007) Anton, a Special-Purpose Machine for Molecular Dynamics Simulation. Isca'07: 34th Annual International Symposium on Computer Architecture, Conference Proceedings: 1–12.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref008"><label>8</label><mixed-citation publication-type="other" xlink:type="simple">Shaw DE, Dror RO, Salmon JK, Grossman JP, Mackenzie KM, et al. (2009) Millisecond-Scale Molecular Dynamics Simulations on Anton. Proceedings of the Conference on High Performance Computing Networking, Storage and Analysis.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref009"><label>9</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pande</surname> <given-names>VS</given-names></name>, <name name-style="western"><surname>Beauchamp</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Bowman</surname> <given-names>GR</given-names></name> (<year>2010</year>) <article-title>Everything you wanted to know about Markov State Models but were afraid to ask</article-title>. <source>Methods</source> <volume>52</volume>: <fpage>99</fpage>–<lpage>105</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.ymeth.2010.06.002" xlink:type="simple">10.1016/j.ymeth.2010.06.002</ext-link></comment> <object-id pub-id-type="pmid">20570730</object-id></mixed-citation></ref>
+<ref id="pcbi.1004381.ref010"><label>10</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Buchete</surname> <given-names>NV</given-names></name>, <name name-style="western"><surname>Hummer</surname> <given-names>G</given-names></name> (<year>2008</year>) <article-title>Coarse master equations for peptide folding dynamics</article-title>. <source>Journal of Physical Chemistry B</source> <volume>112</volume>: <fpage>6057</fpage>–<lpage>6069</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref011"><label>11</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Held</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Noe</surname> <given-names>F</given-names></name> (<year>2012</year>) <article-title>Calculating kinetics and pathways of protein-ligand association</article-title>. <source>European Journal of Cell Biology</source> <volume>91</volume>: <fpage>357</fpage>–<lpage>364</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.ejcb.2011.08.004" xlink:type="simple">10.1016/j.ejcb.2011.08.004</ext-link></comment> <object-id pub-id-type="pmid">22018914</object-id></mixed-citation></ref>
+<ref id="pcbi.1004381.ref012"><label>12</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Prinz</surname> <given-names>JH</given-names></name>, <name name-style="western"><surname>Wu</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Sarich</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Keller</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Senne</surname> <given-names>M</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>Markov models of molecular kinetics: generation and validation</article-title>. <source>J Chem Phys</source> <volume>134</volume>: <fpage>174105</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1063/1.3565032" xlink:type="simple">10.1063/1.3565032</ext-link></comment> <object-id pub-id-type="pmid">21548671</object-id></mixed-citation></ref>
+<ref id="pcbi.1004381.ref013"><label>13</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Swope</surname> <given-names>WC</given-names></name>, <name name-style="western"><surname>Pitera</surname> <given-names>JW</given-names></name>, <name name-style="western"><surname>Suits</surname> <given-names>F</given-names></name> (<year>2004</year>) <article-title>Describing protein folding kinetics by molecular dynamics simulations. 1. Theory</article-title>. <source>Journal of Physical Chemistry B</source> <volume>108</volume>: <fpage>6571</fpage>–<lpage>6581</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref014"><label>14</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Sarich</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Prinz</surname> <given-names>JH</given-names></name>, <name name-style="western"><surname>Schutte</surname> <given-names>C</given-names></name> (<year>2014</year>) <article-title>Markov model theory</article-title>. <source>Adv Exp Med Biol</source> <volume>797</volume>: <fpage>23</fpage>–<lpage>44</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1007/978-94-007-7606-7_3" xlink:type="simple">10.1007/978-94-007-7606-7_3</ext-link></comment> <object-id pub-id-type="pmid">24297273</object-id></mixed-citation></ref>
+<ref id="pcbi.1004381.ref015"><label>15</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schutte</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Fischer</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Huisinga</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Deuflhard</surname> <given-names>P</given-names></name> (<year>1999</year>) <article-title>A direct approach to conformational dynamics based on hybrid Monte Carlo</article-title>. <source>Journal of Computational Physics</source> <volume>151</volume>: <fpage>146</fpage>–<lpage>168</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref016"><label>16</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Noe</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Horenko</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Schutte</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Smith</surname> <given-names>JC</given-names></name> (<year>2007</year>) <article-title>Hierarchical analysis of conformational dynamics in biomolecules: Transition networks of metastable states</article-title>. <source>Journal of Chemical Physics</source> <volume>126</volume>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref017"><label>17</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chodera</surname> <given-names>JD</given-names></name>, <name name-style="western"><surname>Singhal</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Pande</surname> <given-names>VS</given-names></name>, <name name-style="western"><surname>Dill</surname> <given-names>KA</given-names></name>, <name name-style="western"><surname>Swope</surname> <given-names>WC</given-names></name> (<year>2007</year>) <article-title>Automatic discovery of metastable states for the construction of Markov models of macromolecular conformational dynamics</article-title>. <source>Journal of Chemical Physics</source> <volume>126</volume>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref018"><label>18</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Faradjian</surname> <given-names>AK</given-names></name>, <name name-style="western"><surname>Elber</surname> <given-names>R</given-names></name> (<year>2004</year>) <article-title>Computing time scales from reaction coordinates by milestoning</article-title>. <source>The Journal of chemical physics</source> <volume>120</volume>: <fpage>10880</fpage>–<lpage>10889</lpage>. <object-id pub-id-type="pmid">15268118</object-id></mixed-citation></ref>
+<ref id="pcbi.1004381.ref019"><label>19</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Vanden-Eijnden</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Venturoli</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Ciccotti</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Elber</surname> <given-names>R</given-names></name> (<year>2008</year>) <article-title>On the assumptions underlying milestoning</article-title>. <source>Journal of Chemical Physics</source> <volume>129</volume>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref020"><label>20</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kirmizialtin</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Elber</surname> <given-names>R</given-names></name> (<year>2011</year>) <article-title>Revisiting and computing reaction coordinates with Directional Milestoning</article-title>. <source>The journal of physical chemistry A</source> <volume>115</volume>: <fpage>6137</fpage>–<lpage>6148</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1021/jp111093c" xlink:type="simple">10.1021/jp111093c</ext-link></comment> <object-id pub-id-type="pmid">21500798</object-id></mixed-citation></ref>
+<ref id="pcbi.1004381.ref021"><label>21</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>West</surname> <given-names>AM</given-names></name>, <name name-style="western"><surname>Elber</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Shalloway</surname> <given-names>D</given-names></name> (<year>2007</year>) <article-title>Extending molecular dynamics time scales with milestoning: example of complex kinetics in a solvated peptide</article-title>. <source>The Journal of chemical physics</source> <volume>126</volume>: <fpage>145104</fpage>. <object-id pub-id-type="pmid">17444753</object-id></mixed-citation></ref>
+<ref id="pcbi.1004381.ref022"><label>22</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Majek</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Elber</surname> <given-names>R</given-names></name> (<year>2010</year>) <article-title>Milestoning without a Reaction Coordinate</article-title>. <source>Journal of Chemical Theory and Computation</source> <volume>6</volume>: <fpage>1805</fpage>–<lpage>1817</lpage>. <object-id pub-id-type="pmid">20596240</object-id></mixed-citation></ref>
+<ref id="pcbi.1004381.ref023"><label>23</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cardenas</surname> <given-names>AE</given-names></name>, <name name-style="western"><surname>Jas</surname> <given-names>GS</given-names></name>, <name name-style="western"><surname>DeLeon</surname> <given-names>KY</given-names></name>, <name name-style="western"><surname>Hegefeld</surname> <given-names>WA</given-names></name>, <name name-style="western"><surname>Kuczera</surname> <given-names>K</given-names></name>, <etal>et al</etal>. (<year>2012</year>) <article-title>Unassisted transport of N-acetyl-L-tryptophanamide through membrane: experiment and simulation of kinetics</article-title>. <source>The journal of physical chemistry B</source> <volume>116</volume>: <fpage>2739</fpage>–<lpage>2750</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1021/jp2102447" xlink:type="simple">10.1021/jp2102447</ext-link></comment> <object-id pub-id-type="pmid">22313494</object-id></mixed-citation></ref>
+<ref id="pcbi.1004381.ref024"><label>24</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ermak</surname> <given-names>DL</given-names></name>, <name name-style="western"><surname>Mccammon</surname> <given-names>JA</given-names></name> (<year>1978</year>) <article-title>Brownian Dynamics with Hydrodynamic Interactions</article-title>. <source>Journal of Chemical Physics</source> <volume>69</volume>: <fpage>1352</fpage>–<lpage>1360</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref025"><label>25</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Northrup</surname> <given-names>SH</given-names></name>, <name name-style="western"><surname>Allison</surname> <given-names>SA</given-names></name>, <name name-style="western"><surname>Mccammon</surname> <given-names>JA</given-names></name> (<year>1984</year>) <article-title>Brownian Dynamics Simulation of Diffusion-Influenced Bimolecular Reactions</article-title>. <source>Journal of Chemical Physics</source> <volume>80</volume>: <fpage>1517</fpage>–<lpage>1526</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref026"><label>26</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gabdoulline</surname> <given-names>RR</given-names></name>, <name name-style="western"><surname>Wade</surname> <given-names>RC</given-names></name> (<year>1997</year>) <article-title>Simulation of the diffusional association of Barnase and Barstar</article-title>. <source>Biophysical Journal</source> <volume>72</volume>: <fpage>1917</fpage>–<lpage>1929</lpage>. <object-id pub-id-type="pmid">9129797</object-id></mixed-citation></ref>
+<ref id="pcbi.1004381.ref027"><label>27</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Huber</surname> <given-names>GA</given-names></name>, <name name-style="western"><surname>McCammon</surname> <given-names>JA</given-names></name> (<year>2010</year>) <article-title>Browndye: A software package for Brownian dynamics</article-title>. <source>Computer Physics Communications</source> <volume>181</volume>: <fpage>1896</fpage>–<lpage>1905</lpage>. <object-id pub-id-type="pmid">21132109</object-id></mixed-citation></ref>
+<ref id="pcbi.1004381.ref028"><label>28</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Still</surname> <given-names>WC</given-names></name>, <name name-style="western"><surname>Tempczyk</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Hawley</surname> <given-names>RC</given-names></name>, <name name-style="western"><surname>Hendrickson</surname> <given-names>T</given-names></name> (<year>1990</year>) <article-title>Semianalytical Treatment of Solvation for Molecular Mechanics and Dynamics</article-title>. <source>Journal of the American Chemical Society</source> <volume>112</volume>: <fpage>6127</fpage>–<lpage>6129</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref029"><label>29</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Greives</surname> <given-names>NH-XZ</given-names></name> (<year>2012</year>) <article-title>BDflex: A method for efficient treament of molecular flexibility in calculating protein-ligand binding rate constants from Brownian dynamics simulations</article-title>. <source>J Chem Phys</source> <volume>137</volume>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref030"><label>30</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Luty</surname> <given-names>BA</given-names></name>, <name name-style="western"><surname>Elamrani</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Mccammon</surname> <given-names>JA</given-names></name> (<year>1993</year>) <article-title>Simulation of the Bimolecular Reaction between Superoxide and Superoxide-Dismutase—Synthesis of the Encounter and Reaction Steps</article-title>. <source>Journal of the American Chemical Society</source> <volume>115</volume>: <fpage>11874</fpage>–<lpage>11877</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref031"><label>31</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Luty</surname> <given-names>BA</given-names></name>, <name name-style="western"><surname>Mccammon</surname> <given-names>JA</given-names></name> (<year>1993</year>) <article-title>Simulation of Bimolecular Reactions—Synthesis of the Encounter and Reaction Steps</article-title>. <source>Molecular Simulation</source> <volume>10</volume>: <fpage>61</fpage>–<lpage>65</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref032"><label>32</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schutte</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Noe</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Lu</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Sarich</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Vanden-Eijnden</surname> <given-names>E</given-names></name> (<year>2011</year>) <article-title>Markov state models based on milestoning</article-title>. <source>J Chem Phys</source> <volume>134</volume>: <fpage>204105</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1063/1.3590108" xlink:type="simple">10.1063/1.3590108</ext-link></comment> <object-id pub-id-type="pmid">21639422</object-id></mixed-citation></ref>
+<ref id="pcbi.1004381.ref033"><label>33</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Elber</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>West</surname> <given-names>A</given-names></name> (<year>2010</year>) <article-title>Atomically detailed simulation of the recovery stroke in myosin by Milestoning</article-title>. <source>Proceedings of the National Academy of Sciences of the United States of America</source> <volume>107</volume>: <fpage>5001</fpage>–<lpage>5005</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.0909636107" xlink:type="simple">10.1073/pnas.0909636107</ext-link></comment> <object-id pub-id-type="pmid">20194770</object-id></mixed-citation></ref>
+<ref id="pcbi.1004381.ref034"><label>34</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Vanden-Eijnden</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Venturoli</surname> <given-names>M</given-names></name> (<year>2009</year>) <article-title>Markovian milestoning with Voronoi tessellations</article-title>. <source>Journal of Chemical Physics</source> <volume>130</volume>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref035"><label>35</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pedersen</surname> <given-names>L</given-names></name>. <name name-style="western"><surname>D</surname> <given-names>T</given-names></name>. (<year>2002</year>) <article-title>Molecular Dynamics: Techniques and Applications to Proteins</article-title>. <source>Encyclopedia of Computational Chemistry</source>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref036"><label>36</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Karplus</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>McCammon</surname> <given-names>JA</given-names></name> (<year>2002</year>) <article-title>Molecular dynamics simulations of biomolecules (vol 9, pg 646, 2002)</article-title>. <source>Nature Structural Biology</source> <volume>9</volume>: <fpage>788</fpage>–<lpage>788</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref037"><label>37</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gabdoulline</surname> <given-names>RR</given-names></name>, <name name-style="western"><surname>Wade</surname> <given-names>RC</given-names></name> (<year>1998</year>) <article-title>Brownian dynamics simulation of protein-protein diffusional encounter</article-title>. <source>Methods</source> <volume>14</volume>: <fpage>329</fpage>–<lpage>341</lpage>. <object-id pub-id-type="pmid">9571088</object-id></mixed-citation></ref>
+<ref id="pcbi.1004381.ref038"><label>38</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Sines</surname> <given-names>JJ</given-names></name>, <name name-style="western"><surname>Allison</surname> <given-names>SA</given-names></name>, <name name-style="western"><surname>Mccammon</surname> <given-names>JA</given-names></name> (<year>1990</year>) <article-title>Point-Charge Distributions and Electrostatic Steering in Enzyme Substrate Encounter—Brownian Dynamics of Modified Copper-Zinc Superoxide Dismutases</article-title>. <source>Biochemistry</source> <volume>29</volume>: <fpage>9403</fpage>–<lpage>9412</lpage>. <object-id pub-id-type="pmid">2248953</object-id></mixed-citation></ref>
+<ref id="pcbi.1004381.ref039"><label>39</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Elcock</surname> <given-names>AH</given-names></name> (<year>2004</year>) <article-title>Molecular simulations of diffusion and association in multimacromolecular systems</article-title>. <source>Numerical Computer Methods, Pt D</source> <volume>383</volume>: <fpage>166</fpage>–<lpage>198</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref040"><label>40</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Madura J.D.</surname> <given-names>BJM</given-names></name>, <name name-style="western"><surname>Wade</surname> <given-names>R.C.</given-names></name>, <name name-style="western"><surname>Gabdoulline</surname> <given-names>R.R</given-names></name>. (<year>2002</year>) <article-title>Brownian Dynamics</article-title>. <source>Encyclopedia of Computational Chemistry</source>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref041"><label>41</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Murphy</surname> <given-names>TJ</given-names></name>, <name name-style="western"><surname>Aguirre</surname> <given-names>JL</given-names></name> (<year>1972</year>) <article-title>Brownian Motion of N Interacting Particles .1. Extension of Einstein Diffusion Relation to N-Particle Case</article-title>. <source>Journal of Chemical Physics</source> <volume>57</volume>: <fpage>2098-&amp;</fpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref042"><label>42</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wilemski</surname> <given-names>G</given-names></name> (<year>1976</year>) <article-title>Derivation of Smoluchowski Equations with Corrections in Classical-Theory of Brownian-Motion</article-title>. <source>Journal of Statistical Physics</source> <volume>14</volume>: <fpage>153</fpage>–<lpage>169</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref043"><label>43</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kirmizialtin</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Elber</surname> <given-names>R</given-names></name> (<year>2011</year>) <article-title>Revisiting and Computing Reaction Coordinates with Directional Milestoning</article-title>. <source>Journal of Physical Chemistry A</source> <volume>115</volume>: <fpage>6137</fpage>–<lpage>6148</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref044"><label>44</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kreuzer</surname> <given-names>SM</given-names></name>, <name name-style="western"><surname>Moon</surname> <given-names>TJ</given-names></name>, <name name-style="western"><surname>Elber</surname> <given-names>R</given-names></name> (<year>2013</year>) <article-title>Catch bond-like kinetics of helix cracking: Network analysis by molecular dynamics and Milestoning</article-title>. <source>Journal of Chemical Physics</source> <volume>139</volume>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref045"><label>45</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Elber</surname> <given-names>R</given-names></name> (<year>2007</year>) <article-title>A milestoning study of the kinetics of an allosteric transition: atomically detailed simulations of deoxy Scapharca hemoglobin</article-title>. <source>Biophysical journal</source> <volume>92</volume>: <fpage>L85</fpage>–<lpage>87</lpage>. <object-id pub-id-type="pmid">17325010</object-id></mixed-citation></ref>
+<ref id="pcbi.1004381.ref046"><label>46</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Noe</surname> <given-names>F</given-names></name> (<year>2008</year>) <article-title>Probability distributions of molecular observables computed from Markov models</article-title>. <source>Journal of Chemical Physics</source> <volume>128</volume>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref047"><label>47</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mccammon</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Northrup</surname> <given-names>SH</given-names></name>, <name name-style="western"><surname>Allison</surname> <given-names>SA</given-names></name> (<year>1986</year>) <article-title>Diffusional Dynamics of Ligand Receptor Association</article-title>. <source>Journal of Physical Chemistry</source> <volume>90</volume>: <fpage>3901</fpage>–<lpage>3905</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref048"><label>48</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Calef</surname> <given-names>DF</given-names></name>, <name name-style="western"><surname>Deutch</surname> <given-names>JM</given-names></name> (<year>1983</year>) <article-title>Diffusion-Controlled Reactions</article-title>. <source>Annual Review of Physical Chemistry</source> <volume>34</volume>: <fpage>493</fpage>–<lpage>524</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref049"><label>49</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Song</surname> <given-names>YH</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>YJ</given-names></name>, <name name-style="western"><surname>Shen</surname> <given-names>TY</given-names></name>, <name name-style="western"><surname>Bajaj</surname> <given-names>CL</given-names></name>, <name name-style="western"><surname>McCammon</surname> <given-names>A</given-names></name>, <etal>et al</etal>. (<year>2004</year>) <article-title>Finite element solution of the steady-state Smoluchowski equation for rate constant calculations</article-title>. <source>Biophysical Journal</source> <volume>86</volume>: <fpage>2017</fpage>–<lpage>2029</lpage>. <object-id pub-id-type="pmid">15041644</object-id></mixed-citation></ref>
+<ref id="pcbi.1004381.ref050"><label>50</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hardt</surname> <given-names>SL</given-names></name> (<year>1981</year>) <article-title>The Diffusion Transit-Time—a Simple Derivation</article-title>. <source>Bulletin of Mathematical Biology</source> <volume>43</volume>: <fpage>89</fpage>–<lpage>99</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref051"><label>51</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Phillips</surname> <given-names>JC</given-names></name>, <name name-style="western"><surname>Braun</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Gumbart</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Tajkhorshid</surname> <given-names>E</given-names></name>, <etal>et al</etal>. (<year>2005</year>) <article-title>Scalable molecular dynamics with NAMD</article-title>. <source>Journal of Computational Chemistry</source> <volume>26</volume>: <fpage>1781</fpage>–<lpage>1802</lpage>. <object-id pub-id-type="pmid">16222654</object-id></mixed-citation></ref>
+<ref id="pcbi.1004381.ref052"><label>52</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Michaud-Agrawal</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Denning</surname> <given-names>EJ</given-names></name>, <name name-style="western"><surname>Woolf</surname> <given-names>TB</given-names></name>, <name name-style="western"><surname>Beckstein</surname> <given-names>O</given-names></name> (<year>2011</year>) <article-title>Software News and Updates MDAnalysis: A Toolkit for the Analysis of Molecular Dynamics Simulations</article-title>. <source>Journal of Computational Chemistry</source> <volume>32</volume>: <fpage>2319</fpage>–<lpage>2327</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref053"><label>53</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jorgensen</surname> <given-names>WL</given-names></name>, <name name-style="western"><surname>Chandrasekhar</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Madura</surname> <given-names>JD</given-names></name>, <name name-style="western"><surname>Impey</surname> <given-names>RW</given-names></name>, <name name-style="western"><surname>Klein</surname> <given-names>ML</given-names></name> (<year>1983</year>) <article-title>Comparison of Simple Potential Functions for Simulating Liquid Water</article-title>. <source>Journal of Chemical Physics</source> <volume>79</volume>: <fpage>926</fpage>–<lpage>935</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref054"><label>54</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Duan</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Wu</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Chowdhury</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Lee</surname> <given-names>MC</given-names></name>, <name name-style="western"><surname>Xiong</surname> <given-names>GM</given-names></name>, <etal>et al</etal>. (<year>2003</year>) <article-title>A point-charge force field for molecular mechanics simulations of proteins based on condensed-phase quantum mechanical calculations</article-title>. <source>Journal of Computational Chemistry</source> <volume>24</volume>: <fpage>1999</fpage>–<lpage>2012</lpage>. <object-id pub-id-type="pmid">14531054</object-id></mixed-citation></ref>
+<ref id="pcbi.1004381.ref055"><label>55</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yu</surname> <given-names>TQ</given-names></name>, <name name-style="western"><surname>Lapelosa</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Vanden-Eijnden</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Abrams</surname> <given-names>CF</given-names></name> (<year>2015</year>) <article-title>Full Kinetics of CO Entry, Internal Diffusion, and Exit in Myoglobin from Transition-Path Theory Simulations</article-title>. <source>J Am Chem Soc</source> <volume>137</volume>: <fpage>3041</fpage>–<lpage>3050</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1021/ja512484q" xlink:type="simple">10.1021/ja512484q</ext-link></comment> <object-id pub-id-type="pmid">25664858</object-id></mixed-citation></ref>
+<ref id="pcbi.1004381.ref056"><label>56</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Branco</surname> <given-names>RJF</given-names></name>, <name name-style="western"><surname>Fernandes</surname> <given-names>PA</given-names></name>, <name name-style="western"><surname>Ramos</surname> <given-names>MJ</given-names></name> (<year>2006</year>) <article-title>Molecular dynamics simulations of the enzyme Cu, Zn superoxide dismutase</article-title>. <source>Journal of Physical Chemistry B</source> <volume>110</volume>: <fpage>16754</fpage>–<lpage>16762</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref057"><label>57</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Roe</surname> <given-names>DR</given-names></name>, <name name-style="western"><surname>Cheatham</surname> <given-names>TE</given-names></name> (<year>2013</year>) <article-title>PTRAJ and CPPTRAJ: Software for Processing and Analysis of Molecular Dynamics Trajectory Data</article-title>. <source>Journal of Chemical Theory and Computation</source> <volume>9</volume>: <fpage>3084</fpage>–<lpage>3095</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref058"><label>58</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lindert</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Kekenes-Huskey</surname> <given-names>PM</given-names></name>, <name name-style="western"><surname>McCammon</surname> <given-names>JA</given-names></name> (<year>2012</year>) <article-title>Long-Timescale Molecular Dynamics Simulations Elucidate the Dynamics and Kinetics of Exposure of the Hydrophobic Patch in Troponin C</article-title>. <source>Biophysical Journal</source> <volume>103</volume>: <fpage>1784</fpage>–<lpage>1789</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.bpj.2012.08.058" xlink:type="simple">10.1016/j.bpj.2012.08.058</ext-link></comment> <object-id pub-id-type="pmid">23083722</object-id></mixed-citation></ref>
+<ref id="pcbi.1004381.ref059"><label>59</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Baker</surname> <given-names>NA</given-names></name>, <name name-style="western"><surname>Sept</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Joseph</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Holst</surname> <given-names>MJ</given-names></name>, <name name-style="western"><surname>McCammon</surname> <given-names>JA</given-names></name> (<year>2001</year>) <article-title>Electrostatics of nanosystems: Application to microtubules and the ribosome</article-title>. <source>Proceedings of the National Academy of Sciences of the United States of America</source> <volume>98</volume>: <fpage>10037</fpage>–<lpage>10041</lpage>. <object-id pub-id-type="pmid">11517324</object-id></mixed-citation></ref>
+<ref id="pcbi.1004381.ref060"><label>60</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hough</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Hasnain</surname> <given-names>SS</given-names></name> (<year>1999</year>) <article-title>Crystallographic structures of bovine copper-zinc superoxide dismutase reveal asymmetry in two subunits: Functionally important three and five coordinate copper sites captured in the same crystal</article-title>. <source>Journal of Molecular Biology</source> <volume>287</volume>: <fpage>579</fpage>–<lpage>592</lpage>. <object-id pub-id-type="pmid">10092461</object-id></mixed-citation></ref>
+<ref id="pcbi.1004381.ref061"><label>61</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pearlman</surname> <given-names>DA</given-names></name>, <name name-style="western"><surname>Case</surname> <given-names>DA</given-names></name>, <name name-style="western"><surname>Caldwell</surname> <given-names>JW</given-names></name>, <name name-style="western"><surname>Ross</surname> <given-names>WS</given-names></name>, <name name-style="western"><surname>Cheatham</surname> <given-names>TE</given-names></name>, <etal>et al</etal>. (<year>1995</year>) <article-title>Amber, a Package of Computer-Programs for Applying Molecular Mechanics, Normal-Mode Analysis, Molecular-Dynamics and Free-Energy Calculations to Simulate the Structural and Energetic Properties of Molecules</article-title>. <source>Computer Physics Communications</source> <volume>91</volume>: <fpage>1</fpage>–<lpage>41</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref062"><label>62</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Votapka</surname> <given-names>LW</given-names></name>, <name name-style="western"><surname>Czapla</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Zhenirovskyy</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Amaro</surname> <given-names>RE</given-names></name> (<year>2013</year>) <article-title>DelEnsembleElec: Computing Ensemble-Averaged Electrostatics Using DelPhi</article-title>. <source>Communications in Computational Physics</source> <volume>13</volume>: <fpage>256</fpage>–<lpage>268</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref063"><label>63</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Luo</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>JM</given-names></name>, <name name-style="western"><surname>Kollman</surname> <given-names>PA</given-names></name> (<year>2002</year>) <article-title>Development of a more accurate amber united-atom force field for protein folding and large-scale biomolecular simulations</article-title>. <source>Abstracts of Papers of the American Chemical Society</source> <volume>224</volume>: <fpage>U470</fpage>–<lpage>U471</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref064"><label>64</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bas</surname> <given-names>DC</given-names></name>, <name name-style="western"><surname>Rogers</surname> <given-names>DM</given-names></name>, <name name-style="western"><surname>Jensen</surname> <given-names>JH</given-names></name> (<year>2008</year>) <article-title>Very fast prediction and rationalization of pK(a) values for protein-ligand complexes</article-title>. <source>Proteins-Structure Function and Bioinformatics</source> <volume>73</volume>: <fpage>765</fpage>–<lpage>783</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref065"><label>65</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cudd</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Fridovich</surname> <given-names>I</given-names></name> (<year>1982</year>) <article-title>Electrostatic Interactions in the Reaction-Mechanism of Bovine Erythrocyte Superoxide-Dismutase</article-title>. <source>Journal of Biological Chemistry</source> <volume>257</volume>: <fpage>1443</fpage>–<lpage>1447</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref066"><label>66</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Divisek</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Kastening</surname> <given-names>B</given-names></name> (<year>1975</year>) <article-title>Electrochemical Generation and Reactivity of Superoxide Ion in Aqueous-Solutions</article-title>. <source>Journal of Electroanalytical Chemistry</source> <volume>65</volume>: <fpage>603</fpage>–<lpage>621</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref067"><label>67</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Spyracopoulos</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>MX</given-names></name>, <name name-style="western"><surname>Sia</surname> <given-names>SK</given-names></name>, <name name-style="western"><surname>Gagne</surname> <given-names>SM</given-names></name>, <name name-style="western"><surname>Chandra</surname> <given-names>M</given-names></name>, <etal>et al</etal>. (<year>1997</year>) <article-title>Calcium-induced structural transition in the regulatory domain of human cardiac troponin C</article-title>. <source>Biochemistry</source> <volume>36</volume>: <fpage>12138</fpage>–<lpage>12146</lpage>. <object-id pub-id-type="pmid">9315850</object-id></mixed-citation></ref>
+<ref id="pcbi.1004381.ref068"><label>68</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Tikunova</surname> <given-names>SB</given-names></name>, <name name-style="western"><surname>Davis</surname> <given-names>JP</given-names></name> (<year>2004</year>) <article-title>Designing calcium-sensitizing mutations in the regulatory domain of cardiac troponin C</article-title>. <source>Journal of Biological Chemistry</source> <volume>279</volume>: <fpage>35341</fpage>–<lpage>35352</lpage>. <object-id pub-id-type="pmid">15205455</object-id></mixed-citation></ref>
+<ref id="pcbi.1004381.ref069"><label>69</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Li</surname> <given-names>YH</given-names></name>, <name name-style="western"><surname>Gregory</surname> <given-names>S</given-names></name> (<year>1974</year>) <article-title>Diffusion of Ions in Sea-Water and in Deep-Sea Sediments</article-title>. <source>Geochimica Et Cosmochimica Acta</source> <volume>38</volume>: <fpage>703</fpage>–<lpage>714</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref070"><label>70</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kestin</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Sokolov</surname> <given-names>M.</given-names></name>, <name name-style="western"><surname>Wakeham</surname> <given-names>W. A</given-names></name>. (<year>1978</year>) <article-title>Viscosity of Liquid Water in the Range -8C to 150C</article-title>. <source>Journal of Physical Chemistry</source> <volume>7</volume>: <fpage>941</fpage>–<lpage>948</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref071"><label>71</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lamoureux</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>MacKerell</surname> <given-names>AD</given-names></name>, <name name-style="western"><surname>Roux</surname> <given-names>B</given-names></name> (<year>2003</year>) <article-title>A simple polarizable model of water based on classical Drude oscillators</article-title>. <source>Journal of Chemical Physics</source> <volume>119</volume>: <fpage>5185</fpage>–<lpage>5197</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref072"><label>72</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Tange</surname> <given-names>O</given-names></name> (<year>2011</year>) <article-title>GNU Parallel—The Command-Line Power Tool</article-title>. <source>The USENIX Magazine February</source>: <fpage>42</fpage>–<lpage>47</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref073"><label>73</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Argese</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Orsega</surname> <given-names>EF</given-names></name>, <name name-style="western"><surname>Decarli</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Scarpa</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Rigo</surname> <given-names>A</given-names></name> (<year>1984</year>) <article-title>Application of Short Controlled Drop-Time Polarography to the Study of Superoxide Ion Dismutation in Aqueous-Solutions—Determination of the Activity of Superoxide Dismutases</article-title>. <source>Bioelectrochemistry and Bioenergetics</source> <volume>13</volume>: <fpage>385</fpage>–<lpage>392</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref074"><label>74</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hazard</surname> <given-names>AL</given-names></name>, <name name-style="western"><surname>Kohout</surname> <given-names>SC</given-names></name>, <name name-style="western"><surname>Stricker</surname> <given-names>NL</given-names></name>, <name name-style="western"><surname>Putkey</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Falke</surname> <given-names>JJ</given-names></name> (<year>1998</year>) <article-title>The kinetic cycle of cardiac troponin C: Calcium binding and dissociation at site II trigger slow conformational rearrangements</article-title>. <source>Protein Science</source> <volume>7</volume>: <fpage>2451</fpage>–<lpage>2459</lpage>. <object-id pub-id-type="pmid">9828012</object-id></mixed-citation></ref>
+<ref id="pcbi.1004381.ref075"><label>75</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ogawa</surname> <given-names>Y</given-names></name> (<year>1985</year>) <article-title>Calcium-Binding to Troponin C and Troponin—Effects of Mg–2+, Ionic-Strength and Ph</article-title>. <source>Journal of Biochemistry</source> <volume>97</volume>: <fpage>1011</fpage>–<lpage>1023</lpage>. <object-id pub-id-type="pmid">4030713</object-id></mixed-citation></ref>
+<ref id="pcbi.1004381.ref076"><label>76</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Humphrey</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Dalke</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Schulten</surname> <given-names>K</given-names></name> (<year>1996</year>) <article-title>VMD: Visual molecular dynamics</article-title>. <source>Journal of Molecular Graphics &amp; Modelling</source> <volume>14</volume>: <fpage>33</fpage>–<lpage>38</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref077"><label>77</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Sanner</surname> <given-names>MF</given-names></name>, <name name-style="western"><surname>Olson</surname> <given-names>AJ</given-names></name>, <name name-style="western"><surname>Spehner</surname> <given-names>J-C</given-names></name> (<year>1995</year>) <chapter-title>Fast and robust computation of molecular surfaces</chapter-title>. <source>Proceedings of the eleventh annual symposium on Computational geometry</source>. <publisher-loc>Vancouver, British Columbia, Canada</publisher-loc>: <publisher-name>ACM</publisher-name>. pp. <fpage>406</fpage>–<lpage>407</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref078"><label>78</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Berkowitz</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Karim</surname> <given-names>OA</given-names></name>, <name name-style="western"><surname>Mccammon</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Rossky</surname> <given-names>PJ</given-names></name> (<year>1984</year>) <article-title>Sodium-Chloride Ion-Pair Interaction in Water—Computer-Simulation</article-title>. <source>Chemical Physics Letters</source> <volume>105</volume>: <fpage>577</fpage>–<lpage>580</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref079"><label>79</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Karim</surname> <given-names>OA</given-names></name>, <name name-style="western"><surname>Mccammon</surname> <given-names>JA</given-names></name> (<year>1986</year>) <article-title>Rate Constants for Ion-Pair Formation and Dissociation in Water</article-title>. <source>Chemical Physics Letters</source> <volume>132</volume>: <fpage>219</fpage>–<lpage>224</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref080"><label>80</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Guardia</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Rey</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Padro</surname> <given-names>JA</given-names></name> (<year>1991</year>) <article-title>Potential of Mean Force by Constrained Molecular-Dynamics—a Sodium-Chloride Ion-Pair in Water</article-title>. <source>Chemical Physics</source> <volume>155</volume>: <fpage>187</fpage>–<lpage>195</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref081"><label>81</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mccord</surname> <given-names>JM</given-names></name>, <name name-style="western"><surname>Fridovic</surname> <given-names>I</given-names></name> (<year>1969</year>) <article-title>Superoxide Dismutase-an Enzymic Function for Erythrocuprein</article-title>. <source>Federation Proceedings</source> <volume>28</volume>: <fpage>346-&amp;</fpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref082"><label>82</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wong</surname> <given-names>YT</given-names></name>, <name name-style="western"><surname>Clark</surname> <given-names>TW</given-names></name>, <name name-style="western"><surname>Shen</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Mccammon</surname> <given-names>JA</given-names></name> (<year>1993</year>) <article-title>Molecular-Dynamics Simulation of Substrate-Enzyme Interactions in the Active-Site Channel of Superoxide-Dismutase</article-title>. <source>Molecular Simulation</source> <volume>10</volume>: <fpage>277-&amp;</fpage>.</mixed-citation></ref>
+<ref id="pcbi.1004381.ref083"><label>83</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Li</surname> <given-names>MX</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Sykes</surname> <given-names>BD</given-names></name> (<year>2004</year>) <article-title>Structural based insights into the role of troponin in cardiac muscle pathophysiology</article-title>. <source>Journal of Muscle Research and Cell Motility</source> <volume>25</volume>: <fpage>559</fpage>–<lpage>579</lpage>. <object-id pub-id-type="pmid">15711886</object-id></mixed-citation></ref>
+</ref-list>
+</back>
+</article>

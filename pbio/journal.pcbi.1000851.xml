@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="3.0" xml:lang="EN">
+<front>
+<journal-meta><journal-id journal-id-type="publisher-id">plos</journal-id><journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id><journal-id journal-id-type="pmc">ploscomp</journal-id><!--===== Grouping journal title elements =====--><journal-title-group><journal-title>PLoS Computational Biology</journal-title></journal-title-group><issn pub-type="ppub">1553-734X</issn><issn pub-type="epub">1553-7358</issn><publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, USA</publisher-loc></publisher></journal-meta>
+<article-meta><article-id pub-id-type="publisher-id">09-PLCB-RA-0533R4</article-id><article-id pub-id-type="doi">10.1371/journal.pcbi.1000851</article-id><article-categories><subj-group subj-group-type="heading"><subject>Research Article</subject></subj-group><subj-group subj-group-type="Discipline"><subject>Computational Biology/Systems Biology</subject><subject>Oncology/Gastrointestinal Cancers</subject><subject>Oncology/Lung Cancer</subject></subj-group></article-categories><title-group><article-title>Large-Scale Analysis of Network Bistability for Human Cancers</article-title><alt-title alt-title-type="running-head">Network Bistability for Cancers</alt-title></title-group><contrib-group>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Shiraishi</surname><given-names>Tetsuya</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="corresp" rid="cor1"><sup>*</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Matsuyama</surname><given-names>Shinako</given-names></name><xref ref-type="aff" rid="aff2"><sup>2</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Kitano</surname><given-names>Hiroaki</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff3"><sup>3</sup></xref><xref ref-type="aff" rid="aff4"><sup>4</sup></xref></contrib>
+</contrib-group><aff id="aff1"><label>1</label><addr-line>Sony Computer Science Laboratories, Shinagawa-ku, Tokyo, Japan</addr-line>       </aff><aff id="aff2"><label>2</label><addr-line>Sony Corporation, Shinagawa-ku, Tokyo, Japan</addr-line>       </aff><aff id="aff3"><label>3</label><addr-line>The Systems Biology Institute, Shinjuku-ku, Tokyo, Japan</addr-line>       </aff><aff id="aff4"><label>4</label><addr-line>Okinawa Institute of Science and Technology, Kunigami, Okinawa, Japan</addr-line>       </aff><contrib-group>
+<contrib contrib-type="editor" xlink:type="simple"><name name-style="western"><surname>Price</surname><given-names>Nathan D.</given-names></name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/></contrib>
+</contrib-group><aff id="edit1">University of Illinois at Urbana-Champaign, United States of America</aff><author-notes>
+<corresp id="cor1">* E-mail: <email xlink:type="simple">Tetsuya.Shiraishi@jp.sony.com</email></corresp>
+<fn fn-type="con"><p>Conceived and designed the experiments: TS SM HK. Performed the experiments: TS. Analyzed the data: TS SM. Contributed reagents/materials/analysis tools: TS SM. Wrote the paper: TS HK.</p></fn>
+<fn fn-type="conflict"><p>The authors have declared that no competing interests exist.</p></fn></author-notes><pub-date pub-type="collection"><month>7</month><year>2010</year></pub-date><pub-date pub-type="epub"><day>8</day><month>7</month><year>2010</year></pub-date><volume>6</volume><issue>7</issue><elocation-id>e1000851</elocation-id><history>
+<date date-type="received"><day>14</day><month>5</month><year>2009</year></date>
+<date date-type="accepted"><day>3</day><month>6</month><year>2010</year></date>
+</history><!--===== Grouping copyright info into permissions =====--><permissions><copyright-year>2010</copyright-year><copyright-holder>Shiraishi et al</copyright-holder><license><license-p>This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license></permissions><abstract>
+<p>Protein–protein interaction and gene regulatory networks are likely to be locked in a state corresponding to a disease by the behavior of one or more bistable circuits exhibiting switch-like behavior. Sets of genes could be over-expressed or repressed when anomalies due to disease appear, and the circuits responsible for this over- or under-expression might persist for as long as the disease state continues. This paper shows how a large-scale analysis of network bistability for various human cancers can identify genes that can potentially serve as drug targets or diagnosis biomarkers.</p>
+</abstract><abstract abstract-type="summary"><title>Author Summary</title>
+<p>Since most disease states exhibit a certain level of resilience against therapeutic interventions, each disease state can be considered to be homeostatic to some extent. There must be one or more mechanisms that cause the gene-regulatory network to maintain a certain state, and one such mechanism is a bistable switch. In this work, bistable switch networks were constructed and their ON(upregulated)/OFF(downregulated) states were compared between human cancers and healthy control samples. Changes in the ON/OFF state with the progression of cancer were demonstrated. A series of genes that might serve as a drug target or diagnosis biomarker was identified. The approach presented here should provide useful insights into the states of biological networks, which may lead to the discovery of novel drug targets and therapeutic interventions.</p>
+</abstract><funding-group><funding-statement>The authors received no specific funding for this work.</funding-statement></funding-group><counts><page-count count="12"/></counts></article-meta>
+</front>
+<body><sec id="s1">
+<title>Introduction</title>
+<p>Understanding diseases within the context of biological networks is one of the major challenges in systems biology. Diseases often persist and resist therapeutic intervention. The persistence of a disease in a system must be reflected in the ability of the system's networks to maintain the state underlying the disease. In other words, networks are “locked-in” to disease states and maintain their stability. Thus, it is important to understand how such multi-stable states are achieved within the context of network topology and to understand the dynamics of these states. A network robust against a range of perturbations can maintain a healthy state but can also, when affected by a disease, transition to a new steady state that is often also robust against perturbations, making the disease state persistent. A series of disease progressions may be the result of a sequence of state transitions in the network dynamics (<xref ref-type="fig" rid="pcbi-1000851-g001">Fig. 1A</xref>). Bistable circuits may drive such transitions and are thus critical in enabling the initiation and progression of diseases to be understood (<xref ref-type="fig" rid="pcbi-1000851-g001">Fig. 1 B</xref>).</p>
+<fig id="pcbi-1000851-g001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000851.g001</object-id><label>Figure 1</label><caption>
+<title>State transitions in network dynamics and disease progression.</title>
+<p>A: A network in a healthy state is robust against a range of perturbations, so it can continue to maintain a healthy state. With the onset of a disease, however, the network transitions to a new steady state that is also often robust against perturbations, making the disease state persistent. B: These state transitions might be driven by bistable switch networks. The nodes represent genes and the edges between them represent the pairing of bistable toggle switches. Red and blue nodes correspond to ON (upregulated) and OFF (downregulated) states.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000851.g001" xlink:type="simple"/></fig>
+<p>Complex networks exhibiting such multi-stability must have a set of bi-stable or multi-stable circuits consisting of proteins and genes. The identification of circuits that exhibit bi- or multi-stability within large protein-interaction and gene-regulation networks would provide information useful for understanding the mechanism(s) of network bistability. Furthermore, circuits exhibiting bistability can be potential drug targets or biomarkers for classifying disease states.</p>
+<p>Network dynamics are regulated by the structure of the network and the flow of information through feedforward and feedback loops. Mutual activation or mutual inhibition configurations can maintain the flow of biological information between two molecules and act as network memories or switches. Furthermore, an activation-inhibition configuration, in which one molecule stimulates the other while the latter inhibits the former, generates dynamics with periodicity like that seen in circadian rhythms and cell cycles <xref ref-type="bibr" rid="pcbi.1000851-Sontag1">[1]</xref>. The stability and characteristics of Boolean networks comprising these configurations were studied in detail by Kauffman et al. <xref ref-type="bibr" rid="pcbi.1000851-Kauffman1">[2]</xref>. In the study reported here, we focused on mutual inhibition, which is thought to be involved in the stable deviations of a system observed during the progression of tissue from a normal to a diseased state.</p>
+<p>There are several important network motifs for system configurations <xref ref-type="bibr" rid="pcbi.1000851-Milo1">[3]</xref>–<xref ref-type="bibr" rid="pcbi.1000851-Wolf1">[6]</xref> in protein-protein networks. One of them, a toggle switch that converts a continuous input signal into a discontinuous ON or OFF response, plays a fundamental role in information processing and decision making. Among the naturally occurring toggle switches that have been reported are the lambda phage lysis–lysogeny switch <xref ref-type="bibr" rid="pcbi.1000851-Isaacs1">[7]</xref>–<xref ref-type="bibr" rid="pcbi.1000851-Ptashne1">[9]</xref>, switches in the lactose operon repressor system <xref ref-type="bibr" rid="pcbi.1000851-Novick1">[10]</xref>–<xref ref-type="bibr" rid="pcbi.1000851-Vilar1">[12]</xref>, the mitogen-activated protein kinase (MAPK) cascade <xref ref-type="bibr" rid="pcbi.1000851-Bagowski1">[13]</xref>–<xref ref-type="bibr" rid="pcbi.1000851-Markevich1">[20]</xref>, the Sonic hedgehog network in stem-cell differentiation <xref ref-type="bibr" rid="pcbi.1000851-Lai1">[21]</xref>, cell-cycle regulatory circuits <xref ref-type="bibr" rid="pcbi.1000851-Cross1">[22]</xref>–<xref ref-type="bibr" rid="pcbi.1000851-Sha1">[24]</xref>, and the rapid lateral propagation of receptor tyrosine kinase activation <xref ref-type="bibr" rid="pcbi.1000851-Reynolds1">[25]</xref>. Genetically engineered toggle switches have been constructed experimentally in Escherichia coli <xref ref-type="bibr" rid="pcbi.1000851-Gardner1">[26]</xref>, <xref ref-type="bibr" rid="pcbi.1000851-Kobayashi1">[27]</xref> and in mammalian cells <xref ref-type="bibr" rid="pcbi.1000851-Kramer1">[28]</xref>.</p>
+<p>A robust toggle switch behaves as a signal memory unit by using a hysteresis mechanism <xref ref-type="bibr" rid="pcbi.1000851-SabouriGhomi1">[29]</xref>. Once in the ON state, a toggle switch remains in the ON state even if the stimulus concentration falls below the threshold level <xref ref-type="bibr" rid="pcbi.1000851-Ozbudak1">[11]</xref>, <xref ref-type="bibr" rid="pcbi.1000851-Bagowski1">[13]</xref>, <xref ref-type="bibr" rid="pcbi.1000851-Pomerening1">[23]</xref>, <xref ref-type="bibr" rid="pcbi.1000851-Sha1">[24]</xref>, <xref ref-type="bibr" rid="pcbi.1000851-Bagowski2">[30]</xref>, <xref ref-type="bibr" rid="pcbi.1000851-Laslo1">[31]</xref>. A molecular network's persistence in a disease state might be due to the hysteresis of toggle switches.</p>
+<p>To identify circuits exhibiting bi- and multi-stability, we topologically analyzed activation and inhibition in proteins on a large scale by using various databases containing expression array data for various diseases. We compared the progression stages of these diseases with those of control samples by using data for healthy individuals taken from available databases, and we identified sets of switch circuits possibly responsible for maintaining the persistent disease states by using network topologies to analyze that data.</p>
+</sec><sec id="s2">
+<title>Results</title>
+<sec id="s2a">
+<title>Extraction of bistable toggle switches</title>
+<p>There are theoretically many system configurations that can lead to bistability <xref ref-type="bibr" rid="pcbi.1000851-Ferrell4">[18]</xref>, <xref ref-type="bibr" rid="pcbi.1000851-Ferrell5">[32]</xref>–<xref ref-type="bibr" rid="pcbi.1000851-Smolen1">[35]</xref>. We focused on bistable toggle switches (BTSs) with double-negative feedback. Such switches can be constructed from any two genes that mutually repress their expression. We considered three types of network motifs that can exhibit bistable behavior (<xref ref-type="fig" rid="pcbi-1000851-g002">Fig. 2</xref>).</p>
+<fig id="pcbi-1000851-g002" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000851.g002</object-id><label>Figure 2</label><caption>
+<title>Motifs of bistable toggle switches.</title>
+<p>A type-1 bistable toggle switch (BTS) contains two genes with positive autoregulation. Each gene mutually inhibits the other's expression. The two genes in the type-2 BTS also suppress each other's expression. Each gene has double positive or negative feedback with the other gene, so the same function as a type-1 BTS may be exhibited. A type-3 BTS was constructed on the basis of a theoretical study on the modeling of genetic switches with positive feedback loops. The blue, green, and orange nodes respectively correspond to switch genes, mediators, and genes constituting a feedback loop. Positive (upregulated) interactions are indicated by green lines and negative (downregulated) interactions are indicated by red lines.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000851.g002" xlink:type="simple"/></fig>
+<list list-type="order"><list-item>
+<p>Type-1 BTS: A type-1 BTS uses a basic motif that has been identified in E. coli <xref ref-type="bibr" rid="pcbi.1000851-Gardner1">[26]</xref> and has mutually inhibitory interaction and positive autoregulators. In a circuit with a double-negative feedback loop, proteins A and protein B inhibit or repress each other. Positive autoregulation is a type of feedback in which proteins directly activate the transcription of their own genes. Under the right circumstances, there could be a stable steady state in which A is “ON” and B is “OFF” or B is “ON” and A is “OFF.” This bistability is maintained through positive autoregulation.</p>
+</list-item><list-item>
+<p>Type-2 BTS: Only a small number of transcription factors with a positive autoregulation ability have been reported. From the viewpoint of dynamic properties, positive autoregulation has the same functional meaning that a positive feedback loop (double-positive feedback or double-negative feedback) does <xref ref-type="bibr" rid="pcbi.1000851-Guantes1">[36]</xref>. We thus defined two mutually inhibitory nodes with a positive feedback loop between them as a type-2 BTS.</p>
+</list-item><list-item>
+<p>Type-3 BTS: A theoretical study of modeling genetic switches with positive feedback loops <xref ref-type="bibr" rid="pcbi.1000851-Kobayashi2">[37]</xref> revealed that mutual inhibition is maintained even if a molecule that signals information intervenes between the molecules constituting a switch. We defined two nodes that inhibit each other through other genes (mediators) as a type-3 BTS. Although it is theoretically possible that a positive feedback loop can be formed even if the intervening molecules are identical, in the present study we excluded this possibility.</p>
+</list-item></list>
+<p>It is possible that double-negative feedback can be a bistable toggle switch when both nodes have positive feedback loops. Two BTSs can share their mutual inhibition configurations as positive feedback loops and can form network configurations.</p>
+<p>Next, bistable toggle switches defined above was extracted from large-scale databases (ResNet 3.0, Ariadne Genomics Inc.) containing data for interaction networks. We detected 6585 pairs of bistable toggle switches, and these switch nodes formed a large network. Four-hundred and forty-two genes are involved in these BTS pairs, and the hubs of switch nodes in the network are clearly visible because of their high degree of connectivity (<xref ref-type="fig" rid="pcbi-1000851-g003">Fig. 3</xref>). A complete list of the BTS pairs is provided in <xref ref-type="supplementary-material" rid="pcbi.1000851.s001">Protocol S1</xref>, and a Cytoscape session file is provided in <xref ref-type="supplementary-material" rid="pcbi.1000851.s002">Protocol S2</xref>. It should be noted that this network was constructed using text mining and that the molecular details of each interaction were not verified. It is nevertheless a reasonable starting point, and whether or not a listed BTS actually exhibits bistability can be further examined using microarray data.</p>
+<fig id="pcbi-1000851-g003" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000851.g003</object-id><label>Figure 3</label><caption>
+<title>Cytoscape visualization of network composed of bistable toggle switch pairs.</title>
+<p>Four-hundred and forty-two genes are involved in 6585 bistable toggle switch pairs. Nodes are shown in sizes proportional to their connectivity, making the hubs of switch nodes clearly visible. The Cytoscape session file for this network is available in <xref ref-type="supplementary-material" rid="pcbi.1000851.s002">Protocol S2</xref>.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000851.g003" xlink:type="simple"/></fig></sec><sec id="s2b">
+<title>Tests using mRNA microarray data</title>
+<p>ArrayExpress microarray data were used to further examine the states of the BTS pairs. It is obvious that a BTS has four possible states: “ON/ON,” “ON/OFF,” “OFF/ON,” and “OFF/OFF.” Mathematical analysis of bistability for the chosen parameter condition demonstrated that the probability of “ON/OFF” and “OFF/ON” states is high, that of “ON/ON” is low, and that of “OFF/OFF” is extremely low <xref ref-type="bibr" rid="pcbi.1000851-Cao1">[38]</xref>. This is the reason we focused on the BTSs that demonstrated “ON/OFF” or “OFF/ON” states.</p>
+<p>The ArrayExpress experimental categories and the mean number of corresponding BTS pairs with a significant ON/OFF change are shown in <xref ref-type="fig" rid="pcbi-1000851-g004">Fig. 4</xref>. In the set of 6585 candidate BTSs the number of pairs with a significant ON/OFF change ranged from 0 to 1927 (mean = 298.6), while in a set of 6585 randomly selected gene pairs the number of pairs with a significant ON/OFF change ranged from 0 to 273 (mean = 72.1).</p>
+<fig id="pcbi-1000851-g004" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000851.g004</object-id><label>Figure 4</label><caption>
+<title>ArrayExpress experimental categories for microarray datasets and mean number of BTS pairs with significant ON/OFF change.</title>
+<p>There were few BTS pairs with significant changes for “lifestyle” and many with significant changes for “cancer.” Note the higher number of BTS pairs for iPS cells than for donor cells.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000851.g004" xlink:type="simple"/></fig>
+<p>The switching of a molecule's function to the ON state generally means the molecule's intrinsic function related to intracellular molecular systems has become stronger, whereas switching to the OFF state means it has become weaker. The ON state of a molecule is produced not only by an increase in the absolute amount of that molecule but also by actions such as activation due to phosphorylation-induced transformation of the molecule's three-dimensional structure or to translocation of the molecule to an location where it can carry out its function properly.</p>
+<p>In these studies using mRNA expression data from microarrays, the toggling of a BTS pair was defined as an instance in which a sample's mRNA level for one of that pair's molecules increased (relative to a control) and the mRNA level for the other of that pair's molecule decreased (relative to the same control).</p>
+<p>A notable finding is that when mRNA levels were compared between induced pluripotent stem (iPS) cells and donor controls, more than 1000 BTS pairs demonstrated significant changes in the ON/OFF states. The high frequency of these changes in iPS cells is reasonable in that an iPS cell is in an undifferentiated state committed to differentiation to a particular lineage, in which many BTSs might be involved <xref ref-type="bibr" rid="pcbi.1000851-Chatterjee1">[39]</xref>. iPS cells have been generated from mouse and human somatic cells by using retroviruses or lentiviruses to introduce Oct3/4 and Sox2 with either Klf4 and c-Myc or Nanog and Lin28 <xref ref-type="bibr" rid="pcbi.1000851-Okita1">[40]</xref>. These factors have been reported to result in bistability when they combine with other factors and form mutual-activation and mutual-inhibition motifs <xref ref-type="bibr" rid="pcbi.1000851-Boyer1">[41]</xref>–<xref ref-type="bibr" rid="pcbi.1000851-Niwa1">[43]</xref>.</p>
+</sec><sec id="s2c">
+<title>Lung cancer</title>
+<p>Lung cancer is the leading cause of cancer-related deaths <xref ref-type="bibr" rid="pcbi.1000851-Chari1">[44]</xref>, and tobacco smoking is the strongest etiological factor associated with lung cancer. Prior studies have demonstrated that smoking creates a field of molecular injury throughout the airway epithelium exposed to cigarette smoke <xref ref-type="bibr" rid="pcbi.1000851-Sridhar1">[45]</xref>.</p>
+<p><xref ref-type="fig" rid="pcbi-1000851-g005">Figure 5A</xref> depicts the toggling of BTS ON/OFF states inferred from time-dependent data (ArrayExpress ID: E-GEOD-10700 and E-GEOD-10718) for the mRNA expression in normal human bronchial epithelial cells exposed to cigarette smoke for 24 hours. Toggling began at 2 hours (<xref ref-type="fig" rid="pcbi-1000851-g005">Fig. 5B</xref>) and was observed most frequently at 4 hours (<xref ref-type="fig" rid="pcbi-1000851-g005">Fig. 5C</xref>). SOCS3 (suppressor of cytokine signaling 3) was observed early, while BTSs related to HMOX1 (heme oxygenase 1), CSF2 (colony stimulating factor 2), and SPP1 (secreted phosphoprotein 1) were observed throughout the 24-h period.</p>
+<fig id="pcbi-1000851-g005" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000851.g005</object-id><label>Figure 5</label><caption>
+<title>Changes in ON/OFF states of BTSs for time series data for human normal bronchial epithelial cells exposed to smoke.</title>
+<p>A: Toggling inferred from time-dependent data (ArrayExpress ID: E-GEOD-10700 and E-GEOD-10718) for the mRNA expression of normal human bronchial epithelial cells exposed to cigarette smoke for 24 hours. B: 2 hrs after exposure start, C: 4 hrs after exposure start, D: 8 hrs after exposure start, E: 24 hrs after exposure start. The nodes represent genes and the edges between them represent the pairing of bistable toggle switches. The colors of nodes were automatically assigned as a continuous color gradient from red for ON (upregulated) to blue for OFF (downregulated) according to relative gene-expression levels of the nodes. In <xref ref-type="fig" rid="pcbi-1000851-g004">Figs. 4B–E</xref>, the BTS pairs framed by thick lines are pairs with significant toggling scores at that time.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000851.g005" xlink:type="simple"/></fig>
+<p>SOCS3 inhibits cytokine signaling via the JAK(Janus kinase)/STAT(signal transducers and activators of transcription) pathway. Recent research has demonstrated that the activation of SOCS3 in the lung occurs during the acute inflammatory response <xref ref-type="bibr" rid="pcbi.1000851-Gao1">[46]</xref>. Frequent hypermethylation in the CpG islands of the functional SOCS3 promoter has been found in lung-cancer tissue samples to correlate with its transcription silencing <xref ref-type="bibr" rid="pcbi.1000851-He1">[47]</xref>. The OFF states of EGF (epidermal growth factor) and MAPK8 (mitogen-activated protein kinase 8) were linked to the ON states of CSF2 and HMOX1, which became the main players at four or more hours of exposure. CSF2 and HMOX1 were connected through several genes in the OFF state, including IL13 (interleukin 13), IFNG (interferon gamma), and FN1 (fibronectin 1), which are related to inflammatory responses and wound healing.</p>
+<p><xref ref-type="fig" rid="pcbi-1000851-g006">Figure 6</xref> illustrates the state of BTS toggling for a comparison of mRNA expression (ArrayExpress ID: E-GEOD-10072) in non-small cell lung carcinoma (NSCLC) patients with a history of smoking (<xref ref-type="fig" rid="pcbi-1000851-g006">Fig. 6A</xref>) along with those currently smoking (<xref ref-type="fig" rid="pcbi-1000851-g006">Fig. 6B</xref>) with mRNA expression seen in normal lung tissue. The bold black frames surround molecules that are also in the BTS molecules whose toggling is shown in <xref ref-type="fig" rid="pcbi-1000851-g005">Fig. 5A</xref>.</p>
+<fig id="pcbi-1000851-g006" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000851.g006</object-id><label>Figure 6</label><caption>
+<title>Changes in ON/OFF states of BTSs for lung cancer.</title>
+<p>The state of BTS toggling determined by comparing mRNA expression data (ArrayExpress ID: E-GEOD-10072) for normal lung tissue with that for lung-cancer patients with a history of smoking (former smokers) (Fig. 6A) and that for lung-cancer patients still smoking (current smokers) (Fig. 6B). The nodes and genes surrounded by bold black frames are those also shown in <xref ref-type="fig" rid="pcbi-1000851-g005">Fig. 5A</xref>. The nodes and edges surrounded by bold green frames are found in the former smokers as well as the current smokers. The nodes represent genes and the edges between them represent the pairing of bistable toggle switches. The colors of nodes were automatically assigned as a continuous color gradient from red for ON (upregulated) to blue for OFF (downregulated) according to relative gene-expression levels of the nodes.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000851.g006" xlink:type="simple"/></fig>
+<p>ON/OFF patterns of FN1-SPP1 (<xref ref-type="fig" rid="pcbi-1000851-g006">Fig. 6A</xref>) and IGF1-SPP1 (<xref ref-type="fig" rid="pcbi-1000851-g006">Fig. 6B</xref>) were observed in the data gathered in experiments exposing normal human bronchial epithelial cells to cigarette smoke. SPP1 is a secreted integrin-binding glycoprotein that is overexpressed in various tumors and has been reported to be involved in tumorigenesis and metastasis. High expression of SPP1 is a significantly unfavorable prognostic factor for the survival of patients with NSCLC <xref ref-type="bibr" rid="pcbi.1000851-Boldrini1">[48]</xref>.</p>
+<p>In addition, although some EDN1(endothelin-1)-related BTS pairs and SHC1(Src homology 2 domain containing transforming protein)-related BTS pairs are shared in lung cancer tissue in current and former smokers, a considerable number of differing patterns are evident. This suggests that the mechanisms for carcinogenesis differ depending on the lengths of time that current and former smokers have smoked. EDN1, which is a hypoxia-inducible angiogenic growth factor for surrounding epithelial and endothelial cells, plays an important role in cancer-stromal interactions and tumor progression, and its expression is related to poor prognosis in NSCLC <xref ref-type="bibr" rid="pcbi.1000851-Boldrini2">[49]</xref>.</p>
+<p>Small molecules that can put these BTS pairs into normal ON/OFF states might be useful in preventing the progression of lung cancer in both current and former smokers.</p>
+</sec><sec id="s2d">
+<title>Hepatocellular carcinoma</title>
+<p>Hepatocellular carcinoma (HCC) is a primary cancer that originates in hepatocytes and typically follows cirrhosis or chronic-hepatitis virus infections <xref ref-type="bibr" rid="pcbi.1000851-Davis1">[50]</xref>, and the most significant risk factors for HCC are chronic infections with either hepatitis B virus or hepatitis C virus (HCV).</p>
+<p><xref ref-type="fig" rid="pcbi-1000851-g007">Figure 7</xref> is a BTS toggling graph in which mRNA expression data (ArrayExpress ID: E-GEOD-6764, <xref ref-type="bibr" rid="pcbi.1000851-Wurmbach1">[51]</xref>) for tissues from patients with HCV-induced dysplasia and HCC are compared with mRNA expression data for normal liver tissue. The molecules surrounded by bold lines are BTSs for which toggling was observed when comparing dysplastic liver tissue (cirrhotic tissue and dysplastic nodules), a precursor of liver cancer, with normal liver tissue. The two tissue types share many BTSs associated with PTGS2 (prostaglandin-endoperoxide synthase 2; COX-2) and IL1B (interleukin 1, beta). It has been demonstrated that the expression pattern of PTGS2, a key enzyme of the prostaglandin metabolism, is closely correlated with the differentiation grade of HCC <xref ref-type="bibr" rid="pcbi.1000851-Bae1">[52]</xref>. Nonsteroidal anti-inflammatory drugs targeting PTGS2 have been shown to inhibit the proliferation of cultured hepatocellular cancer cells by inducing cell-cycle arrest <xref ref-type="bibr" rid="pcbi.1000851-Baek1">[53]</xref>.</p>
+<fig id="pcbi-1000851-g007" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000851.g007</object-id><label>Figure 7</label><caption>
+<title>Changes in ON/OFF states of BTSs in dysplastic liver tissue and hepatocellular carcinoma.</title>
+<p>BTS toggling graph comparing the mRNA expression data (ArrayExpress ID: E-GEOD-6764) of normal liver tissue with that of precancerous and cancerous liver tissue. The nodes and edges surrounded by the bold lines are BTSs for which toggling was observed when comparing dysplastic liver tissue, a precursor of liver cancer, with normal liver tissue. The nodes represent genes and the edges between them represent the pairing of bistable toggle switches. The colors of nodes were automatically assigned as a continuous color gradient from red for ON (upregulated) to blue for OFF (downregulated) according to relative gene-expression levels of the nodes.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000851.g007" xlink:type="simple"/></fig>
+<p>When HCC tissue was compared with healthy liver tissue, toggling was most evident for CCNA2(cyclin A2)–related BTSs (<xref ref-type="fig" rid="pcbi-1000851-g007">Fig. 7</xref>) We therefore analyzed how the toggling of CCNA2-related BTSs rippled out to other BTS pairs during the malignant transition of HCC (<xref ref-type="fig" rid="pcbi-1000851-g008">Fig. 8</xref>).</p>
+<fig id="pcbi-1000851-g008" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000851.g008</object-id><label>Figure 8</label><caption>
+<title>Rippling of toggling of CCNA2-related BTS during malignant transition of HCC.</title>
+<p>Fig. 8A: A network of CCNA2-related BTS pairs selected from the data used in <xref ref-type="fig" rid="pcbi-1000851-g007">Fig. 7A</xref>. Fig. 8B–E: The nodes represent genes and the edges between them represent the pairing of bistable toggle switches. The colors of nodes were automatically assigned as a continuous color gradient from red for ON (upregulated) to blue for OFF (downregulated) according to relative gene-expression levels of the nodes. B: very early HCC, C: early HCC, D: advanced HCC, E: very advanced HCC. Note that the ON/OFF status of TP53-IGF1 was changed in advanced HCC.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000851.g008" xlink:type="simple"/></fig>
+<p>CCNA2 activates CDC2 or CDK2 kinases and regulates the cell cycle positively by promoting G1/S and G2/M transitions in both the G1 and G2 phases of the cell cycle <xref ref-type="bibr" rid="pcbi.1000851-Wheeler1">[54]</xref>, while EGR1 (early growth response gene 1) has suppresses transformation <xref ref-type="bibr" rid="pcbi.1000851-KronesHerzig1">[55]</xref>. The upregulation of CCNA2 and downregulation of EGR1 might thus play a key role in the dysregulation of normal growth in HCC carcinogenesis <xref ref-type="bibr" rid="pcbi.1000851-Hao1">[56]</xref>. The downregulation of IL6 (interleukin 6) is involved in dysregulation of the immune response in early carcinogenesis.</p>
+<p>After the toggling of CCNA2-related BTSs but still in the early stage of carcinogenesis, the OFF state of IL6 is related to the ON states of PTK2 and SMAD3 (SMAD family member 3). PTK2 and SMAD3 play important roles in cell growth and the activation of intracellular signal transduction pathways, suggesting that cell proliferation might accelerate during this stage.</p>
+<p>Toggling of PTK2(ON)-BCL2(OFF) was observed in advanced and very advanced stages. BCL2 (B-cell CLL/lymphoma 2) suppresses apoptosis, and the downregulation of BCL2 might be involved in the acceleration of apoptosis in cancer cells.</p>
+<p>Notably, the ON/OFF state of the TP53-IGF1 BTS was changed from “OFF-OFF” to “ON(TP53)–OFF(IGF1)” in advanced HCC. And in very advanced HCC, almost all IGF1-related BTS pairs demonstrated “ON(other)–OFF(IGF1)” patterns.</p>
+<p>In the very advanced stage, many IGF1(insulin-like growth factor-1)-related BTS pairs demonstrated significant ON/OFF changes. The liver is the main source of IGF1, and the development of HCC is accompanied by significantly reduced serum IGF1 levels <xref ref-type="bibr" rid="pcbi.1000851-Elsammak1">[57]</xref>. The downregulation of IGF1 and upregulation of a set of another pair of genes might affect a wide variety of cellular functions.</p>
+</sec></sec><sec id="s3">
+<title>Discussion</title>
+<p>We constructed bistable switch networks, compared their ON/OFF states with those of control (healthy) samples, and found that their states changed with disease progression and differed between patient subtypes. Since most disease states exhibit a certain level of resilience against therapeutic intervention, each can be considered to be homeostatic to some extent. This homeostasis implies the robust status of a dynamical network and could not be maintained without mechanisms that drive a network to maintain a certain state. One such mechanism is a bistable switch, so we should look for sets of bistable switch circuits in large-scale protein interaction networks.</p>
+<p>Our analysis revealed that BTS states change with disease progression, and the implications of this are far reaching. For example, it might be possible to prevent or delay disease progression by perturbing one or more such switches. Such switches may be novel drug-target candidates for controlling disease progression. Analysis of the ON/OFF states of genes constituting bistable circuits revealed similarities between disease subtypes.</p>
+<p>While our analysis has provided insightful information, it has shortcomings. First, the network topologies were based on commercial databases created using a text-mining system. This means that the details of the molecular interactions were not verified. The development of a more accurate interaction database would enable more precise and accurate analysis of bistable network behaviors and of the contributions of switch circuits to those behaviors. Second, the analysis was based solely on network topologies—no parametric features were considered. Although topological analysis enabled us to identify circuits exhibiting bistable behavior, whether circuits exhibiting bistable behavior apparently exhibit bistable behavior depends on the kinetic parameters associated with each interaction <xref ref-type="bibr" rid="pcbi.1000851-Qiao1">[58]</xref>.</p>
+<p>Using microarray data, we determined that the pairs of genes in the circuits we identified are polarized into ON and OFF states. Two mutually inhibitory nodes polarized into ON and OFF states do not function as a bistable switch if both genes are ON or OFF. This is why we focused on BTSs, which demonstrated “ON/OFF” or “OFF/ON” states. We should, however, note that the “ON/ON” states of some BTSs play important roles in mammalian embryogenesis <xref ref-type="bibr" rid="pcbi.1000851-Niwa2">[59]</xref>, T-cell differentiation <xref ref-type="bibr" rid="pcbi.1000851-Wang1">[60]</xref>, and visual-system specification <xref ref-type="bibr" rid="pcbi.1000851-Schwarz1">[61]</xref>.</p>
+<p>Cluster analysis of transcriptome data in microarrays is useful for classifying disease characteristics according to differences in expression patterns. Although several disease types that are difficult to classify morphologically have been classified using this approach, the rules underlying the cluster structure of the data are unclear, and the importance of each of the molecules in a cluster cannot be determined with a reasonable degree of certainty. The analysis of changes in gene-expression levels can also be used to create a list of molecules whose levels increase or decrease significantly over time or whose levels differ significantly between healthy and diseased tissues. Although examinations of gene interrelations using gene-ontology classification and analysis of the classification results using network diagrams have led to a greater degree of understanding of the changes in molecular networks, it is difficult to infer the meanings of biological interactions between molecules.</p>
+<p>Our proposed method (i.e., focusing on BTS ON/OFF changes) takes as the starting point the interactions between molecules. This makes it easy to infer biological meaning and makes it possible to analyze time-dependent data for time periods corresponding to that of disease progression (from hours to years). In addition, while conventional methods sometimes neglect molecules that are downregulated, our method places equal importance on both increases and decreases in expression.</p>
+<p>DNA microarray technology makes it possible to study the expression of thousands of genes at the same time, but much of the microarray data consists of low signal intensities that can produce erroneous gene expression ratios between control and experimental samples <xref ref-type="bibr" rid="pcbi.1000851-Asyali1">[62]</xref>. The distribution of the ratio of two random variables approaches a Cauchy, or Lorentzian, distribution, which has longer tails than Gaussian distributions <xref ref-type="bibr" rid="pcbi.1000851-Hinkley1">[63]</xref>, <xref ref-type="bibr" rid="pcbi.1000851-Brody1">[64]</xref>. In our results, far more BTS pairs had significant toggling scores than did random gene pairs, but a considerable number of random gene pairs did show significant ON/OFF changes. We should therefore consider the possibility of random error in the analysis of BTS pairs.</p>
+<p>We used the transcriptome of normal tissue as the control in our analyses. This means that the identification of the molecular ON/OFF states inherent to normal tissue was unclear. Even if the ON/OFF state of a molecular pair for a certain switch is important for a particular tissue, if this state is retained in the diseased tissue, we would be unable to detect it in the present study because the ON and OFF states are not mutually exclusive. Therefore, molecules exhibiting even the slightest change are emphasized while those showing no change are ignored. We aim to overcome this drawback by identifying what types of ON/OFF changes occur in switches when embryonic stem (ES) cells or iPS cells undergo differentiation.</p>
+<p>Since proteins are responsible for cell function, the ON/OFF state of a molecule must be determined at the protein level when searching for molecular-network structures mediating cell functions. Because there are more than 20 control steps along the way from mRNA to functional proteins <xref ref-type="bibr" rid="pcbi.1000851-Cochella1">[65]</xref>, the reported expression levels of mRNA do not always agree with those of proteins—their translated products <xref ref-type="bibr" rid="pcbi.1000851-Xu1">[66]</xref>. And even if there were a quantitative correlation between the levels of mRNA and functional protein, the efficiency of the translation process would be greatly affected by factors such as structural change and protein localization. Proteomics data for proteins in different cellular contexts is useful but is available for only some proteins. Transcriptome data analysis is the only method currently available for examining molecular networks on a large scale, but when testing the quality of BTS pairs in the future we will use all the relevant available data for the target proteins. Furthermore, to ensure bistability, the hysteresis phenomena must be confirmed when a perturbation has vanished. By conducting time-scale experiments in both directions when applying and removing perturbations, we should be able to further test the quality of BTS pairs.</p>
+<p>Despite its shortcomings, the approach presented here provides useful insights into the states of biological networks, insights that may lead to discovery of novel drug targets and therapeutic interventions.</p>
+</sec><sec id="s4" sec-type="materials|methods">
+<title>Materials and Methods</title>
+<sec id="s4a">
+<title>Preparation of basic interaction datasets</title>
+<p>The lists of molecular interactions were constructed using the Ariadne Genomics ResNet human protein interaction database (ver. 3.0) compiled, using MedScan <xref ref-type="bibr" rid="pcbi.1000851-Novichkova1">[67]</xref> natural language processing technology, from more than 13,000,000 PubMed abstracts and 43 publicly available full-text journals. The database contains data on over 200,000 objects (proteins and small molecules) and over 100,000 interactions.</p>
+<p>The interactions can be divided into two major classes: direct physical interactions (binding, protein modifications, and promoter binding) and indirect regulatory interactions (regulation, expression regulation, direct regulation, molecular transport regulation, and molecular synthesis regulation). MedScan also extracted information on the relation direction and the effect on the target molecule. The “Effect” attribute has three possible values: “positive,” “negative,” and “unknown.” The BTS pairs were extracted from the database on the basis of five rules.</p>
+<list list-type="order"><list-item>
+<p>Nodes are limited to genes and proteins only.</p>
+</list-item><list-item>
+<p>Edges are limited to “Regulation,” “Expression,” and “DirectRegulation.”</p>
+</list-item><list-item>
+<p>“Unknown” edges in the “Effect” attribute are omitted.</p>
+</list-item><list-item>
+<p>Edges extracted from fewer than three references are omitted.</p>
+</list-item><list-item>
+<p>If there is a positive and negative attribute in the same direction, the edge is extracted from additional references.</p>
+</list-item></list>
+<p>We extracted 19,178 relationships involving 3,682 genes (basic interaction datasets).</p>
+</sec><sec id="s4b">
+<title>Extraction of candidate bistable toggle switches</title>
+<p>Using basic interaction datasets, we extracted possible network motifs for toggle switches. We defined these motifs as follows.</p>
+<p>The type-1 BTS contains two genes that have positive autoregulation and inhibit each other's expression. The type-2 BTS also contains two genes that suppress each other's expression, but each gene also has a positive or negative loop with the other gene. One of the four subtypes of type-2 BTSs (corresponding to the four possible combinations of double positive and/or negative feedback) shows the same function as the type-1 BTS. The type-3 BTS was based on a theoretical study of the modeling of genetic switches with positive feedback loops <xref ref-type="bibr" rid="pcbi.1000851-Kobayashi2">[37]</xref>. The BTS motifs are illustrated in <xref ref-type="fig" rid="pcbi-1000851-g002">Fig. 2</xref>, and we extracted 6585 BTSs (see supporting Table 1).</p>
+</sec><sec id="s4c">
+<title>Analysis of toggling</title>
+<p>We used mRNA microarray data to examine the changes in the ON/OFF states of BTS candidates. CEL format files or tab-limited text files were downloaded via ArrayExpress (<ext-link ext-link-type="uri" xlink:href="http://www.ebi.ac.uk/arrayexpress/" xlink:type="simple">http://www.ebi.ac.uk/arrayexpress/</ext-link>), which is a public repository provided by the European Bioinformatics Institute <xref ref-type="bibr" rid="pcbi.1000851-Parkinson1">[68]</xref>. We only used microarray data obtained from experiments with humans and with platforms of Affymetrix HG-U133A&amp;B (631 sets) and HG-U133Plus2.0 (404 sets). These data were normalized and summarized using the robust multichip analysis method <xref ref-type="bibr" rid="pcbi.1000851-Irizarry1">[69]</xref> implemented in the Affymetrix Expression Console software.</p>
+<p>The toggling of a BTS pair was defined as instances in which the mRNA levels of a sample increased for one molecule of the pair and decreased for the other. To remove background noise, we calculated the toggling score using<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000851.e001" xlink:type="simple"/></disp-formula></p>
+<p>where SW1 and SW2 are the two molecules in alphabetical order. Changes in the ON/OFF states were considered significant when the toggling score was more than two standard deviations greater than the mean of all the toggling scores.</p>
+</sec><sec id="s4d">
+<title>Network visualization</title>
+<p>For pathway visualization, we used Cytoscape (Version 2.6.3), which is widely used open-source software for visualization and analysis of networks <xref ref-type="bibr" rid="pcbi.1000851-Shannon1">[70]</xref>. The nodes in the visualized BTS network represent genes, the edges between nodes represent the pairing of bistable toggle switches, and the color of nodes were automatically assigned as a continuous color gradient from red for ON (upregulated) to blue for OFF (downregulated) according to relative gene-expression levels of the nodes.</p>
+</sec></sec><sec id="s5">
+<title>Supporting Information</title>
+<supplementary-material id="pcbi.1000851.s001" mimetype="application/x-excel" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000851.s001" xlink:type="simple"><label>Protocol S1</label><caption>
+<p>List of BTS pairs SW1 and SW2 are the two molecules comprising a BTS pair in alphabetical order.</p>
+<p>(0.16 MB XLS)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1000851.s002" mimetype="application/zip" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000851.s002" xlink:type="simple"><label>Protocol S2</label><caption>
+<p>Cytoscape session file for <xref ref-type="fig" rid="pcbi-1000851-g003">Figure 3</xref>.</p>
+<p>(0.09 MB ZIP)</p>
+</caption></supplementary-material></sec></body>
+<back>
+<ack>
+<p>We are grateful to Dr. Y. Hamada (Sony Corporation) for preparing the basic interaction datasets, Mr. J. Suzuki (Tokyo Institute of Technology) for assisting us with the data extraction, and Dr. S. Ueda (Otsu Municipal Hospital) for providing us with the microarray data. We also thank Dr. K. Tabuchi for his useful comments and discussion.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1000851-Sontag1"><label>1</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Sontag</surname><given-names>ED</given-names></name>
+</person-group>             <year>2007</year>             <article-title>Monotone and near-monotone biochemical networks.</article-title>             <source>Syst Synth Biol</source>             <volume>1</volume>             <fpage>59</fpage>             <lpage>87</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Kauffman1"><label>2</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Kauffman</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Peterson</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Samuelsson</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Troein</surname><given-names>C</given-names></name>
+</person-group>             <year>2004</year>             <article-title>Genetic networks with canalyzing Boolean rules are always stable.</article-title>             <source>Proc Natl Acad Sci USA</source>             <volume>101</volume>             <fpage>17102</fpage>             <lpage>17107</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Milo1"><label>3</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Milo</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Shen-Orr</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Itzkovitz</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Kashtan</surname><given-names>N</given-names></name>
+<name name-style="western"><surname>Chklovskii</surname><given-names>D</given-names></name>
+<etal/></person-group>             <year>2002</year>             <article-title>Network motifs: simple building blocks of complex networks.</article-title>             <source>Science</source>             <volume>298</volume>             <fpage>824</fpage>             <lpage>827</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-ShenOrr1"><label>4</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Shen-Orr</surname><given-names>SS</given-names></name>
+<name name-style="western"><surname>Milo</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Mangan</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Alon</surname><given-names>U</given-names></name>
+</person-group>             <year>2002</year>             <article-title>Network motifs in the transcriptional regulation network of Escherichia coli.</article-title>             <source>Nat Genet</source>             <volume>31</volume>             <fpage>64</fpage>             <lpage>68</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Tyson1"><label>5</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Tyson</surname><given-names>JJ</given-names></name>
+<name name-style="western"><surname>Chen</surname><given-names>KC</given-names></name>
+<name name-style="western"><surname>Novak</surname><given-names>B</given-names></name>
+</person-group>             <year>2003</year>             <article-title>Sniffers, buzzers, toggles and blinkers: dynamics of regulatory and signaling pathways in the cell.</article-title>             <source>Curr Opin Cell Biol</source>             <volume>15</volume>             <fpage>221</fpage>             <lpage>231</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Wolf1"><label>6</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Wolf</surname><given-names>DM</given-names></name>
+<name name-style="western"><surname>Arkin</surname><given-names>AP</given-names></name>
+</person-group>             <year>2003</year>             <article-title>Motifs, modules and games in bacteria.</article-title>             <source>Curr Opin Microbiol</source>             <volume>6</volume>             <fpage>125</fpage>             <lpage>134</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Isaacs1"><label>7</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Isaacs</surname><given-names>FJ</given-names></name>
+<name name-style="western"><surname>Hasty</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Cantor</surname><given-names>CR</given-names></name>
+<name name-style="western"><surname>Collins</surname><given-names>JJ</given-names></name>
+</person-group>             <year>2003</year>             <article-title>Prediction and measurement of an autoregulatory genetic module.</article-title>             <source>Proc Natl Acad Sci USA</source>             <volume>100</volume>             <fpage>7714</fpage>             <lpage>7719</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-McAdams1"><label>8</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>McAdams</surname><given-names>HH</given-names></name>
+<name name-style="western"><surname>Arkin</surname><given-names>A</given-names></name>
+</person-group>             <year>1997</year>             <article-title>Stochastic mechanisms in gene expression.</article-title>             <source>Proc Natl Acad Sci USA</source>             <volume>94</volume>             <fpage>814</fpage>             <lpage>819</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Ptashne1"><label>9</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Ptashne</surname><given-names>M</given-names></name>
+</person-group>             <year>1992</year>             <article-title>A genetic switch; phage lambda and higher organisms.</article-title>             <source>Blackwell Science</source>          </element-citation></ref>
+<ref id="pcbi.1000851-Novick1"><label>10</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Novick</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Weiner</surname><given-names>M</given-names></name>
+</person-group>             <year>1957</year>             <article-title>Enzyme Induction as an all-or-none phenomenon.</article-title>             <source>Proc Natl Acad Sci USA</source>             <volume>43</volume>             <fpage>553</fpage>             <lpage>566</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Ozbudak1"><label>11</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Ozbudak</surname><given-names>EM</given-names></name>
+<name name-style="western"><surname>Thattai</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Lim</surname><given-names>HN</given-names></name>
+<name name-style="western"><surname>Shraiman</surname><given-names>BI</given-names></name>
+<name name-style="western"><surname>Van Oudenaarden</surname><given-names>A</given-names></name>
+</person-group>             <year>2004</year>             <article-title>Multistability in the lactose utilization network of Escherichia coli.</article-title>             <source>Nature</source>             <volume>427</volume>             <fpage>737</fpage>             <lpage>740</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Vilar1"><label>12</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Vilar</surname><given-names>JM</given-names></name>
+<name name-style="western"><surname>Guet</surname><given-names>CC</given-names></name>
+<name name-style="western"><surname>Leibler</surname><given-names>S</given-names></name>
+</person-group>             <year>2003</year>             <article-title>Modeling network dynamics: the lac operon, a case study.</article-title>             <source>J Cell Biol</source>             <volume>161</volume>             <fpage>471</fpage>             <lpage>476</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Bagowski1"><label>13</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Bagowski</surname><given-names>CP</given-names></name>
+<name name-style="western"><surname>Ferrell</surname><given-names>JE</given-names><suffix>Jr</suffix></name>
+</person-group>             <year>2001</year>             <article-title>Bistability in the JNK cascade.</article-title>             <source>Curr Biol</source>             <volume>11</volume>             <fpage>1176</fpage>             <lpage>1182</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Bhalla1"><label>14</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Bhalla</surname><given-names>US</given-names></name>
+<name name-style="western"><surname>Ram</surname><given-names>PT</given-names></name>
+<name name-style="western"><surname>Iyengar</surname><given-names>R</given-names></name>
+</person-group>             <year>2002</year>             <article-title>MAP kinase phosphatase as a locus of flexibility in a mitogen-activated protein kinase signaling network.</article-title>             <source>Science</source>             <volume>297</volume>             <fpage>1018</fpage>             <lpage>1023</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Ferrell1"><label>15</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Ferrell</surname><given-names>JE</given-names><suffix>Jr</suffix></name>
+</person-group>             <year>1996</year>             <article-title>Tripping the switch fantastic: how a protein kinase cascade can convert graded inputs into switch-like outputs.</article-title>             <source>Trends Biochem Sci</source>             <volume>21</volume>             <fpage>460</fpage>             <lpage>466</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Ferrell2"><label>16</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Ferrell</surname><given-names>JE</given-names><suffix>Jr</suffix></name>
+</person-group>             <year>1997</year>             <article-title>How responses get more switch-like as you move down a protein kinase cascade.</article-title>             <source>Trends Biochem Sci</source>             <volume>22</volume>             <fpage>288</fpage>             <lpage>289</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Ferrell3"><label>17</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Ferrell</surname><given-names>JE</given-names><suffix>Jr</suffix></name>
+<name name-style="western"><surname>Machleder</surname><given-names>EM</given-names></name>
+</person-group>             <year>1998</year>             <article-title>The biochemical basis of an all-or-none cell fate switch in Xenopus oocytes.</article-title>             <source>Science</source>             <volume>280</volume>             <fpage>895</fpage>             <lpage>898</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Ferrell4"><label>18</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Ferrell</surname><given-names>JE</given-names></name>
+<name name-style="western"><surname>Xiong</surname><given-names>W</given-names></name>
+</person-group>             <year>2001</year>             <article-title>Bistability in cell signaling: How to make continuous processes discontinuous, and reversible processes irreversible.</article-title>             <source>Chaos</source>             <volume>11</volume>             <fpage>227</fpage>             <lpage>236</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Huang1"><label>19</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Huang</surname><given-names>CY</given-names></name>
+<name name-style="western"><surname>Ferrell</surname><given-names>JE</given-names><suffix>Jr</suffix></name>
+</person-group>             <year>1996</year>             <article-title>Ultrasensitivity in the mitogen-activated protein kinase cascade.</article-title>             <source>Proc Natl Acad Sci USA</source>             <volume>93</volume>             <fpage>10078</fpage>             <lpage>10083</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Markevich1"><label>20</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Markevich</surname><given-names>NI</given-names></name>
+<name name-style="western"><surname>Hoek</surname><given-names>JB</given-names></name>
+<name name-style="western"><surname>Kholodenko</surname><given-names>BN</given-names></name>
+</person-group>             <year>2004</year>             <article-title>Signaling switches and bistability arising from multisite phosphorylation in protein kinase cascades.</article-title>             <source>J Cell Biol</source>             <volume>164</volume>             <fpage>353</fpage>             <lpage>359</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Lai1"><label>21</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Lai</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Robertson</surname><given-names>MJ</given-names></name>
+<name name-style="western"><surname>Schaffer</surname><given-names>DV</given-names></name>
+</person-group>             <year>2004</year>             <article-title>The sonic hedgehog signaling system as a bistable genetic switch.</article-title>             <source>Biophys J</source>             <volume>86</volume>             <fpage>2748</fpage>             <lpage>2757</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Cross1"><label>22</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Cross</surname><given-names>FR</given-names></name>
+<name name-style="western"><surname>Archambault</surname><given-names>V</given-names></name>
+<name name-style="western"><surname>Miller</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Klovstad</surname><given-names>M</given-names></name>
+</person-group>             <year>2002</year>             <article-title>Testing a mathematical model of the yeast cell cycle.</article-title>             <source>Mol Biol Cell</source>             <volume>13</volume>             <fpage>52</fpage>             <lpage>70</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Pomerening1"><label>23</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Pomerening</surname><given-names>JR</given-names></name>
+<name name-style="western"><surname>Sontag</surname><given-names>ED</given-names></name>
+<name name-style="western"><surname>Ferrell</surname><given-names>JE</given-names><suffix>Jr</suffix></name>
+</person-group>             <year>2003</year>             <article-title>Building a cell cycle oscillator: hysteresis and bistability in the activation of Cdc2.</article-title>             <source>Nat Cell Biol</source>             <volume>5</volume>             <fpage>346</fpage>             <lpage>351</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Sha1"><label>24</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Sha</surname><given-names>W</given-names></name>
+<name name-style="western"><surname>Moore</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Chen</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Lassaletta</surname><given-names>AD</given-names></name>
+<name name-style="western"><surname>Yi</surname><given-names>CS</given-names></name>
+<etal/></person-group>             <year>2003</year>             <article-title>Hysteresis drives cell-cycle transitions in Xenopus laevis egg extracts.</article-title>             <source>Proc Natl Acad Sci USA</source>             <volume>100</volume>             <fpage>975</fpage>             <lpage>980</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Reynolds1"><label>25</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Reynolds</surname><given-names>AR</given-names></name>
+<name name-style="western"><surname>Tischer</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Verveer</surname><given-names>PJ</given-names></name>
+<name name-style="western"><surname>Rocks</surname><given-names>O</given-names></name>
+<name name-style="western"><surname>Bastiaens</surname><given-names>PI</given-names></name>
+</person-group>             <year>2003</year>             <article-title>EGFR activation coupled to inhibition of tyrosine phosphatases causes lateral signal propagation.</article-title>             <source>Nat Cell Biol</source>             <volume>5</volume>             <fpage>447</fpage>             <lpage>453</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Gardner1"><label>26</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Gardner</surname><given-names>TS</given-names></name>
+<name name-style="western"><surname>Cantor</surname><given-names>CR</given-names></name>
+<name name-style="western"><surname>Collins</surname><given-names>JJ</given-names></name>
+</person-group>             <year>2000</year>             <article-title>Construction of a genetic toggle switch in Escherichia coli.</article-title>             <source>Nature</source>             <volume>403</volume>             <fpage>339</fpage>             <lpage>342</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Kobayashi1"><label>27</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Kobayashi</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Kaern</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Araki</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Chung</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Gardner</surname><given-names>TS</given-names></name>
+<etal/></person-group>             <year>2004</year>             <article-title>Programmable cells: interfacing natural and engineered gene networks.</article-title>             <source>Proc Natl Acad Sci USA</source>             <volume>101</volume>             <fpage>8414</fpage>             <lpage>8419</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Kramer1"><label>28</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Kramer</surname><given-names>BP</given-names></name>
+<name name-style="western"><surname>Viretta</surname><given-names>AU</given-names></name>
+<name name-style="western"><surname>Daoud-El-Baba</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Aubel</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Weber</surname><given-names>W</given-names></name>
+<etal/></person-group>             <year>2004</year>             <article-title>An engineered epigenetic transgene switch in mammalian cells.</article-title>             <source>Nat Biotechnol</source>             <volume>22</volume>             <fpage>867</fpage>             <lpage>870</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-SabouriGhomi1"><label>29</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Sabouri-Ghomi</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Ciliberto</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Kar</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Novak</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Tyson</surname><given-names>JJ</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Antagonism and bistability in protein interaction networks.</article-title>             <source>J Theor Biol</source>             <volume>250</volume>             <fpage>209</fpage>             <lpage>218</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Bagowski2"><label>30</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Bagowski</surname><given-names>CP</given-names></name>
+<name name-style="western"><surname>Besser</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Frey</surname><given-names>CR</given-names></name>
+<name name-style="western"><surname>Ferrell</surname><given-names>JE</given-names><suffix>Jr</suffix></name>
+</person-group>             <year>2003</year>             <article-title>The JNK cascade as a biochemical switch in mammalian cells: ultrasensitive and all-or-none responses.</article-title>             <source>Curr Biol</source>             <volume>13</volume>             <fpage>315</fpage>             <lpage>320</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Laslo1"><label>31</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Laslo</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Spooner</surname><given-names>CJ</given-names></name>
+<name name-style="western"><surname>Warmflash</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Lancki</surname><given-names>DW</given-names></name>
+<name name-style="western"><surname>Lee</surname><given-names>HJ</given-names></name>
+<etal/></person-group>             <year>2006</year>             <article-title>Multilineage transcriptional priming and determination of alternate hematopoietic cell fates.</article-title>             <source>Cell</source>             <volume>126</volume>             <fpage>755</fpage>             <lpage>766</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Ferrell5"><label>32</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Ferrell</surname><given-names>JE</given-names><suffix>Jr</suffix></name>
+</person-group>             <year>2002</year>             <article-title>Self-perpetuating states in signal transduction: positive feedback, double-negative feedback and bistability.</article-title>             <source>Curr Opin Cell Biol</source>             <volume>14</volume>             <fpage>140</fpage>             <lpage>148</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Hasty1"><label>33</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Hasty</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>McMillen</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Isaacs</surname><given-names>F</given-names></name>
+<name name-style="western"><surname>Collins</surname><given-names>JJ</given-names></name>
+</person-group>             <year>2001</year>             <article-title>Computational studies of gene regulatory networks: in numero molecular biology.</article-title>             <source>Nat Rev Genet</source>             <volume>2</volume>             <fpage>268</fpage>             <lpage>279</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Laurent1"><label>34</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Laurent</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Kellershohn</surname><given-names>N</given-names></name>
+</person-group>             <year>1999</year>             <article-title>Multistability: a major means of differentiation and evolution in biological systems.</article-title>             <source>Trends Biochem Sci</source>             <volume>24</volume>             <fpage>418</fpage>             <lpage>422</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Smolen1"><label>35</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Smolen</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Baxter</surname><given-names>DA</given-names></name>
+<name name-style="western"><surname>Byrne</surname><given-names>JH</given-names></name>
+</person-group>             <year>2000</year>             <article-title>Mathematical modeling of gene networks.</article-title>             <source>Neuron</source>             <volume>26</volume>             <fpage>567</fpage>             <lpage>580</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Guantes1"><label>36</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Guantes</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Poyatos</surname><given-names>JF</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Multistable decision switches for flexible control of epigenetic differentiation.</article-title>             <source>PLoS Comput Biol</source>             <volume>4</volume>             <fpage>e1000235</fpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Kobayashi2"><label>37</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Kobayashi</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Chen</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Aihara</surname><given-names>K</given-names></name>
+</person-group>             <year>2003</year>             <article-title>Modeling genetic switches with positive feedback loops.</article-title>             <source>J Theor Biol</source>             <volume>221</volume>             <fpage>379</fpage>             <lpage>399</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Cao1"><label>38</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Cao</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Liang</surname><given-names>J</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Optimal enumeration of state space of finitely buffered stochastic molecular networks and exact computation of steady state landscape probability.</article-title>             <source>BMC Syst Biol</source>             <volume>2</volume>             <fpage>30</fpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Chatterjee1"><label>39</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Chatterjee</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Kaznessis</surname><given-names>YN</given-names></name>
+<name name-style="western"><surname>Hu</surname><given-names>WS</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Tweaking biological switches through a better understanding of bistability behavior.</article-title>             <source>Curr Opin Biotechnol</source>             <volume>19</volume>             <fpage>475</fpage>             <lpage>481</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Okita1"><label>40</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Okita</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Nakagawa</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Hyenjong</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Ichisaka</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Yamanaka</surname><given-names>S</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Generation of mouse induced pluripotent stem cells without viral vectors.</article-title>             <source>Science</source>             <volume>322</volume>             <fpage>949</fpage>             <lpage>953</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Boyer1"><label>41</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Boyer</surname><given-names>LA</given-names></name>
+<name name-style="western"><surname>Mathur</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Jaenisch</surname><given-names>R</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Molecular control of pluripotency.</article-title>             <source>Curr Opin Genet Dev</source>             <volume>16</volume>             <fpage>455</fpage>             <lpage>462</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Chickarmane1"><label>42</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Chickarmane</surname><given-names>V</given-names></name>
+<name name-style="western"><surname>Troein</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Nuber</surname><given-names>UA</given-names></name>
+<name name-style="western"><surname>Sauro</surname><given-names>HM</given-names></name>
+<name name-style="western"><surname>Peterson</surname><given-names>C</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Transcriptional dynamics of the embryonic stem cell switch.</article-title>             <source>PLoS Comput Biol</source>             <volume>2</volume>             <fpage>e123</fpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Niwa1"><label>43</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Niwa</surname><given-names>H</given-names></name>
+</person-group>             <year>2007</year>             <article-title>How is pluripotency determined and maintained?</article-title>             <source>Development</source>             <volume>134</volume>             <fpage>635</fpage>             <lpage>646</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Chari1"><label>44</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Chari</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Lonergan</surname><given-names>KM</given-names></name>
+<name name-style="western"><surname>Ng</surname><given-names>RT</given-names></name>
+<name name-style="western"><surname>MacAulay</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Lam</surname><given-names>WL</given-names></name>
+<etal/></person-group>             <year>2007</year>             <article-title>Effect of active smoking on the human bronchial epithelium transcriptome.</article-title>             <source>BMC Genomics</source>             <volume>8</volume>             <fpage>297</fpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Sridhar1"><label>45</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Sridhar</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Schembri</surname><given-names>F</given-names></name>
+<name name-style="western"><surname>Zeskind</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Shah</surname><given-names>V</given-names></name>
+<name name-style="western"><surname>Gustafson</surname><given-names>AM</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>Smoking-induced gene expression changes in the bronchial airway are reflected in nasal and buccal epithelium.</article-title>             <source>BMC Genomics</source>             <volume>9</volume>             <fpage>259</fpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Gao1"><label>46</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Gao</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Ward</surname><given-names>PA</given-names></name>
+</person-group>             <year>2007</year>             <article-title>STAT3 and suppressor of cytokine signaling 3: potential targets in lung inflammatory responses.</article-title>             <source>Expert Opin Ther Targets</source>             <volume>11</volume>             <fpage>869</fpage>             <lpage>880</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-He1"><label>47</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>He</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>You</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Uematsu</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Zang</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Xu</surname><given-names>Z</given-names></name>
+<etal/></person-group>             <year>2003</year>             <article-title>SOCS-3 is frequently silenced by hypermethylation and suppresses cell growth in human lung cancer.</article-title>             <source>Proc Natl Acad Sci USA</source>             <volume>100</volume>             <fpage>14133</fpage>             <lpage>14138</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Boldrini1"><label>48</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Boldrini</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Donati</surname><given-names>V</given-names></name>
+<name name-style="western"><surname>Dell'Omodarme</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Prati</surname><given-names>MC</given-names></name>
+<name name-style="western"><surname>Faviana</surname><given-names>P</given-names></name>
+<etal/></person-group>             <year>2005</year>             <article-title>Prognostic significance of osteopontin expression in early-stage non-small-cell lung cancer.</article-title>             <source>Br J Cancer</source>             <volume>93</volume>             <fpage>453</fpage>             <lpage>457</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Boldrini2"><label>49</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Boldrini</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Gisfredi</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Ursino</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Faviana</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Lucchi</surname><given-names>M</given-names></name>
+<etal/></person-group>             <year>2005</year>             <article-title>Expression of endothelin-1 is related to poor prognosis in non-small cell lung carcinoma.</article-title>             <source>Eur J Cancer</source>             <volume>41</volume>             <fpage>2828</fpage>             <lpage>2835</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Davis1"><label>50</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Davis</surname><given-names>GL</given-names></name>
+<name name-style="western"><surname>Dempster</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Meler</surname><given-names>JD</given-names></name>
+<name name-style="western"><surname>Orr</surname><given-names>DW</given-names></name>
+<name name-style="western"><surname>Walberg</surname><given-names>MW</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>Hepatocellular carcinoma: management of an increasingly common problem.</article-title>             <source>Proc (Bayl Univ Med Cent)</source>             <volume>21</volume>             <fpage>266</fpage>             <lpage>280</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Wurmbach1"><label>51</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Wurmbach</surname><given-names>E</given-names></name>
+<name name-style="western"><surname>Chen</surname><given-names>YB</given-names></name>
+<name name-style="western"><surname>Khitrov</surname><given-names>G</given-names></name>
+<name name-style="western"><surname>Zhang</surname><given-names>W</given-names></name>
+<name name-style="western"><surname>Roayaie</surname><given-names>S</given-names></name>
+<etal/></person-group>             <year>2007</year>             <article-title>Genome-wide molecular profiles of HCV-induced dysplasia and hepatocellular carcinoma.</article-title>             <source>Hepatology</source>             <volume>45</volume>             <fpage>938</fpage>             <lpage>947</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Bae1"><label>52</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Bae</surname><given-names>SH</given-names></name>
+<name name-style="western"><surname>Jung</surname><given-names>ES</given-names></name>
+<name name-style="western"><surname>Park</surname><given-names>YM</given-names></name>
+<name name-style="western"><surname>Kim</surname><given-names>BS</given-names></name>
+<name name-style="western"><surname>Kim</surname><given-names>BK</given-names></name>
+<etal/></person-group>             <year>2001</year>             <article-title>Expression of cyclooxygenase-2 (COX-2) in hepatocellular carcinoma and growth inhibition of hepatoma cell lines by a COX-2 inhibitor, NS-398.</article-title>             <source>Clin Cancer Res</source>             <volume>7</volume>             <fpage>1410</fpage>             <lpage>1418</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Baek1"><label>53</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Baek</surname><given-names>JY</given-names></name>
+<name name-style="western"><surname>Hur</surname><given-names>W</given-names></name>
+<name name-style="western"><surname>Wang</surname><given-names>JS</given-names></name>
+<name name-style="western"><surname>Bae</surname><given-names>SH</given-names></name>
+<name name-style="western"><surname>Yoon</surname><given-names>SK</given-names></name>
+</person-group>             <year>2007</year>             <article-title>Selective COX-2 inhibitor, NS-398, suppresses cellular proliferation in human hepatocellular carcinoma cell lines via cell cycle arrest.</article-title>             <source>World J Gastroenterol</source>             <volume>13</volume>             <fpage>1175</fpage>             <lpage>1181</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Wheeler1"><label>54</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Wheeler</surname><given-names>LW</given-names></name>
+<name name-style="western"><surname>Lents</surname><given-names>NH</given-names></name>
+<name name-style="western"><surname>Baldassare</surname><given-names>JJ</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Cyclin A-CDK activity during G1 phase impairs MCM chromatin loading and inhibits DNA synthesis in mammalian cells.</article-title>             <source>Cell Cycle</source>             <volume>7</volume>             <fpage>2179</fpage>             <lpage>2188</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-KronesHerzig1"><label>55</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Krones-Herzig</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Mittal</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Yule</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Liang</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>English</surname><given-names>C</given-names></name>
+<etal/></person-group>             <year>2005</year>             <article-title>Early growth response 1 acts as a tumor suppressor in vivo and in vitro via regulation of p53.</article-title>             <source>Cancer Res</source>             <volume>65</volume>             <fpage>5133</fpage>             <lpage>5143</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Hao1"><label>56</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Hao</surname><given-names>MW</given-names></name>
+<name name-style="western"><surname>Liang</surname><given-names>YR</given-names></name>
+<name name-style="western"><surname>Liu</surname><given-names>YF</given-names></name>
+<name name-style="western"><surname>Liu</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Wu</surname><given-names>MY</given-names></name>
+<etal/></person-group>             <year>2002</year>             <article-title>Transcription factor EGR-1 inhibits growth of hepatocellular carcinoma and esophageal carcinoma cell lines.</article-title>             <source>World J Gastroenterol</source>             <volume>8</volume>             <fpage>203</fpage>             <lpage>207</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Elsammak1"><label>57</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Elsammak</surname><given-names>MY</given-names></name>
+<name name-style="western"><surname>Amin</surname><given-names>GM</given-names></name>
+<name name-style="western"><surname>Khalil</surname><given-names>GM</given-names></name>
+<name name-style="western"><surname>Ragab</surname><given-names>WS</given-names></name>
+<name name-style="western"><surname>Abaza</surname><given-names>MM</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Possible contribution of serum activin A and IGF-1 in the development of hepatocellular carcinoma in Egyptian patients suffering from combined hepatitis C virus infection and hepatic schistosomiasis.</article-title>             <source>Clin Biochem</source>             <volume>39</volume>             <fpage>623</fpage>             <lpage>629</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Qiao1"><label>58</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Qiao</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Nachbar</surname><given-names>RB</given-names></name>
+<name name-style="western"><surname>Kevrekidis</surname><given-names>IG</given-names></name>
+<name name-style="western"><surname>Shvartsman</surname><given-names>SY</given-names></name>
+</person-group>             <year>2007</year>             <article-title>Bistability and oscillations in the Huang-Ferrell model of MAPK signaling.</article-title>             <source>PLoS Comput Biol</source>             <volume>3</volume>             <fpage>1819</fpage>             <lpage>1826</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Niwa2"><label>59</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Niwa</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Toyooka</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Shimosato</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Strumpf</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Takahashi</surname><given-names>K</given-names></name>
+</person-group>             <year>2005</year>             <article-title>Interaction between Oct3/4 and Cdx2 determines trophectoderm differentiation.</article-title>             <source>Cell</source>             <volume>123</volume>             <fpage>917</fpage>             <lpage>929</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Wang1"><label>60</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Wang</surname><given-names>ES</given-names></name>
+<name name-style="western"><surname>Szabo</surname><given-names>SJ</given-names></name>
+<name name-style="western"><surname>Schwartberg</surname><given-names>PL</given-names></name>
+<name name-style="western"><surname>Glimcher</surname><given-names>LH</given-names></name>
+</person-group>             <year>2005</year>             <article-title>T helper cell fate specified by kinase-mediated interaction of T-bet with GATA-3.</article-title>             <source>Science</source>             <volume>307</volume>             <fpage>430</fpage>             <lpage>433</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Schwarz1"><label>61</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Schwarz</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Cecconi</surname><given-names>F</given-names></name>
+<name name-style="western"><surname>Bernier</surname><given-names>G</given-names></name>
+<name name-style="western"><surname>Andrejewski</surname><given-names>N</given-names></name>
+<name name-style="western"><surname>Kammandel</surname><given-names>B</given-names></name>
+<etal/></person-group>             <year>2000</year>             <article-title>Spatial specification of mammalian eye territories by reciprocal transcriptional repression of Pax2 and Pax6.</article-title>             <source>Development</source>             <volume>127</volume>             <fpage>4325</fpage>             <lpage>4334</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Asyali1"><label>62</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Asyali</surname><given-names>MH</given-names></name>
+<name name-style="western"><surname>Shoukri</surname><given-names>MM</given-names></name>
+<name name-style="western"><surname>Demirkaya</surname><given-names>O</given-names></name>
+<name name-style="western"><surname>Khabar</surname><given-names>KS</given-names></name>
+</person-group>             <year>2004</year>             <article-title>Assessment of reliability of microarray data and estimation of signal thresholds using mixture modeling.</article-title>             <source>Nucleic Acids Res</source>             <volume>32</volume>             <fpage>2323</fpage>             <lpage>2335</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Hinkley1"><label>63</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Hinkley</surname><given-names>DV</given-names></name>
+</person-group>             <year>1969</year>             <article-title>On the ratio of two correlated normal random variables.</article-title>             <source>Biometrika</source>             <volume>56</volume>             <fpage>635</fpage>             <lpage>639</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Brody1"><label>64</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Brody</surname><given-names>JP</given-names></name>
+<name name-style="western"><surname>Williams</surname><given-names>BA</given-names></name>
+<name name-style="western"><surname>Wold</surname><given-names>BJ</given-names></name>
+<name name-style="western"><surname>Quake</surname><given-names>SR</given-names></name>
+</person-group>             <year>2002</year>             <article-title>Significance and statistical errors in the analysis of DNA microarray data.</article-title>             <source>Proc Natl Acad Sci USA</source>             <volume>99</volume>             <fpage>12975</fpage>             <lpage>12978</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Cochella1"><label>65</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Cochella</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Green</surname><given-names>R</given-names></name>
+</person-group>             <year>2005</year>             <article-title>Fidelity in protein synthesis.</article-title>             <source>Curr Biol</source>             <volume>15</volume>             <fpage>R536</fpage>             <lpage>540</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Xu1"><label>66</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Xu</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Chen</surname><given-names>SY</given-names></name>
+<name name-style="western"><surname>Ross</surname><given-names>KN</given-names></name>
+<name name-style="western"><surname>Balk</surname><given-names>SP</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Androgens induce prostate cancer cell proliferation through mammalian target of rapamycin activation and post-transcriptional increases in cyclin D proteins.</article-title>             <source>Cancer Res</source>             <volume>66</volume>             <fpage>7783</fpage>             <lpage>7792</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Novichkova1"><label>67</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Novichkova</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Egorov</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Daraselia</surname><given-names>N</given-names></name>
+</person-group>             <year>2003</year>             <article-title>MedScan, a natural language processing engine for MEDLINE abstracts.</article-title>             <source>Bioinformatics</source>             <volume>19</volume>             <fpage>1699</fpage>             <lpage>1706</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Parkinson1"><label>68</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Parkinson</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Kapushesky</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Shojatalab</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Abeygunawardena</surname><given-names>N</given-names></name>
+<name name-style="western"><surname>Coulson</surname><given-names>R</given-names></name>
+<etal/></person-group>             <year>2007</year>             <article-title>ArrayExpress—a public database of microarray experiments and gene expression profiles.</article-title>             <source>Nucleic Acids Res</source>             <volume>35</volume>             <fpage>D747</fpage>             <lpage>750</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Irizarry1"><label>69</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Irizarry</surname><given-names>RA</given-names></name>
+<name name-style="western"><surname>Hobbs</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Collin</surname><given-names>F</given-names></name>
+<name name-style="western"><surname>Beazer-Barclay</surname><given-names>YD</given-names></name>
+<name name-style="western"><surname>Antonellis</surname><given-names>KJ</given-names></name>
+<etal/></person-group>             <year>2003</year>             <article-title>Exploration, normalization, and summaries of high density oligonucleotide array probe level data.</article-title>             <source>Biostatistics</source>             <volume>4</volume>             <fpage>249</fpage>             <lpage>264</lpage>          </element-citation></ref>
+<ref id="pcbi.1000851-Shannon1"><label>70</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Shannon</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Markiel</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Ozier</surname><given-names>O</given-names></name>
+<name name-style="western"><surname>Baliga</surname><given-names>NS</given-names></name>
+<name name-style="western"><surname>Wang</surname><given-names>JT</given-names></name>
+<etal/></person-group>             <year>2003</year>             <article-title>: Cytoscape: a software environment for integrated models of biomolecular interaction networks.</article-title>             <source>Genome Res</source>             <volume>13</volume>             <fpage>2498</fpage>             <lpage>2504</lpage>          </element-citation></ref>
+</ref-list>
+
+</back>
+</article>

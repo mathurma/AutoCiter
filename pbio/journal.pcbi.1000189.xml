@@ -1,0 +1,597 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="3.0" xml:lang="EN">
+<front>
+<journal-meta><journal-id journal-id-type="publisher-id">plos</journal-id><journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id><journal-id journal-id-type="pmc">ploscomp</journal-id><!--===== Grouping journal title elements =====--><journal-title-group><journal-title>PLoS Computational Biology</journal-title></journal-title-group><issn pub-type="ppub">1553-734X</issn><issn pub-type="epub">1553-7358</issn><publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, USA</publisher-loc></publisher></journal-meta>
+<article-meta><article-id pub-id-type="publisher-id">08-PLCB-RA-0171R3</article-id><article-id pub-id-type="doi">10.1371/journal.pcbi.1000189</article-id><article-categories><subj-group subj-group-type="heading"><subject>Research Article</subject></subj-group><subj-group subj-group-type="Discipline"><subject>Genetics and Genomics/Bioinformatics</subject><subject>Genetics and Genomics/Gene Expression</subject></subj-group></article-categories><title-group><article-title>Removal of AU Bias from Microarray mRNA Expression Data Enhances Computational Identification of Active MicroRNAs</article-title><alt-title alt-title-type="running-head">Identification of Active miRs from Expression Data</alt-title></title-group><contrib-group>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Elkon</surname><given-names>Ran</given-names></name><xref ref-type="aff" rid="aff1"/></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Agami</surname><given-names>Reuven</given-names></name><xref ref-type="aff" rid="aff1"/><xref ref-type="corresp" rid="cor1"><sup>*</sup></xref></contrib>
+</contrib-group><aff id="aff1">          <addr-line>Division of Gene Regulation, The Netherlands Cancer Institute, Amsterdam, The Netherlands</addr-line>       </aff><contrib-group>
+<contrib contrib-type="editor" xlink:type="simple"><name name-style="western"><surname>Pilpel</surname><given-names>Yitzhak</given-names></name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/></contrib>
+</contrib-group><aff id="edit1">Weizmann Institute of Science, Israel</aff><author-notes>
+<corresp id="cor1">* E-mail: <email xlink:type="simple">r.agami@nki.nl</email></corresp>
+<fn fn-type="con"><p>Conceived and designed the experiments: RE RA. Performed the experiments: RE. Analyzed the data: RE. Wrote the paper: RE RA.</p></fn>
+<fn fn-type="conflict"><p>The authors have declared that no competing interests exist.</p></fn></author-notes><pub-date pub-type="collection"><month>10</month><year>2008</year></pub-date><pub-date pub-type="epub"><day>3</day><month>10</month><year>2008</year></pub-date><volume>4</volume><issue>10</issue><elocation-id>e1000189</elocation-id><history>
+<date date-type="received"><day>11</day><month>3</month><year>2008</year></date>
+<date date-type="accepted"><day>20</day><month>8</month><year>2008</year></date>
+</history><!--===== Grouping copyright info into permissions =====--><permissions><copyright-year>2008</copyright-year><copyright-holder>Elkon, Agami</copyright-holder><license><license-p>This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license></permissions><abstract>
+<p>Elucidation of regulatory roles played by microRNAs (miRs) in various biological networks is one of the greatest challenges of present molecular and computational biology. The integrated analysis of gene expression data and 3′-UTR sequences holds great promise for being an effective means to systematically delineate active miRs in different biological processes. Applying such an integrated analysis, we uncovered a striking relationship between 3′-UTR AU content and gene response in numerous microarray datasets. We show that this relationship is secondary to a general bias that links gene response and probe AU content and reflects the fact that in the majority of current arrays probes are selected from target transcript 3′-UTRs. Therefore, removal of this bias, which is in order in any analysis of microarray datasets, is of crucial importance when integrating expression data and 3′-UTR sequences to identify regulatory elements embedded in this region. We developed visualization and normalization schemes for the detection and removal of such AU biases and demonstrate that their application to microarray data significantly enhances the computational identification of active miRs. Our results substantiate that, after removal of AU biases, mRNA expression profiles contain ample information which allows in silico detection of miRs that are active in physiological conditions.</p>
+</abstract><abstract abstract-type="summary"><title>Author Summary</title>
+<p>MicroRNAs are a novel class of genes that encodes for short RNA molecules recognized to play key roles in the regulation of many biological networks. MicroRNAs, predicted to collectively target more than 30% of all human protein-coding genes, suppress gene expression by binding to regulatory elements usually embedded in the 3′-UTRs of their target mRNAs. Despite intensive efforts in recent years, biological functions carried out by microRNAs have been characterized for only a small number of these genes, making elucidation of their roles one of the greatest challenges of biology today. Bioinformatics analyses can significantly help meet this challenge. In particular, the integrated analysis of microarray mRNA expression data and 3′-UTR sequences holds great promise for systematic dissection of regulatory networks controlled by microRNAs. Applying such integrated analysis to numerous microarray datasets, we disclosed a major technical bias that hampers the identification of active microRNAs from mRNA expression profiles. We developed visualization and normalization schemes for detection and removal of the bias and demonstrate that their application to microarray data significantly enhances the identification of active microRNAs. Given the broad use of microarrays and the ever-growing interest in microRNAs, we anticipate that the methods we introduced will be widely adopted.</p>
+</abstract><funding-group><funding-statement>RE is supported by an EMBO long-term fellowship, and RA by the European Young Investigator Award and Horizon from the Dutch Science Organization (NWO).</funding-statement></funding-group><counts><page-count count="10"/></counts></article-meta>
+</front>
+<body><sec id="s1">
+<title>Introduction</title>
+<p>MicroRNAs (miRs) are a growing class of non-coding RNAs that is now recognized as a major tier of gene control, predicted to target more than 30% of all human protein-coding genes <xref ref-type="bibr" rid="pcbi.1000189-Kim1">[1]</xref>,<xref ref-type="bibr" rid="pcbi.1000189-Lewis1">[2]</xref>. miRs suppress gene expression via binding to regulatory sites usually embedded in the 3′-UTRs of their target mRNAs, leading to the repression of translation occasionally associated with mRNA degradation. Target recognition involves complementary base pairing of the target site with the miR's seed region (positions 2–8 at the miR's 5′ end), although the exact extent of seed complementarity is not precisely determined, and can be modified by 3′ pairing <xref ref-type="bibr" rid="pcbi.1000189-Lewis1">[2]</xref>–<xref ref-type="bibr" rid="pcbi.1000189-Rajewsky1">[4]</xref>. Despite intensive efforts in recent years, biological functions carried out by miRs have been characterized for only a minority of these genes, and therefore, elucidating regulatory roles played by miRs in various biological networks constitutes one of the major challenges facing biology today. Bioinformatics analyses can significantly contribute to elucidation of miR functions; in particular, the integrated analysis of gene expression data and 3′-UTR sequences that holds promise for systematic dissection of regulatory networks controlled by miRs and of cis-regulatory elements embedded in 3′-UTRs.</p>
+<p>Similar bioinformatics approaches that integrates gene expression data and promoter sequences proved highly effective in delineating transcriptional regulatory networks in a multitude of organisms ranging from yeast to human <xref ref-type="bibr" rid="pcbi.1000189-Elkon1">[5]</xref>–<xref ref-type="bibr" rid="pcbi.1000189-Segal1">[7]</xref>. Microarray measurements reflect the total effect of all regulatory mechanisms that control gene expression, including both transcriptional and post-transcriptional mechanisms; thus, genome-wide expression profiles should yield ample information not only on transcriptional networks, but also on regulatory networks regulated by miRs and RNA binding proteins (RBPs) that modulate mRNA stability, and that usually act via regulatory elements in 3′-UTR of their target genes <xref ref-type="bibr" rid="pcbi.1000189-Cheadle1">[8]</xref>. Although mRNA degradation seems to be a secondary mode of miRs' action (with inhibition of translation being the primary one), since each miR is predicted to directly affect the expression level of dozens of target genes, such an orchestrated effect should be discernable by statistical analysis of wide-scale mRNA expression data, even if the effect on each target is only a subtle one. This orchestrated effect could serve as a molecular fingerprint for miRs activity under given biological conditions. Indeed, several pioneering studies provided strong evidence of the ability to computationally decipher miR-mediated regulatory networks from mRNA expression data alone or in correlation with miR expression profiles <xref ref-type="bibr" rid="pcbi.1000189-Farh1">[9]</xref>–<xref ref-type="bibr" rid="pcbi.1000189-Sood1">[14]</xref>.</p>
+<p>In this study, we applied an integrated analysis of gene expression data and 3′-UTR sequences aimed at identifying miRs that are active in a given biological process. Applying such analysis we discovered in numerous microarray datasets a major bias that resulted in a striking relationship between 3′-UTR AU content and gene response. We show that this surprising link between gene's response and 3′-UTR base composition is secondary to a more basic relationship between gene's response and base composition of its probes on the chip. We demonstrate that this bias causes many false positive calls in computational searches for active miRs from mRNA expression data. Therefore, removal of this bias, which is in order in any analysis of microarray datasets, is of crucial importance when integrating expression data and 3′-UTR sequences to identify regulatory elements embedded in this region. Our results substantiate that computational analysis of mRNA expression data, after appropriate removal of AU biases, can accurately detect active miRs that control various biological processes under physiological conditions.</p>
+</sec><sec id="s2">
+<title>Results</title>
+<p>We set out to demonstrate that integrated computational analysis of mRNA expression data and 3′-UTR sequences can accurately uncover miRs that participate in the regulation of a given biological process. As the role of miRs in different branches of hematopoiesis is well characterized <xref ref-type="bibr" rid="pcbi.1000189-Chen1">[15]</xref>–<xref ref-type="bibr" rid="pcbi.1000189-Fazi1">[18]</xref>, we first analyzed a dataset that recorded global gene expression profiles for multi-potent hematopoietic progenitor cells (HPCs) undergoing multi-lineage differentiation <xref ref-type="bibr" rid="pcbi.1000189-Bruno1">[19]</xref>. Since miRs often induce degradation of their target mRNAs, we expected the 3′-UTR of genes whose expression is induced during differentiation to be enriched for seed signatures of miRs that become inactive in this process, and vice versa—that the 3′-UTR of genes whose expression is repressed would be enriched for seed signatures of miRs that become active during the process.</p>
+<p>Before employing statistical tests to identify over-represented seed sequences among up- or down-regulated genes, we examined whether a more global trend in base composition could be detected in the 3′-UTR sequences of the responding genes. For example, if the 3′-UTRs of the up-regulated genes are generally more AU-rich compared to the 3′-UTRs of the non-responding genes, then any statistical search for over-represented seed signatures among the up-regulated genes is expected to yield false positive calls for miRs whose seed signature is AU-rich. One effective means for detecting such false positive calls is to repeat the over-representation tests with randomly permuted miR seeds (which preserve the seed's base composition). If an enrichment of a certain miR seed is accounted for merely by base composition, then it is expected to be non-specific and detected also for randomly permuted seeds derived from the original one.</p>
+<p>Therefore, as a first step in the analysis of the HPC dataset, we checked whether a global 3′-UTR base composition trend is associated with the multi-lineage differentiation. We detected a very strong correlation between 3′-UTR base composition and gene response at several time points in this dataset. For example, there was an exceptionally strong relationship between AU content and gene response at the 16 hr time point after induction of HPC differentiation into megakaryocytes: 3′-UTRs of down-regulated genes were significantly more AU-rich than those of up-regulated ones (<xref ref-type="fig" rid="pcbi-1000189-g001">Figure 1</xref>). (The mean 3′-UTR AU content of the 5% most down-regulated and most up-regulated genes were 60.6% and 52.7%, respectively, <italic>p</italic>&lt;10<sup>−99</sup>, Wilcoxon test.) The other three lineages in this dataset displayed similarly strong trends (<xref ref-type="supplementary-material" rid="pcbi.1000189.s001">Figure S1</xref>).</p>
+<fig id="pcbi-1000189-g001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000189.g001</object-id><label>Figure 1</label><caption>
+<title>Relationship between 3′-UTR AU content and gene response during HPC differentiation.</title>
+<p>Expression profiles were measured at several time points after stimulation of HPC differentiation into megakaryocytes. To visualize the relationships between 3′-UTR AU content and gene response, the genes were sorted for each time point according to their fold of repression/induction relative to the expression level at t0, and the mean 3′-UTR AU content was calculated in a sliding window that encompassed in each step 5% of the genes included in the analysis. (At each step the sliding window was moved to the right by 5% of its size.) Each plot corresponds to the time point indicated above it. Genes are sorted on the X-axis according to their response, from the most repressed genes at the left to the most induced genes at the right. The Y-axis represents the mean 3′-UTR AU content calculated on each sliding window. The <italic>p</italic> value above each plot is for the comparison (Wilcoxon test) between the 3′-UTR AU content of the top 5% (most strongly up-regulated) and bottom 5% (most strongly down-regulated) genes at the corresponding time point. Note the striking relationship between 3′-UTR AU content and gene response at the 16 hr time point.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000189.g001" xlink:type="simple"/></fig>
+<p>The strength of the relationship between 3′-UTR AU content and gene response in the HPC dataset prompted us to search for such trends in other datasets. Surprisingly, we found such relationships, with similarly high statistical significance, in numerous microarray datasets (data not shown). Still more suspicious, we observed the relationship even when we compared different control samples within a dataset. This led us to question whether the relationship observed between 3′-UTR AU content and gene response reflects any true biological regulatory mechanism, or is rather a result of some technical artifact in microarray measurements. We found a definitive answer to this question by analyzing a technical dataset published by van Ruissen et al. <xref ref-type="bibr" rid="pcbi.1000189-vanRuissen1">[20]</xref>. This dataset profiled a universal reference RNA pool in two independent oligonucleotide chips (Affymetrix HGU133A). Comparing the data from these two arrays, which measure identical and artificial RNA pools, we again found a striking relationship between 3′-UTR AU content and difference in gene expression level (<xref ref-type="fig" rid="pcbi-1000189-g002">Figure 2</xref>), pointing to a major AU bias in microarray measurements. This AU response bias is not specific to a particular data preprocessing method, as it existed in data under different preprocessing and normalization schemes; namely, rma, gcrma, and mas5 (<xref ref-type="supplementary-material" rid="pcbi.1000189.s002">Figure S2</xref>). In this technical dataset, we detected no preference for A or U in the bias, and no major 3′-UTR length bias (<xref ref-type="supplementary-material" rid="pcbi.1000189.s003">Figure S3</xref>).</p>
+<fig id="pcbi-1000189-g002" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000189.g002</object-id><label>Figure 2</label><caption>
+<title>Strong relationship between 3′-UTR AU content and gene response detected in a comparison between technical replicates.</title>
+<p>The figure shows the relationship between 3′-UTR AU content and gene fold-change in a comparison between two chips hybridized with identical universal reference RNA pools. The plot was generated as described in the legend to <xref ref-type="fig" rid="pcbi-1000189-g001">Figure 1</xref>. A highly significant relationship between 3′-UTR AU content and gene response was detected in this technical comparison (<italic>p</italic> value = 8.1*10<sup>−84</sup> for the comparison between the bottom and top 5% ‘responding’ genes), pointing to a major AU bias in microarray measurements.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000189.g002" xlink:type="simple"/></fig>
+<p>Next, we sought to elucidate the sources of the AU response bias. A well-documented bias in microarray measurements is the one between probe intensity and response <xref ref-type="bibr" rid="pcbi.1000189-Yang1">[21]</xref>, which is routinely visualized using M-A plots. We first suspected that the observed association between 3′-UTR AU content and gene response is a mere reflection of the intensity-response bias. However, there was no intensity-bias in the above technical dataset, which points that the 3′-UTR AU response bias is distinct from the intensity-response bias (see <xref ref-type="fig" rid="pcbi-1000189-g003">Figure 3A and 3B</xref>; in the latter, adopting the concept of M-A plots, we introduced the M-AU plot to visualize the AU response bias). The AU response bias exists over a large range of intensities (<xref ref-type="supplementary-material" rid="pcbi.1000189.s004">Figure S4</xref>), and, furthermore, the gcrma method which takes into account the correlation between probe's AU content and intensity did not cancel it.</p>
+<fig id="pcbi-1000189-g003" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000189.g003</object-id><label>Figure 3</label><caption>
+<title>M-A and M-AU plots.</title>
+<p>(A). M-A plot shows that there is no intensity-response bias in the comparison between the two chips hybridized with identical universal reference RNA pools. The Y axis (denoted as M) represents the log2 fold-change and the X-axis (denoted as A) represents the average log2 intensity. Each dot in the plot corresponds to a gene in the dataset. (B). Adopting the M-A plot concept, we introduced the M-AU plot, in which the Y axis represents the log2 fold-change (as in the M-A plots), and the X axis represents the 3′-UTR AU content of a gene. The M-AU plot shows a major AU bias in this technical dataset. The red line is the lowess smoothing line calculated for the scatter plot.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000189.g003" xlink:type="simple"/></fig>
+<p>In the vast majority of present chips, probes are selected from the 3′-end of target transcripts. This is also the case for the technical dataset that we have analyzed, which used the Affymetrix HGU133A chip. Therefore, as expected, we observed in this dataset also a strong relationship between probeset AU content and response (similar to the one observed between gene's 3′-UTR AU content and response) (<xref ref-type="supplementary-material" rid="pcbi.1000189.s005">Figure S5</xref>). To test whether the AU artifact origins either from base-composition properties of 3′-UTR of target transcripts or of that of the chip probes, the sequence of probes and target 3′-UTRs need to be uncoupled. The new generation Affymetrix chips break this coupling as their probes are selected from all regions of target transcripts. We therefore analyzed a second technical dataset, recently published by Pradervand et al. <xref ref-type="bibr" rid="pcbi.1000189-Pradervand1">[22]</xref> which used the new Affymetrix Human Gene 1.0 ST Array. In this dataset too, we detected a strong AU response bias. That is, we observed a significant relationship between probeset AU content and response in a comparison between duplicate control chips. Importantly, carrying out a probe-level analysis, we found that probes located at 5′-UTR and CDS regions show a similar AU bias as probes located at 3′-UTRs (<xref ref-type="fig" rid="pcbi-1000189-g004">Figure 4</xref>). This finding indicates that the link between gene's response and 3′-UTR base composition is secondary to a more basic bias in microarray measurements which links gene response with base composition of its probes.</p>
+<fig id="pcbi-1000189-g004" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000189.g004</object-id><label>Figure 4</label><caption>
+<title>The AU response bias is related to probe base composition regardless probe location along the target transcript.</title>
+<p>Probe-level M-AU plot for the comparison between two chips hybridized with a common human brain reference sample. This dataset used the new generation Affymetrix Human Gene 1.0 ST Array, in which probes are located throughout the target transcripts. We generated plots which either included all probes, or included separately only those mapped to the 5′-UTR, CDS, or 3′-UTR of the targets. (As the length of each probe is 25 bases, probe's AU content (X axis) gets only discrete values in the 0–100% range with jumps of 4%). Probes mapped to the different transcript regions exhibited similar level of AU response bias.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000189.g004" xlink:type="simple"/></fig>
+<p>We next evaluated the effect of the AU bias on computational identification of active miRs from microarray data. Searching for miRs that are active in biological conditions examined in a dataset, we utilized miR target prediction generated by TargetScanS <xref ref-type="bibr" rid="pcbi.1000189-Lewis1">[2]</xref>, and applied the following statistical test: for each miR family and for each condition in a dataset, we tested whether the set of predicted miR target genes is significantly induced or repressed compared to a background set consisting of all the non-target genes (see <xref ref-type="sec" rid="s4">Methods</xref>). The technical dataset which profiled the universal reference RNA pool served us as a negative test case in which no real biological signal exists. Applying the statistical tests to this dataset, we identified nine miR families whose target sets showed statistically significant response (<xref ref-type="table" rid="pcbi-1000189-t001">Table 1</xref>). Of course, in this negative test case, all calls are false positive ones; and, as expected, all the falsely identified miR families had an AU-rich seed (the seed of eight out of the nine calls contained at least 5 A or U bases, while the prevalence of miRs with such seed among all the miRs tested was less than 25%; <xref ref-type="table" rid="pcbi-1000189-t001">Table 1</xref>). Next, for each miR family identified as significant, we repeated the statistical tests, but this time with randomly permuted miR seeds. In all cases, permuted seeds showed similar statistical significance to the original seeds (<xref ref-type="table" rid="pcbi-1000189-t001">Table 1</xref>), demonstrating the utility of such permutation tests in detecting non-specific results caused by correlation between base composition of miR-seeds and 3′-UTRs of the responding genes.</p>
+<table-wrap id="pcbi-1000189-t001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000189.t001</object-id><label>Table 1</label><caption>
+<title>Active miRs falsely identified in the negative test case.</title>
+</caption><!--===== Grouping alternate versions of objects =====--><alternatives><graphic id="pcbi-1000189-t001-1" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000189.t001" xlink:type="simple"/><table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" colspan="4" rowspan="1">Without AU Normalization</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR ID</td>
+<td align="left" colspan="1" rowspan="1"><italic>p</italic> Value</td>
+<td align="left" colspan="1" rowspan="1">miR Seed</td>
+<td align="left" colspan="1" rowspan="1">Best Permuted <italic>p</italic> Value<xref ref-type="table-fn" rid="nt101">a</xref></td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR.186</td>
+<td align="left" colspan="1" rowspan="1">2.41*10<sup>−9</sup></td>
+<td align="left" colspan="1" rowspan="1"><named-content content-type="gene" xlink:type="simple">AAAGAAU</named-content></td>
+<td align="left" colspan="1" rowspan="1">1.60*10<sup>−11</sup></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR.543</td>
+<td align="left" colspan="1" rowspan="1">1.72*10<sup>−7</sup></td>
+<td align="left" colspan="1" rowspan="1"><named-content content-type="gene" xlink:type="simple">AACAUUC</named-content></td>
+<td align="left" colspan="1" rowspan="1">2.01*10<sup>−7</sup></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR.496</td>
+<td align="left" colspan="1" rowspan="1">2.24*10<sup>−7</sup></td>
+<td align="left" colspan="1" rowspan="1"><named-content content-type="gene" xlink:type="simple">UUACAUG</named-content></td>
+<td align="left" colspan="1" rowspan="1">3.14*10<sup>−7</sup></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR.200b.429</td>
+<td align="left" colspan="1" rowspan="1">3.07*10<sup>−7</sup></td>
+<td align="left" colspan="1" rowspan="1"><named-content content-type="gene" xlink:type="simple">AAUACUG</named-content></td>
+<td align="left" colspan="1" rowspan="1">9.84*10<sup>−10</sup></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR.381</td>
+<td align="left" colspan="1" rowspan="1">1.41*10<sup>−5</sup></td>
+<td align="left" colspan="1" rowspan="1"><named-content content-type="gene" xlink:type="simple">AUACAAG</named-content></td>
+<td align="left" colspan="1" rowspan="1">2.48*10<sup>−10</sup></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR.26</td>
+<td align="left" colspan="1" rowspan="1">1.62*10<sup>−5</sup></td>
+<td align="left" colspan="1" rowspan="1"><named-content content-type="gene" xlink:type="simple">UCAAGUA</named-content></td>
+<td align="left" colspan="1" rowspan="1">4.07*10<sup>−5</sup></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR.203.1</td>
+<td align="left" colspan="1" rowspan="1">1.79*10<sup>−5</sup></td>
+<td align="left" colspan="1" rowspan="1"><named-content content-type="gene" xlink:type="simple">GAAAUGU</named-content></td>
+<td align="left" colspan="1" rowspan="1">6.34*10<sup>−6</sup></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR.132.212</td>
+<td align="left" colspan="1" rowspan="1">0.00017</td>
+<td align="left" colspan="1" rowspan="1"><named-content content-type="gene" xlink:type="simple">AACAGUC</named-content></td>
+<td align="left" colspan="1" rowspan="1">0.0019</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR.181</td>
+<td align="left" colspan="1" rowspan="1">0.00029</td>
+<td align="left" colspan="1" rowspan="1"><named-content content-type="gene" xlink:type="simple">ACAUUCA</named-content></td>
+<td align="left" colspan="1" rowspan="1">3.45*10<sup>−10</sup></td>
+</tr>
+</tbody>
+</table><table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" colspan="4" rowspan="1">After AU Normalization<xref ref-type="table-fn" rid="nt102">b</xref></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR ID</td>
+<td align="left" colspan="1" rowspan="1"><italic>p</italic> Value</td>
+<td align="left" colspan="1" rowspan="1">Best Permuted <italic>p</italic> Value<xref ref-type="table-fn" rid="nt101">a</xref></td>
+<td align="center" colspan="1" rowspan="1"/>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR.186</td>
+<td align="left" colspan="1" rowspan="1">0.0061</td>
+<td align="left" colspan="1" rowspan="1">0.0060</td>
+<td align="left" colspan="1" rowspan="1"/>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR.500</td>
+<td align="left" colspan="1" rowspan="1">0.0073</td>
+<td align="left" colspan="1" rowspan="1">0.0025</td>
+<td align="left" colspan="1" rowspan="1"/>
+</tr>
+</tbody>
+</table></alternatives><table-wrap-foot><fn id="nt101"><label>a</label><p>Best <italic>p</italic>-value obtained for 20 randomly permuted seeds derived from the original miR seed.</p></fn><fn id="nt102"><label>b</label><p>After applying AU normalization to the dataset none of the miRs passed the statistical significance threshold (0.0003, which corresponds to 0.05 after Bonferroni correction for multiple testing). In order to compare the results with the original data (without AU normalization), we listed the top two miRs even though they did not pass the threshold.</p></fn></table-wrap-foot></table-wrap>
+<p>As shown, the AU response bias causes many false positive calls in computational search for active miRs from expression data, and therefore its removal is crucial when carrying out integrated bioinformatics analysis of mRNA expression data and 3′-UTR sequences. To remove this bias, we adopted the <italic>lowess</italic> normalization method which is routinely used to remove intensity biases from microarray data <xref ref-type="bibr" rid="pcbi.1000189-Yang1">[21]</xref>, and adjusted it to cancel AU biases (<xref ref-type="fig" rid="pcbi-1000189-g005">Figure 5</xref>) (see <xref ref-type="sec" rid="s4">Methods</xref>). Applying AU normalization did not distort the normalization at the M-A plane (<xref ref-type="supplementary-material" rid="pcbi.1000189.s006">Figure S6</xref>). Importantly, after applying AU normalization to the negative control dataset, no miR family passed the statistical significance threshold (0.0003, which corresponds to 0.05 after Bonferroni correction for multiple testing) (<xref ref-type="table" rid="pcbi-1000189-t001">Table 1</xref>).</p>
+<fig id="pcbi-1000189-g005" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000189.g005</object-id><label>Figure 5</label><caption>
+<title>AU normalization.</title>
+<p>M-AU plots without (A) and after (B) applying an AU normalization scheme to the technical dataset which profiled the universal reference RNA pool.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000189.g005" xlink:type="simple"/></fig>
+<p>We next searched for an expression dataset that would serve as a positive test case; that is, a dataset that contains known miR signals. We preferred physiologically relevant datasets over ones that over-expressed miRs, which often give expression levels that are far above physiological ones. (Statistical searches for active miRs applied to several datasets that profiled cells over-expressing specific miRs readily detected the correct signals both without and after AU normalization (data not shown).) A recent study that compared expression profiles between stimulated T-cells derived from miR-155 deficient and control mice met this requirement <xref ref-type="bibr" rid="pcbi.1000189-Rodriguez1">[23]</xref>. As in many other datasets, we observed a strong AU bias in this dataset too, and removed it using the AU normalization (<xref ref-type="fig" rid="pcbi-1000189-g006">Figure 6</xref>). Without AU normalization, the statistical tests identified eleven significant miR families; the true hit (miR-155) was the third most significant one (<xref ref-type="table" rid="pcbi-1000189-t002">Table 2</xref>). (Note that five out of the six most significant miRs falsely identified on the negative dataset were detected also in this positive dataset (compare <xref ref-type="table" rid="pcbi-1000189-t001">Tables 1</xref> and <xref ref-type="table" rid="pcbi-1000189-t002">2</xref>)). Here too, permutation tests found, in most cases, random seeds whose significance scores were similar to the ones obtained by the original seeds (<xref ref-type="table" rid="pcbi-1000189-t002">Table 2</xref>). In sharp contrast, after AU normalization, only the true miR (miR-155) was detected and its statistical significance was substantially improved (<xref ref-type="table" rid="pcbi-1000189-t002">Table 2</xref>). Importantly, none of the permuted seeds derived from the seed of miR-155 obtained a statistically significant score.</p>
+<fig id="pcbi-1000189-g006" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000189.g006</object-id><label>Figure 6</label><caption>
+<title>AU bias in the miR-155 dataset.</title>
+<p>Relationship between 3′-UTR AU content and gene response in the dataset that compared gene expression profiles between miR-155-deficient and control Th2 cells. (A) Without AU normalization. (B) After applying AU normalization to the dataset. Plots were generated as described in the legend to <xref ref-type="fig" rid="pcbi-1000189-g001">Figure 1</xref>.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000189.g006" xlink:type="simple"/></fig><table-wrap id="pcbi-1000189-t002" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000189.t002</object-id><label>Table 2</label><caption>
+<title>Active miRs identified in the miR-155 dataset.</title>
+</caption><!--===== Grouping alternate versions of objects =====--><alternatives><graphic id="pcbi-1000189-t002-2" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000189.t002" xlink:type="simple"/><table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" colspan="3" rowspan="1">Without AU Normalization</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR ID</td>
+<td align="left" colspan="1" rowspan="1"><italic>p</italic> Value<xref ref-type="table-fn" rid="nt103">a</xref></td>
+<td align="left" colspan="1" rowspan="1">Best Permuted <italic>p</italic> Value<xref ref-type="table-fn" rid="nt104">b</xref></td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR.496</td>
+<td align="left" colspan="1" rowspan="1">−1.56*10<sup>−10</sup></td>
+<td align="left" colspan="1" rowspan="1">−1.13*10<sup>−7</sup></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR.186</td>
+<td align="left" colspan="1" rowspan="1">−1.43*10<sup>−08</sup></td>
+<td align="left" colspan="1" rowspan="1">−2.29*10<sup>−9</sup></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold><italic>miR.155</italic></bold></td>
+<td align="left" colspan="1" rowspan="1"><bold><italic>7.07*10<sup>−08</sup></italic></bold></td>
+<td align="left" colspan="1" rowspan="1">−3.98*10<sup>−6</sup></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR.26</td>
+<td align="left" colspan="1" rowspan="1">−2.15*10<sup>−06</sup></td>
+<td align="left" colspan="1" rowspan="1">−1.41*10<sup>−7</sup></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR.543</td>
+<td align="left" colspan="1" rowspan="1">−2.33*10<sup>−06</sup></td>
+<td align="left" colspan="1" rowspan="1">−6.04*10<sup>−6</sup></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR.25.32.92.363.367</td>
+<td align="left" colspan="1" rowspan="1">−6.54*10<sup>−06</sup></td>
+<td align="left" colspan="1" rowspan="1">−3.71*10<sup>−7</sup></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR.381</td>
+<td align="left" colspan="1" rowspan="1">−1.09*10<sup>−05</sup></td>
+<td align="left" colspan="1" rowspan="1">−9.99*10<sup>−8</sup></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR.329</td>
+<td align="left" colspan="1" rowspan="1">−1.98*10<sup>−05</sup></td>
+<td align="left" colspan="1" rowspan="1">−1.31*10<sup>−3</sup></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR.331</td>
+<td align="left" colspan="1" rowspan="1">2.48*10<sup>−05</sup></td>
+<td align="left" colspan="1" rowspan="1">2.19*10<sup>−1</sup></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR.493.5p</td>
+<td align="left" colspan="1" rowspan="1">−3.98*10<sup>−05</sup></td>
+<td align="left" colspan="1" rowspan="1">−1.46*10<sup>−10</sup></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR.495</td>
+<td align="left" colspan="1" rowspan="1">−7.41*10<sup>−05</sup></td>
+<td align="left" colspan="1" rowspan="1">−9.60*10<sup>−8</sup></td>
+</tr>
+</tbody>
+</table><table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" colspan="3" rowspan="1">After AU Normalization<xref ref-type="table-fn" rid="nt103">a</xref></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR ID</td>
+<td align="left" colspan="1" rowspan="1"><italic>p</italic> Value</td>
+<td align="left" colspan="1" rowspan="1">Best Permuted <italic>p</italic> Value<xref ref-type="table-fn" rid="nt104">b</xref></td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold><italic>miR.155</italic></bold></td>
+<td align="left" colspan="1" rowspan="1"><bold><italic>1.20*10<sup>−12</sup></italic></bold></td>
+<td align="left" colspan="1" rowspan="1">−0.023</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR.142.5p</td>
+<td align="left" colspan="1" rowspan="1">0.00083</td>
+<td align="left" colspan="1" rowspan="1">−0.024</td>
+</tr>
+</tbody>
+</table></alternatives><table-wrap-foot><fn id="nt103"><label>a</label><p>The sign of the <italic>p</italic>-value marks the direction of the response of the miR target set: positive and negative <italic>p</italic>-values correspond to miRs whose target sets are significantly up- and down-regulated in miR-deficient Th2 cells, respectively, compared to wild type Th2 cells. The results obtained for the true signal in this dataset—miR-155—are emphasized in bold-italic font, and are in the expected direction: that is, the set of miR-155 predicted target genes is up-regulated in miR-155 deficient Th2 cells compared to control Th2 cells.</p></fn><fn id="nt104"><label>b</label><p>Best <italic>p</italic>-value obtained for 20 randomly permuted seeds derived from the original one.</p></fn></table-wrap-foot></table-wrap>
+<p>For a more challenging test case we used a dataset that monitored gene expression profiles in five distinct human T cells sub-populations representing five phases of T cell differentiation <xref ref-type="bibr" rid="pcbi.1000189-Lee1">[24]</xref>: intrathymic T progenitor (ITTP) cells, double positive (DP) thymocytes, CD4 single positive (SP4), naïve CD4 T cells from cord blood (CB4), and naïve CD4 T cells from adult blood (AB4). To obtain fold-change measures, we divided the expression level at each development phase by the one measured in the mature AB4 T cells. Without AU normalization, the statistical tests identified six significant miR families: the target sets of three were down-regulated in ITTP cells, and the target sets of the other three were up-regulated in the SP4 cells (<xref ref-type="table" rid="pcbi-1000189-t003">Table 3</xref>). After applying the AU normalization to the data, only the three miR-families whose target sets were repressed in ITTP (miR-17.5p, miR-19 and miR-181 families) remained significant (<xref ref-type="table" rid="pcbi-1000189-t003">Table 3</xref>), suggesting that members of these three miR families are active in early phases of T cell development and become inactive as T cells mature. There is evidence that all three miR families detected by the statistical analysis play a role in thymocyte maturation and therefore are true hits. Li et al. recently <xref ref-type="bibr" rid="pcbi.1000189-Li1">[25]</xref> showed that miR-181a is highly expressed in immature T cells and that its expression level goes down as T cells proceed through differentiation. That study further showed that miR-181a plays a critical role in augmenting T cell sensitivity, a propensity that is vital to the elimination of self-reacting T cells early during maturation. Regarding miR-17.5p and miR-19 families, Landais et al. recently reported that the miR-106-363 cluster is over-expressed in 46% of human T-cell leukemias tested <xref ref-type="bibr" rid="pcbi.1000189-Landais1">[26]</xref>. The miR-106-363 cluster is homolog to the miR-17-92 cluster, and miR-19 is contained in both clusters but carries a seed which is different from the one of the other miRs in these two clusters. It is possible that up-regulation of members of the miR-106-363 and miR-17-92 clusters in T-cell leukemia endows these cells with propensities normal to immature T-cells, most probably enhanced proliferation capacity. The identification of true hits on this dataset further demonstrates that computational analysis can accurately dissect active miRs from gene expression data probing cells under physiological conditions. Our statistical analysis utilizes target prediction based on miR seed signatures and therefore cannot distinguish between miRs sharing seed sequences. Empirical biological testing is required to pinpoint which members of the miR-17-92 and miR-106-363 clusters that carry a common seed sequence are actually active during T cell maturation.</p>
+<table-wrap id="pcbi-1000189-t003" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000189.t003</object-id><label>Table 3</label><caption>
+<title>Active miRs identified in the thymocyte maturation dataset.</title>
+</caption><!--===== Grouping alternate versions of objects =====--><alternatives><graphic id="pcbi-1000189-t003-3" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000189.t003" xlink:type="simple"/><table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" colspan="5" rowspan="1">Original Dataset</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR ID</td>
+<td align="left" colspan="1" rowspan="1">ITTP</td>
+<td align="left" colspan="1" rowspan="1">DP4</td>
+<td align="left" colspan="1" rowspan="1">SP4</td>
+<td align="left" colspan="1" rowspan="1">CB4</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR.17.5p.20.93.mr.106.519.d</td>
+<td align="left" colspan="1" rowspan="1">−1.45*10<sup>−9</sup></td>
+<td align="left" colspan="1" rowspan="1">−0.0055</td>
+<td align="left" colspan="1" rowspan="1">−0.12</td>
+<td align="left" colspan="1" rowspan="1">−0.75</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR.19</td>
+<td align="left" colspan="1" rowspan="1">−7.04*10<sup>−8</sup></td>
+<td align="left" colspan="1" rowspan="1">−0.0085</td>
+<td align="left" colspan="1" rowspan="1">−0.52</td>
+<td align="left" colspan="1" rowspan="1">−0.040</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR.101</td>
+<td align="left" colspan="1" rowspan="1">0.76</td>
+<td align="left" colspan="1" rowspan="1">0.0059</td>
+<td align="left" colspan="1" rowspan="1">1.27*10<sup>−6</sup></td>
+<td align="left" colspan="1" rowspan="1">−0.97</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR.144</td>
+<td align="left" colspan="1" rowspan="1">0.84</td>
+<td align="left" colspan="1" rowspan="1">0.0048</td>
+<td align="left" colspan="1" rowspan="1">1.48*10<sup>−6</sup></td>
+<td align="left" colspan="1" rowspan="1">0.48</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR.381</td>
+<td align="left" colspan="1" rowspan="1">0.40</td>
+<td align="left" colspan="1" rowspan="1">0.0064</td>
+<td align="left" colspan="1" rowspan="1">3.81*10<sup>−5</sup></td>
+<td align="left" colspan="1" rowspan="1">0.77</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR.181</td>
+<td align="left" colspan="1" rowspan="1">−5.30*10<sup>−5</sup></td>
+<td align="left" colspan="1" rowspan="1">−0.649</td>
+<td align="left" colspan="1" rowspan="1">0.12</td>
+<td align="left" colspan="1" rowspan="1">−0.35</td>
+</tr>
+</tbody>
+</table><table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" colspan="5" rowspan="1">After Applying AU Normalization</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR ID</td>
+<td align="left" colspan="1" rowspan="1">ITTP<xref ref-type="table-fn" rid="nt105">a</xref><sup>#</sup></td>
+<td align="left" colspan="1" rowspan="1">DP4</td>
+<td align="left" colspan="1" rowspan="1">SP4</td>
+<td align="left" colspan="1" rowspan="1">CB4</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR.17.5p.20.93.mr.106.519.d</td>
+<td align="left" colspan="1" rowspan="1">−1.04*10<sup>−9</sup> (−4.27*10<sup>−3</sup>)</td>
+<td align="left" colspan="1" rowspan="1">−0.0016</td>
+<td align="left" colspan="1" rowspan="1">−0.053</td>
+<td align="left" colspan="1" rowspan="1">0.99</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR.19</td>
+<td align="left" colspan="1" rowspan="1">−2.72*10<sup>−8</sup> (−1.24*10<sup>−2</sup>)</td>
+<td align="left" colspan="1" rowspan="1">−0.0010</td>
+<td align="left" colspan="1" rowspan="1">−0.20</td>
+<td align="left" colspan="1" rowspan="1">−0.08</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">miR.181</td>
+<td align="left" colspan="1" rowspan="1">−3.19*10<sup>−5</sup> (−7.07*10<sup>−4</sup>)</td>
+<td align="left" colspan="1" rowspan="1">−0.20</td>
+<td align="left" colspan="1" rowspan="1">0.43</td>
+<td align="left" colspan="1" rowspan="1">−0.67</td>
+</tr>
+</tbody>
+</table></alternatives><table-wrap-foot><fn id="nt105"><label>a</label><p>In parentheses, the best <italic>p</italic>-value in 20 random seed permutations.</p></fn></table-wrap-foot></table-wrap></sec><sec id="s3">
+<title>Discussion</title>
+<p>In the course of this study we observed in many gene expression datasets a striking association between gene response and 3′-UTR base composition. The high prevalence of such a relationship in microarray datasets, its exceptional statistical strength, and its detection in technical comparisons between replicate arrays, point unequivocally to a major bias in microarray measurements that was heretofore missed. Such a major AU bias in microarray measurements might have gone undetected because gene expression data are commonly analyzed in association with promoter, rather than 3′-UTR sequences, in attempts to unravel cis-regulatory promoter elements that control gene transcription. Only recently, with the emergence of miRs and RNA-binding proteins as key post-transcriptional regulators of gene expression, has gene expression analysis been coupled with analysis of 3′-UTR sequences. Indeed, it was the search for active miRs that motivated us to integrate gene expression and 3′-UTR sequence data, and led us to the detection of the AU response bias in microarray data.</p>
+<p>We demonstrated that this bias is distinct from the well-documented intensity-response and AU intensity biases, and that it originates from a systematic association between probe base composition and response. Using the new generation Affymetrix chips that contain probes selected throughout the transcripts, we uncoupled the sequences of probes and target 3-UTRs. We show that probes exhibit similar AU response bias irrespective of their location in the target transcripts. Therefore, the major link between gene response and 3′-UTR base composition that we observed in vast microarray datasets, is secondary to the general probe AU response bias, and simply reflects the fact that chip probes were selected from 3′-UTRs. A reasonable explanation to the AU response bias is that there are subtle differences in hybridization conditions for different arrays in a dataset, and that the effect of such differences is dependent on probe base composition. Further technical examinations are required to test this point.</p>
+<p>Bioinformatics analysis that integrates gene expression data and 3′-UTR sequences holds promise for systematic dissection of regulatory networks controlled by miRs. However, we demonstrated that the AU response bias causes many false positive calls in such analysis. Permutation tests were highly effective in revealing such false positive hits. Removal of this bias is of crucial importance when aiming to uncover miR-signatures as well as other cis-regulatory elements embedded in 3′-UTRs from mRNA expression profiles. We therefore developed visualization and normalization schemes for the detection and removal of AU biases, and demonstrated that their application to microarray data significantly enhances the computational identification of active miRs. In the case of Affymetrix chips, the normalization scheme that we implemented works at the probe-set or transcript level, and corrects the AU bias in a post-processing step (i.e., ran after probe intensity levels were calculated). A normalization scheme that takes into account the AU response bias at the phase of probe intensity calculation (similar to gcrma, which cancels AU intensity biases) is still required.</p>
+<p>Our results further substantiate that mRNA expression data contain ample information that allows, after proper removal of AU biases, in silico detection of active miRs. Importantly, this is also true when mRNA profiles were measured under physiological conditions. In view of the importance of elucidating regulatory roles played by miRs in various biological networks, we anticipate that the methods introduced in this study for detection, visualization and removal of the AU response bias from microarray data will be in wide use by the research community.</p>
+</sec><sec id="s4">
+<title>Methods</title>
+<p>All statistical analyses were performed and plots were generated using the R package (<ext-link ext-link-type="uri" xlink:href="http://www.r-project.org/" xlink:type="simple">http://www.r-project.org/</ext-link>).</p>
+<sec id="s4a">
+<title>Data Analysis of Gene Expression Datasets</title>
+<p>In this study, we analyzed four microarray datasets which used 3′-UTR Affymetrix oligonucleotide chips (that is, chips in which probes are selected from targets' 3-UTRs), and one dataset that used the new generation Affymetrix Human Gene 1.0 ST Array, in which probes are located throughout the target transcripts. Raw data files (CEL files) were downloaded from GEO (<ext-link ext-link-type="uri" xlink:href="http://www.ncbi.nlm.nih.gov/geo/" xlink:type="simple">http://www.ncbi.nlm.nih.gov/geo/</ext-link>) or ArrayExpress (<ext-link ext-link-type="uri" xlink:href="http://www.ebi.ac.uk/microarray-as/aer/#ae-main0" xlink:type="simple">http://www.ebi.ac.uk/microarray-as/aer/#ae-main0</ext-link>) DBs, or obtained directly from the authors of the data.</p>
+<sec id="s4a1">
+<title>Analysis of datasets that used 3′-UTR Affymetrix chips</title>
+<p>The dataset that profiled HPC multi-lineage differentiation <xref ref-type="bibr" rid="pcbi.1000189-Bruno1">[19]</xref> used Affymetrix MGU74Av2 mouse chips. Expression levels were recorded in triplicates at 0, 4, 8, 16, 24, 48, 72, and 168 hrs of differentiation into four lineages: megakaryocytes, neutrophils, erythrocytes and macrophages. The dataset that profiled Stratagene's universal human reference RNA pool in two independent chips (<xref ref-type="bibr" rid="pcbi.1000189-vanRuissen1">[20]</xref>, GSE1158) used Affymetrix HGU133A human chips. The dataset that profiled expression levels in miR155-deficient and control T cells (<xref ref-type="bibr" rid="pcbi.1000189-Rodriguez1">[23]</xref>, E-TABM-232), used Affymetrix MG-430.2 mouse chips. Expression levels were measured in 5 replicates in miR155-deficient and wild-type Th1 and Th2 cells stimulated for 24 hrs with LPS and IL4. The results reported in our study were derived from the Th2 dataset. The dataset that profiled expression level during T cell maturation (<xref ref-type="bibr" rid="pcbi.1000189-Lee1">[24]</xref>, GSE1460), used Affymetrix HGU133A-B human chips. Expression levels were recorded in triplicates in 5 phases during differentiation (intrathymic T progenitor (ITTP) cells, double positive (DP) thymocytes, CD4 single positive (SP4), naïve CD4 T cells from cord blood (CB4), and naïve CD4 T cells from adult blood (AB4).</p>
+<p>All these four datasets were processed by a similar scheme: First, probeset expression levels were calculated using the rma, gcrma, and mas5 methods implemented in the affy <xref ref-type="bibr" rid="pcbi.1000189-Irizarry1">[27]</xref> and gcrma packages of the BioConductor project <xref ref-type="bibr" rid="pcbi.1000189-Reimers1">[28]</xref>. Unless otherwise stated, results reported in this paper are the ones obtained using the rma method. Similar results were obtained for data processed by the mas5 and gcrma methods. Second, probeset presence flags were calculated using the mas5calls function implemented in the affy package, and probesets that got more ‘Absent’ calls than a certain threshold were removed from subsequent analysis. (Thresholds for the number of ‘Absent’ calls were: 18 (out of 30 chips) in the HPC differentiation into megakaryocytes dataset; one (out of 2 chips) in the universal RNA pool dataset; 3 (out of 10 chips) in the miR-155 dataset; and 10 (out of 18 chips) in the T cell maturation dataset.) Next, probesets were mapped to their corresponding genes using annotation files provided by Affymetrix, and in cases where a gene was represented by several probesets, we used the measurements of the probeset with the highest median intensity level. Intensity levels over replicate chips were averaged.</p>
+</sec><sec id="s4a2">
+<title>Analysis of the dataset that used the Affymetrix Human Gene 1.0 ST Array</title>
+<p>CEL files of this dataset (<xref ref-type="bibr" rid="pcbi.1000189-Pradervand1">[22]</xref>, GSE9819) were downloaded from GEO, and probe-set expression values were calculated using rma. In this dataset, we detected significant 3′-UTR bias in a comparison between two chips hybridized with a common Ambion Human Brain Reference RNA pool (sample ids GSM247680 and GSM247680). Probe-level intensities were extracted using the pm function implemented by the affy package. Probes' sequences and genome coordinates were obtained from chip annotation files provided by Affymetrix. Genome coordination of 5′-UTR, CDS and 3′-UTR regions of all annotated human transcripts were extracted from Ensembl using BioMart utilities <xref ref-type="bibr" rid="pcbi.1000189-Flicek1">[29]</xref>. Mapping of probes to 5′-UTR, CDS, and 3′-UTR regions was done by a Perl script written for this purpose. Before generating the probe-level M-AU plot, we performed the following preprocessing steps: a floor cut-off signal, which was set to the first quartile signal, was applied to each chip; probe expression levels were quantile- normalized; and probes whose signal was above median level were flagged as ‘Present’. Log2 of fold-change and AU content were calculated for each probe. To reduce noise, M-AU plot included only probes that were ‘Present’ in at least one of the chips hybridized with the brain reference sample.</p>
+</sec></sec><sec id="s4b">
+<title>3′-UTR Sequences and miR Target Prediction</title>
+<p>3′-UTR sequences and miR target prediction for human and mouse were downloaded from TargetScanS (<ext-link ext-link-type="uri" xlink:href="http://www.targetscan.org/" xlink:type="simple">http://www.targetscan.org/</ext-link>; version 4.0; July 2007). TargetScanS predicts gene targets of miRNAs by searching 3′-UTRs for the presence of conserved 8-mer and 7-mer sites that match the seed region of each miRNA family <xref ref-type="bibr" rid="pcbi.1000189-Lewis1">[2]</xref>. In case a gene has several annotated 3′-UTRs, the longest one is considered.</p>
+<sec id="s4b1">
+<title>Target prediction for randomly permuted miR seeds</title>
+<p>For each conserved miR family, as defined by TargetscanS, we generated 20 randomly permuted seeds derived from the original seed. Targets of these random seeds were predicted by the same program used by TargetScanS for prediction of targets of the original miRs (the program is available at TargetScanS website).</p>
+</sec><sec id="s4b2">
+<title>AU normalization</title>
+<p>Adopting the concepts of MA-plots and intensity-dependent normalization that were introduced by Yang et al. <xref ref-type="bibr" rid="pcbi.1000189-Yang1">[21]</xref> in order to remove intensity biases from microarray data, we used the robust scatter plot smoother ‘lowess’, implemented in R (with default parameters), to remove the AU bias:<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000189.e001" xlink:type="simple"/></disp-formula>where <italic>I<sub>1</sub></italic> and <italic>I<sub>2</sub></italic> are the intensity signals measured for a gene in chip1 and chip2, and <italic>c</italic>(<italic>AU</italic>) is the lowess fit to the M-AU plot (in which the X-axis represents either transcript 3′-UTR, probe-set, or probe's AU content). Applying 3′-UTR-based or probe-set-based AU normalization to the 3′-UTR Affymetrix datasets yielded similar results, as expected, because of the coupling between transcript 3′-UTR and probe-set sequences in these chips.</p>
+</sec><sec id="s4b3">
+<title>Statistical search for candidate active miRs in mRNA expression dataset</title>
+<p>Searching for miRs that are active in a microarray dataset, we utilized miR target prediction produced by TargetScanS, and applied the following statistical test: for each miR family and for each condition in a dataset, we tested whether the set of predicted miR target genes is significantly more induced/repressed than the background set consisting of all the non-target genes (for which 3′-UTR sequence and expression data are available). Target and background sets were compared using the non-parametric Wilcoxon test, and a miR family was putatively considered ‘active’ in a certain condition if the <italic>p</italic>-value obtained for its target set was below 0.05 after applying Bonferroni correction for multiple testing (∼150 miR families were tested).</p>
+</sec></sec></sec><sec id="s5">
+<title>Supporting Information</title>
+<supplementary-material id="pcbi.1000189.s001" mimetype="image/tiff" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000189.s001" xlink:type="simple"><label>Figure S1</label><caption>
+<p>Relationship between 3′-UTR AU content and gene response during HPC differentiation. The plot was generated as described in the legend to <xref ref-type="fig" rid="pcbi-1000189-g001">Figure 1</xref> and shows the relationship between 3′-UTR AU content and gene response at three time points (4, 8, and 16 h) during HPC differentiation into three lineages (erythrocytes (E), monocytes (M), and neutrophils (N)).</p>
+<p>(0.13 MB TIF)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1000189.s002" mimetype="image/tiff" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000189.s002" xlink:type="simple"><label>Figure S2</label><caption>
+<p>AU bias in microarray data is not specific to a particular preprocessing method. The major AU bias in the dataset that profiled the universal reference RNA pool is not specific to a particular preprocessing method as it existed in data derived using different preprocessing and normalization schemes: rma, gcrma, and mas5.</p>
+<p>(0.12 MB TIF)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1000189.s003" mimetype="image/tiff" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000189.s003" xlink:type="simple"><label>Figure S3</label><caption>
+<p>No preference for A or U in the AU bias. The figure shows the relationship between gene fold-change in the technical dataset and: 3′-UTR AU content, 3′-UTR length, and 3′-UTR single base contents. The figure was generated as described in the legend to <xref ref-type="fig" rid="pcbi-1000189-g001">Figure 1</xref> (<italic>p</italic> values indicated above each plot are for the comparison between the top 5% and bottom 5% genes). In this dataset, there is no preference for A or U in the relationship between 3′-UTR AU content and gene response. No major relationship between 3′-UTR length and gene response was observed here.</p>
+<p>(0.13 MB TIF)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1000189.s004" mimetype="image/tiff" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000189.s004" xlink:type="simple"><label>Figure S4</label><caption>
+<p>The AU response bias exists over large range of intensities. To test whether the AU-response bias is confined to probes with low intensities (which are inherently noisier), we redrew the M-A plot in <xref ref-type="fig" rid="pcbi-1000189-g003">Figure 3A</xref>, and colored each point according to the AU content of the corresponding probe (probes were divided into three groups: High, Medium and Low AU content probes; each group contained one third of the probes included in the analysis). The AU response bias is not associated with low intensity but exists over a large range of intensities.</p>
+<p>(0.33 MB TIF)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1000189.s005" mimetype="image/tiff" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000189.s005" xlink:type="simple"><label>Figure S5</label><caption>
+<p>AU bias using probe-set AU content. M-AU plot in which the X-axis represents probe-set AU content (in contrast to transcript 3′-UTR AU content shown in <xref ref-type="fig" rid="pcbi-1000189-g003">Figure 3B</xref>).</p>
+<p>(0.13 MB TIF)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1000189.s006" mimetype="image/tiff" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000189.s006" xlink:type="simple"><label>Figure S6</label><caption>
+<p>AU normalization does not distort the normalization at the M-A plane. This figure presents the M-A plot after applying AU normalization. While this normalization cancels the major bias detected at the M-AU plane, it has only subtle effect on the M-A plane.</p>
+<p>(0.18 MB TIF)</p>
+</caption></supplementary-material></sec></body>
+<back>
+<ack>
+<p>We thank the authors of the microarray datasets analyzed in this paper for making their data publicly available.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1000189-Kim1"><label>1</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Kim</surname><given-names>VN</given-names></name>
+<name name-style="western"><surname>Nam</surname><given-names>JW</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Genomics of microRNA.</article-title>             <source>Trends Genet</source>             <volume>22</volume>             <fpage>165</fpage>             <lpage>173</lpage>          </element-citation></ref>
+<ref id="pcbi.1000189-Lewis1"><label>2</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Lewis</surname><given-names>BP</given-names></name>
+<name name-style="western"><surname>Burge</surname><given-names>CB</given-names></name>
+<name name-style="western"><surname>Bartel</surname><given-names>DP</given-names></name>
+</person-group>             <year>2005</year>             <article-title>Conserved seed pairing, often flanked by adenosines, indicates that thousands of human genes are microRNA targets.</article-title>             <source>Cell</source>             <volume>120</volume>             <fpage>15</fpage>             <lpage>20</lpage>          </element-citation></ref>
+<ref id="pcbi.1000189-Brennecke1"><label>3</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Brennecke</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Stark</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Russell</surname><given-names>RB</given-names></name>
+<name name-style="western"><surname>Cohen</surname><given-names>SM</given-names></name>
+</person-group>             <year>2005</year>             <article-title>Principles of microRNA-target recognition.</article-title>             <source>PLoS Biol</source>             <volume>3</volume>             <fpage>e85</fpage>             <comment>doi:10.1371/journal.pbio.0030085</comment>          </element-citation></ref>
+<ref id="pcbi.1000189-Rajewsky1"><label>4</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Rajewsky</surname><given-names>N</given-names></name>
+</person-group>             <year>2006</year>             <article-title>MicroRNA target predictions in animals.</article-title>             <source>Nat Genet</source>             <volume>38</volume>             <fpage>S8</fpage>             <lpage>S13</lpage>          </element-citation></ref>
+<ref id="pcbi.1000189-Elkon1"><label>5</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Elkon</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Linhart</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Sharan</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Shamir</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Shiloh</surname><given-names>Y</given-names></name>
+</person-group>             <year>2003</year>             <article-title>Genome-wide in silico identification of transcriptional regulators controlling the cell cycle in human cells.</article-title>             <source>Genome Res</source>             <volume>13</volume>             <fpage>773</fpage>             <lpage>780</lpage>          </element-citation></ref>
+<ref id="pcbi.1000189-Pilpel1"><label>6</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Pilpel</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Sudarsanam</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Church</surname><given-names>GM</given-names></name>
+</person-group>             <year>2001</year>             <article-title>Identifying regulatory networks by combinatorial analysis of promoter elements.</article-title>             <source>Nat Genet</source>             <volume>29</volume>             <fpage>153</fpage>             <lpage>159</lpage>          </element-citation></ref>
+<ref id="pcbi.1000189-Segal1"><label>7</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Segal</surname><given-names>E</given-names></name>
+<name name-style="western"><surname>Yelensky</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Koller</surname><given-names>D</given-names></name>
+</person-group>             <year>2003</year>             <article-title>Genome-wide discovery of transcriptional modules from DNA sequence and gene expression.</article-title>             <source>Bioinformatics</source>             <volume>19</volume>             <fpage>i273</fpage>             <lpage>i282</lpage>          </element-citation></ref>
+<ref id="pcbi.1000189-Cheadle1"><label>8</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Cheadle</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Fan</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Cho-Chung</surname><given-names>YS</given-names></name>
+<name name-style="western"><surname>Werner</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Ray</surname><given-names>J</given-names></name>
+<etal/></person-group>             <year>2005</year>             <article-title>Stability regulation of mRNA and the control of gene expression.</article-title>             <source>Ann N Y Acad Sci</source>             <volume>1058</volume>             <fpage>196</fpage>             <lpage>204</lpage>          </element-citation></ref>
+<ref id="pcbi.1000189-Farh1"><label>9</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Farh</surname><given-names>KK</given-names></name>
+<name name-style="western"><surname>Grimson</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Jan</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Lewis</surname><given-names>BP</given-names></name>
+<name name-style="western"><surname>Johnston</surname><given-names>WK</given-names></name>
+<etal/></person-group>             <year>2005</year>             <article-title>The widespread impact of mammalian microRNAs on mRNA repression and evolution.</article-title>             <source>Science</source>             <volume>310</volume>             <fpage>1817</fpage>             <lpage>1821</lpage>          </element-citation></ref>
+<ref id="pcbi.1000189-Lim1"><label>10</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Lim</surname><given-names>LP</given-names></name>
+<name name-style="western"><surname>Lau</surname><given-names>NC</given-names></name>
+<name name-style="western"><surname>Garrett-Engele</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Grimson</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Schelter</surname><given-names>JM</given-names></name>
+<etal/></person-group>             <year>2005</year>             <article-title>Microarray analysis shows that some microRNAs downregulate large numbers of target mRNAs.</article-title>             <source>Nature</source>             <volume>433</volume>             <fpage>769</fpage>             <lpage>773</lpage>          </element-citation></ref>
+<ref id="pcbi.1000189-Liu1"><label>11</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Liu</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Papagiannakopoulos</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Puskar</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Qi</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Santiago</surname><given-names>F</given-names></name>
+<etal/></person-group>             <year>2007</year>             <article-title>Detection of a microRNA signal in an in vivo expression set of mRNAs.</article-title>             <source>PLoS ONE</source>             <volume>2</volume>             <fpage>e804</fpage>             <comment>doi:10.1371/journal.pone.0000804</comment>          </element-citation></ref>
+<ref id="pcbi.1000189-Tsang1"><label>12</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Tsang</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Zhu</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>van Oudenaarden</surname><given-names>A</given-names></name>
+</person-group>             <year>2007</year>             <article-title>MicroRNA-mediated feedback and feedforward loops are recurrent network motifs in mammals.</article-title>             <source>Mol Cell</source>             <volume>26</volume>             <fpage>753</fpage>             <lpage>767</lpage>          </element-citation></ref>
+<ref id="pcbi.1000189-Huang1"><label>13</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Huang</surname><given-names>JC</given-names></name>
+<name name-style="western"><surname>Babak</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Corson</surname><given-names>TW</given-names></name>
+<name name-style="western"><surname>Chua</surname><given-names>G</given-names></name>
+<name name-style="western"><surname>Khan</surname><given-names>S</given-names></name>
+<etal/></person-group>             <year>2007</year>             <article-title>Using expression profiling data to identify human microRNA targets.</article-title>             <source>Nat Methods</source>             <volume>4</volume>             <fpage>1045</fpage>             <lpage>1049</lpage>          </element-citation></ref>
+<ref id="pcbi.1000189-Sood1"><label>14</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Sood</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Krek</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Zavolan</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Macino</surname><given-names>G</given-names></name>
+<name name-style="western"><surname>Rajewsky</surname><given-names>N</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Cell-type-specific signatures of microRNAs on target mRNA expression.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>103</volume>             <fpage>2746</fpage>             <lpage>2751</lpage>          </element-citation></ref>
+<ref id="pcbi.1000189-Chen1"><label>15</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Chen</surname><given-names>CZ</given-names></name>
+<name name-style="western"><surname>Li</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Lodish</surname><given-names>HF</given-names></name>
+<name name-style="western"><surname>Bartel</surname><given-names>DP</given-names></name>
+</person-group>             <year>2004</year>             <article-title>MicroRNAs modulate hematopoietic lineage differentiation.</article-title>             <source>Science</source>             <volume>303</volume>             <fpage>83</fpage>             <lpage>86</lpage>          </element-citation></ref>
+<ref id="pcbi.1000189-Felli1"><label>16</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Felli</surname><given-names>N</given-names></name>
+<name name-style="western"><surname>Fontana</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Pelosi</surname><given-names>E</given-names></name>
+<name name-style="western"><surname>Botta</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Bonci</surname><given-names>D</given-names></name>
+<etal/></person-group>             <year>2005</year>             <article-title>MicroRNAs 221 and 222 inhibit normal erythropoiesis and erythroleukemic cell growth via kit receptor down-modulation.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>102</volume>             <fpage>18081</fpage>             <lpage>18086</lpage>          </element-citation></ref>
+<ref id="pcbi.1000189-Georgantas1"><label>17</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Georgantas</surname><given-names>RW</given-names><suffix>3rd</suffix></name>
+<name name-style="western"><surname>Hildreth</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Morisot</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Alder</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Liu</surname><given-names>CG</given-names></name>
+<etal/></person-group>             <year>2007</year>             <article-title>CD34+ hematopoietic stem-progenitor cell microRNA expression and function: a circuit diagram of differentiation control.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>104</volume>             <fpage>2750</fpage>             <lpage>2755</lpage>          </element-citation></ref>
+<ref id="pcbi.1000189-Fazi1"><label>18</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Fazi</surname><given-names>F</given-names></name>
+<name name-style="western"><surname>Rosa</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Fatica</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Gelmetti</surname><given-names>V</given-names></name>
+<name name-style="western"><surname>De Marchis</surname><given-names>ML</given-names></name>
+<etal/></person-group>             <year>2005</year>             <article-title>A minicircuitry comprised of microRNA-223 and transcription factors NFI-A and C/EBPalpha regulates human granulopoiesis.</article-title>             <source>Cell</source>             <volume>123</volume>             <fpage>819</fpage>             <lpage>831</lpage>          </element-citation></ref>
+<ref id="pcbi.1000189-Bruno1"><label>19</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Bruno</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Hoffmann</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>McBlane</surname><given-names>F</given-names></name>
+<name name-style="western"><surname>Brown</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Gupta</surname><given-names>R</given-names></name>
+<etal/></person-group>             <year>2004</year>             <article-title>Molecular signatures of self-renewal, differentiation, and lineage choice in multipotential hemopoietic progenitor cells in vitro.</article-title>             <source>Mol Cell Biol</source>             <volume>24</volume>             <fpage>741</fpage>             <lpage>756</lpage>          </element-citation></ref>
+<ref id="pcbi.1000189-vanRuissen1"><label>20</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>van Ruissen</surname><given-names>F</given-names></name>
+<name name-style="western"><surname>Ruijter</surname><given-names>JM</given-names></name>
+<name name-style="western"><surname>Schaaf</surname><given-names>GJ</given-names></name>
+<name name-style="western"><surname>Asgharnegad</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Zwijnenburg</surname><given-names>DA</given-names></name>
+<etal/></person-group>             <year>2005</year>             <article-title>Evaluation of the similarity of gene expression data estimated with SAGE and Affymetrix GeneChips.</article-title>             <source>BMC Genomics</source>             <volume>6</volume>             <fpage>91</fpage>          </element-citation></ref>
+<ref id="pcbi.1000189-Yang1"><label>21</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Yang</surname><given-names>YH</given-names></name>
+<name name-style="western"><surname>Dudoit</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Luu</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Lin</surname><given-names>DM</given-names></name>
+<name name-style="western"><surname>Peng</surname><given-names>V</given-names></name>
+<etal/></person-group>             <year>2002</year>             <article-title>Normalization for cDNA microarray data: a robust composite method addressing single and multiple slide systematic variation.</article-title>             <source>Nucleic Acids Res</source>             <volume>30</volume>             <fpage>e15</fpage>          </element-citation></ref>
+<ref id="pcbi.1000189-Pradervand1"><label>22</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Pradervand</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Paillusson</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Thomas</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Weber</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Wirapati</surname><given-names>P</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>Affymetrix Whole-Transcript Human Gene 1.0 ST array is highly concordant with standard 3′ expression arrays.</article-title>             <source>Biotechniques</source>             <volume>44</volume>             <fpage>759</fpage>             <lpage>762</lpage>          </element-citation></ref>
+<ref id="pcbi.1000189-Rodriguez1"><label>23</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Rodriguez</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Vigorito</surname><given-names>E</given-names></name>
+<name name-style="western"><surname>Clare</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Warren</surname><given-names>MV</given-names></name>
+<name name-style="western"><surname>Couttet</surname><given-names>P</given-names></name>
+<etal/></person-group>             <year>2007</year>             <article-title>Requirement of bic/microRNA-155 for normal immune function.</article-title>             <source>Science</source>             <volume>316</volume>             <fpage>608</fpage>             <lpage>611</lpage>          </element-citation></ref>
+<ref id="pcbi.1000189-Lee1"><label>24</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Lee</surname><given-names>MS</given-names></name>
+<name name-style="western"><surname>Hanspers</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Barker</surname><given-names>CS</given-names></name>
+<name name-style="western"><surname>Korn</surname><given-names>AP</given-names></name>
+<name name-style="western"><surname>McCune</surname><given-names>JM</given-names></name>
+</person-group>             <year>2004</year>             <article-title>Gene expression profiles during human CD4+ T cell differentiation.</article-title>             <source>Int Immunol</source>             <volume>16</volume>             <fpage>1109</fpage>             <lpage>1124</lpage>          </element-citation></ref>
+<ref id="pcbi.1000189-Li1"><label>25</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Li</surname><given-names>QJ</given-names></name>
+<name name-style="western"><surname>Chau</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Ebert</surname><given-names>PJ</given-names></name>
+<name name-style="western"><surname>Sylvester</surname><given-names>G</given-names></name>
+<name name-style="western"><surname>Min</surname><given-names>H</given-names></name>
+<etal/></person-group>             <year>2007</year>             <article-title>miR-181a is an intrinsic modulator of T cell sensitivity and selection.</article-title>             <source>Cell</source>             <volume>129</volume>             <fpage>147</fpage>             <lpage>161</lpage>          </element-citation></ref>
+<ref id="pcbi.1000189-Landais1"><label>26</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Landais</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Landry</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Legault</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Rassart</surname><given-names>E</given-names></name>
+</person-group>             <year>2007</year>             <article-title>Oncogenic potential of the miR-106-363 cluster and its implication in human T-cell leukemia.</article-title>             <source>Cancer Res</source>             <volume>67</volume>             <fpage>5699</fpage>             <lpage>5707</lpage>          </element-citation></ref>
+<ref id="pcbi.1000189-Irizarry1"><label>27</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Irizarry</surname><given-names>RA</given-names></name>
+<name name-style="western"><surname>Bolstad</surname><given-names>BM</given-names></name>
+<name name-style="western"><surname>Collin</surname><given-names>F</given-names></name>
+<name name-style="western"><surname>Cope</surname><given-names>LM</given-names></name>
+<name name-style="western"><surname>Hobbs</surname><given-names>B</given-names></name>
+<etal/></person-group>             <year>2003</year>             <article-title>Summaries of Affymetrix GeneChip probe level data.</article-title>             <source>Nucleic Acids Res</source>             <volume>31</volume>             <fpage>e15</fpage>          </element-citation></ref>
+<ref id="pcbi.1000189-Reimers1"><label>28</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Reimers</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Carey</surname><given-names>VJ</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Bioconductor: an open source framework for bioinformatics and computational biology.</article-title>             <source>Methods Enzymol</source>             <volume>411</volume>             <fpage>119</fpage>             <lpage>134</lpage>          </element-citation></ref>
+<ref id="pcbi.1000189-Flicek1"><label>29</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Flicek</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Aken</surname><given-names>BL</given-names></name>
+<name name-style="western"><surname>Beal</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Ballester</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Caccamo</surname><given-names>M</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>Ensembl 2008.</article-title>             <source>Nucleic Acids Res</source>             <volume>36</volume>             <fpage>D707</fpage>             <lpage>D714</lpage>          </element-citation></ref>
+</ref-list>
+
+</back>
+</article>

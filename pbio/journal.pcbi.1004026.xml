@@ -1,0 +1,621 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="3.0" xml:lang="en">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">ploscomp</journal-id>
+<journal-title-group>
+<journal-title>PLOS Computational Biology</journal-title>
+</journal-title-group>
+<issn pub-type="ppub">1553-734X</issn>
+<issn pub-type="epub">1553-7358</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="publisher-id">PCOMPBIOL-D-14-01535</article-id>
+<article-id pub-id-type="doi">10.1371/journal.pcbi.1004026</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+</article-categories>
+<title-group>
+<article-title>A New Algorithm to Diagnose Atrial Ectopic Origin from Multi Lead ECG Systems - Insights from 3D Virtual Human Atria and Torso</article-title>
+<alt-title alt-title-type="running-head">An Algorithm to Locate Atrial Focal Origin</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Alday</surname>
+<given-names>Erick A. Perez</given-names>
+</name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="other" rid="econtrib001"><sup>‡</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Colman</surname>
+<given-names>Michael A.</given-names>
+</name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="other" rid="econtrib001"><sup>‡</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Langley</surname>
+<given-names>Philip</given-names>
+</name>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Butters</surname>
+<given-names>Timothy D.</given-names>
+</name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Higham</surname>
+<given-names>Jonathan</given-names>
+</name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Workman</surname>
+<given-names>Antony J.</given-names>
+</name>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Hancox</surname>
+<given-names>Jules C.</given-names>
+</name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff004"><sup>4</sup></xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Zhang</surname>
+<given-names>Henggui</given-names>
+</name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff005"><sup>5</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+</contrib-group>
+<aff id="aff001"><label>1</label> <addr-line>Biological Physics Group, Department of Physics and Astronomy, University of Manchester, Manchester, United Kingdom</addr-line></aff>
+<aff id="aff002"><label>2</label> <addr-line>School of Engineering, University of Hull, Hull, United Kingdom</addr-line></aff>
+<aff id="aff003"><label>3</label> <addr-line>Institute of Cardiovascular and Medical Sciences, University of Glasgow, Glasgow, United Kingdom</addr-line></aff>
+<aff id="aff004"><label>4</label> <addr-line>School of Physiology and Pharmacology, and Cardiovascular Research Laboratories, School of Medical Sciences, University of Bristol, Bristol, United Kingdom</addr-line></aff>
+<aff id="aff005"><label>5</label> <addr-line>School of Computer Science and Technology, Harbin Institute of Technology, Harbin, China</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Panfilov</surname>
+<given-names>Alexander V.</given-names>
+</name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1">
+<addr-line>Gent University, BELGIUM</addr-line>
+</aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001"><p>The authors have declared that no competing interests exist.</p></fn>
+<fn fn-type="con" id="contrib001"><p>Conceived and designed the experiments: HZ. Performed the experiments: EAPA MAC PL TDB JH. Analyzed the data: HZ EAPA MAC PL TDB JH. Contributed reagents/materials/analysis tools: HZ EAPA MAC PL TDB JH. Wrote the paper: HZ EAPA MAC PL TDB JH AJW JCH.</p></fn>
+<fn fn-type="other" id="econtrib001"><p>‡ These authors have contributed equally to this work.</p></fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">henggui.zhang@manchester.ac.uk</email></corresp>
+</author-notes>
+<pub-date pub-type="collection">
+<month>1</month>
+<year>2015</year>
+</pub-date>
+<pub-date pub-type="epub">
+<day>22</day>
+<month>1</month>
+<year>2015</year>
+</pub-date>
+<volume>11</volume>
+<issue>1</issue>
+<elocation-id>e1004026</elocation-id>
+<history>
+<date date-type="received">
+<day>21</day>
+<month>8</month>
+<year>2014</year>
+</date>
+<date date-type="accepted">
+<day>5</day>
+<month>11</month>
+<year>2014</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2015</copyright-year>
+<copyright-holder>Alday et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pcbi.1004026" xlink:type="simple"/>
+<abstract>
+<p>Rapid atrial arrhythmias such as atrial fibrillation (AF) predispose to ventricular arrhythmias, sudden cardiac death and stroke. Identifying the origin of atrial ectopic activity from the electrocardiogram (ECG) can help to diagnose the early onset of AF in a cost-effective manner. The complex and rapid atrial electrical activity during AF makes it difficult to obtain detailed information on atrial activation using the standard 12-lead ECG alone. Compared to conventional 12-lead ECG, more detailed ECG lead configurations may provide further information about spatio-temporal dynamics of the body surface potential (BSP) during atrial excitation. We apply a recently developed 3D human atrial model to simulate electrical activity during normal sinus rhythm and ectopic pacing. The atrial model is placed into a newly developed torso model which considers the presence of the lungs, liver and spinal cord. A boundary element method is used to compute the BSP resulting from atrial excitation. Elements of the torso mesh corresponding to the locations of the placement of the electrodes in the standard 12-lead and a more detailed 64-lead ECG configuration were selected. The ectopic focal activity was simulated at various origins across all the different regions of the atria. Simulated BSP maps during normal atrial excitation (i.e. sinoatrial node excitation) were compared to those observed experimentally (obtained from the 64-lead ECG system), showing a strong agreement between the evolution in time of the simulated and experimental data in the P-wave morphology of the ECG and dipole evolution. An algorithm to obtain the location of the stimulus from a 64-lead ECG system was developed. The algorithm presented had a success rate of 93%, meaning that it correctly identified the origin of atrial focus in 75/80 simulations, and involved a general approach relevant to any multi-lead ECG system. This represents a significant improvement over previously developed algorithms.</p>
+</abstract>
+<abstract abstract-type="summary">
+<title>Author Summary</title>
+<p>Ectopic activity is associated with multiple cardiac disorders and has been implicated in the initiation of self-sustaining re-entrant excitation. Identifying the presence and origin of ectopic activity may be vital in improving diagnosis and treatment of disorders such as atrial fibrillation, and has been the subject of multiple studies. The electrical activity of the heart can be non-invasively monitored through the electrocardiogram. However, the standard 12-lead electrocardiogram may not provide sufficient information to resolve the focus of ectopic activity satisfactorily and accurately; more detailed multi-lead electrocardiograms may provide more information to be able to produce an algorithm to locate the origin of ectopic activity. Using a 3D computational atria-torso model developed in our laboratory, we simulated the electrical activity of the atria under normal and different ectopic conditions. The model was first validated by comparison to experimental data, and then used to develop an algorithm to identify the location of atrial ectopic focus using a 64-lead electrocardiogram. The algorithm developed was able to identify the origin of atrial ectopic activity in 75/80 simulations, which is a significant improvement compared to previously developed algorithms. Furthermore, the study suggests that multi-lead electrocardiograms provide significant benefits over the standard 12-lead configuration.</p>
+</abstract>
+<funding-group>
+<funding-statement>This work was supported by CONACyT and project grants from Engineering and Physical Science Research Council UK (EP/J00958X/1; EP/I029826/1), an Engineering and Physical Science Research Council UK Doctoral Prize Fellowship, and the Natural Science Foundation of China (61179009) and the University of Manchester. The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="6"/>
+<table-count count="1"/>
+<page-count count="15"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability" xlink:type="simple">
+<meta-name>Data Availability</meta-name>
+<meta-value>All relevant data are within the paper and its Supporting Information files.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec sec-type="intro" id="sec001">
+<title>Introduction</title>
+<p>Rapid atrial arrhythmias such as atrial tachycardia (AT) and atrial fibrillation (AF) can reduce cardiac output and predispose to ventricular arrhythmias and further complications, such as stroke and even sudden cardiac death [<xref ref-type="bibr" rid="pcbi.1004026.ref001">1</xref>–<xref ref-type="bibr" rid="pcbi.1004026.ref003">3</xref>]. Both AT and AF are associated with ectopic activity—rapid and irregular spontaneous excitation originating from regions of the atria other than the cardiac pacemaker, the sinoatrial node [<xref ref-type="bibr" rid="pcbi.1004026.ref004">4</xref>]. Such activity can interrupt normal sinus rhythm and mediate the development of the self-perpetuating re-entrant excitation associated with AT/AF [<xref ref-type="bibr" rid="pcbi.1004026.ref005">5</xref>], therefore implicating an important role for ectopic activity in the initiation and recurrence of both arrhythmias.</p>
+<p>The pulmonary vein (PV) sleeves in the left atrium (LA) are usually identified as a major source of rapid ectopic activity [<xref ref-type="bibr" rid="pcbi.1004026.ref006">6</xref>–<xref ref-type="bibr" rid="pcbi.1004026.ref008">8</xref>], and catheter ablation therapy targeting the PV sleeves is commonly used as a treatment of AF [<xref ref-type="bibr" rid="pcbi.1004026.ref004">4</xref>, <xref ref-type="bibr" rid="pcbi.1004026.ref007">7</xref>]. However, success rates for catheter ablation therapy are not entirely satisfactory (about 50% in single-procedure ablation [<xref ref-type="bibr" rid="pcbi.1004026.ref009">9</xref>]). Consequently, repeated operations may be required, resulting in significant scar tissue in the LA. Such scarring may induce further complications, such as contributing towards a reduction in cardiac output as well as providing conduction barriers which may promote the development of re-entry [<xref ref-type="bibr" rid="pcbi.1004026.ref010">10</xref>]. Furthermore, ectopic activity is not associated with the PVs alone; focal beats have been observed to originate from multiple regions of both the left and right atria [<xref ref-type="bibr" rid="pcbi.1004026.ref011">11</xref>, <xref ref-type="bibr" rid="pcbi.1004026.ref012">12</xref>]. Hence, identifying the presence and location of ectopic activity is important for guiding ablation therapy, which may increase success rates and reduce the need for repeated operations. Moreover, identifying atrial ectopic activity and its origins may help in the diagnosis of early onset AF [<xref ref-type="bibr" rid="pcbi.1004026.ref013">13</xref>] and lead to timely treatment, inhibiting the development of persistent or chronic AF before the occurrence of permanent electrical and structural remodelling [<xref ref-type="bibr" rid="pcbi.1004026.ref013">13</xref>].</p>
+<p>The electrocardiogram (ECG) is the most common non-invasive method of monitoring cardiac activity. The P-wave of the ECG is associated with atrial activation; irregular ectopic atrial activity may therefore be reflected as an alteration to the P-wave morphology (PWM). Multi-electrode ECG systems, such a 64-lead ECG vest [<xref ref-type="bibr" rid="pcbi.1004026.ref014">14</xref>], provide spatially detailed mapping of the body-surface potential (BSP). However, it is unclear if such further detail provides significant benefits over the standard 12-lead ECG in terms of resolving the location of ectopic atrial activity. In this study, we have used a biophysically detailed computational model of the human atria and torso to investigate the correlation between PWM of 64-lead ECGs and the location of atrial ectopic activity, in order to develop a focus-location algorithm.</p>
+</sec>
+<sec sec-type="materials|methods" id="sec002">
+<title>Methods</title>
+<sec id="sec002a">
+<title>3D atria-torso model and simulation of BSP and multi-lead ECG</title>
+<p>Previously we have developed a biophysically detailed computational model of the three-dimensional (3D) human atria and torso [<xref ref-type="bibr" rid="pcbi.1004026.ref015">15</xref>–<xref ref-type="bibr" rid="pcbi.1004026.ref017">17</xref>]. The model accounts for atrial anatomy [<xref ref-type="bibr" rid="pcbi.1004026.ref018">18</xref>] including segmented regions for the major anatomical structures [<xref ref-type="bibr" rid="pcbi.1004026.ref016">16</xref>] (<xref ref-type="fig" rid="pcbi.1004026.g001">Fig. 1Ai</xref>) and detailed atrial electrophysiology including regional differences in electrical properties [<xref ref-type="bibr" rid="pcbi.1004026.ref016">16</xref>]. The model reproduces sinus rhythm depolarisation and repolarisation patterns (<xref ref-type="fig" rid="pcbi.1004026.g001">Fig. 1Aii</xref>) and has been used to study the mechanisms underlying AF genesis [<xref ref-type="bibr" rid="pcbi.1004026.ref016">16</xref>, <xref ref-type="bibr" rid="pcbi.1004026.ref017">17</xref>]. Implementation of the torso model proved useful in correlating PWM with the origin of atrial ectopic activity in a previous study [<xref ref-type="bibr" rid="pcbi.1004026.ref015">15</xref>]. However, detailed correlation between the two has not yet been established, and the torso geometry used in the previous study was idealised [<xref ref-type="bibr" rid="pcbi.1004026.ref015">15</xref>]. For a more comprehensive analysis of the relation between PWM and ectopic activity, a more realistic torso model must be used. In this study, we use our 3D model of the human atria and update the torso model in order to develop an algorithm to identify the location of focal ectopic activity in the atria (<xref ref-type="fig" rid="pcbi.1004026.g001">Fig. 1</xref>). Details of atrial model development and simulation protocols can be found in Colman <italic>et al.</italic>[<xref ref-type="bibr" rid="pcbi.1004026.ref016">16</xref>], and in <xref ref-type="supplementary-material" rid="pcbi.1004026.s004">S1 Text</xref>.</p>
+<fig id="pcbi.1004026.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004026.g001</object-id>
+<label>Figure 1</label>
+<caption>
+<title>Models and procedure used to develop the algorithm.</title> 
+<p>(A(i)) 3D Atrial model with the different regions of the atria included in this simulation: right atrium (RA, transparent purple), right atrial appendage (RAA, beige), pectinate muscles (PM, green), cristalterminalis (CT, solid purple), sinoatrial node (SAN, red), superior vena cava (SVC), atrio-ventricular ring (AVR, grey), right pulmonary vein (RPV, blue), Bachmann’s bundle (BB, orange), left atrium (LA, light blue), left atrial appendage (LAA, yellow), inferior vena cava (IVC) and left pulmonary veins (LPV, blue). A(ii) is a snapshot of the activation of the atria at 30ms after initiation. B(i) Torso model with all the considerations used in the simulation, we can observe the position of the atria as well. B(ii) BSP produced in our simulation, corresponding to the atrial snapshot in Aii. C(i) and (ii) indicate the different stimulated points across the surface of the atria, used for focal ectopic pacing. D Positions of the electrodes placement in the torso mesh from the front (i) and from the back (ii), for the 64-lead ECG system.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004026.g001"/>
+</fig>
+<p>Two torso reconstructions are used in the present study (<xref ref-type="fig" rid="pcbi.1004026.g002">Fig. 2</xref>), based on segmentation of magnetic resonance imaging (MRI) images taken from the female and male visible human dataset [<xref ref-type="bibr" rid="pcbi.1004026.ref019">19</xref>], by using the software ITK-SNAP [<xref ref-type="bibr" rid="pcbi.1004026.ref020">20</xref>]. Note that the atrial model does not account for gender differences in either anatomy or electrophysiology [<xref ref-type="bibr" rid="pcbi.1004026.ref016">16</xref>] and investigation of gender differences is not the aim of this study; rather, use of multiple torso geometries ensures generality of the developed algorithm. The models account for the structure and different electrical conductivities in the lungs, liver, spinal cord and blood masses [<xref ref-type="bibr" rid="pcbi.1004026.ref021">21</xref>]. The female torso model was discretised at a spatial resolution of 0.33mm × 0.33mm × 0.33 mm[<xref ref-type="bibr" rid="pcbi.1004026.ref019">19</xref>], corresponding to that of the female atrial model [<xref ref-type="bibr" rid="pcbi.1004026.ref016">16</xref>]. Meanwhile the male torso model was discretised at a spatial resolution of 0.33mm × 0.33mm × 1 mm[<xref ref-type="bibr" rid="pcbi.1004026.ref019">19</xref>]. The 3D atrial model (<xref ref-type="fig" rid="pcbi.1004026.g001">Fig. 1A</xref>) [<xref ref-type="bibr" rid="pcbi.1004026.ref016">16</xref>] was then integrated into the two torso geometries and the BSP distribution was calculated through the use of a boundary element method (<xref ref-type="fig" rid="pcbi.1004026.g001">Fig. 1B</xref>) [<xref ref-type="bibr" rid="pcbi.1004026.ref022">22</xref>]. Two different positions of the atria inside the torso were used to account for variability between patients; one is based on Ho and Sanchez-Quintana [<xref ref-type="bibr" rid="pcbi.1004026.ref023">23</xref>] (<xref ref-type="fig" rid="pcbi.1004026.g002">Fig. 2 Ai, Bi</xref>), and the second one is the position of the atria obtained directly from the segmentation of the visible human female dataset (from which the atrial anatomical model was extracted) (<xref ref-type="fig" rid="pcbi.1004026.g002">Fig. 2 Aii, Bii</xref>). From the BSP, ECG signals can be derived by selecting elements of the torso mesh which correspond to the location of electrodes used in ECG systems. Ectopic focal activity was simulated by applying stimuli to various locations across all regions of the atria (<xref ref-type="fig" rid="pcbi.1004026.g001">Fig. 1C</xref>). In this study, we replicated a 64-lead ECG system which measures the BSP on the front and back of the torso (<xref ref-type="fig" rid="pcbi.1004026.g001">Fig. 1D</xref>) as well as the standard 12-lead ECG. All leads in the 64-lead system are unipolar: the potential at the electrode is the positive terminal and Wilson’s Central Terminal[<xref ref-type="bibr" rid="pcbi.1004026.ref024">24</xref>] is the negative terminal.</p>
+<fig id="pcbi.1004026.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004026.g002</object-id>
+<label>Figure 2</label>
+<caption>
+<title>Positions of the atria inside the two different torso reconstructions used in this study.</title>
+<p>A, Female torso taken from the visible human dataset [<xref ref-type="bibr" rid="pcbi.1004026.ref019">19</xref>]. B, Male torso taken from the visible human dataset [<xref ref-type="bibr" rid="pcbi.1004026.ref019">19</xref>]. The labels (i) correspond to the position based on Ho and Sanchez-Quintana [<xref ref-type="bibr" rid="pcbi.1004026.ref023">23</xref>]. The labels (ii) correspond to the position of the atria obtained from the segmentation. The different tissues accounted for in the model are illustrated in (i) and (ii); Green-Lungs, Brown-Liver, Yellow-Spinal cord, red-Ventricles, Blue-Atria, Pink-Torso.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004026.g002"/>
+</fig>
+</sec>
+<sec id="sec002b">
+<title>Characterisation of the P-wave</title>
+<p>For each lead, the P-wave was characterised by its morphology and polarity. It was indexed as positive if the amplitude of the positive peak was greater than double that of the negative peak (if there was one), and vice-versa for a negative P-wave. A biphasic P-wave is defined as one in which the second peak (positive or negative) was at least half of the amplitude of the largest peak (negative or positive). Such a definition resulted in the best performance of our focus location algorithm (described in the next section), and is not intended as a general definition for other purposes.</p>
+</sec>
+<sec id="sec002c">
+<title>Quantification of the atrial dipole evolution</title>
+<p>The P-wave dipole pattern was constructed based on the maximum positive potentials (positive pole) and the minimum negative potentials (negative pole) in the body surface at every time step [<xref ref-type="bibr" rid="pcbi.1004026.ref014">14</xref>]. As the atrial activation evolves, the amplitude and spatial distribution of the poles across the surface of the body change dynamically. Furthermore, we constructed spatial polarity maps based on the polarity (positive/negative/biphasic) of the P-wave at each electrode location.</p>
+</sec>
+<sec id="sec002d">
+<title>Simulation of atrial focal activity</title>
+<p>To simulate ectopic focal activity the model was stimulated by a sequence of external supra-threshold electrical pulses applied to various locations across all different regions of the atria (<xref ref-type="fig" rid="pcbi.1004026.g001">Fig. 1C</xref>), representing the range of ectopic foci observed experimentally [<xref ref-type="bibr" rid="pcbi.1004026.ref011">11</xref>, <xref ref-type="bibr" rid="pcbi.1004026.ref012">12</xref>]. Stimuli were applied to each location at both slow (cycle length = 700ms) and fast (cycle length = 300ms) rates to ensure that rate dependent changes in PWM are accounted for. In each case, the P-wave resulting from the final of three stimuli was analysed.</p>
+</sec>
+<sec id="sec002e">
+<title>Focus location algorithm</title>
+<p>Simulated BSP maps and ECG P-waves varied significantly with the location of the ectopic focus (<xref ref-type="fig" rid="pcbi.1004026.g003">Fig. 3</xref>). The P-wave polarity map offered the most effective method of quantifying such differences, offering more information than the temporal evolution of the dipole peaks while being less affected by noise than the raw P-waves. P-wave polarity maps therefore form the basis of the development of an algorithm to determine the location of an atrial focus from 64-lead ECG measurements.</p>
+<fig id="pcbi.1004026.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004026.g003</object-id>
+<label>Figure 3</label>
+<caption>
+<title>Correlation between two focal origin and the division of quadrants.</title>
+<p>Correlation between atrial focal origin (A) and the body surface polarity (B), corresponding to ectopic pacing at the inferior vena cava (Ai) right atrial appendage (Aii). In B, both the front (left panels) and back (right panels) of the torso are shown. The quadrants on the torso and the atria are illustrated in B (i),(ii) and C. Qt<sub>i</sub> indexes the quadrants of the torso B(i) and (ii), and the Qa<sub>i</sub> indexes quadrants of the atria C(i) and (ii).</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004026.g003"/>
+</fig>
+<p>To relate polarity patterns to atrial anatomical sites, both the atria and the torso were divided into two sets of quadrants, four in the anterior part and four in the posterior part of each anatomical model (<xref ref-type="fig" rid="pcbi.1004026.g003">Fig. 3B,C</xref>). For the torso model, Qt1 to Qt8 were used to label the quadrants (<xref ref-type="fig" rid="pcbi.1004026.g003">Fig. 3Bi,ii</xref>). In the atria Qa1 to Qa8 were used (<xref ref-type="fig" rid="pcbi.1004026.g003">Fig. 3C</xref>) where each quadrant contains corresponding anatomical regions (<xref ref-type="table" rid="pcbi.1004026.t001">Table 1</xref>). Note that the position of the atria within the torso had a significant effect on PWM and the P-wave polarity map (<xref ref-type="supplementary-material" rid="pcbi.1004026.s001">S1 Fig.</xref>), and that the atrial anatomical locations associated with each atrial quadrant differ for both orientations considered. As such, patient variability in the orientation of the heart within the torso must be considered, and can be accounted for in this table rather than the algorithm itself, which operates by relating atrial and torso quadrants.</p>
+<table-wrap id="pcbi.1004026.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004026.t001</object-id>
+<label>Table 1</label>
+<caption>
+<title>Regions of the atria included in each quadrant for the two positions inside the torso.</title>
+</caption>
+<alternatives>
+<graphic id="pcbi.1004026.t001g" mimetype="image" position="float" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004026.t001"/>
+<table frame="hsides" rules="groups">
+<colgroup span="1">
+<col align="left" valign="top" span="1"/>
+<col align="left" valign="top" span="1"/>
+<col align="left" valign="top" span="1"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" valign="top" rowspan="1" colspan="1"><bold>Quadrant</bold></th>
+<th align="left" valign="top" rowspan="1" colspan="1"><bold>Position 1 Regions included</bold></th>
+<th align="left" valign="top" rowspan="1" colspan="1"><bold>Position 2 Regions included</bold></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td align="left" valign="top" rowspan="1" colspan="1">Qa1</td>
+<td align="left" valign="top" rowspan="1" colspan="1">Superior-anterior part of RA, right part of RAA, superior part of the PM, superior part CT, superior part of the SAN, anterior part of the SVC</td>
+<td align="left" valign="top" rowspan="1" colspan="1">Superior-anterior part of RA, right part of RAA, SAN, PM, Superior part of CT.</td>
+</tr>
+<tr>
+<td align="left" valign="top" rowspan="1" colspan="1">Qa2</td>
+<td align="left" valign="top" rowspan="1" colspan="1">Left part of RAA</td>
+<td align="left" valign="top" rowspan="1" colspan="1">Left part of RAA</td>
+</tr>
+<tr>
+<td align="left" valign="top" rowspan="1" colspan="1">Qa3</td>
+<td align="left" valign="top" rowspan="1" colspan="1">Inferior-anterior part of the RA, inferior part of the PM, inferior anterior part of the CT, inferior part of the SAN</td>
+<td align="left" valign="top" rowspan="1" colspan="1">Inferior-anterior part of the RA, inferior anterior part of the CT, AVR, inferior-anterior part of IVC.</td>
+</tr>
+<tr>
+<td align="left" valign="top" rowspan="1" colspan="1">Qa4</td>
+<td align="left" valign="top" rowspan="1" colspan="1">inferior-anterior-left part of the RA, anterior part of the AVR</td>
+<td align="left" valign="top" rowspan="1" colspan="1">Anterior part of AVR.</td>
+</tr>
+<tr>
+<td align="left" valign="top" rowspan="1" colspan="1">Qa5</td>
+<td align="left" valign="top" rowspan="1" colspan="1">RPV, superior-right part of LA, superior part of the AS, BB, posterior part of the SVC</td>
+<td align="left" valign="top" rowspan="1" colspan="1">RSPV, superior-right part of LA, BB, SVC, superior part of AS</td>
+</tr>
+<tr>
+<td align="left" valign="top" rowspan="1" colspan="1">Qa6</td>
+<td align="left" valign="top" rowspan="1" colspan="1">LPV, superior-left part of the LA, LAA, posterior part of the AVR</td>
+<td align="left" valign="top" rowspan="1" colspan="1">LSPV, superior-left part of LA, LAA, posterior part of AVR.</td>
+</tr>
+<tr>
+<td align="left" valign="top" rowspan="1" colspan="1">Qa7</td>
+<td align="left" valign="top" rowspan="1" colspan="1">inferior part of the AS, inferior-right part of the LA, inferior-posterior part of the CT, IVC</td>
+<td align="left" valign="top" rowspan="1" colspan="1">RIPV, inferior part of AS, inferior-right part of LA, inferior-posterior part of IVC.</td>
+</tr>
+<tr>
+<td align="left" valign="top" rowspan="1" colspan="1">Qa8</td>
+<td align="left" valign="top" rowspan="1" colspan="1">inferior-left part of the LA</td>
+<td align="left" valign="top" rowspan="1" colspan="1">LIPV, inferior-left part of LA</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t001fn001">
+<p>The regions of the atria are: Right atrium (RA), right atrial appendage (RAA), pectinate muscles (PM), cristal terminalis (CT), sinoatrial node (SAN), superior vena cava (SVC), atrio-ventricular ring (AVR), right pulmonary vein (RPV), bundle branch (BB), left atrium (LA), left atrial appendage (LAA), inferior vena cava (IVC) and left pulmonary veins (LPV). Position 1 is taken from [<xref ref-type="bibr" rid="pcbi.1004026.ref023">23</xref>]. Position 2 is taken from the actual position of the atria inside its torso.</p>
+</fn>
+</table-wrap-foot>
+</table-wrap>
+<p>Schematic illustration of the algorithm is shown in <xref ref-type="fig" rid="pcbi.1004026.g004">Fig. 4</xref>, and details of the algorithm are described below:
+<list list-type="order">
+<list-item><p>Construct the spatial polarity map.</p></list-item>
+<list-item><p>Assign a numerical value to each electrode position based on the polarity of the P-wave at that position; 2 for a negative P-wave, 1 for a bi-phasic P-wave and 0 for a positive P-wave.</p></list-item>
+<list-item><p>Take the mean average of all the values in each torso quadrant, denoted Sp.</p></list-item>
+<list-item><p>Determine the largest value of Sp across all quadrants, denoted Sp_max. If there is a single quadrant which contains this value (Qtx, x = 1–8), then the location of the atrial focus is in the corresponding atrial quadrant (Qax).</p></list-item>
+<list-item><p>If there are multiple quadrants which contain Sp_max, then further analysis is required:</p>
+<list list-type="alpha-lower">
+<list-item><p>If the value of Sp in two quadrants is equal to Sp_max, then two adjacent quadrants must be compared. Then, the quadrant Sp_max, adjacent to the larger Sp from the second comparison, will be identified as the origin.</p>
+<p>Note: for example, if both superior-right and superior-left anterior quadrants have the same Sp_max value, then the Sp in the inferior-left and inferior-right anterior quadrants are compared, as long as they are different. If the inferior left has a greater Sp, then the atrial focal is in the superior-left region.</p></list-item>
+<list-item><p>If there are 3 quadrants with the same Sp_max value, then the corner quadrant will be identified as the atrial focal origin.</p>
+<p>Note: for example, if the anterior superior-right, the anterior superior-left and the anterior inferior-left quadrants have the same maximal value, then the anterior superior-left quadrant will be the origin.</p></list-item>
+<list-item><p>If 4 or more quadrants have the same Sp_max, the adjacent quadrants with different Sp will be compared, and the quadrant with a larger Sp will be identified as the origin.</p>
+<p>Note: for example, if the four anterior quadrants have the Sp_max, a subsequent maximal Sp in the posterior quadrants will be searched. If there is one, say the superior-right posterior one, then the superior-right anterior quadrant will be identified as the origin.</p></list-item>
+</list></list-item>
+</list></p>
+<fig id="pcbi.1004026.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004026.g004</object-id>
+<label>Figure 4</label>
+<caption>
+<title>Schematic illustration of the algorithm to identify the quadrant of atrial focal origin based on 64-lead ECG P-wave values.</title>
+</caption>
+<graphic mimetype="image" position="float" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004026.g004"/>
+</fig>
+</sec>
+</sec>
+<sec sec-type="results" id="sec003">
+<title>Results</title>
+<sec id="sec003a">
+<title>Validation of the simulated 64-lead ECG system</title>
+<p>Validation of the atrial activation sequence during control conditions has been discussed in [<xref ref-type="bibr" rid="pcbi.1004026.ref016">16</xref>, <xref ref-type="bibr" rid="pcbi.1004026.ref017">17</xref>]. In order to validate the 3D atria-torso model, we first compared the simulated BSP pattern and 12- and 64- lead ECG P-waves for the control case to experimental data obtained from eight healthy subjects. It was demonstrated that the simulated data of the 64-lead ECG (<xref ref-type="fig" rid="pcbi.1004026.g005">Fig. 5</xref>) as well as the 12-lead ECG and BSP pattern are in fair agreement to the experimental data. Then, we further compared the simulated P-wave polarity to the experimental data. In both simulations and experimental data, the polarity of P-waves was mainly positive in the left-superior part of the body, negative in the right, inferior part of the body, and biphasic or flat in the intermediary locations (<xref ref-type="fig" rid="pcbi.1004026.g006">Fig. 6A, B</xref>).</p>
+<fig id="pcbi.1004026.g005" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004026.g005</object-id>
+<label>Figure 5</label>
+<caption>
+<title>P-waves obtained from experimental data (blue line and grey shadow) and simulated (red line) data.</title>
+<p>The experimental average is the average data of 8 healthy people (blue line), and the experimental range corresponds to the maximum and minimum values of these signals (grey shadow). This measurements used the same protocol as described in [<xref ref-type="bibr" rid="pcbi.1004026.ref014">14</xref>]. Both experimental and simulated P-waves were normalized for comparison.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004026.g005"/>
+</fig>
+<fig id="pcbi.1004026.g006" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004026.g006</object-id>
+<label>Figure 6</label>
+<caption>
+<title>Comparison of p-waves and dipole evolution between the simulated and experimental data.</title>
+<p>A and B Comparison of the simulated 64-lead ECG P-waves polarity (ii) to experimental data (i). In this figure, the arrangement of the P-waves is set out to match electrode placement (see <xref ref-type="fig" rid="pcbi.1004026.g001">Fig. 1</xref>). We observed the polarity pattern of the P-waves of the experimental and simulation, in the front (A) and back (B) part of the body. The red positive sign signifies an upright P-wave, the blue negative sign represents an inverted P-wave, and the purple positive/negative sign represents a biphasic P-wave. C Spatial (i) and amplitude (ii) temporal evolution of the dipole. The black dots and lines are the experimental data and error bar taken from [<xref ref-type="bibr" rid="pcbi.1004026.ref014">14</xref>], and the blue lines and dots are obtained from our simulation during a stimuli applied to the superior part of the sino-atrial node region. In (i) the horizontal axis is a continuous scale from the first vertical line electrodes (1–6) to the last line of electrodes (33–38), without taking in to account 31, 32, 63 and 64.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004026.g006"/>
+</fig>
+<p>To assess quantitatively the agreement between the polarity patterns in simulation and experiment, the polarity of the simulated P-wave at every electrode was compared with each experimental dataset. Inter-patient variability was quantified by also comparing experimental datasets to each-other. The simulation data showed a range of agreement between 87.1% and 94.5% with experimental data, comparable to the range observed within the experimental data of 81.5% and 93.7%. Furthermore, the simulated temporal evolution of the dipole location (<xref ref-type="fig" rid="pcbi.1004026.g006">Fig. 6Ci</xref>) and amplitude (<xref ref-type="fig" rid="pcbi.1004026.g006">Fig. 6Cii</xref>) agreed with experimental data [<xref ref-type="bibr" rid="pcbi.1004026.ref014">14</xref>]. Hence, the model was validated for the control condition, and suitable for investigating the correlation between ectopic atrial activity and P-wave profiles.</p>
+</sec>
+<sec id="sec003b">
+<title>Focus location algorithm results</title>
+<p>The algorithm was developed based on results from 30 simulations with different atrial foci. It was then tested with 50 further simulations to determine its success rate (i.e. the proportion of cases in which the algorithm correctly identified the origin of atrial focus from the P-wave polarity pattern). In such blind tests, the success rate was 93%. Note that pacing rate affected PWM only to a small degree, and had no effect on the P-wave polarity map (<xref ref-type="supplementary-material" rid="pcbi.1004026.s002">S2 Fig.</xref>), hence ensuring the algorithm is appropriate for both fast and slow pacing rates.</p>
+<p>There were five cases for which the origin identified by the algorithm did not match the actual excitation site. In those cases the mismatch was a result of the definition of a biphasic P-wave, when the PWM was highly irregular. These irregularities could impact the value of the average for each quadrant, leading to a mismatch in the location of the ectopic focus, mainly when the focal origin was close to the boundary between two or more quadrants.</p>
+<p>Further refinements to the spatial resolution of the quadrants could be performed with the aim to improve the specificity of the algorithm for locating the focal origin site, by dividing each quadrant into sub-quadrants. Accordingly, the algorithm was updated as follows: if a quadrant adjacent to the quadrant with Sp_max has an Sp value close to that of the maximum quadrant (i.e. within 0.1 in this case), then the activation focus is determined to be in the sub-quadrant that is close to the boundary between the two quadrants (i.e. within the quadrant of maximum Sp value in close proximity to the neighbouring quadrant considered). Conversely, if the difference in values between the two quadrants is very large (i.e. greater than 0.1) then the focus of the activation is determined to be within the sub-quadrant that is far from the boundary of the two quadrants. Though such a spatial refinement improved the detection accuracy in terms of the spatial resolution, the success rate of detection showed a slight decrease, down to 89%. This could be due to the limitation of the 64-lead ECG to map the BSP.</p>
+</sec>
+</sec>
+<sec sec-type="conclusions" id="sec004">
+<title>Discussion</title>
+<p>In this study, we have developed a new algorithm for detecting the location of atrial focal activity using a 64-lead ECG system. The algorithm was developed using simulation data, which enabled us to correlate BSP patterns to atrial activation sequences more comprehensively than in an experimental setting.</p>
+<sec id="sec004a">
+<title>Computational models</title>
+<p>The computational model implemented for this study was an update of our previous model of the human atria and torso [<xref ref-type="bibr" rid="pcbi.1004026.ref015">15</xref>–<xref ref-type="bibr" rid="pcbi.1004026.ref017">17</xref>]. The updated model has the following advantages compared to the previous model [<xref ref-type="bibr" rid="pcbi.1004026.ref015">15</xref>, <xref ref-type="bibr" rid="pcbi.1004026.ref017">17</xref>]: (i) realistic torso meshes were used for male and female, rather than an idealised one as used in the previous studies [<xref ref-type="bibr" rid="pcbi.1004026.ref015">15</xref>, <xref ref-type="bibr" rid="pcbi.1004026.ref017">17</xref>]; (ii) a greater level of detail was considered within the torso, including the spine and liver as well as blood masses and lungs; (iii) various, experimentally justified orientations of the atria [<xref ref-type="bibr" rid="pcbi.1004026.ref023">23</xref>] were considered. The developed atria-torso models were validated by their ability to simulate BSP patterns, 12- and 64-lead ECG PWM, 64-lead ECG polarity patterns and the spatio-temporal evolution of the dipole peaks, all of which matched to experimental data from eight healthy patients. Note that experimental P-waves were filtered and averaged over a time period of 1 minute—this has the effect of smoothing the signals compared to the simulated P-waves, for which averaging would have no smoothing effect due to the model being deterministic and subsequent P-waves being identical. Therefore, the presented models provide a useful platform for simulating atrial excitations and their BSP patterns in variant physiological conditions.</p>
+</sec>
+<sec id="sec004b">
+<title>Comparison to other models</title>
+<p>Several human atria-torso models have been developed by other groups in previous studies [<xref ref-type="bibr" rid="pcbi.1004026.ref025">25</xref>–<xref ref-type="bibr" rid="pcbi.1004026.ref029">29</xref>], including the one by Krueger <italic>et al</italic>. [<xref ref-type="bibr" rid="pcbi.1004026.ref025">25</xref>], in which personalised atrial geometries were implemented for reproducing accurate patient specific P-waves. The model in that study considered fat and muscle tissue, which can affect the P-wave. However, due to the difficulty in segmenting both tissue types, few models include them [<xref ref-type="bibr" rid="pcbi.1004026.ref025">25</xref>, <xref ref-type="bibr" rid="pcbi.1004026.ref030">30</xref>]. That model also considered soft tissues of the bowels, kidneys and spleen, which were absent in the present model. However, the simulated PWM from the present models were similar to those from Kruger <italic>et al</italic>. [<xref ref-type="bibr" rid="pcbi.1004026.ref025">25</xref>], suggesting that these soft tissues play only a small role in affecting the polarity of the P-waves, as also suggested in a previous study [<xref ref-type="bibr" rid="pcbi.1004026.ref030">30</xref>–<xref ref-type="bibr" rid="pcbi.1004026.ref032">32</xref>]. Furthermore, agreement of PWM between simulation and experiment were similar in both studies, despite Krueger <italic>et al</italic>. being patient-specific. Though other atria-torso models have been developed for simulating body surface potential maps and multi-lead ECGs, the focus of those studies were in finding the ideal number of electrodes to obtain more information of the atria as compared to the standard 12-lead ECG system [<xref ref-type="bibr" rid="pcbi.1004026.ref026">26</xref>, <xref ref-type="bibr" rid="pcbi.1004026.ref027">27</xref>], or to create a database for detecting atrial fibrillation [<xref ref-type="bibr" rid="pcbi.1004026.ref033">33</xref>, <xref ref-type="bibr" rid="pcbi.1004026.ref034">34</xref>]. To our knowledge, the present study is the first attempt to establish a detailed correlation between the polarity map of body surface potentials and origins of atrial ectopic focus.</p>
+</sec>
+<sec id="sec004c">
+<title>Focus location detection algorithm</title>
+<p><bold>Comparison to previous algorithms</bold>. Focus-location algorithms have been developed previously based on the standard 12-lead ECG system [<xref ref-type="bibr" rid="pcbi.1004026.ref035">35</xref>, <xref ref-type="bibr" rid="pcbi.1004026.ref036">36</xref>], including the well-established Kistler <italic>et al</italic>. algorithm [<xref ref-type="bibr" rid="pcbi.1004026.ref011">11</xref>]. However, the 12-lead based algorithms have limited effectiveness due to the smaller number of electrodes that provided incomplete information on atrial excitations. In their study, Kistler <italic>et al</italic>. reported 93% focus detection accuracy. However, subsequent studies have found a lower accuracy [<xref ref-type="bibr" rid="pcbi.1004026.ref035">35</xref>, <xref ref-type="bibr" rid="pcbi.1004026.ref036">36</xref>]. When we applied the Kistler <italic>et al</italic>. algorithm to simulation data of P-waves, an accuracy of 73% was achieved, which is within the 55–78% range observed in other studies [<xref ref-type="bibr" rid="pcbi.1004026.ref035">35</xref>, <xref ref-type="bibr" rid="pcbi.1004026.ref036">36</xref>].</p>
+<p>In this study, we presented an algorithm for identifying atrial focal origins based on simulated 64-lead ECG system. The developed algorithm showed a higher success rate on the same data than the Kistler <italic>et al</italic>. algorithm (93% vs 73% respectively). Our results suggest that the extra level of detail provided by 64-lead ECG compared to the 12-lead ECG system was useful in accurately locating atrial focal activity.</p>
+<p>The developed algorithm has two key strengths compared to previous algorithms: (i) splitting the torso into two sets of quadrants means that the algorithm is not specific to an electrode array set up – any array which covers the front and back of the torso (symmetric or asymmetric) may be used, and the algorithm need not be adjusted. Similarly, relation of atrial anatomy to torso quadrants via a correlation table intrinsically accounts for patient variability, also without the need to adjust the algorithm itself; (ii) the algorithm is based on polarity patterns of the P-waves, rather than the detailed PWM. Whereas this does not provide a full level of detail as with PWM, such an approach has the following advantages: (a) inter-patient variations manifest as alterations in PWM but have a much smaller effect on P-wave polarity; (b) similarly, noise will not affect the P-wave polarity pattern but may have a significant effect on PWM, especially regarding bifidity; (c) we did not consider bifidity in our definition of polarity, therefore avoiding the limitations of algorithms which use bifidity, such as ambiguity in the definition of the magnitude of bump necessary to be considered bifid and the effect of noise on accentuating or reducing bifidity. Note that this was one of the primary limitations of the Kistler <italic>et al</italic>. algorithm [<xref ref-type="bibr" rid="pcbi.1004026.ref011">11</xref>], responsible for the majority of its errors.</p>
+<p>Another possible approach for locating atrial ectopic foci is to implement an inverse solution. However, inverse solutions are computationally intensive and have several limitations as discussed in other studies [<xref ref-type="bibr" rid="pcbi.1004026.ref028">28</xref>, <xref ref-type="bibr" rid="pcbi.1004026.ref037">37</xref>, <xref ref-type="bibr" rid="pcbi.1004026.ref038">38</xref>].</p>
+<p><bold>Potential application to the clinic</bold>. In the current study, torso quadrants are associated with atrial anatomical locations by <xref ref-type="table" rid="pcbi.1004026.t001">Table 1</xref>. For potential use of the algorithm in the clinic, a patient specific atria-torso correlation table could be constructed if necessary. Low resolution MRI image data can provide information of the orientation of the atria in the torso; typical MRI images would be sufficient to construct such patient specific table, and allow correlation between torso quadrants and atrial anatomical sites. As the algorithm itself is generic, it could be applicable to patients without a need for individual adjustment.</p>
+<p><bold>Limitations</bold>. The torso model lacks considerations of some other tissue types or organs (such as muscles, fat tissue, bowels, kidneys, spleen and skin) that may affect body surface potentials. However, the absence of those tissues does not have a big effect on the polarity of the P-waves [<xref ref-type="bibr" rid="pcbi.1004026.ref030">30</xref>, <xref ref-type="bibr" rid="pcbi.1004026.ref031">31</xref>], which is the characteristic used in the present algorithm. For example, test simulations in which the conductivity of the torso was replaced by an average tissue conductivity accounting for muscle, fat and skin in various configurations demonstrates significant changes to P-wave amplitude but not to the polarity patterns (<xref ref-type="supplementary-material" rid="pcbi.1004026.s003">S3 Fig.</xref>). The developed algorithm was based on simulation data, lacking consideration of the measurement noise as seen in real data. However, the use of P-wave polarity in the detecting algorithm can minimise the influence of noise as this may affect the amplitude of P-wave signals, but have less impact on the P-wave polarity. Whereas polarity patterns may be affected by large degrees of noise, such signals would be unsuitable for use in any clinical diagnosis.</p>
+<p>In the algorithm, eight quadrants were defined to cover the torso. The spatial resolution of the quadrant may require further refinement. For example, each quadrant can be split into eight sub-quadrants. However, finer spatial resolution of the quadrants may not help to improve the detection success rate as it decreases to 89% when eight sub-quadrants were used for each quadrant. Another potential limitation of the algorithm arises from the definition of a “biphasic” P-wave as it may lead to a miscalculation of the atrial activation site. Although the use of P-wave polarity overcomes the problems arising from the “bifid” definition as implemented in the Kistler <italic>et al</italic>. algorithm [<xref ref-type="bibr" rid="pcbi.1004026.ref011">11</xref>], the present algorithm requires a well-defined “biphasic wave” to optimise the performance of the algorithm. This “biphasic” definition leads to a better performance of the algorithm than the use of the Kistler’s “bifid” wave.</p>
+<p>In the present study, we only tested the effectiveness of the algorithm for detecting atrial focal activity. Its use for detecting the organisation centre of rotor activity has not been performed. For that purpose, consideration of combined use of the present algorithm with vectorcardiograms [<xref ref-type="bibr" rid="pcbi.1004026.ref039">39</xref>], phase relationships [<xref ref-type="bibr" rid="pcbi.1004026.ref040">40</xref>] and correlation analysis [<xref ref-type="bibr" rid="pcbi.1004026.ref041">41</xref>] may be necessary, warranting further investigation. Finally, the algorithm was based on simulation data. Though it provides a theoretical basis for detecting atrial focus from multi-lead ECGs, it requires further tests on real ECG data from patients or animal models with known atrial foci. Nevertheless, a test of 50 simulated atrial focus activities, different to those used to develop the algorithm, was performed, which showed a similar success rate in both male and female torso models with varying atrial position.</p>
+</sec>
+<sec id="sec004d">
+<title>Conclusion</title>
+<p>Using a biophysically detailed computer model of the human atria-torso, we have demonstrated a correlation between atrial focal origin and polarity pattern of the BSP. Based on such correlation, a new algorithm has been developed to identify the atrial origin from the BSP reconstructed from 64-lead ECG. This study provides a theoretical basis for non-invasively detecting atrial focal origins, which is important for designing AF ablation protocol, and demonstrates the advantages of multi-lead ECG systems over the standard 12-lead ECG in detecting the origin of focal activity.</p>
+</sec>
+</sec>
+<sec id="sec005">
+<title>Supporting Information</title>
+<supplementary-material id="pcbi.1004026.s001" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004026.s001">
+<label>S1 Fig</label>
+<caption>
+<title>64-lead ECG of the two position of the atria.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004026.s002" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004026.s002">
+<label>S2 Fig</label>
+<caption>
+<title>64-lead ECG and polarity maps of two pacing rates.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004026.s003" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004026.s003">
+<label>S3 Fig</label>
+<caption>
+<title>Lead 2 of the 64-lead ECG system.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004026.s004" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004026.s004">
+<label>S1 Text</label>
+<caption>
+<title>Key features of the models.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1004026.ref001">
+<label>1</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Nattel</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Shiroshita-Takeshita</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Brundel</surname> <given-names>BJJ</given-names></name>, <name name-style="western"><surname>Rivard</surname> <given-names>L</given-names></name> (<year>2005</year>) <article-title>Mechanisms of atrial fibrillation: lessons from animal models</article-title>. <source>Prog Cardiovasc Dis</source> <volume>48</volume>: <fpage>9</fpage>–<lpage>28</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.pcad.2005.06.002" xlink:type="simple">10.1016/j.pcad.2005.06.002</ext-link></comment> <object-id pub-id-type="pmid">16194689</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref002">
+<label>2</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Benjamin</surname> <given-names>EJ</given-names></name>, <name name-style="western"><surname>Wolf</surname> <given-names>PA</given-names></name>, <name name-style="western"><surname>D’Agostino</surname> <given-names>RB</given-names></name>, <name name-style="western"><surname>Silbershatz</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Kannel</surname> <given-names>WB</given-names></name>, <etal>et al.</etal> (<year>1998</year>) <article-title>Impact of atrial fibrillation on the risk of death: the Framingham Heart Study</article-title>. <source>Circulation</source> <volume>98</volume>: <fpage>946</fpage>–<lpage>952</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1161/01.CIR.98.10.946" xlink:type="simple">10.1161/01.CIR.98.10.946</ext-link></comment> <object-id pub-id-type="pmid">9737513</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref003">
+<label>3</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Anter</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Jessup</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Callans</surname> <given-names>DJ</given-names></name> (<year>2009</year>) <article-title>Atrial Fibrillation and Heart Failure Treatment Considerations for a Dual Epidemic</article-title>. <source>Circulation</source> <volume>119</volume>: <fpage>2516</fpage>–<lpage>2525</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1161/CIRCULATIONAHA.108.821306" xlink:type="simple">10.1161/CIRCULATIONAHA.108.821306</ext-link></comment> <object-id pub-id-type="pmid">19433768</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref004">
+<label>4</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lin</surname> <given-names>WS</given-names></name>, <name name-style="western"><surname>Tai</surname> <given-names>CT</given-names></name>, <name name-style="western"><surname>Hsieh</surname> <given-names>MH</given-names></name>, <name name-style="western"><surname>Tsai</surname> <given-names>CF</given-names></name>, <name name-style="western"><surname>Lin</surname> <given-names>YK</given-names></name>, <etal>et al.</etal> (<year>2003</year>) <article-title>Catheter ablation of paroxysmal atrial fibrillation initiated by non-pulmonary vein ectopy</article-title>. <source>Circulation</source> <volume>107</volume>: <fpage>3176</fpage>–<lpage>3183</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1161/01.CIR.0000074206.52056.2D" xlink:type="simple">10.1161/01.CIR.0000074206.52056.2D</ext-link></comment> <object-id pub-id-type="pmid">12821558</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref005">
+<label>5</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Colman</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Varela</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Hancox</surname> <given-names>JC</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Aslanidi</surname> <given-names>OV</given-names></name> (<year>2014</year>) <article-title>Evolution and pharmacological modulation of the arrhythmogenic wave dynamics in canine pulmonary vein model</article-title>. <source>Europace</source> <volume>16</volume>: <fpage>416</fpage>–<lpage>423</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/europace/eut349" xlink:type="simple">10.1093/europace/eut349</ext-link></comment> <object-id pub-id-type="pmid">24569896</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref006">
+<label>6</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Arora</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Verheule</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Scott</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Navarrete</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Katari</surname> <given-names>V</given-names></name>, <etal>et al.</etal> (<year>2013</year>) <article-title>Arrhythmogenic substrate of the pulmonary veins assessed by high-resolution optical mapping</article-title>. <source>Circulation</source> <volume>107</volume>: <fpage>1816</fpage>–<lpage>1821</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1161/01.CIR.0000058461.86339.7E" xlink:type="simple">10.1161/01.CIR.0000058461.86339.7E</ext-link></comment> <object-id pub-id-type="pmid">12665495</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref007">
+<label>7</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kumagai</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Ogawa</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Noguchi</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Yasuda</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Nakashima</surname> <given-names>H</given-names></name>, <etal>et al.</etal> (<year>2004</year>) <article-title>Electrophysiologic properties of pulmonary veins assessed using a multielectrode basket catheter</article-title>. <source>J Am Coll Cardiol</source> <volume>43</volume>: <fpage>2281</fpage>–<lpage>2289</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.jacc.2004.01.051" xlink:type="simple">10.1016/j.jacc.2004.01.051</ext-link></comment> <object-id pub-id-type="pmid">15193694</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref008">
+<label>8</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Haïssaguerre</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Jaïs</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Shah</surname> <given-names>DC</given-names></name>, <name name-style="western"><surname>Takahashi</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Hocini</surname> <given-names>M</given-names></name>, <etal>et al.</etal> (<year>1998</year>) <article-title>Spontaneous initiation of atrial fibrillation by ectopic beats originating in the pulmonary veins</article-title>. <source>N Engl J Med</source> <volume>339</volume>: <fpage>659</fpage>–<lpage>666</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1056/NEJM199809033391003" xlink:type="simple">10.1056/NEJM199809033391003</ext-link></comment> <object-id pub-id-type="pmid">9725923</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref009">
+<label>9</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ganesan</surname> <given-names>AN</given-names></name>, <name name-style="western"><surname>Shipp</surname> <given-names>NJ</given-names></name>, <name name-style="western"><surname>Brooks</surname> <given-names>AG</given-names></name>, <name name-style="western"><surname>Kuklik</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Lau</surname> <given-names>DH</given-names></name>, <etal>et al.</etal> (<year>2013</year>) <article-title>Long-term outcomes of catheter ablation of atrial fibrillation: a systematic review and meta-analysis</article-title>. <source>J Am Heart Assoc</source> <volume>18</volume>:<fpage>e004549</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1161/JAHA.112.004549" xlink:type="simple">10.1161/JAHA.112.004549</ext-link></comment> <object-id pub-id-type="pmid">23537812</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref010">
+<label>10</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Anné</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>van Rensburg</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Adams</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Ector</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Van de Werf</surname> <given-names>F</given-names></name>, <etal>et al.</etal> (<year>2002</year>) <article-title>Ablation of post-surgical intra-atrial reentrant tachycardia. Predilection target sites and mapping approach</article-title>. <source>Eur Heart J</source> <volume>23</volume>: <fpage>1609</fpage>–<lpage>1616</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1053/euhj.2002.3168" xlink:type="simple">10.1053/euhj.2002.3168</ext-link></comment> <object-id pub-id-type="pmid">12323161</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref011">
+<label>11</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kistler</surname> <given-names>PM</given-names></name>, <name name-style="western"><surname>Roberts-Thomson</surname> <given-names>KC</given-names></name>, <name name-style="western"><surname>Haqqani</surname> <given-names>HM</given-names></name>, <name name-style="western"><surname>Fynn</surname> <given-names>SP</given-names></name>, <name name-style="western"><surname>Singarayar</surname> <given-names>S</given-names></name>, <etal>et al.</etal> (<year>2006</year>) <article-title>P-wave morphology in focal atrial tachycardia: development of an algorithm to predict the anatomic site of origin</article-title>. <source>J Am Coll Cardiol</source> <volume>48</volume>:<fpage>1010</fpage>–<lpage>1017</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.jacc.2006.03.058" xlink:type="simple">10.1016/j.jacc.2006.03.058</ext-link></comment> <object-id pub-id-type="pmid">16949495</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref012">
+<label>12</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Haïssaguerre</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Hocini</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Denis</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Shah</surname> <given-names>AJ</given-names></name>, <name name-style="western"><surname>Komatsu</surname> <given-names>Y</given-names></name>, <etal>et al.</etal> (<year>2014</year>) <article-title>Driver Domains in Persistent Atrial Fibrillation</article-title>. <source>Circulation</source> <volume>137</volume>: <fpage>530</fpage>–<lpage>538</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref013">
+<label>13</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ehrlich</surname> <given-names>JR</given-names></name>, <name name-style="western"><surname>Nattel</surname> <given-names>S</given-names></name>, (<year>2009</year>) <article-title>Novel approaches for pharmacological management of atrial fibrillation</article-title>. <source>Drugs</source> <volume>69</volume>: <fpage>757</fpage>–<lpage>774</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.2165/00003495-200969070-00001" xlink:type="simple">10.2165/00003495-200969070-00001</ext-link></comment> <object-id pub-id-type="pmid">19441867</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref014">
+<label>14</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Giacopelli</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Bourke</surname> <given-names>JP</given-names></name>, <name name-style="western"><surname>Murray</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Langley</surname> <given-names>P</given-names></name> (<year>2012</year>) <article-title>Spatial pattern of P waves in paroxysmal atrial fibrillation patients in sinus rhythm and controls</article-title>. <source>Pacing Clin Electrophysiol PACE</source> <volume>35</volume>: <fpage>819</fpage>–<lpage>826</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1111/j.1540-8159.2012.03428.x" xlink:type="simple">10.1111/j.1540-8159.2012.03428.x</ext-link></comment> <object-id pub-id-type="pmid">22651809</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref015">
+<label>15</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Colman</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Aslanidi</surname> <given-names>OV</given-names></name>, <name name-style="western"><surname>Stott</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Holden</surname> <given-names>AV</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>H</given-names></name> (<year>2011</year>) <article-title>Correlation Between P-Wave Morphology and Origin of Atrial Focal Tachycardia: Insights From Realistic Models of the Human Atria and Torso</article-title>. <source>IEEE Trans Biomed Eng</source> <volume>58</volume>: <fpage>2952</fpage>–<lpage>2955</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1109/TBME.2011.2161305" xlink:type="simple">10.1109/TBME.2011.2161305</ext-link></comment> <object-id pub-id-type="pmid">21742568</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref016">
+<label>16</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Colman</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Aslanidi</surname> <given-names>OV</given-names></name>, <name name-style="western"><surname>Kharche</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Boyett</surname> <given-names>MR</given-names></name>, <name name-style="western"><surname>Garratt</surname> <given-names>C</given-names></name>, <etal>et al.</etal> (<year>2013</year>) <article-title>Pro-arrhythmogenic effects of atrial fibrillation-induced electrical remodelling: insights from the three-dimensional virtual human atria</article-title>. <source>J Physiol</source> <volume>591</volume>: <fpage>4249</fpage>–<lpage>4272</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1113/jphysiol.2013.254987" xlink:type="simple">10.1113/jphysiol.2013.254987</ext-link></comment> <object-id pub-id-type="pmid">23732649</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref017">
+<label>17</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Aslanidi</surname> <given-names>OV</given-names></name>, <name name-style="western"><surname>Colman</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Stott</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Dobrzynski</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Boyett</surname> <given-names>MR</given-names></name>, <etal>et al.</etal> (<year>2011</year>) <article-title>3D virtual human atria: A computational platform for studying clinical atrial fibrillation</article-title>. <source>Prog Biophys Mol Biol</source> <volume>107</volume>: <fpage>156</fpage>–<lpage>168</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.pbiomolbio.2011.06.011" xlink:type="simple">10.1016/j.pbiomolbio.2011.06.011</ext-link></comment> <object-id pub-id-type="pmid">21762716</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref018">
+<label>18</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Seemann</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Höper</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Sachse</surname> <given-names>FB</given-names></name>, <name name-style="western"><surname>Dössel</surname> <given-names>O</given-names></name>, <name name-style="western"><surname>Holden</surname> <given-names>AV</given-names></name>, <etal>et al.</etal> (<year>2006</year>) <article-title>Heterogeneous three-dimensional anatomical and electrophysiological model of human atria</article-title>. <source>Philos Transact A Math Phys Eng Sci</source> <volume>364</volume>: <fpage>1465</fpage>–<lpage>1481</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1098/rsta.2006.1781" xlink:type="simple">10.1098/rsta.2006.1781</ext-link></comment> <object-id pub-id-type="pmid">16766355</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref019">
+<label>19</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ackerman</surname> <given-names>MJ</given-names></name> (<year>1998</year>) <article-title>The Visible Human Project</article-title>. <source>Proc IEEE</source> <volume>86</volume>:<fpage>504</fpage>–<lpage>511</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref020">
+<label>20</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yushkevich</surname> <given-names>PA</given-names></name>, <name name-style="western"><surname>Piven</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Hazlett</surname> <given-names>HC</given-names></name>, <name name-style="western"><surname>Smith</surname> <given-names>RG</given-names></name>, <name name-style="western"><surname>Ho</surname> <given-names>S</given-names></name>, <etal>et al.</etal> (<year>2006</year>) <article-title>User-guided 3D active contour segmentation of anatomical structures: significantly improved efficiency and reliability</article-title>. <source>NeuroImage</source> <volume>31</volume>: <fpage>1116</fpage>–<lpage>1128</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.neuroimage.2006.01.015" xlink:type="simple">10.1016/j.neuroimage.2006.01.015</ext-link></comment> <object-id pub-id-type="pmid">16545965</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref021">
+<label>21</label>
+<mixed-citation publication-type="other" xlink:type="simple">Grimnes S, Martinsen ØG (2000) Bioimpedance and Bioelectricity Basics. 118p.</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref022">
+<label>22</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Stott</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Kharche</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Law</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>H</given-names></name> (<year>2008</year>) <article-title>Simulating the effects of atrial fibrillation in electrically heterogeneous human atria: A computer modelling study</article-title>. <source>Computers in Cardiology</source> <volume>2008</volume>: <fpage>65</fpage>–<lpage>68</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref023">
+<label>23</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ho</surname> <given-names>SY</given-names></name>, <name name-style="western"><surname>Sánchez-Quintana</surname> <given-names>D</given-names></name> (<year>2009</year>) <article-title>The importance of atrial structure and fibers</article-title>. <source>Clin Anat N Y N</source> <volume>22</volume>: <fpage>52</fpage>–<lpage>63</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1002/ca.20634" xlink:type="simple">10.1002/ca.20634</ext-link></comment> <object-id pub-id-type="pmid">18470938</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref024">
+<label>24</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wilson</surname> <given-names>FN</given-names></name>, <name name-style="western"><surname>Johnston</surname> <given-names>FD</given-names></name>, <name name-style="western"><surname>Macleod</surname> <given-names>AG</given-names></name>, <name name-style="western"><surname>Barker</surname> <given-names>PS</given-names></name> (<year>1934</year>) <article-title>Electrocardiograms that represent the potential variations of a single electrode</article-title>. <source>Am Heart J</source> <volume>9</volume>: <fpage>447</fpage>–<lpage>458</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref025">
+<label>25</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Krueger</surname> <given-names>MW</given-names></name>, <name name-style="western"><surname>Seemann</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Rhode</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Keller</surname> <given-names>DUJ</given-names></name>, <name name-style="western"><surname>Schilling</surname> <given-names>C</given-names></name>, <etal>et al.</etal> (<year>2013</year>) <article-title>Personalization of atrial anatomy and electrophysiology as a basis for clinical modeling of radio-frequency ablation of atrial fibrillation</article-title>. <source>IEEE Trans. Med. Imaging</source> <volume>32</volume>: <fpage>73</fpage>–<lpage>84</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1109/TMI.2012.2201948" xlink:type="simple">10.1109/TMI.2012.2201948</ext-link></comment> <object-id pub-id-type="pmid">22665507</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref026">
+<label>26</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Llinares</surname> <given-names>JRI</given-names></name> (<year>2006</year>) <article-title>Independent Component Analysis of Body Surface Potential Mapping Recordings with Atrial Fibrillation</article-title>. <source>IJCNN</source> <volume>2006</volume>: <fpage>2287</fpage>–<lpage>2294</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref027">
+<label>27</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Liberos</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Pedron-Torrecilla</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Rodrigo</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Millet</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Climent</surname> <given-names>AM</given-names></name>, <etal>et al.</etal> (<year>2013</year>) <article-title>Body surface potential propagation maps during macroreentrant atrial arrhythmias. A simulation study</article-title>. <source>Computing in Cardiology</source> <volume>2013</volume>: <fpage>915</fpage>–<lpage>918</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref028">
+<label>28</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Van Oosterom</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Jacquemet</surname> <given-names>V</given-names></name> (<year>2005</year>) <article-title>Genesis of the P wave: Atrial signals as generated by the equivalent double layer source model</article-title>. <source>Europace</source> <volume>7</volume>:<fpage>21</fpage>–<lpage>29</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.eupc.2005.05.001" xlink:type="simple">10.1016/j.eupc.2005.05.001</ext-link></comment> <object-id pub-id-type="pmid">16102500</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref029">
+<label>29</label>
+<mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Colman</surname> <given-names>M. A.</given-names></name>, <name name-style="western"><surname>Castro</surname> <given-names>S. J.</given-names></name>, <name name-style="western"><surname>Alday</surname> <given-names>E. A. Perez</given-names></name>, <name name-style="western"><surname>Hancox</surname> <given-names>J. C.</given-names></name>, <name name-style="western"><surname>Garratt</surname> <given-names>C.</given-names></name>, <etal>et al.</etal> (<year>2014</year>) <article-title>Recent progress in multi-scale models of the human atria</article-title>. <publisher-name>Drug Discov Today Dis Models</publisher-name>.
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref030">
+<label>30</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bradley</surname> <given-names>CP</given-names></name>, <name name-style="western"><surname>Pullan</surname> <given-names>AJ</given-names></name>, <name name-style="western"><surname>Hunter</surname> <given-names>PJ</given-names></name> (<year>2000</year>) <article-title>Effects of material properties and geometry on electrocardiographic forward simulations</article-title>. <source>Ann Biomed Eng</source> <volume>28</volume>:<fpage>721</fpage>–<lpage>741</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1114/1.1289467" xlink:type="simple">10.1114/1.1289467</ext-link></comment> <object-id pub-id-type="pmid">11016411</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref031">
+<label>31</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Shahidi</surname> <given-names>AV</given-names></name>, <name name-style="western"><surname>Savard</surname> <given-names>P</given-names></name> (<year>1994</year>) <article-title>Forward problem of electrocardiography: construction of human torso models and field calculations using finite element method</article-title>. <source>Med Biol Eng Comput</source> <volume>32</volume>: <fpage>25</fpage>–<lpage>33</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1007/BF02523324" xlink:type="simple">10.1007/BF02523324</ext-link></comment> <object-id pub-id-type="pmid">7967835</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref032">
+<label>32</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Keller</surname> <given-names>DUJ</given-names></name>, <name name-style="western"><surname>Weber</surname> <given-names>FM</given-names></name>, <name name-style="western"><surname>Seemann</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Dossel</surname> <given-names>O</given-names></name> (<year>2010</year>) <article-title>Ranking the Influence of Tissue Conductivities on Forward-Calculated ECGs</article-title>. <source>IEEE Trans Biomed Eng</source> <volume>57</volume>: <fpage>1568</fpage>–<lpage>1576</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1109/TBME.2010.2046485" xlink:type="simple">10.1109/TBME.2010.2046485</ext-link></comment> <object-id pub-id-type="pmid">20659824</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref033">
+<label>33</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Sippensgroenewegen</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Natale</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Marrouche</surname> <given-names>NF</given-names></name>, <name name-style="western"><surname>Bash</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Cheng</surname> <given-names>J</given-names></name> (<year>2004</year>) <article-title>Potential role of body surface ECG mapping for localization of atrial fibrillation trigger sites</article-title>. <source>J Electrocardiol</source> <volume>37</volume>: <fpage>47</fpage>–<lpage>52</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.jelectrocard.2004.08.017" xlink:type="simple">10.1016/j.jelectrocard.2004.08.017</ext-link></comment> <object-id pub-id-type="pmid">15534799</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref034">
+<label>34</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lian</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Cheng</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Avitall</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>He</surname> <given-names>DB</given-names></name> (<year>2002</year>) <article-title>Body surface Laplacian mapping of atrial depolarization in healthy human subjects</article-title>. <source>Med Biol Eng Comput</source> <volume>40</volume>: <fpage>650</fpage>–<lpage>659</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1007/BF02345304" xlink:type="simple">10.1007/BF02345304</ext-link></comment> <object-id pub-id-type="pmid">12507316</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref035">
+<label>35</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Qian</surname> <given-names>ZY</given-names></name>, <name name-style="western"><surname>Hou</surname> <given-names>XF</given-names></name>, <name name-style="western"><surname>Xu</surname> <given-names>DJ</given-names></name>, <name name-style="western"><surname>Yang</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Chen</surname> <given-names>MK</given-names></name>, <etal>et al.</etal> (<year>2011</year>) <article-title>An algorithm to predict the site of origin of focal atrial tachycardia</article-title>. <source>Pacing Clin Electrophysiol PACE</source> <volume>34</volume>: <fpage>414</fpage>–<lpage>421</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1111/j.1540-8159.2010.02980.x" xlink:type="simple">10.1111/j.1540-8159.2010.02980.x</ext-link></comment> <object-id pub-id-type="pmid">21091746</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref036">
+<label>36</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Uhm</surname> <given-names>JS</given-names></name>, <name name-style="western"><surname>Shim</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Wi</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Mun</surname> <given-names>HS</given-names></name>, <name name-style="western"><surname>Pak</surname> <given-names>HN</given-names></name>, <etal>et al.</etal> (<year>2014</year>) <article-title>An electrocardiography algorithm combined with clinical features could localize the origins of focal atrial tachycardias in adjacent structures</article-title>. <source>Europace</source> <volume>16</volume>: <fpage>1061</fpage>–<lpage>1068</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/europace/eut393" xlink:type="simple">10.1093/europace/eut393</ext-link></comment> <object-id pub-id-type="pmid">24381331</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref037">
+<label>37</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rudy</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Burnes</surname> <given-names>JE</given-names></name> (<year>1999</year>) <article-title>Noninvasive Electrocardiographic Imaging. Ann</article-title>. <source>Noninvasive Electrocardiol</source> <volume>4</volume>: <fpage>340</fpage>–<lpage>359</lpage>. <object-id pub-id-type="pmid">20201906</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref038">
+<label>38</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rudy</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Messinger-Rapport</surname> <given-names>BJ</given-names></name> (<year>1988</year>) <article-title>The inverse problem in electrocardiography: solutions in terms of epicardial potentials</article-title>. <source>Crit Rev Biomed Eng</source> <volume>16</volume>: <fpage>215</fpage>–<lpage>268</lpage>. <object-id pub-id-type="pmid">3064971</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref039">
+<label>39</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gamboa</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Hugenholtz</surname> <given-names>PG</given-names></name>, <name name-style="western"><surname>Nadas</surname> <given-names>AS</given-names></name> (<year>1965</year>) <article-title>Comparison of electrocardiograms and vectorcardiograms in congenital aortic stenosis</article-title>. <source>Br Heart J</source> <volume>27</volume>: <fpage>344</fpage>–<lpage>354</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1136/hrt.27.3.344" xlink:type="simple">10.1136/hrt.27.3.344</ext-link></comment> <object-id pub-id-type="pmid">14284351</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref040">
+<label>40</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Narayan</surname> <given-names>SM</given-names></name>, <name name-style="western"><surname>Bhargava</surname> <given-names>V</given-names></name> (<year>2004</year>) <article-title>Temporal and spatial phase analyses of the electrocardiogram stratify intra-atrial and intra-ventricular organization</article-title>. <source>IEEE Trans Biomed Eng</source> <volume>51</volume>: <fpage>1749</fpage>–<lpage>1764</lpage> <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1109/TBME.2004.827536" xlink:type="simple">10.1109/TBME.2004.827536</ext-link></comment> <object-id pub-id-type="pmid">15490822</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004026.ref041">
+<label>41</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Homaeinezhad</surname> <given-names>MR</given-names></name>, <name name-style="western"><surname>ErfanianMoshiri-Nejad</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Naseri</surname> <given-names>H</given-names></name> (<year>2014</year>) <article-title>A correlation analysis-based detection and delineation of ECG characteristic events using template waveforms extracted by ensemble averaging of clustered heart cycles</article-title>. <source>Comput Biol Med</source> <volume>44</volume>: <fpage>66</fpage>–<lpage>75</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.compbiomed.2013.10.024" xlink:type="simple">10.1016/j.compbiomed.2013.10.024</ext-link></comment> <object-id pub-id-type="pmid">24377690</object-id>
+</mixed-citation>
+</ref>
+</ref-list>
+</back>
+</article>

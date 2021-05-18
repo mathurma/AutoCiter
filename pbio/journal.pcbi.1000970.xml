@@ -1,0 +1,907 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="3.0" xml:lang="EN">
+<front>
+<journal-meta><journal-id journal-id-type="publisher-id">plos</journal-id><journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id><journal-id journal-id-type="pmc">ploscomp</journal-id><!--===== Grouping journal title elements =====--><journal-title-group><journal-title>PLoS Computational Biology</journal-title></journal-title-group><issn pub-type="ppub">1553-734X</issn><issn pub-type="epub">1553-7358</issn><publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, USA</publisher-loc></publisher></journal-meta>
+<article-meta><article-id pub-id-type="publisher-id">10-PLCB-RA-2155R2</article-id><article-id pub-id-type="doi">10.1371/journal.pcbi.1000970</article-id><article-categories><subj-group subj-group-type="heading"><subject>Research Article</subject></subj-group><subj-group subj-group-type="Discipline"><subject>Computational Biology</subject><subject>Computational Biology/Metabolic Networks</subject><subject>Computational Biology/Systems Biology</subject><subject>Computational Biology/Transcriptional Regulation</subject><subject>Microbiology/Microbial Evolution and Genomics</subject><subject>Microbiology/Microbial Physiology and Metabolism</subject></subj-group></article-categories><title-group><article-title>An Automated Phenotype-Driven Approach (<italic>Gene</italic>Force) for Refining Metabolic and Regulatory Models</article-title><alt-title alt-title-type="running-head"><italic>Gene</italic>Force: An Approach for Refining Network Models</alt-title></title-group><contrib-group>
+<contrib contrib-type="author" equal-contrib="yes" xlink:type="simple"><name name-style="western"><surname>Barua</surname><given-names>Dipak</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff2"><sup>2</sup></xref></contrib>
+<contrib contrib-type="author" equal-contrib="yes" xlink:type="simple"><name name-style="western"><surname>Kim</surname><given-names>Joonhoon</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff2"><sup>2</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Reed</surname><given-names>Jennifer L.</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff2"><sup>2</sup></xref><xref ref-type="corresp" rid="cor1"><sup>*</sup></xref></contrib>
+</contrib-group><aff id="aff1"><label>1</label><addr-line>Department of Chemical and Biological Engineering, University of Wisconsin-Madison, Madison, Wisconsin, United States of America</addr-line>       </aff><aff id="aff2"><label>2</label><addr-line>DOE Great Lakes Bioenergy Research Center, University of Wisconsin-Madison, Madison, Wisconsin, United States of America</addr-line>       </aff><contrib-group>
+<contrib contrib-type="editor" xlink:type="simple"><name name-style="western"><surname>Maranas</surname><given-names>Costas D.</given-names></name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/></contrib>
+</contrib-group><aff id="edit1">The Pennsylvania State University, United States of America</aff><author-notes>
+<corresp id="cor1">* E-mail: <email xlink:type="simple">reed@engr.wisc.edu</email></corresp>
+<fn fn-type="con"><p>Conceived and designed the experiments: DB JK JLR. Performed the experiments: DB JK. Analyzed the data: DB JK JLR. Wrote the paper: DB JK JLR. Developed the GeneForce approach: DB. Developed the regulatory formalism used in the approach: JK.</p></fn>
+<fn fn-type="conflict"><p>The authors have declared that no competing interests exist.</p></fn></author-notes><pub-date pub-type="collection"><month>10</month><year>2010</year></pub-date><pub-date pub-type="epub"><day>28</day><month>10</month><year>2010</year></pub-date><volume>6</volume><issue>10</issue><elocation-id>e1000970</elocation-id><history>
+<date date-type="received"><day>27</day><month>4</month><year>2010</year></date>
+<date date-type="accepted"><day>23</day><month>9</month><year>2010</year></date>
+</history><!--===== Grouping copyright info into permissions =====--><permissions><copyright-year>2010</copyright-year><copyright-holder>Barua et al</copyright-holder><license><license-p>This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license></permissions><abstract>
+<p>Integrated constraint-based metabolic and regulatory models can accurately predict cellular growth phenotypes arising from genetic and environmental perturbations. Challenges in constructing such models involve the limited availability of information about transcription factor—gene target interactions and computational methods to quickly refine models based on additional datasets. In this study, we developed an algorithm, <italic>Gene</italic>Force, to identify incorrect regulatory rules and gene-protein-reaction associations in integrated metabolic and regulatory models. We applied the algorithm to refine integrated models of <italic>Escherichia coli</italic> and <italic>Salmonella typhimurium</italic>, and experimentally validated some of the algorithm's suggested refinements. The adjusted <italic>E. coli</italic> model showed improved accuracy (∼80.0%) for predicting growth phenotypes for 50,557 cases (knockout mutants tested for growth in different environmental conditions). In addition to identifying needed model corrections, the algorithm was used to identify native <italic>E. coli</italic> genes that, if over-expressed, would allow <italic>E. coli</italic> to grow in new environments. We envision that this approach will enable the rapid development and assessment of genome-scale metabolic and regulatory network models for less characterized organisms, as such models can be constructed from genome annotations and <italic>cis</italic>-regulatory network predictions.</p>
+</abstract><abstract abstract-type="summary"><title>Author Summary</title>
+<p>Computational models of biological networks are useful for explaining experimental observations and predicting phenotypic behaviors. The construction of genome-scale metabolic and regulatory models is still a labor-intensive process, even with the availability of genome sequences and high-throughput datasets. Since our knowledge about biological systems is incomplete, these models are iteratively refined and validated as we discover new connections in biological networks, and eliminate inconsistencies between model predictions and experimental observations. To enable researchers to quickly determine what causes discrepancies between observed phenotypes and model predictions, we developed a new approach (<italic>Gene</italic>Force) that automatically corrects integrated metabolic and transcriptional regulatory network models. To illustrate the utility of the approach, we applied the developed method to well-curated models of <italic>E. coli</italic> metabolism and regulation. We found that the approach significantly improved the accuracy of phenotype predictions and suggested changes needed to the metabolic and/or regulatory models. We also used the approach to identify rescue non-growth phenotypes and to evaluate the conservation of transcriptional regulatory interactions between <italic>E. coli</italic> and <italic>S. typhimurium</italic>. The developed approach helps reconcile discrepancies between model predictions and experimental data by hypothesizing required network changes, and helps facilitate the development of new genome-scale models.</p>
+</abstract><funding-group><funding-statement>This work was funded by the U.S. Department of Energy Great Lakes Bioenergy Research Center (DOE BER Office of Science DE-FC02-07ER64494) and by the U.S. Department of Energy (DOE) Office of Biological and Environmental Research under the Genomics:GTL Program via the Shewanella Federation consortium and the Microbial Genome Program (DE-AC05-76RLO 1830). The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement></funding-group><counts><page-count count="15"/></counts></article-meta>
+</front>
+<body><sec id="s1">
+<title>Introduction</title>
+<p>A current challenge in systems biology is reconstructing transcriptional regulatory networks from experimental data (e.g. gene expression, genome sequence, and DNA-protein interaction), due to the complexity of interactions in these networks and the limited information on network components and interactions for most organisms <xref ref-type="bibr" rid="pcbi.1000970-Herrgard1">[1]</xref>, <xref ref-type="bibr" rid="pcbi.1000970-Venancio1">[2]</xref>. Even for well-studied model organisms, such as <italic>E. coli</italic> and <italic>Saccharomyces cerevisiae</italic>, inferred or indirect regulatory interactions have to be included in genome-scale transcriptional regulatory reconstructions due to existing knowledge gaps in how genes are transcriptionally regulated <xref ref-type="bibr" rid="pcbi.1000970-Covert1">[3]</xref>, <xref ref-type="bibr" rid="pcbi.1000970-Herrgard2">[4]</xref>. Reconstructed regulatory networks will be incomplete, reflecting incomplete knowledge about <italic>cis</italic>-regulatory networks, and may include incorrect interactions. As such, methods for iterative validation and refinement of regulatory reconstructions are needed in order to assess new experimental datasets as they emerge <xref ref-type="bibr" rid="pcbi.1000970-Feist1">[5]</xref>, <xref ref-type="bibr" rid="pcbi.1000970-Barrett1">[6]</xref>. Such approaches need to identify and eliminate inconsistencies between the reconstructed network and new experimental data, and to include newly discovered network interactions <xref ref-type="bibr" rid="pcbi.1000970-Covert1">[3]</xref>. However, identifying the cause of inconsistencies in a highly interconnected network using manual efforts is not a trivial task, and can be labor intensive particularly for genome–scale transcriptional regulatory network models. Therefore, systematic approaches that automate this iterative procedure are useful for identifying new or incorrect connections in biological models; such approaches have been developed for analysis and correction of metabolic networks <xref ref-type="bibr" rid="pcbi.1000970-Reed1">[7]</xref>–<xref ref-type="bibr" rid="pcbi.1000970-Kumar1">[9]</xref>. In this paper, we present an approach that allows for the automated adjustment of an integrated genome-scale metabolic and transcriptional regulatory network model, by comparing the emergent properties of the integrated networks to cellular growth phenotypes. These adjustments result in testable hypotheses about transcriptional regulation and metabolism in organisms.</p>
+<p>While there are many types of regulatory modeling approaches (reviewed in <xref ref-type="bibr" rid="pcbi.1000970-Karlebach1">[10]</xref>), Boolean modeling of regulatory interactions can be beneficial when modeling large-scale regulatory networks because (i) such formalism requires minimal parametric details to be incorporated <xref ref-type="bibr" rid="pcbi.1000970-Bornholdt1">[11]</xref>, and (ii) these Boolean models can be integrated with constraint-based metabolic models <xref ref-type="bibr" rid="pcbi.1000970-Covert1">[3]</xref>, <xref ref-type="bibr" rid="pcbi.1000970-Herrgard2">[4]</xref>. One of the commonly used constraint-based modeling approaches for metabolic models is flux balance analysis (FBA), which predicts an optimal steady-state flux distribution in a metabolic network <xref ref-type="bibr" rid="pcbi.1000970-Edwards1">[12]</xref>. This can be extended to integrated metabolic and regulatory models, referred to as regulated flux balance analysis (rFBA), which accounts for transcriptional regulation as well as the other governing physicochemical constraints <xref ref-type="bibr" rid="pcbi.1000970-Covert2">[13]</xref>, <xref ref-type="bibr" rid="pcbi.1000970-Covert3">[14]</xref>. While the metabolic and regulatory models in rFBA are solved iteratively, newer approaches for integrating metabolic and regulatory models allow the models to be combined into a single model using an mixed-integer linear programming (MILP) formalism <xref ref-type="bibr" rid="pcbi.1000970-Shlomi1">[15]</xref>. In this case, steady-state regulatory flux balance analysis (SR-FBA) is used to identify optimal flux distributions that satisfy both models simultaneously. We have recently developed an efficient SR-FBA formulation that systematically integrates transcriptional regulatory and metabolic networks <xref ref-type="bibr" rid="pcbi.1000970-Kim1">[16]</xref> which was used here.</p>
+<p>In this work, we developed an algorithm (called <italic>Gene</italic>Force) to reconcile integrated regulatory and metabolic model predictions with experimental data, by automatically identifying and overriding transcriptional regulatory rules that cause inconsistencies between model predictions and experimental observations. The approach can be used in cases where both the experimental data and an un-regulated metabolic model agree on a positive growth phenotype (cells can grow), but the integrated metabolic and regulatory model predicts a non-growth phenotype (cells cannot grow). In these cases, the <italic>Gene</italic>Force algorithm allows the integrated metabolic and regulatory model to achieve growth by violating regulatory rules as needed, while minimizing the total number of regulatory violations in order to maximally preserve the original regulatory interactions present in the regulatory network reconstruction. These rule violations indicate that regulatory rules describing gene expression are incorrect or that isozymes or alternative pathways are present in the metabolic network.</p>
+<p>We first applied the <italic>Gene</italic>Force method to refine the genome-scale transcriptional regulatory network for <italic>E. coli</italic>, <italic>i</italic>MC1010<sup>v1</sup> <xref ref-type="bibr" rid="pcbi.1000970-Covert1">[3]</xref> which was updated here to include newly discovered Lrp regulatory interactions <xref ref-type="bibr" rid="pcbi.1000970-Cho1">[17]</xref>. The algorithm was used to analyze a large collection of ∼50,000 <italic>E. coli</italic> knockout mutant growth phenotypes <xref ref-type="bibr" rid="pcbi.1000970-Glasner1">[18]</xref>, <xref ref-type="bibr" rid="pcbi.1000970-Ito1">[19]</xref>, and the suggested regulatory corrections resulted in a ∼1–8% improvement in model accuracy over the original models, which had already been adjusted during their initial development to improve model accuracy. In addition to correcting regulatory rules, we applied the <italic>Gene</italic>Force algorithm to predict genes that, if overexpressed or constitutively expressed, could rescue non-growth phenotypes of <italic>E. coli</italic> strains (wild-type or mutants) in certain growth environments. Finally, we applied the <italic>Gene</italic>Force method to investigate the conservation of transcriptional regulatory interactions between <italic>E. coli</italic> and <italic>S. typhimurium</italic>. The <italic>E. coli</italic> transcriptional regulatory rules were integrated with a metabolic model for <italic>S. typhimurium</italic> that included metabolic genes and reactions from a recent metabolic reconstruction <italic>i</italic>RR1083 <xref ref-type="bibr" rid="pcbi.1000970-Raghunathan1">[20]</xref>. <italic>Gene</italic>Force suggested a small set of rule corrections for this hybrid network model were needed, based on analysis of <italic>S. typhimurium</italic> growth phenotyping data, suggesting that regulation may be highly conserved between these two organisms. While the approach has been used here to correct Boolean representations of transcriptional regulation, it could easily be extended to consider non-Boolean approaches to modeling transcriptional regulation as they are developed.</p>
+</sec><sec id="s2">
+<title>Results</title>
+<sec id="s2a">
+<title>Regulatory rule correction algorithm, <italic>Gene</italic>Force</title>
+<p>We developed an automated MILP approach, <italic>Gene</italic>Force, to identify problematic Boolean regulatory rules in an integrated metabolic and transcriptional regulatory model. The method identifies regulatory rules that prevent the models from predicting cellular growth in conditions, which are capable of supporting growth experimentally. The approach can be used when the integrated metabolic and regulatory model does not predict growth, but experimental data and metabolic model predictions (without any regulatory constraints) indicate growth occurs.</p>
+<p>The basic idea of the <italic>Gene</italic>Force algorithm is to allow the integrated metabolic and regulatory model to violate a minimal set of transcriptional regulatory rules so that growth can occur in a particular condition. The algorithm therefore adds an additional constraint that the model must satisfy a minimal threshold growth rate. The algorithm uses a set of ‘rule-violation’ equations (see Supporting Information <xref ref-type="supplementary-material" rid="pcbi.1000970.s011">Text S1</xref> for details) to relax certain regulatory constraints (by allowing for expression of un-expressed genes) thus allowing the model to readjust the metabolic and regulatory model solution space to include solutions with growth rates exceeding the minimum threshold. The ‘rule violation’ equations, invoked at the gene level, allow the regulatory rules for metabolic genes to be violated using additional surrogate gene expression indicators (y′<sub>g</sub>) that can differ in value from the gene expression indicators (y<sub>g</sub>), the latter of which are determined by Boolean regulatory rules. Normally in the integrated metabolic and regulatory model a flux is constrained to be zero if the necessary metabolic genes are determined to be un-expressed (y<sub>g</sub> = 0). In the <italic>Gene</italic>Force algorithm, the bounds on the metabolic fluxes are dependent on y′<sub>g</sub> instead of y<sub>g</sub>. The reaction dependence on y′<sub>g</sub> then allows the model to override a minimum number of gene expression indicators (where y<sub>g</sub> = 0 but y′<sub>g</sub> = 1) so that the threshold growth rate can be achieved.</p>
+<p>The example in <xref ref-type="fig" rid="pcbi-1000970-g001">Figure 1</xref> illustrates how the <italic>Gene</italic>Force algorithm uses the rule violation technique to achieve non-zero growth in an integrated metabolic and regulatory model in agreement with the metabolic model predictions. As shown in the <xref ref-type="fig" rid="pcbi-1000970-g001">Figure 1A</xref> the metabolic model predicts positive growth in the presence of A<sub>xt</sub>, whereas the integrated metabolic and regulatory model predicts no growth due to the regulatory interactions between gene G1 and transcription factor TF1 (<xref ref-type="fig" rid="pcbi-1000970-g001">Figure 1B</xref>). Expression of G1 is needed for growth since the corresponding enzyme catalyzes an essential reaction (B→C), but expression of G1 requires TF1 to be active, and the binding activity of TF1 is inhibited by metabolite A. This non-growth phenotype is overcome in the <italic>Gene</italic>Force algorithm by making the reaction availability dependent on the surrogate gene expression indicator y′<sub>G1</sub>, which is not dependent on the regulatory rules. In this case, y<sub>G1</sub> = 0 and y′<sub>G1</sub> = 1 since the associated reaction is essential for growth (<xref ref-type="fig" rid="pcbi-1000970-g001">Figure 1C</xref>). Since the flux ranges in <italic>Gene</italic>Force are directly dependent on y′<sub>g</sub> rather than y<sub>g</sub>, the reaction associated with G1 can carry flux through it allowing growth to occur, even though the gene is not expressed in the Boolean model. It should be noted that the other regulatory rule in the network (y<sub>G2</sub> repressed by TF2) was not overruled (y<sub>G2</sub>′ = y<sub>G2</sub> = 0), even though y<sub>G2</sub>′ could also take the value 1 instead of 0. This is because the algorithm minimizes the sum of the distances between the surrogate and the original gene expression indicators, (<inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000970.e001" xlink:type="simple"/></inline-formula>), and hence the number of regulatory rule violations by the algorithm. Minimization of this objective function forces the binary vector of y′<sub>g</sub> to remain as close as possible to that of y<sub>g</sub>, thus minimizing the number of rule violations. This ensures that the original, literature-derived regulatory rules are maximally conserved and reflected in the predicted behavior of the integrated metabolic and regulatory network.</p>
+<fig id="pcbi-1000970-g001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000970.g001</object-id><label>Figure 1</label><caption>
+<title>Example Network Illustrating the <italic>Gen</italic>eForce Approach.</title>
+<p>(<bold>A</bold>) Predicted fluxes through an un-regulated metabolic network, where all reactions are available (indicated by the green arrow) and flux through the biomass reaction (v<sub>Biomass</sub>) is maximized. The numbers and thickness of the arrows indicate flux values. (<bold>B</bold>) Predicted flux through an integrated metabolic and regulatory model (SR-FBA), where numbers and arrow thicknesses indicate flux values. The regulatory network includes regulation of two genes (G1 and G2) by two transcription factors (TF1 and TF2), where TF1 activates G1 and TF2 represses G2. G1 is needed for the B→C reaction and G2 is needed for the A→D reaction. Binary gene expression status (y<sub>G1</sub> and y<sub>G2</sub>) and transcription factor activity (x<sub>TF1</sub> and x<sub>TF2</sub>) indicators show the expression and binding status of G1, G2, TF1 and TF2, respectively, with value 1 indicating the expressed/active condition and 0 indicating the unexpressed/inactive condition. Regulatory interactions are shown as dashed lines, where a normal or blunt arrowhead indicates activation and repression, respectively. The colors indicate the state (active = green, inactive = red) of transcription factors and metabolic gene expression, or the availability of metabolic reactions (available = green, unavailable = red). (<bold>C</bold>) Fluxes and surrogate gene expression indicator values as predicted by the <italic>Gene</italic>Force approach. The reactions (B→C and A→D) are now dependent on the surrogate gene expression indicators (y′<sub>G1</sub> and y′<sub>G2</sub>) instead of the expression status of genes G1 and G2 (y<sub>G1</sub> and y<sub>G2</sub>). A threshold biomass flux (μ<sub>threshold</sub>) is set as a constraint and the <italic>Gene</italic>Force algorithm minimizes the sum of the differences between the surrogate gene expression indicators (shown in c) and the gene expression indicators (shown in b) while satisfying this constraint.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000970.g001" xlink:type="simple"/></fig></sec><sec id="s2b">
+<title>Rule correction by <italic>Gene</italic>Force: application to an <italic>E. coli</italic> regulatory network model</title>
+<p>We used the <italic>Gene</italic>Force algorithm to refine the regulatory rules in an updated metabolic and regulatory <italic>E. coli</italic> model based on <italic>i</italic>MC104 (the regulatory portion of the integrated <italic>i</italic>MC1010<sup>v1</sup> model <xref ref-type="bibr" rid="pcbi.1000970-Covert1">[3]</xref>), where we had revised the regulatory rules for genes in the Lrp regulon based on experimental data <xref ref-type="bibr" rid="pcbi.1000970-Cho1">[17]</xref> (see methods for details). The Lrp-modified <italic>i</italic>MC104 model was combined with a metabolic model and the resulting integrated model was used to predict growth phenotypes that were compared to experimental growth phenotypes for a large number of knockout mutants tested for growth in various conditions <xref ref-type="bibr" rid="pcbi.1000970-Glasner1">[18]</xref>, <xref ref-type="bibr" rid="pcbi.1000970-Ito1">[19]</xref>. The model refinements were carried out in three successive steps. First, the updated regulatory rules from <italic>i</italic>MC104 were integrated with the metabolic model <italic>i</italic>JR904 <xref ref-type="bibr" rid="pcbi.1000970-Reed2">[21]</xref> and rule corrections were made to give the first refined version of the regulatory model <italic>i</italic>MC105A. Second, the <italic>i</italic>MC105A regulatory model was integrated with an updated metabolic network <italic>i</italic>AF1260 <xref ref-type="bibr" rid="pcbi.1000970-Feist2">[22]</xref> and adjusted to give the second refined regulatory model, <italic>i</italic>MC105AB. Finally, the <italic>i</italic>MC105AB regulatory model was further refined using phenotypic data generated in this study for three global transcription factor knockout mutants (Δ<italic>arcA</italic>, Δ<italic>purR</italic> and Δ<italic>lrp</italic>) to give the final version of the regulatory model <italic>i</italic>MC105<italic>ABC</italic>. Here we consider the regulatory models (<italic>i</italic>MC104, <italic>i</italic>MC105A, <italic>i</italic>MC105AB, and <italic>i</italic>MC105ABC) to be just the regulatory part of the integrated models (the number indicates the total number of transcription factors).</p>
+<p>Integration of <italic>i</italic>JR904 with Lrp-modified <italic>i</italic>MC104 regulatory rules allowed comparison of 32,050 growth phenotype predictions to experimental data (Supporting Information <xref ref-type="supplementary-material" rid="pcbi.1000970.s003">Table S1</xref>). The <italic>Gene</italic>Force algorithm identified genes with possible problematic regulatory rules in 3,079 out of the 32,050 cases examined, where each case represents a mutant grown in a different condition. Alternative optimal solutions exist for only 298 of the 3,079 cases, where most (281 out of 298) were needed to correct predictions for growth on L-serine as a nitrogen source or the Δ<italic>sdaB</italic> mutant. These 3,079 cases correspond to cases where a zero growth prediction by the integrated metabolic and regulatory model contradicted both the experimental data and the metabolic model prediction (+/+/−; where + indicates growth and − indicates no growth, and the order corresponds to the results from experiments / metabolic model / integrated model). Not all regulatory rules identified by the algorithm in the 3,079 cases were adjusted, as they may cause new incorrect predictions in other conditions. Instead, corrections were made for regulatory rules that were frequently identified as problematic for a particular knockout mutant or growth environment (<xref ref-type="table" rid="pcbi-1000970-t001">Table 1</xref>, refinement step A). In total, regulatory rules for ten genes (<italic>glmU</italic>, <italic>ilvY</italic>, <italic>ilvC</italic>, <italic>sdaC</italic>, <italic>cycA</italic>, <italic>gcvB</italic>, <italic>dsdX</italic>, <italic>rpiR</italic>, <italic>acnA</italic>, and <italic>ilvA</italic>) were corrected in the first regulatory model refinement, <italic>i</italic>MC105A. Two gene-protein-reaction (GPR) associations were also corrected in the metabolic model for two amino acid transport reactions (L-methionine and D-serine). These model adjustments led to an ∼8% improvement in the overall accuracy of the integrated model from 73.9% to 81.5% (<xref ref-type="table" rid="pcbi-1000970-t002">Table 2</xref> and <xref ref-type="fig" rid="pcbi-1000970-g002">Figure 2A</xref>). Due to the addition of the transcriptional regulator <italic>gcvB</italic>, this revised regulatory network <italic>i</italic>MC105A contained a total of 105 transcription factors.</p>
+<fig id="pcbi-1000970-g002" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000970.g002</object-id><label>Figure 2</label><caption>
+<title>Accuracy and Number of Rule Correction Cases.</title>
+<p>Application of <italic>Gene</italic>Force to correct growth phenotype predictions by overriding regulatory rules (<bold>A</bold>) Growth phenotype prediction accuracy of integrated regulatory-metabolic network models at various steps of regulatory network refinement. Accuracy (solid circles) is calculated by dividing total number of correct (experimentally consistent) predictions by the total number of cases evaluated (open squares) at each step. The colors correspond to the metabolic networks used in the integrated metabolic and regulatory network models with red for <italic>i</italic>JR904 and blue for <italic>i</italic>AF1260. (<bold>B</bold>) The total number of ‘rule correction’ cases (solid circles) for each regulatory network is plotted. Such cases are represented by +/+/− (Exp/Met/Met+Reg) in the growth comparison tables (Supporting Information <xref ref-type="supplementary-material" rid="pcbi.1000970.s003">Table S1</xref> and <xref ref-type="supplementary-material" rid="pcbi.1000970.s004">S2</xref>).</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000970.g002" xlink:type="simple"/></fig><table-wrap id="pcbi-1000970-t001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000970.t001</object-id><label>Table 1</label><caption>
+<title><italic>E. coli</italic> model refinements and the conditions under which they were identified by <italic>Gene</italic>Force.</title>
+</caption><!--===== Grouping alternate versions of objects =====--><alternatives><graphic id="pcbi-1000970-t001-1" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000970.t001" xlink:type="simple"/><table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" colspan="1" rowspan="1">Refinement Step</td>
+<td align="left" colspan="1" rowspan="1">Gene</td>
+<td align="left" colspan="1" rowspan="1">Original Rule</td>
+<td align="left" colspan="1" rowspan="1">Refined Rule</td>
+<td align="left" colspan="1" rowspan="1">Condition<xref ref-type="table-fn" rid="nt102">#</xref></td>
+<td align="left" colspan="1" rowspan="1">Comment</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>A</bold></td>
+<td align="left" colspan="1" rowspan="1"><italic>metINQ</italic></td>
+<td align="left" colspan="1" rowspan="1">(NOT MetJ)</td>
+<td align="left" colspan="1" rowspan="1">GPR correction</td>
+<td align="left" colspan="1" rowspan="1">Gly-Met (N)Met-Ala (N)</td>
+<td align="left" colspan="1" rowspan="1">Unknown transporter for L-methionine (PMID: 4604763)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>A</bold></td>
+<td align="left" colspan="1" rowspan="1"><italic>glmU</italic></td>
+<td align="left" colspan="1" rowspan="1">(NagC)</td>
+<td align="left" colspan="1" rowspan="1">(ON)</td>
+<td align="left" colspan="1" rowspan="1">N-acetyl-D-glucosamine (C,N)N-acetyl-D-mannosamine (C,N)N-acetyl-neuraminic acid (N)</td>
+<td align="left" colspan="1" rowspan="1">Essential gene (PMID: 8407787)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>A</bold></td>
+<td align="left" colspan="1" rowspan="1"><italic>ilvY</italic></td>
+<td align="left" colspan="1" rowspan="1">(NOT val-L(e)&gt;0 )</td>
+<td align="left" colspan="1" rowspan="1">(ON)</td>
+<td align="left" colspan="1" rowspan="1">b3773 (<italic>ilvY</italic>)</td>
+<td align="left" colspan="1" rowspan="1">á-acetolactate or á-acetohydroxybutyrate inducer for <italic>ilvY</italic> (PMID: 10588699)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>A</bold></td>
+<td align="left" colspan="1" rowspan="1"><italic>ilvC</italic></td>
+<td align="left" colspan="1" rowspan="1">(ilvY)</td>
+<td align="left" colspan="1" rowspan="1">(ilvY AND NOT (val-L(e)&gt;0)) OR (NOT ilvY)</td>
+<td align="left" colspan="1" rowspan="1">b3773 (<italic>ilvY</italic>)</td>
+<td align="left" colspan="1" rowspan="1">Constitutive expression of <italic>ilvC</italic> in <italic>ilvY</italic> strain (PMID: 6783625)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>A</bold></td>
+<td align="left" colspan="1" rowspan="1"><italic>sdaC</italic><xref ref-type="table-fn" rid="nt101">*</xref></td>
+<td align="left" colspan="1" rowspan="1">(Crp AND (NOT Lrp OR (leu-L(e)&gt;0)))</td>
+<td align="left" colspan="1" rowspan="1">((Crp AND (NOT Lrp OR (leu-L(e)&gt;0)))) OR (ser-L(e)&gt;0)</td>
+<td align="left" colspan="1" rowspan="1">L-serine (N)</td>
+<td align="left" colspan="1" rowspan="1">Transporters for ser-L; <italic>sdaC</italic> ser-L specific, <italic>sstT</italic> major, <italic>tdcC</italic> anaerobic (PMID: 8026499)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>A</bold></td>
+<td align="left" colspan="1" rowspan="1"><italic>cycA</italic></td>
+<td align="left" colspan="1" rowspan="1">(NOT Lrp OR (leu-L(e)&gt;0))</td>
+<td align="left" colspan="1" rowspan="1">(NOT GcvB)</td>
+<td align="left" colspan="1" rowspan="1">D-alanine (C,N)</td>
+<td align="left" colspan="1" rowspan="1">No Lrp binding; CycA transporter for 6 amino acids (PMID: 19118351)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>A</bold></td>
+<td align="left" colspan="1" rowspan="1"><italic>gcvB</italic></td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">(NOT GcvR AND GcvA)</td>
+<td align="left" colspan="1" rowspan="1">D-alanine (C,N)</td>
+<td align="left" colspan="1" rowspan="1">New regulatory small RNA (PMID: 10972807)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>A</bold></td>
+<td align="left" colspan="1" rowspan="1"><italic>dsdX</italic></td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">GPR correction DsdC or (DsdC and Crp)</td>
+<td align="left" colspan="1" rowspan="1">D-serine (C,N)</td>
+<td align="left" colspan="1" rowspan="1">New ser-D transporter (This study, PMID: 16952954); regulation (PMID: 7592420)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>A</bold></td>
+<td align="left" colspan="1" rowspan="1"><italic>rpiR</italic></td>
+<td align="left" colspan="1" rowspan="1">(NOT (rib-D(e)&gt;0))</td>
+<td align="left" colspan="1" rowspan="1">(NOT ((all-D(e)&gt;0) OR (rib-D(e)&gt;0)))</td>
+<td align="left" colspan="1" rowspan="1">b2914 (<italic>rpiA</italic>)</td>
+<td align="left" colspan="1" rowspan="1"><italic>i</italic>JR904 requires <italic>rpiB</italic> for <italic>rpiA</italic> strain (PMID: 10559180)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>A</bold></td>
+<td align="left" colspan="1" rowspan="1"><italic>acnA</italic></td>
+<td align="left" colspan="1" rowspan="1">(SoxS)</td>
+<td align="left" colspan="1" rowspan="1">(ON)</td>
+<td align="left" colspan="1" rowspan="1">b0118 (<italic>acnB</italic>)</td>
+<td align="left" colspan="1" rowspan="1">Two aconitases (PMID: 9202458)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>A</bold></td>
+<td align="left" colspan="1" rowspan="1"><italic>ilvA</italic><xref ref-type="table-fn" rid="nt101">*</xref></td>
+<td align="left" colspan="1" rowspan="1">(NOT Lrp OR (leu-L(e)&gt;0))</td>
+<td align="left" colspan="1" rowspan="1">(ON)</td>
+<td align="left" colspan="1" rowspan="1">b2797 (<italic>sdaB</italic>)</td>
+<td align="left" colspan="1" rowspan="1">L-serine/L-threonine deaminases; SdaA (anaerobic), TdcB (anaerobic), IlvA (PMID: 13405870, 15155761)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>B</bold></td>
+<td align="left" colspan="1" rowspan="1"><italic>argD</italic></td>
+<td align="left" colspan="1" rowspan="1">(NOT ArgR)</td>
+<td align="left" colspan="1" rowspan="1">(ON)</td>
+<td align="left" colspan="1" rowspan="1">L-arginine (N)</td>
+<td align="left" colspan="1" rowspan="1">Required for L-lysine biosynthesis</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>B</bold></td>
+<td align="left" colspan="1" rowspan="1"><italic>astABCDE</italic></td>
+<td align="left" colspan="1" rowspan="1">((NOT(Growth&gt;0) AND RpoS) OR (NRI_hi AND RpoN)) AND (NOT Lrp OR (leu-L(e)&gt;0))</td>
+<td align="left" colspan="1" rowspan="1">((NOT(Growth&gt;0) AND RpoS) OR (NRI_hi AND RpoN))</td>
+<td align="left" colspan="1" rowspan="1">L-arginine (N)</td>
+<td align="left" colspan="1" rowspan="1">AST pathway for L-arginine degradation (PMID: 9696779)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>B</bold></td>
+<td align="left" colspan="1" rowspan="1"><italic>speA</italic></td>
+<td align="left" colspan="1" rowspan="1">(NOT (PurR))</td>
+<td align="left" colspan="1" rowspan="1">(NOT (PurR)) AND (NOT (AGMT&gt;0))</td>
+<td align="left" colspan="1" rowspan="1">L-arginine (C)</td>
+<td align="left" colspan="1" rowspan="1">Putrescine inhibits transcription of <italic>speA</italic> (PMID: 1646785)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>B</bold></td>
+<td align="left" colspan="1" rowspan="1"><italic>metH</italic><xref ref-type="table-fn" rid="nt101">*</xref></td>
+<td align="left" colspan="1" rowspan="1">(MetR)</td>
+<td align="left" colspan="1" rowspan="1">(metR) OR (met-L(e)&gt;0)</td>
+<td align="left" colspan="1" rowspan="1">Gly-Met (N)Met-Ala (N)</td>
+<td align="left" colspan="1" rowspan="1">methionine represses <italic>metE</italic>, but not <italic>metH</italic> (PMID: 16622061)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>B</bold></td>
+<td align="left" colspan="1" rowspan="1"><italic>thrA</italic></td>
+<td align="left" colspan="1" rowspan="1">(NOT (thr-L(e)&gt;0 OR ile-L(e)&gt;0)) AND (NOT Lrp OR (leu-L(e)&gt;0))</td>
+<td align="left" colspan="1" rowspan="1">(NOT (thr-L(e)&gt;0 OR ile-L(e)&gt;0))</td>
+<td align="left" colspan="1" rowspan="1">Gly-Met (N)Met-Ala (N)</td>
+<td align="left" colspan="1" rowspan="1">methionine represses <italic>metL</italic>, but not <italic>thrA</italic> (PMID: 3910040)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>B</bold></td>
+<td align="left" colspan="1" rowspan="1"><italic>rhaS</italic></td>
+<td align="left" colspan="1" rowspan="1">(RhaR)</td>
+<td align="left" colspan="1" rowspan="1">(RhaR OR (RhaR AND Crp))</td>
+<td align="left" colspan="1" rowspan="1">L-lyxose (C)</td>
+<td align="left" colspan="1" rowspan="1"><italic>rhaA</italic>, <italic>rhaT</italic> &lt;- <italic>RhaS</italic> &lt;- <italic>RhaR/emph&gt; (PMID: 8757746)</italic></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>B</bold></td>
+<td align="left" colspan="1" rowspan="1"><italic>rhaR</italic></td>
+<td align="left" colspan="1" rowspan="1">(rmn(e)&gt;0)</td>
+<td align="left" colspan="1" rowspan="1">(rmn(e)&gt;0 OR lyx(e)&gt;0 OR man(e))</td>
+<td align="left" colspan="1" rowspan="1">L-lyxose (C)</td>
+<td align="left" colspan="1" rowspan="1"><italic>RhaR</italic> &lt;- rhamnose, lyxose, mannose (PMID: 8757746)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>C</bold></td>
+<td align="left" colspan="1" rowspan="1"><italic>serC</italic></td>
+<td align="left" colspan="1" rowspan="1">(Lrp AND NOT (leu-L(e)&gt;0) OR (NOT (Crp)))</td>
+<td align="left" colspan="1" rowspan="1">(ON)</td>
+<td align="left" colspan="1" rowspan="1">b0889 (lrp)</td>
+<td align="left" colspan="1" rowspan="1">Essential in glucose and glycerol minimal medium (PMID: 17012394)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>C</bold></td>
+<td align="left" colspan="1" rowspan="1"><italic>aroA</italic></td>
+<td align="left" colspan="1" rowspan="1">(Lrp AND NOT (leu-L(e)&gt;0))</td>
+<td align="left" colspan="1" rowspan="1">(ON)</td>
+<td align="left" colspan="1" rowspan="1">b0889 (lrp)</td>
+<td align="left" colspan="1" rowspan="1">Essential in glucose and glycerol minimal medium (PMID: 17012394)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>C</bold></td>
+<td align="left" colspan="1" rowspan="1"><italic>leuD</italic></td>
+<td align="left" colspan="1" rowspan="1">(NOT(leu-L(e)&gt;0) AND Lrp)</td>
+<td align="left" colspan="1" rowspan="1">(NOT(leu-L(e)&gt;0)</td>
+<td align="left" colspan="1" rowspan="1">b0889 (lrp)</td>
+<td align="left" colspan="1" rowspan="1">Essential in glucose and glycerol minimal medium (PMID: 17012394)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>C</bold></td>
+<td align="left" colspan="1" rowspan="1"><italic>leuC</italic></td>
+<td align="left" colspan="1" rowspan="1">(NOT(leu-L(e)&gt;0) AND Lrp)</td>
+<td align="left" colspan="1" rowspan="1">(NOT(leu-L(e)&gt;0)</td>
+<td align="left" colspan="1" rowspan="1">b0889 (lrp)</td>
+<td align="left" colspan="1" rowspan="1">Essential in glucose and glycerol minimal medium (PMID: 17012394)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>C</bold></td>
+<td align="left" colspan="1" rowspan="1"><italic>leuB</italic></td>
+<td align="left" colspan="1" rowspan="1">(NOT(leu-L(e)&gt;0) AND Lrp)</td>
+<td align="left" colspan="1" rowspan="1">(NOT(leu-L(e)&gt;0)</td>
+<td align="left" colspan="1" rowspan="1">b0889 (lrp)</td>
+<td align="left" colspan="1" rowspan="1">Essential in glucose and glycerol minimal medium (PMID: 17012394)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>C</bold></td>
+<td align="left" colspan="1" rowspan="1"><italic>leuA</italic></td>
+<td align="left" colspan="1" rowspan="1">(NOT(leu-L(e)&gt;0) AND Lrp)</td>
+<td align="left" colspan="1" rowspan="1">(NOT(leu-L(e)&gt;0)</td>
+<td align="left" colspan="1" rowspan="1">b0889 (lrp)</td>
+<td align="left" colspan="1" rowspan="1">Essential in glucose and glycerol minimal medium (PMID: 17012394)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>C</bold></td>
+<td align="left" colspan="1" rowspan="1"><italic>ilvB</italic><xref ref-type="table-fn" rid="nt101">*</xref></td>
+<td align="left" colspan="1" rowspan="1">(NOT(leu-L(e)&gt;0 OR val-L(e)&gt;0) AND Crp) to (ON)</td>
+<td align="left" colspan="1" rowspan="1">(ON)</td>
+<td align="left" colspan="1" rowspan="1">b0889 (lrp)glucose (C)gluconate (C)</td>
+<td align="left" colspan="1" rowspan="1"><italic>ilvB</italic> required in glucose condition (this study)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>C</bold></td>
+<td align="left" colspan="1" rowspan="1"><italic>ilvN</italic><xref ref-type="table-fn" rid="nt101">*</xref></td>
+<td align="left" colspan="1" rowspan="1">(NOT(leu-L(e)&gt;0 OR val-L(e)&gt;0) AND Crp) to (ON)</td>
+<td align="left" colspan="1" rowspan="1">(ON)</td>
+<td align="left" colspan="1" rowspan="1">b0889 (lrp)glucose (C)gluconate (C)</td>
+<td align="left" colspan="1" rowspan="1">regulatory subunit of <italic>ilvBN</italic> encoded enzyme complex (PMID: 1512191)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>C</bold></td>
+<td align="left" colspan="1" rowspan="1"><italic>dctA</italic><xref ref-type="table-fn" rid="nt101">*</xref></td>
+<td align="left" colspan="1" rowspan="1">(((“CRP noMAN”) AND NOT(ArcA) AND (DcuR))</td>
+<td align="left" colspan="1" rowspan="1">(ON)</td>
+<td align="left" colspan="1" rowspan="1">b0889 (lrp)L-malate (C)</td>
+<td align="left" colspan="1" rowspan="1"><italic>dctA</italic> deletion causes prolonged lag phase (this study)</td>
+</tr>
+</tbody>
+</table></alternatives><table-wrap-foot><fn id="nt101"><label/><p>*indicates alternative optimal solutions exist for this change.</p></fn><fn id="nt102"><label>#</label><p>(C) indicates carbon source and (N) indicates nitrogen source.</p></fn><fn id="nt103"><label/><p><bold>A</bold>- Rule corrections needed for <italic>i</italic>MC104+<italic>i</italic>JR904.</p></fn><fn id="nt104"><label/><p><bold>B</bold>- Rule corrections needed for <italic>i</italic>MC105A+<italic>i</italic>AF1260.</p></fn><fn id="nt105"><label/><p><bold>C-</bold> Rule corrections needed for <italic>i</italic>MC105AB+<italic>i</italic>AF1260.</p></fn></table-wrap-foot></table-wrap><table-wrap id="pcbi-1000970-t002" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000970.t002</object-id><label>Table 2</label><caption>
+<title>Accuracy and number of rule correction and rescue non-growth cases at successive stages of regulatory rule refinements.</title>
+</caption><!--===== Grouping alternate versions of objects =====--><alternatives><graphic id="pcbi-1000970-t002-2" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000970.t002" xlink:type="simple"/><table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<tbody>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>Metabolic network</bold><xref ref-type="table-fn" rid="nt106">a</xref></td>
+<td align="left" colspan="1" rowspan="1"><italic>i</italic>JR904</td>
+<td align="left" colspan="1" rowspan="1"><italic>i</italic>JR904</td>
+<td align="left" colspan="1" rowspan="1"><italic>i</italic>AF1260</td>
+<td align="left" colspan="1" rowspan="1"><italic>i</italic>AF1260</td>
+<td align="left" colspan="1" rowspan="1"><italic>i</italic>AF1260</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>Regulatory network</bold><xref ref-type="table-fn" rid="nt106">b</xref></td>
+<td align="left" colspan="1" rowspan="1"><italic>i</italic>MC104</td>
+<td align="left" colspan="1" rowspan="1"><italic>i</italic>MC105A</td>
+<td align="left" colspan="1" rowspan="1"><italic>i</italic>MC105A</td>
+<td align="left" colspan="1" rowspan="1"><italic>i</italic>MC105AB</td>
+<td align="left" colspan="1" rowspan="1"><italic>i</italic>MC105ABC</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>Total comparisons</bold><xref ref-type="table-fn" rid="nt107">c</xref></td>
+<td align="left" colspan="1" rowspan="1">32,050</td>
+<td align="left" colspan="1" rowspan="1">32,050</td>
+<td align="left" colspan="1" rowspan="1">50,327</td>
+<td align="left" colspan="1" rowspan="1">50,557</td>
+<td align="left" colspan="1" rowspan="1">50,557</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>Rule correction cases (+/+/−)</bold></td>
+<td align="left" colspan="1" rowspan="1">3,079</td>
+<td align="left" colspan="1" rowspan="1">445</td>
+<td align="left" colspan="1" rowspan="1">1,546</td>
+<td align="left" colspan="1" rowspan="1">565</td>
+<td align="left" colspan="1" rowspan="1">510</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>Rescue cases (−/+/−)</bold></td>
+<td align="left" colspan="1" rowspan="1">2,041</td>
+<td align="left" colspan="1" rowspan="1">1,847</td>
+<td align="left" colspan="1" rowspan="1">2,130</td>
+<td align="left" colspan="1" rowspan="1">2,087</td>
+<td align="left" colspan="1" rowspan="1">2,070</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>Integrated model accuracy</bold><xref ref-type="table-fn" rid="nt108">d</xref></td>
+<td align="left" colspan="1" rowspan="1">23,670 (73.9%)</td>
+<td align="left" colspan="1" rowspan="1">26,112 (81.5%)</td>
+<td align="left" colspan="1" rowspan="1">39,288 (78.1%)</td>
+<td align="left" colspan="1" rowspan="1">40,403 (79.9%)</td>
+<td align="left" colspan="1" rowspan="1">40,441 (80.0%)</td>
+</tr>
+</tbody>
+</table></alternatives><table-wrap-foot><fn id="nt106"><label>a,b</label><p>Metabolic and regulatory networks used in the integrated models.</p></fn><fn id="nt107"><label>c</label><p>Total number of growth phenotypes analyzed.</p></fn><fn id="nt108"><label>d</label><p>Number (percent) of cases where the integrated model predictions were in agreement with experimental data.</p></fn></table-wrap-foot></table-wrap>
+<p>The second set of refinements (refinement step B), occurred when the <italic>i</italic>JR904 metabolic network was replaced with the updated metabolic network <italic>i</italic>AF1260 <xref ref-type="bibr" rid="pcbi.1000970-Feist2">[22]</xref>. The inclusion of the latest metabolic network allowed integrated model predictions to be compared against 50,327 growth phenotypes, since more genes and environments are represented in this larger metabolic network (Supporting Information <xref ref-type="supplementary-material" rid="pcbi.1000970.s004">Table S2</xref>). Using this extended set of growth phenotypes, the algorithm identified a new set of problematic regulatory rules in <italic>i</italic>MC105A, and corrections were made for eleven additional genes, <italic>argD</italic>, <italic>astCADBE</italic>, <italic>speA</italic>, <italic>metH</italic>, <italic>thrA</italic>, <italic>rhaS</italic>, and <italic>rhaR</italic> (<xref ref-type="table" rid="pcbi-1000970-t001">Table 1</xref>, refinement step B) leading to a second revision of the regulatory model, <italic>i</italic>MC105AB. Initial correction of the regulatory rule for <italic>argD</italic> fixed 262 errors (+/+/− changed to +/+/+) associated with cases where arginine is the nitrogen source, but also introduced 297 new errors (−/+/− changed to −/+/+) for cases where arginine is the carbon source. To correct these new errors we subsequently refined the rules for the <italic>astCADBE</italic> operon and <italic>speA</italic> gene, in addition to <italic>argD</italic>, to reconcile the model with both arginine conditions. The prediction accuracy of the integrated metabolic and regulatory model (<italic>i</italic>AF1260+<italic>i</italic>MC105A) was 78.1% before all eleven rule corrections were made, and with this additional second set of regulatory refinements, the <italic>i</italic>MC105AB model could achieve a slightly higher accuracy, 79.9% (<xref ref-type="table" rid="pcbi-1000970-t002">Table 2</xref> and <xref ref-type="fig" rid="pcbi-1000970-g002">Figure 2A</xref>) and with significantly greater coverage of the available experimental data (50,327 cases versus 32,050 cases).</p>
+<p>In the third set of refinements, the refined regulatory model, <italic>i</italic>MC105AB, was tested by comparing predictions to newly acquired experimental data for three transcription factor knockout mutants (Δ<italic>arcA</italic>, <italic>ΔpurR</italic>, and Δ<italic>lrp</italic>). The five transcription factors in <italic>i</italic>MC105AB with the most metabolic gene targets are Crp, Fnr, ArcA, PurR and Lrp. Experimental data was already available for knockout mutants for two of these transcription factors (Crp and Fnr), however, growth phenotyping data for Δ<italic>arcA</italic>, Δ<italic>purR</italic>, and Δ<italic>lrp</italic> mutants was not available. Therefore, growth experiments on phenotype microarrays (Biolog, Hayward, CA) were conducted for the three mutant strains Δ<italic>arcA</italic>, Δ<italic>purR</italic>, and Δ<italic>lrp</italic>. The <italic>Gene</italic>Force algorithm identified an additional nine genes needing regulatory rule corrections (<xref ref-type="table" rid="pcbi-1000970-t001">Table 1</xref>, refinement step C) which all caused incorrect phenotype predictions for the Δ<italic>lrp</italic> mutant (Supporting Information <xref ref-type="supplementary-material" rid="pcbi.1000970.s005">Table S3</xref>). Incorporation of these Lrp specific corrections led to the final refined version <italic>i</italic>MC105ABC, which resulted in a small overall improvement (0.01%) in model accuracy over the previous version <italic>i</italic>MC105AB (<xref ref-type="table" rid="pcbi-1000970-t002">Table 2</xref> and <xref ref-type="fig" rid="pcbi-1000970-g002">Figure 2A</xref>) when evaluating all data, but a large improvement for the new phenotype measurements of the three transcription factor deletion mutants (81.7% accuracy using <italic>i</italic>MC105ABC vs. 66.1% using <italic>i</italic>MC105AB for Δ<italic>lrp</italic>, Δ<italic>purR</italic>, and Δ<italic>arcA</italic> phenotypes).</p>
+<p>For each +/+/− case the minimum number of genes whose regulatory rules had been violated by the <italic>Gene</italic>Force algorithm was determined. The distribution of the number of rule corrections needed for the +/+/− cases is shown for the first two refinement steps in <xref ref-type="fig" rid="pcbi-1000970-g003">Figure 3</xref> before and after the model adjustments were made (listed in <xref ref-type="table" rid="pcbi-1000970-t001">Table 1</xref>). The results show that in most cases a single regulatory rule was preventing the integrated model from making the correct prediction. The first set of refinements eliminated most of the +/+/− cases (<xref ref-type="fig" rid="pcbi-1000970-g003">Figure 3A</xref>), leaving fewer genes needing rule corrections in the subsequent steps (<xref ref-type="fig" rid="pcbi-1000970-g003">Figure 3B</xref>), even though more experimental data (50,557 versus 32,050) could be compared to model predictions.</p>
+<fig id="pcbi-1000970-g003" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000970.g003</object-id><label>Figure 3</label><caption>
+<title>Number of Rule Corrections Needed to Correct Model Predictions.</title>
+<p>Distribution of rule corrections for +/+/− cases before and after rule corrections for (<bold>A</bold>) <italic>i</italic>JR904 with rules from <italic>i</italic>MC104 (with Lrp modified regulatory rules) and <italic>i</italic>MC105A, and (<bold>B</bold>) <italic>i</italic>AF1260 with rules from <italic>i</italic>MC105A and <italic>i</italic>MC105AB. The total number of +/+/− cases for each integrated model is indicated in parenthesis in the legend. For each +/+/− case the minimum number of genes requiring regulatory rule corrections was determined. Panels <bold>A</bold> and <bold>B</bold> are histograms representing the number of cases where 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, or 12 genes need regulatory rule corrections.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000970.g003" xlink:type="simple"/></fig>
+<p>Alternative optimal solutions were generated for each refinement step by adding integer-cut constraints and re-solving the <italic>Gene</italic>Force problem. The number of +/+/− cases for which alternative optimal solutions exist can be found in Supporting Information <xref ref-type="supplementary-material" rid="pcbi.1000970.s006">Table S4</xref>. In most cases, they were specific to a particular knockout mutant or growth environment, and the alternative optimal solutions were two or three isozymes catalyzing an essential reaction. For some instances we were able to find enough information in the literature to determine the most likely isozymes involved (<italic>ilvA</italic>, <italic>metH</italic>, <italic>sdaC</italic> and <italic>thrA</italic>). For other cases described below (<italic>dctA</italic>, <italic>rpiB</italic>, and <italic>ilvBN</italic>), we performed additional growth phenotyping experiments to determine the final set of corrections. Overall application of the <italic>Gene</italic>Force algorithm to correct +/+/− cases led to (i) changes in the regulatory rules for metabolic genes (e.g. <italic>glmU</italic>, <italic>ilvBN</italic>, and <italic>dctA</italic>) (ii) changes in the rules for TF activities (e.g. RpiR), or (iii) changes in the gene-protein-reaction (GPR) associations in the metabolic network (e.g. <italic>dsdX</italic>). Some examples from the different types of changes are presented below, and in some cases additional mutant phenotypes were screened by experiments to confirm the necessary model changes identified by <italic>Gene</italic>Force.</p>
+<p>In our analysis, the regulatory rule describing the regulation of <italic>glmU</italic> by the NagC transcription factor was identified as the most problematic rule, causing approximately one third of the total incorrect zero growth predictions by the Lrp-modified <italic>i</italic>MC104+<italic>i</italic>JR904 integrated model. <italic>Gene</italic>Force identified the regulatory rule for <italic>glmU</italic> gene as needing a correction for most mutants grown in conditions where any of the three amino sugars, N-acetylglucosamine (GlcNAc), N-acetylneuraminate, and N-acetylmannosamine were present. GlmU catalyzes two consecutive reactions producing an essential precursor UDP-N-acetyl-glucosamine (UDP-GlcNAc) for the cell wall of <italic>E. coli</italic> <xref ref-type="bibr" rid="pcbi.1000970-MenginLecreulx1">[23]</xref>, <xref ref-type="bibr" rid="pcbi.1000970-Plumbridge1">[24]</xref>. This gene has been found to be essential in <italic>E. coli</italic> <xref ref-type="bibr" rid="pcbi.1000970-Baba1">[25]</xref>, supporting <italic>Gene</italic>Force's prediction that the regulatory rule for <italic>glmU</italic> is incorrect.</p>
+<p>The following two regulatory rules in <italic>i</italic>MC104 precluded the gene from being expressed in the integrated model under certain conditions: ‘NagC is active if NOT (GlcNAc OR glucosamine-6-phosphate)’ and ‘<italic>glmU</italic> is expressed if NagC is active’. The first rule prohibited NagC from being active in the presence of any of the three amino sugars because glucosamine-6-phosphate is a common intermediate in their degradation pathways. The inactivity of NagC subsequently prohibited the expression of <italic>glmU</italic> in the integrated model, resulting in a non-growth phenotype prediction. <italic>Gene</italic>Force violated the <italic>glmU</italic> regulatory rule so that GlmU can carry out the two essential reactions. Although the regulatory rules shown above were in agreement with experimental data reported in the literature, the Boolean representation of the regulatory interaction was too stringent in the model. The <italic>glmU</italic> gene contains two upstream promoters P1 and P2, and the transcription factor NagC is shown to induce expression using the promoter P1 in the absence of any of the three amino sugars <xref ref-type="bibr" rid="pcbi.1000970-Plumbridge2">[26]</xref>. However, the second <italic>glmU</italic> promoter, P2, is weakly induced in presence of N-acetylglucosamine, suggesting that the activating role of NagC could be dispensable for this promoter <xref ref-type="bibr" rid="pcbi.1000970-Plumbridge2">[26]</xref>. This suggests that the expression of <italic>glmU</italic> is not completely abolished when NagC is inactive, and that the low level of induction at P2 is still sufficient to allow for the production of UDP-GlcNAc. Since <italic>glmU</italic> is required for growth in other environments as well, it is always expressed in the refined set of regulatory rules.</p>
+<p>The integrated model made incorrect predictions for the Δ<italic>lrp</italic> mutant in a few different conditions, including growth on glucose, gluconate, and L-malate as sole carbon sources. For the glucose and gluconate conditions, <italic>Gene</italic>Force found that either <italic>ilvHI</italic> or <italic>ilvBN</italic> needed to be expressed since these two isozymes are used for the synthesis of branched chain amino acids. To evaluate which of these isozymes is used by the cells, we screened a number of Lrp double mutants for growth on glucose and found that only Δ<italic>lrp</italic>Δ<italic>ilvB</italic> is unable to grow; however, Δ<italic>lrp</italic>Δ<italic>ilvN</italic>, Δ<italic>lrp</italic>Δ<italic>ilvH</italic>, and Δ<italic>lrp</italic>Δ<italic>ilvI</italic> were all capable of growing in glucose minimal media (<xref ref-type="fig" rid="pcbi-1000970-g004">Figure 4A</xref>). This is consistent with earlier reports that the catalytic subunits (<italic>ilvB</italic> and <italic>ilvI</italic>) are still active in the absence of the smaller regulatory subunits (<italic>ilvM</italic>, <italic>ilvN</italic> and <italic>ilvH</italic>) <xref ref-type="bibr" rid="pcbi.1000970-Weinstock1">[27]</xref>. To reconcile the positive growth phenotype of a Δ<italic>lrp</italic> mutant grown on malate, <italic>Gene</italic>Force needed to override the regulatory rule for one of the malate transporters in <italic>E. coli</italic>. We subsequently found that Δ<italic>dctA</italic> and Δ<italic>lrp</italic>Δ<italic>dctA</italic> mutants did not grow on L-malate, while the Δ<italic>lrp</italic> mutant grew (<xref ref-type="fig" rid="pcbi-1000970-g004">Figure 4B</xref>) , implying that the <italic>dctA</italic> rule needed correction.</p>
+<fig id="pcbi-1000970-g004" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000970.g004</object-id><label>Figure 4</label><caption>
+<title>Phenotyping Experiments to Confirm Rule Corrections.</title>
+<p>Growth phenotype screens for (<bold>A</bold>) BW25113 (parent strain), <italic>lrp::kan</italic> Δ<italic>ilvB</italic>, <italic>lrp::kan</italic> Δ<italic>ilvN</italic>, <italic>lrp::kan</italic> Δ<italic>ilvH</italic>, and <italic>lrp::kan</italic> Δ<italic>ilvI</italic> on glucose M9 minimal media, (<bold>B</bold>) BW25113, <italic>lrp::kan</italic>, Δ<italic>dctA</italic>, and <italic>lrp::kan</italic> Δ<italic>dctA</italic> on L-malate M9 minimal media, (<bold>C</bold>) BW25113, Δ<italic>rpiA</italic>, Δ<italic>rpiB</italic>, and <italic>rpiA::kan</italic> Δ<italic>rpiB</italic> on D-ribose M9 minimal media, (<bold>D</bold>) BW25113, Δ<italic>rpiA</italic>, Δ<italic>rpiB</italic>, and <italic>rpiA::kan</italic> Δ<italic>rpiB</italic> on D-allose M9 minimal media, (<bold>E</bold>) BW25113, Δ<italic>cycA</italic>, Δ<italic>dsdX</italic>, and <italic>cycA::kan</italic> Δ<italic>dsdX</italic> on D-alanine M9 minimal media, and (<bold>F</bold>) BW25113, Δ<italic>cycA</italic>, Δ<italic>dsdX</italic>, and <italic>cycA::kan</italic> Δ<italic>dsdX</italic> on D-serine M9 minimal media.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000970.g004" xlink:type="simple"/></fig>
+<p>Ribose-5-phosphate isomerase (RPI) catalyzes the reversible conversion of ribose-5-phosphate to ribulose-5-phosphate in the pentose phosphate pathway. Two RPIs have been identified in <italic>E. coli</italic>, RpiA and RpiB, which are genetically and biochemically distinct. RpiA is constitutively expressed and accounts for most of the RPI activity in wild-type cells <xref ref-type="bibr" rid="pcbi.1000970-Essenberg1">[28]</xref>. RpiB also functions as an allose-6-phosphate isomerase, catalyzing the second step in the allose degradation pathway <xref ref-type="bibr" rid="pcbi.1000970-Kim2">[29]</xref>. It has been shown that <italic>rpiB</italic> expression is repressed by a regulator, RpiR, which is located on the same operon <xref ref-type="bibr" rid="pcbi.1000970-Sorensen1">[30]</xref>. We subsequently measured growth of Δ<italic>rpiA</italic>, Δ<italic>rpiB</italic>, and Δ<italic>rpiA</italic>Δ<italic>rpiB</italic> mutants on D-ribose and D-allose, and found that only the double deletion exhibited a lethal phenotype on D-ribose (<xref ref-type="fig" rid="pcbi-1000970-g004">Figure 4C</xref>), while neither Δ<italic>rpiB</italic> nor Δ<italic>rpiA</italic>Δ<italic>rpiB</italic> mutant grew on D-allose (<xref ref-type="fig" rid="pcbi-1000970-g004">Figure 4D</xref>). The original regulatory rule for RpiR had only D-ribose as an inducer; as a result no growth in the D-allose medium condition was incorrectly predicted by the integrated model. We subsequently changed the rule for <italic>rpiR</italic> to also include D-allose as an inducer based on the study of allose catabolism <xref ref-type="bibr" rid="pcbi.1000970-Poulsen1">[31]</xref>.</p>
+<p>Another interesting case was the suggested regulatory refinements for <italic>cycA</italic> based on the utilization of D-alanine and D-serine. In this case the algorithm helped lead to improvements in GPR associations in the metabolic network as well as the regulatory rule for <italic>cycA</italic>. The integrated model incorrectly predicted that these compounds could not be used as carbon and nitrogen sources, which <italic>Gene</italic>Force attributed to the expression rule for the CycA transporter. We subsequently measured growth of Δ<italic>cycA</italic>, Δ<italic>dsdX</italic>, and Δ<italic>cycA</italic>Δ<italic>dsdX</italic> mutants, and found that the Δ<italic>cycA</italic> and Δ<italic>cycA</italic>Δ<italic>dsdX</italic> mutant were unable to grow with D-alanine as a carbon source (<xref ref-type="fig" rid="pcbi-1000970-g004">Figure 4E</xref>) and that only the Δ<italic>cycA</italic>Δ<italic>dsdX</italic> double mutant was unable to grow with D-serine as a carbon source (<xref ref-type="fig" rid="pcbi-1000970-g004">Figure 4F</xref>). This indicates that <italic>cycA</italic> is expressed under both conditions and that <italic>dsdX</italic> is also expressed when D-serine is present as a carbon source. The transport of D-serine by DsdX has only been shown in an uropathogenic strain of <italic>E. coli</italic> <xref ref-type="bibr" rid="pcbi.1000970-Anfora1">[32]</xref> and based on our phenotyping results this protein appears to have the same function in BW25113 as well. As a result, the DsdX transporter was to be added to the metabolic model and the regulatory rule for <italic>cycA</italic> was modified. Altogether, these experimental results illustrate how <italic>Gene</italic>Force can help identify incorrect regulatory rules or missing metabolic functionality which cause model-data discrepancies.</p>
+<p>To investigate the effects the model corrections have in other conditions we evaluated how many new false positives were introduced (i.e. −/+/− cases became −/+/+) for each refinement step (Supporting Information <xref ref-type="supplementary-material" rid="pcbi.1000970.s006">Table S4</xref>) and whether the predicted flux distributions would change using flux variability analysis <xref ref-type="bibr" rid="pcbi.1000970-Mahadevan1">[33]</xref>. In refinement steps A and B, the number of new false positives was only ∼7% of the total number of corrected errors. Although 17 new false positives were introduced in refinement step C to correct 53 model errors, the corrections were supported by experimental results. Aside from the <italic>argD</italic> case described above, we did not find any rule corrections that caused significantly more false positives for other knockout mutant or medium conditions. We further evaluated the effects the model changes had on predicted wildtype optimal metabolic flux distributions. Flux variability analysis was done before and after Refinement A with <italic>i</italic>JR904 and before and after Refinements B+C with <italic>i</italic>AF1260. This analysis was done for conditions in which the models predict non-zero growth rates before and after the refinements (84 media conditions for <italic>i</italic>JR904 and 112 media conditions for <italic>i</italic>AF1260), since the model changes were not intended to affect these conditions. We found that the model changes had no significant effect on the predicted wildtype fluxes for the 84 and 112 conditions examined (maximum and minimum predicted flux values changed by less than 0.004 mmol/gDW/hr, which corresponds to ∼0.04% of the carbon source uptake rates), except for the two conditions with L-malate and D,L-malate as carbon sources. In these two conditions, the regulatory rule change for <italic>dctA</italic> in Refinement C allows D-malate to be transported and L-malate to be transported with a more energetically efficient transporter. As a result higher growth rates can be achieved for these two conditions and the optimal flux distributions will change significantly.</p>
+</sec><sec id="s2c">
+<title>Use of <italic>Gene</italic>Force algorithm for predicting mechanisms for rescuing non-growth phenotypes</title>
+<p>In addition to identifying regulatory rules that cause inconsistencies between model predictions and experimental growth phenotypes, another utility of the <italic>Gene</italic>Force algorithm is to identify genes whose transcriptional regulation prevents cells from growing. In this case the integrated model and regulatory rules are correct, and the un-expressed state of certain metabolic genes prevents the cells from utilizing a particular carbon or nitrogen source. The algorithm functions in the same manner as before, with the difference being that it is used in −/+/− cases in which cells are incapable of growing experimentally, the metabolic model indicates that the genes necessary to support growth are present in the genome, but the integrated metabolic and regulatory model correctly predicts a non-growth phenotype because the necessary genes are not expressed. While the algorithm would falsely violate regulatory rules in order to allow the model to achieve a non-zero growth rate, such false violations are of interest since they indicate which genes if over-expressed would allow for growth. Experimentally, such results could be tested by increasing the expression of the identified genes.</p>
+<p>In our analysis of ∼32,000 mutant phenotypes using <italic>i</italic>JR904+<italic>i</italic>MC105A, we identified ten medium conditions, where the <italic>Gene</italic>Force algorithm repeatedly identified genes whose over-expression could enable aerobic growth of mutant (and likely wild-type) <italic>E. coli</italic> strains. In each of these nutritional states: (i) the majority of the <italic>E. coli</italic> knockout mutants were unable to grow, (ii) the metabolic model incorrectly predicts growth, and (iii) the integrated metabolic and regulatory model correctly predicts no growth. In seven out of the ten aerobic conditions, either a single gene or a single operon was needed to be expressed in violation of the regulatory rules to allow for growth. This list included <italic>citT</italic>, <italic>xylA</italic>, <italic>allC</italic>, <italic>fucO</italic>, <italic>atoDAEB</italic>, <italic>ttdAB</italic>, and <italic>nirBD</italic>, which correspond to the different medium conditions listed in <xref ref-type="table" rid="pcbi-1000970-t003">Table 3</xref>. The distribution of the number of genes needing overexpression to rescue these non-growth phenotypes (−/+/−) occurred in the first two refinement steps (Supporting Information <xref ref-type="supplementary-material" rid="pcbi.1000970.s003">Table S1</xref> and Supporting Information <xref ref-type="supplementary-material" rid="pcbi.1000970.s004">Table S2</xref>) is shown in <xref ref-type="fig" rid="pcbi-1000970-g005">Figure 5</xref>. Similar to the case for rule corrections (<xref ref-type="fig" rid="pcbi-1000970-g003">Figure 3</xref>), most of the rescue non-growth cases required over-expressing a single gene. The refinement of the regulatory rules (listed in <xref ref-type="table" rid="pcbi-1000970-t001">Table 1</xref>) slightly reduced the number of rescue non-growth cases by ∼1–10% as some cases changed from −/+/− to −/+/+ (<xref ref-type="fig" rid="pcbi-1000970-g005">Figure 5</xref>).</p>
+<fig id="pcbi-1000970-g005" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000970.g005</object-id><label>Figure 5</label><caption>
+<title>Number of Rule Corrections Needed to Rescue Non-Growth Phenotypes.</title>
+<p>Distribution of ‘rescue non-growth’ (−/+/−) cases before and after rule corrections for (<bold>A</bold>) <italic>i</italic>JR904 with rules from the <italic>i</italic>MC104 (with Lrp modified regulatory rules) and <italic>i</italic>MC105A, and (<bold>B</bold>) <italic>i</italic>AF1260 with rules from <italic>i</italic>MC105A and <italic>i</italic>MC105AB. The number in parenthesis in the legends indicates the total number of (−/+/−) cases for the different integrated models. For each −/+/− case on the minimum number of genes requiring regulatory rule violations was determined. Panels a and b are histograms representing the number of cases requiring 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, or 12 genes to be overexpressed to rescue non-growth phenotypes.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000970.g005" xlink:type="simple"/></fig><table-wrap id="pcbi-1000970-t003" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000970.t003</object-id><label>Table 3</label><caption>
+<title>Single genes or operons that are predicted to rescue non-growth phenotypes under aerobic conditions.</title>
+</caption><!--===== Grouping alternate versions of objects =====--><alternatives><graphic id="pcbi-1000970-t003-3" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000970.t003" xlink:type="simple"/><table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" colspan="1" rowspan="1">Media</td>
+<td align="left" colspan="1" rowspan="1">Gene</td>
+<td align="left" colspan="1" rowspan="1">Condition</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" colspan="1" rowspan="1">Citrate</td>
+<td align="left" colspan="1" rowspan="1"><italic>citT</italic></td>
+<td align="left" colspan="1" rowspan="1">Carbon Source</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">Sucrose</td>
+<td align="left" colspan="1" rowspan="1"><italic>xylA</italic></td>
+<td align="left" colspan="1" rowspan="1">Carbon Source</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">1,2 propanediol</td>
+<td align="left" colspan="1" rowspan="1"><italic>fucO</italic></td>
+<td align="left" colspan="1" rowspan="1">Carbon Source</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">Butyrate</td>
+<td align="left" colspan="1" rowspan="1"><italic>atoDAEB</italic></td>
+<td align="left" colspan="1" rowspan="1">Carbon Source</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">L-tartrate</td>
+<td align="left" colspan="1" rowspan="1"><italic>ttdAB</italic></td>
+<td align="left" colspan="1" rowspan="1">Carbon Source</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">Allantoin</td>
+<td align="left" colspan="1" rowspan="1"><italic>allC</italic></td>
+<td align="left" colspan="1" rowspan="1">Nitrogen Source</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">Nitrite</td>
+<td align="left" colspan="1" rowspan="1"><italic>nirBD</italic></td>
+<td align="left" colspan="1" rowspan="1">Nitrogen Source</td>
+</tr>
+</tbody>
+</table></alternatives></table-wrap>
+<p>We subsequently looked for experimental evidence in the literature that would corroborate the algorithm's predictions of genes whose overexpression can rescue non-growth phenotypes. We found direct evidence in support of <italic>citT</italic>, <italic>fucO</italic> and <italic>atoDAEB</italic> rescuing the inability of wild-type <italic>E. coli</italic> to grow aerobically on citrate, 1,2-propanediol, and butyrate, respectively <xref ref-type="bibr" rid="pcbi.1000970-Pos1">[34]</xref>–<xref ref-type="bibr" rid="pcbi.1000970-Pauli1">[38]</xref>. The <italic>citT</italic> gene encodes a citrate transporter, and Pos et al. have shown that plasmid mediated over-expression of <italic>citT</italic> allows for aerobic growth on citrate <xref ref-type="bibr" rid="pcbi.1000970-Pos1">[34]</xref>. The 1,2-propanediol oxidoreductase (FucO), is required for growth on 1,2-propanediol anaerobically, but under aerobic conditions this gene is not expressed preventing utilization of this compound. Constitutive expression of <italic>fucO</italic> leads to an ability to grow on 1,2-propanediol aerobically <xref ref-type="bibr" rid="pcbi.1000970-Chen1">[35]</xref>, <xref ref-type="bibr" rid="pcbi.1000970-Lu1">[37]</xref>. Wild-type <italic>E. coli</italic> is unable to utilize saturated short chain fatty acids, such as butyrate, and studies have shown that the constitutive expression of <italic>atoC</italic>, an activator of the <italic>atoDAEB</italic> operon, instills the ability to grow on butyrate <xref ref-type="bibr" rid="pcbi.1000970-Jenkins1">[36]</xref>, <xref ref-type="bibr" rid="pcbi.1000970-Pauli1">[38]</xref>.</p>
+<p>We were unable to find direct evidence in support of <italic>allC</italic> (allantoin) and <italic>ttrAB</italic> (L-tartrate) but these genes encode enzymes in the catabolic pathways for these substrates. Wild-type <italic>E. coli</italic> can utilize allantoin as a sole nitrogen source anaerobically, but not as a sole carbon source <xref ref-type="bibr" rid="pcbi.1000970-Rintoul1">[39]</xref>. The inability to degrade allantoin aerobically is thought to be due to the oxygen mediated inhibition of the regulatory gene <italic>allS</italic>, which is an activator of the allantoin regulon containing <italic>allC</italic> <xref ref-type="bibr" rid="pcbi.1000970-Rintoul1">[39]</xref>. It is possible that constitutive expression of <italic>allC</italic> would allow for utilization of allantoin in an oxic environment. Similar strategies may also be proposed for the <italic>ttrAB</italic> operon, which is also repressed in the presence of oxygen thereby preventing aerobic growth on L-tartrate, a substrate that can be used anaerobically <xref ref-type="bibr" rid="pcbi.1000970-Kim3">[40]</xref>.</p>
+</sec><sec id="s2d">
+<title>Conservation of transcriptional regulation in <italic>E. coli</italic> and <italic>S. typhimurium</italic></title>
+<p>The two bacterial strains, <italic>S. typhimurium</italic> LT2 and <italic>E. coli</italic> K-12 MG1655 are closely related and both organisms have been well studied experimentally and modeled. However, the transcriptional regulatory network of <italic>S. typhimurium</italic> is less characterized experimentally, than <italic>E. coli</italic>'s, and a genome-scale transcriptional regulatory model for <italic>S. typhimurium</italic> is not available. Recently, a metabolic network model, (<italic>i</italic>RR1083) for <italic>S. typhimurium</italic> was published <xref ref-type="bibr" rid="pcbi.1000970-Raghunathan1">[20]</xref>, and we investigated the effects of conserving the <italic>E. coli</italic> transcriptional regulatory interactions in <italic>S. typhimurium</italic> by superimposing the <italic>E. coli</italic> regulatory constraints on the <italic>Salmonella</italic> metabolic network. The regulatory model <italic>i</italic>MC105A was integrated with the metabolic model <italic>i</italic>RR1083, and we evaluated whether this chimeric model was consistent with growth phenotypes for <italic>S. typhimurium</italic>. The expectation was that if the transcriptional regulatory networks were highly conserved few regulatory rule violations would be needed to correctly predict growth.</p>
+<p>We transferred the regulatory rules in <italic>i</italic>MC105A for <italic>E. coli</italic> genes to their orthologs in <italic>S. typhimurium</italic>, and used the GPR association in the <italic>S. typhimurium</italic> metabolic network to constrain fluxes through the metabolic reactions. Among the 1,083 <italic>S. typhimurium</italic> genes included in <italic>i</italic>RR1083, 782 genes had orthologs in <italic>E. coli</italic> that were included in <italic>i</italic>JR904 (which included a total of 904 metabolic genes). Additionally, among the 105 <italic>E. coli</italic> transcription factors in <italic>i</italic>MC105A, we found 86 had orthologs in <italic>S. typhimurium</italic> which were incorporated into the chimeric model. These differences in conservation of metabolic and regulatory genes allowed us to transfer approximately 83% of the regulatory rules in <italic>i</italic>MC105A, while discarding the remaining rules associated with metabolic genes not present in <italic>S. typhimurium</italic> or regulatory rules involving transcription factors present only in <italic>E. coli</italic>. Any metabolic ortholog present in <italic>S. typhimurium</italic> but regulated by transcription factors without orthologs in <italic>S. typhimurium</italic> were kept unregulated in the chimeric model.</p>
+<p>We applied the <italic>Gene</italic>Force algorithm to this hybrid <italic>E. coli</italic> regulatory-<italic>S. typhimurium</italic> metabolic model and evaluated model predictions against wild-type <italic>S. typhimurium</italic> growth phenotypes in 196 medium conditions (Supporting Information <xref ref-type="supplementary-material" rid="pcbi.1000970.s007">Table S5</xref>), which resulted in a surprisingly small number of regulatory rule violations, suggesting a highly conserved transcriptional regulatory network between <italic>E. coli</italic> and <italic>S. typhimurium</italic>, at least for conserved orthologs. As seen in <xref ref-type="table" rid="pcbi-1000970-t004">Table 4</xref>, only a total of 18 genes (out of 505 genes with regulatory rules) needed regulatory rule corrections, some of which (<italic>argD</italic>, <italic>rhaR</italic> and <italic>rhaS</italic>) also needed rule corrections in subsequent refinements of the <italic>E. coli</italic> integrated model as well (<xref ref-type="table" rid="pcbi-1000970-t002">Table 2</xref>, correction list B). Thus, 15 out of the 18 genes suggested some regulatory differences between the two species (<xref ref-type="table" rid="pcbi-1000970-t004">Table 4</xref>). For example, the <italic>prp</italic> operon was forced to be active by the algorithm because <italic>S. typhimurium</italic> is capable of utilizing 1, 2-propanediol aerobically while <italic>E. coli</italic> is not <xref ref-type="bibr" rid="pcbi.1000970-Sridhara1">[41]</xref>. The <italic>prpBCDE</italic> operon of <italic>S. typhimurium</italic> encodes enzymes that are needed for utilization of 1,2 propanediol <xref ref-type="bibr" rid="pcbi.1000970-Tsang1">[42]</xref>. Regulatory rules in <italic>i</italic>MC105A state that the <italic>E. coli prp</italic> operon is induced by propionate, while for <italic>S. typhimurium</italic>, there is evidence that this operon is induced by the coordinated function of regulatory proteins PrpR, IHF, and RpoN, where activation of PrpR is induced by 2-methylcitrate, a reaction intermediate in the 1,2-propanediol utilization pathway <xref ref-type="bibr" rid="pcbi.1000970-Palacios1">[43]</xref>, <xref ref-type="bibr" rid="pcbi.1000970-Palacios2">[44]</xref>. Therefore, the algorithm correctly identified the <italic>prp</italic> genes as having incorrect rules for <italic>S. typhimurium</italic> but not for <italic>E. coli</italic>.</p>
+<table-wrap id="pcbi-1000970-t004" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000970.t004</object-id><label>Table 4</label><caption>
+<title>Regulatory rules needing correction when integrated with a <italic>S. typhimurium</italic> metabolic network.</title>
+</caption><!--===== Grouping alternate versions of objects =====--><alternatives><graphic id="pcbi-1000970-t004-4" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000970.t004" xlink:type="simple"/><table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" colspan="1" rowspan="1">Gene</td>
+<td align="left" colspan="1" rowspan="1">Original rule</td>
+<td align="left" colspan="1" rowspan="1">Refined Rule</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>prpB</italic></td>
+<td align="left" colspan="1" rowspan="1">(ppa(e)&gt;0)</td>
+<td align="left" colspan="1" rowspan="1">(PrpR AND RpoN AND (HimA AND HimD))</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>prpC</italic></td>
+<td align="left" colspan="1" rowspan="1">(ppa(e)&gt;0)</td>
+<td align="left" colspan="1" rowspan="1">(PrpR AND RpoN AND (HimA AND HimD))</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>prpD</italic></td>
+<td align="left" colspan="1" rowspan="1">(ppa(e)&gt;0)</td>
+<td align="left" colspan="1" rowspan="1">(PrpR AND RpoN AND (HimA AND HimD))</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>prpR</italic><xref ref-type="table-fn" rid="nt110">b</xref></td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">(MCITS&gt;0)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>himA</italic><xref ref-type="table-fn" rid="nt110">b</xref></td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">ON</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>himD</italic><xref ref-type="table-fn" rid="nt110">b</xref></td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">ON</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>fadL</italic></td>
+<td align="left" colspan="1" rowspan="1">((NOT (Crp OR FadR OR OmpR)))</td>
+<td align="left" colspan="1" rowspan="1">ON</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>fucO</italic></td>
+<td align="left" colspan="1" rowspan="1">(((((FucR) OR (rmn(e)&gt;0)) AND (NOT (o2(e)&gt;0))) AND Crp) OR (((FucR) OR (rmn(e)&gt;0)) AND (NOT (o2(e)&gt;0))))</td>
+<td align="left" colspan="1" rowspan="1">(fuc-L(e)&gt;0 OR rmn(e)&gt;0)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>glnA</italic></td>
+<td align="left" colspan="1" rowspan="1">(Crp AND RpoN)</td>
+<td align="left" colspan="1" rowspan="1">ON</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>ttdA</italic></td>
+<td align="left" colspan="1" rowspan="1">(NOT(o2(e)&gt;0) AND (tartr-L(e)&gt;0))</td>
+<td align="left" colspan="1" rowspan="1">(tartr-L(e)&gt;0)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>ttdB</italic></td>
+<td align="left" colspan="1" rowspan="1">(NOT(o2(e)&gt;0) AND (tartr-L(e)&gt;0))</td>
+<td align="left" colspan="1" rowspan="1">(tartr-L(e)&gt;0)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>focA</italic></td>
+<td align="left" colspan="1" rowspan="1">(ArcA OR Fnr AND (Crp OR NOT (NarL)))</td>
+<td align="left" colspan="1" rowspan="1">ON</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>argD <sup>a</sup></italic></td>
+<td align="left" colspan="1" rowspan="1">(NOT ArgR)</td>
+<td align="left" colspan="1" rowspan="1">(NOT ArgR) OR (arg-L(e)&gt;0)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>prsA</italic></td>
+<td align="left" colspan="1" rowspan="1">(NOT PurR)</td>
+<td align="left" colspan="1" rowspan="1">ON</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>guaA</italic></td>
+<td align="left" colspan="1" rowspan="1">(NOT (PurR AND Crp))</td>
+<td align="left" colspan="1" rowspan="1">ON</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>guaB</italic></td>
+<td align="left" colspan="1" rowspan="1">(NOT (PurR AND Crp))</td>
+<td align="left" colspan="1" rowspan="1">ON</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>rhaS <sup>a</sup></italic></td>
+<td align="left" colspan="1" rowspan="1">(RhaR)</td>
+<td align="left" colspan="1" rowspan="1">(RhaR OR (RhaR AND Crp))</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>rhaR <sup>a</sup></italic></td>
+<td align="left" colspan="1" rowspan="1">(rmn(e)&gt;0)</td>
+<td align="left" colspan="1" rowspan="1">(rmn(e)&gt;0 OR lyx(e)&gt;0 OR man(e))</td>
+</tr>
+</tbody>
+</table></alternatives><table-wrap-foot><fn id="nt109"><label/><p>Corrections common to <italic>E. coli</italic> and <italic>S. typhimurium</italic>.</p></fn><fn id="nt110"><label>b</label><p><italic>prpR</italic>, <italic>himA</italic> and <italic>himD</italic> were added to the regulatory network to update the regulatory rule for the <italic>prpBCD</italic> operon, and were not part of the original 505 regulatory rules for <italic>S. typhimurium</italic>.</p></fn></table-wrap-foot></table-wrap>
+<p>The <italic>glnA</italic> gene (encoding glutamine synthetase) was also identified as requiring a rule correction in <italic>S. typhimurium</italic> but not in <italic>E. coli</italic> for growth on glucose and D-gluconate medium. This difference is primarily attributed to differences in the GPR association for glutamine synthetase between the two metabolic networks, where <italic>glnA</italic> encodes a sole enzyme for glutamine synthesis in <italic>S. typhimurium</italic>, whereas in the <italic>E. coli</italic> models an additional isozyme YcjK can catalyze the same reaction when <italic>glnA</italic> expression is suppressed. Recently, however the YcjK has been shown to be incapable of synthesizing glutamine from glutamate and ammonia so the regulatory rule for <italic>glnA</italic> and GPR association for glutamine synthetase needs to be updated in the <italic>E. coli</italic> model as well <xref ref-type="bibr" rid="pcbi.1000970-Kurihara1">[45]</xref>. Similarly, the <italic>focA</italic> gene encodes the sole formate transporter in <italic>S. typhimurium</italic> but has an alternative gene <italic>focB</italic> in <italic>E. coli</italic>, which explains why the <italic>focA</italic> regulatory rule was not problematic in our analysis of <italic>E. coli</italic> growth phenotypes.</p>
+<p>The initial integrated metabolic and regulatory model for <italic>S. typhimurium</italic>, when tested against the wild-type <italic>S. typhimurium</italic> growth phenotypic data in 196 medium conditions was 77% accurate. The unregulated metabolic model (unregulated <italic>i</italic>RR1083) was 82% accurate against the same growth phenotyping data. After introducing the refined rules (<xref ref-type="table" rid="pcbi-1000970-t004">Table 4</xref>), the refined integrated metabolic and regulatory model was able to achieve 83% accuracy for this dataset, a value similar to those found in this study for integrated models of <italic>E. coli</italic> metabolism and regulation.</p>
+</sec></sec><sec id="s3">
+<title>Discussion</title>
+<p>In this work we developed a new optimization-based approach, <italic>Gene</italic>Force, for systematically refining a genome-scale transcriptional regulatory model by comparing model predictions against high-throughput growth phenotypic data. The developed approach was used to (i) refine existing transcriptional regulatory and metabolic models of <italic>E. coli</italic> and suggest regulatory rule corrections, (ii) explain how transcriptional regulation prevents cellular growth in certain conditions and identify genes which can rescue non-growth phenotypes if expressed, and (iii) construct and refine a new integrated regulatory and metabolic model for <italic>S. typhimurium</italic>.</p>
+<p>We showed that even well curated transcriptional regulatory and metabolic models for <italic>E. coli</italic> <xref ref-type="bibr" rid="pcbi.1000970-Covert1">[3]</xref>, <xref ref-type="bibr" rid="pcbi.1000970-Reed2">[21]</xref>, <xref ref-type="bibr" rid="pcbi.1000970-Feist2">[22]</xref> can be further improved by using the developed approach. Here, cases where the integrated model under-predicted growth (cells grew experimentally and the metabolic model predicted growth, but the integrated model did not predict growth) were used to improve the integrated metabolic and regulatory model. A total of 42 model corrections (27 listed in <xref ref-type="table" rid="pcbi-1000970-t001">Table 1</xref> and an additional 15 described in the <xref ref-type="sec" rid="s4">Materials and Methods</xref> section) were identified and when implemented they improved the accuracy of the models by 1–8%. The improved integrated metabolic and regulatory model predictions were found to better predict metabolic mutant phenotypes than other constraint-based methods using only metabolic models. When the <italic>i</italic>AF1260 metabolic model was used, flux balance analysis (FBA) was ∼76.5% accurate and minimization of metabolic adjustment (MOMA) <xref ref-type="bibr" rid="pcbi.1000970-Segre1">[46]</xref> was ∼75.6% accurate (data not shown), while the integrated metabolic and regulatory model (<italic>i</italic>AF1260+<italic>i</italic>MC105ABC) was ∼79.6% accurate when predictions were made for the metabolic gene knockouts. The integration of metabolic and regulatory network models is thus important for being able to more accurately predict behavior of metabolic mutants, as well as, transcription factor mutants.</p>
+<p>In addition to fixing incorrect model predictions, we showed that <italic>Gene</italic>Force can also be used to evaluate correct model predictions of non-growth conditions to explain how regulation prevents the use of particular nutrients since the needed enzymes are encoded in the genome. We used the approach to suggest a set of genes which if expressed can rescue non-growth phenotypes of mutant and wildtype strains. Experimental testing of these hypotheses would validate that particular metabolic transformations occur and could be used to engineer novel growth phenotypes in an organism.</p>
+<p>In addition to applying the <italic>Gene</italic>Force approach to already developed and refined metabolic and regulatory <italic>E. coli</italic> models, we also applied it to a new integrated model for <italic>S. typhimurium</italic>. We constructed an initial transcriptional regulatory model for <italic>S. typhimurium</italic>, by transferring the regulatory network from a closely related organism. We then applied the approach to correct regulatory rules in the integrated metabolic and regulatory model of <italic>S. typhimurium</italic> <xref ref-type="bibr" rid="pcbi.1000970-Raghunathan1">[20]</xref>. The results showed that the transcriptional regulatory network in <italic>E. coli</italic> is highly consistent with the growth phenotypes of <italic>S. typhimurium</italic>, indicating that the regulatory networks in these two organisms may be highly conserved between these two organisms. A similar observation was found previously by Babu et al., where ∼90% of <italic>E. coli</italic> regulatory interactions were predicted to be conserved in <italic>S. typhimurium</italic> based on the presence of orthologs of transcription factors and their target genes in <italic>S. typhimurium</italic> <xref ref-type="bibr" rid="pcbi.1000970-MadanBabu1">[47]</xref>. While the resulting integrated model is still consistent with observed phenotypes for <italic>S. typhimurium</italic>, additional work is still needed to expand this initial regulatory model to include organism-specific regulatory interactions (such as altered regulons and regulons that are unique for <italic>S. typhimurium</italic>).</p>
+<p>The number of available metabolic reconstructions is rapidly increasing, which is made possible by the increased number of genome sequences <xref ref-type="bibr" rid="pcbi.1000970-Oberhardt1">[48]</xref>. However, the development of genome-scale transcriptional regulatory models is currently limited by the lack of available data for most organisms. Different approaches have been developed to model transcriptional regulatory networks (reviewed in <xref ref-type="bibr" rid="pcbi.1000970-Karlebach1">[10]</xref>), but a Boolean approach has been commonly used for building genome-scale transcriptional regulatory models due to its scalability. Integrated models of metabolism and transcriptional regulation have been developed using a Boolean approach for some model organisms, such as <italic>E. coli</italic> <xref ref-type="bibr" rid="pcbi.1000970-Covert1">[3]</xref> and <italic>S. cerevisiae</italic> <xref ref-type="bibr" rid="pcbi.1000970-Herrgard2">[4]</xref>, but our current understanding of transcriptional regulation in microorganisms is still limited due to its complexity, interconnectivity, and intrinsic noise in these networks compared to metabolism. The <italic>Gene</italic>Force approach can be very useful for validating and refining transcriptional regulatory models against new experimental data, as well as for developing new regulatory models where initial models often yield a number of predictions that are inconsistent with experimental data. In the past, the identification of regulatory rules causing inconsistencies between model predictions and experimental observations was done through a time intensive, trial and error process <xref ref-type="bibr" rid="pcbi.1000970-Covert1">[3]</xref>.</p>
+<p>Other types of non-Boolean methods are needed to integrate genome-scale metabolic and regulatory models, since Boolean approaches cannot capture all transcriptional regulatory interactions (e.g. regulation of essential genes) and gene expression and metabolic fluxes have variable levels that cannot be reflected using ‘On/Off’ variables. Modeling methods are available to predict gene expression levels <xref ref-type="bibr" rid="pcbi.1000970-Gardner1">[49]</xref>, and these predictions could be used to constrain metabolic fluxes <xref ref-type="bibr" rid="pcbi.1000970-Shlomi2">[50]</xref>–<xref ref-type="bibr" rid="pcbi.1000970-Moxley1">[52]</xref> at a genome-scale. The <italic>Gene</italic>Force algorithm could be easily extended to consider other types of integrated metabolic and regulatory models as they are developed, where the number of genes needing expression levels higher than those predicted by the regulatory models could be minimized. As such, the approach would still reconcile integrated metabolic and regulatory network models with observed growth phenotypes and suggest improvements of such models. Other approaches have been developed for metabolic models that use experimentally determined flux distributions as a means to refine metabolic models <xref ref-type="bibr" rid="pcbi.1000970-Herrgard3">[53]</xref>, and the <italic>Gene</italic>Force algorithm could be extended to compare more quantitative data including biomass yields (where the measured yields are used to determine the minimum growth rate threshold) and measured fluxes (where model fluxes are constrained to be a certain distance from the experimental values) as such quantitative data become available at a large-scale.</p>
+<p>Although automated approaches for refining metabolic models have been developed <xref ref-type="bibr" rid="pcbi.1000970-Reed1">[7]</xref>, <xref ref-type="bibr" rid="pcbi.1000970-Kumar1">[9]</xref>, <xref ref-type="bibr" rid="pcbi.1000970-Green1">[54]</xref>, <xref ref-type="bibr" rid="pcbi.1000970-SatishKumar1">[55]</xref>, such an approach has not been created for integrated models of metabolism and transcriptional regulation. The approach developed here finds a minimum set of refinements needed to correct one case at a time. While we did not find it to be a significant problem here, it is possible that making model refinements to correct one case may cause a significant number of new incorrect predictions for other cases. Approaches that consider multiple cases simultaneously could be advantageous, but they were not considered here because of the added computational burden for considering all conditions simultaneously. The approach described here can be used to improve transcriptional regulatory network models by accounting for how a hypothesized regulatory network will affect metabolism and thereby cellular behavior. We envision that predictions of <italic>cis</italic>-regulatory networks, based on genomic analysis and/or experimental data, can be translated into Boolean regulatory models that can be rapidly refined using our developed approach. The identified refinements can then suggest further experiments and lead to a re-evaluation of <italic>cis</italic>-regulatory networks. By integrating models of metabolism and regulation, phenotypic data can be evaluated against regulatory network predictions (which is difficult to do without a metabolic model), thereby expanding the types of datasets (e.g. gene expression, genome sequence, and DNA-protein interaction) that can be used to reconstruct transcriptional regulatory networks.</p>
+</sec><sec id="s4" sec-type="materials|methods">
+<title>Materials and Methods</title>
+<sec id="s4a">
+<title>Strains</title>
+<p>The Keio collection of in-frame single-gene deletion strains <xref ref-type="bibr" rid="pcbi.1000970-Baba1">[25]</xref> and <italic>E. coli</italic> K-12 BW25113 (the parent strain of the Keio collection) were used to confirm the model changes identified by <italic>Gene</italic>Force. The kanamycin resistant gene (<italic>kan</italic>) was removed from the single-deletion strains before screening mutant phenotypes in the microplate reader (for methods see <xref ref-type="bibr" rid="pcbi.1000970-Datsenko1">[56]</xref>). In addition, seven double mutants (<italic>lrp</italic>::<italic>kan</italic> Δ<italic>ilvB</italic>, <italic>lrp</italic>::<italic>kan</italic> Δ<italic>ilvN</italic>, <italic>lrp</italic>::<italic>kan</italic> Δ<italic>ilvH</italic>, <italic>lrp</italic>::<italic>kan</italic> Δ<italic>ilvI</italic>, <italic>lrp</italic>::<italic>kan</italic> Δ<italic>dctA</italic>, <italic>rpiA</italic>::<italic>kan</italic> Δ<italic>rpiB</italic>, and <italic>cycA</italic>::<italic>kan</italic> Δ<italic>dsdX</italic>) were generated using P1 transduction (for methods see <xref ref-type="bibr" rid="pcbi.1000970-Thomason1">[57]</xref>).</p>
+</sec><sec id="s4b">
+<title>Growth phenotyping experiments</title>
+<p>Phenotype microarray (PM) experiments were conducted for the <italic>arcA::kan</italic>, <italic>purR::kan</italic>, and <italic>lrp::kan</italic> strains from the Keio collection using PM1 and PM2 plates following manufacturer protocols (Biolog Inc., CA). Briefly, strains were grown on BUG+B agar plates and resuspended in inoculating fluid containing Dye A and loaded onto plates. Plates were incubated at 30°C and absorbance readings were taken at 600nm at 24 and 48 hours. Other strains were screened for growth in triplicate at 37°C in a Tecan Infinite 200 microplate reader (Tecan Group Ltd., Switzerland). Optical density measurements at 600 nm were taken by the microplate reader every 15 minutes. The Tecan OD measurements (OD<sub>Tecan</sub>)were converted to an OD value in a spectrophotometer with a 1cm pathlength (OD<sub>600</sub>), using a predetermined linear relationship, OD<sub>600</sub> = (2.566)OD<sub>Tecan</sub>+0.0028. Strains were pre-cultured overnight in 2 g/liter glucose-supplemented M9 minimal medium, except for a few strains (listed in <xref ref-type="fig" rid="pcbi-1000970-g004">Figure 4A</xref>) that were evaluated for their ability to grow on glucose which were instead pre-cultured in LB medium. Pre-cultured cells were washed and resuspended in media containing a new carbon source so that the starting OD (at 600 nm) was around 0.05. All carbon sources were tested in M9 minimal medium (6.8 g of Na<sub>2</sub>HPO<sub>4</sub>, 3 g of KH<sub>2</sub>PO<sub>4</sub>, 0.5 g of NaCl, 1 g of NH<sub>4</sub>Cl, 2 ml of 1M MgSO<sub>4</sub>, and 100 µl of 1 M CaCl<sub>2</sub> per liter) supplemented with 2 g/liter of carbon source.</p>
+</sec><sec id="s4c">
+<title>Data analysis</title>
+<p>High-throughput growth phenotyping (Biolog Inc., CA) data for <italic>E. coli</italic> from the ASAP database <xref ref-type="bibr" rid="pcbi.1000970-Glasner1">[18]</xref> were analyzed to assign “growth (+)” or “no growth (−)” for mutants grown in different conditions. In addition to the dataset (Mutant Biolog Data I) evaluated by Covert and colleagues <xref ref-type="bibr" rid="pcbi.1000970-Covert1">[3]</xref>, an additional dataset (Mutant Biolog Data II) was analyzed in this study. We considered the phenotype microarray (PM) data for carbon (PM1 and PM2) and nitrogen sources (PM3) that can be simulated by the computational models, which consisted of 223 mutants in 130 conditions or 303 mutants in 153 conditions, depending on which model was used (see below). For each PM plate, the negative control value was subtracted from each data point (OD600), and a cutoff parameter of 0.1 was applied to determine whether the cells could grow (+) or not grow (−). The cutoff parameter was obtained by separating a bimodal-like distribution of the data (Supporting Information <xref ref-type="supplementary-material" rid="pcbi.1000970.s001">Figure S1</xref>), and the results were not highly sensitive to this parameter. Another set of high-throughput phenotyping data for single gene knockout mutants of <italic>E. coli</italic> <xref ref-type="bibr" rid="pcbi.1000970-Ito1">[19]</xref> was also used. This dataset includes growth phenotypes for 1,440 mutants in 95 environmental conditions using a GN2-MicroPlate (Biolog Inc., CA). However, the conditions that can be simulated by the models consist of only 102 mutants in 30 conditions or 128 mutants in 31 conditions depending on the model used, since the majority of evaluated mutants involved knockouts of genes with unknown function. The phenotypic data for three global transcription factor knockout mutants (Δ<italic>arcA</italic>, Δ<italic>purR</italic>, and Δ<italic>lrp</italic>) was generated in this study using the phenotype microarrays (Biolog Inc., CA) as described above. In this study, we have excluded the phenotypic data for cells grown on formate and L-serine as carbon sources, and xanthine and xanthosine as nitrogen sources, as they are likely false positives in the PM datasets (formate <xref ref-type="bibr" rid="pcbi.1000970-Covert1">[3]</xref>; xanthine and xanthosine <xref ref-type="bibr" rid="pcbi.1000970-Reed1">[7]</xref> and L-serine (tested in this study, data not shown) ).</p>
+</sec><sec id="s4d">
+<title>Models and simulation conditions</title>
+<p>The genome-scale models of metabolism (<italic>i</italic>JR904 <xref ref-type="bibr" rid="pcbi.1000970-Reed2">[21]</xref>, <italic>i</italic>AF1260 <xref ref-type="bibr" rid="pcbi.1000970-Feist2">[22]</xref>) and regulation (<italic>i</italic>MC104<sup>v1</sup> <xref ref-type="bibr" rid="pcbi.1000970-Covert1">[3]</xref>) for <italic>E. coli</italic> were integrated and used in this study. First, regulatory interactions for the global transcription factor, Lrp, were updated in the regulatory rules represented in the <italic>i</italic>MC104 model based on the recent regulatory reconstruction from analysis of gene expression and ChIP-chip data <xref ref-type="bibr" rid="pcbi.1000970-Cho1">[17]</xref>. The Lrp reconstruction categorized regulatory interactions into six different modes based on the gene expression responses of genes controlled by Lrp to exogenous leucine. We have converted each regulatory mode into Boolean logic rules, and updated the regulatory rules in conjunction with existing rules. Preliminary computational analysis was performed to identify essential genes for growth in glucose minimal media that were predicted to be un-expressed based on the updated Lrp rules; the regulatory rules for these seven essential genes were then changed back to the original ones before mutant phenotypes were evaluated. In addition, when the metabolic part of the integrated model was replaced with the recent metabolic reconstruction, <italic>i</italic>AF1260 instead of <italic>i</italic>JR904, another set of preliminary rule corrections were needed for the eight genes that are essential only in <italic>i</italic>AF1260, due primarily to changes in the biomass equation. These fifteen preliminary rule corrections were made before the integrated model was compared to mutant phenotypes, and thus they are not listed in <xref ref-type="table" rid="pcbi-1000970-t001">Table 1</xref> (see Supporting Information <xref ref-type="supplementary-material" rid="pcbi.1000970.s008">Table S6</xref> for details).</p>
+<p>Simulation conditions for the models were determined based on the available carbon or nitrogen sources in the media as previously described elsewhere <xref ref-type="bibr" rid="pcbi.1000970-Covert1">[3]</xref> (see Supporting Information <xref ref-type="supplementary-material" rid="pcbi.1000970.s009">Table S7</xref>). When testing the growth on different carbon sources, ammonia was used as a nitrogen source and the maximum uptake rate for ammonia was constrained to be 10 mmol/gDW/hr. Pyruvate was used as a carbon source for testing growth on different nitrogen sources, and its uptake rate was constrained to be 11.3 mmol/gDW/hr. Oxygen uptake rate was constrained to be 10 mmol/gDW/hr for all cases, and uptake rates for other essential nutrients in each model were specified as listed in Supporting Information <xref ref-type="supplementary-material" rid="pcbi.1000970.s009">Table S7</xref>.</p>
+</sec><sec id="s4e">
+<title>FBA and steady-state regulatory flux balance analysis (SR-FBA)</title>
+<p>Flux balance analysis (FBA) <xref ref-type="bibr" rid="pcbi.1000970-Price1">[58]</xref> was performed to predict the maximum growth rate for mutants under different conditions using the metabolic models. In order to simulate gene deletions in the metabolic models, we have included GPR associations where reactions are constrained to have zero flux if an associated gene is deleted. For the integrated metabolic and regulatory models, we have systematically formulated an SR-FBA problem <xref ref-type="bibr" rid="pcbi.1000970-Shlomi1">[15]</xref> with gene knockout and transcriptional regulatory constraints <xref ref-type="bibr" rid="pcbi.1000970-Kim1">[16]</xref>. Predictions were made by maximizing growth rate for each mutant in each condition. If the maximum growth rate was positive then the model predicted growth is designated as (+), or otherwise designated as (−).</p>
+</sec><sec id="s4f">
+<title><italic>Gene</italic>Force formulation</title>
+<p><italic>Gene</italic>Force identifies the minimal set of genes that are required for growth, but are unexpressed in a given condition due to transcriptional regulatory constraints. In the <italic>Gene</italic>Force formulation, unexpressed genes are allowed to violate the regulatory rules, and the number of violations is minimized to prevent unnecessary rule violations. A rule violation is implemented by introducing surrogate gene expression indicator variables (y′<sub>g</sub>) to allow flux through reactions whose associated genes are not expressed according to the Boolean regulatory rules. A minimum growth rate requirement is introduced by setting the lower bound for growth rate to a minimum threshold value, and the threshold value was set to 10% of the maximum growth rate predicted by the metabolic model in this study. The algorithm was relatively insensitive to threshold values between 5 and 50% (see Supporting Information <xref ref-type="supplementary-material" rid="pcbi.1000970.s010">Table S8</xref>), because most integrated model growth rate predictions were above 80% or below 5% of the metabolic model predicted growth rate (see Supporting Information <xref ref-type="supplementary-material" rid="pcbi.1000970.s002">Figure S2</xref>). Alternative optimal solutions were found by adding integer-cut constraints and re-solving the problem. See Supporting Information <xref ref-type="supplementary-material" rid="pcbi.1000970.s011">Text S1</xref> for more details.</p>
+</sec><sec id="s4g">
+<title>Rule correction</title>
+<p>To identify possible regulatory rule corrections, we analyzed the cases where the metabolic model and experimental data agree that the mutant can grow, but the integrated model predicts no growth (+/+/−; corresponding to experimental data / metabolic model / integrated model). If a certain set of regulatory rules were repeatedly violated in the <italic>Gene</italic>Force solutions to allow for growth of a specific mutant or in a particular medium condition, the regulatory rules for those genes were corrected based on experimental evidence from the literature. When alternative optimal solutions were available, meaning that different sets of rule violations could correct the non-growth phenotype predictions, we examined each set of solutions and chose the most appropriate one for the specific case based on results from additional experiments and/or information in the literature. If a set of rule corrections caused inconsistencies in other mutant or medium condition, such corrections were not made unless there was strong experimental evidence for the rule correction.</p>
+</sec></sec><sec id="s5">
+<title>Supporting Information</title>
+<supplementary-material id="pcbi.1000970.s001" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000970.s001" xlink:type="simple"><label>Figure S1</label><caption>
+<p>Histograms of OD600 measurement in Biolog Phenotype Microarrays (PM).</p>
+<p>(0.19 MB PDF)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1000970.s002" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000970.s002" xlink:type="simple"><label>Figure S2</label><caption>
+<p>Histograms of relative growth rate predictions by <italic>i</italic>JR904 and <italic>i</italic>MC104 (with Lrp modified regulatory rules) for postive and negative experimental growth phenotypes.</p>
+<p>(0.07 MB PDF)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1000970.s003" mimetype="application/x-excel" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000970.s003" xlink:type="simple"><label>Table S1</label><caption>
+<p>Phenotype-model comparison using <italic>i</italic>JR904 and <italic>i</italic>MC104 (with Lrp modified regulatory rules).</p>
+<p>(0.51 MB XLS)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1000970.s004" mimetype="application/x-excel" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000970.s004" xlink:type="simple"><label>Table S2</label><caption>
+<p>Phenotype-model comparison using <italic>i</italic>AF1260 and <italic>i</italic>MC105A.</p>
+<p>(0.77 MB XLS)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1000970.s005" mimetype="application/x-excel" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000970.s005" xlink:type="simple"><label>Table S3</label><caption>
+<p>Phenotype-model comparison using <italic>i</italic>AF1260 and <italic>i</italic>MC105AB/<italic>i</italic>MC105ABC for Δ<italic>arcA</italic>, Δ<italic>purR</italic>, and Δ<italic>lrp</italic> mutants.</p>
+<p>(0.03 MB XLS)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1000970.s006" mimetype="application/x-excel" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000970.s006" xlink:type="simple"><label>Table S4</label><caption>
+<p>Detailed statistics of model-data comparisons and alternative optimal solutions for each refinement step.</p>
+<p>(0.03 MB XLS)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1000970.s007" mimetype="application/x-excel" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000970.s007" xlink:type="simple"><label>Table S5</label><caption>
+<p>Phenotype-model comparison using <italic>i</italic>RR1083 (<italic>Salmonella typhimurium</italic> LT2) and <italic>i</italic>MC105A.</p>
+<p>(0.03 MB XLS)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1000970.s008" mimetype="application/x-excel" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000970.s008" xlink:type="simple"><label>Table S6</label><caption>
+<p>Preliminary analysis for integrating the new Lrp reconstruction and metabolic model <italic>i</italic>AF1260.</p>
+<p>(0.05 MB XLS)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1000970.s009" mimetype="application/x-excel" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000970.s009" xlink:type="simple"><label>Table S7</label><caption>
+<p>Simulation conditions for Biolog Phenotype Microarrays (PM) and GN2-Microplate.</p>
+<p>(0.06 MB XLS)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1000970.s010" mimetype="application/x-excel" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000970.s010" xlink:type="simple"><label>Table S8</label><caption>
+<p>Sensitivity analysis for different values of minimum growth rate requirement using <italic>i</italic>JR904 and <italic>i</italic>MC104 (with Lrp modified regulatory rules).</p>
+<p>(0.03 MB XLS)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1000970.s011" mimetype="application/msword" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000970.s011" xlink:type="simple"><label>Text S1</label><caption>
+<p>Detailed description of the <italic>Gene</italic>Force formulation.</p>
+<p>(0.05 MB DOC)</p>
+</caption></supplementary-material></sec></body>
+<back>
+<ack>
+<p>The authors wish to thank Trang Vu for conducting the phenotype microarray experiments for the three transcription factor mutants analyzed here.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1000970-Herrgard1"><label>1</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Herrgard</surname><given-names>MJ</given-names></name>
+<name name-style="western"><surname>Covert</surname><given-names>MW</given-names></name>
+<name name-style="western"><surname>Palsson</surname><given-names>BO</given-names></name>
+</person-group>             <year>2004</year>             <article-title>Reconstruction of microbial transcriptional regulatory networks.</article-title>             <source>Curr Opin Biotechnol</source>             <volume>15</volume>             <fpage>70</fpage>             <lpage>77</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Venancio1"><label>2</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Venancio</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Aravind</surname><given-names>L</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Reconstructing prokaryotic transcriptional regulatory networks: lessons from actinobacteria.</article-title>             <source>J Biol</source>             <volume>8</volume>             <fpage>29</fpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Covert1"><label>3</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Covert</surname><given-names>MW</given-names></name>
+<name name-style="western"><surname>Knight</surname><given-names>EM</given-names></name>
+<name name-style="western"><surname>Reed</surname><given-names>JL</given-names></name>
+<name name-style="western"><surname>Herrgard</surname><given-names>MJ</given-names></name>
+<name name-style="western"><surname>Palsson</surname><given-names>BO</given-names></name>
+</person-group>             <year>2004</year>             <article-title>Integrating high-throughput and computational data elucidates bacterial networks.</article-title>             <source>Nature</source>             <volume>429</volume>             <fpage>92</fpage>             <lpage>96</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Herrgard2"><label>4</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Herrgard</surname><given-names>MJ</given-names></name>
+<name name-style="western"><surname>Lee</surname><given-names>BS</given-names></name>
+<name name-style="western"><surname>Portnoy</surname><given-names>V</given-names></name>
+<name name-style="western"><surname>Palsson</surname><given-names>BO</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Integrated analysis of regulatory and metabolic networks reveals novel regulatory mechanisms in Saccharomyces cerevisiae.</article-title>             <source>Genome Res</source>             <volume>16</volume>             <fpage>627</fpage>             <lpage>635</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Feist1"><label>5</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Feist</surname><given-names>AM</given-names></name>
+<name name-style="western"><surname>Herrgard</surname><given-names>MJ</given-names></name>
+<name name-style="western"><surname>Thiele</surname><given-names>I</given-names></name>
+<name name-style="western"><surname>Reed</surname><given-names>JL</given-names></name>
+<name name-style="western"><surname>Palsson</surname><given-names>BO</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Reconstruction of biochemical networks in microorganisms.</article-title>             <source>Nat Rev Microbiol</source>             <volume>7</volume>             <fpage>129</fpage>             <lpage>143</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Barrett1"><label>6</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Barrett</surname><given-names>CL</given-names></name>
+<name name-style="western"><surname>Palsson</surname><given-names>BO</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Iterative Reconstruction of Transcriptional Regulatory Networks: An Algorithmic Approach.</article-title>             <source>PLoS Comput Biol</source>             <volume>2</volume>             <fpage>e52</fpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Reed1"><label>7</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Reed</surname><given-names>JL</given-names></name>
+<name name-style="western"><surname>Patel</surname><given-names>TR</given-names></name>
+<name name-style="western"><surname>Chen</surname><given-names>KH</given-names></name>
+<name name-style="western"><surname>Joyce</surname><given-names>AR</given-names></name>
+<name name-style="western"><surname>Applebee</surname><given-names>MK</given-names></name>
+<etal/></person-group>             <year>2006</year>             <article-title>Systems approach to refining genome annotation.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>103</volume>             <fpage>17480</fpage>             <lpage>17484</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-King1"><label>8</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>King</surname><given-names>RD</given-names></name>
+<name name-style="western"><surname>Whelan</surname><given-names>KE</given-names></name>
+<name name-style="western"><surname>Jones</surname><given-names>FM</given-names></name>
+<name name-style="western"><surname>Reiser</surname><given-names>PGK</given-names></name>
+<name name-style="western"><surname>Bryant</surname><given-names>CH</given-names></name>
+<etal/></person-group>             <year>2004</year>             <article-title>Functional genomic hypothesis generation and experimentation by a robot scientist.</article-title>             <source>Nature</source>             <volume>427</volume>             <fpage>247</fpage>             <lpage>252</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Kumar1"><label>9</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Kumar</surname><given-names>VS</given-names></name>
+<name name-style="western"><surname>Maranas</surname><given-names>CD</given-names></name>
+</person-group>             <year>2009</year>             <article-title>GrowMatch: an automated method for reconciling in silico/in vivo growth predictions.</article-title>             <source>PLoS Comput Biol</source>             <volume>5</volume>             <fpage>e1000308</fpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Karlebach1"><label>10</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Karlebach</surname><given-names>G</given-names></name>
+<name name-style="western"><surname>Shamir</surname><given-names>R</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Modelling and analysis of gene regulatory networks.</article-title>             <source>Nat Rev Mol Cell Biol</source>             <volume>9</volume>             <fpage>770</fpage>             <lpage>780</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Bornholdt1"><label>11</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Bornholdt</surname><given-names>S</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Boolean network models of cellular regulation: prospects and limitations.</article-title>             <source>J R Soc Interface</source>             <volume>5</volume>             <fpage>S85</fpage>             <lpage>S94</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Edwards1"><label>12</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Edwards</surname><given-names>JS</given-names></name>
+<name name-style="western"><surname>Covert</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Palsson</surname><given-names>B</given-names></name>
+</person-group>             <year>2002</year>             <article-title>Metabolic modelling of microbes: the flux-balance approach.</article-title>             <source>Environ Microbiol</source>             <volume>4</volume>             <fpage>133</fpage>             <lpage>140</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Covert2"><label>13</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Covert</surname><given-names>MW</given-names></name>
+<name name-style="western"><surname>Schilling</surname><given-names>CH</given-names></name>
+<name name-style="western"><surname>Palsson</surname><given-names>B</given-names></name>
+</person-group>             <year>2001</year>             <article-title>Regulation of Gene Expression in Flux Balance Models of Metabolism.</article-title>             <source>J Theor Biol</source>             <volume>213</volume>             <fpage>73</fpage>             <lpage>88</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Covert3"><label>14</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Covert</surname><given-names>MW</given-names></name>
+<name name-style="western"><surname>Palsson</surname><given-names>BO</given-names></name>
+</person-group>             <year>2003</year>             <article-title>Constraints-based models: Regulation of Gene Expression Reduces the Steady-state Solution Space.</article-title>             <source>J Theor Biol</source>             <volume>221</volume>             <fpage>309</fpage>             <lpage>325</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Shlomi1"><label>15</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Shlomi</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Eisenberg</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Sharan</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Ruppin</surname><given-names>E</given-names></name>
+</person-group>             <year>2007</year>             <article-title>A genome-scale computational study of the interplay between transcriptional regulation and metabolism.</article-title>             <source>Mol Syst Biol</source>             <volume>3</volume>             <fpage>101</fpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Kim1"><label>16</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Kim</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Reed</surname><given-names>JL</given-names></name>
+</person-group>             <year>2010</year>             <article-title>OptORF: Optimal metabolic and regulatory perturbations for metabolic engineering of microbial strains.</article-title>             <source>BMC Syst Biol</source>             <volume>4</volume>             <fpage>53</fpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Cho1"><label>17</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Cho</surname><given-names>B-K</given-names></name>
+<name name-style="western"><surname>Barrett</surname><given-names>CL</given-names></name>
+<name name-style="western"><surname>Knight</surname><given-names>EM</given-names></name>
+<name name-style="western"><surname>Park</surname><given-names>YS</given-names></name>
+<name name-style="western"><surname>Palsson</surname><given-names>BÃ</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Genome-scale reconstruction of the Lrp regulatory network in Escherichia coli.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>105</volume>             <fpage>19462</fpage>             <lpage>19467</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Glasner1"><label>18</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Glasner</surname><given-names>JD</given-names></name>
+<name name-style="western"><surname>Liss</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Plunkett</surname><given-names>G</given-names><suffix>III</suffix></name>
+<name name-style="western"><surname>Darling</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Prasad</surname><given-names>T</given-names></name>
+<etal/></person-group>             <year>2003</year>             <article-title>ASAP, a systematic annotation package for community analysis of genomes.</article-title>             <source>Nucleic Acids Res</source>             <volume>31</volume>             <fpage>147</fpage>             <lpage>151</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Ito1"><label>19</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Ito</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Baba</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Mori</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Mori</surname><given-names>H</given-names></name>
+</person-group>             <year>2005</year>             <article-title>Functional analysis of 1440 Escherichia coli genes using the combination of knock-out library and phenotype microarrays.</article-title>             <source>Metab Eng</source>             <volume>7</volume>             <fpage>318</fpage>             <lpage>327</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Raghunathan1"><label>20</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Raghunathan</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Reed</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Shin</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Palsson</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Daefler</surname><given-names>S</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Constraint-based analysis of metabolic capacity of Salmonella typhimurium during host-pathogen interaction.</article-title>             <source>BMC Syst Biol</source>             <volume>3</volume>             <fpage>38</fpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Reed2"><label>21</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Reed</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Vo</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Schilling</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Palsson</surname><given-names>B</given-names></name>
+</person-group>             <year>2003</year>             <article-title>An expanded genome-scale model of Escherichia coli K-12 (iJR904 GSM/GPR).</article-title>             <source>Genome Biol</source>             <volume>4</volume>             <fpage>R54</fpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Feist2"><label>22</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Feist</surname><given-names>AM</given-names></name>
+<name name-style="western"><surname>Henry</surname><given-names>CS</given-names></name>
+<name name-style="western"><surname>Reed</surname><given-names>JL</given-names></name>
+<name name-style="western"><surname>Krummenacker</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Joyce</surname><given-names>AR</given-names></name>
+<etal/></person-group>             <year>2007</year>             <article-title>A genome-scale metabolic reconstruction for Escherichia coli K-12 MG1655 that accounts for 1260 ORFs and thermodynamic information.</article-title>             <source>Mol Syst Biol</source>             <volume>3</volume>             <fpage>121</fpage>          </element-citation></ref>
+<ref id="pcbi.1000970-MenginLecreulx1"><label>23</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Mengin-Lecreulx</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>van Heijenoort</surname><given-names>J</given-names></name>
+</person-group>             <year>1994</year>             <article-title>Copurification of glucosamine-1-phosphate acetyltransferase and N-acetylglucosamine-1-phosphate uridyltransferase activities of Escherichia coli: characterization of the glmU gene product as a bifunctional enzyme catalyzing two subsequent steps in the pathway for UDP-N-acetylglucosamine synthesis.</article-title>             <source>J Bacteriol</source>             <volume>176</volume>             <fpage>5788</fpage>             <lpage>5795</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Plumbridge1"><label>24</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Plumbridge</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Vimr</surname><given-names>E</given-names></name>
+</person-group>             <year>1999</year>             <article-title>Convergent Pathways for Utilization of the Amino Sugars N-Acetylglucosamine, N-Acetylmannosamine, and N-Acetylneuraminic Acid by Escherichia coli.</article-title>             <source>J Bacteriol</source>             <volume>181</volume>             <fpage>47</fpage>             <lpage>54</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Baba1"><label>25</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Baba</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Ara</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Hasegawa</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Takai</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Okumura</surname><given-names>Y</given-names></name>
+<etal/></person-group>             <year>2006</year>             <article-title>Construction of Escherichia coli K-12 in-frame, single-gene knockout mutants: the Keio collection.</article-title>             <source>Mol Syst Biol</source>             <volume>2</volume>             <fpage>2006 0008</fpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Plumbridge2"><label>26</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Plumbridge</surname><given-names>J</given-names></name>
+</person-group>             <year>1995</year>             <article-title>Co-ordinated regulation of amino sugar biosynthesis and degradation: the NagC repressor acts as both an activator and a repressor for the transcription of the glmUS operon and requires two separated NagC binding sites.</article-title>             <source>EMBO J</source>             <volume>14</volume>             <fpage>8</fpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Weinstock1"><label>27</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Weinstock</surname><given-names>O</given-names></name>
+<name name-style="western"><surname>Sella</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Chipman</surname><given-names>DM</given-names></name>
+<name name-style="western"><surname>Barak</surname><given-names>Z</given-names></name>
+</person-group>             <year>1992</year>             <article-title>Properties of subcloned subunits of bacterial acetohydroxy acid synthases.</article-title>             <source>J Bacteriol</source>             <volume>174</volume>             <fpage>5560</fpage>             <lpage>5566</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Essenberg1"><label>28</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Essenberg</surname><given-names>MK</given-names></name>
+<name name-style="western"><surname>Cooper</surname><given-names>RA</given-names></name>
+</person-group>             <year>1975</year>             <article-title>Two ribose-5-phosphate isomerases from Escherichia coli K12: partial characterisation of the enzymes and consideration of their possible physiological roles.</article-title>             <source>Eur J Biochem</source>             <volume>55</volume>             <fpage>323</fpage>             <lpage>332</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Kim2"><label>29</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Kim</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Song</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Park</surname><given-names>C</given-names></name>
+</person-group>             <year>1997</year>             <article-title>The D-allose operon of Escherichia coli K-12.</article-title>             <source>J Bacteriol</source>             <volume>179</volume>             <fpage>7631</fpage>             <lpage>7637</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Sorensen1"><label>30</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Sorensen</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Hove-Jensen</surname><given-names>B</given-names></name>
+</person-group>             <year>1996</year>             <article-title>Ribose catabolism of Escherichia coli: characterization of the rpiB gene encoding ribose phosphate isomerase B and of the rpiR gene, which is involved in regulation of rpiB expression.</article-title>             <source>J Bacteriol</source>             <volume>178</volume>             <fpage>1003</fpage>             <lpage>1011</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Poulsen1"><label>31</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Poulsen</surname><given-names>TS</given-names></name>
+<name name-style="western"><surname>Chang</surname><given-names>Y-Y</given-names></name>
+<name name-style="western"><surname>Hove-Jensen</surname><given-names>B</given-names></name>
+</person-group>             <year>1999</year>             <article-title>D-Allose Catabolism of Escherichia coli: Involvement of alsI and Regulation of als Regulon Expression by Allose and Ribose.</article-title>             <source>J Bacteriol</source>             <volume>181</volume>             <fpage>7126</fpage>             <lpage>7130</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Anfora1"><label>32</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Anfora</surname><given-names>AT</given-names></name>
+<name name-style="western"><surname>Welch</surname><given-names>RA</given-names></name>
+</person-group>             <year>2006</year>             <article-title>DsdX is the second D-serine transporter in uropathogenic Escherichia coli clinical isolate CFT073.</article-title>             <source>J Bacteriol</source>             <volume>188</volume>             <fpage>6622</fpage>             <lpage>6628</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Mahadevan1"><label>33</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Mahadevan</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Schilling</surname><given-names>CH</given-names></name>
+</person-group>             <year>2003</year>             <article-title>The effects of alternate optimal solutions in constraint-based genome-scale metabolic models.</article-title>             <source>Metab Eng</source>             <volume>5</volume>             <fpage>264</fpage>             <lpage>276</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Pos1"><label>34</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Pos</surname><given-names>KM</given-names></name>
+<name name-style="western"><surname>Dimroth</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Bott</surname><given-names>M</given-names></name>
+</person-group>             <year>1998</year>             <article-title>The Escherichia coli Citrate Carrier CitT: a Member of a Novel Eubacterial Transporter Family Related to the 2-Oxoglutarate/Malate Translocator from Spinach Chloroplasts.</article-title>             <source>J Bacteriol</source>             <volume>180</volume>             <fpage>4160</fpage>             <lpage>4165</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Chen1"><label>35</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Chen</surname><given-names>YM</given-names></name>
+<name name-style="western"><surname>Lu</surname><given-names>Z</given-names></name>
+<name name-style="western"><surname>Lin</surname><given-names>EC</given-names></name>
+</person-group>             <year>1989</year>             <article-title>Constitutive activation of the fucAO operon and silencing of the divergently transcribed fucPIK operon by an IS5 element in Escherichia coli mutants selected for growth on L-1,2-propanediol.</article-title>             <source>J Bacteriol</source>             <volume>171</volume>             <fpage>6097</fpage>             <lpage>6105</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Jenkins1"><label>36</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Jenkins</surname><given-names>LS</given-names></name>
+<name name-style="western"><surname>Nunn</surname><given-names>WD</given-names></name>
+</person-group>             <year>1987</year>             <article-title>Genetic and molecular characterization of the genes involved in short-chain fatty acid degradation in Escherichia coli: the ato system.</article-title>             <source>J Bacteriol</source>             <volume>169</volume>             <fpage>42</fpage>             <lpage>52</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Lu1"><label>37</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Lu</surname><given-names>Z</given-names></name>
+<name name-style="western"><surname>Cabiscol</surname><given-names>E</given-names></name>
+<name name-style="western"><surname>Obradors</surname><given-names>N</given-names></name>
+<name name-style="western"><surname>Tamarit</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Ros</surname><given-names>J</given-names></name>
+<etal/></person-group>             <year>1998</year>             <article-title>Evolution of an Escherichia coli Protein with Increased Resistance to Oxidative Stress.</article-title>             <source>J Biol Chem</source>             <volume>273</volume>             <fpage>8308</fpage>             <lpage>8316</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Pauli1"><label>38</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Pauli</surname><given-names>G</given-names></name>
+<name name-style="western"><surname>Overath</surname><given-names>P</given-names></name>
+</person-group>             <year>1972</year>             <article-title>ato Operon: a Highly Inducible System for Acetoacetate and Butyrate Degradation in Escherichia coli.</article-title>             <source>Eur J Biochem</source>             <volume>29</volume>             <fpage>553</fpage>             <lpage>562</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Rintoul1"><label>39</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Rintoul</surname><given-names>MR</given-names></name>
+<name name-style="western"><surname>Cusa</surname><given-names>E</given-names></name>
+<name name-style="western"><surname>Baldomà</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Badia</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Reitzer</surname><given-names>L</given-names></name>
+<etal/></person-group>             <year>2002</year>             <article-title>Regulation of the Escherichia coli Allantoin Regulon: Coordinated Function of the Repressor AllR and the Activator AllS.</article-title>             <source>J Mol Biol</source>             <volume>324</volume>             <fpage>599</fpage>             <lpage>610</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Kim3"><label>40</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Kim</surname><given-names>OB</given-names></name>
+<name name-style="western"><surname>Reimann</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Lukas</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Schumacher</surname><given-names>U</given-names></name>
+<name name-style="western"><surname>Grimpo</surname><given-names>J</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>Regulation of tartrate metabolism by TtdR and relation to the DcuS-DcuR regulated C4-dicarboxylate metabolism of Escherichia coli.</article-title>             <source>Microbiology</source>             <comment>mic.0.031401-031400</comment>          </element-citation></ref>
+<ref id="pcbi.1000970-Sridhara1"><label>41</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Sridhara</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Wu</surname><given-names>TT</given-names></name>
+<name name-style="western"><surname>Chused</surname><given-names>TM</given-names></name>
+<name name-style="western"><surname>Lin</surname><given-names>ECC</given-names></name>
+</person-group>             <year>1969</year>             <article-title>Ferrous-activated Nicotinamide Adenine Dinucleotide-linked Dehydrogenase from a Mutant of Escherichia coli Capable of Growth on 1,2-Propanediol.</article-title>             <source>J Bacteriol</source>             <volume>98</volume>             <fpage>87</fpage>             <lpage>95</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Tsang1"><label>42</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Tsang</surname><given-names>AW</given-names></name>
+<name name-style="western"><surname>Horswill</surname><given-names>AR</given-names></name>
+<name name-style="western"><surname>Escalante-Semerena</surname><given-names>JC</given-names></name>
+</person-group>             <year>1998</year>             <article-title>Studies of Regulation of Expression of the Propionate (prpBCDE) Operon Provide Insights into How Salmonella typhimurium LT2 Integrates Its 1,2-Propanediol and Propionate Catabolic Pathways.</article-title>             <source>J Bacteriol</source>             <volume>180</volume>             <fpage>6511</fpage>             <lpage>6518</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Palacios1"><label>43</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Palacios</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Escalante-Semerena</surname><given-names>JC</given-names></name>
+</person-group>             <year>2000</year>             <article-title>prpR, ntrA, and ihf Functions Are Required for Expression of the prpBCDE Operon, Encoding Enzymes That Catabolize Propionate in Salmonella enterica Serovar Typhimurium LT2.</article-title>             <source>J Bacteriol</source>             <volume>182</volume>             <fpage>905</fpage>             <lpage>910</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Palacios2"><label>44</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Palacios</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Escalante-Semerena</surname><given-names>JC</given-names></name>
+</person-group>             <year>2004</year>             <article-title>2-Methylcitrate-dependent activation of the propionate catabolic operon (prpBCDE) of Salmonella enterica by the PrpR protein.</article-title>             <source>Microbiology</source>             <volume>150</volume>             <fpage>3877</fpage>             <lpage>3887</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Kurihara1"><label>45</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Kurihara</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Oda</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Tsuboi</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Kim</surname><given-names>HG</given-names></name>
+<name name-style="western"><surname>Oshida</surname><given-names>M</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>gamma-Glutamylputrescine synthetase in the putrescine utilization pathway of Escherichia coli K-12.</article-title>             <source>J Biol Chem</source>             <volume>283</volume>             <fpage>19981</fpage>             <lpage>19990</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Segre1"><label>46</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Segre</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Vitkup</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Church</surname><given-names>GM</given-names></name>
+</person-group>             <year>2002</year>             <article-title>Analysis of optimality in natural and perturbed metabolic networks.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>99</volume>             <fpage>15112</fpage>             <lpage>15117</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-MadanBabu1"><label>47</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Madan Babu</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Teichmann</surname><given-names>SA</given-names></name>
+<name name-style="western"><surname>Aravind</surname><given-names>L</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Evolutionary Dynamics of Prokaryotic Transcriptional Regulatory Networks.</article-title>             <source>J Mol Biol</source>             <volume>358</volume>             <fpage>614</fpage>             <lpage>633</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Oberhardt1"><label>48</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Oberhardt</surname><given-names>MA</given-names></name>
+<name name-style="western"><surname>Palsson</surname><given-names>BO</given-names></name>
+<name name-style="western"><surname>Papin</surname><given-names>JA</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Applications of genome-scale metabolic reconstructions.</article-title>             <source>Mol Syst Biol</source>             <volume>5</volume>             <fpage>320</fpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Gardner1"><label>49</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Gardner</surname><given-names>TS</given-names></name>
+<name name-style="western"><surname>di Bernardo</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Lorenz</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Collins</surname><given-names>JJ</given-names></name>
+</person-group>             <year>2003</year>             <article-title>Inferring genetic networks and identifying compound mode of action via expression profiling.</article-title>             <source>Science</source>             <volume>301</volume>             <fpage>102</fpage>             <lpage>105</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Shlomi2"><label>50</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Shlomi</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Cabili</surname><given-names>MN</given-names></name>
+<name name-style="western"><surname>Herrgard</surname><given-names>MJ</given-names></name>
+<name name-style="western"><surname>Palsson</surname><given-names>BO</given-names></name>
+<name name-style="western"><surname>Ruppin</surname><given-names>E</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Network-based prediction of human tissue-specific metabolism.</article-title>             <source>Nat Biotechnol</source>             <volume>26</volume>             <fpage>1003</fpage>             <lpage>1010</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Colijn1"><label>51</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Colijn</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Brandes</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Zucker</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Lun</surname><given-names>DS</given-names></name>
+<name name-style="western"><surname>Weiner</surname><given-names>B</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>Interpreting expression data with metabolic flux models: predicting Mycobacterium tuberculosis mycolic acid production.</article-title>             <source>PLoS Comput Biol</source>             <volume>5</volume>             <fpage>e1000489</fpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Moxley1"><label>52</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Moxley</surname><given-names>JF</given-names></name>
+<name name-style="western"><surname>Jewett</surname><given-names>MC</given-names></name>
+<name name-style="western"><surname>Antoniewicz</surname><given-names>MR</given-names></name>
+<name name-style="western"><surname>Villas-Boas</surname><given-names>SG</given-names></name>
+<name name-style="western"><surname>Alper</surname><given-names>H</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>Linking high-resolution metabolic flux phenotypes and transcriptional regulation in yeast modulated by the global regulator Gcn4p.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>106</volume>             <fpage>6477</fpage>             <lpage>6482</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Herrgard3"><label>53</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Herrgard</surname><given-names>MJ</given-names></name>
+<name name-style="western"><surname>Fong</surname><given-names>SS</given-names></name>
+<name name-style="western"><surname>Palsson</surname><given-names>BO</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Identification of genome-scale metabolic network models using experimentally measured flux profiles.</article-title>             <source>PLoS Comput Biol</source>             <volume>2</volume>             <fpage>e72</fpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Green1"><label>54</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Green</surname><given-names>ML</given-names></name>
+<name name-style="western"><surname>Karp</surname><given-names>PD</given-names></name>
+</person-group>             <year>2004</year>             <article-title>A Bayesian method for identifying missing enzymes in predicted metabolic pathway databases.</article-title>             <source>BMC Bioinformatics</source>             <volume>5</volume>             <fpage>76</fpage>          </element-citation></ref>
+<ref id="pcbi.1000970-SatishKumar1"><label>55</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Satish Kumar</surname><given-names>V</given-names></name>
+<name name-style="western"><surname>Dasika</surname><given-names>MS</given-names></name>
+<name name-style="western"><surname>Maranas</surname><given-names>CD</given-names></name>
+</person-group>             <year>2007</year>             <article-title>Optimization based automated curation of metabolic reconstructions.</article-title>             <source>BMC Bioinformatics</source>             <volume>8</volume>             <fpage>212</fpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Datsenko1"><label>56</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Datsenko</surname><given-names>KA</given-names></name>
+<name name-style="western"><surname>Wanner</surname><given-names>BL</given-names></name>
+</person-group>             <year>2000</year>             <article-title>One-step inactivation of chromosomal genes in Escherichia coli K-12 using PCR products.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>97</volume>             <fpage>6640</fpage>             <lpage>6645</lpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Thomason1"><label>57</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Thomason</surname><given-names>LC</given-names></name>
+<name name-style="western"><surname>Costantino</surname><given-names>N</given-names></name>
+<name name-style="western"><surname>Court</surname><given-names>DL</given-names></name>
+</person-group>             <year>2007</year>             <article-title>E. coli genome manipulation by P1 transduction.</article-title>             <source>Curr Protoc Mol Biol Chapter</source>             <volume>1</volume>             <fpage>Unit 1 17</fpage>          </element-citation></ref>
+<ref id="pcbi.1000970-Price1"><label>58</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Price</surname><given-names>ND</given-names></name>
+<name name-style="western"><surname>Reed</surname><given-names>JL</given-names></name>
+<name name-style="western"><surname>Palsson</surname><given-names>BO</given-names></name>
+</person-group>             <year>2004</year>             <article-title>Genome-scale models of microbial cells: evaluating the consequences of constraints.</article-title>             <source>Nat Rev Microbiol</source>             <volume>2</volume>             <fpage>886</fpage>             <lpage>897</lpage>          </element-citation></ref>
+</ref-list>
+
+</back>
+</article>

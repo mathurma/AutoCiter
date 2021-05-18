@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="3.0" xml:lang="en">
+<front>
+<journal-meta>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id>
+<journal-id journal-id-type="pmc">ploscomp</journal-id><journal-title-group>
+<journal-title>PLoS Computational Biology</journal-title></journal-title-group>
+<issn pub-type="ppub">1553-734X</issn>
+<issn pub-type="epub">1553-7358</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, USA</publisher-loc></publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="publisher-id">PCOMPBIOL-D-14-01299</article-id>
+<article-id pub-id-type="doi">10.1371/journal.pcbi.1004008</article-id>
+<article-categories><subj-group subj-group-type="heading"><subject>Research Article</subject></subj-group><subj-group subj-group-type="Discipline-v2"><subject>Biology and life sciences</subject><subj-group><subject>Computational biology</subject></subj-group><subj-group><subject>Ecology</subject><subj-group><subject>Biodiversity</subject></subj-group></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>A RESTful API for Accessing Microbial Community Data for MG-RAST</article-title>
+<alt-title alt-title-type="running-head">A RESTful API for Accessing Microbial Community Data for MG-RAST</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Wilke</surname><given-names>Andreas</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff2"><sup>2</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Bischof</surname><given-names>Jared</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff2"><sup>2</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Harrison</surname><given-names>Travis</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff2"><sup>2</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Brettin</surname><given-names>Tom</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>D'Souza</surname><given-names>Mark</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff2"><sup>2</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Gerlach</surname><given-names>Wolfgang</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff2"><sup>2</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Matthews</surname><given-names>Hunter</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff2"><sup>2</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Paczian</surname><given-names>Tobias</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff2"><sup>2</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Wilkening</surname><given-names>Jared</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff2"><sup>2</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Glass</surname><given-names>Elizabeth M.</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff2"><sup>2</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Desai</surname><given-names>Narayan</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff2"><sup>2</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Meyer</surname><given-names>Folker</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff2"><sup>2</sup></xref><xref ref-type="corresp" rid="cor1"><sup>*</sup></xref></contrib>
+</contrib-group>
+<aff id="aff1"><label>1</label><addr-line>Mathematics and Computer Science Division, Argonne National Laboratory, Lemont, Illinois, United States of America</addr-line></aff>
+<aff id="aff2"><label>2</label><addr-line>Computation Institute, University of Chicago, Chicago, Illinois, United States of America</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple"><name name-style="western"><surname>Gardner</surname><given-names>Paul P.</given-names></name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/></contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>University of Canterbury, New Zealand</addr-line></aff>
+<author-notes>
+<corresp id="cor1">* E-mail: <email xlink:type="simple">folker@anl.gov</email></corresp>
+<fn fn-type="conflict"><p>The authors have declared that no competing interests exist.</p></fn>
+<fn fn-type="con"><p>Conceived and designed the experiments: FM AW. Performed the experiments: MDS JW TB HM EMG ND. Contributed reagents/materials/analysis tools: AW TH TP JB WG. Wrote the paper: EMG FM AW.</p></fn>
+</author-notes>
+<pub-date pub-type="collection"><month>1</month><year>2015</year></pub-date>
+<pub-date pub-type="epub"><day>8</day><month>1</month><year>2015</year></pub-date>
+<volume>11</volume>
+<issue>1</issue>
+<elocation-id>e1004008</elocation-id>
+<history>
+<date date-type="received"><day>14</day><month>7</month><year>2014</year></date>
+<date date-type="accepted"><day>29</day><month>10</month><year>2014</year></date>
+</history>
+<permissions>
+<copyright-year>2015</copyright-year>
+<copyright-holder>Wilke et al</copyright-holder><license xlink:type="simple"><license-p>This is an open-access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license></permissions>
+<abstract>
+<p>Metagenomic sequencing has produced significant amounts of data in recent years. For example, as of summer 2013, MG-RAST has been used to annotate over 110,000 data sets totaling over 43 Terabases. With metagenomic sequencing finding even wider adoption in the scientific community, the existing web-based analysis tools and infrastructure in MG-RAST provide limited capability for data retrieval and analysis, such as comparative analysis between multiple data sets. Moreover, although the system provides many analysis tools, it is not comprehensive. By opening MG-RAST up via a web services API (application programmers interface) we have greatly expanded access to MG-RAST data, as well as provided a mechanism for the use of third-party analysis tools with MG-RAST data. This RESTful API makes all data and data objects created by the MG-RAST pipeline accessible as JSON objects. As part of the DOE Systems Biology Knowledgebase project (KBase, <ext-link ext-link-type="uri" xlink:href="http://kbase.us" xlink:type="simple">http://kbase.us</ext-link>) we have implemented a web services API for MG-RAST. This API complements the existing MG-RAST web interface and constitutes the basis of KBase's microbial community capabilities. In addition, the API exposes a comprehensive collection of data to programmers. This API, which uses a RESTful (Representational State Transfer) implementation, is compatible with most programming environments and should be easy to use for end users and third parties. It provides comprehensive access to sequence data, quality control results, annotations, and many other data types. Where feasible, we have used standards to expose data and metadata. Code examples are provided in a number of languages both to show the versatility of the API and to provide a starting point for users. We present an API that exposes the data in MG-RAST for consumption by our users, greatly enhancing the utility of the MG-RAST service.</p>
+</abstract>
+<abstract abstract-type="summary"><title>Author Summary</title>
+<p>Metagenomic sequencing has produced significant amounts of data in recent years. For example, as of summer 2013, the MG-RAST metagenomics analysis system has been used to annotate over 110,000 data sets totaling over 43 Terabases. With metagenomic sequencing finding even wider adoption in the scientific community, the existing web-based analysis tools and infrastructure in MG-RAST provide limited capability for comparative analysis (i.e., number of data sets). Moreover, although the system provides many analysis tools, it is not comprehensive. By opening MG-RAST up via a web services API (application programmers interface) we have enabled a programmatic way for others to use their bioinformatics tools with MG-RAST data.</p>
+</abstract>
+<funding-group><funding-statement>This work was supported in part by the Alfred P. Sloan Foundation grant 2010-12-01, NIH Human Microbiome Project UH3 DK083993 and U.S. Department of Energy, Office of Biological and Environmental Research under Contract DE-AC02-06CH11357 as part of the DOE Systems Biology Knowledgebase. Computing for this work was supported in part by the U.S. Department of Energy, Office of Science, Advanced Scientific Computing Research, under Contract DE-AC02-06CH11357. The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement></funding-group><counts><page-count count="8"/></counts><custom-meta-group><custom-meta id="data-availability" xlink:type="simple"><meta-name>Data Availability</meta-name><meta-value>The authors confirm that all data underlying the findings are fully available without restriction. Data can be accessed via the API: <ext-link ext-link-type="uri" xlink:href="http://api.metagenomics.anl.gov/api.html" xlink:type="simple">http://api.metagenomics.anl.gov/api.html</ext-link></meta-value></custom-meta></custom-meta-group></article-meta>
+</front>
+<body>
+<p>This is a <italic>PLOS Computational Biology</italic>  Software Article.</p>
+<sec id="s1">
+<title>Introduction</title>
+<p>Over 110,000 metagenomic data sets have been uploaded and analyzed in MG-RAST <xref ref-type="bibr" rid="pcbi.1004008-Meyer1">[1]</xref> since 2007, totaling over 43 Terabases (TBp). Data uploaded falls in three classes: shotgun metagenomic data, amplicon data, and, more recently, metatranscriptomic data. The MG-RAST pipeline normalizes all samples by applying a uniform pipeline with the appropriate quality control mechanisms for the various data sources. Uniform processing and robust sequence quality control enable comparison across experimental systems and, to some extent, across sequencing platforms. With the inclusion of standardized metadata <xref ref-type="bibr" rid="pcbi.1004008-Yilmaz1">[2]</xref> MG-RAST has enabled meta-analysis available through its web-based user interface at <ext-link ext-link-type="uri" xlink:href="http://metagenomics.anl.gov" xlink:type="simple">http://metagenomics.anl.gov</ext-link>. The user interface provides an easy-to-use way to upload data access data via download or interface, perform analyses, and create and share projects. As with most GUIs, however, there are limitations to what can be done. Examples of this include the number of samples processed in a single analysis, access to complete metadata, and easy access to raw data and quality metrics for each sample.</p>
+<p>As part of the DOE Systems Biology Knowledgebase project (KBase) we have implemented a web services application programmers interface (API) that exposes all data to (authenticated) programmers, enabling users to access available data and functionality through software applications. User access to MG-RAST's internal data structures is now possible.</p>
+</sec><sec id="s2">
+<title>Design and Implementation</title>
+<p>The MG-RAST API enables programmatic access to data and analyses in MG-RAST without requiring local installations. With the new API, users can authenticate against the service, submit their data, download results, and perform extensive comparisons of data sets. We chose to use the Representational State Transfer (REST) <xref ref-type="bibr" rid="pcbi.1004008-R1">[3]</xref> architecture. The REST approach allows download of data in ASCII format, which allows users to query the system via URLs and returns MG-RAST data objects in their native format (e.g. similarity tables or sequence files). For structured data (e.g. metadata or project information) the MG-RAST API uses JSON (Javascript Object Notation, a widely used standard) as its data format.</p>
+<p>Using this approach users can use simple tools to download data files to their machines or view the JSON in their web browsers using one of the many available JSON viewers. In addition, many programming languages have libraries for convenient HTTP interaction and JSON conversions.</p>
+<p>This article focuses on describing the architecture used - the underlying components of a web services architecture, their interactions, and the data used for their operation. REST has several key advantages for system scalability. Unlike more traditional remote procedure call methods, REST APIs make the semantics of requests visible at the HTTP protocol layer. This makes the system easier to scale, optimize, and harden through the use of HTTP level appliances providing security, caching, and proxy capabilities. REST APIs also have useful properties in terms of client adoption. They have a minimal number of prerequisites and any language with HTTP and JSON support or command line utilities, such as "curl", can easily integrate with the design.</p>
+<p>The MG-RAST RESTful API supports introspection and versioning. In order to access a specific version of the API, the version number must be added to the base URL. The base URL for all API calls is <ext-link ext-link-type="uri" xlink:href="http://api.metagenomics.anl.gov" xlink:type="simple">http://api.metagenomics.anl.gov</ext-link>. Calling the base URL of the API without any options returns a list and description of available resources; calling a resource without any options returns a description of the resource and its request options with example calls.</p>
+<p>The MG-RAST pipeline accepts sequences in a variety of formats from most DNA sequencing platforms and transforms all sequences using automated pipelines (see <xref ref-type="fig" rid="pcbi-1004008-g001">Figure 1</xref>). The pipeline performs quality control, protein prediction, clustering, and similarity-based annotation on nucleic acid sequence data sets.</p>
+<fig id="pcbi-1004008-g001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1004008.g001</object-id><label>Figure 1</label><caption>
+<title>Different stages of the MG-RAST automated pipeline.</title>
+<p>In the annotation mapping stage, functions and taxonomic units from the M5nr are mapped to the MD5 identifiers found in the similarity search.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004008.g001" position="float" xlink:type="simple"/></fig>
+<p>The analyses provided by MG-RAST rely, to some extent, on comparison with external protein databases, maintained as a single data product in the M5nr <xref ref-type="bibr" rid="pcbi.1004008-Wilke1">[4]</xref>, and enabling users to switch annotation sources and thus naming conventions used for annotation at analysis time. Using the M5nr database, MG-RAST provides links to all major sequence databases and, for example, allows linking from metagenomic sequences to complete genomes (see <xref ref-type="table" rid="pcbi-1004008-t001">Table 1</xref> for a list of available namespaces).</p>
+<table-wrap id="pcbi-1004008-t001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1004008.t001</object-id><label>Table 1</label><caption>
+<title>Current annotation sources available in MG-RAST via the M5nr mechanism.</title>
+</caption><alternatives><graphic id="pcbi-1004008-t001-1" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004008.t001" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1">Database</td>
+<td align="left" rowspan="1" colspan="1">Source</td>
+<td align="left" rowspan="1" colspan="1">Type</td>
+<td align="left" rowspan="1" colspan="1">#IDs</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">GenBank</td>
+<td align="left" rowspan="1" colspan="1">NCBI<ext-link ext-link-type="uri" xlink:href="http://www.ncbi.nlm.nih.gov/" xlink:type="simple">http://www.ncbi.nlm.nih.gov/</ext-link></td>
+<td align="left" rowspan="1" colspan="1">protein</td>
+<td align="left" rowspan="1" colspan="1">20,977,345</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">IMG</td>
+<td align="left" rowspan="1" colspan="1">JGI<ext-link ext-link-type="uri" xlink:href="http://img.jgi.doe.gov/" xlink:type="simple">http://img.jgi.doe.gov/</ext-link></td>
+<td align="left" rowspan="1" colspan="1">protein</td>
+<td align="left" rowspan="1" colspan="1">11,306,919</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">InterPro</td>
+<td align="left" rowspan="1" colspan="1">EBI<ext-link ext-link-type="uri" xlink:href="http://www.ebi.ac.uk/interpro" xlink:type="simple">http://www.ebi.ac.uk/interpro</ext-link></td>
+<td align="left" rowspan="1" colspan="1">protein</td>
+<td align="left" rowspan="1" colspan="1">22,666</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">KEGG</td>
+<td align="left" rowspan="1" colspan="1">KEGG<ext-link ext-link-type="uri" xlink:href="http://www.genome.jp/kegg" xlink:type="simple">http://www.genome.jp/kegg</ext-link></td>
+<td align="left" rowspan="1" colspan="1">protein</td>
+<td align="left" rowspan="1" colspan="1">6,071,792</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">PATRIC</td>
+<td align="left" rowspan="1" colspan="1">VBI<ext-link ext-link-type="uri" xlink:href="http://www.patricbrc.org/" xlink:type="simple">http://www.patricbrc.org/</ext-link></td>
+<td align="left" rowspan="1" colspan="1">protein</td>
+<td align="left" rowspan="1" colspan="1">13,612,238</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Phantome</td>
+<td align="left" rowspan="1" colspan="1">Phantome<ext-link ext-link-type="uri" xlink:href="http://www.phantome.org/" xlink:type="simple">http://www.phantome.org/</ext-link></td>
+<td align="left" rowspan="1" colspan="1">protein</td>
+<td align="left" rowspan="1" colspan="1">67,876</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">RefSeq</td>
+<td align="left" rowspan="1" colspan="1">NCBI<ext-link ext-link-type="uri" xlink:href="http://www.ncbi.nlm.nih.gov/" xlink:type="simple">http://www.ncbi.nlm.nih.gov/</ext-link></td>
+<td align="left" rowspan="1" colspan="1">protein</td>
+<td align="left" rowspan="1" colspan="1">14,875,735</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">SEED</td>
+<td align="left" rowspan="1" colspan="1">SEED<ext-link ext-link-type="uri" xlink:href="http://www.theseed.org/" xlink:type="simple">http://www.theseed.org/</ext-link></td>
+<td align="left" rowspan="1" colspan="1">protein</td>
+<td align="left" rowspan="1" colspan="1">15,822,645</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">SwissProt</td>
+<td align="left" rowspan="1" colspan="1">UniProt<ext-link ext-link-type="uri" xlink:href="http://www.uniprot.org/" xlink:type="simple">http://www.uniprot.org/</ext-link></td>
+<td align="left" rowspan="1" colspan="1">protein</td>
+<td align="left" rowspan="1" colspan="1">535,248</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">TrEMBL</td>
+<td align="left" rowspan="1" colspan="1">UniProt<ext-link ext-link-type="uri" xlink:href="http://www.uniprot.org/" xlink:type="simple">http://www.uniprot.org/</ext-link></td>
+<td align="left" rowspan="1" colspan="1">protein</td>
+<td align="left" rowspan="1" colspan="1">20,639,311</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">COG</td>
+<td align="left" rowspan="1" colspan="1">eggNOG<ext-link ext-link-type="uri" xlink:href="http://eggnog.embl.de/" xlink:type="simple">http://eggnog.embl.de/</ext-link></td>
+<td align="left" rowspan="1" colspan="1">functional hierarchy</td>
+<td align="left" rowspan="1" colspan="1">7,321</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">GO</td>
+<td align="left" rowspan="1" colspan="1">GO<ext-link ext-link-type="uri" xlink:href="http://www.geneontology.org/" xlink:type="simple">http://www.geneontology.org/</ext-link></td>
+<td align="left" rowspan="1" colspan="1">functional hierarchy</td>
+<td align="left" rowspan="1" colspan="1">19,849</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">KO</td>
+<td align="left" rowspan="1" colspan="1">KEGG<ext-link ext-link-type="uri" xlink:href="http://www.genome.jp/kegg" xlink:type="simple">http://www.genome.jp/kegg</ext-link></td>
+<td align="left" rowspan="1" colspan="1">functional hierarchy</td>
+<td align="left" rowspan="1" colspan="1">13,584</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">NOG</td>
+<td align="left" rowspan="1" colspan="1">eggNOG<ext-link ext-link-type="uri" xlink:href="http://eggnog.embl.de/" xlink:type="simple">http://eggnog.embl.de/</ext-link></td>
+<td align="left" rowspan="1" colspan="1">functional hierarchy</td>
+<td align="left" rowspan="1" colspan="1">37,941</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Subsystems</td>
+<td align="left" rowspan="1" colspan="1">SEED<ext-link ext-link-type="uri" xlink:href="http://www.theseed.org/" xlink:type="simple">http://www.theseed.org/</ext-link></td>
+<td align="left" rowspan="1" colspan="1">functional hierarchy</td>
+<td align="left" rowspan="1" colspan="1">13,912</td>
+</tr>
+</tbody>
+</table>
+</alternatives></table-wrap>
+<p>Users are provided access to these MG-RAST resources as well as to analysis results being produced (public data and the users' own data). <xref ref-type="table" rid="pcbi-1004008-t002">Table 2</xref> lists the high-level objects that can be accessed; in addition, users can upload sequence and metadata into their own private MG-RAST staging area. Some objects (e.g., metagenome, metadata, project, M5nr database) will seem intuitive, while others are different from what most users would expect (e.g., download, annotation, matrix). We have designed these additional objects to allow rapid access to sets of sequences or analysis results related for a data set (download), annotated sequences or BLAT results for a data set (annotation), and abundance information for many data sets (matrix).</p>
+<table-wrap id="pcbi-1004008-t002" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1004008.t002</object-id><label>Table 2</label><caption>
+<title>Top-level resources available through the MG-RAST-API.</title>
+</caption><alternatives><graphic id="pcbi-1004008-t002-2" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004008.t002" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1">Resource/Object</td>
+<td align="left" rowspan="1" colspan="1">Description</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">annotation</td>
+<td align="left" rowspan="1" colspan="1">Taxonomic and functional annotations made by comparison with the M5nr database.</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">compute</td>
+<td align="left" rowspan="1" colspan="1">Resource to compute PCoA, heatmap, and normalization for a set of input metagenomes.</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">download</td>
+<td align="left" rowspan="1" colspan="1">Download results of the MG-RAST pipeline.</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">inbox</td>
+<td align="left" rowspan="1" colspan="1">Upload and listing of data in the staging area prior to pipeline execution.</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">library</td>
+<td align="left" rowspan="1" colspan="1">Library information for uploaded metagenome provided by the user.</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">matrix</td>
+<td align="left" rowspan="1" colspan="1">Abundance profiles in BIOM (5) format for a list of metagenomes.</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">M5nr</td>
+<td align="left" rowspan="1" colspan="1">Access M5 nonredundant protein database used for sequence annotation.</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">metadata</td>
+<td align="left" rowspan="1" colspan="1">Creation, export, and validation of metadata templates and spreadsheets.</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">metagenome</td>
+<td align="left" rowspan="1" colspan="1">Container for sample, library, project, and precomputed data for an uploaded metagenomic sequence file.</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">project</td>
+<td align="left" rowspan="1" colspan="1">Project summary for metagenome provided by user</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">sample</td>
+<td align="left" rowspan="1" colspan="1">Sample information provided by user</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">search</td>
+<td align="left" rowspan="1" colspan="1">Search MG-RAST by MG-ID, metadata, function, or taxonomy; or implement a more complex search.</td>
+</tr>
+</tbody>
+</table>
+</alternatives></table-wrap>
+<p>Most of the API calls are simply URLs, which can be entered in the address bar of a web browser to perform the download through the browser. These URLs can also be used with a command line tool like curl, in programing-language-specific libraries, or in command line scripts. The examples in the Results section illustrate the use of each of these methods. The example scripts are available on in the supplementary materials and on GitHub (<ext-link ext-link-type="uri" xlink:href="https://github.com/MG-RAST/MG-RAST-Tools" xlink:type="simple">https://github.com/MG-RAST/MG-RAST-Tools</ext-link>) along with other useful illustrative scripts.</p>
+</sec><sec id="s3">
+<title>Results</title>
+<p>The MG-RAST API provides unprecedented access to MG-RAST data. The system provides index- driven access to data subsets using the following data types as indices into the data: functions, functional hierarchy data, and taxonomic data. Whenever possible we have employed standards to expose data and metadata, such as the BIOM <xref ref-type="bibr" rid="pcbi.1004008-McDonald1">[5]</xref> standard for encoding abundance profiles.</p>
+<p>Next, we demonstrate a number of straightforward use cases for the more traditional objects.</p>
+<sec id="s3a">
+<title>Annotation</title>
+<p>MG-RAST enables users to extract data based on functional or taxonomic annotations. The necessary functionality is provided by two API calls. The first API (<xref ref-type="sec" rid="pcbi-1004008-box001">Box 1</xref>) call lists all metagenomes with certain metadata fields and functional contents, the second API call extracts all requested reads from a given metagenome. The following example script exploits these two API calls to produce a file with sequences annotated as proteases, using SEED annotations from all samples from marine environments. The reads are labeled with the originating data set and the read identifier, as well as the underlying similarity result.</p>
+<boxed-text id="pcbi-1004008-box001" position="float"><sec id="s3a1a">
+<title>Box 1. Example API Call for Search and Data Retrieval</title>
+<p><monospace>API base URL: </monospace><ext-link ext-link-type="uri" xlink:href="http://api.metagenomics.anl.gov" xlink:type="simple">http://api.metagenomics.anl.gov</ext-link></p>
+<p><monospace>API version: 1</monospace></p>
+<p><monospace>Resources: metagenome and annotation</monospace></p>
+<p><monospace>Example API calls:</monospace></p>
+<p><monospace> 1. Find all marine metagenomes with reads annotated as protease: </monospace><ext-link ext-link-type="uri" xlink:href="http://api.metagenomics.anl.gov/1/metagenome?biome=marine&amp;function=protease" xlink:type="simple">http://api.metagenomics.anl.gov/1/metagenome?biome=marine&amp;function=protease</ext-link></p>
+<p><monospace> 2. Retrieve all reads from a marine metagenome (here mgm4440036.3) annotated as protease in SEED Subsystems: </monospace><ext-link ext-link-type="uri" xlink:href="http://api.metagenomics.anl.gov/1/annotation/sequence/mgm4440036.3?type=function&amp;filter=protease&amp;source=Subsystems" xlink:type="simple">http://api.metagenomics.anl.gov/1/annotation/sequence/mgm4440036.3?type=function&amp;filter=protease&amp;source=Subsystems</ext-link></p>
+<p><monospace>Example command line script combining the two calls: mg-extract-sequences.py —function "protease" —biome "marine" | head -n 6</monospace></p>
+<p><monospace>Example output<sup>2</sup>:</monospace></p>
+<p><monospace>sequence id m5nr id (md5sum) semicolon separated list of annotations dna sequence</monospace></p>
+<p><monospace>mgm4440036.3|5079086 02f5a5ecb261e0d3684bbfa2e4e8eb2f ATP-dependent hsl protease ATP-binding subunit HslU <named-content content-type="gene" xlink:type="simple">AGAAGACTTTCTAGATTAGCTGAGGCACCTTTCATAAAAGTTGAAGCAACAAGATTTACTGAGGTTGGGTACGTAGGTAGAGATGTTGAACAAATAGTGAGAGATTTG</named-content></monospace></p>
+<p><monospace>mgm4440036.3|5096297 06dd4b98b30c90b9d057ae77500e7a37 ATP-dependent hsl protease ATP-binding subunit HslU <named-content content-type="gene" xlink:type="simple">ATTTTCAACTGATGCATTTACTTCTGCAGATATTTTTGCAAGCATCTCAATACCGTCGTCGGTAAACTCCAATGCTACGTTTTCTGTGTTTAGCAAAGCTTTA</named-content></monospace></p>
+<p><monospace>mgm4440036.3|5111934 06dd4b98b30c90b9d057ae77500e7a37 ATP-dependent hsl protease ATP-binding subunit HslU <named-content content-type="gene" xlink:type="simple">ATTTCAACTGATGCATTTACTTCTGCAGATATTTTTGCAAGCATCTCAATACCGTCGTCGGTAAACTCCAATGCTACGTTTTCTGTGTTTAAGCAAAGCTTTA</named-content></monospace></p>
+</sec></boxed-text></sec><sec id="s3b">
+<title>Download</title>
+<p>Download allows users to extract analysis result files from MG-RAST (<xref ref-type="sec" rid="pcbi-1004008-box002">Box 2</xref>). The following example below shows how to download BLAT <xref ref-type="bibr" rid="pcbi.1004008-Kent1">[6]</xref> results for a given metagenome.</p>
+<boxed-text id="pcbi-1004008-box002" position="float"><sec id="s3b1a">
+<title>Box 2. Example API Call for Downloading Similarities File</title>
+<p><monospace>API base URL: </monospace><ext-link ext-link-type="uri" xlink:href="http://api.metagenomics.anl.gov" xlink:type="simple">http://api.metagenomics.anl.gov</ext-link></p>
+<p><monospace>API version: 1</monospace></p>
+<p><monospace>Resources: download</monospace></p>
+<p><monospace>Example command line call using curl to download the similarities file for metagenome mgm4447943.3:</monospace></p>
+<p><monospace>curl "</monospace><ext-link ext-link-type="uri" xlink:href="http://api.metagenomics.anl.gov/1/download/mgm4447943.3?file=650.1" xlink:type="simple">http://api.metagenomics.anl.gov/1/download/mgm4447943.3?file=650.1</ext-link><monospace>"&gt; mgm4447943.3.sims.gz</monospace></p>
+<p><monospace>Example output:</monospace></p>
+<p><monospace>GF8803K01A004I_1_134_- 3a215838fa48c7b3d66bc0f406273927 93.33 30 2 0 10 39 191 220 2.6e-09 60.0</monospace></p>
+<p><monospace>GF8803K01A004I_1_134_- 1233890f05d5697e10a58d1dcfdd8c5c 86.67 30 4 0 10 39 191 220 1.7e-08 57.0</monospace></p>
+<p><monospace>GF8803K01A004I_1_134_- 1f79a21185584c67236c773221a1783f 86.67 30 4 0 10 39 191 220 1.7e-08 57.0</monospace></p>
+<p><monospace>GF8803K01A004I_1_134_- 1a8348be8fb06a58583961d5988da4b6 86.67 30 4 0 10 39 178 207 3.9e-08 56.0</monospace></p>
+<p><monospace>GF8803K01A004I_1_134_- ed70df8837c6379d80a4b714d6be3cbf 83.87 31 5 0 10 40 192 222 5.1e-08 56.0</monospace></p>
+<p><monospace>GF8803K01A004I_1_134_- f22757e1b3c4bd87799cc53659a9337c 86.67 30 4 0 10 39 192 221 3.9e-08 56.0</monospace></p>
+<p><monospace>GF8803K01A004I_1_134_- 119ae93780cf45093da9718a3a89c77e 86.67 30 4 0 10 39 191 220 8.8e-08 55.0</monospace></p>
+<p><monospace>GF8803K01A004I_1_134_- bec613da1370240331eed0c3a12033f7 86.67 30 4 0 10 39 192 221 6.7e-08 55.0</monospace></p>
+</sec></boxed-text></sec><sec id="s3c">
+<title>Inbox</title>
+<p>The inbox is a staging area where users can upload metadata and sequence files and manage their data. This requires a MG-RAST account and user authentication (<xref ref-type="sec" rid="pcbi-1004008-box003">Box 3</xref>). An authentication token can be created through the user preferences in MG-RAST.</p>
+<boxed-text id="pcbi-1004008-box003" position="float"><sec id="s3c1a">
+<title>Box 3. Example API Call to Upload the File 'sequences.fastq' to User Inbox, auth Is Required, the <italic>auth_key</italic> Can Be Obtained through User Preferences in MG-RAST</title>
+<p><monospace>curl -X POST -H "auth: auth_key" -F "upload = @sequences.fastq" "</monospace><ext-link ext-link-type="uri" xlink:href="http://api.metagenomics.anl.gov/1/inbox" xlink:type="simple">http://api.metagenomics.anl.gov/1/inbox</ext-link><monospace>"</monospace></p>
+</sec></boxed-text></sec><sec id="s3d">
+<title>Matrix</title>
+<p>Users can retrieve abundance profiles (<xref ref-type="sec" rid="pcbi-1004008-box004">Box 4</xref>) based on functional or taxonomic profiles. Default output format is BIOM.</p>
+<boxed-text id="pcbi-1004008-box004" position="float"><sec id="s3d1a">
+<title>Box 4. Example API Call for Retrieving Taxonomic Abundances for SEED on Family Level for 2 Metagenomes</title><p><ext-link ext-link-type="uri" xlink:href="http://api.metagenomics.anl.gov/matrix/organism?group_level=family&amp;source=SEED&amp;evalue=5&amp;id=mgm4440442.5&amp;id=mgm4440026.3" xlink:type="simple">http://api.metagenomics.anl.gov/matrix/organism?group_level=family&amp;source=SEED&amp;evalue=5&amp;id=mgm4440442.5&amp;id=mgm4440026.3</ext-link></p>
+</sec></boxed-text></sec><sec id="s3e">
+<title>M5nr</title>
+<p>As mentioned earlier, we use a M5-based nonredundant database to perform annotations. Here is an example of extracting the UniProt database entry record for a given sequence in a metagenome (<xref ref-type="sec" rid="pcbi-1004008-box005">Box 5</xref>). Using the M5nr, we identify the UniProt database record most similar to the sequence of a given feature.</p>
+<boxed-text id="pcbi-1004008-box005" position="float"><sec id="s3e1a">
+<title>Box 5. Example API Calls to Retrieve a Uniprot Entry Using the M5nr and Uniprot API</title>
+<list list-type="order"><list-item>
+<p><monospace>Retrieve the UniProt ID for a given sequence identifier: </monospace><ext-link ext-link-type="uri" xlink:href="http://api.metagenomics.anl.gov/1/m5nr/md5/ffc62262a18b38671c3e337150ef535f?source=SwissProt" xlink:type="simple">http://api.metagenomics.anl.gov/1/m5nr/md5/ffc62262a18b38671c3e337150ef535f?source=SwissProt</ext-link></p>
+</list-item><list-item>
+<p><monospace>Use the UniProt API to access the database record: </monospace><ext-link ext-link-type="uri" xlink:href="http://www.uniprot.org/uniprot/B8DWI2.txt" xlink:type="simple">http://www.uniprot.org/uniprot/B8DWI2.txt</ext-link></p>
+</list-item></list>
+<p><monospace>Example command line call:</monospace></p>
+<p><monospace>mg-retrieve-uniprot.py —md5 ffc62262a18b38671c3e337150ef535f —source SwissProt</monospace></p>
+<p><monospace>Example output:</monospace></p>
+<p><monospace>ID DAPA_BIFA0 Reviewed; 303 AA.</monospace></p>
+<p><monospace>AC B8DWI2;</monospace></p>
+<p><monospace>DT 28-JUL-2009, integrated into UniProtKB/Swiss-Prot.</monospace></p>
+<p><monospace>DT 03-MAR-2009, sequence version 1.</monospace></p>
+<p><monospace>DT 16-OCT-2013, entry version 34.</monospace></p>
+<p><monospace>DE RecName: Full = 4-hydroxy-tetrahydrodipicolinate synthase;</monospace></p>
+<p><monospace>DE Short = HTPA synthase;</monospace></p>
+<p><monospace>DE EC = 4.3.3.7;</monospace></p>
+<p><monospace>GN Name = dapA; OrderedLocusNames = BLA_0534;</monospace></p>
+<p><monospace>OS Bifidobacterium animalis subsp. lactis (strain AD011).</monospace></p>
+</sec></boxed-text><sec id="s3e2">
+<title>Metagenome</title>
+<p>Users can access a metagenome by its ID, such as mgm4440026.3, from the command line as shown in <xref ref-type="sec" rid="pcbi-1004008-box006">Box 6</xref>.</p>
+<boxed-text id="pcbi-1004008-box006" position="float"><sec id="s3e2a">
+<title>Box 6. Example API Line Call for the Metadata for a Metagenome</title>
+<p><monospace>curl "</monospace><ext-link ext-link-type="uri" xlink:href="http://api.metagenomics.anl.gov/1/metagenome/mgm4440026.3" xlink:type="simple">http://api.metagenomics.anl.gov/1/metagenome/mgm4440026.3</ext-link><monospace>" | json_xs</monospace></p>
+<p><monospace>{</monospace></p>
+<p><monospace>"version": 1,</monospace></p>
+<p><monospace>"project": [</monospace></p>
+<p><monospace>"mgp31",</monospace></p>
+<p><monospace>"</monospace><ext-link ext-link-type="uri" xlink:href="http://api.metagenomics.anl.gov/1/project/mgp31" xlink:type="simple">http://api.metagenomics.anl.gov/1/project/mgp31</ext-link><monospace>"</monospace></p>
+<p><monospace>],</monospace></p>
+<p><monospace>"status": "public",</monospace></p>
+<p><monospace>"name": "CFLungPat001Rep1SDVir20060505",</monospace></p>
+<p><monospace>"sequence_type": "WGS",</monospace></p>
+<p><monospace>"library": [</monospace></p>
+<p><monospace>"mgl43388",</monospace></p>
+<p><monospace>"</monospace><ext-link ext-link-type="uri" xlink:href="http://api.metagenomics.anl.gov/1/library/mgl43388" xlink:type="simple">http://api.metagenomics.anl.gov/1/library/mgl43388</ext-link><monospace>"</monospace></p>
+<p><monospace>],</monospace></p>
+<p><monospace>"created": "2007-04-27 14:47:11",</monospace></p>
+<p><monospace>"url": "</monospace><ext-link ext-link-type="uri" xlink:href="http://api.metagenomics.anl.gov/1/metagenome/mgm4440026.3?verbosity=minimal" xlink:type="simple">http://api.metagenomics.anl.gov/1/metagenome/mgm4440026.3?verbosity=minimal</ext-link><monospace>",</monospace></p>
+<p><monospace>"id": "mgm4440026.3",</monospace></p>
+<p><monospace>"sample": [</monospace></p>
+<p><monospace>"mgs12326",</monospace></p>
+<p><monospace>"</monospace><ext-link ext-link-type="uri" xlink:href="http://api.metagenomics.anl.gov/1/sample/mgs12326" xlink:type="simple">http://api.metagenomics.anl.gov/1/sample/mgs12326</ext-link><monospace>"</monospace></p>
+<p><monospace>]</monospace></p>
+<p><monospace>}</monospace></p>
+</sec></boxed-text>
+<p>MG-RAST enables users to directly retrieve sample, library, and project information, allowing different granularity of the data being retrieved.</p>
+</sec></sec><sec id="s3f">
+<title>Project</title>
+<p>Users can retrieve project information (<xref ref-type="sec" rid="pcbi-1004008-box007">Box 7</xref>) by using project ID and output as a JSON formatted file.</p>
+<boxed-text id="pcbi-1004008-box007" position="float"><sec id="s3f1a">
+<title>Box 7. Example of Retrieving Project Information</title>
+<p><monospace>curl "</monospace><ext-link ext-link-type="uri" xlink:href="http://api.metagenomics.anl.gov/project/mgp31?verbosity=full" xlink:type="simple">http://api.metagenomics.anl.gov/project/mgp31?verbosity=full</ext-link><monospace>" | json_xs</monospace></p>
+</sec></boxed-text></sec><sec id="s3g">
+<title>Sample</title>
+<p>Available information about individual samples, including IDs and metadata, can be accessed as shown in <xref ref-type="sec" rid="pcbi-1004008-box008">Box 8</xref>.</p>
+<boxed-text id="pcbi-1004008-box008" position="float"><sec id="s3g1a">
+<title>Box 8. Example API Call to Retrieve Sample Information from a Metagenome</title>
+<p><ext-link ext-link-type="uri" xlink:href="http://api.metagenomics.anl.gov/1/sample/mgs12326?verbosity=full" xlink:type="simple">http://api.metagenomics.anl.gov/1/sample/mgs12326?verbosity=full</ext-link></p>
+</sec></boxed-text></sec><sec id="s3h">
+<title>Search</title>
+<p>Using the search resource, users can search for data they want to retrieve. Queries can be made for, metadata, function, and taxonomy (<xref ref-type="sec" rid="pcbi-1004008-box009">Box 9</xref>). Complex queries are supported.</p>
+<boxed-text id="pcbi-1004008-box009" position="float"><sec id="s3h1a">
+<title>Box 9. Complex Search Using Function, Metadata, and Taxonomy</title>
+<p><monospace>Example API call:</monospace></p>
+<p><ext-link ext-link-type="uri" xlink:href="http://api.metagenomics.anl.gov/metagenome?function=dnaA&amp;organism=coli&amp;biome=marine&amp;match=all&amp;order=created" xlink:type="simple">http://api.metagenomics.anl.gov/metagenome?function=dnaA&amp;organism=coli&amp;biome=marine&amp;match=all&amp;order=created</ext-link></p>
+</sec></boxed-text></sec><sec id="s3i">
+<title>Access control allows access to private and public data</title>
+<p>In MG-RAST, all data is initially private. Users who submit data can decide to share that data with specific users (by typing in an email address for the users) or make the data publicly available. Both actions require the provision of standard-compliant minimal metadata by the submitting user. The API provides access to both public and nonpublic data, requiring users to submit authentication tokens for access to private data.</p>
+<p>Authentication tokens can be obtained via the MG-RAST web interface through the user preferences page and are valid for up to 14 days (<xref ref-type="sec" rid="pcbi-1004008-box010">Box 10</xref>). The token serves as login and password for the API. Below is an example of how to use the tokens in three different scenarios. Users can invalidate a token at any time by generating a new one. Note that accessing a remote site through an XMHttpRequest requires support for Cross-Origin Resource Sharing (CORS) compliance and Preflight Request. CORS requires the remote site to accept the local site's origin (AccessControl AllowOrigin). For Preflight Requests, if an HTTP request from a browser adds a custom header to the request (in the example “AUTH”), the browser first makes an OPTIONS request to the largest server, inquiring whether AccessControlAllowHeaders allows this header and whether AccessControlAllowMethod allows the request method (GET/POST).</p>
+<boxed-text id="pcbi-1004008-box010" position="float"><sec id="s3i1a">
+<title>Box 10. Example Authentication Script</title>
+<p>PERL</p>
+<p><monospace>access_control.pl</monospace></p>
+<p><monospace># get a user agent</monospace></p>
+<p><monospace>my $ua  =  LWP::UserAgent-&gt;new;</monospace></p>
+<p><monospace># set the authentication header</monospace></p>
+<p><monospace>$ua-&gt;default_header('AUTH'  = &gt; $auth_token);</monospace></p>
+<p><monospace># retrieve data requiring authentication</monospace></p>
+<p><monospace>print $ua-&gt;get("</monospace><ext-link ext-link-type="uri" xlink:href="http://api.metagenomics.anl.gov/metagenome/mgm12345.3" xlink:type="simple">http://api.metagenomics.anl.gov/metagenome/mgm12345.3</ext-link><monospace>")-&gt;content;</monospace></p>
+<p>curl</p>
+<p><monospace>curl -s -X GET -H "AUTH: myAuthTokenHere" "</monospace><ext-link ext-link-type="uri" xlink:href="http://api.metagenomics.anl.gov/metagenome/mgm12345.3" xlink:type="simple">http://api.metagenomics.anl.gov/metagenome/mgm12345.3</ext-link><monospace>"</monospace></p>
+<p>javascript</p>
+<p><monospace>var xhr  =  new XMLHttpRequest();</monospace></p>
+<p><monospace>xhr.open('GET',"</monospace><ext-link ext-link-type="uri" xlink:href="http://api.metagenomics.anl.gov/metagenome/mgm12345.3" xlink:type="simple">http://api.metagenomics.anl.gov/metagenome/mgm12345.3</ext-link><monospace>");</monospace></p>
+<p><monospace>xhr.setRequestHeader('AUTH', auth_token);</monospace></p>
+<p><monospace>xhr.onload  =  function() {var metagenome  =  JSON.parse(xhr.responseText);}</monospace></p>
+</sec></boxed-text></sec></sec><sec id="s4">
+<title>Availability and Future Directions</title>
+<p>RESTful web services provide access to the data products in MG-RAST. While MG-RAST is open source (GitHub), third parties who are interested in the comparative analysis provided by MG-RAST must either download and install all analysis products or (worse) repeat the analysis. In a time of rapidly decreasing data generation cost <xref ref-type="bibr" rid="pcbi.1004008-NHGRI1">[7]</xref> and rising data analysis cost <xref ref-type="bibr" rid="pcbi.1004008-Wilkening1">[8]</xref>, both reanalysis and local transfer of data products do not appear to be viable options, while the RESTful web services do.</p>
+<p>We anticipate that with the provision of these comprehensive web services, a significant number of users will create their own of data pipelines feeding into or reading from MG-RAST.</p>
+<p>While the MG-RAST pipeline must be optimized with each release in order to keep pace with the growing body of sequence data (within one major release, we do not alter the pipeline other than bug fixes), many uses cases are conceivable that apply more computationally expensive approaches. For example, we may want to determine protein subfamily assignments using more expensive algorithms such as Pfam <xref ref-type="bibr" rid="pcbi.1004008-Coggill1">[9]</xref>, InterPro <xref ref-type="bibr" rid="pcbi.1004008-Hunter1">[10]</xref>, or FAT-CAT <xref ref-type="bibr" rid="pcbi.1004008-Afrasiabi1">[11]</xref>) or other approaches for mapping metagenomic protein fragments to (precomputed) trees. We note that the relatively noisy nature of most shotgun metagenomic data (with or without assembly) casts some doubt over many sequence analyses that attempt to extract weak signals from the sequences. The rare biosphere debate <xref ref-type="bibr" rid="pcbi.1004008-Reeder1">[12]</xref> has demonstrated that without the use of denoising techniques or accounting for the noise in the sequence data, diversity estimates for amplicon samples will be inflated. The data-set-wide quality estimates computed by MG-RAST <xref ref-type="bibr" rid="pcbi.1004008-Keegan1">[13]</xref> allow users to exclude certain data sets in their (meta)analyses.</p>
+<p>Although using a web services interface lightens the installation burden, having to transfer the data across the Internet creates significant overhead, which presents a drawback. In analyzing usage patterns, however, we have found that typically only a small subset of the computed data for each data set is actually accessed by most users. The organization of the data and the data products reflects that pattern. The abundance profiles summarize abundance of taxa, functions (in various namespaces), and gene (protein) functional hierarchies while retaining the ability for the user to set cutoffs (e-value, alignment length, and percent identity). This structure enables decision making in the presentation layer by users or providers of web interfaces. Together with index-supported subset retrieval, this provides the tools needed by most users to perform their comparisons and drill down to their area of choice.</p>
+<p>Thus, from an end-user perspective, the overhead caused by the Internet transfer is more than compensated by the "filtering" that can be performed by MG-RAST. Frequently, this makes the upload of the metagenomic sequence data the single biggest data transfer, since the downloads for the abundance profile are significantly smaller than the uploaded sequences. This is an interesting observation since the various data analysis steps add to the volume of the data: typically the on-disk footprint is about 10 times the size of the uploaded sequence data.</p>
+<p>We have chosen JSON <xref ref-type="bibr" rid="pcbi.1004008-JSON1">[14]</xref> for encoding for the data because it is the current default solution for web service interfaces. This differs from the API to the SEED genome servers <xref ref-type="bibr" rid="pcbi.1004008-Disz1">[15]</xref>, which implements a Remote Procedure Call (RPC)-style interface. The style we chose, however, is a better fit for the data and volumes being handled by MG-RAST. In addition, it allows caching and proxying, providing additional flexibility for future solutions implemented on top of the MG-RAST API.</p>
+<p>The RESTful API adds significant value by enabling user-generated code to access MG-RAST analyses. We have provided, in this article and on the API home page, multiple examples that show the new functionality that we have added to the existing MG-RAST service. In addition, we are creating a repository of user-contributed scripts that utilize MG-RAST as part of the contrib branch in the MG-RAST GitHub repository (<ext-link ext-link-type="uri" xlink:href="https://github.com/MG-RAST/MG-RAST-Tools" xlink:type="simple">https://github.com/MG-RAST/MG-RAST-Tools</ext-link>).</p>
+<p>As with the companion API for the SEED-based RAST and SEED web sites, we expect a significant number of users to access the growing number of metagenomes and analysis results stored in MG-RAST using the new MG-RAST API.</p>
+<p>Finally, the DOE Systems Biology Knowledgebase (KBase; <ext-link ext-link-type="uri" xlink:href="http://kbase.us" xlink:type="simple">http://kbase.us</ext-link>) has adopted the MG- RAST pipeline as its first automated analysis workflow for microbial community data. A version of this API is available to access microbial community data from within KBase.</p>
+<sec id="s4a">
+<title>Availability and requirements</title>
+<list list-type="bullet"><list-item>
+<p><bold>Project name</bold>: MG-RAST REST API</p>
+</list-item><list-item>
+<p><bold>Project home page</bold>: <ext-link ext-link-type="uri" xlink:href="http://api.metagenomics.anl.gov/api.html" xlink:type="simple">http://api.metagenomics.anl.gov/api.html</ext-link></p>
+</list-item><list-item>
+<p><bold>Project source</bold>: <ext-link ext-link-type="uri" xlink:href="https://github.com/MG-RAST/MG-RASThttps://github.com/MG-RAST/MG-RAST" xlink:type="simple">https://github.com/MG-RAST/MG-RASThttps://github.com/MG-RAST/MG-RAST</ext-link> <ext-link ext-link-type="uri" xlink:href="https://github.com/MG-RAST/MG-RAST-Tools" xlink:type="simple">https://github.com/MG-RAST/MG-RAST-Tools</ext-link></p>
+</list-item><list-item>
+<p><bold>Open Source License</bold>: MG-RAST is made available under a BSD type LICENSE.</p>
+</list-item><list-item>
+<p><bold>Operating system(s)</bold>: Platform independent</p>
+</list-item><list-item>
+<p><bold>Programming language</bold>: Language independent</p>
+</list-item><list-item>
+<p><bold>Other requirements</bold>: none</p>
+</list-item><list-item>
+<p><bold>Any restrictions to use by non-academics</bold>: no limitations</p>
+</list-item></list>
+</sec></sec><sec id="s5">
+<title>Supporting Information</title>
+<supplementary-material id="pcbi.1004008.s001" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" xlink:href="info:doi/10.1371/journal.pcbi.1004008.s001" position="float" xlink:type="simple"><label>S1 Example</label><caption>
+<p>A full-length example and abbreviated output for searching MG-RAST for function and sequence.</p>
+<p>(DOCX)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1004008.s002" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" xlink:href="info:doi/10.1371/journal.pcbi.1004008.s002" position="float" xlink:type="simple"><label>S2 Example</label><caption>
+<p>A full-length example and abbreviated output for downloading data.</p>
+<p>(DOCX)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1004008.s003" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" xlink:href="info:doi/10.1371/journal.pcbi.1004008.s003" position="float" xlink:type="simple"><label>S3 Example</label><caption>
+<p>A full-length example and abbreviated output for data in the staging area prior to pipeline execution (Inbox).</p>
+<p>(DOCX)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1004008.s004" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" xlink:href="info:doi/10.1371/journal.pcbi.1004008.s004" position="float" xlink:type="simple"><label>S4 Example</label><caption>
+<p>A full-length example and abbreviated output for retrieving abundance profiles in BIOM format for a list of metagenomes (Matrix).</p>
+<p>(DOCX)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1004008.s005" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" xlink:href="info:doi/10.1371/journal.pcbi.1004008.s005" position="float" xlink:type="simple"><label>S5 Example</label><caption>
+<p>A full-length example and abbreviated output for etrieve M5nr annotation by source.</p>
+<p>(DOCX)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1004008.s006" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" xlink:href="info:doi/10.1371/journal.pcbi.1004008.s006" position="float" xlink:type="simple"><label>S6 Example</label><caption>
+<p>A full-length example and abbreviated output for retrieving sample information by metagenome ID.</p>
+<p>(DOCX)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1004008.s007" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" xlink:href="info:doi/10.1371/journal.pcbi.1004008.s007" position="float" xlink:type="simple"><label>S7 Example</label><caption>
+<p>A full-length example and abbreviated output for retrieving associated sample information by project ID.</p>
+<p>(DOCX)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1004008.s008" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" xlink:href="info:doi/10.1371/journal.pcbi.1004008.s008" position="float" xlink:type="simple"><label>S8 Example</label><caption>
+<p>A full-length example and abbreviated output for retrieving sample information.</p>
+<p>(DOCX)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1004008.s009" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" xlink:href="info:doi/10.1371/journal.pcbi.1004008.s009" position="float" xlink:type="simple"><label>S9 Example</label><caption>
+<p>A full-length example and abbreviated output for searching by metagenome ID.</p>
+<p>(DOCX)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1004008.s010" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" xlink:href="info:doi/10.1371/journal.pcbi.1004008.s010" position="float" xlink:type="simple"><label>S10 Example</label><caption>
+<p>A full-length example and abbreviated output for searching metagenomes by metadata.</p>
+<p>(DOCX)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1004008.s011" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" xlink:href="info:doi/10.1371/journal.pcbi.1004008.s011" position="float" xlink:type="simple"><label>S11 Example</label><caption>
+<p>A full-length example and abbreviated output for searching by function.</p>
+<p>(DOCX)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1004008.s012" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" xlink:href="info:doi/10.1371/journal.pcbi.1004008.s012" position="float" xlink:type="simple"><label>S12 Example</label><caption>
+<p>A full-length example and abbreviated output for a complex search using function, metadata, and taxonomy.</p>
+<p>(DOCX)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1004008.s013" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" xlink:href="info:doi/10.1371/journal.pcbi.1004008.s013" position="float" xlink:type="simple"><label>S13 Example</label><caption>
+<p>Access control.</p>
+<p>(DOCX)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1004008.s014" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" xlink:href="info:doi/10.1371/journal.pcbi.1004008.s014" position="float" xlink:type="simple"><label>S14 Example</label><caption>
+<p>An example of metagenome as JSON object.</p>
+<p>(DOCX)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1004008.s015" mimetype="text/x-python" xlink:href="info:doi/10.1371/journal.pcbi.1004008.s015" position="float" xlink:type="simple"><label>S1 Script</label><caption>
+<p>An example python script that will retrieve annotated sequences from metagenomes filtered by function name and metadata.</p>
+<p>(PY)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1004008.s016" mimetype="text/x-python" xlink:href="info:doi/10.1371/journal.pcbi.1004008.s016" position="float" xlink:type="simple"><label>S2 Script</label><caption>
+<p>An example python script that will retrieve the Uniprot result for a sequence md5 or accession id from MG-RAST.</p>
+<p>(PY)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1004008.s017" mimetype="text/plain" xlink:href="info:doi/10.1371/journal.pcbi.1004008.s017" position="float" xlink:type="simple"><label>S1 File</label><caption>
+<p>Instructions on how to invoke the example python scripts.</p>
+<p>(TXT)</p>
+</caption></supplementary-material></sec></body>
+<back>
+<ack>
+<p>The authors thank Dan Braithwaite, Kevin Keegan, Will Trimble, Adina Chuang-Howe, and Wei Tang for testing the API and providing feedback.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1004008-Meyer1"><label>1</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Meyer</surname><given-names>F</given-names></name>, <name name-style="western"><surname>Paarmann</surname><given-names>D</given-names></name>, <name name-style="western"><surname>D'Souza</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Olson</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Glass</surname><given-names>EM</given-names></name>, <etal>et al</etal>. (<year>2008</year>) <article-title>The metagenomics RAST server - a public resource for the automatic phylogenetic and functional analysis of metagenomes</article-title>. <source>BMC Bioinformatics</source> <volume>9</volume>: <fpage>386</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004008-Yilmaz1"><label>2</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yilmaz</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Kottmann</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Field</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Knight</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Cole</surname><given-names>JR</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>Minimum information about a marker gene sequence (MIMARKS) and minimum information about any (x) sequence (MIxS) specifications</article-title>. <source>Nat Biotechnol</source> <volume>29(5)</volume>: <fpage>415</fpage>–<lpage>20</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004008-R1"><label>3</label>
+<mixed-citation publication-type="other" xlink:type="simple">R. T. Fielding, chapter 5 of dissertation: <ext-link ext-link-type="uri" xlink:href="http://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htmhttp://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm" xlink:type="simple">http://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htmhttp://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm</ext-link></mixed-citation>
+</ref>
+<ref id="pcbi.1004008-Wilke1"><label>4</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wilke</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Harrison</surname><given-names>T</given-names></name>, <name name-style="western"><surname>Wilkening</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Field</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Glass</surname><given-names>EM</given-names></name>, <name name-style="western"><surname>Kyrpides</surname><given-names>N</given-names></name>, <name name-style="western"><surname>Mavrommatis</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Meyer</surname><given-names>F</given-names></name> (<year>2012</year>) <article-title>The M5nr: a novel non-redundant database containing protein sequences and annotations from multiple sources and associated tools</article-title>. <source>BMC Bioinformatics 21</source> <volume>13</volume>: <fpage>141</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004008-McDonald1"><label>5</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>McDonald</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Clemente</surname><given-names>JC</given-names></name>, <name name-style="western"><surname>Kuczynski</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Rideout</surname><given-names>JR</given-names></name>, <name name-style="western"><surname>Stombaugh</surname><given-names>J</given-names></name>, <etal>et al</etal>. (<year>2012</year>) <article-title>The Biological Observation Matrix (BIOM) format or: how I learned to stop worrying and love the ome-ome</article-title>. <source>Gigascience 12</source>; <volume>1(1)</volume>: <fpage>7</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004008-Kent1"><label>6</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kent</surname><given-names>WJ</given-names></name>, <collab xlink:type="simple">BLAT–the BLAST-like alignment tool</collab> (<year>2002</year>) <article-title>Genome Res</article-title>. <volume>12(4)</volume>: <fpage>656</fpage>–<lpage>64</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004008-NHGRI1"><label>7</label>
+<mixed-citation publication-type="other" xlink:type="simple">NHGRI web page: <ext-link ext-link-type="uri" xlink:href="http://www.genome.gov/http://www.genome.gov/" xlink:type="simple">http://www.genome.gov/http://www.genome.gov/</ext-link></mixed-citation>
+</ref>
+<ref id="pcbi.1004008-Wilkening1"><label>8</label>
+<mixed-citation publication-type="other" xlink:type="simple">Wilkening J, Wilke A, Desai N, Meyer F. (2009) Using clouds for metagenomics: a case study, IEEE International Conference on Cluster Computing and Workshops, CLUSTER'09.</mixed-citation>
+</ref>
+<ref id="pcbi.1004008-Coggill1"><label>9</label>
+<mixed-citation publication-type="other" xlink:type="simple">Coggill P, Finn RD, Bateman A. (2008) Identifying protein domains with the Pfam database. Curr Protoc Bioinformatics. Chapter 2: Unit 2.5.</mixed-citation>
+</ref>
+<ref id="pcbi.1004008-Hunter1"><label>10</label>
+<mixed-citation publication-type="other" xlink:type="simple">Hunter S, Jones P, Mitchell A, Apweiler R, Attwood TK, <etal>et al</etal>. (2012) InterPro in 2011: new developments in the family and domain prediction database. Nucleic Acids Res 40(Database issue): D306–12.</mixed-citation>
+</ref>
+<ref id="pcbi.1004008-Afrasiabi1"><label>11</label>
+<mixed-citation publication-type="other" xlink:type="simple">Afrasiabi C, Samad B, Dineen D, Meacham C, Sjölander K. (2013) The PhyloFacts FAT-CAT web server: ortholog identification and function prediction using fast approximate tree classification. Nucleic Acids Res 41(Web Server issue): W242–8.</mixed-citation>
+</ref>
+<ref id="pcbi.1004008-Reeder1"><label>12</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Reeder</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Knight</surname><given-names>R</given-names></name> (<year>2009</year>) <article-title>The 'rare biosphere': a reality check</article-title>. <source>Nat Methods</source> <volume>6(9)</volume>: <fpage>636</fpage>–<lpage>7</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004008-Keegan1"><label>13</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Keegan</surname><given-names>KP</given-names></name>, <name name-style="western"><surname>Trimble</surname><given-names>WL</given-names></name>, <name name-style="western"><surname>Wilkening</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Wilke</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Harrison</surname><given-names>T</given-names></name>, <name name-style="western"><surname>D'Souza</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Meyer</surname><given-names>F</given-names></name> (<year>2012</year>) <article-title>A platform-independent method for detecting errors in metagenomic sequencing data: DRISEE</article-title>. <source>PLoS Comput Biol</source> <volume>8(6)</volume>: <fpage>e1002541</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004008-JSON1"><label>14</label>
+<mixed-citation publication-type="other" xlink:type="simple">JSON web page: <ext-link ext-link-type="uri" xlink:href="http://www.json.org" xlink:type="simple">http://www.json.org</ext-link></mixed-citation>
+</ref>
+<ref id="pcbi.1004008-Disz1"><label>15</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Disz</surname><given-names>T</given-names></name>, <name name-style="western"><surname>Akhter</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Cuevas</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Olson</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Overbeek</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Vonstein</surname><given-names>V</given-names></name>, <name name-style="western"><surname>Stevens</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Edwards</surname><given-names>RA</given-names></name> (<year>2010</year>) <article-title>Accessing the SEED genome databases via Web services API: tools for programmers</article-title>. <source>BMC Bioinformatics 14</source>; <volume>11</volume>: <fpage>319</fpage>.</mixed-citation>
+</ref>
+</ref-list></back>
+</article>

@@ -1,0 +1,674 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="3.0" xml:lang="en">
+<front>
+<journal-meta>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id>
+<journal-id journal-id-type="pmc">ploscomp</journal-id><journal-title-group>
+<journal-title>PLoS Computational Biology</journal-title></journal-title-group>
+<issn pub-type="ppub">1553-734X</issn>
+<issn pub-type="epub">1553-7358</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, USA</publisher-loc></publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="publisher-id">PCOMPBIOL-D-12-01521</article-id>
+<article-id pub-id-type="doi">10.1371/journal.pcbi.1003234</article-id>
+<article-categories><subj-group subj-group-type="heading"><subject>Research Article</subject></subj-group></article-categories>
+<title-group>
+<article-title>ToPS: A Framework to Manipulate Probabilistic Models of Sequence Data</article-title>
+<alt-title alt-title-type="running-head">The ToPS Framework</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Kashiwabara</surname><given-names>André Yoshiaki</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Bonadio</surname><given-names>Ígor</given-names></name><xref ref-type="aff" rid="aff2"><sup>2</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Onuchic</surname><given-names>Vitor</given-names></name><xref ref-type="aff" rid="aff3"><sup>3</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Amado</surname><given-names>Felipe</given-names></name><xref ref-type="aff" rid="aff4"><sup>4</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Mathias</surname><given-names>Rafael</given-names></name><xref ref-type="aff" rid="aff2"><sup>2</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Durham</surname><given-names>Alan Mitchell</given-names></name><xref ref-type="aff" rid="aff5"><sup>5</sup></xref><xref ref-type="corresp" rid="cor1"><sup>*</sup></xref></contrib>
+</contrib-group>
+<aff id="aff1"><label>1</label><addr-line>Graduate Program in Informatics, Federal University of Technology - Paraná, Cornélio Procópio, Paraná, Brazil</addr-line></aff>
+<aff id="aff2"><label>2</label><addr-line>Computer Science Graduate Program, Universidade de São Paulo, São Paulo, Brazil</addr-line></aff>
+<aff id="aff3"><label>3</label><addr-line>Bioinformatics Graduate Program, Universidade de São Paulo, São Paulo, Brazil</addr-line></aff>
+<aff id="aff4"><label>4</label><addr-line>Computer Science Undergraduate Program, Universidade de São Paulo, São Paulo, Brazil</addr-line></aff>
+<aff id="aff5"><label>5</label><addr-line>Department of Computer Science, Instituto de Matemática e Estatística, Universidade de São Paulo, São Paulo, Brazil</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple"><name name-style="western"><surname>Lapp</surname><given-names>Hilmar</given-names></name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/></contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>National Evolutionary Synthesis Center, United States of America</addr-line></aff>
+<author-notes>
+<corresp id="cor1">* E-mail: <email xlink:type="simple">aland@usp.br</email></corresp>
+<fn fn-type="conflict"><p>The authors have declared that no competing interests exist.</p></fn>
+<fn fn-type="con"><p>Conceived and designed the experiments: AYK AMD. Performed the experiments: AYK. Analyzed the data: AYK AMD. Wrote the paper: AYK AMD. Designed and implemented the PairHMM model and related algorithms: VO. Designed and implemented ProfileHMM and related algorithms: FA RM. Implemented the specificaion parser with error reporting and some algorithms of the GHMM probabilistic model: IB.</p></fn>
+</author-notes>
+<pub-date pub-type="collection"><month>10</month><year>2013</year></pub-date>
+<pub-date pub-type="epub"><day>3</day><month>10</month><year>2013</year></pub-date>
+<volume>9</volume>
+<issue>10</issue>
+<elocation-id>e1003234</elocation-id>
+<history>
+<date date-type="received"><day>21</day><month>9</month><year>2012</year></date>
+<date date-type="accepted"><day>5</day><month>8</month><year>2013</year></date>
+</history>
+<permissions>
+<copyright-year>2013</copyright-year>
+<copyright-holder>Kashiwabara et al</copyright-holder><license xlink:type="simple"><license-p>This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license></permissions>
+<abstract>
+<p>Discrete Markovian models can be used to characterize patterns in sequences of values and have many applications in biological sequence analysis, including gene prediction, CpG island detection, alignment, and protein profiling. We present ToPS, a computational framework that can be used to implement different applications in bioinformatics analysis by combining eight kinds of models: (i) independent and identically distributed process; (ii) variable-length Markov chain; (iii) inhomogeneous Markov chain; (iv) hidden Markov model; (v) profile hidden Markov model; (vi) pair hidden Markov model; (vii) generalized hidden Markov model; and (viii) similarity based sequence weighting. The framework includes functionality for training, simulation and decoding of the models. Additionally, it provides two methods to help parameter setting: Akaike and Bayesian information criteria (AIC and BIC). The models can be used stand-alone, combined in Bayesian classifiers, or included in more complex, multi-model, probabilistic architectures using GHMMs. In particular the framework provides a novel, flexible, implementation of decoding in GHMMs that detects when the architecture can be traversed efficiently.</p>
+</abstract>
+<funding-group><funding-statement>This work was partially funded by Conselho Nacional de Pesquisa - CNPq (grant numbers 141069/2007,307573/2009-5,485566/2007-9,312075/2006-5), by Fundação de Amparo à Pesquisa do Estado de São Paulo - FAPESP (grant number 2010/04409-2), and by Coordenação de Aperfeiçoamento de Pessoal De Nível Superior - CAPES. These funding agencies had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement></funding-group><counts><page-count count="10"/></counts></article-meta>
+</front>
+<body><sec id="s1">
+<title/>
+<disp-quote>
+<p>This is a <italic>PLOS Computational Biology</italic> Software Article.</p>
+</disp-quote></sec><sec id="s2">
+<title>Introduction</title>
+<p>Markov models of nucleic acids and proteins are widely used in bioinformatics. Examples of applications include <italic>ab initio</italic> gene prediction <xref ref-type="bibr" rid="pcbi.1003234-Zhang1">[1]</xref>, CpG island detection <xref ref-type="bibr" rid="pcbi.1003234-Wu1">[2]</xref>, protein family characterization <xref ref-type="bibr" rid="pcbi.1003234-Punta1">[3]</xref>, and sequence alignment <xref ref-type="bibr" rid="pcbi.1003234-Knudsen1">[4]</xref>. Many times these models are hard coded in the analysis software, which means well-known algorithms are implemented over and over again. A system providing a wide range of these models is important to allow researchers to quickly select the most appropriate model to analyze sequences of different problem domains. In some cases, such as gene prediction, the characterization of the family of sequences may involve using various probabilistic models integrated in a single architecture.</p>
+<p>One approach to avoid rewriting code is to use a general-purpose system such as R <xref ref-type="bibr" rid="pcbi.1003234-R1">[5]</xref>, for which there are packages for using these models <xref ref-type="bibr" rid="pcbi.1003234-Machler1">[6]</xref>, <xref ref-type="bibr" rid="pcbi.1003234-Harte1">[7]</xref>, but different packages require the use of different interfaces, which makes them harder to combine. Another alternative is a general-purpose system that can implement different models such as gHMM <xref ref-type="bibr" rid="pcbi.1003234-Schliep1">[8]</xref>, HTK <xref ref-type="bibr" rid="pcbi.1003234-Young1">[9]</xref>, HMMoC <xref ref-type="bibr" rid="pcbi.1003234-Lunter1">[10]</xref> and HMMConverter <xref ref-type="bibr" rid="pcbi.1003234-Lam1">[11]</xref>, N-SCAN <xref ref-type="bibr" rid="pcbi.1003234-Korf1">[12]</xref> and Tigrscan <xref ref-type="bibr" rid="pcbi.1003234-Majoros1">[13]</xref> (also known as Genezilla).</p>
+<p>HTK and gHMM have the distinctive capability of working with continuous emission distributions or, in other words, can accept sequences of arbitrary floating point numbers. HTK was designed to treat the speech recognition problem, but it can also be used to model biological sequences. However it implements only HMMs and does not provide simulations of the models. The gHMM package is a C library providing implementations for HMMs, pair-HMMs, inhomogeneous Markov chains and a mixture of PDFs. The system includes a graphical user interface and provides Python wrappers for each probabilistic model, but it does not implement GHMMs.</p>
+<p>HMMConverter and HMMoC are systems that contain skeleton implementations of HMMs, pair-HMMs, and a generalization of the HMM where states may emit more than one symbol at a time. As a distinctive characteristic, both implement memory-efficient versions of the forward, backward, and Viterbi algorithms. However they do not implement the general GHMMs traditionally applied in gene-finding systems <xref ref-type="bibr" rid="pcbi.1003234-Majoros1">[13]</xref>–<xref ref-type="bibr" rid="pcbi.1003234-Stanke1">[16]</xref>, where states emit words using a duration distribution and an arbitrary emission sub-model. In addition, they both require some familiarity with the XML language for the configuration of the models. HMMoC in particular requires also some programming language skills since the description of a model needs to include C code embedded at specific points in the XML configuration file.</p>
+<p>Finally, N-SCAN and Tigrscan are examples of systems which implement general, configurable GHMMs that can combine different probabilistic sub-models in states with a given duration probability distribution. However, they are targeted specifically for gene prediction, offering only a restricted set of probabilistic models in a fixed architecture designed for the gene-finding problem.</p>
+<p>In this paper we present ToPS (Toolkit for Probabilistic models of Sequences), a framework for the implementation of discrete probabilistic models for sequence data. ToPS currently implements eight kinds of models: (i) independent and identically distributed process (i.i.d); (ii) variable-length Markov chain <xref ref-type="bibr" rid="pcbi.1003234-Rissanen1">[17]</xref>; (iii) inhomogeneous Markov chain <xref ref-type="bibr" rid="pcbi.1003234-Salzberg1">[18]</xref>; (iv) hidden Markov model <xref ref-type="bibr" rid="pcbi.1003234-Rabiner1">[19]</xref>; (v) profile hidden Markov model <xref ref-type="bibr" rid="pcbi.1003234-Eddy1">[20]</xref>; (vi) pair hidden Markov model <xref ref-type="bibr" rid="pcbi.1003234-Durbin1">[21]</xref>; (vii) generalized hidden Markov model (GHMM) <xref ref-type="bibr" rid="pcbi.1003234-Kulp1">[14]</xref>; (viii) similarity based sequence weighting (SBSW) <xref ref-type="bibr" rid="pcbi.1003234-Stanke1">[16]</xref>. To the best of our knowledge, ToPS is the first framework that at the same time implements this range of probabilistic models, is not restricted to any specific problem domain, and does not require from end-users any familiarity with programming languages or with the hierarchical structure of XML. Additionally, ToPS provides a novel implementation of the decoding algorithm that automatically detects GHMM architectures that can be parsed more efficiently, a characteristic that is essential for gene finders, since they have to be designed to parse long sequences. ToPS includes command-line programs for: training and simulating the models, evaluating input sequences using a specific model, performing Bayesian classification, and decoding sequences. As another novelty, ToPS includes two model selection criteria to help select the best parameters for a classification problem: Bayesian Information Criteria (BIC) <xref ref-type="bibr" rid="pcbi.1003234-Schwarz1">[22]</xref>, and Akaike Information Criteria (AIC) <xref ref-type="bibr" rid="pcbi.1003234-Akaike1">[23]</xref>. ToPS uses easy-to-read configuration files that describe probabilistic models in a notation close to the mathematical definitions. Finally, ToPS has an object-oriented architecture designed to facilitate extension and inclusion of new probabilistic models. <xref ref-type="table" rid="pcbi-1003234-t001">Table 1</xref> shows a comparison of the features of these general-purpose systems.</p>
+<table-wrap id="pcbi-1003234-t001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003234.t001</object-id><label>Table 1</label><caption>
+<title>Comparison of ToPS with other Markov model toolkits.</title>
+</caption><alternatives><graphic id="pcbi-1003234-t001-1" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003234.t001" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1">Program</td>
+<td align="left" rowspan="1" colspan="1">Input Format</td>
+<td align="left" rowspan="1" colspan="1">Probabilistic Models</td>
+<td align="left" rowspan="1" colspan="1">Simulation</td>
+<td align="left" rowspan="1" colspan="1">Distinguishing Characteristics</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">HMMConverter</td>
+<td align="left" rowspan="1" colspan="1">XML</td>
+<td align="left" rowspan="1" colspan="1">HMM</td>
+<td align="left" rowspan="1" colspan="1">NO</td>
+<td align="left" rowspan="1" colspan="1">memory efficient Viterbi, forward, backward</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">pair-HMM</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">generalized HMM<xref ref-type="table-fn" rid="nt101">*</xref></td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">HMMoC</td>
+<td align="left" rowspan="1" colspan="1">XML</td>
+<td align="left" rowspan="1" colspan="1">HMM</td>
+<td align="left" rowspan="1" colspan="1">YES</td>
+<td align="left" rowspan="1" colspan="1">memory efficient Viterbi, forward, backward</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">C language</td>
+<td align="left" rowspan="1" colspan="1">pair-HMM, triple-HMM, quad-HMM</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">generalized HMM<xref ref-type="table-fn" rid="nt101">*</xref></td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">gHMM</td>
+<td align="left" rowspan="1" colspan="1">XML</td>
+<td align="left" rowspan="1" colspan="1">HMM</td>
+<td align="left" rowspan="1" colspan="1">YES</td>
+<td align="left" rowspan="1" colspan="1">continuous emission</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">inhomogeneous Markov chain</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">graphical user interface</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">pair-HMM</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">mixture of probability density functions</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">HTK</td>
+<td align="left" rowspan="1" colspan="1">XML</td>
+<td align="left" rowspan="1" colspan="1">HMM</td>
+<td align="left" rowspan="1" colspan="1">NO</td>
+<td align="left" rowspan="1" colspan="1">continuous emission</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Tigrscan</td>
+<td align="left" rowspan="1" colspan="1">own language</td>
+<td align="left" rowspan="1" colspan="1">GHMM<xref ref-type="table-fn" rid="nt103">+</xref></td>
+<td align="left" rowspan="1" colspan="1">NO</td>
+<td align="left" rowspan="1" colspan="1">Does not provide Baum-Welsh training</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">N-SCAN</td>
+<td align="left" rowspan="1" colspan="1">XML</td>
+<td align="left" rowspan="1" colspan="1">GHMM<xref ref-type="table-fn" rid="nt103">+</xref></td>
+<td align="left" rowspan="1" colspan="1">NO</td>
+<td align="left" rowspan="1" colspan="1">Does not provide Baum-Welsh training</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>ToPS</bold></td>
+<td align="left" rowspan="1" colspan="1">own language</td>
+<td align="left" rowspan="1" colspan="1">HMM</td>
+<td align="left" rowspan="1" colspan="1">YES</td>
+<td align="left" rowspan="1" colspan="1">model selection criteria (AIC and BIC)</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">pair-HMM</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">build profile-HMM from alignment</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">GHMM</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">efficient and general GHMMs</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">variable-length Markov chain</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">inhomogeneous Markov chains</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">discrete i.i.d models</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">SBSW</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+</tbody>
+</table>
+</alternatives><table-wrap-foot><fn id="nt101"><label>*</label><p>The generalized version of HMMs in HMMoC and HMMConverter is different from the GHMMs as defined by Kulp <xref ref-type="bibr" rid="pcbi.1003234-Kulp1">[14]</xref>.</p></fn><fn id="nt102"><label/><p>Specifically, they only allow the emission of whole words within a state, and neither allows sub models or the characterization of duration with a non-geometric distribution;</p></fn><fn id="nt103"><label>+</label><p>Tigrscan and N-SCAN implement GHMMs containing as sub-models weight arrays, maximum dependence decomposition, smoothed histograms, three-periodic Markov chains, and interpolated Markov models.</p></fn><fn id="nt104"><label/><p>However, these models can not be used individually, as the state architecture of the GHMM is hard coded in these systems.</p></fn></table-wrap-foot></table-wrap>
+<p>In this paper we describe the basic characteristics of ToPS and two examples of how to use it in practical problems: (i) a CpG island detector; (ii) a simple eukaryotic gene predictor.</p>
+<p>The ToPS framework has been in intensive use by our research group in a wide variety of problems, including experimentation with null models <xref ref-type="bibr" rid="pcbi.1003234-MachadoLima1">[24]</xref>, annotation of full transcripts, small RNA characterization and building gene predictors.</p>
+</sec><sec id="s3">
+<title>Design and Implementation</title>
+<sec id="s3a">
+<title>Architecture</title>
+<p>ToPS was developed with an object-oriented architecture, which is important for the integration of the models in a single framework. The ToPS architecture includes three main class hierarchies: <italic>ProbabilisticModel</italic>, to represent model implementations; <italic>ProbabilisticModelCreator</italic>, to specify the on-the fly creation of models based on configuration files; and <italic>ProbabilisticModelParameterValue</italic>, to enable the parsing of the configuration files. These three hierarchies are used by a set of application programs that implement the framework's user functionalities (<italic>bayes_classifier, evaluate, posterior_decoding, simulate, train, viterbi_decoding</italic>). Implementing new models as a subclass of <italic>ProbabilisticModel</italic> will ensure integration with the facilities for training, simulating, decoding, integration in GHMMs and construction of Bayesian classifiers. A more detailed description of the architecture can be found in the ToPS user guide (<ext-link ext-link-type="uri" xlink:href="http://tops.sourceforge.net/tops-doc.pdf" xlink:type="simple">http://tops.sourceforge.net/tops-doc.pdf</ext-link>).</p>
+</sec><sec id="s3b">
+<title>Model selection criteria</title>
+<p>Many training algorithms contain parameters that can control the dimensionality of the trained model. A typical example is a Markov chain model in which the user has to choose the value of the order parameter. Another example is the Variable Length Markov Chain in which the user has to set a parameter that controls the pruning of the probabilistic suffix tree. Finding the best parameters can be a long and tedious task if it is performed by manually testing possible parameters. To aid the user with finding a good set of parameters, ToPS contains two model selection criteria that the user can specify with the training procedure:</p>
+<list list-type="bullet"><list-item>
+<p>Bayesian Information Criteria (BIC) <xref ref-type="bibr" rid="pcbi.1003234-Schwarz1">[22]</xref>, that selects the parameters for which the corresponding model has the smallest value for the formula:<disp-formula id="pcbi.1003234.e001"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003234.e001" xlink:type="simple"/></disp-formula></p>
+</list-item><list-item>
+<p>Akaike Information Criteria (AIC) <xref ref-type="bibr" rid="pcbi.1003234-Akaike1">[23]</xref>, that selects the parameters for which the corresponding model has the smallest value for the formula:<disp-formula id="pcbi.1003234.e002"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003234.e002" xlink:type="simple"/></disp-formula>To the best of our knowledge, ToPS is currently the only framework for implementing Markovian models that provides this feature.</p>
+</list-item></list>
+</sec><sec id="s3c">
+<title>Efficient decoding of GHMMs</title>
+<p>GHMMs are very flexible probabilistic models that can be integrated with other models to describe a complex architecture. A wide majority of successful gene predictors use GHMMs as a base to recognize particular gene structures <xref ref-type="bibr" rid="pcbi.1003234-Majoros1">[13]</xref>–<xref ref-type="bibr" rid="pcbi.1003234-Stanke1">[16]</xref>, <xref ref-type="bibr" rid="pcbi.1003234-Reese1">[25]</xref>–<xref ref-type="bibr" rid="pcbi.1003234-Lomsadze1">[27]</xref>. However, for an unrestricted GHMM architecture that contains <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e003" xlink:type="simple"/></inline-formula> states and a sequence with length <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e004" xlink:type="simple"/></inline-formula>, the complexity of the decoding algorithm is <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e005" xlink:type="simple"/></inline-formula> <xref ref-type="bibr" rid="pcbi.1003234-Burge1">[15]</xref>, <xref ref-type="bibr" rid="pcbi.1003234-Gudon1">[28]</xref>. This is too inefficient when we are decoding large genomic sequences in systems with many states, which is typical with gene prediction. To circumvent this problem, gene predictors impose restrictions on the GHMM's architecture in order to provide a more efficient implementation. Decoding algorithms used in gene predictors require that GHMMs satisfy three important properties (adapted from <xref ref-type="bibr" rid="pcbi.1003234-Majoros2">[29]</xref>):</p>
+<list list-type="bullet"><list-item>
+<p><bold>Limited connectivity:</bold> The number of transitions from a given state is less than a constant <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e006" xlink:type="simple"/></inline-formula>. This property limits the number of previous states searched by the Viterbi algorithm, resulting in an algorithm that is in <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e007" xlink:type="simple"/></inline-formula>.</p>
+</list-item><list-item>
+<p><bold>Limited duration:</bold> The states have duration distributions limited by a constant <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e008" xlink:type="simple"/></inline-formula>. This property restricts the number of emission lengths that need to be analyzed by the Viterbi algorithm and, combined with the first restriction, results in an algorithm that is in <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e009" xlink:type="simple"/></inline-formula>.</p>
+</list-item><list-item>
+<p><bold>Constant time lookup of the emission probabilities:</bold> The likelihood of a subsequence can be calculated in constant time after a linear time preprocessing of the sequence, resulting, when combined with the two previous optimizations, in a decoding algorithm that is in <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e010" xlink:type="simple"/></inline-formula>.</p>
+</list-item></list>
+<p>To implement an efficient decoding algorithm, many gene-finding systems use fixed GHMM architectures hard-coded in the program and embed restrictions of the model in order to allow efficient processing. This enables efficient decoding, but limits the architectures that can be described using GHMMs and, therefore, potentially limits their applicability.</p>
+<p>ToPS was designed for general applicability, accepting any arbitrary GHMM configurations. To do so, we introduced a methodology to automatically use efficient decoding when the architecture allows it. This is achieved by the use of an adjacency graph to represent the transitions with probability greater than zero, and by taking advantage of the object-oriented architecture of the system:</p>
+<list list-type="bullet"><list-item>
+<p>ToPS uses a sparse graph implementation to benefit from the limited connectivity.</p>
+</list-item><list-item>
+<p>The automatic detection of the constant <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e011" xlink:type="simple"/></inline-formula> is achieved by the use of the classes representing i.i.d models which contain a list of possible durations.</p>
+</list-item><list-item>
+<p>The constant time lookup of the emission probabilities is achieved by the use of the object-oriented architecture: any probabilistic model implemented as a subclass of <italic>FactorableModel</italic> or <italic>InhomogeneousFactorable</italic> represents models for which the likelihood of a sequence is factored as a product of terms, one term per sequence position. This property allows the implementation of a technique, called Prefix Sum Array <xref ref-type="bibr" rid="pcbi.1003234-Majoros1">[13]</xref> (PSA), that calculates the likelihood of a subsequence in constant time, after a linear time preprocessing of the sequence.</p>
+</list-item></list>
+<p>In addition, we have developed another optimization technique for the case when some observation sub-model has probability zero to emit specific words, a situation that is very common in gene-finding systems. In this case ToPS maintains an auxiliary linked list for each line of the Viterbi matrix (corresponding to the values of a given state for each position of the sequence), indicating the positions that have non-zero probability. When we have factorable models, the entries of the Viterbi matrix that generate a path with probability zero do not need to be examined. Typically, most positions have zero probability, therefore using the lists substantially reduce the running time.</p>
+<p>These techniques achieve similar performance to the <italic>ad-hoc</italic> optimizations that reduce the generality of the GHMMs that can be analyzed.</p>
+</sec></sec><sec id="s4">
+<title>Results</title>
+<p>ToPS is a framework that helps describing and using discrete probabilistic models. <xref ref-type="fig" rid="pcbi-1003234-g001">Figure 1</xref> illustrates the various ways to use ToPS: (i) train models given an initial specification and a set of training sequences, (ii) evaluate input sequences given a model, (iii) simulate a model, (iv) decode a sequence given a decodable model and (v) create a Bayesian classifier for sequences based on a set of pre-defined models. In this section we present two applications developed using the framework, in order to illustrate its applicability. We have chosen two well known problems in genomics: CpG island characterization and gene prediction. In both experiments we were able to improve the performance on solving the problem when comparing the ToPS implementation against published, well known alternatives.</p>
+<fig id="pcbi-1003234-g001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003234.g001</object-id><label>Figure 1</label><caption>
+<title>A diagram of examples of ToPS usage.</title>
+<p>Square boxes represent data files, rounded boxes represent programs or manual processes. Each model may be described manually by editing a text file (1), or the train program can be used to estimate the parameters and automatically generate such file from a training set (2). The files that contain the model parameters (in our example model1.txt, model2.txt and model3.txt) are used by the programs evaluate (3), simulate (4), bayes_classifier(5) and viterbi_decoding (6). The evaluate program calculates the likelihood of a set of input sequences given a model, the simulate program samples new sequences, the viterbi_decoding program decodes input sequences using the Viterbi algorithm, and the bayes_classifier classifies input sequences given a set of probabilistic models.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003234.g001" position="float" xlink:type="simple"/></fig>
+<p>All models, scripts, configuration files and sequence data to reproduce the experiments are available through the ToPS homepage.</p>
+<sec id="s4a">
+<title>Characterizing CpG Islands with a GHMM</title>
+<p>CpG islands (CGI) are genomic regions of great interest due to their relation with gene regulation. These regions are commonly present in the promoter region of genes. The CGI sequences typically have high G+C content with a significant high frequency of Cs followed by Gs. CGIs are also related to the DNA methylation that occurs typically at the C nucleotides. The presence of methylated DNA regions can inhibit the binding of transcription factors and therefore inhibit gene expression. Large scale experiments to detect differentially methylated regions use a CGI list as a reference, stating the importance of producing high quality CGI lists <xref ref-type="bibr" rid="pcbi.1003234-Wu1">[2]</xref>.</p>
+<p>The use of Hidden Markov Model to define CGIs was described in <xref ref-type="bibr" rid="pcbi.1003234-Durbin1">[21]</xref> and a more accurate model in <xref ref-type="bibr" rid="pcbi.1003234-Wu1">[2]</xref>. However, hidden Markov models assume that the length of each region is geometrically distributed and the observed symbols are conditionally independently distributed. With a generalized hidden Markov model we can use different models to represent CGI and non-CGI regions, and also characterize the length of CGI regions either geometrically with a self transition, or with a distribution based on known data. In this section we show how we can use these ideas in ToPS to implement CGI characterization.</p>
+<p>Our GHMM has only two states, shown in <xref ref-type="fig" rid="pcbi-1003234-g002">Figure 2</xref>: CPG and NONCPG. We modeled NONCPG and CPG as states with a geometric run-length distribution represented by a self transition. To characterize both CPG and NONCPG we used Interpolated Markov Models (IMMs) <xref ref-type="bibr" rid="pcbi.1003234-Salzberg1">[18]</xref>. IMMs have the ability of representing dependencies of arbitrary length, and we hypothesize that this model can improve CPG detection.</p>
+<fig id="pcbi-1003234-g002" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003234.g002</object-id><label>Figure 2</label><caption>
+<title>The implemented GHMM for the CpG island detector.</title>
+<p>In this GHMM we used IMMs as emission sub-models and we tested different values for the exit probability of the NONCPG state, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e012" xlink:type="simple"/></inline-formula>, to generate the sensitivity analysis. The mean length of the CPG state emission was estimated using the training data.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003234.g002" position="float" xlink:type="simple"/></fig><sec id="s4a1">
+<title>Building and training the models</title>
+<p>To implement this system in ToPS we initially trained the two IMMs that constitute the states of the GHMM. We stored the description of these two models in the files <italic>cpg_imm.txt</italic> and <italic>not_cpg_imm.txt</italic>.</p>
+<p>Once we had all the trained models, we specified a GHMM with the configuration file described in the <xref ref-type="fig" rid="pcbi-1003234-g002">Figure 2</xref>. We assumed a mean length of <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e013" xlink:type="simple"/></inline-formula> to compute the geometric duration of the CPG state. This parameter was estimated from the training data. We evaluated a set of different values of NONCPG exit probability to produce the sensitivity analysis, shown in <xref ref-type="fig" rid="pcbi-1003234-g003">Figure 3</xref>.</p>
+<fig id="pcbi-1003234-g003" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003234.g003</object-id><label>Figure 3</label><caption>
+<title>Sensitivity associated with the combined length of the predicted CGIs.</title>
+<p>In this experiment the points in the curve correspond to different values for the exit probability of the NONCPG state of the GHMM. For comparison, the results with the CGI list from UCSC Genome Browser and with the CGI list obtained using HMM <xref ref-type="bibr" rid="pcbi.1003234-Wu1">[2]</xref> are shown as a blue square and green triangle, respectively.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003234.g003" position="float" xlink:type="simple"/></fig>
+<p>In a different experiment we evaluated another GHMM with a non-geometric duration for the CPG state (data not shown). Because the Viterbi decoding must verify the best length for the CPG state, the decoding was significantly slower than with the geometric duration GHMM (12 hours vs. 1 minute). Furthermore, we did not observe an improvement in the quality of the prediction when modeling the duration of the CPG state explicitly.</p>
+</sec><sec id="s4a2">
+<title>Evaluating the results</title>
+<p>To characterize CpG islands and their lengths we used <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e014" xlink:type="simple"/></inline-formula> randomly chosen sequences from the CGI list of the UCSC Genome Browser <xref ref-type="bibr" rid="pcbi.1003234-Kent1">[30]</xref>. The validation set was composed of <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e015" xlink:type="simple"/></inline-formula> unmasked sequences corresponding to the ENCODE pilot project regions of the hg18 assembly <xref ref-type="bibr" rid="pcbi.1003234-ENCODE1">[31]</xref>.</p>
+<p>We compared our results with two independent CGI lists: (i) the CGI list computed by an HMM developed by Wu and colleagues <xref ref-type="bibr" rid="pcbi.1003234-Wu1">[2]</xref>, that is stored as “Custom Annotation Tracks” in the UCSC Genome Browser; (ii) The official CGI list provided by the UCSC Genome Browser <xref ref-type="bibr" rid="pcbi.1003234-Kent1">[30]</xref>. We used the comparison criteria proposed by Glass and collaborators <xref ref-type="bibr" rid="pcbi.1003234-Glass1">[32]</xref>, where the success of CGI prediction is measured by the rate of TSS regions covered by the CGI predictions. The TSSs were downloaded from the confirmed set of the DBTSS database <xref ref-type="bibr" rid="pcbi.1003234-Yamashita1">[33]</xref>.</p>
+<p>As can be seen from <xref ref-type="table" rid="pcbi-1003234-t002">Table 2</xref>, the GHMM results were better than those of the HMM: the ToPS GHMM (with <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e016" xlink:type="simple"/></inline-formula>) predicts <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e017" xlink:type="simple"/></inline-formula> fewer nucleotides than the HMM CGI regions of Wu and collaborators (<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e018" xlink:type="simple"/></inline-formula> vs. <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e019" xlink:type="simple"/></inline-formula>), but both covered <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e020" xlink:type="simple"/></inline-formula> confirmed TSSs (<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e021" xlink:type="simple"/></inline-formula> sensitivity). In a comparison against the UCSC annotation results, the GHMM (with <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e022" xlink:type="simple"/></inline-formula>) covered the same number of TSSs (<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e023" xlink:type="simple"/></inline-formula>), using fewer regions (<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e024" xlink:type="simple"/></inline-formula>). However, the GHMM predicted more nucleotides than the CGI list (<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e025" xlink:type="simple"/></inline-formula> vs. <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e026" xlink:type="simple"/></inline-formula>), indicating that the GHMM predicted, on average, larger regions than UCSC CGI list.</p>
+<table-wrap id="pcbi-1003234-t002" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003234.t002</object-id><label>Table 2</label><caption>
+<title>Comparison between CGI lists.</title>
+</caption><alternatives><graphic id="pcbi-1003234-t002-2" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003234.t002" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1">CGI List</td>
+<td align="left" rowspan="1" colspan="1">Total number of CGI regions</td>
+<td align="left" rowspan="1" colspan="1">Percentage of confirmed TSSs contained in the CGI predictions (“sensitivity”)</td>
+<td align="left" rowspan="1" colspan="1">Total of nucleotides in CGI list (“specificity”)</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">UCSC Genome Browser</td>
+<td align="left" rowspan="1" colspan="1"><inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e027" xlink:type="simple"/></inline-formula></td>
+<td align="left" rowspan="1" colspan="1"><inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e028" xlink:type="simple"/></inline-formula></td>
+<td align="left" rowspan="1" colspan="1"><inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e029" xlink:type="simple"/></inline-formula></td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>GHMM</bold> <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e030" xlink:type="simple"/></inline-formula></td>
+<td align="left" rowspan="1" colspan="1"><inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e031" xlink:type="simple"/></inline-formula></td>
+<td align="left" rowspan="1" colspan="1"><inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e032" xlink:type="simple"/></inline-formula></td>
+<td align="left" rowspan="1" colspan="1"><inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e033" xlink:type="simple"/></inline-formula></td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">HMM <xref ref-type="bibr" rid="pcbi.1003234-Wu1">[2]</xref></td>
+<td align="left" rowspan="1" colspan="1"><inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e034" xlink:type="simple"/></inline-formula></td>
+<td align="left" rowspan="1" colspan="1"><inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e035" xlink:type="simple"/></inline-formula></td>
+<td align="left" rowspan="1" colspan="1"><inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e036" xlink:type="simple"/></inline-formula></td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>GHMM</bold> <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e037" xlink:type="simple"/></inline-formula></td>
+<td align="left" rowspan="1" colspan="1"><inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e038" xlink:type="simple"/></inline-formula></td>
+<td align="left" rowspan="1" colspan="1"><inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e039" xlink:type="simple"/></inline-formula></td>
+<td align="left" rowspan="1" colspan="1"><inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e040" xlink:type="simple"/></inline-formula></td>
+</tr>
+</tbody>
+</table>
+</alternatives><table-wrap-foot><fn id="nt105"><label/><p>This table shows a comparison between four distinct CGI lists: the UCSC Genome Browser list, the list produced by the HMM designed by Wu and collaborators <xref ref-type="bibr" rid="pcbi.1003234-Wu1">[2]</xref>, and the lists produced by our GHMM approach using two distinct exit probabilities for the NONCPG state. The probabilities of the GHMM selected were those that produced lists with the same sensitivity as the ones from the UCSC Genome Browser (<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e041" xlink:type="simple"/></inline-formula>), and from the HMM by Wu and collaborators (<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e042" xlink:type="simple"/></inline-formula>).</p></fn></table-wrap-foot></table-wrap>
+<p>The results obtained with different values of <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e043" xlink:type="simple"/></inline-formula> were used to generate a sensitivity analysis, as suggested by Wu and collaborators <xref ref-type="bibr" rid="pcbi.1003234-Wu1">[2]</xref>, shown in <xref ref-type="fig" rid="pcbi-1003234-g003">Figure 3</xref>. In particular, we tested the value <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e044" xlink:type="simple"/></inline-formula> for the exit probability of the NONCPG state, which embodies the hypothesis of a CpG region for each <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e045" xlink:type="simple"/></inline-formula>, or approximately <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e046" xlink:type="simple"/></inline-formula> CpG regions in the human genome. This GHMM predicted <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e047" xlink:type="simple"/></inline-formula> as CGI and covered <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e048" xlink:type="simple"/></inline-formula> TSSs (<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e049" xlink:type="simple"/></inline-formula> sensitivity).</p>
+</sec></sec><sec id="s4b">
+<title>Building a protein-coding gene finder using GHMM</title>
+<p>Predicting the location and the structure of protein-coding genes in eukaryotic genomes is a difficult but very important task <xref ref-type="bibr" rid="pcbi.1003234-Zhang1">[1]</xref>. To build a competitive gene finding system one is required to know a large number of non-intuitive details such as the order of each Markov model, the length of the models representing biological signals, the training set for estimating each sub-model, and the architecture of the GHMM. The majority of successful gene-finding systems uses GHMMs <xref ref-type="bibr" rid="pcbi.1003234-Majoros1">[13]</xref>–<xref ref-type="bibr" rid="pcbi.1003234-Stanke1">[16]</xref>, <xref ref-type="bibr" rid="pcbi.1003234-Lomsadze1">[27]</xref>, but important details are sometimes hard-coded in the the program, making it difficult to customize the GHMMs.</p>
+<p>Next we illustrate the implementation in TopS of a gene-finding system using a GHMM with 56 states.</p>
+<sec id="s4b1">
+<title>Building and training the models</title>
+<p>The GHMM we built is shown in <xref ref-type="fig" rid="pcbi-1003234-g004">Figure 4</xref>. This GHMM architecture was adapted from similar GHMMs used by different gene finders and contains <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e050" xlink:type="simple"/></inline-formula> states which model genes from both DNA strands. The main differences when compared to GENSCAN <xref ref-type="bibr" rid="pcbi.1003234-Burge1">[15]</xref> are the lack of states for poly-A signal and promoters in our model, and the fact that we use only one GHMM model, whereas GENSCAN uses different GHMMs for each G+C composition intervals of the target sequence.</p>
+<fig id="pcbi-1003234-g004" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003234.g004</object-id><label>Figure 4</label><caption>
+<title>GHMM architecture for eukaryotic protein-coding gene prediction.</title>
+<p><inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e051" xlink:type="simple"/></inline-formula> is a state for representing an initial exon that ends at phase <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e052" xlink:type="simple"/></inline-formula>. <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e053" xlink:type="simple"/></inline-formula> is a state for representing an internal exon that begins at phase <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e054" xlink:type="simple"/></inline-formula> and ends at phase <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e055" xlink:type="simple"/></inline-formula>. <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e056" xlink:type="simple"/></inline-formula> is a state for representing a terminal exon that begins at phase <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e057" xlink:type="simple"/></inline-formula>. <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e058" xlink:type="simple"/></inline-formula> is a state for representing an intron at phase <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e059" xlink:type="simple"/></inline-formula>. <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e060" xlink:type="simple"/></inline-formula> is a state for representing intergenic regions. <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e061" xlink:type="simple"/></inline-formula> is a state for representing the start codon signal. <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e062" xlink:type="simple"/></inline-formula> is a state for representing the stop codon signal. <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e063" xlink:type="simple"/></inline-formula> is a state for representing acceptor splice site signal at phase <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e064" xlink:type="simple"/></inline-formula>. <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e065" xlink:type="simple"/></inline-formula> is a state for representing the donor splice site signal at phase <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e066" xlink:type="simple"/></inline-formula>. To model the reverse strand, we used the states that begin with the prefix ‘<italic>r-</italic>’. Squares with a self-transition represent states with geometric duration distribution. Squares without a self-transition represent states with a non-geometric duration distribution. Ellipses represent states with fixed-length durations.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003234.g004" position="float" xlink:type="simple"/></fig>
+<p>To define a GHMM, we have to specify an emission sub-model for each state. Below is a list of the forward strand models we used:</p>
+<list list-type="bullet"><list-item>
+<p><bold>start codon initial motif:</bold> A Weight Array Model (WAM) - implemented as an inhomogeneous Markov chain - that emits a pattern of length <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e067" xlink:type="simple"/></inline-formula> representing the sequences that appear before the start codon (ATG). We used a WAM with order estimated using BIC.</p>
+</list-item><list-item>
+<p><bold>start codon model:</bold> A manually edited WAM that emits the sequence “ATG” with probability <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e068" xlink:type="simple"/></inline-formula>.</p>
+</list-item><list-item>
+<p><bold>initial pattern model:</bold> A WAM that emits a pattern of length <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e069" xlink:type="simple"/></inline-formula> representing sequences that appear after the start codon. We used a WAM of order <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e070" xlink:type="simple"/></inline-formula>.</p>
+</list-item><list-item>
+<p><bold>stop codon model:</bold> A WAM that emits the sequences TAA, TAG, or TGA with the same frequency distribution that appears in the training set.</p>
+</list-item><list-item>
+<p><bold>acceptor splice site model:</bold> A WAM that emits a pattern of length <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e071" xlink:type="simple"/></inline-formula> (<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e072" xlink:type="simple"/></inline-formula> before the canonical AG, followed by the dinucleotide AG, followed by <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e073" xlink:type="simple"/></inline-formula> after the AG).</p>
+</list-item><list-item>
+<p><bold>branch point model:</bold> Windowed WAM <xref ref-type="bibr" rid="pcbi.1003234-Burge1">[15]</xref> (with order <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e074" xlink:type="simple"/></inline-formula> and vicinity length of <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e075" xlink:type="simple"/></inline-formula>) that emits a pattern of length <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e076" xlink:type="simple"/></inline-formula> for sequences that appear before the acceptor splice site.</p>
+</list-item><list-item>
+<p><bold>acceptor initial pattern model:</bold> A WAM that emits a pattern of length <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e077" xlink:type="simple"/></inline-formula> corresponding to the sequences that appear after the acceptor splice site.</p>
+</list-item><list-item>
+<p><bold>donor splice site model:</bold> A similarity based sequence weighting <xref ref-type="bibr" rid="pcbi.1003234-Stanke1">[16]</xref> representing patterns of length <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e078" xlink:type="simple"/></inline-formula> (a pattern of length <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e079" xlink:type="simple"/></inline-formula>, followed by the dinucleotide GT, followed by a pattern of length <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e080" xlink:type="simple"/></inline-formula>).</p>
+</list-item><list-item>
+<p><bold>donor initial pattern model:</bold> A WAM of order <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e081" xlink:type="simple"/></inline-formula> that emits a pattern of length <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e082" xlink:type="simple"/></inline-formula> that appears before the donor splice site model emissions.</p>
+</list-item><list-item>
+<p><bold>protein-coding model:</bold> A three-periodic Interpolated Markov Model, with order estimated using BIC, trained with the annotated protein-coding sequences from the training set.</p>
+</list-item><list-item>
+<p><bold>non-coding model:</bold> An Interpolated Markov Model, with order automatically estimated using BIC, trained with the annotated <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e083" xlink:type="simple"/></inline-formula> and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e084" xlink:type="simple"/></inline-formula> sequences.</p>
+</list-item></list>
+<p>A summarized description of each state can be found in <xref ref-type="table" rid="pcbi-1003234-t003">Table 3</xref>. The states representing the reverse strand were trained with sequences corresponding to the reverse complement of those used to train the states representing the forward strand.</p>
+<table-wrap id="pcbi-1003234-t003" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003234.t003</object-id><label>Table 3</label><caption>
+<title>States of the GHMM for the gene prediction problem.</title>
+</caption><alternatives><graphic id="pcbi-1003234-t003-3" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003234.t003" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1">State Name</td>
+<td align="left" rowspan="1" colspan="1">Description</td>
+<td align="left" rowspan="1" colspan="1">Emission Model</td>
+<td align="left" rowspan="1" colspan="1">Duration Model</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1"><inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e085" xlink:type="simple"/></inline-formula></td>
+<td align="left" rowspan="1" colspan="1">start codon</td>
+<td align="left" rowspan="1" colspan="1">start codon initial motif (20 nt)</td>
+<td align="left" rowspan="1" colspan="1">fixed-length (27 nt)</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">start codon model (3 nt)</td>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">initial pattern model (4 nt)</td>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e086" xlink:type="simple"/></inline-formula></td>
+<td align="left" rowspan="1" colspan="1">stop codon</td>
+<td align="left" rowspan="1" colspan="1">stop codon model (3 nt)</td>
+<td align="left" rowspan="1" colspan="1">fixed-length (3 nt)</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e087" xlink:type="simple"/></inline-formula></td>
+<td align="left" rowspan="1" colspan="1">single exon</td>
+<td align="left" rowspan="1" colspan="1">protein-coding model</td>
+<td align="left" rowspan="1" colspan="1">Smoothed Histogram</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e088" xlink:type="simple"/></inline-formula></td>
+<td align="left" rowspan="1" colspan="1">initial exons</td>
+<td align="left" rowspan="1" colspan="1">protein-coding model</td>
+<td align="left" rowspan="1" colspan="1">Smoothed Histogram</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e089" xlink:type="simple"/></inline-formula></td>
+<td align="left" rowspan="1" colspan="1">terminal exons</td>
+<td align="left" rowspan="1" colspan="1">protein-coding model</td>
+<td align="left" rowspan="1" colspan="1">Smoothed Histogram</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e090" xlink:type="simple"/></inline-formula></td>
+<td align="left" rowspan="1" colspan="1">internal exon</td>
+<td align="left" rowspan="1" colspan="1">protein-coding model</td>
+<td align="left" rowspan="1" colspan="1">Smoothed Histogram</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e091" xlink:type="simple"/></inline-formula></td>
+<td align="left" rowspan="1" colspan="1">intron</td>
+<td align="left" rowspan="1" colspan="1">non-coding model</td>
+<td align="left" rowspan="1" colspan="1">geometric distributed</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e092" xlink:type="simple"/></inline-formula></td>
+<td align="left" rowspan="1" colspan="1">donor splice site</td>
+<td align="left" rowspan="1" colspan="1">donor initial pattern (4 nt)</td>
+<td align="left" rowspan="1" colspan="1">fixed-length (13 nt)</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">donor splice site model (9 nt)</td>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e093" xlink:type="simple"/></inline-formula></td>
+<td align="left" rowspan="1" colspan="1">acceptor splice site</td>
+<td align="left" rowspan="1" colspan="1">branch point model (32 nt)</td>
+<td align="left" rowspan="1" colspan="1">fixed-length (42 nt)</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">acceptor splice site model (6 nt)</td>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">acceptor initial pattern model (4 nt)</td>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e094" xlink:type="simple"/></inline-formula></td>
+<td align="left" rowspan="1" colspan="1">intergenic state</td>
+<td align="left" rowspan="1" colspan="1">non-coding model</td>
+<td align="left" rowspan="1" colspan="1">geometric distributed</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e095" xlink:type="simple"/></inline-formula></td>
+<td align="left" rowspan="1" colspan="1">final state</td>
+<td align="left" rowspan="1" colspan="1">non-coding model</td>
+<td align="left" rowspan="1" colspan="1">self-transition probability is one</td>
+</tr>
+</tbody>
+</table>
+</alternatives><table-wrap-foot><fn id="nt106"><label/><p>This table shows a summary of the configuration we used in each state of the GHMM for the gene-prediction problem. The states <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e096" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e097" xlink:type="simple"/></inline-formula>, and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e098" xlink:type="simple"/></inline-formula> are composed of two or more individual sub-models. The reverse strand states are symmetric and were omitted from this table.</p></fn></table-wrap-foot></table-wrap>
+<p>The run-length distribution of the states representing exons was trained using the same methodology described in <xref ref-type="bibr" rid="pcbi.1003234-Stanke2">[34]</xref> where smoothed histograms were estimated using a variation of the kernel density estimation algorithm. Because the coding segments must produce consistent gene structures, the run-length of the exon states must not allow emissions that are incompatible with their input phase and output phase. The average length of the intron sequences was estimated using the training set. Finally, the mean length of the intergenic region was estimated as <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e099" xlink:type="simple"/></inline-formula>.</p>
+</sec><sec id="s4b2">
+<title>Evaluating the results</title>
+<p>To compare our results with a well established program, we applied GENSCAN <xref ref-type="bibr" rid="pcbi.1003234-Burge1">[15]</xref> using the original “HumanIso.smat” parameters. As a validation set we used <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e100" xlink:type="simple"/></inline-formula> randomly selected Refseq genes from the hg18 genome obtained from the UCSC Genome Browser. We used a 5-fold cross validation experiment with our system using the “viterbi_decoding” program to decode the test sequences from each individual cross-validation run. We also applied GENSCAN to each of the five validation sets. We then used Eval <xref ref-type="bibr" rid="pcbi.1003234-Keibler1">[35]</xref> to calculate a set of comparative statistics, including the traditional accuracy measures for gene-finding systems. The results, shown in <xref ref-type="table" rid="pcbi-1003234-t004">Table 4</xref>, indicate that ToPS achieved better performance (considering the F-score as criteria) in two measures: nucleotides (<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e101" xlink:type="simple"/></inline-formula> vs <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e102" xlink:type="simple"/></inline-formula>) and complete gene structure (<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e103" xlink:type="simple"/></inline-formula> vs <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003234.e104" xlink:type="simple"/></inline-formula>). In this particular example the GHMM's performance could be probably be improved by including better models for representing short introns, and by implementing strategies to treat the C+G content variability of the genomes.</p>
+<table-wrap id="pcbi-1003234-t004" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003234.t004</object-id><label>Table 4</label><caption>
+<title>Accuracy of the gene predictions.</title>
+</caption><alternatives><graphic id="pcbi-1003234-t004-4" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003234.t004" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td colspan="3" align="left" rowspan="1">Gene</td>
+<td colspan="3" align="left" rowspan="1">Exon</td>
+<td colspan="3" align="left" rowspan="1">Nucleotide</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Predictor</td>
+<td align="left" rowspan="1" colspan="1">PPV</td>
+<td align="left" rowspan="1" colspan="1">S<italic><sub>n</sub></italic></td>
+<td align="left" rowspan="1" colspan="1">F-score</td>
+<td align="left" rowspan="1" colspan="1">PPV</td>
+<td align="left" rowspan="1" colspan="1">S<italic><sub>n</sub></italic></td>
+<td align="left" rowspan="1" colspan="1">F-score</td>
+<td align="left" rowspan="1" colspan="1">PPV</td>
+<td align="left" rowspan="1" colspan="1">S<italic><sub>n</sub></italic></td>
+<td align="left" rowspan="1" colspan="1">F-score</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">GENSCAN</td>
+<td align="left" rowspan="1" colspan="1">9.7±1.1</td>
+<td align="left" rowspan="1" colspan="1">19.6±0.7</td>
+<td align="left" rowspan="1" colspan="1">12.9±1.1</td>
+<td align="left" rowspan="1" colspan="1">54.3±2.2</td>
+<td align="left" rowspan="1" colspan="1"><bold>74.4±1.0</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>62.8±1.4</bold></td>
+<td align="left" rowspan="1" colspan="1">55.0±4.7</td>
+<td align="left" rowspan="1" colspan="1"><bold>96.3±1.2</bold></td>
+<td align="left" rowspan="1" colspan="1">69.9±3.7</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">ToPS</td>
+<td align="left" rowspan="1" colspan="1"><bold>12.0±1.5</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>21.6±2.2</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>15.4±1.8</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>59.0±1.8</bold></td>
+<td align="left" rowspan="1" colspan="1">55.9±1.7</td>
+<td align="left" rowspan="1" colspan="1">57.4±1.6</td>
+<td align="left" rowspan="1" colspan="1"><bold>69.6±5.2</bold></td>
+<td align="left" rowspan="1" colspan="1">87.1±2.4</td>
+<td align="left" rowspan="1" colspan="1"><bold>77.3±3.1</bold></td>
+</tr>
+</tbody>
+</table>
+</alternatives><table-wrap-foot><fn id="nt107"><label/><p>This table shows the accuracy of ToPS to the 5-fold cross-validation experiment. GENSCAN was tested using the “HumanIso.smat” parameters and the same test set used in each individual validation run. PPV: positive predictive value; S<italic><sub>n</sub></italic>: sensitivity.</p></fn></table-wrap-foot></table-wrap></sec></sec><sec id="s4c">
+<title>Conclusion</title>
+<p>We presented ToPS, an open-source object-oriented framework for analyzing probabilistic models of sequence data. It implements seven well-established probabilistic models that have applications in many distinct disciplines. ToPS includes programs for simulating, decoding, classifying and evaluating discrete sequences. The implemented models can be used individually, combined in heterogeneous models using GHMMs, or integrated in Bayesian classifiers. In contrast to systems with similar goals, end users do not need any previous knowledge of programming languages, since the probabilistic models are specified using a notation close to the mathematical one. There are specific auxiliary programs for training, simulating and decoding. In addition, ToPS includes two algorithms for model selection, BIC and AIC, that can be used to find the best classification parameters for given training and validation sets. Also, in contrast to other systems, ToPS includes a GHMM implementation that is at the same time general enough to describe any GHMM architecture and efficient when the model characteristics allow for a faster version of the Viterbi algorithm. This is important to enable the use of ToPS in gene finding.</p>
+<p>The two examples presented above, a CpG island classifier and a gene predictor, illustrate that ToPS can be used to build complex model architectures to be applied to real-world problems. In both cases we achieve competitive performance against well established results with minimal implementation work. Both results could even be improved further through experimentation with the model.</p>
+</sec></sec><sec id="s5">
+<title>Availability and Future Directions</title>
+<p>ToPS was tested under GNU/Linux, and MacOSX and can be obtained from <ext-link ext-link-type="uri" xlink:href="http://tops.sourceforge.net/" xlink:type="simple">http://tops.sourceforge.net/</ext-link>. ToPS is distributed with a manual containing a set of examples to illustrate its use. The datasets and configuration files for the two experiments can be obtained from <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.6084/m9.figshare.765452" xlink:type="simple">http://dx.doi.org/10.6084/m9.figshare.765452</ext-link>. Supporting information includes the source code, the manual, and a tutorial of the system (<xref ref-type="supplementary-material" rid="pcbi.1003234.s001">Software S1</xref>).</p>
+<p>We are currently using ToPS to develop different probabilistic models for biological sequence analysis. In particular ToPS was useful to produce results described in <xref ref-type="bibr" rid="pcbi.1003234-MachadoLima1">[24]</xref>, where we studied the problem of choosing different null-models that can reduce the number of false positives in Bayesian sequence classification. We are now developing other models for characterizing protein-coding sequences both in genomic sequences and in mRNAs, non-coding RNA characterization, and sequence aligners. In the near future, ToPS will be extended to include Maximum Dependence Decomposition models <xref ref-type="bibr" rid="pcbi.1003234-Burge1">[15]</xref>, Covariance Models <xref ref-type="bibr" rid="pcbi.1003234-Durbin1">[21]</xref> and Conditional Random Fields <xref ref-type="bibr" rid="pcbi.1003234-Lafferty1">[36]</xref>.</p>
+</sec><sec id="s6">
+<title>Supporting Information</title>
+<supplementary-material id="pcbi.1003234.s001" mimetype="application/x-gzip" xlink:href="info:doi/10.1371/journal.pcbi.1003234.s001" position="float" xlink:type="simple"><label>Software S1</label><caption>
+<p>Source code for ToPS. A compressed file containing the source code for ToPS.</p>
+<p>(GZ)</p>
+</caption></supplementary-material></sec></body>
+<back>
+<ack>
+<p>The authors are indebted to Elias de Moraes Fernandes for the design of the ToPS logo.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1003234-Zhang1"><label>1</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zhang</surname><given-names>MQ</given-names></name> (<year>2002</year>) <article-title>Computational prediction of eukaryotic protein-coding genes</article-title>. <source>Nat Rev Genet</source> <volume>3</volume>: <fpage>698</fpage>–<lpage>698</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003234-Wu1"><label>2</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wu</surname><given-names>HAO</given-names></name>, <name name-style="western"><surname>Caffo</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Jaffee</surname><given-names>HA</given-names></name>, <name name-style="western"><surname>Irizarry</surname><given-names>RA</given-names></name> (<year>2010</year>) <article-title>Redefining CpG islands using hidden Markov models</article-title>. <source>Biostat</source> <volume>1</volume>: <fpage>499</fpage>–<lpage>514</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003234-Punta1"><label>3</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Punta</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Coggill</surname><given-names>PC</given-names></name>, <name name-style="western"><surname>Eberhardt</surname><given-names>RY</given-names></name>, <name name-style="western"><surname>Mistry</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Tate</surname><given-names>J</given-names></name>, <etal>et al</etal>. (<year>2012</year>) <article-title>The Pfam protein families database</article-title>. <source>Nucleic acids research</source> <volume>40</volume>: <fpage>D290</fpage>–<lpage>301</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003234-Knudsen1"><label>4</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Knudsen</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Miyamoto</surname><given-names>MM</given-names></name> (<year>2003</year>) <article-title>Sequence Alignments and Pair Hidden Markov Models Using Evolutionary History</article-title>. <source>Journal of Molecular Biology</source> <volume>333</volume>: <fpage>453</fpage>–<lpage>460</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003234-R1"><label>5</label>
+<mixed-citation publication-type="other" xlink:type="simple">R Development Core Team (2009) R: A Language and Environment for Statistical Computing. Vienna, Austria: R Foundation for Statistical Computing.</mixed-citation>
+</ref>
+<ref id="pcbi.1003234-Machler1"><label>6</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Machler</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Buhlmann</surname><given-names>P</given-names></name> (<year>2004</year>) <article-title>Variable length Markov chains: Methodology, Computing, and Software</article-title>. <source>Journal of Computational &amp; Graphical Statistics</source> <volume>13</volume>: <fpage>435</fpage>–<lpage>455</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003234-Harte1"><label>7</label>
+<mixed-citation publication-type="other" xlink:type="simple">Harte D (2008) Reference manual package: HiddenMarkov. Wellington, New Zealand: Statistics Research Associates Limited.</mixed-citation>
+</ref>
+<ref id="pcbi.1003234-Schliep1"><label>8</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schliep</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Georgi</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Costa</surname><given-names>IG</given-names></name>, <name name-style="western"><surname>Schönhuth</surname><given-names>A</given-names></name> (<year>2004</year>) <article-title>The General Hidden Markov Model Library: Analyzing Systems with Unobservable States</article-title>. <source>Proceedings of the Heinz-Billing-Price</source> <volume>2004</volume>: <fpage>121</fpage>–<lpage>135</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003234-Young1"><label>9</label>
+<mixed-citation publication-type="other" xlink:type="simple">Young S, Evermann G, Gales M, Hain T, Kershaw D, <etal>et al</etal>.. (2006) The HTK Book (for HTK Version 3.4). Cambridge: Cambridge University Engineering Department. 359 p.</mixed-citation>
+</ref>
+<ref id="pcbi.1003234-Lunter1"><label>10</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lunter</surname><given-names>G</given-names></name> (<year>2007</year>) <article-title>HMMoC – a compiler for hidden Markov models</article-title>. <source>Bioinformatics</source> <volume>23</volume>: <fpage>2485</fpage>–<lpage>2487</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003234-Lam1"><label>11</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lam</surname><given-names>TY</given-names></name>, <name name-style="western"><surname>Meyer</surname><given-names>IM</given-names></name> (<year>2009</year>) <article-title>HMMCONVERTER 1.0: a toolbox for hidden Markov models</article-title>. <source>Nucleic acids research</source> <volume>37</volume>: <fpage>e139</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003234-Korf1"><label>12</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Korf</surname><given-names>I</given-names></name>, <name name-style="western"><surname>Flicek</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Duan</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Brent</surname><given-names>M</given-names></name> (<year>2001</year>) <article-title>Integrating genomic homology into gene structure prediction</article-title>. <source>Bioinformatics</source> <volume>17</volume>: <fpage>S140</fpage>–<lpage>S148</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003234-Majoros1"><label>13</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Majoros</surname><given-names>WH</given-names></name>, <name name-style="western"><surname>Pertea</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Salzberg</surname><given-names>S</given-names></name> (<year>2004</year>) <article-title>TigrScan and GlimmerHMM: two open source ab initio eukaryotic gene-finders</article-title>. <source>Bioinformatics</source> <volume>20</volume>: <fpage>2878</fpage>–<lpage>2879</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003234-Kulp1"><label>14</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kulp</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Haussler</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Reese</surname><given-names>MG</given-names></name>, <name name-style="western"><surname>Eeckman</surname><given-names>FH</given-names></name> (<year>1996</year>) <article-title>A generalized hidden Markov model for the recognition of human genes in DNA</article-title>. <source>Proc Int Conf Intell Syst Mol Biol</source> <volume>4</volume>: <fpage>134</fpage>–<lpage>142</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003234-Burge1"><label>15</label>
+<mixed-citation publication-type="other" xlink:type="simple">Burge C (1997) Identification of genes in human genomic DNA. [PhD Dissertation] Stanford University.</mixed-citation>
+</ref>
+<ref id="pcbi.1003234-Stanke1"><label>16</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Stanke</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Waack</surname><given-names>S</given-names></name> (<year>2003</year>) <article-title>Gene prediction with a hidden Markov model and a new intron submodel</article-title>. <source>Bioinformatics</source> <volume>19 Suppl 2</volume>: <fpage>II215</fpage>–<lpage>II225</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003234-Rissanen1"><label>17</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rissanen</surname><given-names>J</given-names></name> (<year>1983</year>) <article-title>A universal data compression system</article-title>. <source>Information Theory, IEEE Transactions on</source> <volume>29</volume>: <fpage>656</fpage>–<lpage>664</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003234-Salzberg1"><label>18</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Salzberg</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Delcher</surname><given-names>AL</given-names></name>, <name name-style="western"><surname>Kasif</surname><given-names>S</given-names></name>, <name name-style="western"><surname>White</surname><given-names>O</given-names></name> (<year>1998</year>) <article-title>Microbial gene identification using Interpolated Markov Models</article-title>. <source>Nucleic Acids Research</source> <volume>26</volume>: <fpage>544</fpage>–<lpage>548</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003234-Rabiner1"><label>19</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rabiner</surname><given-names>LR</given-names></name> (<year>1989</year>) <article-title>A tutorial on Hidden Markov Models and selected applications in speech recoginition</article-title>. <source>Proccedings of the IEEE</source> <volume>77</volume>: <fpage>257</fpage>–<lpage>286</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003234-Eddy1"><label>20</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Eddy</surname><given-names>SR</given-names></name> (<year>1998</year>) <article-title>Profile hidden Markov models</article-title>. <source>Bioinformatics</source> <volume>14</volume>: <fpage>755</fpage>–<lpage>763</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003234-Durbin1"><label>21</label>
+<mixed-citation publication-type="other" xlink:type="simple">Durbin R, Eddy SR, Krogh A, Mitchison G (1998) Biological sequence analysis: Probabilistic models of proteins and nucleic acids. CambridgeUK: Cambridge University Press. 356 p.</mixed-citation>
+</ref>
+<ref id="pcbi.1003234-Schwarz1"><label>22</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schwarz</surname><given-names>G</given-names></name> (<year>1978</year>) <article-title>Estimating the dimension of a model</article-title>. <source>The Annals of Statistics</source> <volume>6</volume>: <fpage>461</fpage>–<lpage>464</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003234-Akaike1"><label>23</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Akaike</surname><given-names>H</given-names></name> (<year>1974</year>) <article-title>A new look at the statistical model identification</article-title>. <source>IEEE transactions on automatic control</source> <volume>AC-19</volume>: <fpage>716</fpage>–<lpage>723</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003234-MachadoLima1"><label>24</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Machado-Lima</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Kashiwabara</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Durham</surname><given-names>A</given-names></name> (<year>2010</year>) <article-title>Decreasing the number of false positives in sequence classification</article-title>. <source>BMC genomics</source> <volume>11</volume>: <fpage>S10</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003234-Reese1"><label>25</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Reese</surname><given-names>MG</given-names></name>, <name name-style="western"><surname>Eeckman</surname><given-names>FH</given-names></name> (<year>1997</year>) <article-title>Improved splice site detection in Genie</article-title>. <source>J Comp Biol</source> <volume>4</volume>: <fpage>311</fpage>–<lpage>323</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003234-Cawley1"><label>26</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cawley</surname><given-names>SE</given-names></name>, <name name-style="western"><surname>Wirth</surname><given-names>AI</given-names></name>, <name name-style="western"><surname>Speed</surname><given-names>TP</given-names></name> (<year>2001</year>) <article-title>Phat–a gene finding program for plasmodium falciparum</article-title>. <source>Mol Biochem Parasitol</source> <volume>118</volume>: <fpage>167</fpage>–<lpage>174</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003234-Lomsadze1"><label>27</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lomsadze</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Ter-Hovhannisyan</surname><given-names>V</given-names></name>, <name name-style="western"><surname>Chernoff</surname><given-names>YO</given-names></name>, <name name-style="western"><surname>Borodovsky</surname><given-names>M</given-names></name> (<year>2005</year>) <article-title>Gene identification in novel eukaryotic genomes by self-training algorithm</article-title>. <source>Nucleic Acids Res</source> <volume>33</volume>: <fpage>6494</fpage>–<lpage>6506</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003234-Gudon1"><label>28</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Guédon</surname><given-names>Y</given-names></name> (<year>2003</year>) <article-title>Estimating hidden semi-Markov chains from discrete sequences</article-title>. <source>Journal of Computational and Graphical Statistics</source> <volume>12</volume>: <fpage>604</fpage>–<lpage>639</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003234-Majoros2"><label>29</label>
+<mixed-citation publication-type="other" xlink:type="simple">Majoros W, Status I, Availability L (2007) Methods for Computational Gene Prediction. Cambridge: Cambridge University Press. 430 p.</mixed-citation>
+</ref>
+<ref id="pcbi.1003234-Kent1"><label>30</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kent</surname><given-names>WJ</given-names></name> (<year>2002</year>) <article-title>Blat–the blast-like alignment tool</article-title>. <source>Genome Research</source> <volume>12</volume>: <fpage>656</fpage>–<lpage>64</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003234-ENCODE1"><label>31</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><collab xlink:type="simple">ENCODE Project Consortium</collab> (<year>2004</year>) <article-title>The ENCODE (ENCyclopedia Of DNA Elements) Project</article-title>. <source>Science</source> <volume>306</volume>: <fpage>636</fpage>–<lpage>640</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003234-Glass1"><label>32</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Glass</surname><given-names>JL</given-names></name>, <name name-style="western"><surname>Thompson</surname><given-names>RF</given-names></name>, <name name-style="western"><surname>Khulan</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Figueroa</surname><given-names>ME</given-names></name>, <name name-style="western"><surname>Olivier</surname><given-names>EN</given-names></name>, <etal>et al</etal>. (<year>2007</year>) <article-title>CG dinucleotide clustering is a species-specific property of the genome</article-title>. <source>Nucleic acids research</source> <volume>35</volume>: <fpage>6798</fpage>–<lpage>807</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003234-Yamashita1"><label>33</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yamashita</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Wakaguri</surname><given-names>H</given-names></name>, <name name-style="western"><surname>Sugano</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Suzuki</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Nakai</surname><given-names>K</given-names></name> (<year>2010</year>) <article-title>DBTSS provides a tissue specific dynamic view of Transcription Start Sites</article-title>. <source>Nucleic acids research</source> <volume>38</volume>: <fpage>D98</fpage>–<lpage>104</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003234-Stanke2"><label>34</label>
+<mixed-citation publication-type="other" xlink:type="simple">Stanke M (2003) Gene prediction with a hidden Markov model. [PhD Dissertation] Universität Göttingen.</mixed-citation>
+</ref>
+<ref id="pcbi.1003234-Keibler1"><label>35</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Keibler</surname><given-names>E</given-names></name>, <name name-style="western"><surname>Brent</surname><given-names>MR</given-names></name> (<year>2003</year>) <article-title>Eval: a software package for analysis of genome annotations</article-title>. <source>BMC Bioinformatics</source> <volume>4</volume>: <fpage>50</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003234-Lafferty1"><label>36</label>
+<mixed-citation publication-type="other" xlink:type="simple">Lafferty J, McCallum A, Pereira F (2001) Conditional Random Fields: Probabilistic Models for Segmenting and Labeling Sequence Data. In: ICML '01 Proceedings of the Eighteenth International Conference on Machine Learning. pp. 282–289.</mixed-citation>
+</ref>
+</ref-list></back>
+</article>

@@ -1,0 +1,859 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" dtd-version="3.0" xml:lang="en" article-type="research-article">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">ploscomp</journal-id>
+<journal-title-group>
+<journal-title>PLOS Computational Biology</journal-title>
+</journal-title-group>
+<issn pub-type="ppub">1553-734X</issn>
+<issn pub-type="epub">1553-7358</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="publisher-id">PCOMPBIOL-D-14-01687</article-id>
+<article-id pub-id-type="doi">10.1371/journal.pcbi.1004128</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+</article-categories>
+<title-group>
+<article-title>Neural Modularity Helps Organisms Evolve to Learn New Skills without Forgetting Old Skills</article-title>
+<alt-title alt-title-type="running-head">Modularity Enables Learning New Skills without Forgetting Old Skills</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Ellefsen</surname> <given-names>Kai Olav</given-names></name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Mouret</surname> <given-names>Jean-Baptiste</given-names></name>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Clune</surname> <given-names>Jeff</given-names></name>
+<xref ref-type="aff" rid="aff004"><sup>4</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+</contrib-group>
+<aff id="aff001">
+<label>1</label>
+<addr-line>Department of Computer and Information Science, Norwegian University of Science and Technology, Trondheim, Norway</addr-line>
+</aff>
+<aff id="aff002">
+<label>2</label>
+<addr-line>Sorbonne Université UPMC Univ Paris 06, UMR 7222, ISIR, Paris, France</addr-line>
+</aff>
+<aff id="aff003">
+<label>3</label>
+<addr-line>CNRS, UMR 7222, ISIR,  Paris, France</addr-line>
+</aff>
+<aff id="aff004">
+<label>4</label>
+<addr-line>Computer Science Department, University of Wyoming, Laramie, Wyoming, United States of America</addr-line>
+</aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Bongard</surname> <given-names>Josh C.</given-names></name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1">
+<addr-line>University of Vermont, UNITED STATES</addr-line>
+</aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<fn fn-type="con" id="contrib001">
+<p>Conceived and designed the experiments: KOE JC. Performed the experiments: KOE. Analyzed the data: KOE JBM JC. Contributed reagents/materials/analysis tools: KOE JBM. Wrote the paper: KOE JMB JC. Developed the software used in experiments: JBM.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">jeffclune@uwyo.edu</email></corresp>
+</author-notes>
+<pub-date pub-type="collection">
+<month>4</month>
+<year>2015</year>
+</pub-date>
+<pub-date pub-type="epub">
+<day>2</day>
+<month>4</month>
+<year>2015</year>
+</pub-date>
+<volume>11</volume>
+<issue>4</issue>
+<elocation-id>e1004128</elocation-id>
+<history>
+<date date-type="received">
+<day>17</day>
+<month>9</month>
+<year>2014</year>
+</date>
+<date date-type="accepted">
+<day>14</day>
+<month>1</month>
+<year>2015</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2015</copyright-year>
+<copyright-holder>Ellefsen et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pcbi.1004128" xlink:type="simple"/>
+<abstract>
+<p>A long-standing goal in artificial intelligence is creating agents that can learn a variety of different skills for different problems. In the artificial intelligence subfield of neural networks, a barrier to that goal is that when agents learn a new skill they typically do so by losing previously acquired skills, a problem called <italic>catastrophic forgetting</italic>. That occurs because, to learn the new task, neural learning algorithms change connections that encode previously acquired skills. How networks are organized critically affects their learning dynamics. In this paper, we test whether catastrophic forgetting can be reduced by evolving <italic>modular</italic> neural networks. Modularity intuitively should reduce learning interference between tasks by separating functionality into physically distinct modules in which learning can be selectively turned on or off. Modularity can further improve learning by having a reinforcement learning module separate from sensory processing modules, allowing learning to happen only in response to a positive or negative reward. In this paper, learning takes place via neuromodulation, which allows agents to selectively change the rate of learning for each neural connection based on environmental stimuli (e.g. to alter learning in specific locations based on the task at hand). To produce modularity, we evolve neural networks with a cost for neural connections. We show that this <italic>connection cost technique</italic> causes modularity, confirming a previous result, and that such sparsely connected, modular networks have higher overall performance because they learn new skills faster while retaining old skills more and because they have a separate reinforcement learning module. Our results suggest (1) that encouraging modularity in neural networks may help us overcome the long-standing barrier of networks that cannot learn new skills without forgetting old ones, and (2) that one benefit of the modularity ubiquitous in the brains of natural animals might be to alleviate the problem of catastrophic forgetting.</p>
+</abstract>
+<abstract abstract-type="summary">
+<title>Author Summary</title>
+<p>A long-standing goal in artificial intelligence (AI) is creating computational brain models (neural networks) that learn what to do in new situations. An obstacle is that agents typically learn new skills only by losing previously acquired skills. Here we test whether such forgetting is reduced by evolving modular neural networks, meaning networks with many distinct subgroups of neurons. Modularity intuitively should help because learning can be selectively turned on only in the module learning the new task. We confirm this hypothesis: modular networks have higher overall performance because they learn new skills faster while retaining old skills more. Our results suggest that one benefit of modularity in natural animal brains may be allowing learning without forgetting.</p>
+</abstract>
+<funding-group>
+<funding-statement>KOE and JC have no specific financial support for this work. JBM is supported by an ANR young researchers grant (Creadapt, ANR-12-JS03-0009). URL: <ext-link ext-link-type="uri" xlink:type="simple" xlink:href="http://www.agence-nationale-recherche.fr/en/funding-opportunities/documents/aap-en/generic-call-for-proposals-2015-2015/nc/">http://www.agence-nationale-recherche.fr/en/funding-opportunities/documents/aap-en/generic-call-for-proposals-2015-2015/nc/</ext-link>. The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="11"/>
+<table-count count="0"/>
+<page-count count="24"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability" xlink:type="simple">
+<meta-name>Data Availability</meta-name>
+<meta-value>The exact source code and experimental configuration files used in our experiments, along with data from all our experiments, are freely available in the online Dryad scientific archive at <ext-link ext-link-type="uri" xlink:type="simple" xlink:href="http://dx.doi.org/10.5061/dryad.s38n5">http://dx.doi.org/10.5061/dryad.s38n5</ext-link>.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>A long-standing scientific challenge is to create agents that can <italic>learn</italic>, meaning they can adapt to novel situations and environments within their lifetime. The world is too complex, dynamic, and unpredictable to program all beneficial strategies ahead of time, which is why robots, like natural animals, need to be able to continuously learn new skills on the fly.</p>
+<p>Having robots learn a large set of skills, however, has been an elusive challenge because they need to learn new skills without forgetting previously acquired skills [<xref ref-type="bibr" rid="pcbi.1004128.ref001">1</xref>–<xref ref-type="bibr" rid="pcbi.1004128.ref003">3</xref>]. Such forgetting is especially problematic in fields that attempt to create artificial intelligence in brain models called artificial neural networks [<xref ref-type="bibr" rid="pcbi.1004128.ref001">1</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref004">4</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref005">5</xref>]. To learn new skills, neural network learning algorithms change the <italic>weights</italic> of neural connections [<xref ref-type="bibr" rid="pcbi.1004128.ref006">6</xref>–<xref ref-type="bibr" rid="pcbi.1004128.ref008">8</xref>], but old skills are lost because the weights that encoded old skills are changed to improve performance on new tasks. This problem is known as <italic>catastrophic forgetting</italic> [<xref ref-type="bibr" rid="pcbi.1004128.ref009">9</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref010">10</xref>] to emphasize that it contrasts with biological animals (including humans), where there is <italic>gradual</italic> forgetting of old skills as new skills are learned [<xref ref-type="bibr" rid="pcbi.1004128.ref011">11</xref>]. While robots and artificially intelligent software agents have the potential to significantly help society [<xref ref-type="bibr" rid="pcbi.1004128.ref012">12</xref>–<xref ref-type="bibr" rid="pcbi.1004128.ref014">14</xref>], their benefits will be extremely limited until we can solve the problem of catastrophic forgetting [<xref ref-type="bibr" rid="pcbi.1004128.ref001">1</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref015">15</xref>]. To advance our goal of producing sophisticated, functional artificial intelligence in neural networks and make progress in our long-term quest to create general artificial intelligence with them, we need to develop algorithms that can learn how to handle more than a few different problems. Additionally, the difference between computational brain models and natural brains with respect to catastrophic forgetting limits the usefulness of such models as tools to study neurological pathologies [<xref ref-type="bibr" rid="pcbi.1004128.ref016">16</xref>].</p>
+<p>In this paper, we investigate the hypothesis that modularity, which is widespread in biological neural networks [<xref ref-type="bibr" rid="pcbi.1004128.ref017">17</xref>–<xref ref-type="bibr" rid="pcbi.1004128.ref021">21</xref>], helps reduce catastrophic forgetting in artificial neural networks. Modular networks are those that have many clusters (modules) of highly connected neurons that are only sparsely connected to neurons in other modules [<xref ref-type="bibr" rid="pcbi.1004128.ref019">19</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref022">22</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref023">23</xref>]. The intuition behind this hypothesis is that modularity could allow learning new skills without forgetting old skills because learning can be selectively turned on only in modules learning a new task (<xref ref-type="fig" rid="pcbi.1004128.g001">Fig. 1</xref>, top). Selective regulation of learning occurs in natural brains via <italic>neuromodulation</italic> [<xref ref-type="bibr" rid="pcbi.1004128.ref024">24</xref>], and we incorporate an abstraction of it in our model [<xref ref-type="bibr" rid="pcbi.1004128.ref025">25</xref>]. We also investigate a second hypothesis: that modularity can improve skill learning by separating networks into a <italic>skill module</italic> and a <italic>reward module</italic>, resulting in more precise control of learning (<xref ref-type="fig" rid="pcbi.1004128.g001">Fig. 1</xref>, bottom).</p>
+<fig id="pcbi.1004128.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004128.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>Two hypotheses for how neural modularity can improve learning.</title>
+<p>Hypothesis 1: Evolving non-modular networks leads to the forgetting of old skills as new skills are learned. Evolving networks with a pressure to minimize connection costs leads to modular solutions that can retain old skills as new skills are learned. Hypothesis 2: Evolving modular networks makes reward-based learning easier, because it allows a clear separation of reward signals and learned skills. We present evidence for both hypotheses in this paper.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004128.g001"/>
+</fig>
+<p>To evolve <italic>modular</italic> networks, we add another natural phenomenon: costs for neural connections. In nature, there are many costs associated with neural connections (e.g. building them, maintaining them, and housing them) [<xref ref-type="bibr" rid="pcbi.1004128.ref026">26</xref>–<xref ref-type="bibr" rid="pcbi.1004128.ref028">28</xref>] and it was recently demonstrated that incorporating a cost for such connections encourages the evolution of modularity in networks [<xref ref-type="bibr" rid="pcbi.1004128.ref023">23</xref>]. Our results support the hypothesis that modularity does mitigate catastrophic forgetting: modular networks have higher overall performance because they learn new skills faster while retaining old skills more. Additional research into this area, including investigating the generality of our results, will catalyze research on creating artificial intelligence, improve models of neural learning, and shed light on whether one benefit of modularity in natural animal brains is an improved ability to learn without forgetting.</p>
+<sec id="sec002">
+<title>Background</title>
+<sec id="sec003">
+<title>Catastrophic forgetting</title>
+<p>Catastrophic forgetting (also called catastrophic interference) has been identified as a problem for artificial neural networks (ANNs) for over two decades: When learning multiple tasks in a sequence, previous skills are forgotten rapidly as new information is learned [<xref ref-type="bibr" rid="pcbi.1004128.ref009">9</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref010">10</xref>]. The problem occurs because learning algorithms only focus on solving the current problem and change any connections that will help solve that problem, even if those connections encoded skills appropriate to previously encountered problems [<xref ref-type="bibr" rid="pcbi.1004128.ref009">9</xref>].</p>
+<p>Many attempts have been made to mitigate catastrophic forgetting. <italic>Novelty vectors</italic> modify the backpropagation learning algorithm [<xref ref-type="bibr" rid="pcbi.1004128.ref007">7</xref>] to limit the number of connections that are changed in the network based on how novel, or unexpected, the input pattern is [<xref ref-type="bibr" rid="pcbi.1004128.ref029">29</xref>]. This technique is only applicable for auto-encoder networks (networks whose target output is identical to their input), thus limiting its value as a general solution to catastrophic forgetting [<xref ref-type="bibr" rid="pcbi.1004128.ref001">1</xref>]. <italic>Orthogonalization</italic> techniques mitigate interference between tasks by reducing their representational overlap in input neurons (via manually designed preprocessing) and by encouraging sparse hidden-neuron activations [<xref ref-type="bibr" rid="pcbi.1004128.ref030">30</xref>–<xref ref-type="bibr" rid="pcbi.1004128.ref032">32</xref>]. <italic>Interleaved learning</italic> avoids catastrophic forgetting by training on both old and new data when learning [<xref ref-type="bibr" rid="pcbi.1004128.ref010">10</xref>], although this method cannot scale and does not work for realistic environments because in the real world not all challenges are faced concurrently [<xref ref-type="bibr" rid="pcbi.1004128.ref033">33</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref034">34</xref>]. This problem with interleaved learning can be reduced with <italic>pseudo rehearsal</italic>, wherein input-output associations from old tasks are remembered and rehearsed [<xref ref-type="bibr" rid="pcbi.1004128.ref034">34</xref>]. However, scaling remains an issue with pseudo rehearsal because such associations still must be stored and choosing which associations to store is an unsolved problem [<xref ref-type="bibr" rid="pcbi.1004128.ref015">15</xref>]. These techniques are all engineered approaches to reducing the problem of catastrophic forgetting and are not proposed as methods by which natural evolution solved the problem of catastrophic forgetting [<xref ref-type="bibr" rid="pcbi.1004128.ref001">1</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref010">10</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref029">29</xref>–<xref ref-type="bibr" rid="pcbi.1004128.ref032">32</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref034">34</xref>].</p>
+<p><italic>Dual-net architectures</italic>, on the other hand, present a biologically plausible [<xref ref-type="bibr" rid="pcbi.1004128.ref035">35</xref>] mechanism for limiting catastrophic forgetting [<xref ref-type="bibr" rid="pcbi.1004128.ref033">33</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref036">36</xref>]. The technique, inspired by theories on how human brains separate and subsequently integrate old and new knowledge, partitions early processing and long-term storage into different subnetworks. Similar to interleaved learning techniques, dual-net architectures enable both new knowledge and input history (in the form of current network state) to affect learning.</p>
+<p>Although these methods have been suggested for reducing catastrophic forgetting, many questions remain about how animals avoid this problem [<xref ref-type="bibr" rid="pcbi.1004128.ref001">1</xref>] and which mechanisms can help avoid it in neural networks [<xref ref-type="bibr" rid="pcbi.1004128.ref001">1</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref015">15</xref>]. In this paper, we study a new hypothesis, which is that <italic>modularity</italic> can help avoid catastrophic forgetting. Unlike the techniques mentioned so far, our solution does not require human design, but is automatically generated by evolution. Evolving our solution under biologically realistic constraints has the added benefit of suggesting how such a mechanism may have originated in nature.</p>
+</sec>
+<sec id="sec004">
+<title>Evolving neural networks that learn</title>
+<p>One method for setting the connection weights of neural networks is to evolve them, meaning that an <italic>evolutionary algorithm</italic> specifies each weight, and the weight does not change within an organism’s “lifetime” [<xref ref-type="bibr" rid="pcbi.1004128.ref005">5</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref037">37</xref>–<xref ref-type="bibr" rid="pcbi.1004128.ref039">39</xref>]. Evolutionary algorithms abstract Darwinian evolution: in each generation a population of “organisms” is subjected to selection (for high performance) and then mutation (and possibly crossover) [<xref ref-type="bibr" rid="pcbi.1004128.ref005">5</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref038">38</xref>]. These algorithms have shown impressive performance—often outperforming human engineers [<xref ref-type="bibr" rid="pcbi.1004128.ref040">40</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref041">41</xref>]—on a range of tasks, such as measuring properties in quantum physics [<xref ref-type="bibr" rid="pcbi.1004128.ref012">12</xref>], dynamic rocket guidance [<xref ref-type="bibr" rid="pcbi.1004128.ref042">42</xref>], and robot locomotion [<xref ref-type="bibr" rid="pcbi.1004128.ref043">43</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref044">44</xref>].</p>
+<p>Another approach to determining the weights of neural networks is to initialize them randomly and then allow them to change via a learning algorithm [<xref ref-type="bibr" rid="pcbi.1004128.ref005">5</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref007">7</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref045">45</xref>]. Some learning algorithms, such as backpropagation [<xref ref-type="bibr" rid="pcbi.1004128.ref006">6</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref007">7</xref>], require a correct output (e.g. action) for each input. Other learning algorithms are considered more biologically plausible in that they involve only information local to each neuron (e.g. Hebb’s rule [<xref ref-type="bibr" rid="pcbi.1004128.ref045">45</xref>]) or infrequent reward signals [<xref ref-type="bibr" rid="pcbi.1004128.ref008">8</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref046">46</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref047">47</xref>].</p>
+<p>Evolution and learning can be combined, wherein evolution creates an initial neural network and then a learning algorithm modifies its connections within the lifetime of the organism [<xref ref-type="bibr" rid="pcbi.1004128.ref005">5</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref037">37</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref047">47</xref>–<xref ref-type="bibr" rid="pcbi.1004128.ref049">49</xref>]. Compared to behaviors defined solely by evolution, evolving agents that learn leads to better solutions in fewer generations [<xref ref-type="bibr" rid="pcbi.1004128.ref048">48</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref050">50</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref051">51</xref>], improved adaptability to changing environments [<xref ref-type="bibr" rid="pcbi.1004128.ref048">48</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref049">49</xref>], and enables evolving solutions for larger neural networks [<xref ref-type="bibr" rid="pcbi.1004128.ref048">48</xref>]. Computational studies of evolving agents that learn have also shed light on open biological questions regarding the interactions between evolution and learning [<xref ref-type="bibr" rid="pcbi.1004128.ref050">50</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref052">52</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref053">53</xref>].</p>
+<p>The idea of using evolutionary computation to reduce catastrophic forgetting has not been widely explored. In one relevant paper, evolution optimized certain parameters of a neural network to mitigate catastrophic forgetting [<xref ref-type="bibr" rid="pcbi.1004128.ref015">15</xref>]. Such parameters included the number of hidden (internal) neurons, learning rates, patterns of connectivity, initial weights, and output error tolerances. That paper did show that there is a potential for evolution to generate a stronger resistance to catastrophic forgetting, but did not investigate the role of modularity in helping produce such a resistance.</p>
+</sec>
+<sec id="sec005">
+<title>Neuromodulatory learning in neural networks</title>
+<p>Evolutionary experiments on artificial neural networks typically model only the classic excitatory and inhibitory actions of neurons in the brain [<xref ref-type="bibr" rid="pcbi.1004128.ref005">5</xref>]. In addition to these processes, biological brains employ a number of different <italic>neuromodulators</italic>, which are chemical signals that can locally modify learning [<xref ref-type="bibr" rid="pcbi.1004128.ref024">24</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref054">54</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref055">55</xref>]. By allowing evolution to design neuromodulatory dynamics, learning rates for particular synapses can be upregulated and downregulated in response to certain inputs from the environment. These additional degrees of freedom greatly increase the possible complexity of reward-based learning strategies. This type of plasticity-controlling neuromodulation has been successfully applied when evolving neural networks that solve reinforcement learning problems [<xref ref-type="bibr" rid="pcbi.1004128.ref025">25</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref046">46</xref>], and a comparison found that evolution was able to solve more complex tasks with neuromodulated Hebbian learning than with Hebbian learning alone [<xref ref-type="bibr" rid="pcbi.1004128.ref025">25</xref>]. Our experiments include this form of neuromodulation (<xref ref-type="sec" rid="sec016">Methods</xref>).</p>
+</sec>
+<sec id="sec006">
+<title>Evolved modularity in neural networks</title>
+<p>Modularity is ubiquitous in biological networks, including neural networks, genetic regulatory networks, and protein interaction networks [<xref ref-type="bibr" rid="pcbi.1004128.ref017">17</xref>–<xref ref-type="bibr" rid="pcbi.1004128.ref021">21</xref>]. Why modularity evolved in such networks has been a long-standing area of research [<xref ref-type="bibr" rid="pcbi.1004128.ref018">18</xref>–<xref ref-type="bibr" rid="pcbi.1004128.ref020">20</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref056">56</xref>–<xref ref-type="bibr" rid="pcbi.1004128.ref059">59</xref>]. Researchers have also long studied how to encourage the evolution of modularity in artificial neural networks, usually by creating the conditions that are thought to promote modularity in natural evolution [<xref ref-type="bibr" rid="pcbi.1004128.ref019">19</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref057">57</xref>–<xref ref-type="bibr" rid="pcbi.1004128.ref061">61</xref>]. Several different hypotheses have been suggested for the evolutionary origins of modularity.</p>
+<p>A leading hypothesis has been that modularity emerges when evolution occurs in rapidly changing environments that have common subproblems, but different overall problems [<xref ref-type="bibr" rid="pcbi.1004128.ref057">57</xref>]. These environments are said to have <italic>modularly varying goals</italic>. While such environments can promote modularity [<xref ref-type="bibr" rid="pcbi.1004128.ref057">57</xref>], the effect only appears for certain frequencies of environmental change [<xref ref-type="bibr" rid="pcbi.1004128.ref023">23</xref>] and can fail to appear with different types of networks [<xref ref-type="bibr" rid="pcbi.1004128.ref058">58</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref060">60</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref061">61</xref>]. Moreover, it is unclear how many natural environments change <italic>modularly</italic> and how to design training problems for artificial neural networks that have modularly varying goals. Other experiments have shown that modularity may arise from gene duplication and differentiation [<xref ref-type="bibr" rid="pcbi.1004128.ref019">19</xref>], or that it may evolve to make networks more robust to noise in the genotype-phenotype mapping [<xref ref-type="bibr" rid="pcbi.1004128.ref058">58</xref>] or to reduce interference between network activity patterns [<xref ref-type="bibr" rid="pcbi.1004128.ref059">59</xref>].</p>
+<p>Recently, a different cause of module evolution was documented: that modularity evolves when there are costs for connections in networks [<xref ref-type="bibr" rid="pcbi.1004128.ref023">23</xref>]. This explanation for the evolutionary origins of modularity is biologically plausible because biological networks have connection costs (e.g. to build connections, maintain them, and house them) and there is evidence that natural selection optimally arranges neurons to minimize these connection costs [<xref ref-type="bibr" rid="pcbi.1004128.ref026">26</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref027">27</xref>]. Moreover, the modularity-inducing effects of adding a connection cost were shown to occur in a wide range of environments, suggesting that adding a selection pressure to reduce connection costs is a robust, general way to encourage modularity [<xref ref-type="bibr" rid="pcbi.1004128.ref023">23</xref>]. We apply this technique in our paper because of its efficacy and because it may be a main reason that modularity evolves in natural networks.</p>
+</sec>
+</sec>
+<sec id="sec007">
+<title>Experimental Setup</title>
+<p>To test our hypotheses, we set up an environment in which there is a potential for catastrophic forgetting and where individuals able to avoid this forgetting receive a higher evolutionary <italic>fitness</italic>, meaning they are more likely to reproduce. The environment is an abstraction of a world in which an organism performs a daily routine of trying to eat nutritious food while avoiding eating poisonous food. Every day the organism observes every food item one time: half of the food items are nutritious and half are poisonous. To achieve maximum fitness, the individual needs to eat all the nutritious items and avoid eating the poisonous ones. After a number of days, the season changes abruptly from a summer season to a winter season. In the new season, there is a new set of food sources, half of them nutritious and half poisonous, and the organism has to learn which is which. After this winter season, the environment changes back to the summer season and the food items and their nutritious/poisonous statuses are the same as in the previous summer. The environment switches back and forth between these two seasons multiple times in the organism’s lifetime. Individuals that remember each season’s food associations perform better by avoiding poisonous items without having to try them first.</p>
+<p>We consider each pair of a summer and winter season a <italic>year</italic>. Every season lasts for five <italic>days</italic>, and in each day an individual encounters all four food items for that season in a random order. A <italic>lifetime</italic> is three years (<xref ref-type="fig" rid="pcbi.1004128.g002">Fig. 2</xref>). To ensure that individuals must <italic>learn</italic> associations within their lifetimes instead of having genetically hardcoded associations [<xref ref-type="bibr" rid="pcbi.1004128.ref047">47</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref062">62</xref>], in each lifetime two food items are randomly assigned as nutritious and the other two food items are assigned as poisonous (<xref ref-type="fig" rid="pcbi.1004128.g003">Fig. 3</xref>). To select for <italic>general</italic> learners rather than individuals that by chance do well in a specific environment, performance is averaged over four random environments (lifetimes) for each individual during evolution, and over 80 random environments (lifetimes) when assessing the performance of final, end-of-experiment individuals (<xref ref-type="sec" rid="sec016">Methods</xref>).</p>
+<fig id="pcbi.1004128.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004128.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>The environment for one individual’s lifetime.</title>
+<p>A lifetime lasts 3 years. Each year has 2 seasons: winter and summer. Each season consists of 5 days. In each day, each individual sees all food items available in that season (only two are shown) in a random order.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004128.g002"/>
+</fig>
+<fig id="pcbi.1004128.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004128.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title>Randomizing food associations between generations.</title>
+<p>To ensure that agents learn associations within their lifetimes instead of genetically hardcoding associations, whether each food item is nutritious or poisonous is randomized each generation. There are four food items per season (two are depicted).</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004128.g003"/>
+</fig>
+<p>This environment selects for agents that can avoid forgetting old information as they learn new, unrelated information. For instance, if an agent is able to avoid forgetting the summer associations during the winter season, it will immediately perform well when summer returns, thus outcompeting agents that have to relearn summer associations. Agents that forget, especially catastrophically, are therefore at a selective disadvantage.</p>
+<p>Our main results were found to be robust to variations in several of our experimental parameters, including changes to the number of years in the organism’s lifetime, the number of different seasons per year, the number of different edible items, and different representations of the inputs (the presence of items being represented either by a single input or distributed across all inputs for a season). We also observed that our results are robust to lengthening the number of days per season: networks in the experimental treatment (called “P&amp;CC” for reasons described below) significantly outperform the networks in the control (“PA”) treatment (<italic>p</italic> &lt; 0.05) even when doubling or quadrupling the number of days per season, although the size of the difference diminished in longer seasons.</p>
+<sec id="sec008">
+<title>Neural network model</title>
+<p>The model of the organism’s brain is a neural network with 10 input neurons (Supp. <xref ref-type="supplementary-material" rid="pcbi.1004128.s001">S1 Fig</xref>). From left to right, inputs 1-4 and 5-8 encode which summer and winter food item is present, respectively. During summer, the winter inputs are never active and vice versa. Catastrophic forgetting may appear in these networks because a non-modular neural network is likely to use the same hidden neurons for both seasons (<xref ref-type="fig" rid="pcbi.1004128.g001">Fig. 1</xref>, top). We segmented the summer and winter items into separate input neurons to abstract a neural network responsible for an intermediate phase of cognition, where early visual processing and object recognition have already occurred, but before decisions have been made about what to do in response to the recognized visual stimuli. Such disentangled representations of objects have been identified in animal brains [<xref ref-type="bibr" rid="pcbi.1004128.ref063">63</xref>] and are common at intermediate layers of neural network models [<xref ref-type="bibr" rid="pcbi.1004128.ref064">64</xref>]. The final two inputs are for reinforcement learning: inputs 9 and 10 are reward and punishment signals that fire when a nutritious or poisonous food item is eaten, respectively. The network has a single output that determines if the agent will eat (<italic>output</italic> &gt; 0) or ignore (<italic>output</italic> &lt; = 0) the presented food item.</p>
+<p>Associations can be learned by properly connecting reward signals through neuromodulatory neurons to non-modulatory neurons that determine which actions to take in response to food items (<xref ref-type="sec" rid="sec016">Methods</xref>). Evolution determines the neural wiring that produces learning dynamics, as described next.</p>
+</sec>
+<sec id="sec009">
+<title>Evolutionary algorithm</title>
+<p>Evolution begins with a randomly generated population of neural networks. The <italic>performance</italic> of each network is evaluated as described above. More fit networks tend to have more offspring, with fitness being determined differently in each treatment, as explained below. Offspring are generated by copying a parent genome and mutating it by adding or removing connections, changing the strength of connections, and switching neurons from being modulatory to non-modulatory or vice versa. The process repeats for 20,000 generations.</p>
+<p>To evolve <italic>modular</italic> neural networks, we followed a recently demonstrated procedure where modularity evolves as a byproduct of a selection pressure to reduce neural connectivity [<xref ref-type="bibr" rid="pcbi.1004128.ref023">23</xref>]. We compared a treatment where the fitness of individuals was based on performance alone (PA) to one based on both maximizing performance and minimizing connection costs (P&amp;CC). Specifically, evolution proceeds according to a multi-objective evolutionary algorithm with one (PA) or two (P&amp;CC) primary objectives. A network’s connection cost equals its number of connections, following [<xref ref-type="bibr" rid="pcbi.1004128.ref023">23</xref>]. More details on the evolutionary algorithm can be found in Methods.</p>
+</sec>
+</sec>
+</sec>
+<sec id="sec010" sec-type="results">
+<title>Results</title>
+<sec id="sec011">
+<title>A Connection Cost Increases Performance and Modularity</title>
+<p>The addition of a cost for connections (the P&amp;CC treatment) leads to a rapid, sustained, and statistically significant fitness advantage versus not having a connection cost (the PA treatment) (<xref ref-type="fig" rid="pcbi.1004128.g004">Fig. 4</xref>). In addition to overall performance across generations, we looked at the day-to-day performance of final, evolved individuals (<xref ref-type="fig" rid="pcbi.1004128.g005">Fig. 5</xref>). P&amp;CC networks learn associations faster in their first summer and winter, and maintain higher performance over multiple years (pairs of seasons).</p>
+<fig id="pcbi.1004128.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004128.g004</object-id>
+<label>Fig 4</label>
+<caption>
+<title>The addition of a cost for network connections, which is present only in the P&amp;CC treatment, significantly increases performance and modularity.</title>
+<p>Modularity is measured via a widely used approximation of the standard <italic>Q</italic> modularity score [<xref ref-type="bibr" rid="pcbi.1004128.ref023">23</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref057">57</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref065">65</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref067">67</xref>] (<xref ref-type="sec" rid="sec016">Methods</xref>). For each treatment, the median from 100 independent evolution experiments is shown ± 95% bootstrapped confidence intervals of the median (<xref ref-type="sec" rid="sec016">Methods</xref>). Asterisks below each plot indicate statistically significant differences at <italic>p</italic> &lt; 0.01 according to the Mann-Whitney U test, which is the default statistical test throughout this paper unless otherwise specified.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004128.g004"/>
+</fig>
+<fig id="pcbi.1004128.g005" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004128.g005</object-id>
+<label>Fig 5</label>
+<caption>
+<title>Performance each day for evolved agents from both treatments.</title>
+<p>Plotted is median performance per day (± 95% bootstrapped confidence intervals of the median) measured across 100 organisms (the highest-performing organism from each experiment per treatment) tested in 80 new environments (lifetimes) with random associations (<xref ref-type="sec" rid="sec016">Methods</xref>). P&amp;CC networks significantly outperform PA networks on every day (asterisks). Eating no items or all items produces a score of 0.5; eating all and only nutritious food items achieves the maximum score of 1.0.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004128.g005"/>
+</fig>
+<p>The presence of a connection cost also significantly increases network <italic>modularity</italic> (<xref ref-type="fig" rid="pcbi.1004128.g004">Fig. 4</xref>), confirming the finding of Clune et al. [<xref ref-type="bibr" rid="pcbi.1004128.ref023">23</xref>] in this different context of networks with within-life learning. Networks evolved in the P&amp;CC treatment tend to create a separate reinforcement learning module that contains the reward and punishment inputs and most or all neuromodulatory neurons (<xref ref-type="fig" rid="pcbi.1004128.g006">Fig. 6</xref>). One of our hypotheses (<xref ref-type="fig" rid="pcbi.1004128.g001">Fig. 1</xref>, bottom) suggested that such a separation could improve the efficiency of learning, by regulating learning (via neuromodulatory neurons) in response to whether the network performed a correct or incorrect action, and applying that learning to downstream neurons that determine which action should be taken in response to input stimuli.</p>
+<fig id="pcbi.1004128.g006" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004128.g006</object-id>
+<label>Fig 6</label>
+<caption>
+<title>PA networks are visually non-modular whereas P&amp;CC networks tend to create a separate module for learning (red and orange neurons), as hypothesized in <xref ref-type="fig" rid="pcbi.1004128.g001">Fig. 1</xref> (bottom).</title>
+<p>Dark blue nodes are inputs that encode which type of food has been encountered. Light blue nodes indicate internal, non-modulatory neurons. Red nodes are reward or punishment inputs that indicate if a nutritious or poisonous item has been eaten. Orange neurons are neuromodulatory neurons that regulate learning. P&amp;CC networks tend to separate the reward/punishment inputs and neuromodulatory neurons into a separate module that applies learning to downstream neurons that determine which actions to take. For each treatment, the highest-performing network from each of the nine highest-performing evolution experiments are shown (all are shown in the Supporting Information). In each panel, the left number reports performance and the right number reports modularity. We follow the convention from [<xref ref-type="bibr" rid="pcbi.1004128.ref023">23</xref>] of placing nodes in the way that minimizes the total connection length.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004128.g006"/>
+</fig>
+<p>To quantify whether learning is separated into its own module, we adopted a technique from [<xref ref-type="bibr" rid="pcbi.1004128.ref023">23</xref>], which splits a network into the most modular decomposition according to the modularity <italic>Q</italic> score [<xref ref-type="bibr" rid="pcbi.1004128.ref065">65</xref>]. We then measured the frequency with which the reinforcement inputs (reward/punishment signals) were placed into a different module from the remaining food-item inputs. This measure reveals that P&amp;CC networks have a separate module for learning in 31% of evolutionary trials, whereas only 4% of the PA trials do, which is a significant difference (<italic>p</italic> = 2.71 × 10<sup>−7</sup>), in agreement with our hypothesis (<xref ref-type="fig" rid="pcbi.1004128.g001">Fig. 1</xref>, bottom). Analyses also reveal that the networks from both treatments that have a separate module for learning perform significantly better than networks without this decomposition (median performance of modular networks in 80 randomly generated environments (<xref ref-type="sec" rid="sec016">Methods</xref>): 0.87 [95% CI: 0.83, 0.88] vs. non-modular networks: 0.80 [0.71, 0.84], <italic>p</italic> = 0.02). Even though only 31% of the P&amp;CC networks are deemed modular in this particular way, the remaining P&amp;CC networks are still significantly more modular on average than PA networks (median Q scores are 0.25 [0.23, 0.28] and 0.2 [0.19, 0.22] respectively, <italic>p</italic> = 4.37 × 10<sup>−6</sup>), suggesting additional ways in which modularity improves the performance of P&amp;CC networks.</p>
+<p>After observing that a connection cost significantly improves performance and modularity, we analyzed whether this increased performance can be explained by the increased modularity, or whether it may better correlate with network <italic>sparsity</italic>, since P&amp;CC networks also have fewer connections (P&amp;CC median number of connections is 35.5 [95% CI: 31.0, 40.0] vs. PA 82.0 [74.0, 97.1], <italic>p</italic> = 7.97 × 10<sup>−19</sup>). Both sparsity and modularity are correlated with the performance of networks (<xref ref-type="fig" rid="pcbi.1004128.g007">Fig. 7</xref>). Sparsity also correlates with modularity (<italic>p</italic> = 5.15 × 10<sup>−40</sup> as calculated by a <italic>t</italic>-test of the hypothesis that the correlation is zero), as previously shown [<xref ref-type="bibr" rid="pcbi.1004128.ref023">23</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref066">66</xref>]. Our interpretation of the data is that the pressure for both functionality and sparsity causes modularity, which in turn helps evolve learners that are more resistant to catastrophic forgetting. However, it cannot be ruled out that sparsity itself mitigates catastrophic forgetting [<xref ref-type="bibr" rid="pcbi.1004128.ref001">1</xref>], or that the <italic>general</italic> learning abilities of the network have been improved due to the separation into a skill module and a learning module. Either way, the data support our hypothesis that a connection cost promotes the evolution of sparsity, modularity, and increased performance on learning tasks.</p>
+<fig id="pcbi.1004128.g007" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004128.g007</object-id>
+<label>Fig 7</label>
+<caption>
+<title>Performance is correlated with sparsity and modularity.</title>
+<p>Black dots represent the highest-performing network from each of the 100 experiments from both the PA and P&amp;CC treatments. Both the sparsity (<italic>p</italic> = 1.08 × 10<sup>−16</sup>) and modularity (<italic>p</italic> = 1.19 × 10<sup>−5</sup>) of networks significantly correlates with their performance. Performance was measured in 80 randomly generated environments (<xref ref-type="sec" rid="sec016">Methods</xref>). Significance was calculated by a <italic>t</italic>-test of the hypothesis that the correlation is zero. Notice that many of the lowest-performing networks are close to the maximum of 150 connections.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004128.g007"/>
+</fig>
+</sec>
+<sec id="sec012">
+<title>Modular P&amp;CC Networks Learn More and Forget Less</title>
+<p>We next investigated whether the improved performance of P&amp;CC individuals is because they forget less. Measuring the percent of information a network retains can be misleading, because networks that never learn anything are reported as never forgetting anything. In many PA experiments, networks did not learn in one or both seasons, which looks like perfect <italic>retention</italic>, but for the wrong reason: they do not forget anything because they never knew anything to begin with. To prevent such pathological, non-learning networks from clouding this analysis, we compared only the 50 highest-performing experiments from each treatment, instead of all 100 experiments. For both treatments, we then measured retention and forgetting in the highest-performing network from each of these 50 experiments.</p>
+<p>To illuminate how old associations are forgotten and new ones are formed, we performed an experiment from studies of association forgetting in humans [<xref ref-type="bibr" rid="pcbi.1004128.ref011">11</xref>]: already evolved individuals learned one task and then began training on a new task, during which we measured how their performance on the original task degraded. Specifically, we allowed individuals to learn for 50 winter days—to allow even poor learners time to learn the winter associations—before exposing them to 20 summer days, during which we measured how rapidly they forgot winter associations and learned summer associations (<xref ref-type="sec" rid="sec016">Methods</xref>). Notice that individuals were evolved in seasons lasting only 5 days, but we measure learning and forgetting for 20 days in this analysis to study the longer-term consequences of the evolved learning architectures. Thus, the key result relevant to catastrophic forgetting is what occurs during the first five days. We included the remaining 15 days to show that the differences in performance persist if the seasons are extended.</p>
+<p>P&amp;CC networks retain higher performance on the original task when learning a new task (<xref ref-type="fig" rid="pcbi.1004128.g008">Fig. 8</xref>, left). They also learn the new task better (<xref ref-type="fig" rid="pcbi.1004128.g008">Fig. 8</xref>, center). The combined effect significantly improves performance (<xref ref-type="fig" rid="pcbi.1004128.g008">Fig. 8</xref>, right), meaning P&amp;CC networks are significantly better at learning associations in a new season while retaining associations from a previous one.</p>
+<fig id="pcbi.1004128.g008" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004128.g008</object-id>
+<label>Fig 8</label>
+<caption>
+<title>Comparing the retention and forgetting of networks from the two treatments.</title>
+<p>P&amp;CC networks, which are more modular, are better at <italic>retaining</italic> associations learned on a previous task (winter associations) while learning a new task (summer associations), better at <italic>learning</italic> new (summer) associations, and significantly better when measuring performance on <italic>both</italic> the associations for the original task (winter) and the new task (summer). Note that networks were evolved with five days per season, so the results during those first five days are the most informative regarding the evolutionary mitigation of catastrophic forgetting: we show additional days to reveal longer-term consequences of the evolved architectures. Solid lines show median performance and shaded areas indicate 95% bootstrapped confidence intervals of the median. The retention scores (left panel) are normalized relative to the original performance before training on the new task (an unnormalized version is provided as Supp. <xref ref-type="supplementary-material" rid="pcbi.1004128.s006">S6 Fig</xref>). During all performance measurements, learning was disabled to prevent such measurements from changing an individual’s known associations (<xref ref-type="sec" rid="sec016">Methods</xref>).</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004128.g008"/>
+</fig>
+<p>To further understand whether the increased performance of the P&amp;CC individuals is because they learn more, retain more, or both, we counted the number of retained and learned associations for individuals in 80 randomly generated environments (lifetimes). If we regard performance in each season as a <italic>skill</italic>, this experiment measures whether the individuals can retain a previously-learned skill (perfect summer performance) after learning a new skill (perfect winter performance). We tested the knowledge of the individuals in the following way: at the end of each season, we counted the number of sets of associations (summer or winter) that individuals knew perfectly, which required them knowing the correct response for each food item in that season. We formulated four metrics that quantify how well individuals knew and retained associations.</p>
+<p>The first metric (“<italic>Perfect</italic>”) measures the number of seasons an individual knew <italic>both</italic> sets of associations (summer and winter). Doing well on this metric indicates reduced catastrophic forgetting because it requires retaining an old skill even after a new one is learned. P&amp;CC individuals learned significantly more Perfect associations (<xref ref-type="fig" rid="pcbi.1004128.g009">Fig. 9</xref>, Perfect).</p>
+<fig id="pcbi.1004128.g009" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004128.g009</object-id>
+<label>Fig 9</label>
+<caption>
+<title>P&amp;CC networks significantly outperform PA networks in both learning and retention.</title>
+<p>P&amp;CC individuals learn significantly more associations, whether counting only when the associations for both seasons are known (“Perfect” knowledge) or separately counting knowledge of either season’s association (total “Known”). P&amp;CC networks also forget fewer associations, defined as associations known in one season and then forgotten in the next, which is significant when looking at the percent of known associations forgotten (“% Forgotten”). P&amp;CC networks also retain significantly more associations, meaning they did not forget one season’s association when learning the next season’s association. See text for more information about the “Perfect”, “Known”, “Forgotten,” and “Retained” metrics. During all performance measurements, learning was disabled to prevent such measurements from changing an individual’s known associations (<xref ref-type="sec" rid="sec016">Methods</xref>). Bars show median performance, whiskers show the 95% bootstrapped confidence interval of the median. Two asterisks indicate <italic>p</italic> &lt; 0.01, three asterisks indicate <italic>p</italic> &lt; 0.001.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004128.g009"/>
+</fig>
+<p>The second metric (“<italic>Known</italic>”) is the sum of the number of seasons that summer associations were known and the number of seasons that winter associations were known. In other words, it counts knowing either season in a year and doubly counts knowing both. P&amp;CC individuals learned significantly more of these Known associations (<xref ref-type="fig" rid="pcbi.1004128.g009">Fig. 9</xref>, Known).</p>
+<p>The third metric counts the number of seasons in which an association was “<italic>Forgotten</italic>”, meaning an association was completely known in one season, but was not in the following season. There is no significant difference between treatments on this metric when measured in absolute numbers (<xref ref-type="fig" rid="pcbi.1004128.g009">Fig. 9</xref>, Forgotten). However, measured as a percentage of <italic>Known</italic> items, P&amp;CC individuals forgot significantly fewer associations (<xref ref-type="fig" rid="pcbi.1004128.g009">Fig. 9</xref>, % Forgotten). The modular P&amp;CC networks thus learned more and forgot less—leading to a significantly lower <italic>percentage</italic> of forgotten associations.</p>
+<p>The final metric counts the number of seasons in which an association was “<italic>Retained</italic>”, meaning an association was completely known in one season and the following season. P&amp;CC individuals retained significantly more than PA individuals, both in absolute numbers (<xref ref-type="fig" rid="pcbi.1004128.g009">Fig. 9</xref>, Retained) and as a percentage of the total number of known items (<xref ref-type="fig" rid="pcbi.1004128.g009">Fig. 9</xref>, % Retained).</p>
+<p>In each season, an agent can know two associations (summer and winter), leading to a maximum score of 6 × 80 × 2 = 960 for the <italic>known</italic> metric (6 seasons per lifetime (<xref ref-type="fig" rid="pcbi.1004128.g002">Fig. 2</xref>), 80 random environments). The agent can retain or forget two associations each season except the first, making the maximum score for these metrics 5 × 80 × 2 = 800. However, the agent can only score one perfect association (meaning both summer and winter is known) each season, leading to a maximum score of 6 × 80 = 480 for that metric.</p>
+<p>In summary, this analysis reveals that a connection cost caused evolution to find individuals that are better at gaining new knowledge without forgetting old knowledge. In other words, adding a connection cost mitigated catastrophic forgetting. That, in turn, enabled an increase in the total number of associations P&amp;CC individuals learned in their lifetimes.</p>
+</sec>
+<sec id="sec013">
+<title>Removing the Ability of Evolution to Improve Retention</title>
+<p>To further test whether the improved performance in the P&amp;CC treatment results from it mitigating catastrophic forgetting, we conducted experiments in a regime where retaining skills between tasks is impossible. Under such a regime, if the P&amp;CC treatment does not outperform the PA treatment, that is evidence for our hypothesis that the ability of P&amp;CC networks to outperform PA networks in the normal regime is because P&amp;CC networks retain previously learned skills more when learning new skills.</p>
+<p>To create a regime similar to the original problem, but without the potential to improve performance by minimizing catastrophic forgetting, we forced individuals to forget everything they learned at the end of every season. This <italic>forced forgetting</italic> was implemented by resetting all neuromodulated weights in the network to random values between each season change. The experimental setup was otherwise identical to the main experiment. In this treatment, evolution cannot evolve individuals to handle forgetting better, and can focus only on evolving good learning abilities for each season. With forced forgetting, the P&amp;CC treatment no longer significantly outperforms the PA treatment (<xref ref-type="fig" rid="pcbi.1004128.g010">Fig. 10</xref>).</p>
+<fig id="pcbi.1004128.g010" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004128.g010</object-id>
+<label>Fig 10</label>
+<caption>
+<title>Forcing individuals to forget what they have learned in the past eliminates the performance benefits of adding a connection cost.</title>
+<p>With forced forgetting, P&amp;CC does not significantly outperform PA: P&amp;CC 0.91 [95% CI: 0.91, 0.91] vs. PA 0.91 [0.90, 0.91], <italic>p</italic> &gt; 0.05. In the default treatment where remembering is possible, P&amp;CC significantly outperforms PA: P&amp;CC 0.94 [0.92, 0.94] vs. PA 0.78 [0.78, 0.81], <italic>p</italic> = 8.08 × 10<sup>−6</sup>.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004128.g010"/>
+</fig>
+<p>This result indicates that the connection cost specifically helps evolution in optimizing the parts of learning related to resistance against forgetting old associations while learning new ones.</p>
+<p>Interestingly, without the connection cost (the PA treatment), forced forgetting significantly improves performance (<xref ref-type="fig" rid="pcbi.1004128.g010">Fig. 10</xref>, <italic>p</italic> = 2.5 × 10<sup>−5</sup> via bootstrap sampling with randomization [<xref ref-type="bibr" rid="pcbi.1004128.ref068">68</xref>]). Forcing forgetting likely removes some of the interference between learning the two separate tasks. With the connection cost, however, forced forgetting leads to worse results, indicating that the modular networks in the P&amp;CC treatment have found solutions that benefit from remembering what they have learned in the past, and thus are worse off when not allowed to remember that information.</p>
+</sec>
+<sec id="sec014">
+<title>The Importance of Neuromodulation</title>
+<p>We hypothesized that a key factor that causes modularity to help minimize catastrophic forgetting is <italic>neuromodulation</italic>, which is the ability for learning to be selectively turned on and off in specific neural connections in specific situations. To test whether neuromodulation is essential to evolving a resistance to forgetting in our experiments, we evolved neural networks <italic>with</italic> and <italic>without</italic> neuromodulation. When we evolve without neuromodulation, the Hebbian learning dynamics of each connection are constant throughout the lifetime of the organism: this is accomplished by disallowing neuromodulatory neurons from being included in the networks (<xref ref-type="sec" rid="sec016">Methods</xref>).</p>
+<p>Comparing the performance of networks evolved with and without neuromodulation demonstrates that with purely Hebbian learning (i.e. without neuromodulation) evolution never produces a network that performs even moderately well (<xref ref-type="fig" rid="pcbi.1004128.g011">Fig. 11</xref>). This finding is in line with previous work demonstrating that neuromodulation allows evolution to solve more complex reinforcement learning problems than purely Hebbian learning [<xref ref-type="bibr" rid="pcbi.1004128.ref025">25</xref>]. While the non-modulatory P&amp;CC networks perform slightly better than non-modulatory PA networks, the differences, while significant (P&amp;CC performance 0.72 [95% CI: 0.71, 0.72] vs. PA 0.70 [0.69, 0.71], <italic>p</italic> = 0.003), are small. Because networks in neither treatment learn much, studying whether they suffer from catastrophic forgetting is uninformative. These results reveal that neuromodulation is essential to perform well in these environments, and its presence is effectively a prerequisite for testing the hypothesis that modularity mitigates catastrophic forgetting. Moreover, neuromodulation is ubiquitous in animal brains, justifying its inclusion in our default model. One can think of neuromodulation, like the presence of neurons, as a necessary, but not sufficient, ingredient for learning without forgetting. Including it in the experimental backdrop allows us to isolate whether modularity further improves learning and helps mitigate catastrophic forgetting.</p>
+<fig id="pcbi.1004128.g011" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004128.g011</object-id>
+<label>Fig 11</label>
+<caption>
+<title>The effect of neuromodulation and connection costs when evolving solutions for catastrophic forgetting.</title>
+<p>Connection costs and neuromodulatory dynamics interact to evolve forgetting-resistant solutions. Without neuromodulation, neither treatment performs well, suggesting that neuromodulation is a prerequisite for solving these types of problems, a result that is consistent with previous research showing that neuromodulation is required to solve challenging learning tasks [<xref ref-type="bibr" rid="pcbi.1004128.ref025">25</xref>]. However, even in the non-neuromodulatory (pure Hebbian) experiments, P&amp;CC is more modular (0.33 [95% CI: 0.33, 0.33] vs PA 0.26 [0.22, 0.31], <italic>p</italic> = 1.16 × 10<sup>−12</sup>) and performs significantly better (0.72 [95% CI: 0.71, 0.72] vs. PA 0.70 [0.69, 0.71], <italic>p</italic> = 0.003). That said, because both treatments perform poorly without neuromodulation, and because natural animal brains contain neuromodulated learning [<xref ref-type="bibr" rid="pcbi.1004128.ref028">28</xref>], it is most interesting to see the additional impact of modularity against the backdrop of neuromodulation. Against that backdrop, neural modularity improves performance to a much larger degree (P&amp;CC 0.94 [0.92, 0.94] vs. PA 0.78 [0.78, 0.81], <italic>p</italic> = 8.08 × 10<sup>−6</sup>), in part by reducing catastrophic forgetting (see text).</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004128.g011"/>
+</fig>
+</sec>
+</sec>
+<sec id="sec015" sec-type="conclusions">
+<title>Discussion</title>
+<p>In the experiments we performed, we found evidence that adding a connection cost when evolving neural networks significantly increases modularity and the ability of networks to learn new skills while retaining previously learned skills. The resultant networks have a separate learning module and exhibit significantly higher performance, learning, and retention. We further found three lines of evidence that modularity improves performance and helps prevent catastrophic forgetting: (1) networks with a separate learning module performed significantly better, (2) modularity and performance are significantly correlated, and (3) the performance increase disappeared when the ability to retain skills was artificially eliminated. These findings support the idea that neural modularity can improve learning performance both for tasks with the potential for <italic>catastrophic forgetting</italic>, by reducing the overlap in how separate skills are stored (<xref ref-type="fig" rid="pcbi.1004128.g001">Fig. 1</xref>, top), and <italic>in general</italic>, by modularly separating learned skills from reward signals (<xref ref-type="fig" rid="pcbi.1004128.g001">Fig. 1</xref>, bottom).</p>
+<p>We also found evidence supporting the hypothesis that the ability to selectively regulate per-connection learning in specific situations, called neuromodulation, is critical for the benefits of a connection cost to be realized. In the presence of neuromodulatory learning dynamics, which occur in the brains of natural animals [<xref ref-type="bibr" rid="pcbi.1004128.ref024">24</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref054">54</xref>], a connection cost could thus significantly mitigate catastrophic forgetting. This work thus provides a new candidate technique for improving learning and reducing catastrophic forgetting, which is essential for advancing our goal of making sophisticated robots and intelligent software based on neural networks. It also suggests that one benefit of the modularity ubiquitous in natural networks may be improved learning via reduced catastrophic forgetting.</p>
+<p>While we found these results hold in the experiments we conducted, much work remains to be done on the interesting question of how catastrophic forgetting is avoided in animal brains. Future work in different types of problems and experimental setups are needed to confirm or deny the hypotheses suggested in this paper. Specific studies that can investigate the generality of our hypothesis include studying whether the connection cost technique still reduces interference when inputs cannot be as easily disentangled (for instance, if certain inputs are shared between several skills), investigating the effect of more complex learning tasks that may not be learned at all if the agent forgets between training episodes, and further exploring the effect of experimental parameters, such as the length of training episodes, number of tasks, and different neural network sizes and architectures.</p>
+<p>Additionally, while we focused primarily on <italic>evolution</italic> specifying modular architectures, those architectures could also emerge via intra-life learning rules that lead to modular neural architectures. In fact, there may have been evolutionary pressure to create learning dynamics that result in neural modularity: whether such “modular plasticity” rules exist, how they mechanistically cause modularity, and the role of evolution in producing them, is a ripe area for future study. More generally, exploring the degree to which evolution encodes learning rules that lead to modular architectures, as opposed to hard coding modular architectures, is an interesting area for future research.</p>
+<p>The experiments in this paper are meant to invigorate the conversation about how evolution and learning produce brains that avoid catastrophic forgetting. While the results of these experiments shed light on that question, the importance, magnitude, and complexity of the question will yield fascinating research for decades, if not centuries, to come.</p>
+</sec>
+<sec id="sec016" sec-type="materials|methods">
+<title>Methods</title>
+<sec id="sec017">
+<title>Neural Network Model Details</title>
+<p>We utilize a standard network model common in previous studies of the evolution of modularity [<xref ref-type="bibr" rid="pcbi.1004128.ref023">23</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref057">57</xref>], extended with neuromodulatory neurons to add reinforcement learning dynamics [<xref ref-type="bibr" rid="pcbi.1004128.ref025">25</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref069">69</xref>]. The network has five layers (Supp. <xref ref-type="supplementary-material" rid="pcbi.1004128.s001">S1 Fig</xref>) and is <italic>feed-forward</italic>, meaning each node receives inputs only from nodes in the previous layer and sends outputs only to nodes in the next layer. The number of neurons is 10/4/2 for the three hidden layers. The weights (connection strengths) and biases (activation thresholds) in the network take values in the range [-1, 1]. Following the paper that introduced the connection cost technique [<xref ref-type="bibr" rid="pcbi.1004128.ref023">23</xref>], networks are directly encoded [<xref ref-type="bibr" rid="pcbi.1004128.ref070">70</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref071">71</xref>].</p>
+<p>Information flows through the network from the input layer towards the output layer, with one layer per time step. The output of each node is a function of its inputs, as described in the next section.</p>
+</sec>
+<sec id="sec018">
+<title>Learning Model</title>
+<p>The neuromodulated ANN model in this paper was introduced by Soltoggio et al. [<xref ref-type="bibr" rid="pcbi.1004128.ref025">25</xref>], and adapted for the Sferes software package by Tonelli and Mouret [<xref ref-type="bibr" rid="pcbi.1004128.ref069">69</xref>]. It differs from standard ANN models by employing two types of neurons: <italic>non-modulatory neurons</italic>, which are regular, activity-propagating neurons, and <italic>modulatory neurons</italic>. Inputs into each neuron consist of two types of connections: <italic>modulatory connections</italic> <italic>C</italic><sub><italic>m</italic></sub> and <italic>non-modulatory connections</italic> <italic>C</italic><sub><italic>n</italic></sub> (normal neural network connections).</p>
+<p>The output of a neuron is decided by the weighted sum of its non-modulatory input connections, as follows:
+<disp-formula id="pcbi.1004128.e001"><alternatives><graphic id="pcbi.1004128.e001g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004128.e001"/><mml:math id="M1" display="block" overflow="scroll"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:msub><mml:mi>a</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>=</mml:mo> <mml:mi>φ</mml:mi> <mml:mfenced separators="" open="(" close=")"><mml:munder><mml:mo>∑</mml:mo> <mml:mrow><mml:mi>j</mml:mi> <mml:mo>∈</mml:mo> <mml:msub><mml:mi>C</mml:mi> <mml:mi>n</mml:mi></mml:msub></mml:mrow></mml:munder> <mml:msub><mml:mi>w</mml:mi> <mml:mrow><mml:mi>i</mml:mi> <mml:mi>j</mml:mi></mml:mrow></mml:msub> <mml:msub><mml:mi>a</mml:mi> <mml:mi>j</mml:mi></mml:msub> <mml:mo>+</mml:mo> <mml:msub><mml:mi>b</mml:mi> <mml:mi>i</mml:mi></mml:msub></mml:mfenced></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives> <label>(1)</label></disp-formula>
+where <italic>i</italic> and <italic>j</italic> are neurons, <italic>a</italic><sub><italic>j</italic></sub> is the output of neuron <italic>j</italic>, <italic>b</italic><sub><italic>i</italic></sub> is the bias of neuron <italic>i</italic>, <italic>w</italic><sub><italic>ij</italic></sub> is the weight of the connection between neuron <italic>i</italic> and <italic>j</italic>, and <italic>φ</italic> is a sigmoid function that maps its input to a value in the range [−1, 1], allowing both positive and negative outputs.</p>
+<p>Only <italic>non-modulatory connections</italic> (outgoing connections from non-modulatory neurons) are plastic. Their weight modification depends on the sum of modulatory inputs to the downstream neurons they connect to and a constant learning rate <italic>η</italic>. Their weight change is calculated by the following two equations:
+<disp-formula id="pcbi.1004128.e002"><alternatives><graphic id="pcbi.1004128.e002g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004128.e002"/><mml:math id="M2" display="block" overflow="scroll"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:msub><mml:mi>m</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>=</mml:mo> <mml:mi>φ</mml:mi> <mml:mfenced separators="" open="(" close=")"><mml:munder><mml:mo>∑</mml:mo> <mml:mrow><mml:mi>j</mml:mi> <mml:mo>∈</mml:mo> <mml:msub><mml:mi>C</mml:mi> <mml:mi>m</mml:mi></mml:msub></mml:mrow></mml:munder> <mml:msub><mml:mi>w</mml:mi> <mml:mrow><mml:mi>i</mml:mi> <mml:mi>j</mml:mi></mml:mrow></mml:msub> <mml:msub><mml:mi>a</mml:mi> <mml:mi>j</mml:mi></mml:msub></mml:mfenced></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives> <label>(2)</label></disp-formula>
+<disp-formula id="pcbi.1004128.e003"><alternatives><graphic id="pcbi.1004128.e003g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004128.e003"/><mml:math id="M3" display="block" overflow="scroll"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:mo>∀</mml:mo> <mml:mi>j</mml:mi> <mml:mo>∈</mml:mo> <mml:msub><mml:mi>C</mml:mi> <mml:mi>n</mml:mi></mml:msub> <mml:mo>:</mml:mo> <mml:mo>Δ</mml:mo> <mml:msub><mml:mi>w</mml:mi> <mml:mrow><mml:mi>i</mml:mi> <mml:mi>j</mml:mi></mml:mrow></mml:msub> <mml:mo>=</mml:mo> <mml:mi>η</mml:mi> <mml:mo>·</mml:mo> <mml:msub><mml:mi>m</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>·</mml:mo> <mml:msub><mml:mi>a</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>·</mml:mo> <mml:msub><mml:mi>a</mml:mi> <mml:mi>j</mml:mi></mml:msub></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives> <label>(3)</label></disp-formula></p>
+<p><xref ref-type="disp-formula" rid="pcbi.1004128.e002">Equation 2</xref> describes how the modulatory input to each neuron is calculated. <italic>φ</italic> is a sigmoid function that maps its input to the interval [−1, 1] (thus allowing both positive and negative modulation). The sum includes weighted contributions from all modulatory connections.</p>
+<p><xref ref-type="disp-formula" rid="pcbi.1004128.e003">Equation 3</xref> describes how this modulatory input determines the learning rate of all incoming, non-modulatory connections to neuron <italic>i</italic>. <italic>η</italic> is a constant learning rate that is set to 0.04 in our experiments. The <italic>a</italic><sub><italic>i</italic></sub>⋅<italic>a</italic><sub><italic>j</italic></sub> component is a regular Hebbian learning term that is high when the activity of the pre- and post-synaptic neurons of a connection are correlated [<xref ref-type="bibr" rid="pcbi.1004128.ref045">45</xref>]. The result is a Hebbian learning rule that is <italic>regulated</italic> by the inputs from neuromodulatory neurons, allowing the learning rate of specific connections to be increased or decreased in <italic>specific circumstances</italic>.</p>
+<p>In control experiments without the potential for neuromodulation, all neurons were non-modulatory. Updates to the weights of their incoming connections were calculated via <xref ref-type="disp-formula" rid="pcbi.1004128.e003">Equation 3</xref> with <italic>m</italic><sub><italic>i</italic></sub> set to a constant value of 1.</p>
+</sec>
+<sec id="sec019">
+<title>Evolutionary Algorithm</title>
+<p>Our experiments feature a multi-objective evolutionary algorithm, which optimizes multiple objectives simultaneously. Specifically, it is a modification of the widely used Non-dominated Sorting Genetic Algorithm (NSGA-II) [<xref ref-type="bibr" rid="pcbi.1004128.ref072">72</xref>]. However, NSGA-II does not take into account that one objective may be more important than others. In our case, network <italic>performance</italic> is essential to survival, and minimizing the sum of connection costs is a secondary priority. To capture this difference, we follow [<xref ref-type="bibr" rid="pcbi.1004128.ref023">23</xref>] in having a <italic>stochastic</italic> version of Pareto dominance, in which the secondary objective (connection cost) only factors into selection for an individual with a given probability <italic>p</italic>. In the experiments reported here, the value of <italic>p</italic> was 0.75, but preliminary runs demonstrated that values of <italic>p</italic> of 0.25 and 0.5 led to qualitatively similar results, indicating that the results are robust to substantial changes to this value. However, a <italic>p</italic> value of 1 was found to overemphasize connection costs at the expense of performance, leading to pathological solutions that perform worse than the PA networks.</p>
+<p>Evolutionary algorithms frequently get stuck in local optima [<xref ref-type="bibr" rid="pcbi.1004128.ref005">5</xref>] and, due to computational costs, are limited to small population sizes compared to biological evolution. To better capture the power of larger populations, which contain more diversity and thus are less likely to get trapped on local optima, we adopted the common technique of encouraging phenotypic diversity in the population [<xref ref-type="bibr" rid="pcbi.1004128.ref005">5</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref073">73</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref074">74</xref>]. Diversity was encouraged by adding a diversity objective to the multi-objective algorithm that selected for organisms whose network outputs were different than others in the population. As with performance, the diversity objective factors into selection 100% of the time (i.e. the probability <italic>p</italic> for PNSGA was 1). Technically, we register every choice (to eat or not) each individual makes and determine how different its sequence of choices is from the choices of other individuals: differences are calculated via a normalized bitwise XOR of the binary choice vectors of two individuals. For each individual, this difference is measured with regards to all other individuals, summed and normalized, resulting in a value between 0 and 1, which measures how different the behavior of this individual is from that of all other individuals. Preliminary experiments demonstrated that, for the problems in this paper, this diversity-promoting technique is necessary to reliably obtain functional networks in either treatment, and is thus a necessary prerequisite to conduct our study. This finding is in line with previous experiments that have showed that diversity is especially necessary for problems that involve learning, because learning problems are especially laden with local optima [<xref ref-type="bibr" rid="pcbi.1004128.ref074">74</xref>].</p>
+<p>All experiments were implemented in the Sferes evolutionary algorithm software package [<xref ref-type="bibr" rid="pcbi.1004128.ref075">75</xref>]. The exact source code and experimental configuration files used in our experiments, along with data from all our experiments, are freely available in the online Dryad scientific archive at <ext-link ext-link-type="uri" xlink:type="simple" xlink:href="http://dx.doi.org/10.5061/dryad.s38n5">http://dx.doi.org/10.5061/dryad.s38n5</ext-link>.</p>
+</sec>
+<sec id="sec020">
+<title>Mutational Effects</title>
+<p>The variation necessary to drive evolution is supplied via random mutation. In each generation, every new offspring network is a copy of its parent that is randomly mutated. Mutations can add a connection, remove a connection, change the strength of connections, move connections and change the type of neurons (switching between modulatory and non-modulatory). Probabilities and details for each mutational event are given in Supp. <xref ref-type="supplementary-material" rid="pcbi.1004128.s008">S1 Table</xref>. We chose these evolutionary parameters, including keeping things simple by not adding crossover, to maintain similarity with related experiments on evolving modularity [<xref ref-type="bibr" rid="pcbi.1004128.ref023">23</xref>] and neuromodulated learning [<xref ref-type="bibr" rid="pcbi.1004128.ref076">76</xref>].</p>
+</sec>
+<sec id="sec021">
+<title>Fitness Function</title>
+<p>The fitness function simulates an organism learning associations in a world that fluctuates periodically between a summer and a winter season. During evolution, each individual is tested in four randomly generated environments (i.e. for four “lifetimes”, <xref ref-type="fig" rid="pcbi.1004128.g002">Fig. 2</xref>) that vary in which items are designated as food and poison, and in which <italic>order</italic> individuals encounter the items. Because there is variance in the difficulty of these random worlds, we test in 4 environments (lifetimes), instead of 1, to increase the sample size. We further increase the sample size to 80 environments (lifetimes) when measuring the performance of final, evolved, end-of-experiment individuals (e.g. Figs. <xref ref-type="fig" rid="pcbi.1004128.g008">8</xref> and <xref ref-type="fig" rid="pcbi.1004128.g009">9</xref>). Individuals within the same generation are all subjected to the same four environments, but across generations the environments are randomized to select for learning, rather than genetically hard-coded solutions (<xref ref-type="fig" rid="pcbi.1004128.g003">Fig. 3</xref>). To start each environment (note: not season) from a clean slate, before being inserted in an environment the modulated weights of individuals are randomly initialized, which follows previous work with this neuromodulatory learning model [<xref ref-type="bibr" rid="pcbi.1004128.ref076">76</xref>]. Modulatory connections never change, and thus do not need to be altered between environments. In the runs without neuromodulation, all connections are reset to their genetically specified weights.</p>
+<p>Throughout its life, an individual encounters different edible items several times (<xref ref-type="fig" rid="pcbi.1004128.g002">Fig. 2</xref>). Fitness is proportional to the number of food items consumed minus the number of poison items consumed across all environments (Supp. <xref ref-type="supplementary-material" rid="pcbi.1004128.s007">S7 Fig</xref>). Individuals that can successfully learn which items to eat and which to avoid are thus rewarded, and the best fitness scores are obtained by individuals that are able to retain this information across the fluctuating seasons (i.e. individuals that do not exhibit catastrophic forgetting).</p>
+</sec>
+<sec id="sec022">
+<title>Modularity Calculations</title>
+<p>Our modularity calculations follow those developed by Leicht and Newman for directed networks [<xref ref-type="bibr" rid="pcbi.1004128.ref067">67</xref>], which is an extension of the most well-established modularity optimization method [<xref ref-type="bibr" rid="pcbi.1004128.ref065">65</xref>]. That modularity optimization method relies on the maximization of a benefit function <italic>Q</italic>, which measures the difference between the number of connections within each module and the expected fraction of such connections given a “null model”, that is, a statistical model of random networks. High values of <italic>Q</italic> indicate an “unexpectedly modular” network.</p>
+<p>For undirected networks, the null model traditionally corresponds to random networks constrained to have the same degree sequence as the network whose modularity is measured. Leicht and Newman extend this model to directed networks by distinguishing between the in-degree and out-degree of each node in the degree sequence [<xref ref-type="bibr" rid="pcbi.1004128.ref067">67</xref>]. The probability that the analyzed network has a connection between node <italic>i</italic> and <italic>j</italic> is therefore <inline-formula id="pcbi.1004128.e004"><mml:math id="M4" display="inline" overflow="scroll"><mml:mrow><mml:msubsup><mml:mi>k</mml:mi> <mml:mi>i</mml:mi> <mml:mrow><mml:mi>i</mml:mi> <mml:mi>n</mml:mi></mml:mrow></mml:msubsup> <mml:msubsup><mml:mi>k</mml:mi> <mml:mi>j</mml:mi> <mml:mrow><mml:mi>o</mml:mi> <mml:mi>u</mml:mi> <mml:mi>t</mml:mi></mml:mrow></mml:msubsup> <mml:mo>/</mml:mo> <mml:mi>m</mml:mi></mml:mrow></mml:math></inline-formula>, where <inline-formula id="pcbi.1004128.e005"><mml:math id="M5" display="inline" overflow="scroll"><mml:mrow><mml:msubsup><mml:mi>k</mml:mi> <mml:mi>i</mml:mi> <mml:mrow><mml:mi>i</mml:mi> <mml:mi>n</mml:mi></mml:mrow></mml:msubsup></mml:mrow></mml:math></inline-formula> and <inline-formula id="pcbi.1004128.e006"><mml:math id="M6" display="inline" overflow="scroll"><mml:mrow><mml:msubsup><mml:mi>k</mml:mi> <mml:mi>j</mml:mi> <mml:mrow><mml:mi>o</mml:mi> <mml:mi>u</mml:mi> <mml:mi>t</mml:mi></mml:mrow></mml:msubsup></mml:mrow></mml:math></inline-formula> are the in- and out-degrees of node <italic>i</italic> and <italic>j</italic>, respectively, <italic>m</italic> is the total number of edges in the network, and the modularity of a given decomposition for directed networks is as follows:
+<disp-formula id="pcbi.1004128.e007"><alternatives><graphic id="pcbi.1004128.e007g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004128.e007"/><mml:math id="M7" display="block" overflow="scroll"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:mi>Q</mml:mi> <mml:mo>=</mml:mo> <mml:mfrac><mml:mn>1</mml:mn> <mml:mi>m</mml:mi></mml:mfrac> <mml:munder><mml:mo>∑</mml:mo> <mml:mrow><mml:mi>i</mml:mi> <mml:mi>j</mml:mi></mml:mrow></mml:munder> <mml:mfenced separators="" open="[" close="]"><mml:msub><mml:mi>A</mml:mi> <mml:mrow><mml:mi>i</mml:mi> <mml:mi>j</mml:mi></mml:mrow></mml:msub> <mml:mo>-</mml:mo> <mml:mfrac><mml:mrow><mml:msubsup><mml:mi>k</mml:mi> <mml:mi>i</mml:mi> <mml:mrow><mml:mi>i</mml:mi> <mml:mi>n</mml:mi></mml:mrow></mml:msubsup> <mml:msubsup><mml:mi>k</mml:mi> <mml:mi>j</mml:mi> <mml:mrow><mml:mi>o</mml:mi> <mml:mi>u</mml:mi> <mml:mi>t</mml:mi></mml:mrow></mml:msubsup></mml:mrow> <mml:mi>m</mml:mi></mml:mfrac></mml:mfenced> <mml:msub><mml:mi>δ</mml:mi> <mml:mrow><mml:mi>c</mml:mi> <mml:mi>i</mml:mi> <mml:mo>,</mml:mo> <mml:mi>c</mml:mi> <mml:mi>j</mml:mi></mml:mrow></mml:msub></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives> <label>(4)</label></disp-formula></p>
+<p><italic>A</italic><sub><italic>ij</italic></sub> is the connectivity matrix (1 if there is an edge from node <italic>i</italic> to node <italic>j</italic>, and 0 otherwise), <italic>m</italic> is the total number of edges in the network, and <italic>δ</italic><sub><italic>ci</italic>, <italic>cj</italic></sub> is a function that is 1 if <italic>i</italic> and <italic>j</italic> belong to the same module, and 0 otherwise. Our results are qualitatively unchanged when using layered, feed-forward networks as “null model” to compute and optimize <italic>Q</italic> (Supp. <xref ref-type="supplementary-material" rid="pcbi.1004128.s009">S2 Table</xref>).</p>
+<p>Maximizing <italic>Q</italic> is an NP-hard problem [<xref ref-type="bibr" rid="pcbi.1004128.ref077">77</xref>], meaning it is necessary to rely on an approximate optimization algorithm instead of an exact one. Here we applied the <italic>spectral optimization method</italic>, which gives good results in practice at a low computational cost [<xref ref-type="bibr" rid="pcbi.1004128.ref067">67</xref>, <xref ref-type="bibr" rid="pcbi.1004128.ref078">78</xref>]. As suggested by Leicht and Newman [<xref ref-type="bibr" rid="pcbi.1004128.ref067">67</xref>], each module is split in two until the next split stops increasing the modularity score.</p>
+</sec>
+<sec id="sec023">
+<title>Experimental Parameters</title>
+<p>Each experimental treatment was repeated 100 times with different stochastic events (accomplished by initiating experiments with a different numeric seed to a random number generator). Analyses are based on the highest-performing network from each trial. The experiments lasted 20,000 generations and had a population size of 400.</p>
+<p>The environment had 2 different <italic>seasons</italic> (“summer” and “winter”). Each season lasted 5 <italic>days</italic>, and cycled through 3 <italic>years</italic> (<xref ref-type="fig" rid="pcbi.1004128.g002">Fig. 2</xref>). In each season, 2 <italic>poisonous items</italic> and 2 <italic>nutritious items</italic> were available, each item encoded by a separate input neuron (i.e. a “one-hot encoding” [<xref ref-type="bibr" rid="pcbi.1004128.ref064">64</xref>]).</p>
+<p>Considering the fact that visiting objects in a different order may affect learning, the total number of possible different environments is 25,920. Each day we randomize the order in which food items are presented, yielding 4! = 24 different possibilities per day. There are in total 5 days per season, and an individual lives for 6 seasons, resulting in 5 × 6 = 30 days per lifetime (<xref ref-type="fig" rid="pcbi.1004128.g002">Fig. 2</xref>), and thus 24 × 30 = 720 different ways to visit the items in a single lifetime. In addition to randomizing the order items are visited in, the edibility associations agents are supposed to learn are randomized between environments. We randomly designate 2 of the 4 items as nutritious food, giving <inline-formula id="pcbi.1004128.e008"><mml:math id="M8" display="inline" overflow="scroll"><mml:mfenced separators="" open="(" close=")"><mml:mtable><mml:mtr><mml:mtd><mml:mrow><mml:mn>4</mml:mn></mml:mrow></mml:mtd></mml:mtr> <mml:mtr><mml:mtd><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:mfenced> <mml:mo>=</mml:mo> <mml:mn>6</mml:mn></mml:math></inline-formula> different possibilities for summer and 6 different possibilities for winter. There are thus a total of 6 × 6 = 36 different ways to organize edibility associations across both seasons. In total, we have 720 × 36 = 25,920 unique environments, reflecting the 720 different ways food items can be presented and the 36 possible edibility associations.</p>
+<p>As mentioned in the previous section, four of these environments were seen by each individual during evolution, and 80 of them were seen in the final performance tests. In both cases they were selected at random from the set of 25,920.</p>
+</sec>
+<sec id="sec024">
+<title>Statistics</title>
+<p>Unless otherwise stated, the test of statistical significance is the Mann-Whitney U test. 95% bootstrapped confidence intervals of the median are calculated by re-sampling the data 5,000 times. In <xref ref-type="fig" rid="pcbi.1004128.g004">Fig. 4</xref>, we smooth the plotted values with a median filter to remove sampling noise. The median filter has a window size of 11, and we plot each 10 generations, meaning the median spans a total of 110 generations.</p>
+</sec>
+<sec id="sec025">
+<title>Measuring Learning and Retention</title>
+<p>While measuring the forgetting and retention of evolved individuals (e.g. Figs. <xref ref-type="fig" rid="pcbi.1004128.g008">8</xref> and <xref ref-type="fig" rid="pcbi.1004128.g009">9</xref>), further learning was disabled. The process is thus (1) learn food associations, (2) measure what was learned and forgotten without further learning, and (3) repeat. Disabling learning allows measurements of what has been learned without the evaluation changing that learned information.</p>
+</sec>
+</sec>
+<sec id="sec026">
+<title>Supporting Information</title>
+<supplementary-material id="pcbi.1004128.s001" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004128.s001" mimetype="image/tiff" xlink:type="simple">
+<label>S1 Fig</label>
+<caption>
+<title>The number and layout of the input, hidden, and output neurons.</title>
+<p>Inputs provide information about the environment. The output is interpreted as the decision to eat a food item or ignore it.</p>
+<p>(TIFF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004128.s002" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004128.s002" mimetype="image/tiff" xlink:type="simple">
+<label>S2 Fig</label>
+<caption>
+<title>The highest-performing networks from all of the 100 experiments in the PA treatment (part 1 of 2).</title>
+<p>Dark blue nodes are inputs that encode which type of food has been encountered. Light blue nodes indicate internal, non-modulatory neurons. Red nodes are reward or punishment inputs that indicate if a nutritious or poisonous item has been eaten. Orange nodes are neuromodulatory neurons that regulate learning. In the cases where an input neuron was modulatory, we indicate this with an orange circle around the neuron. In each panel, the left number reports performance and the right number reports modularity. We follow the convention from [<xref ref-type="bibr" rid="pcbi.1004128.ref023">23</xref>] of placing nodes in the way that minimizes the total connection length.</p>
+<p>(TIFF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004128.s003" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004128.s003" mimetype="image/tiff" xlink:type="simple">
+<label>S3 Fig</label>
+<caption>
+<title>The highest-performing networks from all of the 100 experiments in the PA treatment (part 2 of 2).</title>
+<p>See the previous figure caption for more details.</p>
+<p>(TIFF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004128.s004" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004128.s004" mimetype="image/tiff" xlink:type="simple">
+<label>S4 Fig</label>
+<caption>
+<title>The highest-performing networks from all of the 100 experiments in the P&amp;CC treatment (part 1 of 2).</title>
+<p>Dark blue nodes are inputs that encode which type of food has been encountered. Light blue nodes indicate internal, non-modulatory neurons. Red nodes are reward or punishment inputs that indicate if a nutritious or poisonous item has been eaten. Orange nodes are neuromodulatory neurons that regulate learning. In the cases where an input neuron was modulatory, we indicate this with an orange circle around the neuron. In each panel, the left number reports performance and the right number reports modularity. We follow the convention from [<xref ref-type="bibr" rid="pcbi.1004128.ref023">23</xref>] of placing nodes in the way that minimizes the total connection length.</p>
+<p>(TIFF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004128.s005" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004128.s005" mimetype="image/tiff" xlink:type="simple">
+<label>S5 Fig</label>
+<caption>
+<title>The highest-performing networks from all of the 100 experiments in the P&amp;CC treatment (part 2 of 2).</title>
+<p>See the previous figure caption for more details.</p>
+<p>(TIFF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004128.s006" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004128.s006" mimetype="image/tiff" xlink:type="simple">
+<label>S6 Fig</label>
+<caption>
+<title>Unnormalized values for <xref ref-type="fig" rid="pcbi.1004128.g008">Fig. 8</xref> (left panel).</title>
+<p>Shows how old associations are forgotten as new ones are learned for the two experimental treatments. The treatment with a connection cost (P&amp;CC) was able to learn the associations better and shows a more gradual forgetting in the first timesteps. Together, this leads it to outperform the regular treatment (PA) significantly when measuring how fast individuals forget. Note that networks were evolved with five days per season, so the results during those first five days are the most informative regarding the evolutionary mitigation of catastrophic forgetting: we show additional days to reveal longer-term consequences of the evolved architectures.</p>
+<p>(TIFF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004128.s007" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004128.s007" mimetype="image/tiff" xlink:type="simple">
+<label>S7 Fig</label>
+<caption>
+<title>The steps for evaluating the fitness of an individual.</title>
+<p>The example describes what happens when an agent encounters a food item during summer. For the winter season, the process is the same, but with winter inputs active instead of summer inputs.</p>
+<p>(TIFF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004128.s008" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004128.s008" mimetype="image/tiff" xlink:type="simple">
+<label>S1 Table</label>
+<caption>
+<title>The mutation operators along with their probabilities of affecting an individual.</title>
+<p>(TIFF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004128.s009" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004128.s009" mimetype="image/tiff" xlink:type="simple">
+<label>S2 Table</label>
+<caption>
+<title>Two different null models for calculating the modularity score.</title>
+<p>The conventional way to calculate modularity is inherently relative: one computes the modularity of network N by searching for the modular decomposition (assigning N’s nodes to different modules) that maximizes the number of edges within the modules compared to the number of expected edges given by a statistical model of random, but similar, networks called the “null model”. There are different ways to model random networks, depending on the type of networks being measured and their topological constraints. Here, we calculated the modularity Q-score with two different null models, one modeling random, directed networks and the other modeling random, layered, feed-forward networks. When calculating modularity with either null model, P&amp;CC networks are significantly more modular than PA networks. <italic>A</italic><sub><italic>ij</italic></sub> is 1 if there is an edge from node <italic>i</italic> to node <italic>j</italic>, and 0 otherwise, <inline-formula id="pcbi.1004128.e009"><mml:math id="M9" display="inline" overflow="scroll"><mml:mrow><mml:msubsup><mml:mi>k</mml:mi> <mml:mi>i</mml:mi> <mml:mrow><mml:mi>i</mml:mi> <mml:mi>n</mml:mi></mml:mrow></mml:msubsup></mml:mrow></mml:math></inline-formula> and <inline-formula id="pcbi.1004128.e010"><mml:math id="M10" display="inline" overflow="scroll"><mml:mrow><mml:msubsup><mml:mi>k</mml:mi> <mml:mi>j</mml:mi> <mml:mrow><mml:mi>o</mml:mi> <mml:mi>u</mml:mi> <mml:mi>t</mml:mi></mml:mrow></mml:msubsup></mml:mrow></mml:math></inline-formula> are the in- and out-degrees of node <italic>i</italic> and <italic>j</italic>, respectively, <italic>m</italic> is the total number of edges in the network, <italic>m</italic><sub><italic>ij</italic></sub> is the number of edges between the layer containing node <italic>i</italic> and the layer containing node <italic>j</italic>, and <italic>δ</italic><sub><italic>ci</italic>, <italic>cj</italic></sub> is a function that is 1 if <italic>i</italic> and <italic>j</italic> belong to the same module, and 0 otherwise.</p>
+<p>(TIFF)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ack>
+<p>We thank Joost Huizinga, Henok Sahilu Mengistu, Mohammad Sadegh Norouzzadeh, Oliver Coleman, Keith Downing, Roby Velez, Gleb Sizov, Jean-Marc Montanier, Anh Nguyen, Jingyu Li and Boye Annfelt Høverstad for helpful comments. We also thank the editors and anonymous reviewers. The images in Figs. <xref ref-type="fig" rid="pcbi.1004128.g002">2</xref> &amp; <xref ref-type="fig" rid="pcbi.1004128.g003">3</xref> are from OpenClipArt.org and are in the public domain.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1004128.ref001">
+<label>1</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>French</surname> <given-names>R</given-names></name> (<year>1999</year>) <article-title>Catastrophic forgetting in connectionist networks</article-title>. <source>Trends Cogn Sci</source> <volume>3</volume>: <fpage>128</fpage>–<lpage>135</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/S1364-6613(99)01294-2" xlink:type="simple">10.1016/S1364-6613(99)01294-2</ext-link></comment> <object-id pub-id-type="pmid">10322466</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref002">
+<label>2</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Mermillod</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Bugaiska</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Bonin</surname> <given-names>P</given-names></name> (<year>2013</year>) <article-title>The Stability-Plasticity Dilemma: Investigating the Continuum from Catastrophic Forgetting to Age-Limited Learning Effects</article-title>. <source>Front Psychol</source> <volume>4</volume>: <fpage>504</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.3389/fpsyg.2013.00504" xlink:type="simple">10.3389/fpsyg.2013.00504</ext-link></comment> <object-id pub-id-type="pmid">23935590</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref003">
+<label>3</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Ajemian</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>D’Ausilio</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Moorman</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Bizzi</surname> <given-names>E</given-names></name> (<year>2013</year>) <article-title>A theory for how sensorimotor skills are learned and retained in noisy and nonstationary neural circuits</article-title>. <source>Proc Natl Acad Sci U S A</source> <volume>110</volume>: <fpage>E5078</fpage>–<lpage>87</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.1320116110" xlink:type="simple">10.1073/pnas.1320116110</ext-link></comment> <object-id pub-id-type="pmid">24324147</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref004">
+<label>4</label>
+<mixed-citation xlink:type="simple" publication-type="book">
+<name name-style="western"><surname>Haykin</surname> <given-names>SS</given-names></name> (<year>2009</year>) <source>Neural networks and learning machines</source>. <publisher-loc>New York</publisher-loc>: <publisher-name>Prentice Hall</publisher-name>, <edition>3 edition</edition>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref005">
+<label>5</label>
+<mixed-citation xlink:type="simple" publication-type="book">
+<name name-style="western"><surname>Floreano</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Mattiussi</surname> <given-names>C</given-names></name> (<year>2008</year>) <source>Bio-inspired artificial intelligence: theories, methods, and technologies</source>. <publisher-name>The MIT Press</publisher-name>, <fpage>659</fpage> pp.</mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref006">
+<label>6</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Widrow</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Lehr</surname> <given-names>M</given-names></name> (<year>1990</year>) <article-title>30 years of adaptive neural networks: perceptron, Madaline, and backpropagation</article-title>. <source>Proc IEEE</source> <volume>78</volume>: <fpage>1415</fpage>–<lpage>1442</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1109/5.58323" xlink:type="simple">10.1109/5.58323</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref007">
+<label>7</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Rummelhart</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Hinton</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Williams</surname> <given-names>R</given-names></name> (<year>1986</year>) <article-title>Learning representations by back-propagating errors</article-title>. <source>Nature</source> <volume>323</volume>: <fpage>533</fpage>–<lpage>535</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/323533a0" xlink:type="simple">10.1038/323533a0</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref008">
+<label>8</label>
+<mixed-citation xlink:type="simple" publication-type="book">
+<name name-style="western"><surname>Soltoggio</surname> <given-names>A</given-names></name> (<year>2008</year>) <chapter-title>Neural Plasticity and Minimal Topologies for Reward-Based Learning</chapter-title>. <source>In: Hybrid Intelligent Systems, 2008 HIS’08 Eighth International Conference on</source>. <publisher-name>IEEE</publisher-name>, pp. <fpage>637</fpage>–<lpage>642</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref009">
+<label>9</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>McCloskey</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Cohen</surname> <given-names>NJ</given-names></name> (<year>1989</year>) <article-title>Catastrophic interference in connectionist networks: The sequential learning problem</article-title>. <source>Psychol Learn Motiv</source> <volume>24</volume>: <fpage>109</fpage>–<lpage>165</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/S0079-7421(08)60536-8" xlink:type="simple">10.1016/S0079-7421(08)60536-8</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref010">
+<label>10</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Ratcliff</surname> <given-names>R</given-names></name> (<year>1990</year>) <article-title>Connectionist models of recognition memory: constraints imposed by learning and forgetting functions</article-title>. <source>Psychol Rev</source> <volume>97</volume>: <fpage>285</fpage>–<lpage>308</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1037/0033-295X.97.2.285" xlink:type="simple">10.1037/0033-295X.97.2.285</ext-link></comment> <object-id pub-id-type="pmid">2186426</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref011">
+<label>11</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Barnes</surname> <given-names>JM</given-names></name>, <name name-style="western"><surname>Underwood</surname> <given-names>BJ</given-names></name> (<year>1959</year>) <article-title>Fate of first-list associations in transfer theory</article-title>. <source>J Exp Psychol</source> <volume>58</volume>: <fpage>97</fpage>–<lpage>105</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1037/h0047507" xlink:type="simple">10.1037/h0047507</ext-link></comment> <object-id pub-id-type="pmid">13796886</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref012">
+<label>12</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Aaltonen</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Adelman</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Akimoto</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Albrow</surname> <given-names>MG</given-names></name>, <name name-style="western"><surname>Alvarez González</surname> <given-names>B</given-names></name>, <etal>et al</etal>. (<year>2009</year>) <article-title>Measurement of the top-quark mass with dilepton events selected using neuroevolution at CDF</article-title>. <source>Phys Rev Lett</source> <volume>102</volume>: <fpage>152001</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1103/PhysRevLett.103.152001" xlink:type="simple">10.1103/PhysRevLett.103.152001</ext-link></comment> <object-id pub-id-type="pmid">19518620</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref013">
+<label>13</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Anemone</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Emerson</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Conroy</surname> <given-names>G</given-names></name> (<year>2011</year>) <article-title>Finding fossils in new ways: An artificial neural network approach to predicting the location of productive fossil localities</article-title>. <source>Evol Anthropol</source> <volume>20</volume>: <fpage>169</fpage>–<lpage>180</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1002/evan.20324" xlink:type="simple">10.1002/evan.20324</ext-link></comment> <object-id pub-id-type="pmid">22034235</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref014">
+<label>14</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Ramesh</surname> <given-names>AN</given-names></name>, <name name-style="western"><surname>Kambhampati</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Monson</surname> <given-names>JRT</given-names></name>, <name name-style="western"><surname>Drew</surname> <given-names>PJ</given-names></name> (<year>2004</year>) <article-title>Artificial intelligence in medicine</article-title>. <source>Ann R Coll Surg Engl</source> <volume>86</volume>: <fpage>334</fpage>–<lpage>338</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1308/147870804290" xlink:type="simple">10.1308/147870804290</ext-link></comment> <object-id pub-id-type="pmid">15333167</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref015">
+<label>15</label>
+<mixed-citation xlink:type="simple" publication-type="book">
+<name name-style="western"><surname>Seipone</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Bullinaria</surname> <given-names>J</given-names></name> (<year>2005</year>) <chapter-title>The evolution of minimal catastrophic forgetting in neural systems</chapter-title>. <source>In: Proc Annu Conf Cogn Sci Soc</source>. <publisher-name>Cognitive Science Society</publisher-name>, pp. <fpage>1991</fpage>–<lpage>1996</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref016">
+<label>16</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Ans</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Rousset</surname> <given-names>S</given-names></name> (<year>2000</year>) <article-title>Neural networks with a self-refreshing memory: knowledge transfer in sequential learning tasks without catastrophic forgetting</article-title>. <source>Conn Sci</source> <volume>12</volume>: <fpage>1</fpage>–<lpage>19</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1080/095400900116177" xlink:type="simple">10.1080/095400900116177</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref017">
+<label>17</label>
+<mixed-citation xlink:type="simple" publication-type="book">
+<name name-style="western"><surname>Alon</surname> <given-names>U</given-names></name> (<year>2006</year>) <source>An Introduction to Systems Biology: Design Principles of Biological Circuits</source>. <publisher-name>CRC press</publisher-name>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref018">
+<label>18</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Carroll</surname> <given-names>SB</given-names></name> (<year>2001</year>) <article-title>Chance and necessity: the evolution of morphological complexity and diversity</article-title>. <source>Nature</source> <volume>409</volume>: <fpage>1102</fpage>–<lpage>1109</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/35055637" xlink:type="simple">10.1038/35055637</ext-link></comment> <object-id pub-id-type="pmid">11234024</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref019">
+<label>19</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Wagner</surname> <given-names>GP</given-names></name>, <name name-style="western"><surname>Pavlicev</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Cheverud</surname> <given-names>JM</given-names></name> (<year>2007</year>) <article-title>The road to modularity</article-title>. <source>Nat Rev Genet</source> <volume>8</volume>: <fpage>921</fpage>–<lpage>931</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nrg2267" xlink:type="simple">10.1038/nrg2267</ext-link></comment> <object-id pub-id-type="pmid">18007649</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref020">
+<label>20</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Hintze</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Adami</surname> <given-names>C</given-names></name> (<year>2008</year>) <article-title>Evolution of complex modular biological networks</article-title>. <source>PLoS Comput Biol</source> <volume>4</volume>: <fpage>e23</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.0040023" xlink:type="simple">10.1371/journal.pcbi.0040023</ext-link></comment> <object-id pub-id-type="pmid">18266463</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref021">
+<label>21</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Mountcastle</surname> <given-names>VB</given-names></name> (<year>1997</year>) <article-title>The columnar organization of the neocortex</article-title>. <source>Brain</source> <volume>120</volume>: <fpage>701</fpage>–<lpage>722</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/brain/120.4.701" xlink:type="simple">10.1093/brain/120.4.701</ext-link></comment> <object-id pub-id-type="pmid">9153131</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref022">
+<label>22</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Lipson</surname> <given-names>H</given-names></name> (<year>2007</year>) <article-title>Principles of modularity, regularity, and hierarchy for scalable systems</article-title>. <source>J Biol Phys Chem</source> <volume>7</volume>: <fpage>125</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.4024/40701.jbpc.07.04" xlink:type="simple">10.4024/40701.jbpc.07.04</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref023">
+<label>23</label>
+<mixed-citation xlink:type="simple" publication-type="other">Clune J, Mouret JB, Lipson H (2013) The evolutionary origins of modularity. Proc R Soc London Ser B Biol Sci 280.</mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref024">
+<label>24</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Burrell</surname> <given-names>BD</given-names></name>, <name name-style="western"><surname>Sahley</surname> <given-names>CL</given-names></name> (<year>2001</year>) <article-title>Learning in simple systems</article-title>. <source>Curr Opin Neurobiol</source> <volume>11</volume>: <fpage>757</fpage>–<lpage>764</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/S0959-4388(01)00281-1" xlink:type="simple">10.1016/S0959-4388(01)00281-1</ext-link></comment> <object-id pub-id-type="pmid">11741030</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref025">
+<label>25</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Soltoggio</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Bullinaria</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Mattiussi</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Dürr</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Floreano</surname> <given-names>D</given-names></name> (<year>2008</year>) <article-title>Evolutionary Advantages of Neuromodulated Plasticity in Dynamic, Reward-based Scenarios</article-title>. <source>Artif Life</source> <volume>11</volume>: <fpage>569</fpage>–<lpage>576</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref026">
+<label>26</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Cherniak</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Mokhtarzada</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Rodriguez-Esteban</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Changizi</surname> <given-names>K</given-names></name> (<year>2004</year>) <article-title>Global optimization of cerebral cortex layout</article-title>. <source>Proc Natl Acad Sci U S A</source> <volume>101</volume>: <fpage>1081</fpage>–<lpage>1086</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.0305212101" xlink:type="simple">10.1073/pnas.0305212101</ext-link></comment> <object-id pub-id-type="pmid">14722353</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref027">
+<label>27</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Ahn</surname> <given-names>YY</given-names></name>, <name name-style="western"><surname>Jeong</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Kim</surname> <given-names>BJ</given-names></name> (<year>2006</year>) <article-title>Wiring cost in the organization of a biological neuronal network</article-title>. <source>Physica A</source> <volume>367</volume>: <fpage>531</fpage>–<lpage>537</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.physa.2005.12.013" xlink:type="simple">10.1016/j.physa.2005.12.013</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref028">
+<label>28</label>
+<mixed-citation xlink:type="simple" publication-type="book">
+<name name-style="western"><surname>Striedter</surname> <given-names>G</given-names></name> (<year>2005</year>) <source>Principles of brain evolution</source>. <publisher-name>Sinauer Associates Sunderland</publisher-name>, <publisher-loc>MA</publisher-loc>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref029">
+<label>29</label>
+<mixed-citation xlink:type="simple" publication-type="other">Kortge C (1990) Episodic memory in connectionist networks. In: Proc Annu Conf Cogn Sci Soc. pp. 764–771.</mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref030">
+<label>30</label>
+<mixed-citation xlink:type="simple" publication-type="book">
+<name name-style="western"><surname>Lewandowsky</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>SC</given-names></name> (<year>1993</year>) <chapter-title>Catastrophic interference in neural networks: causes, solutions and data</chapter-title>. In: <name name-style="western"><surname>Dempster</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Brainerd</surname> <given-names>C</given-names></name>, editors, <source>New Perspectives on Interference and Inhibition in Cognition</source>, <publisher-name>Academic Press</publisher-name>. pp. <fpage>329</fpage>–<lpage>361</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref031">
+<label>31</label>
+<mixed-citation xlink:type="simple" publication-type="other">French R (1991) Using semi-distributed representations to overcome catastrophic forgetting in connectionist networks. In: Proceedings of the 13th Annual Congitive Science Society Conference. pp. 173–178.</mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref032">
+<label>32</label>
+<mixed-citation xlink:type="simple" publication-type="other">French R (1994) Dynamically constraining connectionist networks to produce distributed, orthogonal representations to reduce catastrophic interference. In: Proc Annu Conf Cogn Sci Soc. pp. 335–340.</mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref033">
+<label>33</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>French</surname> <given-names>R</given-names></name> (<year>1997</year>) <article-title>Pseudo-recurrent connectionist networks: An approach to the’sensitivity-stability’ dilemma</article-title>. <source>Conn Sci</source> <volume>9</volume>: <fpage>353</fpage>–<lpage>379</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1080/095400997116595" xlink:type="simple">10.1080/095400997116595</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref034">
+<label>34</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Robins</surname> <given-names>A</given-names></name> (<year>1995</year>) <article-title>Catastrophic forgetting, rehearsal and pseudorehearsal</article-title>. <source>Conn Sci</source> <volume>7</volume>: <fpage>123</fpage>–<lpage>146</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1080/09540099550039318" xlink:type="simple">10.1080/09540099550039318</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref035">
+<label>35</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>McClelland</surname> <given-names>JL</given-names></name>, <name name-style="western"><surname>McNaughton</surname> <given-names>BL</given-names></name>, <name name-style="western"><surname>O’Reilly</surname> <given-names>RC</given-names></name> (<year>1995</year>) <article-title>Why there are complementary learning systems in the hippocampus and neocortex: insights from the successes and failures of connectionist models of learning and memory</article-title>. <source>Psychol Rev</source> <volume>102</volume>: <fpage>419</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1037/0033-295X.102.3.419" xlink:type="simple">10.1037/0033-295X.102.3.419</ext-link></comment> <object-id pub-id-type="pmid">7624455</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref036">
+<label>36</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Ans</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Rousset</surname> <given-names>S</given-names></name> (<year>1997</year>) <article-title>Avoiding catastrophic forgetting by coupling two reverberating neural networks</article-title>. <source>C R Acad Sci III</source> <volume>320</volume>: <fpage>989</fpage>–<lpage>997</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/S0764-4469(97)82472-9" xlink:type="simple">10.1016/S0764-4469(97)82472-9</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref037">
+<label>37</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Xin</surname> <given-names>Y</given-names></name> (<year>1999</year>) <article-title>Evolving artificial neural networks</article-title>. <source>Proc IEEE</source> <volume>87</volume>: <fpage>1423</fpage>–<lpage>1447</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1109/5.784219" xlink:type="simple">10.1109/5.784219</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref038">
+<label>38</label>
+<mixed-citation xlink:type="simple" publication-type="book">
+<name name-style="western"><surname>Holland</surname> <given-names>JH</given-names></name> (<year>1975</year>) <source>Adaptation in natural and artificial systems: An introductory analysis with applications to biology, control, and artificial intelligence</source>. <publisher-name>U Michigan Press</publisher-name>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref039">
+<label>39</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Stanley</surname> <given-names>KO</given-names></name>, <name name-style="western"><surname>Miikkulainen</surname> <given-names>R</given-names></name> (<year>2002</year>) <article-title>Evolving neural networks through augmenting topologies</article-title>. <source>Evol Comput</source> <volume>10</volume>: <fpage>99</fpage>–<lpage>127</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1162/106365602320169811" xlink:type="simple">10.1162/106365602320169811</ext-link></comment> <object-id pub-id-type="pmid">12180173</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref040">
+<label>40</label>
+<mixed-citation xlink:type="simple" publication-type="book">
+<name name-style="western"><surname>Koza</surname> <given-names>JR</given-names></name> (<year>2003</year>) <source>Genetic programming IV: Routine human-competitive machine intelligence</source>. <publisher-name>Kluwer</publisher-name>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref041">
+<label>41</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Hornby</surname> <given-names>GS</given-names></name>, <name name-style="western"><surname>Lohn</surname> <given-names>JD</given-names></name>, <name name-style="western"><surname>Linden</surname> <given-names>DS</given-names></name> (<year>2011</year>) <article-title>Computer-automated evolution of an x-band antenna for NASA’s space technology 5 mission</article-title>. <source>Evol Comput</source> <volume>19</volume>: <fpage>1</fpage>–<lpage>23</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1162/EVCO_a_00005" xlink:type="simple">10.1162/EVCO_a_00005</ext-link></comment> <object-id pub-id-type="pmid">20583909</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref042">
+<label>42</label>
+<mixed-citation xlink:type="simple" publication-type="other">Gomez FJ, Miikkulainen R (2003) Active guidance for a finless rocket using neuroevolution. In: Proc Genet Evol Comput Conf. pp. 2084–2095.</mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref043">
+<label>43</label>
+<mixed-citation xlink:type="simple" publication-type="other">Clune J, Beckmann BE, Ofria C, Pennock RT (2009) Evolving coordinated quadruped gaits with the HyperNEAT generative encoding. In: Proc Congr Evol Comput. pp. 2764–2771.</mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref044">
+<label>44</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Hornby</surname> <given-names>GS</given-names></name>, <name name-style="western"><surname>Takamura</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Yamamoto</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Fujita</surname> <given-names>M</given-names></name> (<year>2005</year>) <article-title>Autonomous evolution of dynamic gaits with two quadruped robots</article-title>. <source>IEEE Trans Robot</source> <volume>21</volume>: <fpage>402</fpage>–<lpage>410</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1109/TRO.2004.839222" xlink:type="simple">10.1109/TRO.2004.839222</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref045">
+<label>45</label>
+<mixed-citation xlink:type="simple" publication-type="book">
+<name name-style="western"><surname>Hebb</surname> <given-names>DO</given-names></name> (<year>1949</year>) <source>The Organization of Behavior</source>. <publisher-loc>New York</publisher-loc>: <publisher-name>Wiley and Sons, 335 pp</publisher-name>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref046">
+<label>46</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Niv</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Joel</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Meilijson</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Ruppin</surname> <given-names>E</given-names></name> (<year>2002</year>) <article-title>Evolution of reinforcement learning in uncertain environments: a simple explanation for complex foraging behaviors</article-title>. <source>Adapt Behav</source> <volume>10</volume>: <fpage>5</fpage>–<lpage>24</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1177/10597123020101001" xlink:type="simple">10.1177/10597123020101001</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref047">
+<label>47</label>
+<mixed-citation xlink:type="simple" publication-type="other">Ellefsen KO (2013) Balancing the Costs and Benefits of Learning Ability. In: European Conference of Artificial Life. pp. 292–299.</mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref048">
+<label>48</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Urzelai</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Floreano</surname> <given-names>D</given-names></name> (<year>2001</year>) <article-title>Evolution of adaptive synapses: Robots with fast adaptive behavior in new environments</article-title>. <source>Evol Comput</source> <volume>9</volume>: <fpage>495</fpage>–<lpage>524</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1162/10636560152642887" xlink:type="simple">10.1162/10636560152642887</ext-link></comment> <object-id pub-id-type="pmid">11709106</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref049">
+<label>49</label>
+<mixed-citation xlink:type="simple" publication-type="book">
+<name name-style="western"><surname>Blynel</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Floreano</surname> <given-names>D</given-names></name> (<year>2002</year>) <chapter-title>Levels of dynamics and adaptive behavior in evolutionary neural controllers</chapter-title>. <source>In: 7th International Conference on Simulation on Adaptive Behavior (SAB’2002)</source>. <publisher-name>MIT Press</publisher-name>, pp. <fpage>272</fpage>–<lpage>281</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref050">
+<label>50</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Hinton</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Nowlan</surname> <given-names>S</given-names></name> (<year>1987</year>) <article-title>How learning can guide evolution</article-title>. <source>Complex Systems</source> <volume>1</volume>: <fpage>495</fpage>–<lpage>502</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref051">
+<label>51</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Nolfi</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Parisi</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Elman</surname> <given-names>JL</given-names></name> (<year>1994</year>) <article-title>Learning and Evolution in Neural Networks</article-title>. <source>Adapt Behav</source> <volume>3</volume>: <fpage>5</fpage>–<lpage>28</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1177/105971239400300102" xlink:type="simple">10.1177/105971239400300102</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref052">
+<label>52</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Mayley</surname> <given-names>G</given-names></name> (<year>1996</year>) <article-title>Landscapes, Learning Costs, and Genetic Assimilation</article-title>. <source>Evol Comput</source> <volume>4</volume>: <fpage>213</fpage>–<lpage>234</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1162/evco.1996.4.3.213" xlink:type="simple">10.1162/evco.1996.4.3.213</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref053">
+<label>53</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Sasaki</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Tokoro</surname> <given-names>M</given-names></name> (<year>1999</year>) <article-title>Evolving Learnable Neural Networks under Changing Environments with Various Rates of Inheritance of Acquired Characters: Comparison between Darwinian and Lamarckian Evolution</article-title>. <source>Artif Life</source> <volume>5</volume>: <fpage>203</fpage>–<lpage>223</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1162/106454699568746" xlink:type="simple">10.1162/106454699568746</ext-link></comment> <object-id pub-id-type="pmid">10648951</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref054">
+<label>54</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Jay</surname> <given-names>TM</given-names></name> (<year>2003</year>) <article-title>Dopamine: a potential substrate for synaptic plasticity and memory mechanisms</article-title>. <source>Prog Neurobiol</source> <volume>69</volume>: <fpage>375</fpage>–<lpage>390</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/S0301-0082(03)00085-6" xlink:type="simple">10.1016/S0301-0082(03)00085-6</ext-link></comment> <object-id pub-id-type="pmid">12880632</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref055">
+<label>55</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Abbott</surname> <given-names>LF</given-names></name>, <name name-style="western"><surname>Regehr</surname> <given-names>WG</given-names></name> (<year>2004</year>) <article-title>Synaptic computation</article-title>. <source>Nature</source> <volume>431</volume>: <fpage>796</fpage>–<lpage>803</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nature03010" xlink:type="simple">10.1038/nature03010</ext-link></comment> <object-id pub-id-type="pmid">15483601</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref056">
+<label>56</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Pigliucci</surname> <given-names>M</given-names></name> (<year>2008</year>) <article-title>Is evolvability evolvable</article-title>? <source>Nat Rev Genet</source> <volume>9</volume>: <fpage>75</fpage>–<lpage>82</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nrg2278" xlink:type="simple">10.1038/nrg2278</ext-link></comment> <object-id pub-id-type="pmid">18059367</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref057">
+<label>57</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Kashtan</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Alon</surname> <given-names>U</given-names></name> (<year>2005</year>) <article-title>Spontaneous evolution of modularity and network motifs</article-title>. <source>Proc Natl Acad Sci U S A</source> <volume>102</volume>: <fpage>13773</fpage>–<lpage>13778</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.0503610102" xlink:type="simple">10.1073/pnas.0503610102</ext-link></comment> <object-id pub-id-type="pmid">16174729</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref058">
+<label>58</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Hoverstad</surname> <given-names>BA</given-names></name> (<year>2011</year>) <article-title>Noise and the evolution of neural network modularity</article-title>. <source>Artif Life</source> <volume>17</volume>: <fpage>33</fpage>–<lpage>50</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1162/artl_a_00016" xlink:type="simple">10.1162/artl_a_00016</ext-link></comment> <object-id pub-id-type="pmid">21087148</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref059">
+<label>59</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Espinosa-Soto</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Wagner</surname> <given-names>A</given-names></name> (<year>2010</year>) <article-title>Specialization can drive the evolution of modularity</article-title>. <source>PLoS Comput Biol</source> <volume>6</volume>: <fpage>e1000719</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.1000719" xlink:type="simple">10.1371/journal.pcbi.1000719</ext-link></comment> <object-id pub-id-type="pmid">20360969</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref060">
+<label>60</label>
+<mixed-citation xlink:type="simple" publication-type="book">
+<name name-style="western"><surname>Clune</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Beckmann</surname> <given-names>BE</given-names></name>, <name name-style="western"><surname>McKinley</surname> <given-names>PK</given-names></name>, <name name-style="western"><surname>Ofria</surname> <given-names>C</given-names></name> (<year>2010</year>) <chapter-title>Investigating whether HyperNEAT produces modular neural networks</chapter-title>. <source>In: Genet Evol Comput Conf</source>. <publisher-name>ACM</publisher-name>, pp. <fpage>635</fpage>–<lpage>642</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref061">
+<label>61</label>
+<mixed-citation xlink:type="simple" publication-type="book">
+<name name-style="western"><surname>Verbancsics</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Stanley</surname> <given-names>KO</given-names></name> (<year>2011</year>) <chapter-title>Constraining connectivity to encourage modularity in HyperNEAT</chapter-title>. <source>In: Genet Evol Comput Conf</source>. <publisher-name>ACM</publisher-name>, pp. <fpage>1483</fpage>–<lpage>1490</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref062">
+<label>62</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Dunlap</surname> <given-names>AS</given-names></name>, <name name-style="western"><surname>Stephens</surname> <given-names>DW</given-names></name> (<year>2009</year>) <article-title>Components of change in the evolution of learning and unlearned preference</article-title>. <source>Proc R Soc B Biol Sci</source> <volume>276</volume>: <fpage>3201</fpage>–<lpage>8</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1098/rspb.2009.0602" xlink:type="simple">10.1098/rspb.2009.0602</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref063">
+<label>63</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Tanaka</surname> <given-names>K</given-names></name> (<year>1996</year>) <article-title>Inferotemporal cortex and object vision</article-title>. <source>Annu Rev Neurosci</source> <volume>19</volume>: <fpage>109</fpage>–<lpage>139</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1146/annurev.ne.19.030196.000545" xlink:type="simple">10.1146/annurev.ne.19.030196.000545</ext-link></comment> <object-id pub-id-type="pmid">8833438</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref064">
+<label>64</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Bengio</surname> <given-names>Y</given-names></name> (<year>2009</year>) <article-title>Learning Deep Architectures for AI</article-title>. <source>Foundations and Trends in Machine Learning</source> <volume>2</volume>: <fpage>1</fpage>–<lpage>127</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1561/2200000006" xlink:type="simple">10.1561/2200000006</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref065">
+<label>65</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Newman</surname> <given-names>MEJ</given-names></name> (<year>2006</year>) <article-title>Modularity and community structure in networks</article-title>. <source>Proc Natl Acad Sci U S A</source> <volume>103</volume>: <fpage>8577</fpage>–<lpage>8582</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.0601602103" xlink:type="simple">10.1073/pnas.0601602103</ext-link></comment> <object-id pub-id-type="pmid">16723398</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref066">
+<label>66</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Guimerà</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Sales-Pardo</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Amaral</surname> <given-names>LAN</given-names></name> (<year>2004</year>) <article-title>Modularity from fluctuations in random graphs and complex networks</article-title>. <source>Phys Rev E Stat Nonlin Soft Matter Phys</source> <volume>70</volume>: <fpage>025101</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1103/PhysRevE.70.025101" xlink:type="simple">10.1103/PhysRevE.70.025101</ext-link></comment> <object-id pub-id-type="pmid">15447530</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref067">
+<label>67</label>
+<mixed-citation xlink:type="simple" publication-type="book">
+<name name-style="western"><surname>Leicht</surname> <given-names>EA</given-names></name>, <name name-style="western"><surname>Newman</surname> <given-names>MEJ</given-names></name> (<year>2008</year>) <source>Community structure in directed networks</source>. <publisher-name>Phys Rev Lett</publisher-name>: <fpage>118703</fpage>–<lpage>118707</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref068">
+<label>68</label>
+<mixed-citation xlink:type="simple" publication-type="book">
+<name name-style="western"><surname>Cohen</surname> <given-names>PR</given-names></name> (<year>1995</year>) <source>Empirical Methods for Artificial Intelligence</source>. <publisher-loc>Cambridge, MA, USA</publisher-loc>: <publisher-name>MIT Press</publisher-name>, <fpage>405</fpage> pp.</mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref069">
+<label>69</label>
+<mixed-citation xlink:type="simple" publication-type="other">Tonelli P, Mouret JB (2011) On the relationships between synaptic plasticity and generative systems. In: Genet Evol Comput Conf. pp. 1531–1538.</mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref070">
+<label>70</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Stanley</surname> <given-names>KO</given-names></name>, <name name-style="western"><surname>Miikkulainen</surname> <given-names>R</given-names></name> (<year>2003</year>) <article-title>A taxonomy for artificial embryogeny</article-title>. <source>Artif Life</source> <volume>9</volume>: <fpage>93</fpage>–<lpage>130</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1162/106454603322221487" xlink:type="simple">10.1162/106454603322221487</ext-link></comment> <object-id pub-id-type="pmid">12906725</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref071">
+<label>71</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Clune</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Stanley</surname> <given-names>KO</given-names></name>, <name name-style="western"><surname>Pennock</surname> <given-names>RT</given-names></name>, <name name-style="western"><surname>Ofria</surname> <given-names>C</given-names></name> (<year>2011</year>) <article-title>On the performance of indirect encoding across the continuum of regularity</article-title>. <source>IEEE Trans Evol Comput</source> <volume>15</volume>: <fpage>346</fpage>–<lpage>367</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1109/TEVC.2010.2104157" xlink:type="simple">10.1109/TEVC.2010.2104157</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref072">
+<label>72</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Deb</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Pratap</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Agarwal</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Meyarivan</surname> <given-names>T</given-names></name> (<year>2002</year>) <article-title>A fast and elitist multiobjective genetic algorithm: NSGA-II</article-title>. <source>IEEE Trans Evol Comput</source> <volume>6</volume>: <fpage>182</fpage>–<lpage>197</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1109/4235.996017" xlink:type="simple">10.1109/4235.996017</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref073">
+<label>73</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Mouret</surname> <given-names>JB</given-names></name>, <name name-style="western"><surname>Doncieux</surname> <given-names>S</given-names></name> (<year>2012</year>) <article-title>Encouraging Behavioral Diversity in Evolutionary Robotics: an Empirical Study</article-title>. <source>Evol Comput</source> <volume>1</volume>: <fpage>91</fpage>–<lpage>113</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1162/EVCO_a_00048" xlink:type="simple">10.1162/EVCO_a_00048</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref074">
+<label>74</label>
+<mixed-citation xlink:type="simple" publication-type="other">Risi S, Vanderbleek SD, Hughes CE, Stanley KO (2009) How novelty search escapes the deceptive trap of learning to learn. In: Genet Evol Comput Conf. pp. 153–160.</mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref075">
+<label>75</label>
+<mixed-citation xlink:type="simple" publication-type="book">
+<name name-style="western"><surname>Mouret</surname> <given-names>JB</given-names></name>, <name name-style="western"><surname>Doncieux</surname> <given-names>S</given-names></name> (<year>2010</year>) <chapter-title>SFERES v2: Evolvin’ in the Multi-Core World</chapter-title>. <source>In: Proc Congr Evol Comput</source>. <publisher-name>IEEE</publisher-name>, <volume>2</volume>, pp. <fpage>4079</fpage>–<lpage>4086</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref076">
+<label>76</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Tonelli</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Mouret</surname> <given-names>JB</given-names></name> (<year>2013</year>) <article-title>On the Relationships between Generative Encodings, Regularity, and Learning Abilities when Evolving Plastic, Artificial Neural Networks</article-title>. <source>PLoS One</source> <volume>8</volume>: <fpage>e79138</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pone.0079138" xlink:type="simple">10.1371/journal.pone.0079138</ext-link></comment> <object-id pub-id-type="pmid">24236099</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref077">
+<label>77</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Brandes</surname> <given-names>U</given-names></name>, <name name-style="western"><surname>Delling</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Gaertler</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Gorke</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Hoefer</surname> <given-names>M</given-names></name>, <etal>et al</etal>. (<year>2008</year>) <article-title>On modularity clustering</article-title>. <source>IEEE Trans Knowl Data Eng</source> <volume>20</volume>: <fpage>172</fpage>–<lpage>188</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1109/TKDE.2007.190689" xlink:type="simple">10.1109/TKDE.2007.190689</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004128.ref078">
+<label>78</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Fortunato</surname> <given-names>S</given-names></name> (<year>2010</year>) <article-title>Community detection in graphs</article-title>. <source>Phys Rep</source> <volume>486</volume>: <fpage>75</fpage>–<lpage>174</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.physrep.2009.11.002" xlink:type="simple">10.1016/j.physrep.2009.11.002</ext-link></comment></mixed-citation>
+</ref>
+</ref-list>
+</back>
+</article>

@@ -1,0 +1,787 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="3.0" xml:lang="en">
+<front>
+<journal-meta>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id>
+<journal-id journal-id-type="pmc">ploscomp</journal-id><journal-title-group>
+<journal-title>PLoS Computational Biology</journal-title></journal-title-group>
+<issn pub-type="ppub">1553-734X</issn>
+<issn pub-type="epub">1553-7358</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, USA</publisher-loc></publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="publisher-id">PCOMPBIOL-D-13-00292</article-id>
+<article-id pub-id-type="doi">10.1371/journal.pcbi.1003314</article-id>
+<article-categories><subj-group subj-group-type="heading"><subject>Research Article</subject></subj-group></article-categories>
+<title-group>
+<article-title>Systematically Differentiating Functions for Alternatively Spliced Isoforms through Integrating RNA-seq Data</article-title>
+<alt-title alt-title-type="running-head">Differentiating Functions for Isoforms</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" equal-contrib="yes" xlink:type="simple"><name name-style="western"><surname>Eksi</surname><given-names>Ridvan</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref></contrib>
+<contrib contrib-type="author" equal-contrib="yes" xlink:type="simple"><name name-style="western"><surname>Li</surname><given-names>Hong-Dong</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Menon</surname><given-names>Rajasree</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Wen</surname><given-names>Yuchen</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Omenn</surname><given-names>Gilbert S.</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff2"><sup>2</sup></xref><xref ref-type="corresp" rid="cor1"><sup>*</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Kretzler</surname><given-names>Matthias</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff2"><sup>2</sup></xref><xref ref-type="corresp" rid="cor1"><sup>*</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Guan</surname><given-names>Yuanfang</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff2"><sup>2</sup></xref><xref ref-type="aff" rid="aff3"><sup>3</sup></xref><xref ref-type="corresp" rid="cor1"><sup>*</sup></xref></contrib>
+</contrib-group>
+<aff id="aff1"><label>1</label><addr-line>Department of Computational Medicine and Bioinformatics, University of Michigan, Ann Arbor, Michigan, United States of America</addr-line></aff>
+<aff id="aff2"><label>2</label><addr-line>Department of Internal Medicine, University of Michigan, Ann Arbor, Michigan, United States of America</addr-line></aff>
+<aff id="aff3"><label>3</label><addr-line>Department of Electrical Engineering and Computer Science, University of Michigan, Ann Arbor, Michigan, United States of America</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple"><name name-style="western"><surname>Iakoucheva</surname><given-names>Lilia M.</given-names></name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/></contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>University of California San Diego, United States of America</addr-line></aff>
+<author-notes>
+<corresp id="cor1">* E-mail: <email xlink:type="simple">gomenn@med.umich.edu</email> (GSO); <email xlink:type="simple">kretzler@umich.edu</email> (MK); <email xlink:type="simple">gyuanfan@umich.edu</email> (YG)</corresp>
+<fn fn-type="conflict"><p>The authors have declared that no competing interests exist.</p></fn>
+<fn fn-type="con"><p>Conceived and designed the experiments: RE YG. Performed the experiments: RE. Analyzed the data: RE HDL RM GSO MK YG. Wrote the paper: HDL YG. Developed the website: RE YW.</p></fn>
+</author-notes>
+<pub-date pub-type="collection"><month>11</month><year>2013</year></pub-date>
+<pub-date pub-type="epub"><day>7</day><month>11</month><year>2013</year></pub-date>
+<volume>9</volume>
+<issue>11</issue>
+<elocation-id>e1003314</elocation-id>
+<history>
+<date date-type="received"><day>18</day><month>2</month><year>2013</year></date>
+<date date-type="accepted"><day>19</day><month>9</month><year>2013</year></date>
+</history>
+<permissions>
+<copyright-year>2013</copyright-year>
+<copyright-holder>Eksi et al</copyright-holder><license xlink:type="simple"><license-p>This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license></permissions>
+<abstract>
+<p>Integrating large-scale functional genomic data has significantly accelerated our understanding of gene functions. However, no algorithm has been developed to differentiate functions for isoforms of the same gene using high-throughput genomic data. This is because standard supervised learning requires ‘ground-truth’ functional annotations, which are lacking at the isoform level. To address this challenge, we developed a generic framework that interrogates public RNA-seq data at the transcript level to differentiate functions for alternatively spliced isoforms. For a specific function, our algorithm identifies the ‘responsible’ isoform(s) of a gene and generates classifying models at the isoform level instead of at the gene level. Through cross-validation, we demonstrated that our algorithm is effective in assigning functions to genes, especially the ones with multiple isoforms, and robust to gene expression levels and removal of homologous gene pairs. We identified genes in the mouse whose isoforms are predicted to have disparate functionalities and experimentally validated the ‘responsible’ isoforms using data from mammary tissue. With protein structure modeling and experimental evidence, we further validated the predicted isoform functional differences for the genes <italic>Cdkn2a</italic> and <italic>Anxa6</italic>. Our generic framework is the first to predict and differentiate functions for alternatively spliced isoforms, instead of genes, using genomic data. It is extendable to any base machine learner and other species with alternatively spliced isoforms, and shifts the current gene-centered function prediction to isoform-level predictions.</p>
+</abstract>
+<abstract abstract-type="summary"><title>Author Summary</title>
+<p>In mammalian genomes, a single gene can be alternatively spliced into multiple isoforms which greatly increase the functional diversity of the genome. In the human, more than 95% of multi-exon genes undergo alternative splicing. It is hard to computationally differentiate the functions for the splice isoforms of the same gene, because they are almost always annotated with the same functions and share similar sequences. In this paper, we developed a generic framework to identify the ‘responsible’ isoform(s) for each function that the gene carries out, and therefore predict functional assignment on the isoform level instead of on the gene level. Within this generic framework, we implemented and evaluated several related algorithms for isoform function prediction. We tested these algorithms through both computational evaluation and experimental validation of the predicted ‘responsible’ isoform(s) and the predicted disparate functions of the isoforms of <italic>Cdkn2a</italic> and of <italic>Anxa6</italic>. Our algorithm represents the first effort to predict and differentiate isoforms through large-scale genomic data integration.</p>
+</abstract>
+<funding-group><funding-statement>This work is supported by NIH 1R21NS082212-01 and EU-FP VII Systems Biology of Rare Disease. The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement></funding-group><counts><page-count count="16"/></counts></article-meta>
+</front>
+<body><sec id="s1">
+<title>Introduction</title>
+<p>Determining the functions of proteins is a central goal of genetics, fundamental for understanding the molecular basis of diverse genetic diseases <xref ref-type="bibr" rid="pcbi.1003314-Schmitz1">[1]</xref>–<xref ref-type="bibr" rid="pcbi.1003314-1">[7]</xref>. During the past few decades, significant efforts have been made to integrate and develop diverse machine learning algorithms for gene function prediction through large-scale genomic data integration <xref ref-type="bibr" rid="pcbi.1003314-Hu1">[8]</xref>–<xref ref-type="bibr" rid="pcbi.1003314-Zhang2">[12]</xref>, such as Support Vector Machines, Bayesian classifications and Artificial Neural Networks. Despite differences in implementation and performance of the specific algorithms, the essence of these methods for gene function prediction is ‘supervised learning’, in which a model of features derived from functional genomic data (such as microarray, protein-protein physical interactions, gene-gene genetic interactions) is constructed to delineate a defined set of ‘positives’ (genes annotated to the function under consideration) and ‘negatives’ (genes without the function). These algorithms have significantly accelerated our understanding of gene functions.</p>
+<p>A major intellectual limitation of the current function prediction paradigm is that it considers a gene as a single entity without differentiating the functional diversity of alternatively spliced isoforms. Alternative splicing is a major source of protein molecular function diversity and regulatory diversity. In humans, 95% of multi-exon genes undergo alternative splicing, generating proteins of potential different functions <xref ref-type="bibr" rid="pcbi.1003314-Pan1">[13]</xref>–<xref ref-type="bibr" rid="pcbi.1003314-deSouza1">[21]</xref>. For example, TRPM3, which encodes a type of cation-selective channels in human, can be alternatively spliced into two variants targeting different ions <xref ref-type="bibr" rid="pcbi.1003314-Mittendorf1">[22]</xref>–<xref ref-type="bibr" rid="pcbi.1003314-Oberwinkler1">[24]</xref>. Other splice variants have been reported with distinctly opposite functions. For example, the splice variants of <italic>BCLX</italic> are antiapoptotic and pro-apoptotic, respectively <xref ref-type="bibr" rid="pcbi.1003314-Revil1">[25]</xref>. Similarly, <italic>CASP3</italic>-L variant is pro-apoptotic while <italic>CASP3</italic>-S is antiapoptotic <xref ref-type="bibr" rid="pcbi.1003314-Vegran1">[26]</xref>. Differences in function are sometimes reflected on the regulatory level: two alternatively spliced transcripts of <italic>OSR2</italic> have opposite transcriptional activities, activation and repression <xref ref-type="bibr" rid="pcbi.1003314-Vegran1">[26]</xref>. Attempts to capture such differential functions are currently limited to low-throughput experimental approaches and protein domain analysis. However, based on the protein domain annotation we downloaded in Dec, 2012, only 34% of the isoform pairs (of the same gene) in the NCBI database have different domains. The majority of the isoforms of the same gene differ in subtle ways which are not reflected by protein domains. We expect that computational methods developed to differentiate isoform functions through integrating functional genomic data will assist a deeper, high-resolution understanding of gene functions.</p>
+<p>The key challenge facing isoform prediction is the lack of a systematic catalog of isoform-level function annotations and large-scale genomic data resolved at the isoform level. The latter is resolved by the unprecedented amount of transcriptomic data generated by next-generation sequencing <xref ref-type="bibr" rid="pcbi.1003314-Mortazavi1">[27]</xref>–<xref ref-type="bibr" rid="pcbi.1003314-Wang1">[29]</xref>. RNA-seq data available in public databases <xref ref-type="bibr" rid="pcbi.1003314-Leinonen1">[30]</xref> now surpass the number of microarray data that have been previously used to infer functions at gene levels <xref ref-type="bibr" rid="pcbi.1003314-Hibbs1">[31]</xref>. Algorithms have been developed to assign isoform-level expression values <xref ref-type="bibr" rid="pcbi.1003314-Jiang1">[28]</xref>, <xref ref-type="bibr" rid="pcbi.1003314-Trapnell1">[32]</xref>–<xref ref-type="bibr" rid="pcbi.1003314-Bohnert1">[39]</xref>. They provide a resource for isoform-level features that can be used as input data to infer isoform functions.</p>
+<p>However, the fundamental challenge remains: a genome-wide set of ‘ground-truth’ annotations of functions at the isoform level is still lacking. Isoform functions have been computationally inferred through domains, binding regions and individual binding sites <xref ref-type="bibr" rid="pcbi.1003314-Verspoor1">[40]</xref>–<xref ref-type="bibr" rid="pcbi.1003314-Rentzsch1">[46]</xref>. In widely used databases such as Gene Ontology <xref ref-type="bibr" rid="pcbi.1003314-Ashburner1">[47]</xref>, <xref ref-type="bibr" rid="pcbi.1003314-Harris1">[48]</xref> and KEGG <xref ref-type="bibr" rid="pcbi.1003314-Kanehisa1">[49]</xref>, biological functions are defined at the gene level. Under these circumstances, to predict whether a gene is related to a specific function, supervised learning algorithms will be deployed to derive a model from the genomic data we collect. For example, to predict ‘mitochondria biogenesis’-related genes, we need a ‘gold standard’ set of genes known to be related to mitochondria biogenesis, and find out how these genes differ from other genes in their expression patterns. Without an existing and comprehensive set of annotated isoforms, standard ‘supervised learning’ approaches are not applicable to predicting different functions for splice isoforms.</p>
+<p>We developed a generic framework that improves gene function prediction and provides information for isoform-level functions. Our framework intends to locate the ‘responsible’ set of isoform(s) of annotated genes of a specific function, through iteratively correcting the composition of this set to maximize its ‘discriminativity’ against the negatives. For example, for mitochondria biogenesis, we have a set of genes <italic>G<sup>+</sup><sub>1</sub></italic>, <italic>G<sup>+</sup><sub>2</sub></italic>, …, <italic>G<sup>+</sup><sub>n</sub></italic> annotated to this function (positive genes). Each gene is considered as a bag of alternatively spliced isoforms. We then try to find out which isoform(s) of this positive set of genes can be selected to maximize the difference between them and the negative isoforms, <italic>i.e.</italic>, the <italic>G<sup>i</sup><sub>k</sub><sup>+</sup></italic>, where <italic>k</italic> is the gene index, and <italic>i</italic> is the isoform index. The isoforms in the <italic>G<sup>i</sup><sub>k</sub><sup>+</sup></italic> set are iteratively updated to maximize the similarity within them. The model derived from the <italic>G<sup>i</sup><sub>k</sub><sup>+</sup></italic> set (instead of <italic>G<sub>k</sub><sup>+</sup></italic>) is then used to classify whether an isoform has the biological function, mitochondria biogenesis, in this example. From this perspective, our problem is a multiple instance learning task <xref ref-type="bibr" rid="pcbi.1003314-Babenko1">[50]</xref>–<xref ref-type="bibr" rid="pcbi.1003314-Bunescu1">[53]</xref>, in which each example considered positive with respect to certain property contains multiple discrete elements, of which at least one of them must be positive.</p>
+<p>We used an iterative algorithm to approximate the solution to the above optimization problem. We found that our algorithm can successfully capture the differential isoform functions as evidenced by prediction accuracy on multi-isoform genes as well as literature and experimental validation on isoforms that are drastically different in their assigned functions. Computationally predicting isoform functions or differentiating functions for isoforms of the same genes in a genome-wide manner using high-throughput genomic data has not been done prior to our work. This framework is also generic. It can be integrated into any basic machine learning algorithm such as logistic regression, random forests or deep learning, and can be readily extended to predict isoform functions in other organisms as well as other properties of isoforms such as phenotypes and interaction networks. Our prediction results are available to the user community online at <ext-link ext-link-type="uri" xlink:href="http://guanlab.ccmb.med.umich.edu/isoPred/" xlink:type="simple">http://guanlab.ccmb.med.umich.edu/isoPred/</ext-link>.</p>
+</sec><sec id="s2">
+<title>Results</title>
+<p>We first established the workflow that generates isoform-level function predictions. Then we validated our models with computational cross validation, focusing on performance comparison between multiple-isoform genes and single-isoform genes. The predicted ‘functional’ isoform(s) are further validated using breast cell proteomic data. Finally, through protein structure modeling and experimental evidence, we validated our predictions for <italic>Cdkn2a</italic> and for <italic>Anxa6</italic>, whose isoforms were predicted to be responsible for different functions.</p>
+<sec id="s2a">
+<title>The isoform function prediction framework</title>
+<p>We aim at predicting isoform functions while functional annotations have been based on genes. The model therefore needs to be learned at the isoform level rather than at the gene level (see <bold><xref ref-type="supplementary-material" rid="pcbi.1003314.s005">Figure S1</xref></bold> for a comparison between a traditional gene function learning problem and our isoform function prediction problem). Our core idea is to model the common patterns of a <bold><underline>subset</underline></bold> of isoforms across genes associated with a particular function, with the requirement that at least one of the isoforms of each positive gene must retain the common feature pattern. This is a multiple instance problem, the aim of which is to identify the hidden labels of the isoforms of the positively annotated genes and use these hidden labels to construct classification models to label additional isoforms.</p>
+<p>We used maximum margin-based classification as base-learner in this iterative process <xref ref-type="bibr" rid="pcbi.1003314-Vapnik1">[54]</xref>, due to the success of SVM in the protein function prediction domain <xref ref-type="bibr" rid="pcbi.1003314-Guan2">[9]</xref>. Such a framework could be integrated into any other machine learner, such as deep learning or Bayesian classification.</p>
+<p>To elucidate our algorithm, we will use the following definitions throughout the paper:</p>
+<list list-type="bullet"><list-item>
+<p>A ‘<bold><underline>bag</underline></bold>’ refers to a gene, which consists of multiple isoforms.</p>
+</list-item><list-item>
+<p><bold><underline>‘Instances’</underline></bold> refer to individual isoforms.</p>
+</list-item><list-item>
+<p>A <bold><underline>‘positive’</underline></bold> bag refers to a gene related to the specific function under study.</p>
+</list-item><list-item>
+<p><bold><underline>‘Witness(es)’</underline></bold> refer to the isoform(s) of a positive gene related to the specific function under study. A ‘positive’ bag has at least one witness;</p>
+</list-item></list>
+<p>Our algorithm aims to identify a subset of isoforms of the positive genes that maximizes the difference between them and the negative isoforms. Identifying the best combination of isoforms from the positive genes is difficult. The ideal solution requires excessive computational time. We therefore approximated the solution with an iterative algorithm (<xref ref-type="fig" rid="pcbi-1003314-g001"><bold>Figure 1</bold></xref>). For the training set, in the first iteration, we assign every isoform of a positive gene to be positive. We then establish a classifier, with which we can go back to classify the training set. This classifier will assign some isoforms of the positive gene to be positive (the ‘witnesses’), and some to be negative, but at least one isoform of a positive gene must be positive. This subset of ‘witnesses’ is iteratively updated to maximize the inter-class distance. Using this assignment, a new classifier is established, which could again be used to classify the training set. We iterate this process to update the ‘witnesses’. This procedure is repeated until convergence is achieved (<xref ref-type="fig" rid="pcbi-1003314-g001"><bold>Figure 1</bold></xref>).</p>
+<fig id="pcbi-1003314-g001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003314.g001</object-id><label>Figure 1</label><caption>
+<title>Overview of the computational approach for predicting functions for alternatively spliced isoforms.</title>
+<p>We collected RNA-seq data from the sequence read archive (SRA) database and estimated isoform-level expression values using state-of-the-art software <xref ref-type="bibr" rid="pcbi.1003314-Trapnell1">[32]</xref>, <xref ref-type="bibr" rid="pcbi.1003314-Trapnell2">[34]</xref>. We then generated a gene-level gold standard using Gene Ontology (GO) annotations. For each biological function, this gold standard contains positive genes (annotated to the function under investigation) and negative genes (other genes). Our study contains two major parts: cross-validation for performance estimation and bootstrap bagging for generating final predictions as well as performance evaluation. For cross-validation, we partitioned the examples into a training set for model development and a test set for model validation. For generating final predictions for all isoforms, we sampled with replacement to construct a training set, and then used this training set to construct models to assign prediction probabilities to the out-of-bag set. The final predictions for all isoforms were made by calculating the median prediction values of all out-of-bag sets. For each training set, a model was derived from the RNA-seq data to delineate the positives and the negatives. This model was used to classify the training set and update the labels of the isoforms of the positive genes, under the criterion that at least one isoform of a positive gene must remain positive. This new assignment is then used to construct the model in the next iteration. This process is iterated until the assignment of positive isoforms no longer changes, and then the final model was used to assign a prediction value to the test or the out-of-the-bag set. Bootstrap was done for 30 iterations and the median value for each out-of-the-bag isoform was taken as the final prediction value. The predictive performance of our model was assessed through three approaches: (1) cross-validation of gene-level predictive performances, focusing on comparison between single-isoform genes and multiple-isoform genes, (2) literature validation and (3) experimental validation of top predictions using proteomic data.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003314.g001" position="float" xlink:type="simple"/></fig>
+<p>Because of the properties and relationships between genes and isoforms, this Multiple Instance Learning (MIL) framework is suitable for our problem. MIL assumes that there are one or more positive instances in a positive bag, and, if we can identify these positive instances in positive bags, we can expect to have a better classifier by excluding remaining instances from the positive class. Biologically, if a gene is annotated to a function, one or more of its isoforms will be selected as witness(es) as the ones that are related to this function, and other isoforms will be marked as non-functional. By excluding these non-functional isoforms, the classifier is expected to be more accurate.</p>
+</sec><sec id="s2b">
+<title>Implementation and testing parameters</title>
+<p>To generate alternatively spliced transcript-level features, we collected transcriptomic data from public RNA-seq experiments (<xref ref-type="supplementary-material" rid="pcbi.1003314.s001">Dataset S1</xref>). These RNA-seq datasets cover a wide sampling of tissues and different experimental conditions, such as liver, brain, muscle and testis. The ENCODE RNA-seq data covering ovary, mammary gland, stomach, kidney, liver, lung, spleen, colon and heart, are also included in our data. Co-expression patterns in these data can be highly informative for co-functionality. We assigned isoform-level expression values for each of these experiments using the state-of-the-art tools <xref ref-type="bibr" rid="pcbi.1003314-Trapnell1">[32]</xref>, <xref ref-type="bibr" rid="pcbi.1003314-Trapnell2">[34]</xref>, <xref ref-type="bibr" rid="pcbi.1003314-Trapnell3">[35]</xref> (<xref ref-type="fig" rid="pcbi-1003314-g001"><bold>Figure 1</bold></xref>). Public RNA-seq datasets came from different experimental protocols and such information is not always recorded in databases in a standardized way. We filtered these datasets based on their quality and coverage (see <xref ref-type="sec" rid="s4">Methods</xref>). This data collection serves as our genomic data input. Essentially, each isoform was described by a vector of values specifying its normalized expression value in various RNA-seq samples. Gene Ontology is arranged in a hierarchy, where complex relationships exist between different terms. To test different variations of MIL and tune the parameters of our algorithms, we focused on a list of biological process terms that have been voted by biologists to be able to describe and cover different biological processes that are experimentally testable <xref ref-type="bibr" rid="pcbi.1003314-Myers1">[55]</xref>. This list included 99 terms, with GO term size 20–300.</p>
+<p>Two important parameters (other than the standard SVM parameters) in this algorithm are the proportion of positive isoforms to be labeled as positive in each iteration, and whether we should label the rest of isoforms in the positive bag negative or discard them. Therefore, we tested two basic formulations of the algorithm. The first approach tries to impute all non-witness instances in positive bags as negative instances and then considers the problem as a supervised learning problem. The second approach tries to identify a single witness from each positive bag which is responsible for the positive label. Then, a classifier is built based on these witnesses only, while other instances are dropped. SVM formulations of these two approaches are, respectively, mi-SVM and MI-SVM <xref ref-type="bibr" rid="pcbi.1003314-Andrews1">[51]</xref>. For the first approach, we envisioned that different ratio of instances can be retained as ‘witnesses’ and tested three different cutoffs (<xref ref-type="fig" rid="pcbi-1003314-g002"><bold>Figure 2A–B</bold></xref>).</p>
+<fig id="pcbi-1003314-g002" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003314.g002</object-id><label>Figure 2</label><caption>
+<title>Performance comparison of different formulations of the SVM-MIL algorithm in predicting isoform functions.</title>
+<p>A. The histogram shows the score distribution of the instances in the positive bags and the negative bags in the training set. Different threshold choices in mi-SVM are based on the distribution of scores of negative genes. The first threshold is equal to the mode of distribution of scores from negative instances in the training set. The second threshold is equal to the 75% percentile of scores of the negative instances in the training set. The third threshold is equal to the maximum score of negative instances in the training set. B. This panel illustrates how different thresholds and formulations can divide the isoforms in a positive bag into positive, negative and neutral classes. Three thresholds in mi-SVM represent different degrees of strictness for assigning labels. The first threshold is the least strict, which assigns most of the isoforms from positive genes as positive, whereas the third threshold is the strictest, which in general leaves only one positive instance in every positive bag. For the MI-SVM formulation, only one isoform per positive gene is assigned as positive, and other isoforms are dropped (<italic>i.e.</italic> neutral class). C. Performance comparison of three different threshold choices for the mi-SVM formulation, the MI-SVM formulation and the MI-SVM formulation with random witness selection. This plot shows that the mi-SVM formulation with threshold-2 performs best in terms of AUC.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003314.g002" position="float" xlink:type="simple"/></fig>
+<p>Ideally, testing of isoform function prediction should use isoform-level gold-standard functional annotation. However, such comprehensive functional annotation does not exist in any database (if they did exist, regular supervised classification would be sufficient to predict isoform functions). Therefore, we first evaluated the performance of our algorithms at the gene level. The probability of each gene to be associated to a function is assigned with the maximum value of all its instances, under the assumption that the eventual gene function is carried out by at least one of its isoforms. For all methods and parameters tested, the algorithm converged within several iterations. Additionally, we found that different thresholds or methods resulted in relatively stable performance on the gene level. mi-SVM with 75% of all negative scores as the cutoff for defining ‘witnesses’ resulted in the highest AUC of 0.73 (<xref ref-type="fig" rid="pcbi-1003314-g002"><bold>Figure 2C</bold></xref>). Therefore, we used this method for inferring isoform functions and all the evaluation and validation below is based on this threshold.</p>
+<sec id="s2b1">
+<title>Cross-validation of the function prediction algorithm</title>
+<p>We adopted several lines of validation to test our algorithm, including computational validation of multi- and single-isoform genes, literature evidence for top predicted candidates and experimental validation of top predictions. For all the following evaluations, we presented 1792 biological process terms with 20 to 300 genes annotated to each. This size range was selected based on previous statistical studies showing that GO terms of this size show robust cross-validation behavior <xref ref-type="bibr" rid="pcbi.1003314-Fu1">[56]</xref>.</p>
+<p>We first compared the performance of our algorithm in capturing gene-level functions to a direct SVM model using the same data input at the gene level. For each GO term, we carried out five-fold cross-validation to evaluate our prediction results. We partitioned the training and test groups by genes instead of isoforms to prevent information leak in the evaluation process. We used both the area under the ROC curve (AUC) and the area under the precision-recall curve (AUPRC) to measure predictive performance (complete evaluation results are included in <xref ref-type="supplementary-material" rid="pcbi.1003314.s002">Dataset S2</xref>). Because GO terms of different sizes vary in terms of predictability <xref ref-type="bibr" rid="pcbi.1003314-Guan2">[9]</xref>, we divided all GO terms into 5 groups so that each group contains roughly the same number of GO terms according to GO term size. This resulted in groups of [20, 27], [27, 39], [39, 60], [60, 105] and [105, 298]. For each GO term group, we calculated AUC, AUPRC, precision at 1% recall and precision at 10% recall (<xref ref-type="fig" rid="pcbi-1003314-g003"><bold>Figure 3</bold></xref>). The median AUCs of the 5 GO term groups are 0.66, 0.67, 0.68, 0.69, and 0.71, respectively. Strictly, these AUC values cannot be directly compared to those reported results in the literature because of the difference in the data used. However, it is still meaningful to benchmark, at least roughly, our results against the reported results. The work of Peña-Castillo <italic>et al.</italic> <xref ref-type="bibr" rid="pcbi.1003314-PenaCastillo1">[57]</xref> is a benchmark of the mouse gene function prediction performance in 2008, using heterogeneous genomic data including physical interaction, protein domain, phenotypes and expression. Peña-Castillo <italic>et al.</italic> reported a median AUC in predicting novel gene annotations across 72 GO biological function terms is 0.69 with a standard deviation 0.071. Thus, our algorithm achieved satisfactory results using transcriptomic data alone; the additional benefit of differentiating isoform functions will be detailed in the following sections.</p>
+<fig id="pcbi-1003314-g003" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003314.g003</object-id><label>Figure 3</label><caption>
+<title>Robust performance of our algorithm to predicting functions using RNA-seq data.</title>
+<p>We carried out five-fold cross validation to test the performance of our algorithm. For each function, the prediction value for each gene is assigned the maximum prediction value of all of its isoforms, under the assumption that at least one of its isoforms should carry out the function. Because the number of known genes of each GO term systematically affects the prediction performance, we group these terms into 5 groups according to their GO term sizes. (A)–(D) shows the distribution (10, 25, 50, 75, 90%) of the AUCs, the AUPRCs, the precisions at 1% recall and the precisions at 10% recall, respectively.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003314.g003" position="float" xlink:type="simple"/></fig>
+<p>For some of the biological processes, interpreting data at the isoform level can dramatically improve the prediction performance over gene level results. These biological processes are those likely to be affected or carried out by certain specific isoforms of the genes. For example, for GO terms GO:0019882 (antigen processing and presentation), GO:0019395 (fatty acid oxidation), GO:0031032 (actomyosin structure organization), GO:0046649 (lymphocyte activation), GO:0002252 (immune effector process), GO:0045058 (T cell selection) (<bold><xref ref-type="supplementary-material" rid="pcbi.1003314.s006">Figure S2</xref></bold>), AUPRC increased from 0.087 to 0.105 (20% improvement, baseline 0.0018), from 0.026 to 0.036 (36% improvement, baseline 0.0021), from 0.047 to 0.060 (28% improvement, baseline 0.0012), from 0.0414 to 0.0593 (43% improvement, baseline 0.0101), from 0.037 to 0.046 (27% improvement, baseline is 0.0061), from 0.017 to 0.039 (137% improvement, baseline is 0.0011) respectively using our iterative algorithm compared to using the gene-level SVM method only. The improvement in performance is likely due to having access to more data and eliminating noisy, non-predictive patterns from positive class which is achieved by the MIL formulation.</p>
+</sec></sec><sec id="s2c">
+<title>Better performance for multi-isoform genes than single-isoform genes</title>
+<p>The performance obtained in the previous section is a mix between single-isoform genes and multiple-isoform genes. We hypothesize that, if our framework does bring in discriminative power at the isoform level, multi-isoform genes should be predicted with better accuracy than single-isoform genes for the same set of GO terms evaluated. Single-isoform genes include both real ones and those that are missed in the database <xref ref-type="bibr" rid="pcbi.1003314-Harrow1">[58]</xref>. In fact, although it has been estimated that 95% of the multi-exon genes in human have multiple isoforms <xref ref-type="bibr" rid="pcbi.1003314-Pan1">[13]</xref>, only 13% of the genes are documented with validated multiple isoforms in NCBI. For these genes, the performance is expected to be poorer since the input features for each gene approximate the average of all its isoforms and our algorithm is not applicable to these genes in differentiating isoform functions. Therefore, we separately evaluated the performance of single-isoform genes and multiple-isoform genes. Two-fold cross-validation was carried out to evaluate our models to ensure there are sufficient genes in both the training and test sets for multi- and single-isoform genes. To make the comparison feasible, negatives in each group were randomly chosen to ensure that the ratio of positives to negatives is the same for multi- and single-isoform genes for the same GO term. In doing so, the AUC, AUPRC, precision at 1% recall and precision at 10% recall of each GO term are recalculated for both sets separately. These results are again organized into 5 groups, based on the number of positive genes in the test set for each GO term (<xref ref-type="fig" rid="pcbi-1003314-g004"><bold>Figure 4</bold></xref>).</p>
+<fig id="pcbi-1003314-g004" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003314.g004</object-id><label>Figure 4</label><caption>
+<title>Prediction performance comparison of single-isoform genes (green) and multi-isoform gene (blue) based on AUC (upper panel) and AUPRC (lower panel).</title>
+<p>We separately evaluated its prediction performance for single-isoform genes and multiple-isoform genes. Two-fold cross-validation was carried out to ensure enough examples in both groups. To ensure comparability, the negatives were randomly selected to ensure that the ratios of positive to negative genes for the multi-isoform group and the single isoform group are the same for each GO term. GO terms were grouped according to the number of genes in the test set. Shown in the box-plot are the AUC (<bold>A</bold>) and AUPRC (<bold>B</bold>) at 10, 25, 50, 75 and 90 percentile, respectively.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003314.g004" position="float" xlink:type="simple"/></fig>
+<p>We found consistently better performance for multi-isoform genes than single-isoform genes for the same GO term evaluated (<xref ref-type="fig" rid="pcbi-1003314-g004"><bold>Figure 4</bold></xref>; complete evaluation results are included in <xref ref-type="supplementary-material" rid="pcbi.1003314.s003">Dataset S3</xref>). For multi-isoform genes, we acquired median AUCs of 0.68, 0.70, 0.70, 0.73 and 0.76 for the five groups of multi-isoform genes, compared to median AUCs of the same groups of GO terms for single-isoform genes, 0.62, 0.63, 0.65, 0.66 and 0.68, which correspond to 57%, 56%, 34%, 47% and 40% improvements against the baseline (0.5), respectively. Similar better performance is seen for AUPRC values. We observed an increase from 0.002 to 0.006 (162% improvement, baseline is 0.0009), from 0.003 to 0.009 (168% improvement, baseline is 0.0015), from 0.005 to 0.012 (152% improvement, baseline is 0.0021), from 0.008 to 0.022 (156% improvement, baseline is 0.0034), from 0.016 to 0.042 (154% improvement, baseline is 0.0072). In fact, 71% of the 1591 GO terms with more than 20 positive genes and less than 300 positive genes have gained better performance for multi-isoform genes. This implies that our approach is effective in capturing the functionality of multi-isoform genes, which is robust regardless of the metrics used to quantify performance. For example, for GO terms GO:0000279 (M phase), GO:0006952 (defense response), GO:0006936 (muscle contraction), GO:0007507 (heart development), GO:0002252 (immune effector process), GO:0003002 (regionalization), precision at 10% recall increased from 0.121 to 0.571 (baseline 0.0069), from 0.051 to 0.500 (baseline is 0.0103), from 0.052 to 0.364 (baseline is 0.0038), from 0.045 to 0.389 (baseline is 0.0097), from 0.042 to 0.750 (baseline is 0.0048), from 0.074 to 0.320 (baseline is 0.0089), respectively. (<bold><xref ref-type="supplementary-material" rid="pcbi.1003314.s007">Figure S3</xref></bold>). Such precision improvement is robust to accuracy measurement across the entire precision-recall spectrum and consistent across a wide sampling of GO terms. For the five groups of GO terms, median of precision at 1% recall increased from 0.005 to 0.014 (baseline is 0.0009), from 0.008 to 0.031 (baseline is 0.0015), from 0.011 to 0.045 (baseline is 0.0021), from 0.016 to 0.083 (baseline is 0.0034), from 0.028 to 0.154 (baseline is 0.0072) (<xref ref-type="fig" rid="pcbi-1003314-g005"><bold>Figure 5</bold></xref>). This result indicates that our algorithm is more effective in predicting functions for genes with multiple isoforms than single-isoform genes, which is likely caused by the power of our algorithm in differentiating isoform functions for the same genes.</p>
+<fig id="pcbi-1003314-g005" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003314.g005</object-id><label>Figure 5</label><caption>
+<title>Prediction precision between single-isoform genes (green) with multi-isoform gene (blue).</title>
+<p>Two-fold cross-validation was carried out to ensure that enough examples are included in both the single-isoform group and the multi-isoform group. The negatives were randomly selected to ensure that the ratios of positive to negative genes for the multi-isoform group and the single isoform group are the same for each GO term, so that the baseline precision for each GO term is equal for the two groups. GO terms were grouped according to the number of genes in the test set. Each dot represents the precision value of an individual GO term. A. Precision at one percent recall. B. Precision at ten percent recall.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003314.g005" position="float" xlink:type="simple"/></fig></sec><sec id="s2d">
+<title>Robustness of predictions with respect to gene expression levels and exclusion of homolog gene pairs</title>
+<p>We further considered two factors to validate the robustness of our algorithm. First, because the estimated expression levels are less reliable for genes that have low expression values, we tested whether our algorithm can predict the functions for low-expressing isoforms. We partitioned genes into three groups of equal numbers - the high, the medium and the low groups - based on their expression level averaged across all experimental conditions and evaluated prediction results separately for these groups to see if performance is affected by the overall expression level of genes. We showed that prediction performance is fairly robust to the genes' expression levels (<xref ref-type="fig" rid="pcbi-1003314-g006"><bold>Figure 6A</bold></xref>). Although the genes in the highest expression group do show better performance (AUC = 0.79), AUCs for the medium (0.69) and low (0.69) groups are comparable to the global accuracy (<xref ref-type="fig" rid="pcbi-1003314-g006"><bold>Figure 6A</bold></xref>), indicating that our method is applicable to genes that have relatively low expression levels.</p>
+<fig id="pcbi-1003314-g006" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003314.g006</object-id><label>Figure 6</label><caption>
+<title>Robust performance of our algorithm in predicting isoform functions.</title>
+<p>A. Genes are grouped according to their expression levels averaged across all samples in our RNA-seq data collection. The distribution of the performance in AUC across all GO terms is plotted using box-plot. B. The performance in AUC across all GO terms by partitioning the genes according to homologous groups between the training and the test set is compared against the performance of partitioning the genes randomly.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003314.g006" position="float" xlink:type="simple"/></fig>
+<p>Secondly, we tested whether our good performance comes from the homolog gene pairs of which one member is grouped into the training set and the other member is grouped into the test set. This can potentially cause overfitting by information leak, which is a common phenomenon in all functional prediction algorithms, especially those based on sequence information. In order to test robustness of our method with respect to having homolog pairs in test and training sets, we partitioned all genes into equal size test and training sets by putting all genes in a homolog group as defined in Ensembl <xref ref-type="bibr" rid="pcbi.1003314-Vilella1">[59]</xref> together and re-evaluated the performance. We found that the performance is comparable to the case where paralog genes can occur in training and test sets (<xref ref-type="fig" rid="pcbi-1003314-g006"><bold>Figure 6B</bold></xref>). This suggests that our method utilizing RNA-seq data integration is also robust to the information leak from homologs.</p>
+</sec><sec id="s2e">
+<title>Validation of predicted ‘functional’ isoform(s)</title>
+<p>To generate the final isoform function prediction, we applied bootstrap bagging to assign scores for each isoform (<xref ref-type="fig" rid="pcbi-1003314-g001"><bold>Figure 1</bold></xref>, <ext-link ext-link-type="uri" xlink:href="http://guanlab.ccmb.med.umich.edu/isoPred/" xlink:type="simple">http://guanlab.ccmb.med.umich.edu/isoPred/</ext-link> for complete prediction results). The median AUC for the bootstrap result across all GO terms is the same as the cross-validation result, indicating the robust performance of bootstrapping. Essentially, genes are sampled with replacement to construct a training set, and the rest of the examples form an “out-of-bag” set. This process is iterated, and the eventual predictions are drawn from the median across all “out-of-bag” sets. Bootstrap bagging is suitable for our isoform function prediction task, where the numbers of positive and negative examples are highly imbalanced <xref ref-type="bibr" rid="pcbi.1003314-Fu1">[56]</xref>. The robustness of bootstrap bagging has been tested for positive example set sizes ranging from less than 20 to more than 200 <xref ref-type="bibr" rid="pcbi.1003314-Fu1">[56]</xref>, <xref ref-type="bibr" rid="pcbi.1003314-Finsterer1">[60]</xref>, which is close to the GO term sizes for which we provide predictions in this study.</p>
+<p>Because each GO term has a different background probability for a gene to be associated with it, we calculated the fold change against background for each gene to be associated to a GO term. Indeed, it is pervasive that isoforms of the same gene are assigned with different confidence levels for the same function under consideration (see <bold><xref ref-type="supplementary-material" rid="pcbi.1003314.s009">Table S1</xref></bold> for a selection of examples and <ext-link ext-link-type="uri" xlink:href="http://guanlab.ccmb.med.umich.edu/isoPred/" xlink:type="simple">http://guanlab.ccmb.med.umich.edu/isoPred/</ext-link> for complete prediction results). Because biological functions of transcripts are eventually delivered at the protein level, we hypothesized that the functional isoform(s) of a gene must be expressed at the protein level in the normal physiological condition. We therefore used splice variant protein expression data in normal mammary tissue to validate our predictions. Using our previously developed protocol <xref ref-type="bibr" rid="pcbi.1003314-Menon1">[61]</xref>, we identified genes of which only one isoform is strongly expressed (but the other isoforms are not detected). In this gene list, we focused on the ones that have a known specific function (<italic>i.e.</italic>, the function has less than 300 genes annotated to them), but their isoforms are predicted with drastically different confidence levels to carry out this function. In total this resulted in 15 isoform groups. We could then check whether the predicted ‘responsible’ isoform(s) correspond to the expressed isoforms in normal breast tissues.</p>
+<p>We found a strong match between the expressed splice variant and the isoform(s) predicted to be responsible for the known specific function of the gene (<xref ref-type="table" rid="pcbi-1003314-t001"><bold>Table 1</bold></xref><bold> and <xref ref-type="supplementary-material" rid="pcbi.1003314.s004">Dataset S4</xref></bold>). All the expressed isoforms are predicted with the highest value in at least one of the known functions, indicating the consistency between the predicted functional isoforms and the expressed isoform. For example, we predicted that NM_172745.3 of Tufm is responsible for its function translation (34 fold over background probability), while the other isoform, NM_001163713.1, is much less likely to be functional (3 fold over background probability). Indeed, only NM_172745.3 is expressed in normal breast tissue. Among the six alternatively spliced isoforms of Tardbp, we correctly predicted that NM_145556.4 is the one responsible for its function in RNA splicing and stabilization; this variant is the only one identified in the proteomic sample. In fact, of the 9 functions annotated for Tardbp, NM_145556.4 is predicted with the highest value eight times. The majority of the exceptions occur for tissue or developmental-stage-specific GO terms, such as GO:0007507 heart development, GO:0035051 cardiac cell differentiation and GO: 0006936 muscle contraction. The predicted functional isoform is not the one identified in our proteomic sample, most likely because our sample is tissue-specific and normal and these functions might be carried out by other isoforms in other tissues or conditions. However, overall, the predicted functional isoforms are consistent with the ones we identified in our proteomic data, indicating that our algorithm can correctly identify the functional splice variants in normal conditions.</p>
+<table-wrap id="pcbi-1003314-t001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003314.t001</object-id><label>Table 1</label><caption>
+<title>Examples for predicted functional isoforms that are validated using proteomic data.</title>
+</caption><alternatives><graphic id="pcbi-1003314-t001-1" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003314.t001" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1">Gene Name</td>
+<td align="left" rowspan="1" colspan="1">Identified transcript in proteomic data</td>
+<td align="left" rowspan="1" colspan="1">GO term ID</td>
+<td align="left" rowspan="1" colspan="1">GO term name</td>
+<td align="left" rowspan="1" colspan="1">Fold change of prediction score</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">Tufm</td>
+<td align="left" rowspan="1" colspan="1">NM_172745.3</td>
+<td align="left" rowspan="1" colspan="1">GO:0006412</td>
+<td align="left" rowspan="1" colspan="1">translation</td>
+<td align="left" rowspan="1" colspan="1">34.10</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Tardbp</td>
+<td align="left" rowspan="1" colspan="1">NM_145556.4</td>
+<td align="left" rowspan="1" colspan="1">GO:0006396</td>
+<td align="left" rowspan="1" colspan="1">RNA processing</td>
+<td align="left" rowspan="1" colspan="1">10.48</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Tardbp</td>
+<td align="left" rowspan="1" colspan="1">NM_145556.4</td>
+<td align="left" rowspan="1" colspan="1">GO:0008380</td>
+<td align="left" rowspan="1" colspan="1">RNA splicing</td>
+<td align="left" rowspan="1" colspan="1">15.08</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Tardbp</td>
+<td align="left" rowspan="1" colspan="1">NM_145556.4</td>
+<td align="left" rowspan="1" colspan="1">GO:0016071</td>
+<td align="left" rowspan="1" colspan="1">mRNA metabolic process</td>
+<td align="left" rowspan="1" colspan="1">6.15</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Tardbp</td>
+<td align="left" rowspan="1" colspan="1">NM_145556.4</td>
+<td align="left" rowspan="1" colspan="1">GO:0043487</td>
+<td align="left" rowspan="1" colspan="1">regulation of RNA stability</td>
+<td align="left" rowspan="1" colspan="1">3.28</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Tardbp</td>
+<td align="left" rowspan="1" colspan="1">NM_145556.4</td>
+<td align="left" rowspan="1" colspan="1">GO:0043488</td>
+<td align="left" rowspan="1" colspan="1">regulation of mRNA stability</td>
+<td align="left" rowspan="1" colspan="1">7.00</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Tardbp</td>
+<td align="left" rowspan="1" colspan="1">NM_145556.4</td>
+<td align="left" rowspan="1" colspan="1">GO:0043489</td>
+<td align="left" rowspan="1" colspan="1">RNA stabilization</td>
+<td align="left" rowspan="1" colspan="1">7.50</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Tardbp</td>
+<td align="left" rowspan="1" colspan="1">NM_145556.4</td>
+<td align="left" rowspan="1" colspan="1">GO:0048255</td>
+<td align="left" rowspan="1" colspan="1">mRNA stabilization</td>
+<td align="left" rowspan="1" colspan="1">6.70</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Tardbp</td>
+<td align="left" rowspan="1" colspan="1">NM_145556.4</td>
+<td align="left" rowspan="1" colspan="1">GO:0051817</td>
+<td align="left" rowspan="1" colspan="1">modification of morphology or physiology of other organism involved in symbiotic interaction</td>
+<td align="left" rowspan="1" colspan="1">3.08</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Ola1</td>
+<td align="left" rowspan="1" colspan="1">NM_025942.2</td>
+<td align="left" rowspan="1" colspan="1">GO:0006163</td>
+<td align="left" rowspan="1" colspan="1">purine nucleotide metabolic process</td>
+<td align="left" rowspan="1" colspan="1">2.23</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Ola1</td>
+<td align="left" rowspan="1" colspan="1">NM_025942.2</td>
+<td align="left" rowspan="1" colspan="1">GO:0006195</td>
+<td align="left" rowspan="1" colspan="1">purine nucleotide catabolic process</td>
+<td align="left" rowspan="1" colspan="1">2.20</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Ola1</td>
+<td align="left" rowspan="1" colspan="1">NM_025942.2</td>
+<td align="left" rowspan="1" colspan="1">GO:0006200</td>
+<td align="left" rowspan="1" colspan="1">ATP catabolic process</td>
+<td align="left" rowspan="1" colspan="1">2.92</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Ola1</td>
+<td align="left" rowspan="1" colspan="1">NM_025942.2</td>
+<td align="left" rowspan="1" colspan="1">GO:0009141</td>
+<td align="left" rowspan="1" colspan="1">nucleoside triphosphate metabolic process</td>
+<td align="left" rowspan="1" colspan="1">2.53</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Ola1</td>
+<td align="left" rowspan="1" colspan="1">NM_025942.2</td>
+<td align="left" rowspan="1" colspan="1">GO:0009143</td>
+<td align="left" rowspan="1" colspan="1">nucleoside triphosphate catabolic process</td>
+<td align="left" rowspan="1" colspan="1">2.32</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Ola1</td>
+<td align="left" rowspan="1" colspan="1">NM_025942.2</td>
+<td align="left" rowspan="1" colspan="1">GO:0009144</td>
+<td align="left" rowspan="1" colspan="1">purine nucleoside triphosphate metabolic process</td>
+<td align="left" rowspan="1" colspan="1">2.60</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Ola1</td>
+<td align="left" rowspan="1" colspan="1">NM_025942.2</td>
+<td align="left" rowspan="1" colspan="1">GO:0009146</td>
+<td align="left" rowspan="1" colspan="1">purine nucleoside triphosphate catabolic process</td>
+<td align="left" rowspan="1" colspan="1">2.38</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Ola1</td>
+<td align="left" rowspan="1" colspan="1">NM_025942.2</td>
+<td align="left" rowspan="1" colspan="1">GO:0009154</td>
+<td align="left" rowspan="1" colspan="1">purine ribonucleotide catabolic process</td>
+<td align="left" rowspan="1" colspan="1">2.59</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Ola1</td>
+<td align="left" rowspan="1" colspan="1">NM_025942.2</td>
+<td align="left" rowspan="1" colspan="1">GO:0009166</td>
+<td align="left" rowspan="1" colspan="1">nucleotide catabolic process</td>
+<td align="left" rowspan="1" colspan="1">2.08</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Ola1</td>
+<td align="left" rowspan="1" colspan="1">NM_025942.2</td>
+<td align="left" rowspan="1" colspan="1">GO:0009199</td>
+<td align="left" rowspan="1" colspan="1">ribonucleoside triphosphate metabolic process</td>
+<td align="left" rowspan="1" colspan="1">2.29</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Ola1</td>
+<td align="left" rowspan="1" colspan="1">NM_025942.2</td>
+<td align="left" rowspan="1" colspan="1">GO:0009203</td>
+<td align="left" rowspan="1" colspan="1">ribonucleoside triphosphate catabolic process</td>
+<td align="left" rowspan="1" colspan="1">2.24</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Ola1</td>
+<td align="left" rowspan="1" colspan="1">NM_025942.2</td>
+<td align="left" rowspan="1" colspan="1">GO:0009205</td>
+<td align="left" rowspan="1" colspan="1">purine ribonucleoside triphosphate metabolic process</td>
+<td align="left" rowspan="1" colspan="1">2.42</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Ola1</td>
+<td align="left" rowspan="1" colspan="1">NM_025942.2</td>
+<td align="left" rowspan="1" colspan="1">GO:0009207</td>
+<td align="left" rowspan="1" colspan="1">purine ribonucleoside triphosphate catabolic process</td>
+<td align="left" rowspan="1" colspan="1">2.66</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Ola1</td>
+<td align="left" rowspan="1" colspan="1">NM_025942.2</td>
+<td align="left" rowspan="1" colspan="1">GO:0046034</td>
+<td align="left" rowspan="1" colspan="1">ATP metabolic process</td>
+<td align="left" rowspan="1" colspan="1">3.55</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Ola1</td>
+<td align="left" rowspan="1" colspan="1">NM_025942.2</td>
+<td align="left" rowspan="1" colspan="1">GO:0046700</td>
+<td align="left" rowspan="1" colspan="1">heterocycle catabolic process</td>
+<td align="left" rowspan="1" colspan="1">2.08</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Ola1</td>
+<td align="left" rowspan="1" colspan="1">NM_025942.2</td>
+<td align="left" rowspan="1" colspan="1">GO:0072521</td>
+<td align="left" rowspan="1" colspan="1">purine-containing compound metabolic process</td>
+<td align="left" rowspan="1" colspan="1">2.35</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Ola1</td>
+<td align="left" rowspan="1" colspan="1">NM_025942.2</td>
+<td align="left" rowspan="1" colspan="1">GO:0072523</td>
+<td align="left" rowspan="1" colspan="1">purine-containing compound catabolic process</td>
+<td align="left" rowspan="1" colspan="1">2.10</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Myom1</td>
+<td align="left" rowspan="1" colspan="1">NM_010867.2</td>
+<td align="left" rowspan="1" colspan="1">GO:0003012</td>
+<td align="left" rowspan="1" colspan="1">muscle system process</td>
+<td align="left" rowspan="1" colspan="1">21.02</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Lmna</td>
+<td align="left" rowspan="1" colspan="1">NM_001002011.2</td>
+<td align="left" rowspan="1" colspan="1">GO:0007517</td>
+<td align="left" rowspan="1" colspan="1">muscle organ development</td>
+<td align="left" rowspan="1" colspan="1">3.04</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Lmna</td>
+<td align="left" rowspan="1" colspan="1">NM_001002011.2</td>
+<td align="left" rowspan="1" colspan="1">GO:0014706</td>
+<td align="left" rowspan="1" colspan="1">striated muscle tissue development</td>
+<td align="left" rowspan="1" colspan="1">4.03</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Lmna</td>
+<td align="left" rowspan="1" colspan="1">NM_001002011.2</td>
+<td align="left" rowspan="1" colspan="1">GO:0042692</td>
+<td align="left" rowspan="1" colspan="1">muscle cell differentiation</td>
+<td align="left" rowspan="1" colspan="1">4.69</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Lmna</td>
+<td align="left" rowspan="1" colspan="1">NM_001002011.2</td>
+<td align="left" rowspan="1" colspan="1">GO:0051146</td>
+<td align="left" rowspan="1" colspan="1">striated muscle cell differentiation</td>
+<td align="left" rowspan="1" colspan="1">7.05</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Lmna</td>
+<td align="left" rowspan="1" colspan="1">NM_001002011.2</td>
+<td align="left" rowspan="1" colspan="1">GO:0055001</td>
+<td align="left" rowspan="1" colspan="1">muscle cell development</td>
+<td align="left" rowspan="1" colspan="1">4.57</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Lmna</td>
+<td align="left" rowspan="1" colspan="1">NM_001002011.2</td>
+<td align="left" rowspan="1" colspan="1">GO:0060537</td>
+<td align="left" rowspan="1" colspan="1">muscle tissue development</td>
+<td align="left" rowspan="1" colspan="1">5.35</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Lmna</td>
+<td align="left" rowspan="1" colspan="1">NM_001002011.2</td>
+<td align="left" rowspan="1" colspan="1">GO:0061061</td>
+<td align="left" rowspan="1" colspan="1">muscle structure development</td>
+<td align="left" rowspan="1" colspan="1">4.28</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Gpx3</td>
+<td align="left" rowspan="1" colspan="1">NM_008161.2</td>
+<td align="left" rowspan="1" colspan="1">GO:0006518</td>
+<td align="left" rowspan="1" colspan="1">peptide metabolic process</td>
+<td align="left" rowspan="1" colspan="1">2.16</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Gpx3</td>
+<td align="left" rowspan="1" colspan="1">NM_008161.2</td>
+<td align="left" rowspan="1" colspan="1">GO:0006749</td>
+<td align="left" rowspan="1" colspan="1">glutathione metabolic process</td>
+<td align="left" rowspan="1" colspan="1">2.25</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Gpx3</td>
+<td align="left" rowspan="1" colspan="1">NM_008161.2</td>
+<td align="left" rowspan="1" colspan="1">GO:0042743</td>
+<td align="left" rowspan="1" colspan="1">hydrogen peroxide metabolic process</td>
+<td align="left" rowspan="1" colspan="1">2.18</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Gpx3</td>
+<td align="left" rowspan="1" colspan="1">NM_008161.2</td>
+<td align="left" rowspan="1" colspan="1">GO:0044106</td>
+<td align="left" rowspan="1" colspan="1">cellular amine metabolic process</td>
+<td align="left" rowspan="1" colspan="1">2.14</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Gpx3</td>
+<td align="left" rowspan="1" colspan="1">NM_008161.2</td>
+<td align="left" rowspan="1" colspan="1">GO:0072593</td>
+<td align="left" rowspan="1" colspan="1">reactive oxygen species metabolic process</td>
+<td align="left" rowspan="1" colspan="1">2.38</td>
+</tr>
+</tbody>
+</table>
+</alternatives></table-wrap></sec><sec id="s2f">
+<title>Validation of predicted disparate functions for isoforms of CDKN2a and of ANXA6</title>
+<p>Our algorithm is more than just identifying the ‘functional’ isoform of a gene. The power of our algorithm to predict the functional disparity between isoforms is further illustrated by isoforms that carry out different aspects of gene functions. It is relatively common that only one isoform is predicted to be responsible for one particular function of a gene, as described in the previous section. In this section, we focus on analyzing specific examples in which isoforms of a single gene are assigned with unrelated biological functions.</p>
+<p>CDKN2a is the only known example where alternative splicing results in different reading frames (<xref ref-type="fig" rid="pcbi-1003314-g007"><bold>Figure 7A</bold></xref>). Two genes (XBP1, GNAS1) produce alternate reading frames, but start with single transcript and therefore do not fall into the realm of alternative splicing. We predicted that the two isoforms of CDKN2a would carry distinct functions for the gene (<xref ref-type="fig" rid="pcbi-1003314-g007"><bold>Figure 7B</bold></xref>). NM_001040654.1 is predicted to be involved in apoptotic nuclear changes with a probability 74 times the background probability, while the probability for NM_009877.2 approximates background. On the other hand, NM_009877.2 is predicted to be involved in positive regulation of the transmembrane receptor protein serine/threonine kinase signaling pathway (3 times background), while NM_001040654.1 is not. Because crystallized protein structures are available for both proteins in the human but not in the mouse, we used I-TASSER, the state-of-the-art protein structure prediction algorithm <xref ref-type="bibr" rid="pcbi.1003314-Roy1">[62]</xref>, to model the 3-D protein structures of the two isoforms (<xref ref-type="fig" rid="pcbi-1003314-g007"><bold>Figure 7C–D</bold></xref>). Although the translated products of NM_001040654.1 (168 aa) and NM_009877.2 (169 aa) are almost the same lengths, the transcript sequences are in different open reading frames. This resulted in five ankyrin repeats in the NM_001040654.1 (<xref ref-type="fig" rid="pcbi-1003314-g007"><bold>Figure 7C</bold></xref>), compared to a cyclin-dependent kinase inhibitor N-terminus domain in NM_009877.2 (<xref ref-type="fig" rid="pcbi-1003314-g007"><bold>Figure 7D</bold></xref>). The drastically different 3-D structures support the potential disparate functions predicted by our algorithm.</p>
+<fig id="pcbi-1003314-g007" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003314.g007</object-id><label>Figure 7</label><caption>
+<title>Predicted functions for isoforms of CDKN2a and their predicted protein structures. A</title>
+<p>. Gene model for NM_001040654.1 and NM_009877.2. <bold>B</bold>. Predicted functions for NM_001040654.1 and NM_009877.2. <bold>C</bold>. The computationally modeled structure of NM_001040654.1 is characterized by five ankryin repeats. <bold>D</bold>. The modeled structure of NM_009877.2 has a CDKN2a N-terminus domain.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003314.g007" position="float" xlink:type="simple"/></fig>
+<p>The function predictions for NM_009877.2 and NM_001040654.1, which we made by mining only large-scale public RNA-seq datasets, are consistent with the two distinct biological roles of the two isoforms. NM_009877.2 is an inhibitor of CDK4 kinase, a member of the Ser/Thr protein kinase family, directly supporting its role in GO:0071900, regulation of protein serine/threonine kinase activity. NM_001040654.1 encodes an alternate open reading frame (ARF) that generates a protein structurally unrelated to NM_009877.2. This protein enhances p53-dependent transactivation and apoptosis <xref ref-type="bibr" rid="pcbi.1003314-Liontos1">[63]</xref>, supporting its role in apoptotic nuclear changes. Interestingly, although coding for structurally dissimilar proteins, both isoforms share a common functionality in cell cycle G1 control <xref ref-type="bibr" rid="pcbi.1003314-Ivanchuk1">[64]</xref>. This shared functionality is correctly predicted by our algorithm; for regulation of G1/S transition of mitotic cell cycle (GO:2000045): NM_001040654.1 has a probability 3.5 times the background probability, and NM_009877.2 has a probability 2.4 times that of background.</p>
+<p>The CDKN2a example involves isoforms of drastically different protein domains. We used the isoforms of ANXA6 (NM_013472.4 and NM_001110211.1) to validate our model in predicting isoforms of very similar structure. The only difference between the two isoforms at the protein sequence level is the presence of six residues in the longer NM_013472.4 (‘VAAEIL’, 525–530) which are missing in NM_001110211.1. The three-dimensional structures of the translated sequences of these isoforms were published by some authors of this paper <xref ref-type="bibr" rid="pcbi.1003314-Menon2">[65]</xref>. Although the global topology of the I-TASSER models for the two isoforms of ANXA6 is almost identical (with RMSD = 0.38 Å and TM-score = 0.99), there is an obvious structural variation identified by TM-align <xref ref-type="bibr" rid="pcbi.1003314-Zhang3">[66]</xref>. The positions of Thr-535 and Ser-537 in NM_013472.4 compared to NM_001110211.1 make NM_013472.4 more likely to undergo phosphorylation <xref ref-type="bibr" rid="pcbi.1003314-Menon2">[65]</xref>. The fold changes on GO-terms related to phosphorylation by our function prediction algorithm supported the conclusion from the structural comparisons. The fold change for peptidyl-serine phosphorylation for NM_013472.4 was 3.5 compared to 1.9 for NM_001110211.1. Re-searching the mass-spectrometric data with phosphorylation on Serine or Threonine (Phospho (S) and Phospho (T)) as potential residue modification, yielded a peptide ‘DQAQEDAQVAAEILEIADTPSGDKTSLETR’ (found only in NM_013472.4) with 3281.506 daltons as the mh (calculated peptide mass plus a proton) indicating potential phosphorylation <xref ref-type="bibr" rid="pcbi.1003314-Omenn2">[67]</xref>. In contrast, the peptide that matched the spliced region in NM_001110211.1 (residues ‘VAAEIL’ are missing in this peptide) did not show any phosphorylation. These observations further supported our predictions. In addition, the overall function enrichment showed the smaller isoform, NM_001110211.1 as involved in biological processes related to cell adhesion and cell migration, whereas the longer form is predicted to be involved in localization. It is important to emphasize the fact that our computational predictions based on RNA-seq data alone were able to pick up the differences between these two isoforms with 99% sequence identity and predict distinct functions for the isoforms. These findings suggest that our approach can solve the pressing need of isoform function differentiation, which would be invaluable for a better understanding of the diversity of functions created by alternative splicing of a limited set of genes.</p>
+</sec></sec><sec id="s3">
+<title>Discussion</title>
+<p>Gene functions are delivered through alternatively spliced transcript isoforms that encode proteins of different functions. It is highly beneficial that the investigation of functions is carried out at the isoform level. From this point of view, the standard gene function prediction paradigm has a major drawback in that it considers a gene as one single entity without differentiating its isoforms. The availability of transcript-level expression data from RNA-seq provides a rich resource for addressing this drawback. However, algorithmically, any supervised learning algorithm developed for gene function prediction cannot be directly applied to isoform function prediction because of the lack of isoform-level, ‘ground-truth’ functional annotations.</p>
+<p>To address this challenge, we developed an iterative algorithm that predicts functions at the individual isoform level by conceptualizing a gene as a ‘bag’ of isoforms of potentially different functions. Our key idea is to iteratively extract the common pattern of a subset of isoforms across the positive genes of the function under investigation, aiming at maximizing the coherence within this subset of isoforms and the discriminative power against the other ‘negative’ genes (genes not related to the specific function under consideration).</p>
+<p>Through experimental validation, we demonstrated that our approach in combination with publicly available RNA-seq data is capable of differentiating isoform functions, promising better and deeper understanding of gene functions. RNA-seq data are the richest resource for genome-wide, isoform-level data so far. But the basic concept is extendable to other large-scale datasets providing isoform-level information, such as protein domain data and post-translational regulation datasets. These datasets are not included in this study due to their strong overlap with the ‘Gold-Standard’ gene ontology annotations, which might lead to a circularity problem in evaluating our algorithms. Furthermore, our study only focuses on the base learner SVM. However, our approach is highly extendable to other modeling methods, such as logistical regression and random forests.</p>
+<p>Our study is limited to the incomplete isoform catalog maintained by NCBI, but it can be readily updated whenever the genome annotation of isoforms is updated. Additionally, alternatively spliced isoforms often show tissue-specific expression and functions <xref ref-type="bibr" rid="pcbi.1003314-Fruhwald1">[23]</xref>, <xref ref-type="bibr" rid="pcbi.1003314-Mortazavi1">[27]</xref>, <xref ref-type="bibr" rid="pcbi.1003314-Barash1">[68]</xref>–<xref ref-type="bibr" rid="pcbi.1003314-Pan2">[71]</xref>. Our generic algorithm does not yet take the tissue-specific functionality into consideration. We expect that more accurate and biologically meaningful isoform function prediction could be achieved if tissue specificity were taken into account. As a result, our validation carried out in breast tissue is only used to validate the ‘generic’ functions of the isoforms. Recent studies found that the same principal isoform is often present in different tissues <xref ref-type="bibr" rid="pcbi.1003314-Djebali1">[72]</xref>–<xref ref-type="bibr" rid="pcbi.1003314-GonzalezPorta1">[75]</xref>. We expect that tissue-specific functions can be validated in corresponding tissues when these tissue-specific predictions can be made. Our study is further limited by the current technology to assign isoform-level expression values, as well as the differential capability between platforms for capturing isoform-specific expression. We used Cufflinks in the Tuxedo suite <xref ref-type="bibr" rid="pcbi.1003314-Trapnell1">[32]</xref>, one of the state-of-the-art algorithms, to estimate the isoform-level read counts and achieved good performance. However, if more advanced algorithms are developed, our algorithm could directly utilize the estimates from those algorithms and generate isoform function predictions.</p>
+<p>Our approach represents a novel and generic strategy to look at gene functions at a higher resolution. Cross-validation, literature, and experimental analysis of proteomic data provided evidence that our algorithm is powerful in differentiating isoform functions. Broadly speaking, the genomic data integration field typically relies on the supervised learning concept, which cannot generate predictions for spliced isoforms, <italic>e.g.</italic>, predicting gene-disease association and gene regulatory networks. We envision that similar concepts will be developed for generating isoform-level models for these prediction tasks.</p>
+</sec><sec id="s4" sec-type="methods">
+<title>Methods</title>
+<sec id="s4a">
+<title>Pre-processing public RNA-seq datasets</title>
+<p>We downloaded 811 RNA-seq experiments for the mouse from the NCBI sequence read archive (SRA) database as of May 1, 2012 <xref ref-type="bibr" rid="pcbi.1003314-Leinonen1">[30]</xref>. These datasets represent different conditions and tissues. Heterogeneity of the datasets allowed us to look at the isoform expression variations across different conditions and tissues. Because datasets are heterogeneous in terms of library preparation procedures and sequencing platform (<xref ref-type="supplementary-material" rid="pcbi.1003314.s001">Dataset S1</xref>), we adopted the following processing and filtering pipeline to ensure that all datasets included in the final predictions have sufficient coverage. NCBI build 37.2 reference genome was downloaded from the TopHat homepage, and BOWTIE2 <xref ref-type="bibr" rid="pcbi.1003314-Langmead1">[76]</xref> index files were created by bowtie2-build software. For each RNA-seq dataset, short reads were aligned against the NCBI <italic>Mus musculus</italic> reference genome (Build 37.2) using TopHat v2.0.051 <xref ref-type="bibr" rid="pcbi.1003314-Trapnell1">[32]</xref>, <xref ref-type="bibr" rid="pcbi.1003314-Trapnell2">[34]</xref>. The reference GTF annotation file from NCBI (build 37.2, downloaded from TopHat homepage) was given to TopHat and the no-novel-juncs option was used. With this option, TopHat creates a database of splice junctions indicated in the supplied GTF file and maps the previously unmapped reads against the database of these junctions to create an estimate of isoform expression levels. Then we used Cufflinks v2.0.0 <xref ref-type="bibr" rid="pcbi.1003314-Trapnell1">[32]</xref> to measure the relative abundances of the transcripts using normalized RNA-seq fragment counts <xref ref-type="bibr" rid="pcbi.1003314-Trapnell1">[32]</xref>, <xref ref-type="bibr" rid="pcbi.1003314-Trapnell3">[35]</xref>. The unit of expression levels is Fragments Per Kilobase of exon per Million fragments mapped (FPKM). To ensure data quality and overall coverage, we removed those experiments with less than 10 million reads or with less than 50% reads being successfully mapped to the genome. The above procedure resulted in 365 experiments used in our study. Genes detected in less than half of the experiments were removed. After filtering these poorly-covered genes, there are 19209 genes left with a total of 24274 isoforms. Distribution of the number of isoforms per gene is included in <xref ref-type="supplementary-material" rid="pcbi.1003314.s008">Figure S4</xref>. FPKM values were log<sub>2</sub>-transformed; missing values were approximated with a value of “-15”.</p>
+</sec><sec id="s4b">
+<title>Assembling gene-level gold standard functional annotations</title>
+<p>We constructed gold standard gene functions using the Gene Ontology (GO) database <xref ref-type="bibr" rid="pcbi.1003314-Harris1">[48]</xref>, <xref ref-type="bibr" rid="pcbi.1003314-Ashburner2">[77]</xref>. For each biological process term, we treated the genes which are annotated to that GO term and any of its descendent terms as positives and others as negatives. We maintained all GO evidence codes. The sources of these annotations include (1) hand annotation from primary literature, (2) electronic annotation based on gene name and symbols, (3) annotation from SwissProt keywords and (4) Enzyme Commision (EC) numbers <xref ref-type="bibr" rid="pcbi.1003314-Hill1">[78]</xref>. These annotation sources are reasonably accurate for our analysis.</p>
+</sec><sec id="s4c">
+<title>Mathematical definition and solution of the isoform function prediction problem</title>
+<p>As stated in the <xref ref-type="sec" rid="s2">Results</xref> section, the isoform function prediction problem is a Multiple Instance Learning problem. Since the introduction of MIL by <xref ref-type="bibr" rid="pcbi.1003314-Dietterich1">[79]</xref> for the drug activity prediction, several methods to solve this problem have been proposed in the literature. In <xref ref-type="bibr" rid="pcbi.1003314-Maron1">[80]</xref>, the authors introduced the concept of Diversity Density, whose aim is to find a point in feature space that has a high Diverse Density. This means high density of instances from positive bags and low density of instances from negative bags. Additionally, Ray and Page <xref ref-type="bibr" rid="pcbi.1003314-Ray1">[81]</xref> proposed the method multiple-instance regression. Their algorithm assumed that each bag has a witness instance and treated it as a missing value; then the EM (Expectation-Maximization) method was used to learn the witness instances and do the regression simultaneously. Ramon et al. <xref ref-type="bibr" rid="pcbi.1003314-Ramon1">[82]</xref> utilized the Neural Network technique on Multiple Instance Learning and proposed the Multiple Instance Neural Network. Finally, Andrews et al. <xref ref-type="bibr" rid="pcbi.1003314-Andrews1">[51]</xref> applied the Support Vector Machines to Multiple Instance Learning.</p>
+<p>In this paper, we chose to use a method that utilizes the Support Vector Machine. Two different approaches have been proposed to solve the MIL problem using SVM. The first tries to impute all non-witness instances in positive bags as negative examples and then considers the problem as a supervised learning problem. The second tries to identify a single witness from each positive bag which is responsible for positive label. Then, a classifier is built based on these witnesses only, while other instances are dropped out of the classification process. SVM formulations of these two approaches are labeled mi-SVM and MI-SVM by Andrews et al. <xref ref-type="bibr" rid="pcbi.1003314-Andrews1">[51]</xref>; we implemented and tested several alternatives of these algorithms.</p>
+<p>Without loss of generality, we assume that the <italic>i</italic>th gene with <italic>m</italic> isoforms is denoted as <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003314.e001" xlink:type="simple"/></inline-formula>. The corresponding class label <italic>y<sub>i</sub></italic> is set to 1 if the gene is annotated to the function under consideration and <italic>0</italic> if not. For each gene, we hypothesize that if a gene is annotated to a function, at least one of its isoforms should be annotated to the function; if a gene is a negative example used in training, none of its isoforms can be annotated to the function, <italic>i.e.</italic>,<disp-formula id="pcbi.1003314.e002"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003314.e002" xlink:type="simple"/><label>(1)</label></disp-formula></p>
+<p>Then, the mi-SVM formulation of MIL can be written as follows<disp-formula id="pcbi.1003314.e003"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003314.e003" xlink:type="simple"/><label>(2)</label></disp-formula></p>
+<p>In the standard classification setting, the labels <italic>y<sub>ij</sub></italic> of the isoform <italic>x<sub>ij</sub></italic> would be given; however, in <xref ref-type="disp-formula" rid="pcbi.1003314.e003">equation (2)</xref> labels of isoforms that belong to a positive gene are treated as unobserved hidden integer variables. Therefore, the soft-margin criterion is maximized jointly over hyperplanes and over all possible label assignments. The algorithm is looking for a separating hyperplane such that all isoforms of negative genes are in the negative half-space, whereas there is at least one isoform from every positive gene in the positive half-space. Meantime, the margin is maximized with respect to the selected labels.</p>
+<p>Alternatively, in the MI-SVM formulation, the definition of margins is extended to bag-level. Margin of a bag with respect to a separating hyperplane can be defined as the maximum margin of its instances. In the case of positive bags, bag margin is defined by the most positive instance, whereas, for negative bags, the bag margin is defined by the least negative instance. Using this definition of bag margin, the MI-SVM formulation can be written as follows:<disp-formula id="pcbi.1003314.e004"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003314.e004" xlink:type="simple"/><label>(3)</label></disp-formula>where <italic>y<sub>i</sub></italic> takes the form <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003314.e005" xlink:type="simple"/></inline-formula> and <italic>s(i)</italic> is the selector variable that denotes the isoform selected as witness from each positive gene. Note that, for the mi-SVM formulation, every instance in a positive bag has an effect on the margin maximization equation, whereas, in the MI-SVM formulation, only one instance per positive bag is taken into account, because this instance alone will determine the margin of the bag.</p>
+<p>Finding the optimum solution to (2) and (3) is a combinatorial optimization problem, which cannot be found efficiently with the state-of-the-art tools. Therefore, we approximated the solution by using the following optimization heuristics which is proposed by Andrews <italic>et al.</italic> <xref ref-type="bibr" rid="pcbi.1003314-Andrews1">[51]</xref>. Both formulations of MIL explained above can be considered as mixed-integer problems. In the mi-SVM formulation, instance margin is maximized over hidden labels of instances in positive bags, whereas, in the MI-SVM formulation, bag margin is maximized over selector variable, which selects a single witness from every positive bag. Optimization heuristic uses the fact that, given these integer variables, the problem reduces to a quadratic programming problem which can be solved exactly. The optimization heuristic includes two steps: (i) for a set of given integer variables (i.e. hidden labels in mi-SVM and selector variable in MI-SVM), solve the soft-margin maximization problem and find the optimal separating hyper-plane, (ii) for a given separating hyper-plane, update all integer variables so that they maximize the objective locally. These two steps are run iteratively until integer variables are not updated anymore in step (ii). The following workflow explains this optimization heuristic further in detail for both formulations.</p>
+<list list-type="order"><list-item>
+<p>Initialization: Initially, we assign all instances (isoforms) in positive bags (genes) as positives, <italic>i.e.</italic>,<disp-formula id="pcbi.1003314.e006"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003314.e006" xlink:type="simple"/><label>(4)</label></disp-formula>where <italic>y<sub>i</sub></italic> = 1 if the gene is annotated to the function under consideration, and <italic>y<sub>i</sub></italic> = 0 if otherwise.</p>
+</list-item><list-item>
+<p>Loop:</p>
+<list list-type="simple"><list-item>
+<p>(2.1) Model building: construct a maximum margin classification model using positive and negative instances. Using this model, we calculate a prediction score for all instances (including those instances in positive bags which are not “witnesses”) in the training set.</p>
+</list-item><list-item>
+<p>(2.2) Integer variable updating:</p>
+</list-item><list-item>
+<p>In the mi-SVM formulation, instances in each positive bag are assigned to a label based on prediction score calculated in the previous step. One can choose different thresholds for scores to partition instances into positive and negative classes. Here, we investigated following three thresholds and chose the second threshold, since it gave the best performance (<xref ref-type="fig" rid="pcbi-1003314-g002"><bold>Figure 2</bold></xref>)</p>
+<list list-type="simple"><list-item>
+<p>(i) The first threshold is equal to the mode of the distribution of scores from negative instances in training set.</p>
+</list-item><list-item>
+<p>(ii) The second threshold is equal to the 75% percentile of scores of all negative instances in training set.</p>
+</list-item><list-item>
+<p>(iii) The third threshold is equal to the maximum score of negative instances in the training set.</p>
+</list-item></list>
+</list-item><list-item>
+<p>These three thresholds represent different degrees of strictness for assigning labels. The first threshold is the least strict; it assigns most of the instances from positive bags as positive, whereas the third threshold is the most strict, generally leaving only one positive instance in every positive bag.</p>
+</list-item><list-item>
+<p>In the MI-SVM formulation, we chose only the instance with the maximum score in each positive bag as the “witness”; the remaining instances from this bag are not assigned to any class. (<italic>i.e.</italic> dropped out of the margin calculation).</p>
+</list-item><list-item>
+<p>Note that in mi-SVM every instance in positive bags is assigned to either positive or negative, but in MI-SVM only one instance per positive bag is assigned positive and other instances from the same bag are discarded.</p>
+</list-item><list-item>
+<p>(2.3) Stop criterion checking: When the assignment of integer variables does not change anymore (<italic>i.e.</italic> label assignments of instances in positive bags for mi-SVM, witness selector variable for MI-SVM), or the assignment of integer variables reverts to one of the assignments in previous iterations, go to Step (3); otherwise go back to step (2.1).</p>
+</list-item></list></list-item>
+<list-item>
+<p>Ending iteration: use the model built in the last iteration to predict all instances. At the gene level, the score of each gene is assigned as the maximum score of all its isoforms.</p>
+</list-item></list>
+</sec><sec id="s4d">
+<title>Estimation of probability score for isoforms using bootstrap bagging</title>
+<p>For every function, we need to assign each isoform a score no matter whether the gene that the isoform belongs to has an annotation or not. We therefore used bootstrap bagging to estimate the probability that an isoform is associated with a specific biological process. Essentially all genes are sampled with replacement (0.632 bootstrap) to construct a training set. The scores of the held-out set are recorded and the process is iterated 30 times. For each isoform, the final score is assigned with the median across all iterations.</p>
+</sec><sec id="s4e">
+<title>Proteomic data processing</title>
+<p>Functions of splice variants must eventually be delivered at that protein level. To test whether the predicted differential functions are correct, we compiled the data from LC-MS/MS of normal mammary tissue <xref ref-type="bibr" rid="pcbi.1003314-Whiteaker1">[83]</xref>. The original study reported that normal tissues were harvested from 5 normal mice, processed into tissue lysates and pooled. The pooled sample was digested by trypsin for mass spectrometric analysis. The mzXML files were searched against our modified ECgene database for alternative splice variant analysis using X!Tandem <xref ref-type="bibr" rid="pcbi.1003314-Craig1">[84]</xref>.</p>
+</sec><sec id="s4f">
+<title>Web implementation</title>
+<p>All prediction results are stored in MySQL databases and delivered through a searchable website: <ext-link ext-link-type="uri" xlink:href="http://guanlab.ccmb.med.umich.edu/isoPred" xlink:type="simple">http://guanlab.ccmb.med.umich.edu/isoPred</ext-link>.</p>
+</sec></sec><sec id="s5">
+<title>Supporting Information</title>
+<supplementary-material id="pcbi.1003314.s001" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" xlink:href="info:doi/10.1371/journal.pcbi.1003314.s001" position="float" xlink:type="simple"><label>Dataset S1</label><caption>
+<p><bold>Input RNA-seq dataset description.</bold></p>
+<p>(XLSX)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1003314.s002" xlink:href="info:doi/10.1371/journal.pcbi.1003314.s002" mimetype="text/plain" position="float" xlink:type="simple"><label>Dataset S2</label><caption>
+<p><bold>Five-fold cross-validation results.</bold></p>
+<p>(TXT)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1003314.s003" xlink:href="info:doi/10.1371/journal.pcbi.1003314.s003" mimetype="text/plain" position="float" xlink:type="simple"><label>Dataset S3</label><caption>
+<p><bold>Separated evaluation for genes annotated with multiple isoforms and a single isoform.</bold></p>
+<p>(TXT)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1003314.s004" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" xlink:href="info:doi/10.1371/journal.pcbi.1003314.s004" position="float" xlink:type="simple"><label>Dataset S4</label><caption>
+<p><bold>Comparison between expressed splice variant in the normal breast cell sample and predicted ‘functional’ isoforms.</bold></p>
+<p>(XLSX)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1003314.s005" mimetype="image/tiff" xlink:href="info:doi/10.1371/journal.pcbi.1003314.s005" position="float" xlink:type="simple"><label>Figure S1</label><caption>
+<p><bold>Differences between the traditional gene function prediction problem and the isoform function prediction problem.</bold> We use maximum margin as a base learner to illustrate the differences between a traditional classification problem for gene function prediction and our scheme for predicting isoform functions. <bold>A</bold>. Traditionally, a gene is treated as one single entity. The positive examples, defined as genes annotated to a specific function, are separated from the negative examples (other genes) by an SVM classifier. <bold>B</bold>. A single gene may contain several isoforms of which only some carry out the function under investigation. Genes here are considered as ‘bags’, each of which may contain one to several isoforms, defined as ‘instances’. A positive gene must have at least one of its isoforms carrying out the function under consideration. None of the isoforms of a negative gene can carry out the function under study. The hyperplane trained to separate the positive isoforms and negative isoforms must satisfy the above criteria.</p>
+<p>(TIF)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1003314.s006" mimetype="image/tiff" xlink:href="info:doi/10.1371/journal.pcbi.1003314.s006" position="float" xlink:type="simple"><label>Figure S2</label><caption>
+<p><bold>Comparison of gene-level prediction performance resulting from gene expression data (dashed green) and isoform expression data (solid blue).</bold> For each GO term-specific gold standard, we developed models using gene-expression data with standard SVM and isoform-expression data with our prediction framework, respectively, and compared their precision recall curves. Shown here are six representative examples, where significant improvements were achieved when using isoform-expression data and our iterative learning strategy.</p>
+<p>(TIF)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1003314.s007" mimetype="image/tiff" xlink:href="info:doi/10.1371/journal.pcbi.1003314.s007" position="float" xlink:type="simple"><label>Figure S3</label><caption>
+<p><bold>Precision recall curve comparison between single-isoform genes (dashed green) and multiple-isoform genes (solid blue) for some GO terms</bold>.</p>
+<p>(TIF)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1003314.s008" mimetype="image/tiff" xlink:href="info:doi/10.1371/journal.pcbi.1003314.s008" position="float" xlink:type="simple"><label>Figure S4</label><caption>
+<p><bold>Histogram of number of isoforms per gene according to NCBI annotation file (build 37.2).</bold> This figure shows only multi-isoform genes, single-isoform genes are excluded.</p>
+<p>(TIF)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1003314.s009" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" xlink:href="info:doi/10.1371/journal.pcbi.1003314.s009" position="float" xlink:type="simple"><label>Table S1</label><caption>
+<p><bold>Example isoform groups that are predicted with differential functions.</bold></p>
+<p>(DOCX)</p>
+</caption></supplementary-material></sec></body>
+<back><ref-list>
+<title>References</title>
+<ref id="pcbi.1003314-Schmitz1"><label>1</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schmitz</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Young</surname><given-names>RM</given-names></name>, <name name-style="western"><surname>Ceribelli</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Jhavar</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Xiao</surname><given-names>WM</given-names></name>, <etal>et al</etal>. (<year>2012</year>) <article-title>Burkitt lymphoma pathogenesis and therapeutic targets from structural and functional genomics</article-title>. <source>Nature</source> <volume>490</volume>: <fpage>116</fpage>–<lpage>120</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Guan1"><label>2</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Guan</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Ackert-Bicknell</surname><given-names>CL</given-names></name>, <name name-style="western"><surname>Kell</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Troyanskaya</surname><given-names>OG</given-names></name>, <name name-style="western"><surname>Hibbs</surname><given-names>MA</given-names></name> (<year>2010</year>) <article-title>Functional genomics complements quantitative genetics in identifying disease-gene associations</article-title>. <source>PLoS Comput Biol</source> <volume>6</volume>: <fpage>e1000991</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Chen1"><label>3</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chen</surname><given-names>KF</given-names></name>, <name name-style="western"><surname>Crowther</surname><given-names>DC</given-names></name> (<year>2012</year>) <article-title>Functional genomics in Drosophila models of human disease</article-title>. <source>Briefings in Functional Genomics</source> <volume>11</volume>: <fpage>405</fpage>–<lpage>415</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Liang1"><label>4</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Liang</surname><given-names>H</given-names></name>, <name name-style="western"><surname>Cheung</surname><given-names>LWT</given-names></name>, <name name-style="western"><surname>Li</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Ju</surname><given-names>ZL</given-names></name>, <name name-style="western"><surname>Yu</surname><given-names>SX</given-names></name>, <etal>et al</etal>. (<year>2012</year>) <article-title>Whole-exome sequencing combined with functional genomics reveals novel candidate driver cancer genes in endometrial cancer</article-title>. <source>Genome Research</source> <volume>22</volume>: <fpage>2120</fpage>–<lpage>2129</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Nelson1"><label>5</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Nelson</surname><given-names>AC</given-names></name>, <name name-style="western"><surname>Pillay</surname><given-names>N</given-names></name>, <name name-style="western"><surname>Henderson</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Presneau</surname><given-names>N</given-names></name>, <name name-style="western"><surname>Tirabosco</surname><given-names>R</given-names></name>, <etal>et al</etal>. (<year>2012</year>) <article-title>An integrated functional genomics approach identifies the regulatory network directed by brachyury (T) in chordoma</article-title>. <source>Journal of Pathology</source> <volume>228</volume>: <fpage>274</fpage>–<lpage>285</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Zhang1"><label>6</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zhang</surname><given-names>XY</given-names></name>, <name name-style="western"><surname>Cowper-Sallari</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Bailey</surname><given-names>SD</given-names></name>, <name name-style="western"><surname>Moore</surname><given-names>JH</given-names></name>, <name name-style="western"><surname>Lupien</surname><given-names>M</given-names></name> (<year>2012</year>) <article-title>Integrative functional genomics identifies an enhancer looping to the SOX9 gene disrupted by the 17q24.3 prostate cancer risk locus</article-title>. <source>Genome Research</source> <volume>22</volume>: <fpage>1437</fpage>–<lpage>1446</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-1"><label>7</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><article-title>A user's guide to the encyclopedia of DNA elements (ENCODE)</article-title>. <source>PLoS Biol</source> <volume>9</volume>: <fpage>e1001046</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Hu1"><label>8</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hu</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Bader</surname><given-names>G</given-names></name>, <name name-style="western"><surname>Wigle</surname><given-names>DA</given-names></name>, <name name-style="western"><surname>Emili</surname><given-names>A</given-names></name> (<year>2007</year>) <article-title>Computational prediction of cancer-gene function</article-title>. <source>Nature Reviews Cancer</source> <volume>7</volume>: <fpage>23</fpage>–<lpage>34</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Guan2"><label>9</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Guan</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Myers</surname><given-names>CL</given-names></name>, <name name-style="western"><surname>Hess</surname><given-names>DC</given-names></name>, <name name-style="western"><surname>Barutcuoglu</surname><given-names>Z</given-names></name>, <name name-style="western"><surname>Caudy</surname><given-names>AA</given-names></name>, <etal>et al</etal>. (<year>2008</year>) <article-title>Predicting gene function in a hierarchical context with an ensemble of classifiers</article-title>. <source>Genome Biol</source> <volume>9 Suppl 1</volume>: <fpage>S3</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Letovsky1"><label>10</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Letovsky</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Kasif</surname><given-names>S</given-names></name> (<year>2003</year>) <article-title>Predicting protein function from protein/protein interaction data: a probabilistic approach</article-title>. <source>Bioinformatics</source> <volume>19</volume>: <fpage>i197</fpage>–<lpage>i204</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Wu1"><label>11</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wu</surname><given-names>H</given-names></name>, <name name-style="western"><surname>Su</surname><given-names>Z</given-names></name>, <name name-style="western"><surname>Mao</surname><given-names>F</given-names></name>, <name name-style="western"><surname>Olman</surname><given-names>V</given-names></name>, <name name-style="western"><surname>Xu</surname><given-names>Y</given-names></name> (<year>2005</year>) <article-title>Prediction of functional modules based on comparative genome analysis and gene ontology application</article-title>. <source>Nucleic Acids Res</source> <volume>33</volume>: <fpage>2822</fpage>–<lpage>2837</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Zhang2"><label>12</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zhang</surname><given-names>W</given-names></name> (<year>2004</year>) <article-title>The functional landscape of mouse gene expression</article-title>. <source>J Biol</source> <volume>3</volume>: <fpage>21</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Pan1"><label>13</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pan</surname><given-names>Q</given-names></name>, <name name-style="western"><surname>Shai</surname><given-names>O</given-names></name>, <name name-style="western"><surname>Lee</surname><given-names>LJ</given-names></name>, <name name-style="western"><surname>Frey</surname><given-names>BJ</given-names></name>, <name name-style="western"><surname>Blencowe</surname><given-names>BJ</given-names></name> (<year>2008</year>) <article-title>Deep surveying of alternative splicing complexity in the human transcriptome by high-throughput sequencing</article-title>. <source>Nat Genet</source> <volume>40</volume>: <fpage>1413</fpage>–<lpage>1415</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Matlin1"><label>14</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Matlin</surname><given-names>AJ</given-names></name>, <name name-style="western"><surname>Clark</surname><given-names>F</given-names></name>, <name name-style="western"><surname>Smith</surname><given-names>CWJ</given-names></name> (<year>2005</year>) <article-title>Understanding alternative splicing: towards a cellular code</article-title>. <source>Nat Rev Mol Cell Biol</source> <volume>6</volume>: <fpage>386</fpage>–<lpage>398</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Skotheim1"><label>15</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Skotheim</surname><given-names>RI</given-names></name>, <name name-style="western"><surname>Nees</surname><given-names>M</given-names></name> (<year>2007</year>) <article-title>Alternative splicing in cancer: Noise, functional, or systematic</article-title>? <source>The International Journal of Biochemistry &amp; Cell Biology</source> <volume>39</volume>: <fpage>1432</fpage>–<lpage>1449</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Tazi1"><label>16</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Tazi</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Bakkour</surname><given-names>N</given-names></name>, <name name-style="western"><surname>Stamm</surname><given-names>S</given-names></name> (<year>2009</year>) <article-title>Alternative splicing and disease</article-title>. <source>Biochimica et Biophysica Acta</source> <volume>1792</volume>: <fpage>14</fpage>–<lpage>26</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Omenn1"><label>17</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Omenn</surname><given-names>GS</given-names></name>, <name name-style="western"><surname>Yocum</surname><given-names>AK</given-names></name>, <name name-style="western"><surname>Menon</surname><given-names>R</given-names></name> (<year>2010</year>) <article-title>Alternative splice variants, a new class of protein cancer biomarker candidates: findings in pancreatic cancer and breast cancer with systems biology implications</article-title>. <source>Dis Markers</source> <volume>28</volume>: <fpage>241</fpage>–<lpage>251</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Hegyi1"><label>18</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hegyi</surname><given-names>H</given-names></name>, <name name-style="western"><surname>Kalmar</surname><given-names>L</given-names></name>, <name name-style="western"><surname>Horvath</surname><given-names>T</given-names></name>, <name name-style="western"><surname>Tompa</surname><given-names>P</given-names></name> <article-title>Verification of alternative splicing variants based on domain integrity, truncation length and intrinsic protein disorder</article-title>. <source>Nucleic Acids Research</source> <volume>39</volume>: <fpage>1208</fpage>–<lpage>1219</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Wan1"><label>19</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wan</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Masuda</surname><given-names>T</given-names></name>, <name name-style="western"><surname>Hackler</surname><given-names>L</given-names></name>, <name name-style="western"><surname>Torres</surname><given-names>KM</given-names></name>, <name name-style="western"><surname>Merbs</surname><given-names>SL</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>Dynamic usage of alternative splicing exons during mouse retina development</article-title>. <source>Nucleic Acids Research</source> <volume>39</volume>: <fpage>7920</fpage>–<lpage>7930</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Severing1"><label>20</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Severing</surname><given-names>EI</given-names></name>, <name name-style="western"><surname>van Dijk</surname><given-names>ADJ</given-names></name>, <name name-style="western"><surname>van Ham</surname><given-names>R</given-names></name> (<year>2011</year>) <article-title>Assessing the contribution of alternative splicing to proteome diversity in Arabidopsis thaliana using proteomics data</article-title>. <source>Bmc Plant Biology</source> <volume>11</volume>: <fpage>82</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-deSouza1"><label>21</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>de Souza</surname><given-names>JES</given-names></name>, <name name-style="western"><surname>Ramalho</surname><given-names>RF</given-names></name>, <name name-style="western"><surname>Galante</surname><given-names>PAF</given-names></name>, <name name-style="western"><surname>Meyer</surname><given-names>D</given-names></name>, <name name-style="western"><surname>de Souza</surname><given-names>SJ</given-names></name> <article-title>Alternative splicing and genetic diversity: silencers are more frequently modified by SNVs associated with alternative exon/intron borders</article-title>. <source>Nucleic Acids Research</source> <volume>39</volume>: <fpage>4942</fpage>–<lpage>4948</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Mittendorf1"><label>22</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mittendorf</surname><given-names>KF</given-names></name>, <name name-style="western"><surname>Deatherage</surname><given-names>CL</given-names></name>, <name name-style="western"><surname>Ohi</surname><given-names>MD</given-names></name>, <name name-style="western"><surname>Sanders</surname><given-names>CR</given-names></name> (<year>2012</year>) <article-title>Tailoring of Membrane Proteins by Alternative Splicing of Pre-mRNA</article-title>. <source>Biochemistry</source> <volume>51</volume>: <fpage>5541</fpage>–<lpage>5556</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Fruhwald1"><label>23</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fruhwald</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Londono</surname><given-names>JC</given-names></name>, <name name-style="western"><surname>Dembla</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Mannebach</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Lis</surname><given-names>A</given-names></name>, <etal>et al</etal>. (<year>2012</year>) <article-title>Alternative Splicing of a Protein Domain Indispensable for Function of Transient Receptor Potential Melastatin 3 (TRPM3) Ion Channels</article-title>. <source>Journal of Biological Chemistry</source> <volume>287</volume>: <fpage>36663</fpage>–<lpage>36672</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Oberwinkler1"><label>24</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Oberwinkler</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Lis</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Giehl</surname><given-names>KM</given-names></name>, <name name-style="western"><surname>Flockerzi</surname><given-names>V</given-names></name>, <name name-style="western"><surname>Philipp</surname><given-names>SE</given-names></name> (<year>2005</year>) <article-title>Alternative splicing switches the divalent cation selectivity of TRPM3 channels</article-title>. <source>Journal of Biological Chemistry</source> <volume>280</volume>: <fpage>22540</fpage>–<lpage>22548</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Revil1"><label>25</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Revil</surname><given-names>T</given-names></name>, <name name-style="western"><surname>Toutant</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Shkreta</surname><given-names>L</given-names></name>, <name name-style="western"><surname>Garneau</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Cloutier</surname><given-names>P</given-names></name>, <etal>et al</etal>. (<year>2007</year>) <article-title>Protein kinase C-dependent control of Bcl-x alternative splicing</article-title>. <source>Mol Cell Biol</source> <volume>27</volume>: <fpage>8431</fpage>–<lpage>8441</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Vegran1"><label>26</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Vegran</surname><given-names>F</given-names></name>, <name name-style="western"><surname>Boidot</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Oudin</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Riedinger</surname><given-names>JM</given-names></name>, <name name-style="western"><surname>Bonnetain</surname><given-names>F</given-names></name>, <etal>et al</etal>. (<year>2006</year>) <article-title>Overexpression of caspase-3s splice variant in locally advanced breast carcinoma is associated with poor response to neoadjuvant chemotherapy</article-title>. <source>Clin Cancer Res</source> <volume>12</volume>: <fpage>5794</fpage>–<lpage>5800</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Mortazavi1"><label>27</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mortazavi</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Williams</surname><given-names>BA</given-names></name>, <name name-style="western"><surname>McCue</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Schaeffer</surname><given-names>L</given-names></name>, <name name-style="western"><surname>Wold</surname><given-names>B</given-names></name> (<year>2008</year>) <article-title>Mapping and quantifying mammalian transcriptomes by RNA-Seq</article-title>. <source>Nature Methods</source> <volume>5</volume>: <fpage>621</fpage>–<lpage>628</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Jiang1"><label>28</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jiang</surname><given-names>H</given-names></name>, <name name-style="western"><surname>Wong</surname><given-names>WH</given-names></name> (<year>2009</year>) <article-title>Statistical inferences for isoform expression in RNA-Seq</article-title>. <source>Bioinformatics</source> <volume>25</volume>: <fpage>1026</fpage>–<lpage>1032</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Wang1"><label>29</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wang</surname><given-names>Z</given-names></name>, <name name-style="western"><surname>Gerstein</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Snyder</surname><given-names>M</given-names></name> (<year>2009</year>) <article-title>RNA-Seq: a revolutionary tool for transcriptomics</article-title>. <source>Nature Reviews Genetics</source> <volume>10</volume>: <fpage>57</fpage>–<lpage>63</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Leinonen1"><label>30</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Leinonen</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Sugawara</surname><given-names>H</given-names></name>, <name name-style="western"><surname>Shumway</surname><given-names>M</given-names></name> (<year>2011</year>) <article-title>The sequence read archive</article-title>. <source>Nucleic Acids Res</source> <volume>39</volume>: <fpage>D19</fpage>–<lpage>21</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Hibbs1"><label>31</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hibbs</surname><given-names>MA</given-names></name>, <name name-style="western"><surname>Hess</surname><given-names>DC</given-names></name>, <name name-style="western"><surname>Myers</surname><given-names>CL</given-names></name>, <name name-style="western"><surname>Huttenhower</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Li</surname><given-names>K</given-names></name>, <etal>et al</etal>. (<year>2007</year>) <article-title>Exploring the functional landscape of gene expression: directed search of large microarray compendia</article-title>. <source>Bioinformatics</source> <volume>23</volume>: <fpage>2692</fpage>–<lpage>2699</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Trapnell1"><label>32</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Trapnell</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Roberts</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Goff</surname><given-names>L</given-names></name>, <name name-style="western"><surname>Pertea</surname><given-names>G</given-names></name>, <name name-style="western"><surname>Kim</surname><given-names>D</given-names></name>, <etal>et al</etal>. (<year>2012</year>) <article-title>Differential gene and transcript expression analysis of RNA-seq experiments with TopHat and Cufflinks</article-title>. <source>Nat Prot</source> <volume>7</volume>: <fpage>562</fpage>–<lpage>578</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Feng1"><label>33</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Feng</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Li</surname><given-names>W</given-names></name>, <name name-style="western"><surname>Jiang</surname><given-names>T</given-names></name> (<year>2011</year>) <article-title>Inference of isoforms from short sequence reads</article-title>. <source>J Comput Biol</source> <volume>18</volume>: <fpage>305</fpage>–<lpage>321</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Trapnell2"><label>34</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Trapnell</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Pachter</surname><given-names>L</given-names></name>, <name name-style="western"><surname>Salzberg</surname><given-names>SL</given-names></name> (<year>2009</year>) <article-title>TopHat: discovering splice junctions with RNA-Seq</article-title>. <source>Bioinformatics</source> <volume>25</volume>: <fpage>1105</fpage>–<lpage>1111</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Trapnell3"><label>35</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Trapnell</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Williams</surname><given-names>BA</given-names></name>, <name name-style="western"><surname>Pertea</surname><given-names>G</given-names></name>, <name name-style="western"><surname>Mortazavi</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Kwan</surname><given-names>G</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>Transcript assembly and quantification by RNA-Seq reveals unannotated transcripts and isoform switching during cell differentiation</article-title>. <source>Nat Biotech</source> <volume>28</volume>: <fpage>511</fpage>–<lpage>515</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Mortazavi2"><label>36</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mortazavi</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Williams</surname><given-names>BA</given-names></name>, <name name-style="western"><surname>McCue</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Schaeffer</surname><given-names>L</given-names></name>, <name name-style="western"><surname>Wold</surname><given-names>B</given-names></name> (<year>2008</year>) <article-title>Mapping and quantifying mammalian transcriptomes by RNA-Seq</article-title>. <source>Nat Meth</source> <volume>5</volume>: <fpage>621</fpage>–<lpage>628</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Kim1"><label>37</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kim</surname><given-names>H</given-names></name>, <name name-style="western"><surname>Bi</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Pal</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Gupta</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Davuluri</surname><given-names>RV</given-names></name> (<year>2011</year>) <article-title>IsoformEx: isoform level gene expression estimation using weighted non-negative least squares from mRNA-Seq data</article-title>. <source>BMC Bioinformatics</source> <volume>12</volume>: <fpage>305</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Li1"><label>38</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Li</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Dewey</surname><given-names>CN</given-names></name> (<year>2011</year>) <article-title>RSEM: accurate transcript quantification from RNA-Seq data with or without a reference genome</article-title>. <source>BMC Bioinformatics</source> <volume>12</volume>: <fpage>323</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Bohnert1"><label>39</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bohnert</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Ratsch</surname><given-names>G</given-names></name> (<year>2010</year>) <article-title>rQuant.web: a tool for RNA-Seq-based transcript quantitation</article-title>. <source>Nucleic Acids Res</source> <volume>38</volume>: <fpage>W348</fpage>–<lpage>351</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Verspoor1"><label>40</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Verspoor</surname><given-names>KM</given-names></name>, <name name-style="western"><surname>Cohn</surname><given-names>JD</given-names></name>, <name name-style="western"><surname>Ravikumar</surname><given-names>KE</given-names></name>, <name name-style="western"><surname>Wall</surname><given-names>ME</given-names></name> (<year>2012</year>) <article-title>Text mining improves prediction of protein functional sites</article-title>. <source>PLoS One</source> <volume>7</volume>: <fpage>e32171</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Fischer1"><label>41</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fischer</surname><given-names>JD</given-names></name>, <name name-style="western"><surname>Mayer</surname><given-names>CE</given-names></name>, <name name-style="western"><surname>Soding</surname><given-names>J</given-names></name> (<year>2008</year>) <article-title>Prediction of protein functional residues from sequence by probability density estimation</article-title>. <source>Bioinformatics</source> <volume>24</volume>: <fpage>613</fpage>–<lpage>620</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Vacic1"><label>42</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Vacic</surname><given-names>V</given-names></name>, <name name-style="western"><surname>Iakoucheva</surname><given-names>LM</given-names></name>, <name name-style="western"><surname>Lonardi</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Radivojac</surname><given-names>P</given-names></name> (<year>2010</year>) <article-title>Graphlet kernels for prediction of functional residues in protein structures</article-title>. <source>J Comput Biol</source> <volume>17</volume>: <fpage>55</fpage>–<lpage>72</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Thibert1"><label>43</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Thibert</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Bredesen</surname><given-names>DE</given-names></name>, <name name-style="western"><surname>del Rio</surname><given-names>G</given-names></name> (<year>2005</year>) <article-title>Improved prediction of critical residues for protein function based on network and phylogenetic analyses</article-title>. <source>BMC Bioinformatics</source> <volume>6</volume>: <fpage>213</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Kochanczyk1"><label>44</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kochanczyk</surname><given-names>M</given-names></name> (<year>2011</year>) <article-title>Prediction of functionally important residues in globular proteins from unusual central distances of amino acids</article-title>. <source>BMC Struct Biol</source> <volume>11</volume>: <fpage>34</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Murvai1"><label>45</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Murvai</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Vlahovicek</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Szepesvari</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Pongor</surname><given-names>S</given-names></name> (<year>2001</year>) <article-title>Prediction of protein functional domains from sequences using artificial neural networks</article-title>. <source>Genome Res</source> <volume>11</volume>: <fpage>1410</fpage>–<lpage>1417</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Rentzsch1"><label>46</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rentzsch</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Orengo</surname><given-names>CA</given-names></name> (<year>2013</year>) <article-title>Protein function prediction using domain families</article-title>. <source>BMC Bioinformatics</source> <volume>14 Suppl 3</volume>: <fpage>S5</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Ashburner1"><label>47</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ashburner</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Ball</surname><given-names>CA</given-names></name>, <name name-style="western"><surname>Blake</surname><given-names>JA</given-names></name>, <name name-style="western"><surname>Botstein</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Butler</surname><given-names>H</given-names></name>, <etal>et al</etal>. (<year>2000</year>) <article-title>Gene ontology: tool for the unification of biology. The Gene Ontology Consortium</article-title>. <source>Nat Genet</source> <volume>25</volume>: <fpage>25</fpage>–<lpage>29</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Harris1"><label>48</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Harris</surname><given-names>MA</given-names></name> (<year>2004</year>) <article-title>The Gene Ontology (GO) database and informatics resource</article-title>. <source>Nucleic Acids Res</source> <volume>32</volume>: <fpage>D258</fpage>–<lpage>D261</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Kanehisa1"><label>49</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kanehisa</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Goto</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Furumichi</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Tanabe</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Hirakawa</surname><given-names>M</given-names></name> (<year>2010</year>) <article-title>KEGG for representation and analysis of molecular networks involving diseases and drugs</article-title>. <source>Nucleic Acids Res</source> <volume>38</volume>: <fpage>D355</fpage>–<lpage>360</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Babenko1"><label>50</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Babenko</surname><given-names>B</given-names></name> <article-title>Multiple Instance Learning: Algorithms and Applications</article-title>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Andrews1"><label>51</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Andrews</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Hofmann</surname><given-names>T</given-names></name>, <name name-style="western"><surname>Tsochantaridis</surname><given-names>I</given-names></name> (<year>2002</year>) <article-title>Multiple Instance Learning with Generalized Support Vector Machines</article-title>. <source>AAAI-02 Proceedings</source></mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Viola1"><label>52</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Viola</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Platt</surname><given-names>JC</given-names></name>, <name name-style="western"><surname>Zhang</surname><given-names>C</given-names></name> (<year>2005</year>) <article-title>Multiple instance boosting for object detection</article-title>. <source>NIPS</source></mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Bunescu1"><label>53</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bunescu</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Mooney</surname><given-names>R</given-names></name> (<year>2007</year>) <article-title>Multiple instance learning for sparse positive bags</article-title>. <source>ICML</source> <fpage>105</fpage>–<lpage>112</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Vapnik1"><label>54</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Vapnik</surname><given-names>V</given-names></name> (<year>1995</year>) <article-title>The Nature of Statistical Learning Theory: Springer-Verlag</article-title>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Myers1"><label>55</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Myers</surname><given-names>CL</given-names></name>, <name name-style="western"><surname>Barrett</surname><given-names>DR</given-names></name>, <name name-style="western"><surname>Hibbs</surname><given-names>MA</given-names></name>, <name name-style="western"><surname>Huttenhower</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Troyanskaya</surname><given-names>OG</given-names></name> (<year>2006</year>) <article-title>Finding function: evaluation methods for functional genomic data</article-title>. <source>BMC Genomics</source> <volume>7</volume>: <fpage>187</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Fu1"><label>56</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fu</surname><given-names>WJ</given-names></name>, <name name-style="western"><surname>Carroll</surname><given-names>RJ</given-names></name>, <name name-style="western"><surname>Wang</surname><given-names>S</given-names></name> (<year>2005</year>) <article-title>Estimating misclassification error with small samples via bootstrap cross-validation</article-title>. <source>Bioinformatics</source> <volume>21</volume>: <fpage>1979</fpage>–<lpage>1986</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-PenaCastillo1"><label>57</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pena-Castillo</surname><given-names>L</given-names></name>, <name name-style="western"><surname>Tasan</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Myers</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Lee</surname><given-names>H</given-names></name>, <name name-style="western"><surname>Joshi</surname><given-names>T</given-names></name>, <etal>et al</etal>. (<year>2008</year>) <article-title>A critical assessment of Mus musculus gene function prediction using integrated genomic evidence</article-title>. <source>Genome Biology</source> <volume>9</volume>: <fpage>S2</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Harrow1"><label>58</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Harrow</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Frankish</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Gonzalez</surname><given-names>JM</given-names></name>, <name name-style="western"><surname>Tapanari</surname><given-names>E</given-names></name>, <name name-style="western"><surname>Diekhans</surname><given-names>M</given-names></name>, <etal>et al</etal>. (<year>2012</year>) <article-title>GENCODE: The reference human genome annotation for The ENCODE Project</article-title>. <source>Genome Research</source> <volume>22</volume>: <fpage>1760</fpage>–<lpage>1774</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Vilella1"><label>59</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Vilella</surname><given-names>AJ</given-names></name>, <name name-style="western"><surname>Severin</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Ureta-Vidal</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Heng</surname><given-names>L</given-names></name>, <name name-style="western"><surname>Durbin</surname><given-names>R</given-names></name>, <etal>et al</etal>. (<year>2009</year>) <article-title>EnsemblCompara GeneTrees: Complete, duplication-aware phylogenetic trees in vertebrates</article-title>. <source>Genome Res</source> <volume>19</volume>: <fpage>327</fpage>–<lpage>335</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Finsterer1"><label>60</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Finsterer</surname><given-names>J</given-names></name> (<year>2009</year>) <article-title>Ataxias with autosomal, X-chromosomal or maternal inheritance</article-title>. <source>Can J Neurol Sci</source> <volume>36</volume>: <fpage>409</fpage>–<lpage>428</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Menon1"><label>61</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Menon</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Omenn</surname><given-names>GS</given-names></name> (<year>2011</year>) <article-title>Identification of alternatively spliced transcripts using a proteomic informatics approach</article-title>. <source>Methods Mol Biol</source> <volume>696</volume>: <fpage>319</fpage>–<lpage>326</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Roy1"><label>62</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Roy</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Kucukural</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Zhang</surname><given-names>Y</given-names></name> (<year>2010</year>) <article-title>I-TASSER: a unified platform for automated protein structure and function prediction</article-title>. <source>Nat Protoc</source> <volume>5</volume>: <fpage>725</fpage>–<lpage>738</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Liontos1"><label>63</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Liontos</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Pateras</surname><given-names>IS</given-names></name>, <name name-style="western"><surname>Evangelou</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Gorgoulis</surname><given-names>VG</given-names></name> (<year>2012</year>) <article-title>The tumor suppressor gene ARF as a sensor of oxidative stress</article-title>. <source>Curr Mol Med</source> <volume>12</volume>: <fpage>704</fpage>–<lpage>715</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Ivanchuk1"><label>64</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ivanchuk</surname><given-names>SM</given-names></name>, <name name-style="western"><surname>Mondal</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Dirks</surname><given-names>PB</given-names></name>, <name name-style="western"><surname>Rutka</surname><given-names>JT</given-names></name> (<year>2001</year>) <article-title>The INK4A/ARF locus: role in cell cycle control and apoptosis and implications for glioma growth</article-title>. <source>J Neurooncol</source> <volume>51</volume>: <fpage>219</fpage>–<lpage>229</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Menon2"><label>65</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Menon</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Roy</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Mukherjee</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Belkin</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Zhang</surname><given-names>Y</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>Functional implications of structural predictions for alternative splice proteins expressed in Her2/neu-induced breast cancers</article-title>. <source>J Proteome Res</source> <volume>10</volume>: <fpage>5503</fpage>–<lpage>5511</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Zhang3"><label>66</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zhang</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Skolnick</surname><given-names>J</given-names></name> (<year>2005</year>) <article-title>TM-align: a protein structure alignment algorithm based on the TM-score</article-title>. <source>Nucleic Acids Res</source> <volume>33</volume>: <fpage>2302</fpage>–<lpage>2309</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Omenn2"><label>67</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Omenn</surname><given-names>GS</given-names></name>, <name name-style="western"><surname>Menon</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Zhang</surname><given-names>Y</given-names></name> (<year>2013</year>) <article-title>Innovations in proteomic profiling of cancers: Alternative splice variants as a new class of cancer biomarker candidates and bridging of proteomics with structural biology</article-title>. <source>J Proteomics</source> <volume>90</volume>: <fpage>28</fpage>–<lpage>37</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Barash1"><label>68</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Barash</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Calarco</surname><given-names>JA</given-names></name>, <name name-style="western"><surname>Gao</surname><given-names>W</given-names></name>, <name name-style="western"><surname>Pan</surname><given-names>Q</given-names></name>, <name name-style="western"><surname>Wang</surname><given-names>X</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>Deciphering the splicing code</article-title>. <source>Nature</source> <volume>465</volume>: <fpage>53</fpage>–<lpage>59</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Bertone1"><label>69</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bertone</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Stolc</surname><given-names>V</given-names></name>, <name name-style="western"><surname>Royce</surname><given-names>TE</given-names></name>, <name name-style="western"><surname>Rozowsky</surname><given-names>JS</given-names></name>, <name name-style="western"><surname>Urban</surname><given-names>AE</given-names></name>, <etal>et al</etal>. (<year>2004</year>) <article-title>Global identification of human transcribed sequences with genome tiling arrays</article-title>. <source>Science</source> <volume>306</volume>: <fpage>2242</fpage>–<lpage>2246</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Black1"><label>70</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Black</surname><given-names>DL</given-names></name> (<year>2007</year>) <article-title>Mechanisms of alternative pre-messenger RNA splicing</article-title>. <source>Annu Rev Biochem</source> <volume>72</volume>: <fpage>291</fpage>–<lpage>336</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Pan2"><label>71</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pan</surname><given-names>Q</given-names></name>, <name name-style="western"><surname>Shai</surname><given-names>O</given-names></name>, <name name-style="western"><surname>Misquitta</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Zhang</surname><given-names>W</given-names></name>, <name name-style="western"><surname>Saltzman</surname><given-names>AL</given-names></name>, <etal>et al</etal>. (<year>2004</year>) <article-title>Revealing global regulatory features of mammalian alternative splicing using a quantitative microarray platform</article-title>. <source>Mol Cell</source> <volume>16</volume>: <fpage>929</fpage>–<lpage>941</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Djebali1"><label>72</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Djebali</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Davis</surname><given-names>CA</given-names></name>, <name name-style="western"><surname>Merkel</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Dobin</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Lassmann</surname><given-names>T</given-names></name>, <etal>et al</etal>. (<year>2012</year>) <article-title>Landscape of transcription in human cells</article-title>. <source>Nature</source> <volume>489</volume>: <fpage>101</fpage>–<lpage>108</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Tress1"><label>73</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Tress</surname><given-names>ML</given-names></name>, <name name-style="western"><surname>Wesselink</surname><given-names>JJ</given-names></name>, <name name-style="western"><surname>Frankish</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Lopez</surname><given-names>G</given-names></name>, <name name-style="western"><surname>Goldman</surname><given-names>N</given-names></name>, <etal>et al</etal>. (<year>2008</year>) <article-title>Determination and validation of principal gene products</article-title>. <source>Bioinformatics</source> <volume>24</volume>: <fpage>11</fpage>–<lpage>17</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Rodriguez1"><label>74</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rodriguez</surname><given-names>JM</given-names></name>, <name name-style="western"><surname>Maietta</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Ezkurdia</surname><given-names>I</given-names></name>, <name name-style="western"><surname>Pietrelli</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Wesselink</surname><given-names>JJ</given-names></name>, <etal>et al</etal>. (<year>2013</year>) <article-title>APPRIS: annotation of principal and alternative splice isoforms</article-title>. <source>Nucleic Acids Res</source> <volume>41</volume>: <fpage>D110</fpage>–<lpage>117</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-GonzalezPorta1"><label>75</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gonzalez-Porta</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Frankish</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Rung</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Harrow</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Brazma</surname><given-names>A</given-names></name> (<year>2013</year>) <article-title>Transcriptome analysis of human tissues and cell lines reveals one dominant transcript per gene</article-title>. <source>Genome Biol</source> <volume>14</volume>: <fpage>R70</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Langmead1"><label>76</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Langmead</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Salzberg</surname><given-names>SL</given-names></name> (<year>2012</year>) <article-title>Fast gapped-read alignment with Bowtie 2</article-title>. <source>Nat Methods</source> <volume>9</volume>: <fpage>357</fpage>–<lpage>359</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Ashburner2"><label>77</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ashburner</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Ball</surname><given-names>CA</given-names></name>, <name name-style="western"><surname>Blake</surname><given-names>JA</given-names></name>, <name name-style="western"><surname>Botstein</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Butler</surname><given-names>H</given-names></name>, <etal>et al</etal>. (<year>2000</year>) <article-title>Gene Ontology: tool for the unification of biology</article-title>. <source>Nature Genetics</source> <volume>25</volume>: <fpage>25</fpage>–<lpage>29</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Hill1"><label>78</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hill</surname><given-names>DP</given-names></name>, <name name-style="western"><surname>Davis</surname><given-names>AP</given-names></name>, <name name-style="western"><surname>Richardson</surname><given-names>JE</given-names></name>, <name name-style="western"><surname>Corradi</surname><given-names>JP</given-names></name>, <name name-style="western"><surname>Ringwald</surname><given-names>M</given-names></name>, <etal>et al</etal>. (<year>2001</year>) <article-title>Program description: Strategies for biological annotation of mammalian systems: implementing gene ontologies in mouse genome informatics</article-title>. <source>Genomics</source> <volume>74</volume>: <fpage>121</fpage>–<lpage>128</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Dietterich1"><label>79</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Dietterich</surname><given-names>TG</given-names></name>, <name name-style="western"><surname>Lathrop</surname><given-names>RH</given-names></name>, <name name-style="western"><surname>Lozano-Pérez</surname><given-names>T</given-names></name> (<year>1997</year>) <article-title>Solving the multiple instance problem with axis-parallel rectangles</article-title>. <source>Artificial Intelligence</source> <volume>89</volume>: <fpage>31</fpage>–<lpage>71</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Maron1"><label>80</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Maron</surname><given-names>O</given-names></name>, <name name-style="western"><surname>Lozano-Perez</surname><given-names>T</given-names></name> (<year>1998</year>) <article-title>A framework for multiple-instance learning</article-title>. <source>NIPS</source></mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Ray1"><label>81</label>
+<mixed-citation publication-type="book" xlink:type="simple">Ray S, Page D. Multiple-Instance Regression; 2001; San Francisco, CA. pp.425–432.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Ramon1"><label>82</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ramon</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Raedt</surname><given-names>LD</given-names></name> (<year>2000</year>) <article-title>Multi-Instance Neural Networks;</article-title>. </mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Whiteaker1"><label>83</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Whiteaker</surname><given-names>JR</given-names></name>, <name name-style="western"><surname>Zhang</surname><given-names>H</given-names></name>, <name name-style="western"><surname>Zhao</surname><given-names>L</given-names></name>, <name name-style="western"><surname>Wang</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Kelly-Spratt</surname><given-names>KS</given-names></name>, <etal>et al</etal>. (<year>2007</year>) <article-title>Integrated pipeline for mass spectrometry-based discovery and confirmation of biomarkers demonstrated in a mouse model of breast cancer</article-title>. <source>J Proteome Res</source> <volume>6</volume>: <fpage>3962</fpage>–<lpage>3975</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003314-Craig1"><label>84</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Craig</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Beavis</surname><given-names>RC</given-names></name> (<year>2004</year>) <article-title>TANDEM: matching proteins with tandem mass spectra</article-title>. <source>Bioinformatics</source> <volume>20</volume>: <fpage>1466</fpage>–<lpage>1467</lpage>.</mixed-citation>
+</ref>
+</ref-list></back>
+</article>

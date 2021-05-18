@@ -1,0 +1,1004 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" dtd-version="3.0" xml:lang="en" article-type="research-article">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">ploscomp</journal-id>
+<journal-title-group>
+<journal-title>PLOS Computational Biology</journal-title>
+</journal-title-group>
+<issn pub-type="ppub">1553-734X</issn>
+<issn pub-type="epub">1553-7358</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="publisher-id">PCOMPBIOL-D-14-02233</article-id>
+<article-id pub-id-type="doi">10.1371/journal.pcbi.1004347</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+</article-categories>
+<title-group>
+<article-title>Decreasing-Rate Pruning Optimizes the Construction of Efficient and Robust Distributed Networks</article-title>
+<alt-title alt-title-type="running-head">Pruning Optimizes Construction of Efficient and Robust Networks</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Navlakha</surname> <given-names>Saket</given-names></name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Barth</surname> <given-names>Alison L.</given-names></name>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Bar-Joseph</surname> <given-names>Ziv</given-names></name>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+</contrib-group>
+<aff id="aff001">
+<label>1</label>
+<addr-line>Center for Integrative Biology, The Salk Institute for Biological Studies, La Jolla, California, United States of America</addr-line>
+</aff>
+<aff id="aff002">
+<label>2</label>
+<addr-line>Department of Biological Sciences, Center for the Neural Basis of Cognition, Carnegie Mellon University, Pittsburgh, Pennsylvania, United States of America</addr-line>
+</aff>
+<aff id="aff003">
+<label>3</label>
+<addr-line>Lane Center for Computational Biology, Machine Learning Department, Carnegie Mellon University, Pittsburgh, Pennsylvania, United States of America</addr-line>
+</aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Graham</surname> <given-names>Lyle J.</given-names></name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1">
+<addr-line>Université Paris Descartes, Centre National de la Recherche Scientifique, FRANCE</addr-line>
+</aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<fn fn-type="con" id="contrib001">
+<p>Conceived and designed the experiments: SN ALB ZBJ. Performed the experiments: SN ALB. Analyzed the data: SN. Contributed reagents/materials/analysis tools: SN ALB ZBJ. Wrote the paper: SN ALB ZBJ.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">barth@cmu.edu</email> (ALB); <email xlink:type="simple">zivbj@cs.cmu.edu</email> (ZBJ)</corresp>
+</author-notes>
+<pub-date pub-type="collection">
+<month>7</month>
+<year>2015</year>
+</pub-date>
+<pub-date pub-type="epub">
+<day>28</day>
+<month>7</month>
+<year>2015</year>
+</pub-date>
+<volume>11</volume>
+<issue>7</issue>
+<elocation-id>e1004347</elocation-id>
+<history>
+<date date-type="received">
+<day>12</day>
+<month>12</month>
+<year>2014</year>
+</date>
+<date date-type="accepted">
+<day>20</day>
+<month>5</month>
+<year>2015</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2015</copyright-year>
+<copyright-holder>Navlakha et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pcbi.1004347" xlink:type="simple"/>
+<abstract>
+<p>Robust, efficient, and low-cost networks are advantageous in both biological and engineered systems. During neural network development in the brain, synapses are massively over-produced and then pruned-back over time. This strategy is not commonly used when designing engineered networks, since adding connections that will soon be removed is considered wasteful. Here, we show that for large distributed routing networks, network function is markedly enhanced by hyper-connectivity followed by aggressive pruning and that the global rate of pruning, a developmental parameter not previously studied by experimentalists, plays a critical role in optimizing network structure. We first used high-throughput image analysis techniques to quantify the rate of pruning in the mammalian neocortex across a broad developmental time window and found that the rate is decreasing over time. Based on these results, we analyzed a model of computational routing networks and show using both theoretical analysis and simulations that decreasing rates lead to more robust and efficient networks compared to other rates. We also present an application of this strategy to improve the distributed design of airline networks. Thus, inspiration from neural network formation suggests effective ways to design distributed networks across several domains.</p>
+</abstract>
+<abstract abstract-type="summary">
+<title>Author Summary</title>
+<p>During development of neural circuits in the brain, synapses are massively over-produced and then pruned-back over time. This is a fundamental process that occurs in many brain regions and organisms, yet, despite decades of study of this process, the rate of synapse elimination, and how such rates affect the function and structure of networks, has not been studied. We performed large-scale brain imaging experiments to quantify synapse elimination rates in the developing mouse cortex and found that the rate is decreasing over time (i.e. aggressive elimination occurs early, followed by a longer phase of slow elimination). We show that such rates optimize the efficiency and robustness of distributed routing networks under several models. We also present an application of this strategy to improve the design of airline networks.</p>
+</abstract>
+<funding-group>
+<funding-statement>This work was supported in part by the National Institutes of Health award no. F32-MH099784 to SN; by grants from the National Institutes of Health award no. 0171-088 and the McKnight Foundation to ALB; and by grants from the McDonnell Foundation programme on Studying Complex Systems and from the US National Science Foundation award nos. DBI-0965316 and DBI-1356505 to ZBJ. The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="7"/>
+<table-count count="1"/>
+<page-count count="23"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability" xlink:type="simple">
+<meta-name>Data Availability</meta-name>
+<meta-value>All images generated to study developmental pruning in the mouse somatosensory cortex are available in an online database at: <ext-link ext-link-type="uri" xlink:type="simple" xlink:href="http://www.snl.salk.edu/~navlakha/pruning_data/">http://www.snl.salk.edu/~navlakha/pruning_data/</ext-link></meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>Neural networks in the brain are formed during development using a pruning process that includes expansive growth of synapses followed by activity-dependent elimination. In humans, synaptic density peaks around age 2 and subsequently declines by 50–60% in adulthood [<xref ref-type="bibr" rid="pcbi.1004347.ref001">1</xref>–<xref ref-type="bibr" rid="pcbi.1004347.ref004">4</xref>]. It has been hypothesized that synaptic pruning is important for experience-dependent selection of the most appropriate subset of connections [<xref ref-type="bibr" rid="pcbi.1004347.ref001">1</xref>, <xref ref-type="bibr" rid="pcbi.1004347.ref005">5</xref>], and it occurs in many brain regions and species [<xref ref-type="bibr" rid="pcbi.1004347.ref006">6</xref>–<xref ref-type="bibr" rid="pcbi.1004347.ref009">9</xref>]. This strategy substantially reduces the amount of genetic information required to code for the trillions of connections made in the human brain [<xref ref-type="bibr" rid="pcbi.1004347.ref010">10</xref>]. Instead of instructing precise connections, more general rules can be applied, which are then fine-tuned by activity-dependent selection. Although the molecular and cellular mechanisms driving activity-dependent pruning have been extensively investigated [<xref ref-type="bibr" rid="pcbi.1004347.ref001">1</xref>, <xref ref-type="bibr" rid="pcbi.1004347.ref003">3</xref>, <xref ref-type="bibr" rid="pcbi.1004347.ref004">4</xref>], global aspects of this highly-distributed process, including the rate at which synapses are pruned, the impact of these rates on network function, and the contrast of pruning-versus growth-based strategies commonly used in engineering to construct networks, has not been studied.</p>
+<p>While the specific computations performed within neural and engineered networks may be very different, at a broad level, both types of networks share many goals and constraints [<xref ref-type="bibr" rid="pcbi.1004347.ref011">11</xref>]. First, networks must propagate signals efficiently while also being robust to malfunctions (e.g. spike propagation failures in neural networks [<xref ref-type="bibr" rid="pcbi.1004347.ref012">12</xref>–<xref ref-type="bibr" rid="pcbi.1004347.ref014">14</xref>]; computer or link failures in communication networks [<xref ref-type="bibr" rid="pcbi.1004347.ref015">15</xref>]). Second, both types of networks must adapt connections based on patterns of input activity [<xref ref-type="bibr" rid="pcbi.1004347.ref016">16</xref>]. Third, these factors must be optimized under the constraint of distributed processing (without a centralized coordinator) [<xref ref-type="bibr" rid="pcbi.1004347.ref017">17</xref>, <xref ref-type="bibr" rid="pcbi.1004347.ref018">18</xref>], and using low-cost solutions that conserve important metabolic or physical resources (e.g. number of synapses or wiring length in biological networks; energy consumption or battery-life in engineered networks) [<xref ref-type="bibr" rid="pcbi.1004347.ref019">19</xref>–<xref ref-type="bibr" rid="pcbi.1004347.ref021">21</xref>]. For example, on the Internet or power grid, requests can be highly dynamic and variable over many time-scales and can lead to network congestion and failures if networks are unable to adapt to such conditions [<xref ref-type="bibr" rid="pcbi.1004347.ref022">22</xref>, <xref ref-type="bibr" rid="pcbi.1004347.ref023">23</xref>]. In wireless or mobile networks, broadcast ranges (which determine network topology) need to be inferred in real-time based on the physical distribution of devices in order to optimize energy efficiency [<xref ref-type="bibr" rid="pcbi.1004347.ref024">24</xref>]. Although optimizing network design is critical for such engineered systems across a wide range of applications, existing algorithms used for this problem are not, to our knowledge, based on experience-based pruning, in part because adding connections that will soon be eliminated is considered wasteful.</p>
+<p>Here, we develop a computational approach informed by experimental data to show that pruning-inspired algorithms can enhance the design of distributed routing networks. First, we experimentally examined developmental pruning rates in the mouse somatosensory cortex, a well-characterized anatomical structure in the mouse brain [<xref ref-type="bibr" rid="pcbi.1004347.ref025">25</xref>]. Using electron microscopy imaging across 41 animals and 16 developmental time-points, coupled with unbiased and high-throughput image analysis [<xref ref-type="bibr" rid="pcbi.1004347.ref026">26</xref>], we counted over 20,000 synapses and determined that pruning rates are decreasing over time (i.e. early, rapid synapse elimination is followed by a period of slower, gradual elimination). Next, to translate these observations to the computational domain, we developed a simulated environment for comparing algorithms for distributed network construction. We find that over-connection followed by pruning leads to significant improvements in efficiency (routing distance in the network) and robustness (number of alternative routes between two nodes) compared to commonly-used methods that add connections to initially-sparse networks. To determine if these results hold more generally, we analyzed the theoretical basis of network construction by pruning and found that decreasing rates led to networks with near-optimal connectivity compared to other rates (increasing, constant, etc.), which we also confirmed using simulations. Finally, we adapted a pruning-based strategy to improve the design of airline networks using real traffic pattern data.</p>
+<p>The novelty of our approach is two-fold. First, while synaptic pruning has been studied for decades, previous analyses have determined that synaptic density peaks during early development and is reduced by late adolescence and adulthood [<xref ref-type="bibr" rid="pcbi.1004347.ref006">6</xref>–<xref ref-type="bibr" rid="pcbi.1004347.ref009">9</xref>]. However, fine-scale measurements to statistically establish the rate of synapse elimination have not been made. Second, while substantial prior work linking neural and computational networks has focused on the <italic>computation</italic> performed by neural networks [<xref ref-type="bibr" rid="pcbi.1004347.ref027">27</xref>, <xref ref-type="bibr" rid="pcbi.1004347.ref028">28</xref>], our work focuses on the <italic>construction</italic> of networks and provides a quantitative platform to compare different network construction processes based on their cost, efficiency, and robustness. Our goals here are to model pruning from an abstract, graph-theoretic perspective; we do not intend to capture all the requirements of information processing in the brain, and instead focus on using pruning-inspired algorithms for improving routing in distributed networks. Overall, our results suggest that computational thinking can simultaneously lead to novel, testable biological hypotheses and new distributed computing algorithms for designing better networks.</p>
+</sec>
+<sec id="sec002" sec-type="results">
+<title>Results</title>
+<sec id="sec003">
+<title>Neural networks employ decreasing rates of synapse elimination</title>
+<p>Many generative models have been proposed to understand how networks evolve and develop over time (e.g. preferential attachment [<xref ref-type="bibr" rid="pcbi.1004347.ref029">29</xref>], small-world models [<xref ref-type="bibr" rid="pcbi.1004347.ref030">30</xref>], duplication-divergence [<xref ref-type="bibr" rid="pcbi.1004347.ref031">31</xref>, <xref ref-type="bibr" rid="pcbi.1004347.ref032">32</xref>]), yet most of these models assume that the number of nodes and edges strictly grows over time. Synaptic pruning, however, diverges from this strategy. To better understand how pruning is implemented and whether it can be used to construct networks for broad routing problems, we sought to measure this process experimentally. Although pruning is a well-established neurodevelopmental phenomenon, previous experimental studies have primarily focused on identifying the time period over which pruning begins and ends but have largely ignored the dynamics in between these end-points [<xref ref-type="bibr" rid="pcbi.1004347.ref006">6</xref>, <xref ref-type="bibr" rid="pcbi.1004347.ref009">9</xref>, <xref ref-type="bibr" rid="pcbi.1004347.ref033">33</xref>], lacking crucial pruning rate information that may be useful for using pruning-based strategies for building distributed networks.</p>
+<p>To determine the rate of synapse loss in developing neural networks, we focused on a well-characterized region of the neocortex, layer 4 of somatosensory cortex representing the D1 whisker (<xref ref-type="fig" rid="pcbi.1004347.g001">Fig 1A</xref>), where both thalamic inputs and recurrent circuitry are established in the first two postnatal weeks [<xref ref-type="bibr" rid="pcbi.1004347.ref034">34</xref>–<xref ref-type="bibr" rid="pcbi.1004347.ref036">36</xref>]. Because this region of primary sensory cortex does not receive significant input from other cortical layers [<xref ref-type="bibr" rid="pcbi.1004347.ref037">37</xref>], measurements of synaptic pruning reflect the maturation of an extant network, uncontaminated by the addition of synapses over the analysis window. In addition, the somatotopic anatomy of the whisker (barrel) cortex insured that comparisons across different animals and time-points could be made for the identical small cortical region (<xref ref-type="fig" rid="pcbi.1004347.g001">Fig 1B</xref>).</p>
+<fig id="pcbi.1004347.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004347.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>Experimental pipeline, image processing, and decreasing pruning rates.</title>
+<p>(A) Schematic of the somatotopic mapping of whiskers to neocortical columns in the mouse somatosensory cortex. (B) Tangential sections from flattened brains preserve the structure of the barrel-field, enabling easy identification and isolation of the D1 barrel in tissue from different ages. (C) A support vector machine (SVM) classifier is trained using manually labeled examples of synapses and non-synapses in electron microscopy images. (D) Example images of synapses at three different time points corresponding to peak synapse density (P19), and later drop-off (P24 and P32). Scale bar represents 500nm. (E) Developmental pruning rate (raw data, left; binned data, right). Red lines show spline interpolations of the data points. Insets show that the majority of synapses are pruned during the first half of the developmental pruning period.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004347.g001"/>
+</fig>
+<p>Changes in synaptic density over time were obtained from sampling 41 animals over 16 developmental time-points ranging from postnatal day 14 (P14) to P40 (<xref ref-type="table" rid="pcbi.1004347.t001">Table 1</xref>). Over 20,000 synapses in nearly 10,000 images were identified using a synapse-enhancing reaction that specifically highlights synaptic contacts for electron microscopy [<xref ref-type="bibr" rid="pcbi.1004347.ref038">38</xref>, <xref ref-type="bibr" rid="pcbi.1004347.ref039">39</xref>], coupled with unbiased machine learning algorithms (<xref ref-type="fig" rid="pcbi.1004347.g001">Fig 1C</xref>; <xref ref-type="sec" rid="sec012">Materials and Methods</xref>) [<xref ref-type="bibr" rid="pcbi.1004347.ref026">26</xref>]. Consistent with prior estimates that sampled only the peak and the end-point [<xref ref-type="bibr" rid="pcbi.1004347.ref009">9</xref>, <xref ref-type="bibr" rid="pcbi.1004347.ref033">33</xref>], peak synaptic density occurred at P19 and density declined steeply to mature levels three weeks later (<xref ref-type="fig" rid="pcbi.1004347.g001">Fig 1D and 1E</xref>). Synapse density at P40 was similar to adult mice sampled at P65 (<xref ref-type="supplementary-material" rid="pcbi.1004347.s005">S4 Fig</xref>).</p>
+<table-wrap id="pcbi.1004347.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004347.t001</object-id>
+<label>Table 1</label>
+<caption>
+<title>Overview of experiments and synapses detected.</title>
+</caption>
+<alternatives>
+<graphic id="pcbi.1004347.t001g" mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004347.t001"/>
+<table frame="box" rules="all" border="0">
+<colgroup span="1">
+<col align="left" valign="top" span="1"/>
+<col align="left" valign="top" span="1"/>
+<col align="left" valign="top" span="1"/>
+<col align="left" valign="top" span="1"/>
+<col align="left" valign="top" span="1"/>
+<col align="left" valign="top" span="1"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" rowspan="1" colspan="1"><bold>Post-natal day (P)</bold></th>
+<th align="left" rowspan="1" colspan="1"><bold># Animals</bold></th>
+<th align="left" rowspan="1" colspan="1"><bold># Images</bold></th>
+<th align="left" rowspan="1" colspan="1"><bold># Synapses (Avg/Image)</bold></th>
+<th align="left" rowspan="1" colspan="1"><bold>Precision</bold></th>
+<th align="left" rowspan="1" colspan="1"><bold>Recall</bold></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">14</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">269</td>
+<td align="left" rowspan="1" colspan="1">500 (1.86)</td>
+<td align="char" char="." rowspan="1" colspan="1">89.00</td>
+<td align="char" char="." rowspan="1" colspan="1">50.00</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">17</td>
+<td align="left" rowspan="1" colspan="1">3</td>
+<td align="left" rowspan="1" colspan="1">400</td>
+<td align="left" rowspan="1" colspan="1">964 (2.41)</td>
+<td align="char" char="." rowspan="1" colspan="1">92.40</td>
+<td align="char" char="." rowspan="1" colspan="1">50.00</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">19</td>
+<td align="left" rowspan="1" colspan="1">3</td>
+<td align="left" rowspan="1" colspan="1">739</td>
+<td align="left" rowspan="1" colspan="1">2437 (3.30)</td>
+<td align="char" char="." rowspan="1" colspan="1">88.37</td>
+<td align="char" char="." rowspan="1" colspan="1">49.50</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">21</td>
+<td align="left" rowspan="1" colspan="1">3</td>
+<td align="left" rowspan="1" colspan="1">736</td>
+<td align="left" rowspan="1" colspan="1">1984 (2.70)</td>
+<td align="char" char="." rowspan="1" colspan="1">96.57</td>
+<td align="char" char="." rowspan="1" colspan="1">49.70</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">22</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">397</td>
+<td align="left" rowspan="1" colspan="1">1121 (2.83)</td>
+<td align="char" char="." rowspan="1" colspan="1">80.80</td>
+<td align="char" char="." rowspan="1" colspan="1">50.00</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">23</td>
+<td align="left" rowspan="1" colspan="1">4</td>
+<td align="left" rowspan="1" colspan="1">767</td>
+<td align="left" rowspan="1" colspan="1">1913 (2.50)</td>
+<td align="char" char="." rowspan="1" colspan="1">92.75</td>
+<td align="char" char="." rowspan="1" colspan="1">49.88</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">24</td>
+<td align="left" rowspan="1" colspan="1">1</td>
+<td align="left" rowspan="1" colspan="1">136</td>
+<td align="left" rowspan="1" colspan="1">418 (3.07)</td>
+<td align="char" char="." rowspan="1" colspan="1">96.50</td>
+<td align="char" char="." rowspan="1" colspan="1">49.50</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">26</td>
+<td align="left" rowspan="1" colspan="1">3</td>
+<td align="left" rowspan="1" colspan="1">523</td>
+<td align="left" rowspan="1" colspan="1">1176 (2.25)</td>
+<td align="char" char="." rowspan="1" colspan="1">91.93</td>
+<td align="char" char="." rowspan="1" colspan="1">49.83</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">28</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">915</td>
+<td align="left" rowspan="1" colspan="1">1779 (1.95)</td>
+<td align="char" char="." rowspan="1" colspan="1">95.70</td>
+<td align="char" char="." rowspan="1" colspan="1">49.45</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">30</td>
+<td align="left" rowspan="1" colspan="1">3</td>
+<td align="left" rowspan="1" colspan="1">642</td>
+<td align="left" rowspan="1" colspan="1">1186 (1.85)</td>
+<td align="char" char="." rowspan="1" colspan="1">95.40</td>
+<td align="char" char="." rowspan="1" colspan="1">49.83</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">32</td>
+<td align="left" rowspan="1" colspan="1">4</td>
+<td align="left" rowspan="1" colspan="1">1480</td>
+<td align="left" rowspan="1" colspan="1">2192 (1.48)</td>
+<td align="char" char="." rowspan="1" colspan="1">96.00</td>
+<td align="char" char="." rowspan="1" colspan="1">49.70</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">33</td>
+<td align="left" rowspan="1" colspan="1">1</td>
+<td align="left" rowspan="1" colspan="1">256</td>
+<td align="left" rowspan="1" colspan="1">642 (2.51)</td>
+<td align="char" char="." rowspan="1" colspan="1">98.00</td>
+<td align="char" char="." rowspan="1" colspan="1">50.00</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">34</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">508</td>
+<td align="left" rowspan="1" colspan="1">1235 (2.43)</td>
+<td align="char" char="." rowspan="1" colspan="1">88.80</td>
+<td align="char" char="." rowspan="1" colspan="1">49.50</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">36</td>
+<td align="left" rowspan="1" colspan="1">3</td>
+<td align="left" rowspan="1" colspan="1">763</td>
+<td align="left" rowspan="1" colspan="1">1611 (2.11)</td>
+<td align="char" char="." rowspan="1" colspan="1">90.83</td>
+<td align="char" char="." rowspan="1" colspan="1">49.73</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">38</td>
+<td align="left" rowspan="1" colspan="1">3</td>
+<td align="left" rowspan="1" colspan="1">734</td>
+<td align="left" rowspan="1" colspan="1">1397 (1.91)</td>
+<td align="char" char="." rowspan="1" colspan="1">92.63</td>
+<td align="char" char="." rowspan="1" colspan="1">49.80</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">40</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="left" rowspan="1" colspan="1">489</td>
+<td align="left" rowspan="1" colspan="1">803 (1.64)</td>
+<td align="char" char="." rowspan="1" colspan="1">94.10</td>
+<td align="char" char="." rowspan="1" colspan="1">49.65</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">16</td>
+<td align="left" rowspan="1" colspan="1">41</td>
+<td align="left" rowspan="1" colspan="1">9754</td>
+<td align="left" rowspan="1" colspan="1">21355</td>
+<td align="char" char="." rowspan="1" colspan="1">92.38</td>
+<td align="char" char="." rowspan="1" colspan="1">49.76</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p>Pruning rates were decreasing over time, i.e. rapid elimination was followed by a slower period of pruning. To determine the significance of this observation and to test whether only a single sample or time-point was driving the rate, we used a leave-one-out cross-validation strategy (<xref ref-type="sec" rid="sec012">Materials and Methods</xref>). First, the pruning period was divided into either 2 or 5 equally-spaced intervals over time from P19 to P40. Second, for each fold in the cross-validation, either one sample was left-out or one time-point was left-out. Third, a spline interpolation curve was fit and was used to compute the percentage of synapses pruned across successive intervals. When dividing the period into 2 intervals (P19–P29, <italic>n</italic> = 18 animals and P29–P39, <italic>n</italic> = 18 animals), there was a significant decrease in the percentage of synapses pruned within the first interval compared to the second interval (average percentage of synapses pruned from P19 to P29: 39.99%; (standard deviation over cross-validation folds: 2.93); average percentage of synapses pruned from P29 to P39: 10.87% (standard deviation: 4.56); <italic>P</italic> &lt; 0.01, unpaired 2-sample t-test; <xref ref-type="fig" rid="pcbi.1004347.g001">Fig 1E</xref>). When dividing into 5 intervals, we also found a significant decrease in percentage of synapses pruned within the first interval versus the second (27% versus 15%; <italic>P</italic> &lt; 0.01 unpaired 2-sample t-test) and similar decreases across the next two intervals (<xref ref-type="fig" rid="pcbi.1004347.g002">Fig 2</xref>). The slight rise in pruning in the last interval (7%) may be due to the addition of layer-4-innervating afferents from other brain areas [<xref ref-type="bibr" rid="pcbi.1004347.ref040">40</xref>] (indeed, we see a small rise in synapse density at P33, followed by additional pruning; <xref ref-type="supplementary-material" rid="pcbi.1004347.s007">S6 Fig</xref>). Nonetheless, the majority of the pruning still occurs during the first two intervals compared to the last three (<italic>P</italic> &lt; 0.01), which is quantitatively indicative of a decreasing rate.</p>
+<fig id="pcbi.1004347.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004347.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>Finer analysis of decreasing synaptic pruning rates.</title>
+<p>The pruning period was divided into 5 intervals and the percentage of synapses pruned across successive intervals is depicted by the red bars. Statistics were computed using a leave-out-one strategy on either individual samples from the raw data (A) or on entire time-points using the binned data (B), where samples from a 2-day window were merged into the same time-point. Error bars indicate standard deviation over the cross-validation folds. All successive points are significantly different (<italic>P</italic> &lt; 0.01, two-sample t-test).</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004347.g002"/>
+</fig>
+<p>To further assess the reproducibility of these results, synapse density was adjusted for 3D analysis, which also confirmed a decreasing rate of synapse elimination (<xref ref-type="supplementary-material" rid="pcbi.1004347.s006">S5 Fig</xref>). These data indicate that neural networks are modified by aggressive pruning of connections, followed by a later, slow phase of synaptic elimination.</p>
+</sec>
+<sec id="sec004">
+<title>Pruning outperforms growing algorithms for constructing distributed networks</title>
+<p>Theoretical and practical approaches to engineered network construction typically begin by constructing a basic, backbone network (e.g. a spanning-tree) and then adding connections over time as needed [<xref ref-type="bibr" rid="pcbi.1004347.ref017">17</xref>]. Such a process is considered cost efficient since it does not introduce new edges unless they are determined to improve routing efficiency or robustness. To quantitatively compare the differences between pruning and growing algorithms, we formulated the following optimization problem: Given <italic>n</italic> nodes and an online stream of source-target pairs of nodes drawn from an <italic>a priori</italic> unknown distribution 𝓓 (<xref ref-type="fig" rid="pcbi.1004347.g003">Fig 3A</xref>), design an efficient and robust network with respect to 𝓓 (<xref ref-type="sec" rid="sec012">Materials and Methods</xref>). Efficiency is measured in terms of the average shortest-path routing distance between source-target pairs, and robustness is measured in terms of number of alternative source-target paths (<xref ref-type="sec" rid="sec012">Materials and Methods</xref>).</p>
+<fig id="pcbi.1004347.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004347.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title>Computational network model and comparison between pruning and growing.</title>
+<p>(A) Example distribution (2-patch) for source-target pairs. (B) The pruning algorithm starts with an exuberant number of connections. Edges commonly used to route source-target messages are retained, whereas low-use edges are iteratively pruned. (C) The growing algorithm begins with a spanning-tree and adds local shortcut edges along common source-target routes. (D) The no-learning algorithm chooses random edges and does not attempt to learn connections based on the training data. (E+F) Learned networks were evaluated by computing efficiency (E, the average shortest-path distance amongst test pairs) and robustness (F, the average number of short alternative paths between a test source and target). Error bars indicate standard deviation over 3 simulation runs.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004347.g003"/>
+</fig>
+<p>The distribution 𝓓 represents an input-output signaling structure that the network needs to learn during the training (developmental) phase of network construction. This situation occurs in many computational scenarios. For example, wireless and sensor networks often rely on information from the environment, which may be structured but unknown beforehand (e.g. when monitoring river contamination or volcanic activity, some sensors may first detect changes in the environment based on their physical location and then pass this information to other downstream nodes for processing) [<xref ref-type="bibr" rid="pcbi.1004347.ref024">24</xref>]. Similarly, in peer-to-peer systems on the Internet, some machines preferentially route information to other machines [<xref ref-type="bibr" rid="pcbi.1004347.ref041">41</xref>], and traffic patterns may be unknown beforehand and only discovered in real-time. In the brain, such a distribution may mimic the directional flow of information across two regions or populations of neurons.</p>
+<p>After training, the goal is to output an unweighted, directed graph with a fixed number of edges <italic>B</italic>, representing a limit on available physical or metabolic resources. To evaluate the final network (test phase), additional pairs are drawn from the same distribution 𝓓, and efficiency and robustness of the source-target routes is computed using the test pairs.</p>
+<p>Importantly, decisions about edge maintenance, growth, or loss were local and distributed (no central coordinator). The pruning algorithm begins with a dense network and tracks how many times each edge is used along a source-target path. In other words, each edge locally keeps track of how many times it has been used along a source-to-target path. Edges used many times are by definition important (according to 𝓓); edges with low usage values are then iteratively eliminated modeling a “use it or lose it” strategy [<xref ref-type="bibr" rid="pcbi.1004347.ref042">42</xref>, <xref ref-type="bibr" rid="pcbi.1004347.ref043">43</xref>] (<xref ref-type="fig" rid="pcbi.1004347.g003">Fig 3B</xref>). Initially, we assumed elimination occurs at a constant rate, i.e. a constant percentage of existing edges are removed in each interval (<xref ref-type="sec" rid="sec012">Materials and Methods</xref>). The growing algorithm first constructs a spanning-tree on <italic>n</italic> nodes and iteratively adds local edges to shortcut common routes [<xref ref-type="bibr" rid="pcbi.1004347.ref044">44</xref>] (<xref ref-type="fig" rid="pcbi.1004347.g003">Fig 3C</xref>). These algorithms were compared to a fixed global network (no-learning) that selects <italic>B</italic> random directed edges (<xref ref-type="fig" rid="pcbi.1004347.g003">Fig 3D</xref>).</p>
+<p>Simulations and analysis of final network structure revealed a marked difference in network efficiency (lower values are better) and robustness (higher values are better) between the pruning, growing, and no-learning algorithms. In sparsely connected networks (average of 2 connections per node), pruning led to a 4.5-fold improvement in efficiency compared to growing and 1.8-fold improvement compared to no-learning (<xref ref-type="fig" rid="pcbi.1004347.g003">Fig 3E</xref>; <xref ref-type="supplementary-material" rid="pcbi.1004347.s009">S8 Fig</xref>). In more densely connected networks (average of 10–20 connections per node), pruning still exhibited a significant improvement in efficiency (<xref ref-type="supplementary-material" rid="pcbi.1004347.s008">S7 Fig</xref>). The no-learning algorithm does not tailor connectivity to 𝓓 and thus wastes 25% of edges connecting targets back to sources, which does not enhance efficiency under the 2-patch distribution (<xref ref-type="fig" rid="pcbi.1004347.g003">Fig 3A</xref>). Remarkably, pruning-based networks enhanced fault tolerance by more than 20-fold compared to growing-based networks, which were particularly fragile due to strong reliance on the backbone spanning tree (<xref ref-type="fig" rid="pcbi.1004347.g003">Fig 3F</xref>).</p>
+</sec>
+<sec id="sec005">
+<title>Simulations confirm advantages of decreasing pruning rates</title>
+<p>The pruning algorithm employed in the previous simulations used a constant rate of connection loss. Given our experimental results of decreasing pruning rates in neural networks, we asked whether such rates could indeed lead to more efficient and robust networks in our simulated environment. To address this question, the effects of three pruning rates (increasing, decreasing, and constant) on network function were compared (<xref ref-type="sec" rid="sec012">Materials and Methods</xref>). Increasing rates start by eliminating few connections and then removing connections more aggressively in later intervals. This is an intuitively appealing strategy since the network can delay edge elimination decisions until more training data is collected. Decreasing rates initially prune aggressively and then taper off over time, which forces earlier decision-making but provides more time for network stabilization.</p>
+<p>Simulations show that the biologically-motivated decreasing rates indeed improve upon the constant rate used previously and created the most efficient and robust networks (<xref ref-type="fig" rid="pcbi.1004347.g004">Fig 4A–4C</xref>). In particular, for the sparsest networks, decreasing rates were 30% more efficient than increasing rates (20% more efficient than constant rates) and exhibited similar gains in fault tolerance. This was particularly surprising because efficiency and robustness are often optimized using competing topological structures: e.g. while alternative paths enable fault tolerance, they do not necessarily enhance efficiency. Further, fewer source-target pairs were unroutable (disconnected from each other) using decreasing rates than any other rate (<xref ref-type="fig" rid="pcbi.1004347.g004">Fig 4B</xref>), which means that these networks were overall better adapted to the activity patterns defined by the distribution 𝓓. Performance of pruning algorithms was also qualitatively similar when starting with sparser initial topologies, as opposed to cliques (<xref ref-type="supplementary-material" rid="pcbi.1004347.s010">S9 Fig</xref>).</p>
+<fig id="pcbi.1004347.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004347.g004</object-id>
+<label>Fig 4</label>
+<caption>
+<title>Simulation results for network optimization.</title>
+<p>(A) Efficiency (lower is better), (B) the number of unroutable pairs (disconnected source-target test pairs), and (C) robustness (higher is better) using the 2-patch distribution. For the growing algorithm, there are no unroutable pairs due to the initial spanning tree construction, which ensures connectivity between every pair to begin with.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004347.g004"/>
+</fig>
+<p>Interestingly, decreasing rates also consume the least energy compared to the other rates in terms of total number of edges maintained during the developmental period (<xref ref-type="supplementary-material" rid="pcbi.1004347.s011">S10 Fig</xref>), which further supports their practical usage.</p>
+</sec>
+<sec id="sec006">
+<title>An alternative biologically-inspired model for building networks</title>
+<p>Neurons likely cannot route signals via shortest paths in networks. To explore a more biologically plausible, yet still abstract, process for network construction, we developed a network-flow-based model that performs a breadth-first search from the source node, which requires no global shortest path computation (<xref ref-type="sec" rid="sec012">Materials and Methods</xref>).</p>
+<p>Using this model, we see the identical ordering of performance amongst the three rates, with decreasing rates leading to the most efficient and robust networks, followed by constant and then increasing (<xref ref-type="fig" rid="pcbi.1004347.g005">Fig 5</xref>). While our original goal was not to model the full complexity of neural circuits (e.g. using leaky integrate-and-fire units, multiple cell types, etc.), this analysis shows the generality of our biological findings and relevance of pruning rates on network construction.</p>
+<fig id="pcbi.1004347.g005" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004347.g005</object-id>
+<label>Fig 5</label>
+<caption>
+<title>Similar advantages of decreasing pruning rates are observed when using a network-flow-based model of network activity.</title>
+<p>A) 2-patch input distribution and B) 4-patch input distribution.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004347.g005"/>
+</fig>
+</sec>
+<sec id="sec007">
+<title>Comparing algorithms using additional source-target distributions</title>
+<p>The previous results compared each network construction algorithm using the 2-patch distribution (<xref ref-type="fig" rid="pcbi.1004347.g003">Fig 3A</xref>). This distribution is unidirectional with equal probability of sampling any node within the source and target sets, respectively. Next, we compared each network design algorithm using four additional input distributions. For the 2s-patch distribution (<xref ref-type="fig" rid="pcbi.1004347.g006">Fig 6A</xref>), with probability <italic>x</italic>, a random source and target pair is drawn, but with probability 1−<italic>x</italic>, a random pair is drawn from amongst a smaller more active set of sources and targets. This distribution models recent evidence suggesting highly active subnetworks in the cortex with potentially specialized sources and targets [<xref ref-type="bibr" rid="pcbi.1004347.ref045">45</xref>, <xref ref-type="bibr" rid="pcbi.1004347.ref046">46</xref>]. We set <italic>x</italic> = 0.5 and the size of the selective sets to be 10% each. For the 2-patch-unbalanced distribution (<xref ref-type="fig" rid="pcbi.1004347.g006">Fig 6B</xref>), there are three times as many targets as sources, inspired by the fact that different layers have different numbers of neurons [<xref ref-type="bibr" rid="pcbi.1004347.ref047">47</xref>]. For the 4-patch distribution (<xref ref-type="fig" rid="pcbi.1004347.g006">Fig 6C</xref>), there are two disjoint sets of sources and targets, each putatively representing input-output activity from adjacent columns or layers. For the 4-patch Hubel-Wiesel distribution (<xref ref-type="fig" rid="pcbi.1004347.g006">Fig 6D</xref>), the second set of sources are shut-off and never drawn from and their corresponding targets are recruited by the first set of sources, mimicking monocular deprivation [<xref ref-type="bibr" rid="pcbi.1004347.ref016">16</xref>].</p>
+<fig id="pcbi.1004347.g006" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004347.g006</object-id>
+<label>Fig 6</label>
+<caption>
+<title>Additional source-target distributions.</title>
+<p>Decreasing rates are more efficient and robust than all other rates and algorithms for all four distributions: A) 2s-patch. B) 2-patch-unbalanced. C) 4-patch. D) 4-patch Hubel &amp; Wiesel distribution, where during development one input source is lost entirely.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004347.g006"/>
+</fig>
+<p>Overall, decreasing rates produced the most efficient and robust networks across all distributions. which further supports the generality of our model and experimental observations.</p>
+</sec>
+<sec id="sec008">
+<title>Analysis of network motifs</title>
+<p>To test if our model can replicate statistics of non-random circuits, we detected network motifs within the final network generated using decreasing-rate pruning. We counted all possible 3-node motifs and compared these counts to those expected in a random network [<xref ref-type="bibr" rid="pcbi.1004347.ref048">48</xref>]. Interestingly, when using the 2-patch distribution, where sources and targets are drawn uniformly from the two sets, we found no over-represented motifs. However, when we considered the 2s-patch distribution (where a subset of sources and targets are selectively more active than the others, as one might expect in real cortical circuits [<xref ref-type="bibr" rid="pcbi.1004347.ref045">45</xref>, <xref ref-type="bibr" rid="pcbi.1004347.ref046">46</xref>, <xref ref-type="bibr" rid="pcbi.1004347.ref049">49</xref>, <xref ref-type="bibr" rid="pcbi.1004347.ref050">50</xref>]), we found feed-forward motifs to be statistically over-represented when compared to random networks (<italic>P</italic> &lt; 0.01, Z-score = 2.82). This motif has been widely observed in many biological and computational networks and is known for its role in signal propagation and noise control [<xref ref-type="bibr" rid="pcbi.1004347.ref048">48</xref>].</p>
+</sec>
+<sec id="sec009">
+<title>Theoretical basis of optimal pruning rates</title>
+<p>Given a small, initial sampling of the training source-target pairs, it is relatively easy to determine many connections that will likely not be important. Decreasing rates eliminate these connections quickly, and then provide longer time for the network to fine-tune itself and accommodate indirect pathways while eliminating fewer connections. On the other hand, increasing rates can gather more information early, but then are forced to drastically alter network topology towards the final pruning intervals, which can sever pathways and fragment the network. Interestingly, if the network construction process were guided by a centralized coordinator, then pruning only in the last interval would clearly be a superior strategy because the longer the coordinator waits, the more data is available to determine which edges are most important to inform the centralized design process. However, the distributed nature of the optimization problem forces a different strategy. Indeed, we found more network fragmentation (unroutable pairs) between sources and targets using increasing rates versus decreasing (<xref ref-type="fig" rid="pcbi.1004347.g004">Fig 4B</xref>).</p>
+<p>To capture these intuitive notions more formally, we theoretically analyzed the effect of pruning rates on network efficiency. Analysis was simplified in the following way: (1) we only considered efficiency (routing distance) as the optimization target [<xref ref-type="bibr" rid="pcbi.1004347.ref051">51</xref>]; (2) we assumed the 2-patch routing distribution used for simulation (<xref ref-type="fig" rid="pcbi.1004347.g003">Fig 3A</xref>); and (3) we approximated the topology of the final network using three-parameter Erdős-Rényi random graphs. In these graphs, directed edges between sources 𝓢 → 𝓢 or targets 𝓣 → 𝓣 exist independently with probability <italic>p</italic>, edges from 𝓢 → 𝓣 exist with probability <italic>q</italic>, and edges 𝓣 → 𝓢 existed with probability <italic>z</italic> (<xref ref-type="supplementary-material" rid="pcbi.1004347.s001">S1 Text</xref>, <xref ref-type="supplementary-material" rid="pcbi.1004347.s012">S11A Fig</xref>; <italic>z</italic> = 0 in optimal sparse networks).</p>
+<p>We derived a recurrence to predict the final <italic>p</italic>/<italic>q</italic> ratio given a pruning rate and analytically related the final <italic>p</italic>/<italic>q</italic> ratio to efficiency, the expected path length between source-target pairs (<xref ref-type="supplementary-material" rid="pcbi.1004347.s001">S1 Text</xref>, <xref ref-type="supplementary-material" rid="pcbi.1004347.s012">S11B and S11C Fig</xref>). Decreasing rates led to networks with near-optimal <italic>p</italic>/<italic>q</italic> ratios, resulting in the best efficiency compared to other rates. Increasing rates yield larger values of <italic>q</italic> (direct source-target edges) because these edges initially represent the shortest routing path for source-target pairs observed during training when the network is very dense. However, these exact pairs are unlikely to be seen again during testing, which leads to over-fitted networks.</p>
+<p>From both simulations and theoretical analysis, we found that the regime where decreasing rates are better than increasing rates lies mostly in sparse networks; i.e. where there are 𝓞(<italic>kn</italic>) edges, where <italic>k</italic> is a small constant. For example, with <italic>n</italic> = 1000 nodes, we find <italic>k</italic> in the range of 2–6 to show the most significant differences between rates. This level of sparsity is in line with many real-world geometric networks [<xref ref-type="bibr" rid="pcbi.1004347.ref052">52</xref>].</p>
+</sec>
+<sec id="sec010">
+<title>Real-world application to improve airline routing using pruning algorithms</title>
+<p>To demonstrate the utility of decreasing-rate pruning on real-world data, we used it to construct airline routing networks using real traffic data denoting the frequency of passenger travel between US cities. Here, nodes are cities and directed edges imply a direct flight from one city to another (<xref ref-type="fig" rid="pcbi.1004347.g007">Fig 7A</xref>). Due to budgetary constraints, only a subset of routes can be offered based on traffic demands from passengers. We collected data from the Department of Transportation detailing how many passengers flew between the top 1000 source and target city pairs in the United States (e.g. San Francisco to Los Angeles) during the 3rd quarter of 2013 [<xref ref-type="bibr" rid="pcbi.1004347.ref053">53</xref>]. These frequencies were converted into a distribution (𝓓) denoting the probability of travel between two cities. For this data, a source can also be a target and vice-versa. There were 122 nodes (cities) in the graph. Training and evaluation was done as before.</p>
+<fig id="pcbi.1004347.g007" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004347.g007</object-id>
+<label>Fig 7</label>
+<caption>
+<title>Improving airline efficiency and robustness using pruning algorithms.</title>
+<p>(A) Actual data of travel frequency amongst 122 popular cities from the 3rd quarter of 2013 was used to define a source-target distribution. (B-C) Efficiency (travel time in terms of number of hops) and robustness (number of alternative routes with the same number of hops) comparison using different algorithms. Decreasing-rate pruning produced more efficient networks with similar robustness.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004347.g007"/>
+</fig>
+<p>Decreasing-rate pruning once again outperformed constant and increasing rates, enhancing efficiency by 5–10% with similar robustness when using the same number of edges (<xref ref-type="fig" rid="pcbi.1004347.g007">Fig 7B and 7C</xref>). In other words, these networks can reduce travel time for passengers—especially when travel to some cities is shut down by emergencies—and can reduce overall load of air traffic control systems. While in practice airline routing networks can be designed in a centralized and offline manner, we used this example to show in principle how our technique could work, using real data.</p>
+</sec>
+</sec>
+<sec id="sec011" sec-type="conclusions">
+<title>Discussion</title>
+<p>Motivated by new experimental data, we showed that decreasing pruning rates lead to more efficient and robust routing networks compared to other pruning rate strategies and growth-based methods, when learning is distributed and online. While pruning is initially resource-intensive, early hyper-connectivity facilitates rapid convergence to the most important subset of connections. Our experimental and theoretical results may appear counter-intuitive since decreasing rates eliminate more connections early and thus cannot utilize information received later, compared to increasing rates. However, similar to many large-scale engineered systems, the brain is built distributedly, with many concurrent processes that do not have access to a single global planner [<xref ref-type="bibr" rid="pcbi.1004347.ref054">54</xref>]. Increasing rates prune aggressively at the end, and such last-minute drastic changes in topology leave the network fragmented. Decreasing rates provide the best of both worlds in this regard. They retain extensively used connections and provide more time for the network to fine-tune pathways by making only relatively minor topological modifications in later pruning intervals. Moreover, decreasing rates require the least overall energy to implement because most edges are pruned early in development. This confers an additional practical advantage to their usage. Our results applied to networks designed using both a shortest-path model and a flow-based model.</p>
+<p>Simultaneously enhancing both efficiency and robustness, a result achieved by decreasing rates, is not a trivial task. A network in which each node is only connected to a single super-hub can be used to route every source-target pair using at most 2 hops; however, if the primary hub fails, the graph will be entirely disconnected, leading to a fragile network. On the other hand, random networks will have many paths between two nodes, but these paths are not efficient for specific source-target distributions. The fact that decreasing rates outperformed the other rates for both measures attests to its overall power. Given the importance of dynamic construction of distributed networks, for example in wireless computing [<xref ref-type="bibr" rid="pcbi.1004347.ref055">55</xref>], decreasing-rate pruning may be a viable alternative to current network design methods. These results may be further improved by optimizing the actual rate of decrease in which we prune edges. Further, a more rigorous analysis of the regimes where decreasing rates outperform other rates, including their affect on network robustness, is left for future work.</p>
+<p>Prior work studying synapse elimination have primarily focused on the molecular mechanisms controlling this process, including the genes, proteins, and signaling pathways involved [<xref ref-type="bibr" rid="pcbi.1004347.ref001">1</xref>, <xref ref-type="bibr" rid="pcbi.1004347.ref002">2</xref>], and the role of microglia [<xref ref-type="bibr" rid="pcbi.1004347.ref004">4</xref>]. Quantitative measurements of synaptic density over development have been made in several species, including human (frontal cortex [<xref ref-type="bibr" rid="pcbi.1004347.ref006">6</xref>], prefrontal cortex [<xref ref-type="bibr" rid="pcbi.1004347.ref056">56</xref>], visual cortex [<xref ref-type="bibr" rid="pcbi.1004347.ref057">57</xref>], striate cortex [<xref ref-type="bibr" rid="pcbi.1004347.ref058">58</xref>]) and mouse (DLGN [<xref ref-type="bibr" rid="pcbi.1004347.ref059">59</xref>, <xref ref-type="bibr" rid="pcbi.1004347.ref060">60</xref>], neuro-muscular junction [<xref ref-type="bibr" rid="pcbi.1004347.ref061">61</xref>], barrel cortex [<xref ref-type="bibr" rid="pcbi.1004347.ref009">9</xref>, <xref ref-type="bibr" rid="pcbi.1004347.ref033">33</xref>]), amongst others [<xref ref-type="bibr" rid="pcbi.1004347.ref007">7</xref>, <xref ref-type="bibr" rid="pcbi.1004347.ref008">8</xref>]. However, unlike our study that focused on determining pruning rates, the primary goal of these studies was to demonstrate that pruning exists in these areas and to identify the time-period over which it occurs. In some of these studies, decreasing pruning rates can be inferred [<xref ref-type="bibr" rid="pcbi.1004347.ref056">56</xref>, <xref ref-type="bibr" rid="pcbi.1004347.ref058">58</xref>], which further strengthens our findings. However, given their focus as mentioned above, no attempt is made in these prior studies to determine the statistical significance of the observed decreasing rate, and these rates were not linked to network-level information processing (routing), which is our primary contribution. Prior computational modeling of synaptic pruning has used Hopfield networks as an optimization model [<xref ref-type="bibr" rid="pcbi.1004347.ref005">5</xref>]; while this work also does not analyze pruning rates, our results may shed light on the robustness of memory recall and storage under such a model. Finally, Goyal et al. [<xref ref-type="bibr" rid="pcbi.1004347.ref062">62</xref>] used expression levels of known synaptic markers to study synapse elimination in human; such expression patterns can potentially also be used to model co-occurring rates of synapse growth and energy consumption (e.g. ATP) during development. There may also be additional pruning parameters important to extract and analyze, such as pruning differences amongst different cell types, the addition of afferents from other brain areas at delayed time-points, and the involvement of glia in synaptic pruning.</p>
+<p>Our experimental analysis of pruning rates in the neocortex shows that rates are decreasing over time. This finding has important biological implications for how networks mature during development or reorganize during learning. Given similar levels of activity over the network construction period, these results suggest that the threshold for activation of signaling pathways that initiate synaptic weakening or loss should increase over time. Previous experimental data provides some support to this view, indicating that nascent connections are particularly vulnerable to synaptic depression [<xref ref-type="bibr" rid="pcbi.1004347.ref063">63</xref>] or elimination [<xref ref-type="bibr" rid="pcbi.1004347.ref064">64</xref>]. Decreasing pruning rates are also consistent with the developmental time-course of myelination, which shows sharp sigmoidal growth soon after pruning begins [<xref ref-type="bibr" rid="pcbi.1004347.ref065">65</xref>, <xref ref-type="bibr" rid="pcbi.1004347.ref066">66</xref>]. By pruning aggressively early, myelin is not unduly wasted on axons that may ultimately be lost. Clinically, many neurological disorders show abnormal pruning levels during critical development periods—either too many synapses (Fragile X syndrome [<xref ref-type="bibr" rid="pcbi.1004347.ref067">67</xref>–<xref ref-type="bibr" rid="pcbi.1004347.ref069">69</xref>]) or too few synapses (Rett syndrome [<xref ref-type="bibr" rid="pcbi.1004347.ref070">70</xref>–<xref ref-type="bibr" rid="pcbi.1004347.ref072">72</xref>])—and these phenotypes may also affect network function. While our experimental analysis allowed us to coarsely quantify pruning rates, further challenges remain in longitudinal analysis of synaptic changes within a single animal and automatic synapse detection from large volumes of tissue. Both advances can enable temporally-finer analyses, which can be used to establish more precise pruning rates. Further, any continuous pruning rate that eventually stabilizes will have a time bin over which the rate decreases; our data showed that this decrease persists over multiple days, though finer analyses may be warranted to uncover more precise elimination rates.</p>
+<p>Our main goal in this paper was to explore whether a pruning process that mimics how neural networks are formed can be used to construct efficient and robust computational communication networks. To this end, our model abstracted away many other information processing goals of neural networks, including synchronization and transformation of input signals. In addition, we do not model many properties of neural circuits, including connection weights, coincident activation of multiple neurons, spike-timing dependent plasticity, and the presence of inhibitory transmission. Our intention in this study was to highlight the potential importance of pruning rates on global circuit function and to show how this unusual strategy can be applied in various computing applications. Further study will be required to experimentally perturb pruning rates <italic>in vivo</italic> to understand how they affect neural function and behavior.</p>
+<p>Our approach of abstracting broad-scale, algorithmic principles from neural networks is likely to provide further insights into the construction of engineered networks and further exemplifies how bi-directional studies can benefit both biology and computer science [<xref ref-type="bibr" rid="pcbi.1004347.ref011">11</xref>, <xref ref-type="bibr" rid="pcbi.1004347.ref073">73</xref>–<xref ref-type="bibr" rid="pcbi.1004347.ref075">75</xref>].</p>
+</sec>
+<sec id="sec012" sec-type="materials|methods">
+<title>Materials and Methods</title>
+<sec id="sec013">
+<title>Ethics statement</title>
+<p>All experiments were carried out in accordance with NIH Guidelines for animal care and use, and were approved by Carnegie Mellon’s institutional animal care and use committee (IACUC protocol AS13-37).</p>
+</sec>
+<sec id="sec014">
+<title>Electron microscopy imaging and image processing</title>
+<p>To experimentally quantify the rate of pruning, we focused on layer 4 of the somatosensory cortex. We extracted, fixed, and sectioned 50<italic>μm</italic>-thick tissue from wildtype C57bl6 (Harlan) mice at different ages. A mitochondrial stain (cytochrome oxidase) was used to visualize the barrelfield, and the D1 barrel was extracted using a dissecting light microscope.</p>
+<p>To enable unbiased and high-throughput classification of synapses, we leveraged a staining technique that uses ethanolic phosphotungstic acid (EPTA) to pronounce electron opacity at synaptic sites by targeting proteins in contact zones [<xref ref-type="bibr" rid="pcbi.1004347.ref038">38</xref>, <xref ref-type="bibr" rid="pcbi.1004347.ref039">39</xref>]. This technique typically leaves non-synaptic structures (e.g. plasma membranes, neurotubules, and vesicles) less stained, though considerable variation can exist across samples due to differences in histological chemistry, microscope lighting, etc. Tissue was prepared for electron microscopy (EM) imaging using the same procedure previously described [<xref ref-type="bibr" rid="pcbi.1004347.ref026">26</xref>]. Both excitatory and inhibitory synapses are stained by this technique [<xref ref-type="bibr" rid="pcbi.1004347.ref026">26</xref>, <xref ref-type="bibr" rid="pcbi.1004347.ref038">38</xref>, <xref ref-type="bibr" rid="pcbi.1004347.ref039">39</xref>].</p>
+<p>We previously developed a machine learning method that uses support vector machines (SVM) to detect synapses in EPTA-EM images using texture- and shape-based features [<xref ref-type="bibr" rid="pcbi.1004347.ref026">26</xref>]. The SVM model was trained on data collected in this paper from all 16 developmental time-points. This compromised 3,708 positive examples (synapses) and 39,163 negative examples (non-synapses) across all ages studied. Overall, the classifier was highly accurate and achieved a precision of 90.4% with a recall of 50.0% under 10-fold cross-validation. To ensure that synapse densities were comparable across samples (animals), especially those with variable staining quality, we manually classified synapses in roughly 20 images per sample, applied the classifier (which was built on training data from all the other samples) to these images, and then selected the classification threshold that resulted in 50% recall with 80+% precision (<xref ref-type="supplementary-material" rid="pcbi.1004347.s001">S1 Text</xref>, <xref ref-type="supplementary-material" rid="pcbi.1004347.s002">S1 Fig</xref>). Recall is defined as: TP / (TP + FN), i.e. the percentage of true synapses correctly predicted by the classifier. Precision is defined as: TP / (TP + FP), i.e. the percentage of predicted synapses that are truly synapses. This means that within each sample, we detected roughly half the synapses, and if the classifier identified a synapse, it was indeed a synapse at least 80% of the time. If precision was &lt; 80% at 50% recall, the sample was removed from the analysis. <xref ref-type="table" rid="pcbi.1004347.t001">Table 1</xref> shows average precision and recall values for samples in each time-point. Although we carefully provided our classifier example synapses with a wide variety of structures, shapes, and sizes, there may still be some bias towards classifying certain types of synapses over others. Full details of the imaging method and synapse classification pipeline, including their novelty compared to analysis of conventional electron microscopy images, was previously discussed [<xref ref-type="bibr" rid="pcbi.1004347.ref026">26</xref>].</p>
+<p>A potential method to improve accuracy is to classify synapses in 3D volumes rather than 2D images. Due to challenges related to imaging, alignment, segmentation, and reconstruction across serial sections, such 3D analysis is currently difficult to fully automate [<xref ref-type="bibr" rid="pcbi.1004347.ref076">76</xref>, <xref ref-type="bibr" rid="pcbi.1004347.ref077">77</xref>], which makes it difficult to reason statistically about fine-scale pruning rates. To help control for variability in synapse density in the tissue itself, four regions were sampled from within the barrel (<xref ref-type="supplementary-material" rid="pcbi.1004347.s003">S2 Fig</xref>) and counts were averaged. While this approach of sampling multiple regions within the same 2D plane may miss synapses, the same procedure was applied to each animal in each time point, and hence the relative number of synapses per unit area can still be fairly compared to infer a temporal pruning rate.</p>
+<p>To perform the statistical analysis of the pruning rates, we binned the data into 12 bins: P14 only, P17 only, P19 only, P21 and P22, P23 and P24, P26 only, P28 only, P30 only, P32 and P33, P34 and P36, P38 only, P40 only. By removing one sample or time-point at a time from the dataset and re-computing the pruning rate using the remaining dataset (known as leave-one-out cross-validation), we statistically determined whether a single sample or time-point was responsible for the observed pruning rate.</p>
+</sec>
+<sec id="sec015">
+<title>A theoretical framework for distributed network design</title>
+<p>We developed a computational model for designing and evaluating distributed routing networks. The problem is as follows:</p>
+<p><bold>Problem:</bold> <italic>Given a set V of n nodes and an online stream of source-target pairs <inline-formula id="pcbi.1004347.e001"><alternatives><graphic id="pcbi.1004347.e001g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004347.e001"/><mml:math id="M1" display="inline" overflow="scroll"><mml:mrow><mml:msubsup><mml:mrow><mml:mo stretchy="false">{</mml:mo> <mml:mo stretchy="false">(</mml:mo> <mml:msub><mml:mi>s</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>,</mml:mo> <mml:msub><mml:mi>t</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo stretchy="false">)</mml:mo> <mml:mo stretchy="false">}</mml:mo></mml:mrow> <mml:mrow><mml:mi>i</mml:mi> <mml:mo>=</mml:mo> <mml:mn>1</mml:mn></mml:mrow> <mml:mi>p</mml:mi></mml:msubsup></mml:mrow></mml:math></alternatives></inline-formula>, where s<sub>i</sub> , t<sub>i</sub> ∈ V are drawn from some distribution 𝓓, return a graph G with at most B edges that is “efficient” and “robust” with respect to 𝓓.</italic></p>
+<p>The source-target pairs are drawn from an <italic>a priori</italic> unknown distribution 𝓓. This distribution captures some structure in activity (input-output signals) that the network needs to learn during the “training” phase in which the network is constructed. For example, half the nodes can be sources and the other half are targets (the 2-patch distribution; <xref ref-type="fig" rid="pcbi.1004347.g003">Fig 3A</xref>), though the identity of which node belongs to which class is not known a-priori. The sources and targets are individual nodes in the network. The source-target pairs are drawn <italic>online</italic>, which means they are provided one at a time to the network and thus cannot be processed in bulk, mimicking real-time information processing constraints in many types of networks. The pairs are drawn randomly and hence the same pair may appear multiple times in the training or testing sets.</p>
+<p>After <italic>p</italic> source-target pairs are seen, the goal is to output an unweighted, directed network <italic>G</italic> with some fixed number of edges (defined as the budget <italic>B</italic>). This budget represents the total allowable cost that the system can maintain (i.e. the number of physical or wireless connections).</p>
+</sec>
+<sec id="sec016">
+<title>Measuring the quality of a network: Efficiency and robustness</title>
+<p>The quality of the final network <italic>G</italic> is evaluated according to its efficiency and robustness when processing an additional <italic>p</italic> pairs drawn from the same distribution 𝓓 (the “testing” phase). During testing, the network is fixed and no changes are made to its connectivity. The test and train pairs may overlap (both are drawn from the same distribution), though they are both likely to also have non-overlapping pairs. This emulates the fact that activity patterns observed during development mimic those expected later but are not exactly the same. Hence, the challenge is to design a network that generalizes the training data and does not over-fit.</p>
+<p>Efficiency is defined as the average shortest-path routing distance over all test pairs [<xref ref-type="bibr" rid="pcbi.1004347.ref078">78</xref>]: <inline-formula id="pcbi.1004347.e002"><alternatives><graphic id="pcbi.1004347.e002g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004347.e002"/><mml:math id="M2" display="inline" overflow="scroll"><mml:mrow><mml:mtext mathvariant="normal">efficiency</mml:mtext> <mml:mo stretchy="false">(</mml:mo> <mml:mi>G</mml:mi> <mml:mo stretchy="false">)</mml:mo> <mml:mo>=</mml:mo> <mml:mfrac><mml:mn>1</mml:mn> <mml:mi>p</mml:mi></mml:mfrac> <mml:msub><mml:mo>∑</mml:mo> <mml:mrow><mml:mi>u</mml:mi> <mml:mo>,</mml:mo> <mml:mi>v</mml:mi> <mml:mo>∈</mml:mo> <mml:mo>𝓓</mml:mo></mml:mrow></mml:msub> <mml:mi>d</mml:mi> <mml:mo stretchy="false">(</mml:mo> <mml:mi>u</mml:mi> <mml:mo>,</mml:mo> <mml:mi>v</mml:mi> <mml:mo stretchy="false">)</mml:mo> <mml:mo>,</mml:mo></mml:mrow></mml:math></alternatives></inline-formula> where <italic>p</italic> is the number of source-target pairs observed in the test phase, and <italic>d</italic>(<italic>u</italic>, <italic>v</italic>) is the shortest-path distance between source <italic>u</italic> and target <italic>v</italic> in the final network. If there does not exist a path between a pair, then we set its penalty distance to a large constant.</p>
+<p>Robustness is a measure of how tolerant the network is to the deletion of nodes. We adopt a standard measure for robustness based on vertex connectivity [<xref ref-type="bibr" rid="pcbi.1004347.ref079">79</xref>]: for each source-target pair, we compute the number of alternative paths that have up to one additional hop compared to the true shortest path. This is computed implicitly by removing nodes along the shortest path, and then finding the length of the next shortest path, etc. This definition of robustness ensures that if a primary route is attacked or damaged, an alternative route not only exists but is one that is not much worse than the shortest path.</p>
+<p>These definitions are broad, well-established from a graph-theoretic perspective, and applicable to many computing scenarios, but they are not meant to capture all the requirements of information processing in the brain.</p>
+</sec>
+<sec id="sec017">
+<title>Pruning-based algorithms for distributed network design</title>
+<p>To test the impact of pruning and pruning rates we use the following algorithm which is particularly suitable for routing applications. The algorithm begins with a fully connected graph (a clique) on <italic>n</italic> nodes. For each source-target pair, the source routes its message to the target via the shortest path in the graph (computed using a distributed routing table [<xref ref-type="bibr" rid="pcbi.1004347.ref080">80</xref>, <xref ref-type="bibr" rid="pcbi.1004347.ref081">81</xref>]). Initially, all shortest paths will be direct source-to-target paths. Each edge keeps track of the number of times it has been used to satisfy a request(i.e. if an edge <italic>u</italic> → <italic>v</italic> lies on the shortest path from source <italic>s</italic><sub><italic>i</italic></sub> to target <italic>t</italic><sub><italic>i</italic></sub>, then edge <italic>u</italic> → <italic>v</italic> updates its usage value by 1). All edges initially have a usage of 0.</p>
+<p>The above method is appropriate for simulating computational networks. In contrast, neurons likely cannot route signals via shortest paths in networks. We thus tested another simulation model which is more biologically plausible, yet still abstract. Rather than routing, this simulation uses a flow-based model that performs a breadth-first search from the source node (counting all paths between the pairs). Such search does not require any global shortest path computation. In this model, the usage of edges along every successful path that reaches the target is upweighted by 1. This model assumes there is feedback to the circuit that “rewards” every edge active along a source-to-target response [<xref ref-type="bibr" rid="pcbi.1004347.ref082">82</xref>]. To further mimic synapse failure (signal loss) widely present in neural circuits [<xref ref-type="bibr" rid="pcbi.1004347.ref083">83</xref>], we assumed a constant signal loss probability of 0.65. This means that with probability 0.65, an edge will fail and will not propagate the signal onwards. Similar values of the signal loss probability led to similar results. This flow process repeats for each source and target during training. Edges are pruned iteratively according to different pruning rates (see below).</p>
+<p>For the simulations, the pruning period is divided into 10 discrete intervals, each occurring after 10% of the source-target pairs have been processed. After each interval <italic>i</italic>, some <italic>r</italic><sub><italic>i</italic></sub>-percentage of edges are removed (where <italic>r</italic><sub><italic>i</italic></sub> depends on the pruning rate, see below). In each interval the pruned edges are those with the lowest-usage (ties are broken randomly).</p>
+</sec>
+<sec id="sec018">
+<title>Pruning rate strategies</title>
+<p>We divided the pruning period into 10 discrete intervals, and after each interval, some <italic>r</italic><sub><italic>i</italic></sub> percentage of existing connections were pruned. We considered four pruning rate strategies: increasing, decreasing, constant, and ending (<xref ref-type="supplementary-material" rid="pcbi.1004347.s004">S3 Fig</xref>).
+<list list-type="order">
+<list-item><p><bold>Constant rate:</bold> <italic>r</italic><sub>1</sub> = <italic>r</italic><sub>2</sub> = … = <italic>r</italic><sub>10</sub>. Elimination rates are kept constant (i.e. the same percentage of existing connections are removed in each interval).</p></list-item>
+<list-item><p><bold>Increasing rate:</bold> <italic>r</italic><sub>1</sub> &lt; <italic>r</italic><sub>2</sub> &lt; … &lt; <italic>r</italic><sub>10</sub>. Elimination begins very slowly and becomes aggressive later.</p></list-item>
+<list-item><p><bold>Decreasing rate:</bold> <italic>r</italic><sub>1</sub> &gt; <italic>r</italic><sub>2</sub> &gt; … &gt; <italic>r</italic><sub>10</sub>. Elimination begins aggressively and then decelerates over time.</p></list-item>
+<list-item><p><bold>Ending rate:</bold> <italic>r</italic><sub>1</sub> = <italic>r</italic><sub>2</sub> = … = <italic>r</italic><sub>9</sub> = 0 and <inline-formula id="pcbi.1004347.e003"><alternatives><graphic id="pcbi.1004347.e003g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004347.e003"/><mml:math id="M3" display="inline" overflow="scroll"><mml:mrow><mml:msub><mml:mi>r</mml:mi> <mml:mn>10</mml:mn></mml:msub> <mml:mo>=</mml:mo> <mml:mfrac><mml:mi>B</mml:mi> <mml:mrow><mml:mi>n</mml:mi> <mml:mo stretchy="false">(</mml:mo> <mml:mi>n</mml:mi> <mml:mo>−</mml:mo> <mml:mn>1</mml:mn> <mml:mo stretchy="false">)</mml:mo></mml:mrow></mml:mfrac></mml:mrow></mml:math></alternatives></inline-formula>. Elimination only occurs in the final interval and immediately reduces the network from a clique to exactly <italic>B</italic> edges.</p></list-item>
+</list>
+See <xref ref-type="supplementary-material" rid="pcbi.1004347.s001">S1 Text</xref> for complete details on how these rates are applied. The Ending rate produced highly overfit networks with only direct edges connecting a subset of source-target pairs seen during training. This yielded the worst efficiency and robustness over all rates.</p>
+</sec>
+<sec id="sec019">
+<title>Additional network design algorithms: growing and no-learning</title>
+<p>We also tested a growth-based algorithm for solving the network design problem that adds connections over time starting from a backbone spanning tree (which are commonly used in engineered systems [<xref ref-type="bibr" rid="pcbi.1004347.ref017">17</xref>]). See <xref ref-type="supplementary-material" rid="pcbi.1004347.s001">S1 Text</xref> for details.</p>
+<p>The <italic>no-learning</italic> algorithm simply selects <italic>B</italic> random directed edges to form the final network and ignores the training data.</p>
+</sec>
+</sec>
+<sec id="sec020">
+<title>Supporting Information</title>
+<supplementary-material id="pcbi.1004347.s001" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004347.s001" mimetype="application/pdf" xlink:type="simple">
+<label>S1 Text</label>
+<caption>
+<title>Supplementary methods and results.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004347.s002" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004347.s002" mimetype="image/tiff" xlink:type="simple">
+<label>S1 Fig</label>
+<caption>
+<title>Controlling for image quality in EPTA-EM images.</title>
+<p>A) First, positive (synapses) and negative (non-synapses) examples were manually labeled in 20 images in the new sample <italic>s</italic>. B) Second, the classifier (trained on images from all other samples, excluding <italic>s</italic>) was applied to the labeled data for <italic>s</italic> and the threshold <italic>τ</italic> that yielded a recall of 50% with precision &gt; 80% was selected. C) Third, the classifier was applied to all images in <italic>s</italic> using <italic>τ</italic> as the classifier threshold.</p>
+<p>(TIFF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004347.s003" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004347.s003" mimetype="image/tiff" xlink:type="simple">
+<label>S2 Fig</label>
+<caption>
+<title>Electron microscopy imaging within a barrel.</title>
+<p>To control for variability in synapse density in different areas in the barrel, 4 regions of the barrel were imaged. Tissue was placed on a mesh copper grid. White circles depict electron beam residue after images were taken. Approximately 240 images per animal (60 images x 4 regions) were taken covering a total of 6,000<italic>μm</italic><sup>2</sup> of tissue per animal.</p>
+<p>(TIFF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004347.s004" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004347.s004" mimetype="image/tiff" xlink:type="simple">
+<label>S3 Fig</label>
+<caption>
+<title>Four pruning rate strategies.</title>
+<p>Constant rates (red) prune an equal percentage of existing connections in each pruning interval. Decreasing rates (blue) prune aggressively early-on and then slower later. Increasing rates (black) are the opposite of decreasing rates. Ending rates only prune edges in the final iteration. A) Number of edges remaining after each pruning interval. B) Percentage of edges pruned in each pruning interval. Here, <italic>n</italic> = 1000.</p>
+<p>(TIFF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004347.s005" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004347.s005" mimetype="image/tiff" xlink:type="simple">
+<label>S4 Fig</label>
+<caption>
+<title>Synapse density in adult mice (P65).</title>
+<p>(TIFF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004347.s006" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004347.s006" mimetype="image/tiff" xlink:type="simple">
+<label>S5 Fig</label>
+<caption>
+<title>Pruning rate with 3D-count adjustment.</title>
+<p>Adjusted pruning rate per volume of tissue plotted using A) the raw data (where each point corresponds to a single animal) and B) the binned data (where each point averages over animals from a 2-day window).</p>
+<p>(TIFF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004347.s007" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004347.s007" mimetype="image/tiff" xlink:type="simple">
+<label>S6 Fig</label>
+<caption>
+<title>Pruning with multiple periods of synaptogenesis and pruning.</title>
+<p>(TIFF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004347.s008" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004347.s008" mimetype="image/tiff" xlink:type="simple">
+<label>S7 Fig</label>
+<caption>
+<title>Comparing pruning and growing for denser networks.</title>
+<p>(TIFF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004347.s009" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004347.s009" mimetype="image/tiff" xlink:type="simple">
+<label>S8 Fig</label>
+<caption>
+<title>Comparing the efficiency and robustness of two growing algorithm variants.</title>
+<p>(TIFF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004347.s010" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004347.s010" mimetype="image/tiff" xlink:type="simple">
+<label>S9 Fig</label>
+<caption>
+<title>Comparing efficiency and robustness of pruning algorithms that start with variable initial connectivity.</title>
+<p>A) Initial density is 60% (i.e. each edge exists independently with probability 0.6. B) Initial density is 80%.</p>
+<p>(TIFF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004347.s011" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004347.s011" mimetype="image/tiff" xlink:type="simple">
+<label>S10 Fig</label>
+<caption>
+<title>Cumulative energy consumed by each pruning algorithm.</title>
+<p>Energy consumption at interval <italic>i</italic> is the cumulative number of edges present in the network in interval <italic>i</italic> and all prior intervals. Here, <italic>n</italic> = 1000 and it is assumed that the network initially starts as a clique.</p>
+<p>(TIFF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004347.s012" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004347.s012" mimetype="image/tiff" xlink:type="simple">
+<label>S11 Fig</label>
+<caption>
+<title>Theoretical results for network optimization.</title>
+<p>(A) Example edge-distribution using decreasing pruning rates and the 2-patch distribution. (B) Prediction of final network <italic>p</italic>/<italic>q</italic> ratio given a pruning rate. Bold bars indicate simulated ratios, and hashed bars indicate analytical predictions. (C) Prediction of source-target efficiency given a <italic>p</italic>/<italic>q</italic> ratio.</p>
+<p>(TIFF)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ack>
+<p>We thank Joanne Steinmiller for animal care.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1004347.ref001">
+<label>1</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Stoneham</surname> <given-names>ET</given-names></name>, <name name-style="western"><surname>Sanders</surname> <given-names>EM</given-names></name>, <name name-style="western"><surname>Sanyal</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Dumas</surname> <given-names>TC</given-names></name> (<year>2010</year>) <article-title>Rules of engagement: factors that regulate activity-dependent synaptic plasticity during neural network development</article-title>. <source>Biol Bull</source> <volume>219</volume>: <fpage>81</fpage>–<lpage>99</lpage>. <object-id pub-id-type="pmid">20972254</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref002">
+<label>2</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Tessier</surname> <given-names>CR</given-names></name>, <name name-style="western"><surname>Broadie</surname> <given-names>K</given-names></name> (<year>2009</year>) <article-title>Activity-dependent modulation of neural circuit synaptic connectivity</article-title>. <source>Front Mol Neurosci</source> <volume>2</volume>: <fpage>8</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.3389/neuro.02.008.2009" xlink:type="simple">10.3389/neuro.02.008.2009</ext-link></comment> <object-id pub-id-type="pmid">19668708</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref003">
+<label>3</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Lichtman</surname> <given-names>JW</given-names></name>, <name name-style="western"><surname>Colman</surname> <given-names>H</given-names></name> (<year>2000</year>) <article-title>Synapse elimination and indelible memory</article-title>. <source>Neuron</source> <volume>25</volume>: <fpage>269</fpage>–<lpage>278</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/S0896-6273(00)80893-4" xlink:type="simple">10.1016/S0896-6273(00)80893-4</ext-link></comment> <object-id pub-id-type="pmid">10719884</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref004">
+<label>4</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Paolicelli</surname> <given-names>RC</given-names></name>, <name name-style="western"><surname>Bolasco</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Pagani</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Maggi</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Scianni</surname> <given-names>M</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>Synaptic pruning by microglia is necessary for normal brain development</article-title>. <source>Science</source> <volume>333</volume>: <fpage>1456</fpage>–<lpage>1458</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/science.1202529" xlink:type="simple">10.1126/science.1202529</ext-link></comment> <object-id pub-id-type="pmid">21778362</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref005">
+<label>5</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Chechik</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Meilijson</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Ruppin</surname> <given-names>E</given-names></name> (<year>1998</year>) <article-title>Synaptic pruning in development: a computational account</article-title>. <source>Neural Comput</source> <volume>10</volume>: <fpage>1759</fpage>–<lpage>1777</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1162/089976698300017124" xlink:type="simple">10.1162/089976698300017124</ext-link></comment> <object-id pub-id-type="pmid">9744896</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref006">
+<label>6</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Huttenlocher</surname> <given-names>PR</given-names></name> (<year>1979</year>) <article-title>Synaptic density in human frontal cortex—developmental changes and effects of aging</article-title>. <source>Brain Res</source> <volume>163</volume>: <fpage>195</fpage>–<lpage>205</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/0006-8993(79)90349-4" xlink:type="simple">10.1016/0006-8993(79)90349-4</ext-link></comment> <object-id pub-id-type="pmid">427544</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref007">
+<label>7</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Markus</surname> <given-names>EJ</given-names></name>, <name name-style="western"><surname>Petit</surname> <given-names>TL</given-names></name> (<year>1987</year>) <article-title>Neocortical synaptogenesis, aging, and behavior: lifespan development in the motor-sensory system of the rat</article-title>. <source>Exp Neurol</source> <volume>96</volume>: <fpage>262</fpage>–<lpage>278</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/0014-4886(87)90045-8" xlink:type="simple">10.1016/0014-4886(87)90045-8</ext-link></comment> <object-id pub-id-type="pmid">3569455</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref008">
+<label>8</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Bourgeois</surname> <given-names>JP</given-names></name>, <name name-style="western"><surname>Rakic</surname> <given-names>P</given-names></name> (<year>1993</year>) <article-title>Changes of synaptic density in the primary visual cortex of the macaque monkey from fetal to adult stage</article-title>. <source>J Neurosci</source> <volume>13</volume>: <fpage>2801</fpage>–<lpage>2820</lpage>. <object-id pub-id-type="pmid">8331373</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref009">
+<label>9</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>White</surname> <given-names>EL</given-names></name>, <name name-style="western"><surname>Weinfeld</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Lev</surname> <given-names>DL</given-names></name> (<year>1997</year>) <article-title>A survey of morphogenesis during the early postnatal period in PMBSF barrels of mouse SmI cortex with emphasis on barrel D4</article-title>. <source>Somatosens Mot Res</source> <volume>14</volume>: <fpage>34</fpage>–<lpage>55</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1080/08990229771204" xlink:type="simple">10.1080/08990229771204</ext-link></comment> <object-id pub-id-type="pmid">9241727</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref010">
+<label>10</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Cowan</surname> <given-names>WM</given-names></name>, <name name-style="western"><surname>Fawcett</surname> <given-names>JW</given-names></name>, <name name-style="western"><surname>O’Leary</surname> <given-names>DD</given-names></name>, <name name-style="western"><surname>Stanfield</surname> <given-names>BB</given-names></name> (<year>1984</year>) <article-title>Regressive events in neurogenesis</article-title>. <source>Science</source> <volume>225</volume>: <fpage>1258</fpage>–<lpage>1265</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/science.6474175" xlink:type="simple">10.1126/science.6474175</ext-link></comment> <object-id pub-id-type="pmid">6474175</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref011">
+<label>11</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Navlakha</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Kingsford</surname> <given-names>C</given-names></name> (<year>2011</year>) <article-title>Network archaeology: uncovering ancient networks from present-day interactions</article-title>. <source>PLoS Comput Biol</source> <volume>7</volume>: <fpage>e1001119</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.1001119" xlink:type="simple">10.1371/journal.pcbi.1001119</ext-link></comment> <object-id pub-id-type="pmid">21533211</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref012">
+<label>12</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Gautrais</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Thorpe</surname> <given-names>S</given-names></name> (<year>1998</year>) <article-title>Rate coding versus temporal order coding: a theoretical approach</article-title>. <source>Biosystems</source> <volume>48</volume>: <fpage>57</fpage>–<lpage>65</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/S0303-2647(98)00050-1" xlink:type="simple">10.1016/S0303-2647(98)00050-1</ext-link></comment> <object-id pub-id-type="pmid">9886632</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref013">
+<label>13</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Alstott</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Breakspear</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Hagmann</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Cammoun</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Sporns</surname> <given-names>O</given-names></name> (<year>2009</year>) <article-title>Modeling the impact of lesions in the human brain</article-title>. <source>PLoS Comput Biol</source> <volume>5</volume>: <fpage>e1000408</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.1000408" xlink:type="simple">10.1371/journal.pcbi.1000408</ext-link></comment> <object-id pub-id-type="pmid">19521503</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref014">
+<label>14</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Feldmeyer</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Radnikow</surname> <given-names>G</given-names></name> (<year>2009</year>) <article-title>Developmental alterations in the functional properties of excitatory neocortical synapses</article-title>. <source>J Physiol (Lond)</source> <volume>587</volume>: <fpage>1889</fpage>–<lpage>1896</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1113/jphysiol.2009.169458" xlink:type="simple">10.1113/jphysiol.2009.169458</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref015">
+<label>15</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Albert</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Jeong</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Barabasi</surname> <given-names>AL</given-names></name> (<year>2000</year>) <article-title>Error and attack tolerance of complex networks</article-title>. <source>Nature</source> <volume>406</volume>: <fpage>378</fpage>–<lpage>382</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/35019019" xlink:type="simple">10.1038/35019019</ext-link></comment> <object-id pub-id-type="pmid">10935628</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref016">
+<label>16</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>LeVay</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Wiesel</surname> <given-names>TN</given-names></name>, <name name-style="western"><surname>Hubel</surname> <given-names>DH</given-names></name> (<year>1980</year>) <article-title>The development of ocular dominance columns in normal and visually deprived monkeys</article-title>. <source>J Comp Neurol</source> <volume>191</volume>: “<fpage>1</fpage>–<lpage>51</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1002/cne.901910102" xlink:type="simple">10.1002/cne.901910102</ext-link></comment> <object-id pub-id-type="pmid">6772696</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref017">
+<label>17</label>
+<mixed-citation xlink:type="simple" publication-type="book">
+<name name-style="western"><surname>Lynch</surname> <given-names>NA</given-names></name> (<year>1996</year>) <source>Distributed Algorithms</source>. <publisher-loc>San Francisco, CA, USA</publisher-loc>: <publisher-name>Morgan Kaufmann Publishers Inc</publisher-name>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref018">
+<label>18</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Yuste</surname> <given-names>R</given-names></name> (<year>2011</year>) <article-title>Dendritic spines and distributed circuits</article-title>. <source>Neuron</source> <volume>71</volume>: <fpage>772</fpage>–<lpage>781</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.neuron.2011.07.024" xlink:type="simple">10.1016/j.neuron.2011.07.024</ext-link></comment> <object-id pub-id-type="pmid">21903072</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref019">
+<label>19</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Laughlin</surname> <given-names>SB</given-names></name> (<year>2001</year>) <article-title>Energy as a constraint on the coding and processing of sensory information</article-title>. <source>Curr Opin Neurobiol</source> <volume>11</volume>: <fpage>475</fpage>–<lpage>480</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/S0959-4388(00)00237-3" xlink:type="simple">10.1016/S0959-4388(00)00237-3</ext-link></comment> <object-id pub-id-type="pmid">11502395</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref020">
+<label>20</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Laughlin</surname> <given-names>SB</given-names></name>, <name name-style="western"><surname>Sejnowski</surname> <given-names>TJ</given-names></name> (<year>2003</year>) <article-title>Communication in neuronal networks</article-title>. <source>Science</source> <volume>301</volume>: <fpage>1870</fpage>–<lpage>1874</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/science.1089662" xlink:type="simple">10.1126/science.1089662</ext-link></comment> <object-id pub-id-type="pmid">14512617</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref021">
+<label>21</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Hasenstaub</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Otte</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Callaway</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Sejnowski</surname> <given-names>TJ</given-names></name> (<year>2010</year>) <article-title>Metabolic cost as a unifying principle governing neuronal biophysics</article-title>. <source>Proc Natl Acad Sci USA</source> <volume>107</volume>: <fpage>12329</fpage>–<lpage>12334</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.0914886107" xlink:type="simple">10.1073/pnas.0914886107</ext-link></comment> <object-id pub-id-type="pmid">20616090</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref022">
+<label>22</label>
+<mixed-citation xlink:type="simple" publication-type="book">
+<name name-style="western"><surname>Moore</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Shannon</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Brown</surname> <given-names>J</given-names></name> (<year>2002</year>) <chapter-title>Code-Red: a case study on the spread and victims of an Internet worm</chapter-title>. In: <source>SIGCOMM/USENIX Internet Measurement Workshop</source>. <publisher-loc>Marseille, France</publisher-loc>, pp. <fpage>273</fpage>–<lpage>284</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref023">
+<label>23</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Albert</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Albert</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Nakarado</surname> <given-names>GL</given-names></name> (<year>2004</year>) <article-title>Structural vulnerability of the North American power grid</article-title>. <source>Phys Rev E Stat Nonlin Soft Matter Phys</source> <volume>69</volume>: <fpage>025103</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1103/PhysRevE.69.025103" xlink:type="simple">10.1103/PhysRevE.69.025103</ext-link></comment> <object-id pub-id-type="pmid">14995510</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref024">
+<label>24</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Carle</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Simplot-Ryl</surname> <given-names>D</given-names></name> (<year>2004</year>) <article-title>Energy-efficient area monitoring for sensor networks</article-title>. <source>Computer</source> <volume>37</volume>: <fpage>40</fpage>–<lpage>46</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1109/MC.2004.1266294" xlink:type="simple">10.1109/MC.2004.1266294</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref025">
+<label>25</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Feldmeyer</surname> <given-names>D</given-names></name> (<year>2012</year>) <article-title>Excitatory neuronal connectivity in the barrel cortex</article-title>. <source>Front Neuroanat</source> <volume>6</volume>: <fpage>24</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.3389/fnana.2012.00024" xlink:type="simple">10.3389/fnana.2012.00024</ext-link></comment> <object-id pub-id-type="pmid">22798946</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref026">
+<label>26</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Navlakha</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Suhan</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Barth</surname> <given-names>AL</given-names></name>, <name name-style="western"><surname>Bar-Joseph</surname> <given-names>Z</given-names></name> (<year>2013</year>) <article-title>A high-throughput framework to detect synapses in electron microscopy images</article-title>. <source>Bioinformatics</source> <volume>29</volume>: <fpage>9</fpage>–<lpage>17</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/bioinformatics/btt222" xlink:type="simple">10.1093/bioinformatics/btt222</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref027">
+<label>27</label>
+<mixed-citation xlink:type="simple" publication-type="book">
+<name name-style="western"><surname>Dayan</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Abbott</surname> <given-names>LF</given-names></name> (<year>2005</year>) <source>Theoretical Neuroscience: Computational and Mathematical Modeling of Neural Systems</source>. <publisher-name>The MIT Press</publisher-name>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref028">
+<label>28</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Dean</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Corrado</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Monga</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Chen</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Devin</surname> <given-names>M</given-names></name>, <etal>et al</etal>. (<year>2012</year>) <article-title>Large scale distributed deep networks</article-title>. In: <source>Advances in Neural Information Processing Systems</source> <volume>25</volume>. pp. <fpage>1232</fpage>–<lpage>1240</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref029">
+<label>29</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Barabási</surname> <given-names>AL</given-names></name>, <name name-style="western"><surname>Albert</surname> <given-names>R</given-names></name> (<year>1999</year>) <article-title>Emergence of scaling in random networks</article-title>. <source>Science</source> <volume>286</volume>: <fpage>509</fpage>–<lpage>512</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/science.286.5439.509" xlink:type="simple">10.1126/science.286.5439.509</ext-link></comment> <object-id pub-id-type="pmid">10521342</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref030">
+<label>30</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Watts</surname> <given-names>DJ</given-names></name>, <name name-style="western"><surname>Strogatz</surname> <given-names>SH</given-names></name> (<year>1998</year>) <article-title>Collective dynamics of ‘small-world’ networks</article-title>. <source>Nature</source> <volume>393</volume>: <fpage>440</fpage>–<lpage>442</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/30918" xlink:type="simple">10.1038/30918</ext-link></comment> <object-id pub-id-type="pmid">9623998</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref031">
+<label>31</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Vazquez</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Flammini</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Maritan</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Vespignani</surname> <given-names>A</given-names></name> (<year>2003</year>) <article-title>Modeling of protein interaction networks</article-title>. <source>Complexus</source> <volume>1</volume>: <fpage>38</fpage>–<lpage>44</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1159/000067642" xlink:type="simple">10.1159/000067642</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref032">
+<label>32</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Navlakha</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Bar-Joseph</surname> <given-names>Z</given-names></name> (<year>2011</year>) <article-title>Algorithms in nature: the convergence of systems biology and computational thinking</article-title>. <source>Nature Mol Syst Biol</source> <volume>7</volume>: <fpage>546</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/msb.2011.78" xlink:type="simple">10.1038/msb.2011.78</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref033">
+<label>33</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>De Felipe</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Marco</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Fairen</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Jones</surname> <given-names>EG</given-names></name> (<year>1997</year>) <article-title>Inhibitory synaptogenesis in mouse somatosensory cortex</article-title>. <source>Cereb Cortex</source> <volume>7</volume>: <fpage>619</fpage>–<lpage>634</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/cercor/7.7.619" xlink:type="simple">10.1093/cercor/7.7.619</ext-link></comment> <object-id pub-id-type="pmid">9373018</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref034">
+<label>34</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Crair</surname> <given-names>MC</given-names></name>, <name name-style="western"><surname>Malenka</surname> <given-names>RC</given-names></name> (<year>1995</year>) <article-title>A critical period for long-term potentiation at thalamocortical synapses</article-title>. <source>Nature</source> <volume>375</volume>: <fpage>325</fpage>–<lpage>328</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/375325a0" xlink:type="simple">10.1038/375325a0</ext-link></comment> <object-id pub-id-type="pmid">7753197</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref035">
+<label>35</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Feldman</surname> <given-names>DE</given-names></name>, <name name-style="western"><surname>Nicoll</surname> <given-names>RA</given-names></name>, <name name-style="western"><surname>Malenka</surname> <given-names>RC</given-names></name> (<year>1999</year>) <article-title>Synaptic plasticity at thalamocortical synapses in developing rat somatosensory cortex: LTP, LTD, and silent synapses</article-title>. <source>J Neurobiol</source> <volume>41</volume>: <fpage>92</fpage>–<lpage>101</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1002/(SICI)1097-4695(199910)41:1%3C92::AID-NEU12%3E3.0.CO;2-U" xlink:type="simple">10.1002/(SICI)1097-4695(199910)41:1%3C92::AID-NEU12%3E3.0.CO;2-U</ext-link></comment> <object-id pub-id-type="pmid">10504196</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref036">
+<label>36</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Ashby</surname> <given-names>MC</given-names></name>, <name name-style="western"><surname>Isaac</surname> <given-names>JT</given-names></name> (<year>2011</year>) <article-title>Maturation of a recurrent excitatory neocortical circuit by experience-dependent unsilencing of newly formed dendritic spines</article-title>. <source>Neuron</source> <volume>70</volume>: <fpage>510</fpage>–<lpage>521</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.neuron.2011.02.057" xlink:type="simple">10.1016/j.neuron.2011.02.057</ext-link></comment> <object-id pub-id-type="pmid">21555076</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref037">
+<label>37</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Lefort</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Tomm</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Floyd Sarria</surname> <given-names>JC</given-names></name>, <name name-style="western"><surname>Petersen</surname> <given-names>CC</given-names></name> (<year>2009</year>) <article-title>The excitatory neuronal network of the c2 barrel column in mouse primary somatosensory cortex</article-title>. <source>Neuron</source> <volume>61</volume>: <fpage>301</fpage>–<lpage>316</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.neuron.2008.12.020" xlink:type="simple">10.1016/j.neuron.2008.12.020</ext-link></comment> <object-id pub-id-type="pmid">19186171</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref038">
+<label>38</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Bloom</surname> <given-names>FE</given-names></name>, <name name-style="western"><surname>Aghajanian</surname> <given-names>GK</given-names></name> (<year>1966</year>) <article-title>Cytochemistry of synapses: selective staining for electron microscopy</article-title>. <source>Science</source> <volume>154</volume>: <fpage>1575</fpage>–<lpage>1577</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/science.154.3756.1575" xlink:type="simple">10.1126/science.154.3756.1575</ext-link></comment> <object-id pub-id-type="pmid">5924927</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref039">
+<label>39</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Bloom</surname> <given-names>FE</given-names></name>, <name name-style="western"><surname>Aghajanian</surname> <given-names>GK</given-names></name> (<year>1968</year>) <article-title>Fine structural and cytochemical analysis of the staining of synaptic junctions with phosphotungstic acid</article-title>. <source>J Ultrastruct Res</source> <volume>22</volume>: <fpage>361</fpage>–<lpage>375</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/S0022-5320(68)90027-0" xlink:type="simple">10.1016/S0022-5320(68)90027-0</ext-link></comment> <object-id pub-id-type="pmid">4173151</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref040">
+<label>40</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Seabrook</surname> <given-names>TA</given-names></name>, <name name-style="western"><surname>El-Danaf</surname> <given-names>RN</given-names></name>, <name name-style="western"><surname>Krahe</surname> <given-names>TE</given-names></name>, <name name-style="western"><surname>Fox</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Guido</surname> <given-names>W</given-names></name> (<year>2013</year>) <article-title>Retinal input regulates the timing of corticogeniculate innervation</article-title>. <source>J Neurosci</source> <volume>33</volume>: <fpage>10085</fpage>–<lpage>10097</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1523/JNEUROSCI.5271-12.2013" xlink:type="simple">10.1523/JNEUROSCI.5271-12.2013</ext-link></comment> <object-id pub-id-type="pmid">23761904</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref041">
+<label>41</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Annexstein</surname> <given-names>FS</given-names></name>, <name name-style="western"><surname>Berman</surname> <given-names>KA</given-names></name>, <name name-style="western"><surname>Jovanović</surname> <given-names>MA</given-names></name> (<year>2006</year>) <article-title>Broadcasting in unstructured peer-to-peer overlay networks</article-title>. <source>Theoretical computer science</source> <volume>355</volume>: <fpage>25</fpage>–<lpage>36</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.tcs.2005.12.013" xlink:type="simple">10.1016/j.tcs.2005.12.013</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref042">
+<label>42</label>
+<mixed-citation xlink:type="simple" publication-type="book">
+<name name-style="western"><surname>Hebb</surname> <given-names>DO</given-names></name> (<year>1949</year>) <source>The Organization of Behavior: A Neuropsychological Theory</source>. <publisher-loc>New York</publisher-loc>: <publisher-name>Wiley</publisher-name>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref043">
+<label>43</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Turney</surname> <given-names>SG</given-names></name>, <name name-style="western"><surname>Lichtman</surname> <given-names>JW</given-names></name> (<year>2012</year>) <article-title>Reversing the outcome of synapse elimination at developing neuromuscular junctions in vivo: evidence for synaptic competition and its mechanism</article-title>. <source>PLoS Biol</source> <volume>10</volume>: <fpage>e1001352</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pbio.1001352" xlink:type="simple">10.1371/journal.pbio.1001352</ext-link></comment> <object-id pub-id-type="pmid">22745601</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref044">
+<label>44</label>
+<mixed-citation xlink:type="simple" publication-type="other">Leskovec J, Backstrom L, Kumar R, Tomkins A (2008) Microscopic evolution of social networks. In: Proc. 14th ACM SIGKDD Intl. Conf. on Knowledge Discovery and Data Mining (KDD). New York, NY, USA: ACM, KDD’08, pp. 462–470.</mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref045">
+<label>45</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Yassin</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Benedetti</surname> <given-names>BL</given-names></name>, <name name-style="western"><surname>Jouhanneau</surname> <given-names>JS</given-names></name>, <name name-style="western"><surname>Wen</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Poulet</surname> <given-names>JF</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>An embedded subnetwork of highly active neurons in the neocortex</article-title>. <source>Neuron</source> <volume>68</volume>: <fpage>1043</fpage>–<lpage>1050</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.neuron.2010.11.029" xlink:type="simple">10.1016/j.neuron.2010.11.029</ext-link></comment> <object-id pub-id-type="pmid">21172607</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref046">
+<label>46</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Ko</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Hofer</surname> <given-names>SB</given-names></name>, <name name-style="western"><surname>Pichler</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Buchanan</surname> <given-names>KA</given-names></name>, <name name-style="western"><surname>Sjostrom</surname> <given-names>PJ</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>Functional specificity of local synaptic connections in neocortical networks</article-title>. <source>Nature</source> <volume>473</volume>: <fpage>87</fpage>–<lpage>91</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nature09880" xlink:type="simple">10.1038/nature09880</ext-link></comment> <object-id pub-id-type="pmid">21478872</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref047">
+<label>47</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Meyer</surname> <given-names>HS</given-names></name>, <name name-style="western"><surname>Wimmer</surname> <given-names>VC</given-names></name>, <name name-style="western"><surname>Oberlaender</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>de Kock</surname> <given-names>CP</given-names></name>, <name name-style="western"><surname>Sakmann</surname> <given-names>B</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>Number and laminar distribution of neurons in a thalamocortical projection column of rat vibrissal cortex</article-title>. <source>Cereb Cortex</source> <volume>20</volume>: <fpage>2277</fpage>–<lpage>2286</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/cercor/bhq067" xlink:type="simple">10.1093/cercor/bhq067</ext-link></comment> <object-id pub-id-type="pmid">20534784</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref048">
+<label>48</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Milo</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Shen-Orr</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Itzkovitz</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Kashtan</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Chklovskii</surname> <given-names>D</given-names></name>, <etal>et al</etal>. (<year>2002</year>) <article-title>Network motifs: simple building blocks of complex networks</article-title>. <source>Science</source> <volume>298</volume>: <fpage>824</fpage>–<lpage>827</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/science.298.5594.824" xlink:type="simple">10.1126/science.298.5594.824</ext-link></comment> <object-id pub-id-type="pmid">12399590</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref049">
+<label>49</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Song</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Sjostrom</surname> <given-names>PJ</given-names></name>, <name name-style="western"><surname>Reigl</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Nelson</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Chklovskii</surname> <given-names>DB</given-names></name> (<year>2005</year>) <article-title>Highly nonrandom features of synaptic connectivity in local cortical circuits</article-title>. <source>PLoS Biol</source> <volume>3</volume>: <fpage>e68</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pbio.0030068" xlink:type="simple">10.1371/journal.pbio.0030068</ext-link></comment> <object-id pub-id-type="pmid">15737062</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref050">
+<label>50</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Perin</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Berger</surname> <given-names>TK</given-names></name>, <name name-style="western"><surname>Markram</surname> <given-names>H</given-names></name> (<year>2011</year>) <article-title>A synaptic organizing principle for cortical neuronal groups</article-title>. <source>Proc Natl Acad Sci USA</source> <volume>108</volume>: <fpage>5419</fpage>–<lpage>5424</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.1016051108" xlink:type="simple">10.1073/pnas.1016051108</ext-link></comment> <object-id pub-id-type="pmid">21383177</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref051">
+<label>51</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Royer</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Toh</surname> <given-names>CK</given-names></name> (<year>1999</year>) <article-title>A review of current routing protocols for ad hoc mobile wireless networks</article-title>. <source>Personal Communications, IEEE</source> <volume>6</volume>: <fpage>46</fpage>–<lpage>55</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1109/98.760423" xlink:type="simple">10.1109/98.760423</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref052">
+<label>52</label>
+<mixed-citation xlink:type="simple" publication-type="book">
+<name name-style="western"><surname>Newman</surname> <given-names>M</given-names></name> (<year>2010</year>) <source>Networks: An Introduction</source>. <publisher-loc>New York, NY, USA</publisher-loc>: <publisher-name>Oxford University Press, Inc</publisher-name>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref053">
+<label>53</label>
+<mixed-citation xlink:type="simple" publication-type="other">DoT (2013). Department of transportation airfare report—third quarter 2013. <ext-link ext-link-type="uri" xlink:type="simple" xlink:href="http://www.dot.gov/office-policy/aviation-policy/table-1-domestic-airline-airfare-report-third-qquarter-2013">http://www.dot.gov/office-policy/aviation-policy/table-1-domestic-airline-airfare-report-third-qquarter-2013</ext-link>. Accessed: 2014-05-13.</mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref054">
+<label>54</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Kleinberg</surname> <given-names>JM</given-names></name> (<year>2000</year>) <article-title>Navigation in a small world</article-title>. <source>Nature</source> <volume>406</volume>: <fpage>845</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/35022643" xlink:type="simple">10.1038/35022643</ext-link></comment> <object-id pub-id-type="pmid">10972276</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref055">
+<label>55</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Romer</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Mattern</surname> <given-names>F</given-names></name> (<year>2004</year>) <article-title>The design space of wireless sensor networks</article-title>. <source>Wireless Communications, IEEE</source> <volume>11</volume>: <fpage>54</fpage>–<lpage>61</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1109/MWC.2004.1368897" xlink:type="simple">10.1109/MWC.2004.1368897</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref056">
+<label>56</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Petanjek</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Judas</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Simic</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Rasin</surname> <given-names>MR</given-names></name>, <name name-style="western"><surname>Uylings</surname> <given-names>HB</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>Extraordinary neoteny of synaptic spines in the human prefrontal cortex</article-title>. <source>Proc Natl Acad Sci USA</source> <volume>108</volume>: <fpage>13281</fpage>–<lpage>13286</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.1105108108" xlink:type="simple">10.1073/pnas.1105108108</ext-link></comment> <object-id pub-id-type="pmid">21788513</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref057">
+<label>57</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Huttenlocher</surname> <given-names>PR</given-names></name>, <name name-style="western"><surname>de Courten</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Garey</surname> <given-names>LJ</given-names></name>, <name name-style="western"><surname>Van der Loos</surname> <given-names>H</given-names></name> (<year>1982</year>) <article-title>Synaptogenesis in human visual cortex–evidence for synapse elimination during normal development</article-title>. <source>Neurosci Lett</source> <volume>33</volume>: <fpage>247</fpage>–<lpage>252</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/0304-3940(82)90379-2" xlink:type="simple">10.1016/0304-3940(82)90379-2</ext-link></comment> <object-id pub-id-type="pmid">7162689</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref058">
+<label>58</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Huttenlocher</surname> <given-names>PR</given-names></name>, <name name-style="western"><surname>de Courten</surname> <given-names>C</given-names></name> (<year>1987</year>) <article-title>The development of synapses in striate cortex of man</article-title>. <source>Hum Neurobiol</source> <volume>6</volume>: <fpage>1</fpage>–<lpage>9</lpage>. <object-id pub-id-type="pmid">3583840</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref059">
+<label>59</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Bickford</surname> <given-names>ME</given-names></name>, <name name-style="western"><surname>Slusarczyk</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Dilger</surname> <given-names>EK</given-names></name>, <name name-style="western"><surname>Krahe</surname> <given-names>TE</given-names></name>, <name name-style="western"><surname>Kucuk</surname> <given-names>C</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>Synaptic development of the mouse dorsal lateral geniculate nucleus</article-title>. <source>J Comp Neurol</source> <volume>518</volume>: <fpage>622</fpage>–<lpage>635</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1002/cne.22223" xlink:type="simple">10.1002/cne.22223</ext-link></comment> <object-id pub-id-type="pmid">20034053</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref060">
+<label>60</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Hong</surname> <given-names>YK</given-names></name>, <name name-style="western"><surname>Chen</surname> <given-names>C</given-names></name> (<year>2011</year>) <article-title>Wiring and rewiring of the retinogeniculate synapse</article-title>. <source>Curr Opin Neurobiol</source> <volume>21</volume>: <fpage>228</fpage>–<lpage>237</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.conb.2011.02.007" xlink:type="simple">10.1016/j.conb.2011.02.007</ext-link></comment> <object-id pub-id-type="pmid">21558027</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref061">
+<label>61</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Barber</surname> <given-names>MJ</given-names></name>, <name name-style="western"><surname>Lichtman</surname> <given-names>JW</given-names></name> (<year>1999</year>) <article-title>Activity-driven synapse elimination leads paradoxically to domination by inactive neurons</article-title>. <source>J Neurosci</source> <volume>19</volume>: <fpage>9975</fpage>–<lpage>9985</lpage>. <object-id pub-id-type="pmid">10559405</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref062">
+<label>62</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Goyal</surname> <given-names>MS</given-names></name>, <name name-style="western"><surname>Raichle</surname> <given-names>ME</given-names></name> (<year>2013</year>) <article-title>Gene expression-based modeling of human cortical synaptic density</article-title>. <source>Proc Natl Acad Sci USA</source> <volume>110</volume>: <fpage>6571</fpage>–<lpage>6576</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.1303453110" xlink:type="simple">10.1073/pnas.1303453110</ext-link></comment> <object-id pub-id-type="pmid">23576754</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref063">
+<label>63</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Wen</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>DeBlois</surname> <given-names>MC</given-names></name>, <name name-style="western"><surname>Barth</surname> <given-names>AL</given-names></name> (<year>2013</year>) <article-title>Initiation, labile, and stabilization phases of experience-dependent plasticity at neocortical synapses</article-title>. <source>J Neurosci</source> <volume>33</volume>: <fpage>8483</fpage>–<lpage>8493</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1523/JNEUROSCI.3575-12.2013" xlink:type="simple">10.1523/JNEUROSCI.3575-12.2013</ext-link></comment> <object-id pub-id-type="pmid">23658185</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref064">
+<label>64</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Yang</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Pan</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Gan</surname> <given-names>WB</given-names></name> (<year>2009</year>) <article-title>Stably maintained dendritic spines are associated with lifelong memories</article-title>. <source>Nature</source> <volume>462</volume>: <fpage>920</fpage>–<lpage>924</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nature08577" xlink:type="simple">10.1038/nature08577</ext-link></comment> <object-id pub-id-type="pmid">19946265</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref065">
+<label>65</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>LaMantia</surname> <given-names>AS</given-names></name>, <name name-style="western"><surname>Rakic</surname> <given-names>P</given-names></name> (<year>1990</year>) <article-title>Axon overproduction and elimination in the corpus callosum of the developing rhesus monkey</article-title>. <source>J Neurosci</source> <volume>10</volume>: <fpage>2156</fpage>–<lpage>2175</lpage>. <object-id pub-id-type="pmid">2376772</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref066">
+<label>66</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<collab xlink:type="simple">III DCD</collab>, <name name-style="western"><surname>O’Muircheartaigh</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Dirks</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Waskiewicz</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Lehman</surname> <given-names>K</given-names></name>, <etal>et al</etal>. (<year>2014</year>) <article-title>Modeling healthy male white matter and myelin development: 3 through 60 months of age</article-title>. <source>NeuroImage</source> <volume>84</volume>: <fpage>742</fpage>–<lpage>752</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.neuroimage.2013.09.058" xlink:type="simple">10.1016/j.neuroimage.2013.09.058</ext-link></comment> <object-id pub-id-type="pmid">24095814</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref067">
+<label>67</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Nimchinsky</surname> <given-names>EA</given-names></name>, <name name-style="western"><surname>Oberlander</surname> <given-names>AM</given-names></name>, <name name-style="western"><surname>Svoboda</surname> <given-names>K</given-names></name> (<year>2001</year>) <article-title>Abnormal development of dendritic spines in FMR1 knock-out mice</article-title>. <source>J Neurosci</source> <volume>21</volume>: <fpage>5139</fpage>–<lpage>5146</lpage>. <object-id pub-id-type="pmid">11438589</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref068">
+<label>68</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Pfeiffer</surname> <given-names>BE</given-names></name>, <name name-style="western"><surname>Huber</surname> <given-names>KM</given-names></name> (<year>2009</year>) <article-title>The state of synapses in fragile X syndrome</article-title>. <source>Neuroscientist</source> <volume>15</volume>: <fpage>549</fpage>–<lpage>567</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1177/1073858409333075" xlink:type="simple">10.1177/1073858409333075</ext-link></comment> <object-id pub-id-type="pmid">19325170</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref069">
+<label>69</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Patel</surname> <given-names>AB</given-names></name>, <name name-style="western"><surname>Loerwald</surname> <given-names>KW</given-names></name>, <name name-style="western"><surname>Huber</surname> <given-names>KM</given-names></name>, <name name-style="western"><surname>Gibson</surname> <given-names>JR</given-names></name> (<year>2014</year>) <article-title>Postsynaptic FMRP promotes the pruning of cell-to-cell connections among pyramidal neurons in the L5A neocortical network</article-title>. <source>J Neurosci</source> <volume>34</volume>: <fpage>3413</fpage>–<lpage>3418</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1523/JNEUROSCI.2921-13.2014" xlink:type="simple">10.1523/JNEUROSCI.2921-13.2014</ext-link></comment> <object-id pub-id-type="pmid">24573297</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref070">
+<label>70</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Glaze</surname> <given-names>DG</given-names></name> (<year>2004</year>) <article-title>Rett syndrome: of girls and mice–lessons for regression in autism</article-title>. <source>Ment Retard Dev Disabil Res Rev</source> <volume>10</volume>: <fpage>154</fpage>–<lpage>158</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1002/mrdd.20030" xlink:type="simple">10.1002/mrdd.20030</ext-link></comment> <object-id pub-id-type="pmid">15362175</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref071">
+<label>71</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Johnston</surname> <given-names>MV</given-names></name>, <name name-style="western"><surname>Blue</surname> <given-names>ME</given-names></name>, <name name-style="western"><surname>Naidu</surname> <given-names>S</given-names></name> (<year>2005</year>) <article-title>Rett syndrome and neuronal development</article-title>. <source>J Child Neurol</source> <volume>20</volume>: <fpage>759</fpage>–<lpage>763</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1177/08830738050200082601" xlink:type="simple">10.1177/08830738050200082601</ext-link></comment> <object-id pub-id-type="pmid">16225832</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref072">
+<label>72</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Na</surname> <given-names>ES</given-names></name>, <name name-style="western"><surname>Monteggia</surname> <given-names>LM</given-names></name> (<year>2011</year>) <article-title>The role of MeCP2 in CNS development and function</article-title>. <source>Horm Behav</source> <volume>59</volume>: <fpage>364</fpage>–<lpage>368</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.yhbeh.2010.05.014" xlink:type="simple">10.1016/j.yhbeh.2010.05.014</ext-link></comment> <object-id pub-id-type="pmid">20515694</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref073">
+<label>73</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Abbott</surname> <given-names>LF</given-names></name> (<year>2008</year>) <article-title>Theoretical neuroscience rising</article-title>. <source>Neuron</source> <volume>60</volume>: <fpage>489</fpage>–<lpage>495</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.neuron.2008.10.019" xlink:type="simple">10.1016/j.neuron.2008.10.019</ext-link></comment> <object-id pub-id-type="pmid">18995824</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref074">
+<label>74</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Tero</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Takagi</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Saigusa</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Ito</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Bebber</surname> <given-names>DP</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>Rules for biologically inspired adaptive network design</article-title>. <source>Science</source> <volume>327</volume>: <fpage>439</fpage>–<lpage>442</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/science.1177894" xlink:type="simple">10.1126/science.1177894</ext-link></comment> <object-id pub-id-type="pmid">20093467</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref075">
+<label>75</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Gordon</surname> <given-names>DM</given-names></name> (<year>2014</year>) <article-title>The ecology of collective behavior</article-title>. <source>PLoS Biol</source> <volume>12</volume>: <fpage>e1001805</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pbio.1001805" xlink:type="simple">10.1371/journal.pbio.1001805</ext-link></comment> <object-id pub-id-type="pmid">24618695</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref076">
+<label>76</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Jain</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Seung</surname> <given-names>HS</given-names></name>, <name name-style="western"><surname>Turaga</surname> <given-names>SC</given-names></name> (<year>2010</year>) <article-title>Machines that learn to segment images: a crucial technology for connectomics</article-title>. <source>Curr Opin Neurobiol</source> <volume>20</volume>: <fpage>653</fpage>–<lpage>666</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.conb.2010.07.004" xlink:type="simple">10.1016/j.conb.2010.07.004</ext-link></comment> <object-id pub-id-type="pmid">20801638</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref077">
+<label>77</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Morgan</surname> <given-names>JL</given-names></name>, <name name-style="western"><surname>Lichtman</surname> <given-names>JW</given-names></name> (<year>2013</year>) <article-title>Why not connectomics?</article-title> <source>Nat Methods</source> <volume>10</volume>: <fpage>494</fpage>–<lpage>500</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nmeth.2480" xlink:type="simple">10.1038/nmeth.2480</ext-link></comment> <object-id pub-id-type="pmid">23722208</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref078">
+<label>78</label>
+<mixed-citation xlink:type="simple" publication-type="book">
+<name name-style="western"><surname>Goldberg</surname> <given-names>AV</given-names></name>, <name name-style="western"><surname>Harrelson</surname> <given-names>C</given-names></name> (<year>2005</year>) <chapter-title>Computing the shortest path: A search meets graph theory</chapter-title>. In: <source>Proceedings of the Sixteenth Annual ACM-SIAM Symposium on Discrete Algorithms</source>. <publisher-loc>Philadelphia, PA, USA</publisher-loc>: <publisher-name>Society for Industrial and Applied Mathematics</publisher-name>, SODA’05, pp. <fpage>156</fpage>–<lpage>165</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref079">
+<label>79</label>
+<mixed-citation xlink:type="simple" publication-type="book">
+<name name-style="western"><surname>White</surname> <given-names>DR</given-names></name>, <name name-style="western"><surname>Newman</surname> <given-names>MEJ</given-names></name> (<year>2001</year>) <article-title>Fast approximation algorithms for finding node-independent paths in networks</article-title>. <source>Working papers</source>, <publisher-name>Santa Fe Institute</publisher-name>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref080">
+<label>80</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Gavoille</surname> <given-names>C</given-names></name> (<year>2001</year>) <article-title>Routing in distributed networks: overview and open problems</article-title>. <source>SIGACT News</source> <volume>32</volume>: <fpage>36</fpage>–<lpage>52</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1145/568438.568451" xlink:type="simple">10.1145/568438.568451</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref081">
+<label>81</label>
+<mixed-citation xlink:type="simple" publication-type="book">
+<name name-style="western"><surname>Thorup</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Zwick</surname> <given-names>U</given-names></name> (<year>2001</year>) <chapter-title>Compact routing schemes</chapter-title>. In: <source>Proc. 13th annual ACM Symp. on Parallel Algorithms and Architectures (SPAA)</source>. <publisher-loc>New York, NY, USA</publisher-loc>: <publisher-name>ACM</publisher-name>, pp. <fpage>1</fpage>–<lpage>10</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref082">
+<label>82</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Hu</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Real</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Takamiya</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Kang</surname> <given-names>MG</given-names></name>, <name name-style="western"><surname>Ledoux</surname> <given-names>J</given-names></name>, <etal>et al</etal>. (<year>2007</year>) <article-title>Emotion enhances learning via norepinephrine regulation of AMPA-receptor trafficking</article-title>. <source>Cell</source> <volume>131</volume>: <fpage>160</fpage>–<lpage>173</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.cell.2007.09.017" xlink:type="simple">10.1016/j.cell.2007.09.017</ext-link></comment> <object-id pub-id-type="pmid">17923095</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004347.ref083">
+<label>83</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Barth</surname> <given-names>AL</given-names></name>, <name name-style="western"><surname>Poulet</surname> <given-names>JF</given-names></name> (<year>2012</year>) <article-title>Experimental evidence for sparse firing in the neocortex</article-title>. <source>Trends Neurosci</source> <volume>35</volume>: <fpage>345</fpage>–<lpage>355</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.tins.2012.03.008" xlink:type="simple">10.1016/j.tins.2012.03.008</ext-link></comment> <object-id pub-id-type="pmid">22579264</object-id></mixed-citation>
+</ref>
+</ref-list>
+</back>
+</article>

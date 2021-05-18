@@ -1,0 +1,856 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="3.0" xml:lang="EN">
+<front>
+<journal-meta><journal-id journal-id-type="publisher-id">plos</journal-id><journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id><journal-id journal-id-type="pmc">ploscomp</journal-id><!--===== Grouping journal title elements =====--><journal-title-group><journal-title>PLoS Computational Biology</journal-title></journal-title-group><issn pub-type="ppub">1553-734X</issn><issn pub-type="epub">1553-7358</issn><publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, USA</publisher-loc></publisher></journal-meta>
+<article-meta><article-id pub-id-type="publisher-id">10-PLCB-RA-1882R2</article-id><article-id pub-id-type="doi">10.1371/journal.pcbi.1000827</article-id><article-categories><subj-group subj-group-type="heading"><subject>Research Article</subject></subj-group><subj-group subj-group-type="Discipline"><subject>Computational Biology</subject><subject>Computational Biology/Molecular Dynamics</subject></subj-group></article-categories><title-group><article-title>Multiscale Coarse-Graining of the Protein Energy Landscape</article-title><alt-title alt-title-type="running-head">Coarse-Graining the Energy Landscape</alt-title></title-group><contrib-group>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Hills</surname><given-names>Ronald D.</given-names><suffix>Jr</suffix></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff2"><sup>2</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Lu</surname><given-names>Lanyuan</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff2"><sup>2</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Voth</surname><given-names>Gregory A.</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff2"><sup>2</sup></xref><xref ref-type="corresp" rid="cor1"><sup>*</sup></xref></contrib>
+</contrib-group><aff id="aff1"><label>1</label><addr-line>Department of Chemistry, James Franck Institute and Computation Institute, University of Chicago, Chicago, Illinois, United States of America</addr-line>       </aff><aff id="aff2"><label>2</label><addr-line>Department of Chemistry and Center for Biophysical Modeling and Simulation, University of Utah, Salt Lake City, Utah, United States of America</addr-line>       </aff><contrib-group>
+<contrib contrib-type="editor" xlink:type="simple"><name name-style="western"><surname>Nussinov</surname><given-names>Ruth</given-names></name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/></contrib>
+</contrib-group><aff id="edit1">National Cancer Institute, United States of America and Tel Aviv University, Israel</aff><author-notes>
+<corresp id="cor1">* E-mail: <email xlink:type="simple">voth@hec.utah.edu</email></corresp>
+<fn fn-type="con"><p>Conceived and designed the experiments: RDH GAV. Performed the experiments: RDH LL. Analyzed the data: RDH. Contributed reagents/materials/analysis tools: RDH LL. Wrote the paper: RDH LL GAV.</p></fn>
+<fn fn-type="conflict"><p>The authors have declared that no competing interests exist.</p></fn></author-notes><pub-date pub-type="collection"><month>6</month><year>2010</year></pub-date><pub-date pub-type="epub"><day>24</day><month>6</month><year>2010</year></pub-date><volume>6</volume><issue>6</issue><elocation-id>e1000827</elocation-id><history>
+<date date-type="received"><day>2</day><month>3</month><year>2010</year></date>
+<date date-type="accepted"><day>21</day><month>5</month><year>2010</year></date>
+</history><!--===== Grouping copyright info into permissions =====--><permissions><copyright-year>2010</copyright-year><copyright-holder>Hills, Jr. et al</copyright-holder><license><license-p>This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license></permissions><abstract>
+<p>A variety of coarse-grained (CG) models exists for simulation of proteins. An outstanding problem is the construction of a CG model with physically accurate conformational energetics rivaling all-atom force fields. In the present work, atomistic simulations of peptide folding and aggregation equilibria are force-matched using multiscale coarse-graining to develop and test a CG interaction potential of general utility for the simulation of proteins of arbitrary sequence. The reduced representation relies on multiple interaction sites to maintain the anisotropic packing and polarity of individual sidechains. CG energy landscapes computed from replica exchange simulations of the folding of Trpzip, Trp-cage and adenylate kinase resemble those of other reduced representations; non-native structures are observed with energies similar to those of the native state. The artifactual stabilization of misfolded states implies that non-native interactions play a deciding role in deviations from ideal funnel-like cooperative folding. The role of surface tension, backbone hydrogen bonding and the smooth pairwise CG landscape is discussed. <italic>Ab initio</italic> folding aside, the improved treatment of sidechain rotamers results in stability of the native state in constant temperature simulations of Trpzip, Trp-cage, and the open to closed conformational transition of adenylate kinase, illustrating the potential value of the CG force field for simulating protein complexes and transitions between well-defined structural states.</p>
+</abstract><abstract abstract-type="summary"><title>Author Summary</title>
+<p>Biological function originates from the dynamical motions of proteins in response to cellular stimuli. Protein dynamics arise from physical interactions that are well-predicted by detailed atomistic simulations. In order to examine large protein complexes on long timescales of biological importance, however, coarse-grained simulation approaches are needed to complement experiment. Previous coarse-grained models have proved successful for investigations involving a given protein's native structure, including protein folding and structure prediction. We construct a model capable of simulating proteins regardless of their sequence or structure. The present coarse-grained model was, however, developed rigorously from the underlying atomistic forces as opposed to knowledge-based or <italic>ad hoc</italic> parameterizations. Examination of the model predictions on various accessible timescales reveals successes and limitations of the model. While functionally relevant conformational transitions can be studied, the coarse-grained representation has some difficulty with the <italic>ab initio</italic> folding of the peptide chain into its proper structure. Our observations highlight the complex molecular nature of a protein's underlying energy landscape, offering rigorous insight into the information missing in reduced representations of the peptide chain. With these caveats in mind, the physical interaction–based, coarse-grained model will find application in simulations of a wide variety of proteins and continue to guide future coarse-graining efforts.</p>
+</abstract><funding-group><funding-statement>This work was supported by a US National Institutes of Health Kirschstein NRSA postdoctoral fellowship to RDH and the National Science Foundation (CHE-0628257). The funders had no role in study design, data collection and analysis, decision to publish, or preparation of manuscript.</funding-statement></funding-group><counts><page-count count="12"/></counts></article-meta>
+</front>
+<body><sec id="s1">
+<title>Introduction</title>
+<p>Despite continuing advances in computing power, atomistic simulation remains a considerable challenge at increasingly large time and length scales for processes of biological importance such as protein folding, conformational change and assembly. Coarse-grained (CG) approaches have therefore enjoyed popularity, in which the polypeptide can be modeled using a reduced representation of one or more, sometimes fewer, interaction sites per residue. Early CG models employed a binary code, classifying interactions between combinations of hydrophobic and polar (HP) residues <xref ref-type="bibr" rid="pcbi.1000827-Yue1">[1]</xref>. HP models suffered from having a degenerate global energy minimum with as many as 10<sup>3</sup> conformations. An important remaining objective therefore is the construction of a sophisticated CG potential that recapitulates the thermodynamics of the conformational landscape and identifies the native state as a stable global energy minimum consistent with energy landscape theory <xref ref-type="bibr" rid="pcbi.1000827-Onuchic1">[2]</xref>. Such a CG potential would be of value not only to the protein folding and structure prediction communities but could prove extremely useful in general simulations of protein dynamics and conformational change.</p>
+<p>Despite an ever-growing repertoire of independent coarse-graining approaches they still have not rivaled all-atom potentials in structure prediction <xref ref-type="bibr" rid="pcbi.1000827-Bradley1">[3]</xref>. Nevertheless, CG models have achieved surprising success in diverse areas of protein modeling. This success is made possible by the introduction of bias towards the native state. Elastic network models are the most restrictive example, in which backbone alpha carbons within some cutoff distance of each other in the native structure are assigned pairwise harmonic restraints. Elastic network calculations have reproduced the low frequency functional motions of a large variety of proteins <xref ref-type="bibr" rid="pcbi.1000827-Tama1">[4]</xref>. Less restrictive are Gō models <xref ref-type="bibr" rid="pcbi.1000827-Taketomi1">[5]</xref>, where backbone alpha carbons in proximity in the native state are attracted via a Lennard-Jones (LJ) potential:<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000827.e001" xlink:type="simple"/><label>(1)</label></disp-formula>in which the location and depth of the attractive minimum between particles <italic>i</italic> and <italic>j</italic> are given by <italic>r</italic><sub>min</sub> and <italic>ε</italic>, respectively. Unlike harmonic restraints, LJ interactions can spontaneously dissociate in order to visit unfolded conformations. Gō models have been successful in predicting folding mechanisms because they mimic the minimally frustrated funneled energy landscape of evolved proteins, in which non-native interactions play a minimal role <xref ref-type="bibr" rid="pcbi.1000827-Clementi1">[6]</xref>, <xref ref-type="bibr" rid="pcbi.1000827-Hills1">[7]</xref>. Lastly, general CG models have employed simple LJ interactions between all residues in the protein chain but rely on additional native dihedral or hydrogen bond restraints to counteract energetic frustration and thereby ensure structural stability during simulation of the native state <xref ref-type="bibr" rid="pcbi.1000827-Bond1">[8]</xref>–<xref ref-type="bibr" rid="pcbi.1000827-Korkut1">[13]</xref>.</p>
+<p>Current efforts aim to improve the physical accuracy of CG nonbonded interaction schemes in order to alleviate the need for native structure restraints. Accurate CG interactions would provide for a correct description of protein dynamics and conformational change for large deviations from the native state as well as protein-protein interactions. Ongoing parameterization endeavors include various schemes. Certain empirical approaches parameterize <italic>ad hoc</italic> LJ functional forms using thermodynamic data such as density, surface tension, solvation energy and oil-water partition coefficients <xref ref-type="bibr" rid="pcbi.1000827-Monticelli1">[9]</xref>, <xref ref-type="bibr" rid="pcbi.1000827-DeVane1">[14]</xref>–<xref ref-type="bibr" rid="pcbi.1000827-Chiu1">[16]</xref>, which have previously been used with some success in CG models of lipid bilayers <xref ref-type="bibr" rid="pcbi.1000827-Marrink1">[17]</xref>. Folding-inspired approaches utilize known folding behavior to tune CG parameters that will result in a properly folded protein <xref ref-type="bibr" rid="pcbi.1000827-Bereau1">[18]</xref>–<xref ref-type="bibr" rid="pcbi.1000827-Takada1">[22]</xref>. In a somewhat similar fashion, knowledge-based methods invoke statistical potentials derived from distributions of residue-residue interactions and secondary structure in all known protein structures <xref ref-type="bibr" rid="pcbi.1000827-Bradley1">[3]</xref>, <xref ref-type="bibr" rid="pcbi.1000827-Korkut1">[13]</xref>, <xref ref-type="bibr" rid="pcbi.1000827-Betancourt1">[23]</xref>–<xref ref-type="bibr" rid="pcbi.1000827-Buchete1">[27]</xref>.</p>
+<p>The remaining class of CG model development involves parameterization against all-atom reference simulations. Some of these approaches are based on obtaining the pairwise potentials of mean force (PMFs) between amino acid sidechains. Scheraga and colleagues have employed atomistic umbrella sampling to obtain PMFs for different packing arrangements of sidechain analog dimers <xref ref-type="bibr" rid="pcbi.1000827-Makowski1">[28]</xref>. Analytical approximations to the orientation-dependent, pairwise PMFs empower the UNRES model for structure prediction <xref ref-type="bibr" rid="pcbi.1000827-He1">[29]</xref>. Another single site sidechain model for structure prediction has recently been developed by Betancourt and Omovie with pairwise PMFs obtained from atomistic simulations of all 210 amino acid pairs <xref ref-type="bibr" rid="pcbi.1000827-Betancourt2">[30]</xref>. A model consisting of up to two interaction sites per sidechain has been developed for protein docking based on PMFs estimated from atomistic simulations of the 20 amino acid homodimers <xref ref-type="bibr" rid="pcbi.1000827-Basdevant1">[31]</xref>.</p>
+<p>The goal of the present work is the construction of an accurate CG interaction model for the amino acids in which the packing energetics of sidechain rotamers is properly maintained using multiple interaction centers per sidechain. The CG potential is developed from forces generated from atomistic simulation, a process sometimes referred to as force matching (actually a force “renormalization”), using the multiscale coarse-graining (MS-CG) method <xref ref-type="bibr" rid="pcbi.1000827-Ayton1">[32]</xref>–<xref ref-type="bibr" rid="pcbi.1000827-Noid3">[37]</xref>. MS-CG is a variational procedure for determining the many-body potential of mean force for the CG variables (the CG “potential”) that reproduces the equilibrium probability distribution observed in the atomistic configurational ensemble <xref ref-type="bibr" rid="pcbi.1000827-Noid1">[35]</xref>. No assumptions are made about the functional forms of the pairwise interactions between CG sites <xref ref-type="bibr" rid="pcbi.1000827-Noid3">[37]</xref>, and multibody correlations <xref ref-type="bibr" rid="pcbi.1000827-Noid2">[36]</xref> are implicitly taken into account in the resulting effective pairwise CG potential. In these respects MS-CG has a similar objective as the other multiscale methods iterative Boltzmann inversion <xref ref-type="bibr" rid="pcbi.1000827-Reith1">[38]</xref> and inverse Monte Carlo <xref ref-type="bibr" rid="pcbi.1000827-Lyubartsev1">[39]</xref>, in which the effective pairwise potential is iteratively refined until satisfactory agreement with the atomistic radial distribution functions (RDFs) is obtained <xref ref-type="bibr" rid="pcbi.1000827-Murtola1">[40]</xref>. A key difference, however, is that MS-CG uses molecular scale forces as its input and not the two-body RDFs (rather, the latter is a prediction, not input, from the MS-CG model).</p>
+<p>A challenge with multiscale methods is that the resulting CG model may be limited in applicability to the substates, or region of conformational space, sampled in the reference atomistic simulations used to construct the CG model. Previous MS-CG models have been used to accurately describe specific configurations of selected peptides <xref ref-type="bibr" rid="pcbi.1000827-Liu1">[41]</xref>–<xref ref-type="bibr" rid="pcbi.1000827-Zhou1">[43]</xref>. In contrast, the approach used here is to apply MS-CG to a variety of peptide equilibria to obtain a general set of CG interaction potentials for the amino acids that can then be used in simulations of proteins of arbitrary sequence. The MS-CG potentials are compared and combined for atomistic simulations of the unfolded ensembles of polyalanine, polyleucine and the miniprotein Trpzip, as well as the self-association of amino acid dipeptides.</p>
+<p>The force field is then validated by performing CG simulations of Trpzip, Trp-cage and adenylate kinase (AdK). Parallel tempering, or replica exchange molecular dynamics (REMD) <xref ref-type="bibr" rid="pcbi.1000827-Sugita1">[44]</xref>, is used to characterize the folding energy landscapes of the three CG proteins. REMD takes advantage of simultaneous simulations at high temperature to overcome local energy barriers. Extensive sampling with CG-REMD was employed to determine the global energy minimum and illustrate potential strengths and limitations of the model. Finally, conventional constant temperature molecular dynamics (MD) is performed to demonstrate the stability of the native state and the promise of the CG force field for modeling protein dynamics.</p>
+<p>The present work attempts to address for the first time the question of whether protein folding and dynamics can be captured with a generic reduced representation of the sidechains derived from real physical forces. In contrast to backbone centric approaches that have had some success in predicting the global minimum of helical bundles <xref ref-type="bibr" rid="pcbi.1000827-Bereau1">[18]</xref>, <xref ref-type="bibr" rid="pcbi.1000827-Irback1">[21]</xref>, <xref ref-type="bibr" rid="pcbi.1000827-Takada1">[22]</xref>, the current sidechain centric approach appears to be more useful for simulating the native state dynamics of diverse helical and β-sheet proteins. Evaluation of our model in comparison to backbone centric models yields insight into the relative influence of the backbone and sidechains on folding and dynamics and illustrates the limitations of pairwise additive residue-level interactions in reproducing folding cooperativity.</p>
+</sec><sec id="s2" sec-type="methods">
+<title>Methods</title>
+<sec id="s2a">
+<title>CG model construction</title>
+<p>The polypeptide backbone was represented using a single CG site per residue placed at the C<sub>α</sub> position in order to reasonably maintain the backbone conformational degrees of freedom <xref ref-type="bibr" rid="pcbi.1000827-Kwiecinska1">[45]</xref>, <xref ref-type="bibr" rid="pcbi.1000827-Tozzini1">[46]</xref>. MS-CG was also attempted with three backbone sites per residue as in previous work on hydrogen bonding <xref ref-type="bibr" rid="pcbi.1000827-Liu1">[41]</xref>–<xref ref-type="bibr" rid="pcbi.1000827-Zhou1">[43]</xref> but not included in the model; the resultant potentials were repulsive, likely due to the approach of averaging over all orientations present in the unfolded ensemble rather than a purely attractive native basin. MS-CG was performed by matching the instantaneous total atomistic force on the alpha carbon. As many as four CG sites were chosen for each sidechain to describe the essential orientational degrees of freedom and maintain a consistent mapping of two or three heavy atoms per site (<xref ref-type="fig" rid="pcbi-1000827-g001">Figure 1</xref>). MS-CG was used to determine the 15 pair potentials between combinations of five assigned CG site types (backbone, apolar, polar, positive, negative). The grouping of sidechain sites according to type was a necessary approximation in order to obtain converged pair potentials using the MS-CG algorithm. MS-CG was performed by matching the sum of the instantaneous forces on all atoms in a given sidechain site.</p>
+<fig id="pcbi-1000827-g001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000827.g001</object-id><label>Figure 1</label><caption>
+<title>Mapping of CG site types for the amino acids.</title>
+<p>The backbone is represented by a single site at the alpha carbon (green). Sidechain sites are assigned to the mass centers of polar (light blue), apolar (gray), positive (blue) and negative (red) functional groups consisting of two or three heavy atoms. CG sites are connected by bonded interactions (red lines).</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000827.g001" xlink:type="simple"/></fig>
+<p>The solvent degrees of freedom were integrated out making this a “solvent-free” CG force field <xref ref-type="bibr" rid="pcbi.1000827-Izvekov3">[47]</xref>, <xref ref-type="bibr" rid="pcbi.1000827-Lu1">[48]</xref>. No atom was involved in the definition of more than one CG site, thereby allowing for consistency in momentum space as well as configuration space between the all-atom and CG many-body PMF <xref ref-type="bibr" rid="pcbi.1000827-Noid1">[35]</xref>. Absolute timescales in the CG dynamics are difficult to obtain from the model, however, due to the reduced number of degrees of freedom, lack of explicit solvent molecules and smooth energy surface.</p>
+<p>Bonded terms were obtained directly from the atomistic distributions rather than the force matching results with MS-CG, allowing for residues to be treated uniquely regardless of site type to give a full description of steric packing. Potentials for bond lengths, bending angles and torsions in each amino acid were obtained using Boltzmann inversion:<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000827.e002" xlink:type="simple"/><label>(2)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000827.e003" xlink:type="simple"/><label>(3)</label></disp-formula><disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000827.e004" xlink:type="simple"/><label>(4)</label></disp-formula>where <italic>kT</italic> is the thermal energy and <italic>p</italic> is the probability distribution observed in atomistic MD; the volume normalization factors <italic>r</italic><sup>2</sup> and sin <italic>θ</italic> were needed to properly represent all distributions. Bond and angle potentials were fit to harmonic or fourth order polynomials where appropriate; otherwise, custom bond tables were employed in GROMACS <xref ref-type="bibr" rid="pcbi.1000827-Hess1">[49]</xref>. The angle from sidechain and backbone sites of residue <italic>i</italic> to backbone residue <italic>i</italic>−1 was treated separately from the angle to backbone residue <italic>i</italic>+1. Torsions involving sidechains were unrestricted excepting tryptophan and tyrosine rings, which were fit with improper torsions to maintain planarity. Backbone angles between three successive alpha carbons were represented using a single sequence-independent fourth order polynomial allowing rapid interconversion between α-helix and β-sheet values (see supporting <xref ref-type="supplementary-material" rid="pcbi.1000827.s001">Figure S1A</xref>).</p>
+<p>Backbone torsions between four successive alpha carbons were represented using a set of sequence-dependent potentials developed from fitting the inverted distributions of known structures in the Protein Data Bank <xref ref-type="bibr" rid="pcbi.1000827-Karanicolas1">[50]</xref>. These consisted of 20<sup>2</sup> fourth order cosine series, one fit for each possible permutation of the middle two residues involved in the torsion. All statistical potentials were scaled by a constant factor of 0.54, chosen to give good agreement with the polyalanine distribution from all-atom MD (<xref ref-type="supplementary-material" rid="pcbi.1000827.s002">Figure S2A</xref>). The inverted distribution of polyleucine in all-atom MD was well predicted by the resulting scaled statistical potential (<xref ref-type="supplementary-material" rid="pcbi.1000827.s002">Figure S2B</xref>). The final set of backbone torsions allowed rapid interconversion between α-helix and β-sheet, with rates generally decreasing with sidechain bulk in the order Gly∶Ala∶C<sub>β</sub>-branched∶Pro. Developing the bonded potentials separately from the nonbonded interactions was ultimately justified by the satisfactory agreement between bonded distributions in all-atom and CG simulations (<italic>e.g.</italic>, see <xref ref-type="supplementary-material" rid="pcbi.1000827.s001">Figures S1</xref>, <xref ref-type="supplementary-material" rid="pcbi.1000827.s002">S2A</xref>).</p>
+</sec><sec id="s2b">
+<title>Force matching atomistic simulations</title>
+<p>All-atom MD was performed using the OPLS <xref ref-type="bibr" rid="pcbi.1000827-Kaminski1">[51]</xref> protein force field with SPC solvent in the GROMACS <xref ref-type="bibr" rid="pcbi.1000827-Hess1">[49]</xref> simulation package. The default parameters were employed with particle mesh Ewald for long-range electrostatics and a 1.2 nm cutoff for grid-based short-range neighbor searching. Constant NVT simulations were performed using the Nosé-Hoover thermostat with a 0.5 ps relaxation time constant. Bonds to hydrogens were constrained using LINCS and a 2 fs integration timestep was used. Each peptide system was simulated in a (4 nm)<sup>3</sup> periodic box with a peptide∶water concentration of 10%. Coordinates and forces of protein atoms were recorded at intervals of 1 ps or longer for use in MS-CG force matching.</p>
+<p>In order to derive a general set of CG potentials from the unfolded ensemble, peptide systems were simulated at 498 K to enhance conformational sampling. Given the modest temperature dependence of interaction potentials generated from atomistic simulation <xref ref-type="bibr" rid="pcbi.1000827-Qian1">[52]</xref>, <xref ref-type="bibr" rid="pcbi.1000827-Zhu1">[53]</xref>, polyalanine is comparably shown to exhibit modest temperature sensitivity with the MS-CG scheme employed in the present work (<xref ref-type="fig" rid="pcbi-1000827-g002">Figure 2</xref>). Nevertheless, the higher temperature used in the simulations to define the model CG potentials will tend to “smooth out” the resulting interactions. Potentials were developed separately for different peptide systems and compared to assess the efficacy of a single potential being used independent of sequence. Ten or more independent simulations approximately 50 ns in length were performed starting from different random configurations of the following peptide systems to yield a composite simulation length of at least 0.5 µs for each system (<xref ref-type="table" rid="pcbi-1000827-t001">Table 1</xref>). Five Ala15 peptides were simulated in a box of water molecules at 300 K as well as 498 K. Three unfolded Leu15 peptides were simulated in one water box. Three molecules of the miniprotein Trpzip2 <xref ref-type="bibr" rid="pcbi.1000827-Cochran1">[54]</xref> were simulated in another water box. Lastly, 25 dipeptides were randomly placed in a single water box, one for each amino acid with the exception of two for alanine, glycine and lysine and three for aspartate. To ensure ample exchange between sidechain association partners and convergence in the developed MS-CG potentials, 200 independent simulations of the dipeptide solution were performed for a composite length of 9 µs. A few remaining bonded terms were obtained from distributions in all-atom unfolding simulations of two Trp-cage5b <xref ref-type="bibr" rid="pcbi.1000827-Neidigh1">[55]</xref> proteins in water and five AACHMFVAA peptides in water, although neither system was force-matched. A single natively structured Trpzip molecule was also simulated in water at 300 K for comparison of structural fluctuations between all-atom MD and CG-MD with the final model. Excepting the dipeptides, each terminus was uncapped and charged. Unfolded starting configurations were generated by randomly orienting the peptides in Cartesian space and then equilibrating for 2 ns at 700 K; the random number generator was employed with varying seeds.</p>
+<fig id="pcbi-1000827-g002" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000827.g002</object-id><label>Figure 2</label><caption>
+<title>Pairwise interaction potential between nonbonded backbone alpha carbons generated from atomistic force matching.</title>
+<p>Unfolding (498 K) simulations of Trpzip (red), Leu15 (green) and Ala15 (blue) as well as 300 K MD of Ala15 (pink) yield attractive potentials that share a minimum at ∼0.6 nm. Inset (same <italic>xy</italic> scale): Correspondence in the interaction potentials between apolar sidechain sites for Trpzip (red) and a dipeptide solution of the 20 amino acids (black).</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000827.g002" xlink:type="simple"/></fig><table-wrap id="pcbi-1000827-t001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000827.t001</object-id><label>Table 1</label><caption>
+<title>Peptide systems employed in all-atom reference simulations.</title>
+</caption><!--===== Grouping alternate versions of objects =====--><alternatives><graphic id="pcbi-1000827-t001-1" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000827.t001" xlink:type="simple"/><table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" colspan="1" rowspan="1">Sequence</td>
+<td align="left" colspan="1" rowspan="1"><italic>T</italic> (K)</td>
+<td align="left" colspan="1" rowspan="1">Peptides<xref ref-type="table-fn" rid="nt101">a</xref></td>
+<td align="left" colspan="1" rowspan="1">Total µs</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" colspan="1" rowspan="1">Ala15</td>
+<td align="left" colspan="1" rowspan="1">300<xref ref-type="table-fn" rid="nt102">b</xref>, 498<xref ref-type="table-fn" rid="nt102">b</xref></td>
+<td align="left" colspan="1" rowspan="1">5, 5</td>
+<td align="left" colspan="1" rowspan="1">1.7, 0.6</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">Leu15</td>
+<td align="left" colspan="1" rowspan="1">498<xref ref-type="table-fn" rid="nt102">b</xref></td>
+<td align="left" colspan="1" rowspan="1">3</td>
+<td align="left" colspan="1" rowspan="1">0.5</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">Trpzip</td>
+<td align="left" colspan="1" rowspan="1">300, 498<xref ref-type="table-fn" rid="nt102">b</xref></td>
+<td align="left" colspan="1" rowspan="1">1, 3</td>
+<td align="left" colspan="1" rowspan="1">1.2, 0.6</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">Trp-cage</td>
+<td align="left" colspan="1" rowspan="1">498</td>
+<td align="left" colspan="1" rowspan="1">2</td>
+<td align="left" colspan="1" rowspan="1">0.5</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">dipeptide solution</td>
+<td align="left" colspan="1" rowspan="1">498<xref ref-type="table-fn" rid="nt102">b</xref></td>
+<td align="left" colspan="1" rowspan="1">25</td>
+<td align="left" colspan="1" rowspan="1">9.2</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">AACHMFVAA</td>
+<td align="left" colspan="1" rowspan="1">498</td>
+<td align="left" colspan="1" rowspan="1">5</td>
+<td align="left" colspan="1" rowspan="1">0.6</td>
+</tr>
+</tbody>
+</table></alternatives><table-wrap-foot><fn id="nt101"><label>a</label><p>Number of peptides placed in the (4 nm)<sup>3</sup> water box.</p></fn><fn id="nt102"><label>b</label><p>System was used for force matching nonbonded interactions. Bonded interactions were obtained from all systems via distribution fitting.</p></fn></table-wrap-foot></table-wrap>
+<p>The force matching of the atomistic reference simulations in the MS-CG method was performed using the program MSCGFM <xref ref-type="bibr" rid="pcbi.1000827-Lu2">[56]</xref>, a fast and flexible implementation of MS-CG. A linear spline basis set was employed for least squares optimization of nonbonded interaction pairs separated by less than 2 nm and more than three bonds. The computation was made feasible by employing the block-averaging procedure of combining separate solutions for disjoint sets of configurations (blocks) <xref ref-type="bibr" rid="pcbi.1000827-Noid3">[37]</xref>. Blocks consisted of 2,000 or more frames for each peptide system depending on memory requirements. The resulting pairwise force curves were integrated and smoothed using a cubic B-spline to obtain tabulated potentials for input in GROMACS. Repulsive positive-positive and negative-negative interactions were switched linearly to zero over the range 1 nm to 1.2 nm, resulting in ∼1 kJ/mol error over the switching region. Convergence of the nonbonded interactions was checked by repeating the MS-CG calculation with half the configurations and ensuring the force curves were similar excepting high frequency noise.</p>
+</sec><sec id="s2c">
+<title>CG molecular dynamics</title>
+<p>CG simulations were performed in GROMACS 4 <xref ref-type="bibr" rid="pcbi.1000827-Hess1">[49]</xref> using Langevin dynamics with a 2 ps inverse friction constant to maintain thermal equilibrium and a 2 fs integration timestep. Tabulated nonbonded interactions were updated every step and calculated between all CG sites separated by at least three bonds using a 1.2 nm distance cutoff. A single set of 15 site-site CG potentials, chosen as most representative across peptide systems, was employed for all CG proteins.</p>
+<p>CG-MD of polyalanine was performed on five copies of Ala15 placed in a 40 Å periodic box for 50 ns starting from a random configuration obtained from the endpoint of a 58 ns atomistic MD run at 498 K described above. Polyalanine aggregation was monitored by computing the pairwise RDF of inter- and intramolecular alpha carbons separated by at least three bonds. Native state CG-MD simulations of Trpzip, Trp-cage and the open and closed forms of AdK were begun from NMR structures 1LE1.pdb <xref ref-type="bibr" rid="pcbi.1000827-Cochran1">[54]</xref> and 1L2Y.pdb <xref ref-type="bibr" rid="pcbi.1000827-Neidigh1">[55]</xref> and crystal structures 4AKE.pdb and 1AKE.pdb, respectively, and performed for 200 ns at 0.6 <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000827.e005" xlink:type="simple"/></inline-formula>, where <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000827.e006" xlink:type="simple"/></inline-formula> is the reference temperature for the CG model. The reference temperature was defined as the folding transition, or melting, temperature observed in CG-REMD folding simulations of Trpzip.</p>
+<p>CG-REMD folding simulations were performed with exponentially spaced temperature replicas spanning 100–700 K. The number of replicas was chosen to maintain an exchange frequency between 20% and 40% throughout the simulation and was first estimated using <italic>P</italic><sub>des</sub> <xref ref-type="bibr" rid="pcbi.1000827-Patriksson1">[57]</xref>. CG-REMD of Trpzip and Trp-cage required 16 replicas while AdK required 48 replicas. Conformational exchanges between temperature windows were attempted and snapshots recorded for Trpzip/Trp-cage every 200 ps and for AdK every 20 ps. For Trpzip and Trp-cage two independent simulations of 3 µs or longer were performed starting from an extended structure to bring the total simulation length to 6 µs per replica. To check convergence 3 µs was then performed starting from the native state. Trp-cage simulations converged to a common structure. Two additional simulations were performed with it as the starting point to verify the global minimum. For the more complex folding landscape of AdK, four independent simulations were performed for 80 ns, each starting from extended, closed, open or a 50/50 mixture of open and extended states. Extended starting structures were generated from equilibration in CG-MD at 700 K for at least 10 ns.</p>
+<p>Folding landscapes were characterized by computing the root mean square deviation (RMSD) from the native structure of replica conformations corresponding to 0.6 <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000827.e007" xlink:type="simple"/></inline-formula>. The RMSD from the CG representation of the native state was computed for a subset of backbone or sidechain sites after superimposing the backbone alpha carbons of the region of interest. CG-REMD was also performed with position restrained backbone alpha carbons starting from the native structure to determine the distribution of sidechain rotamers (3 µs for Trpzip/Trp-cage and 80 ns for open and closed AdK). The mean and standard deviation of the RMSD of sidechain sites from the native structure were computed over the fixed backbone CG-REMD simulations as well as the unrestrained CG-MD, both at 0.6 <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000827.e008" xlink:type="simple"/></inline-formula>. CG conformations were visualized using VMD <xref ref-type="bibr" rid="pcbi.1000827-Humphrey1">[58]</xref>.</p>
+</sec></sec><sec id="s3">
+<title>Results</title>
+<sec id="s3a">
+<title>Transferable CG interactions</title>
+<p>The most significant approximations used in construction of the present CG model are threefold. Atomistic reference simulations were performed at elevated temperature to denature the protein ensemble and allow for rapid interchange between association pairs in aggregated peptides. Secondly, site-site interaction potentials were obtained from different peptide systems in order to obtain a single force field applicable across protein sequences. Lastly, the through-space interactions constitute an average over the chemical diversity of the amino acids grouped into five CG site types. These assumptions enabled the construction of a versatile model for simulating proteins of arbitrary sequence and conformation.</p>
+<p>Overall, a reasonable correspondence was observed between the CG potentials developed separately from different peptide systems for a given interaction. <xref ref-type="fig" rid="pcbi-1000827-g002">Figure 2</xref> shows the similarity in C<sub>α</sub>-C<sub>α</sub> and apolar-apolar interactions across peptide sequences. For each of the 15 nonbonded interaction pairs in the model the MS-CG potential was employed that was most representative across peptide systems. The one exception is the case of positive-negative salt bridges. Force matching of Trpzip and the dipeptide solution yielded potential minima of −10 kJ/mol and −37 kJ/mol, respectively, likely due to the influence of the hydrophobic environment; the former was adopted in the CG model to avoid large forces. <xref ref-type="fig" rid="pcbi-1000827-g002">Figure 2</xref> also illustrates that the temperature dependence of the developed CG potential for polyalanine is comparable in magnitude to the variation between different sequences. The modest temperature dependence of CG potentials obtained from atomistic data has been noted previously <xref ref-type="bibr" rid="pcbi.1000827-Qian1">[52]</xref>, <xref ref-type="bibr" rid="pcbi.1000827-Zhu1">[53]</xref>. The final set of CG potentials employed (<xref ref-type="supplementary-material" rid="pcbi.1000827.s003">Figure S3</xref>) have profiles similar to atomistic PMFs obtained at room temperature <xref ref-type="bibr" rid="pcbi.1000827-Makowski1">[28]</xref>. When arranged according to strength and location the attractive minima follow an expected relationship to polarity (<xref ref-type="table" rid="pcbi-1000827-t002">Table 2</xref>).</p>
+<table-wrap id="pcbi-1000827-t002" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000827.t002</object-id><label>Table 2</label><caption>
+<title>Location and depth of attractive minima in nonbonded interactions between CG site types.</title>
+</caption><!--===== Grouping alternate versions of objects =====--><alternatives><graphic id="pcbi-1000827-t002-2" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000827.t002" xlink:type="simple"/><table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" colspan="1" rowspan="1">Interaction Pair</td>
+<td align="left" colspan="1" rowspan="1"><italic>r</italic><sub>min</sub> (Å)</td>
+<td align="left" colspan="1" rowspan="1"><italic>ε</italic> (kJ/mol)<xref ref-type="table-fn" rid="nt103">a</xref></td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" colspan="1" rowspan="1">positive-negative</td>
+<td align="left" colspan="1" rowspan="1">3.2</td>
+<td align="left" colspan="1" rowspan="1">9.6</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">C<sub>α</sub>-C<sub>α</sub></td>
+<td align="left" colspan="1" rowspan="1">5.4</td>
+<td align="left" colspan="1" rowspan="1">3.6</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">apolar-apolar</td>
+<td align="left" colspan="1" rowspan="1">4.4</td>
+<td align="left" colspan="1" rowspan="1">3.2</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">C<sub>α</sub>-positive</td>
+<td align="left" colspan="1" rowspan="1">4.8</td>
+<td align="left" colspan="1" rowspan="1">2.4</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">C<sub>α</sub>-polar</td>
+<td align="left" colspan="1" rowspan="1">4.4</td>
+<td align="left" colspan="1" rowspan="1">1.9</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">polar-polar</td>
+<td align="left" colspan="1" rowspan="1">4.2</td>
+<td align="left" colspan="1" rowspan="1">1.7</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">apolar-polar</td>
+<td align="left" colspan="1" rowspan="1">4.4</td>
+<td align="left" colspan="1" rowspan="1">1.6</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">C<sub>α</sub>-apolar</td>
+<td align="left" colspan="1" rowspan="1">4.8</td>
+<td align="left" colspan="1" rowspan="1">1.4</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">polar-positive</td>
+<td align="left" colspan="1" rowspan="1">4.0</td>
+<td align="left" colspan="1" rowspan="1">1.1</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">C<sub>α</sub>-negative</td>
+<td align="left" colspan="1" rowspan="1">4.6</td>
+<td align="left" colspan="1" rowspan="1">0.1<xref ref-type="table-fn" rid="nt104">b</xref></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">polar-negative</td>
+<td align="left" colspan="1" rowspan="1">5.1</td>
+<td align="left" colspan="1" rowspan="1">0.1<xref ref-type="table-fn" rid="nt104">b</xref></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">apolar-negative</td>
+<td align="left" colspan="1" rowspan="1">5.8</td>
+<td align="left" colspan="1" rowspan="1">0.1<xref ref-type="table-fn" rid="nt104">b</xref></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">apolar-positive</td>
+<td align="left" colspan="1" rowspan="1">6.5</td>
+<td align="left" colspan="1" rowspan="1">0.1<xref ref-type="table-fn" rid="nt104">b</xref></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">positive-positive</td>
+<td align="left" colspan="1" rowspan="1">5.5</td>
+<td align="left" colspan="1" rowspan="1">0.1<xref ref-type="table-fn" rid="nt104">b</xref></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">negative-negative</td>
+<td align="left" colspan="1" rowspan="1">5.5</td>
+<td align="left" colspan="1" rowspan="1">0.1<xref ref-type="table-fn" rid="nt104">b</xref></td>
+</tr>
+</tbody>
+</table></alternatives><table-wrap-foot><fn id="nt103"><label>a</label><p>Each tabulated potential had a softer core repulsion <xref ref-type="bibr" rid="pcbi.1000827-Chiu1">[16]</xref> than the LJ function with the same minimum.</p></fn><fn id="nt104"><label>b</label><p>Potential was predominantly repulsive. See <xref ref-type="supplementary-material" rid="pcbi.1000827.s001">Figure S1</xref>.</p></fn></table-wrap-foot></table-wrap></sec><sec id="s3b">
+<title>Role of CG temperature</title>
+<p>As is well appreciated from atomistic MD studies with continuum solvent, surface tension can be an elusive property in implicit solvent models and is often approximated as a simple function of the solvent accessible surface area <xref ref-type="bibr" rid="pcbi.1000827-Chen1">[59]</xref>. Typically, CG potentials for protein folding are scaled by a constant factor so that <italic>T</italic><sub>f</sub> matches experiment <xref ref-type="bibr" rid="pcbi.1000827-Karanicolas1">[50]</xref>. Simulations with the present CG model exhibited a higher effective surface tension than atomistic simulations at the same temperature, as evidenced by a greater tendency to aggregate. As inferred from CG-MD of polyalanine aggregation, increasing the temperature can reproduce the pairwise RDF of nonbonded alpha carbons from atomistic MD (<xref ref-type="fig" rid="pcbi-1000827-g003">Figure 3</xref>). In the statistical mechanical framework of MS-CG temperature corrections should not be needed <xref ref-type="bibr" rid="pcbi.1000827-Noid1">[35]</xref>, and their use may reflect inadequacies in the pairwise CG potential or basis set employed in the optimization <xref ref-type="bibr" rid="pcbi.1000827-Noid2">[36]</xref>, <xref ref-type="bibr" rid="pcbi.1000827-Johnson1">[60]</xref>. Excessive peptide aggregation with pairwise CG PMFs has been reduced elsewhere by the inclusion of explicit waters <xref ref-type="bibr" rid="pcbi.1000827-Villa1">[61]</xref>, <xref ref-type="bibr" rid="pcbi.1000827-Villa2">[62]</xref>. The high sampling temperature, peptide concentration and sequences of the atomistic reference simulations are also sources of error in the developed CG potential.</p>
+<fig id="pcbi-1000827-g003" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000827.g003</object-id><label>Figure 3</label><caption>
+<title>Temperature correspondence in CG-MD simulations of polyalanine aggregation.</title>
+<p>The RDF between nonbonded alpha carbons is shown for CG simulations at 300 K (black dash), 498 K (pink), 600 K (blue) and 700 K (cyan) and atomistic simulations at 300 K (solid black) and 498 K (red).</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000827.g003" xlink:type="simple"/></fig>
+<p>To determine the appropriate temperature range for protein simulations using the CG model the temperature dependence of the heat capacity was computed for Trpzip, Trp-cage and AdK from CG-REMD folding simulations (<xref ref-type="fig" rid="pcbi-1000827-g004">Figure 4</xref>). Unfolding transitions occurred at temperatures as low as 200 K. CG simulations of the native state were therefore performed at 0.6 <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000827.e009" xlink:type="simple"/></inline-formula>, where <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000827.e010" xlink:type="simple"/></inline-formula> is the folding transition temperature defined by the maximum in the heat capacity observed in Trpzip simulations. CG Trpzip/Trp-cage exhibited transition temperatures of 218 K/198 K, equal in ratio to their experimental melting temperatures 345 K/315 K <xref ref-type="bibr" rid="pcbi.1000827-Cochran1">[54]</xref>, <xref ref-type="bibr" rid="pcbi.1000827-Neidigh1">[55]</xref>. The designed miniprotein Trpzip has an experimental melting temperature typical of natural proteins and was therefore used to define the reference temperature of the CG model. Since the CG potential is less “rough” than the actual atomistic potential, it is perhaps not surprising that a lower temperature is required for the CG protein simulations in order to effectively compensate for this feature of the model. Nevertheless, this aspect of the modeling is not completely satisfactory and will therefore be a focus of future improvements in the methodology and CG model.</p>
+<fig id="pcbi-1000827-g004" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000827.g004</object-id><label>Figure 4</label><caption>
+<title>Heat capacity as a function of temperature for CG-REMD folding simulations of Trpzip (A), Trp-cage (B) and AdK (C).</title>
+<p>The reference temperature for the CG model is taken to be the folding transition temperature observed for Trpzip (<inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000827.e011" xlink:type="simple"/></inline-formula>), defined by the maximum in <italic>C</italic><sub>v</sub>(<italic>T</italic>). Line and data point thickness denote error.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000827.g004" xlink:type="simple"/></fig></sec><sec id="s3c">
+<title>CG-REMD folding landscapes</title>
+<p>Parallel tempering was used to characterize the CG energy landscape. Performing REMD over a wide temperature range (100–700 K) starting independently from unfolded as well as native states enabled near-canonical sampling of low energy conformations, some of which were non-native as judged from structural RMSD. Ensemble simulations were used to evaluate the accuracy of the force field in identifying the native structure as the global energy minimum.</p>
+<p>The sampling convergence of CG-REMD folding simulations can be seen in <xref ref-type="fig" rid="pcbi-1000827-g005">Figure 5</xref>. Trpzip simulations starting from the unfolded state (7.1 Å C<sub>α</sub> RMSD from native) rapidly convert to and exchange between three stable native-like conformations (<xref ref-type="fig" rid="pcbi-1000827-g005">Figures 5A,D</xref>). The conformation with 2.5 Å C<sub>α</sub> RMSD consists of a proper β-hairpin backbone, though the Tryptophan zipper occurs on the wrong side of the β-sheet (<xref ref-type="supplementary-material" rid="pcbi.1000827.s004">Figure S4A</xref>). The 4 Å and 6 Å C<sub>α</sub> RMSD conformations contain the Trp zipper on the correct side of the β-hairpin but allowed for distortions in the backbone of varying degrees (<xref ref-type="supplementary-material" rid="pcbi.1000827.s004">Figure S4A</xref>). Trp-cage simulations starting from the unfolded state (6.4 Å C<sub>α</sub> RMSD from native) converge to a stable global minimum with 5.8 Å C<sub>α</sub> RMSD (<xref ref-type="fig" rid="pcbi-1000827-g005">Figures 5B,E</xref>). The global minimum resembles the native helix-coil motif, albeit with a distorted helix (<xref ref-type="supplementary-material" rid="pcbi.1000827.s004">Figure S4B</xref>).</p>
+<fig id="pcbi-1000827-g005" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000827.g005</object-id><label>Figure 5</label><caption>
+<title>CG-REMD folding landscapes collected at 0.6 <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000827.e012" xlink:type="simple"/></inline-formula>.</title>
+<p>The C<sub>α</sub> RMSD from the native state is shown versus composite simulation time (A–C) or potential energy (D–F) for independent simulations (different colors) of Trpzip (A,D), Trp-cage (B,E) and AdK (C,F). Simulations were started from extended and native structures as well as their common final configuration in the case of Trp-cage. AdK simulations were started from extended, closed, open and a mixture of open and extended states; RMSD is computed from the closed crystal structure. Large structural changes between snapshots, such as folded to misfolded transitions, correspond to conformational exchanges between replicas of similar energy.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000827.g005" xlink:type="simple"/></fig>
+<p>In contrast to 12-residue Trpzip and 20-residue Trp-cage, the CG energy landscape of 214-residue AdK is indicative of a frustrated random heteropolymer. Conformations with C<sub>α</sub> RMSDs spanning the range 7–19 Å were visited with equal frequency once simulations starting from different initial structures converged (<xref ref-type="fig" rid="pcbi-1000827-g005">Figures 5C,F</xref>). The non-two-state nature of AdK's glassy folding transition is underscored by the lack of a sharp melting transition in the heat capacity curve (<xref ref-type="fig" rid="pcbi-1000827-g004">Figure 4</xref>). Such deviations from the funneled landscape attributed to evolved proteins <xref ref-type="bibr" rid="pcbi.1000827-Onuchic1">[2]</xref> emphasize the role of non-native interactions (contacts not present in the native state), whose repulsive nature must be underestimated in the coarse-grained representation. The high degeneracy of AdK's global energy minimum compared to Trpzip and Trp-cage is likely due to its large domain size and vast number of possible backbone conformations.</p>
+</sec><sec id="s3d">
+<title>Native state is stable in CG-MD</title>
+<p>Successes and failures in <italic>ab initio</italic> folding notwithstanding, the goal of the present work was the construction of a CG force field for modeling proteins in known structural states. Conventional constant temperature simulations were therefore performed at 0.6 <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000827.e013" xlink:type="simple"/></inline-formula> to assess the stability of the native state under CG-MD. Trpzip and Trp-cage exhibited structural stability with final configurations of 2.6 Å and 4.7 Å C<sub>α</sub> RMSD, respectively, from the starting native structure after 200 ns of CG-MD (<xref ref-type="fig" rid="pcbi-1000827-g006">Figure 6</xref>). A slight bimodal distribution was observed in RMSD, but this was mainly due to fraying in the residues at the N- and C-termini (<xref ref-type="fig" rid="pcbi-1000827-g007">Figures 7A,B</xref>).</p>
+<fig id="pcbi-1000827-g006" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000827.g006</object-id><label>Figure 6</label><caption>
+<title>Native state CG-MD at 0.6 <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000827.e014" xlink:type="simple"/></inline-formula>.</title>
+<p>The instantaneous C<sub>α</sub> RMSD from the native state is shown for simulations starting from the native structure for Trpzip (A) and Trp-cage (B). By comparison, all-atom MD of Trpzip at 300 K yielded a mean C<sub>α</sub> RMSD of 0.8±0.2 Å.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000827.g006" xlink:type="simple"/></fig><fig id="pcbi-1000827-g007" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000827.g007</object-id><label>Figure 7</label><caption>
+<title>Backbone C<sub>α</sub>-trace structures at the end of native state CG-MD at 0.6 <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000827.e015" xlink:type="simple"/></inline-formula> for Trpzip (A), Trp-cage (B) and AdK (C).</title>
+<p>Starting native structures are shown in cyan for Trpzip/Trp-cage and as a ribbon diagram for closed AdK. Tryptophan and proline sidechains are shown in blue (A,B). The LID/NMP domains of the AdK endpoint conformations are colored green/pink for simulations starting from open AdK and orange/blue for simulations starting from closed AdK.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000827.g007" xlink:type="simple"/></fig></sec><sec id="s3e">
+<title>Conformational transition in AdK</title>
+<p>Atomistic simulation was recently used in conjunction with umbrella sampling to characterize the oft-studied open to closed conformational transition of AdK <xref ref-type="bibr" rid="pcbi.1000827-Arora1">[63]</xref>, in which the LID and NMP domains undergo a 14 Å relative hinge bending motion about the CORE domain. The study suggested in the absence of ligand AdK fluctuates about the open crystal structure, occasionally visiting conformations near the closed crystal structure. Binding of an adenosine polyphosphate substrate analog to the arginine-lined active site was observed to dramatically stabilize the closed conformation. To examine the suitability of the current CG force field for studying conformational transitions, CG-MD was performed for 200 ns at 0.6 <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000827.e016" xlink:type="simple"/></inline-formula> starting from both the open and closed AdK structures.</p>
+<p>The CORE, LID and NMP domains are stable in CG-MD of both the open and closed states (<xref ref-type="fig" rid="pcbi-1000827-g008">Figure 8</xref>), each of which individually has a structural RMSD between the open and closed crystal structures of less than 2 Å when domains are superimposed. The open to closed conformational transition was monitored in AdK simulations using the reaction coordinate Δ<italic>D</italic><sub>RMSD</sub> <xref ref-type="bibr" rid="pcbi.1000827-Arora1">[63]</xref>, defined as the RMSD of backbone and sidechain sites from the open state minus their RMSD from the closed state. The simulation of the closed conformer undergoes limited structural rearrangement (4.6 Å final C<sub>α</sub> RMSD to starting structure) compared to the simulation starting from the open conformer (8.0 Å final C<sub>α</sub> RMSD to starting structure). Indeed, values of the reaction coordinate approach positive Δ<italic>D</italic><sub>RMSD</sub> (become more closed-like) in simulations of the open state (<xref ref-type="fig" rid="pcbi-1000827-g009">Figure 9</xref>).</p>
+<fig id="pcbi-1000827-g008" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000827.g008</object-id><label>Figure 8</label><caption>
+<title>Native state CG-MD at 0.6 <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000827.e017" xlink:type="simple"/></inline-formula> starting from the open (A) and closed (B) forms of AdK.</title>
+<p>The instantaneous C<sub>α</sub> RMSD from the starting structure is shown for the CORE (dark gray), LID (light gray) and NMP (black) domains.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000827.g008" xlink:type="simple"/></fig><fig id="pcbi-1000827-g009" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000827.g009</object-id><label>Figure 9</label><caption>
+<title>Conformational transition in AdK expressed as the difference in RMSD from the open and closed states.</title>
+<p>Simulations starting from the open structure (black circles), Δ<italic>D</italic><sub>RMSD</sub> = −7 Å, are seen to partly converge toward simulations starting from the closed structure (gray trace), Δ<italic>D</italic><sub>RMSD</sub> = +7 Å.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000827.g009" xlink:type="simple"/></fig>
+<p>The dynamics of AdK in CG-MD can be understood in terms of surface tension. Just as polyalanine exhibited an exaggerated surface tension for a given temperature, Trpzip, Trp-cage and AdK are more compact than the native structure under low temperature folding conditions in CG simulations (<xref ref-type="table" rid="pcbi-1000827-t003">Table 3</xref>). Even under unfolding conditions, the peptide chains are disordered in compacted globules up to temperatures exceeding 500 K (<xref ref-type="table" rid="pcbi-1000827-t003">Table 3</xref>), as can also be seen by the long tails in the heat capacity curves up to 700 K (<xref ref-type="fig" rid="pcbi-1000827-g004">Figure 4</xref>). Under CG-MD, the open state of AdK rapidly adopts a more compact and stable conformation that is structurally similar to the closed crystal structure, though the LID and NMP domains are not in contact. The simulation starting from the closed state also adopts a compacted structure in which the LID and NMP domains are in closer contact (<xref ref-type="fig" rid="pcbi-1000827-g007">Figure 7C</xref>).</p>
+<table-wrap id="pcbi-1000827-t003" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000827.t003</object-id><label>Table 3</label><caption>
+<title>Distributions of radius of gyration in folding simulations.</title>
+</caption><!--===== Grouping alternate versions of objects =====--><alternatives><graphic id="pcbi-1000827-t003-3" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000827.t003" xlink:type="simple"/><table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" colspan="1" rowspan="1">Protein</td>
+<td align="left" colspan="1" rowspan="1"><italic>T</italic> (K)</td>
+<td align="left" colspan="1" rowspan="1">&lt;<italic>R</italic><sub>g</sub>/<inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000827.e018" xlink:type="simple"/></inline-formula>&gt;<xref ref-type="table-fn" rid="nt105">a</xref></td>
+<td align="left" colspan="1" rowspan="1">σ</td>
+<td align="left" colspan="1" rowspan="1">Resolution<xref ref-type="table-fn" rid="nt106">b</xref></td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" colspan="1" rowspan="1">Trpzip</td>
+<td align="left" colspan="1" rowspan="1">148</td>
+<td align="left" colspan="1" rowspan="1">0.86</td>
+<td align="left" colspan="1" rowspan="1">0.02</td>
+<td align="left" colspan="1" rowspan="1">CG</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">Trp-cage</td>
+<td align="left" colspan="1" rowspan="1">148</td>
+<td align="left" colspan="1" rowspan="1">0.86</td>
+<td align="left" colspan="1" rowspan="1">0.01</td>
+<td align="left" colspan="1" rowspan="1">CG</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">AdK<sup>closed</sup></td>
+<td align="left" colspan="1" rowspan="1">139</td>
+<td align="left" colspan="1" rowspan="1">0.91</td>
+<td align="left" colspan="1" rowspan="1">0.01</td>
+<td align="left" colspan="1" rowspan="1">CG</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>Trpzip</italic></td>
+<td align="left" colspan="1" rowspan="1"><italic>300</italic></td>
+<td align="left" colspan="1" rowspan="1"><italic>0.97</italic></td>
+<td align="left" colspan="1" rowspan="1"><italic>0.02</italic></td>
+<td align="left" colspan="1" rowspan="1"><italic>AA</italic></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">Trpzip</td>
+<td align="left" colspan="1" rowspan="1">366</td>
+<td align="left" colspan="1" rowspan="1">0.98</td>
+<td align="left" colspan="1" rowspan="1">0.05</td>
+<td align="left" colspan="1" rowspan="1">CG</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">Trp-cage</td>
+<td align="left" colspan="1" rowspan="1">366</td>
+<td align="left" colspan="1" rowspan="1">0.98</td>
+<td align="left" colspan="1" rowspan="1">0.04</td>
+<td align="left" colspan="1" rowspan="1">CG</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">AdK<sup>closed</sup></td>
+<td align="left" colspan="1" rowspan="1">361</td>
+<td align="left" colspan="1" rowspan="1">0.97</td>
+<td align="left" colspan="1" rowspan="1">0.03</td>
+<td align="left" colspan="1" rowspan="1">CG</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>Trpzip</italic></td>
+<td align="left" colspan="1" rowspan="1"><italic>498</italic></td>
+<td align="left" colspan="1" rowspan="1"><italic>1.16</italic></td>
+<td align="left" colspan="1" rowspan="1"><italic>0.17</italic></td>
+<td align="left" colspan="1" rowspan="1"><italic>AA</italic></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><italic>Trp-cage</italic></td>
+<td align="left" colspan="1" rowspan="1"><italic>498</italic></td>
+<td align="left" colspan="1" rowspan="1"><italic>1.28</italic></td>
+<td align="left" colspan="1" rowspan="1"><italic>0.20</italic></td>
+<td align="left" colspan="1" rowspan="1"><italic>AA</italic></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">Trpzip</td>
+<td align="left" colspan="1" rowspan="1">540</td>
+<td align="left" colspan="1" rowspan="1">1.10</td>
+<td align="left" colspan="1" rowspan="1">0.13</td>
+<td align="left" colspan="1" rowspan="1">CG</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">Trp-cage</td>
+<td align="left" colspan="1" rowspan="1">540</td>
+<td align="left" colspan="1" rowspan="1">1.12</td>
+<td align="left" colspan="1" rowspan="1">0.14</td>
+<td align="left" colspan="1" rowspan="1">CG</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">AdK<sup>closed</sup></td>
+<td align="left" colspan="1" rowspan="1">546</td>
+<td align="left" colspan="1" rowspan="1">1.77</td>
+<td align="left" colspan="1" rowspan="1">0.33</td>
+<td align="left" colspan="1" rowspan="1">CG</td>
+</tr>
+</tbody>
+</table></alternatives><table-wrap-foot><fn id="nt105"><label>a</label><p>Radius of gyration is shown relative to that of the native structure (<inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000827.e019" xlink:type="simple"/></inline-formula>).</p></fn><fn id="nt106"><label>b</label><p>CG-REMD simulations are shown compared to <italic>all-atom (AA)</italic> reference simulations at selected temperatures.</p></fn></table-wrap-foot></table-wrap>
+<p>Besides surface tension, other possible explanations exist for the incorrect relative arrangement of the LID and NMP domains during CG simulations. The negatively charged substrate needed to counteract repulsion in the arginine-lined binding pocket is absent from the simulations. Experimentally, the LID and NMP domains exhibit reduced thermodynamic stability compared to the CORE domain <xref ref-type="bibr" rid="pcbi.1000827-Rundqvist1">[64]</xref>. The open to closed conformational transition requires many subtle backbone rearrangements in the hinge regions connecting the three domains <xref ref-type="bibr" rid="pcbi.1000827-Rundqvist1">[64]</xref>–<xref ref-type="bibr" rid="pcbi.1000827-Whitford1">[66]</xref>. Lastly, an alternative explanation is that the reduced bulk of the low resolution interaction sites in the CG model fails to fully account for the effect of the underlying atomistic steric clashes. Structural compaction in peptide coarse-graining has been reported previously <xref ref-type="bibr" rid="pcbi.1000827-Thorpe1">[42]</xref>. The reduced temperature used in the simulations could also be a contributor to structural compaction.</p>
+<p>In the case of large conformational transitions in which the rearrangement can be viewed as a local refolding event <xref ref-type="bibr" rid="pcbi.1000827-Rundqvist1">[64]</xref>, <xref ref-type="bibr" rid="pcbi.1000827-Whitford1">[66]</xref>, the CG force field could potentially benefit from the addition of a loose elastic network to maintain the backbone topology analogous to previous work <xref ref-type="bibr" rid="pcbi.1000827-Periole1">[10]</xref>, <xref ref-type="bibr" rid="pcbi.1000827-Korkut2">[67]</xref>. Backbone restraints could also be used in order to predict sidechain configurations for low resolution experimental structures in which only the backbone C<sub>α</sub> positions are known. Indeed, parallel tempering of Trpzip, Trp-cage and AdK with fixed native backbone topology yielded improved distributions of native sidechain configurations (<xref ref-type="table" rid="pcbi-1000827-t004">Table 4</xref>, <xref ref-type="supplementary-material" rid="pcbi.1000827.s005">Figure S5</xref>). The fact that sidechain packing is reproduced to within 3 Å RMSD suggests that the CG description constitutes a reasonable representation of sidechain sterics and polarity, although higher resolution models <xref ref-type="bibr" rid="pcbi.1000827-Han1">[15]</xref>, <xref ref-type="bibr" rid="pcbi.1000827-Gopal1">[68]</xref> are expected to improve accuracy.</p>
+<table-wrap id="pcbi-1000827-t004" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000827.t004</object-id><label>Table 4</label><caption>
+<title>Distributions of sidechain RMSD in native state simulations at 0.6 <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000827.e020" xlink:type="simple"/></inline-formula>.</title>
+</caption><!--===== Grouping alternate versions of objects =====--><alternatives><graphic id="pcbi-1000827-t004-4" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000827.t004" xlink:type="simple"/><table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" colspan="1" rowspan="1">Domain</td>
+<td align="left" colspan="1" rowspan="1">Fixed backbone&lt;RMSD<sup>SC</sup>&gt;</td>
+<td align="left" colspan="1" rowspan="1">σ<sub>RMSD</sub></td>
+<td align="left" colspan="1" rowspan="1">Unrestrained&lt;RMSD<sup>SC</sup>&gt;</td>
+<td align="left" colspan="1" rowspan="1">σ<sub>RMSD</sub></td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" colspan="1" rowspan="1">Trpzip<xref ref-type="table-fn" rid="nt108">b</xref></td>
+<td align="left" colspan="1" rowspan="1">3.5</td>
+<td align="left" colspan="1" rowspan="1">0.3</td>
+<td align="left" colspan="1" rowspan="1">6.6</td>
+<td align="left" colspan="1" rowspan="1">0.5</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">Trp-cage</td>
+<td align="left" colspan="1" rowspan="1">3.6</td>
+<td align="left" colspan="1" rowspan="1">0.2</td>
+<td align="left" colspan="1" rowspan="1">6.8</td>
+<td align="left" colspan="1" rowspan="1">0.8</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">CORE<sup>open</sup></td>
+<td align="left" colspan="1" rowspan="1">3.0</td>
+<td align="left" colspan="1" rowspan="1">0.2</td>
+<td align="left" colspan="1" rowspan="1">6.0</td>
+<td align="left" colspan="1" rowspan="1">0.3</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">LID<sup>open</sup></td>
+<td align="left" colspan="1" rowspan="1">2.9</td>
+<td align="left" colspan="1" rowspan="1">0.2</td>
+<td align="left" colspan="1" rowspan="1">5.0</td>
+<td align="left" colspan="1" rowspan="1">0.4</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">NMP<sup>open</sup></td>
+<td align="left" colspan="1" rowspan="1">2.9</td>
+<td align="left" colspan="1" rowspan="1">0.2</td>
+<td align="left" colspan="1" rowspan="1">5.2</td>
+<td align="left" colspan="1" rowspan="1">0.4</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">CORE<sup>closed</sup></td>
+<td align="left" colspan="1" rowspan="1">2.9</td>
+<td align="left" colspan="1" rowspan="1">0.1</td>
+<td align="left" colspan="1" rowspan="1">5.0</td>
+<td align="left" colspan="1" rowspan="1">0.2</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">LID<sup>closed</sup></td>
+<td align="left" colspan="1" rowspan="1">3.3</td>
+<td align="left" colspan="1" rowspan="1">0.2</td>
+<td align="left" colspan="1" rowspan="1">4.4</td>
+<td align="left" colspan="1" rowspan="1">0.1</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">NMP<sup>closed</sup></td>
+<td align="left" colspan="1" rowspan="1">2.9</td>
+<td align="left" colspan="1" rowspan="1">0.2</td>
+<td align="left" colspan="1" rowspan="1">6.6</td>
+<td align="left" colspan="1" rowspan="1">0.3</td>
+</tr>
+</tbody>
+</table></alternatives><table-wrap-foot><fn id="nt107"><label>a</label><p>The RMSD (Å) of sidechain (SC) sites from the native structure was monitored in native state simulations with fixed backbone (CG-REMD) or no restraints (CG-MD).</p></fn><fn id="nt108"><label>b</label><p>By comparison, unrestrained all-atom MD of Trpzip at 300 K yielded a mean sidechain RMSD of 2.5±0.5 Å.</p></fn></table-wrap-foot></table-wrap></sec></sec><sec id="s4">
+<title>Discussion</title>
+<p>A CG force field for the amino acids was developed based on microsecond all-atom simulations of peptide folding and association. Previously, the accuracy of CG functions has been assessed based on their ability to identify the native state as lower in potential energy than decoy structures <xref ref-type="bibr" rid="pcbi.1000827-DeVane1">[14]</xref>, <xref ref-type="bibr" rid="pcbi.1000827-Majek1">[25]</xref>, <xref ref-type="bibr" rid="pcbi.1000827-Buchete1">[27]</xref>, <xref ref-type="bibr" rid="pcbi.1000827-Betancourt2">[30]</xref>. The present CG model was evaluated based on analysis of folding energy landscapes generated from REMD simulations. Non-native structures were observed with energies similar to that of the native state, which is in accord with replica exchange investigations of other CG representations for folding <xref ref-type="bibr" rid="pcbi.1000827-Bereau1">[18]</xref> and structure prediction <xref ref-type="bibr" rid="pcbi.1000827-Shmygelska1">[69]</xref>. Deviations from the funneled landscape indicate that the smooth landscape of CG interactions may fail to capture the effective repulsion between non-native contacts in the rugged atomistic landscape. The current sidechain centric model emphasizes sequence at the expense of detailed backbone hydrogen bonding, both of which in conjunction have been shown to determine the tertiary structure of proteins <xref ref-type="bibr" rid="pcbi.1000827-deAraujo1">[70]</xref>. At the other end of the spectrum, backbone centric models contain three or more backbone interaction sites per residue to incorporate geometric hydrogen bond constraints at the expense of sidechain rotamers, which are represented by a singe site at the beta carbon position <xref ref-type="bibr" rid="pcbi.1000827-Bereau1">[18]</xref>, <xref ref-type="bibr" rid="pcbi.1000827-Irback1">[21]</xref>, <xref ref-type="bibr" rid="pcbi.1000827-Takada1">[22]</xref>. Backbone centric models have successfully predicted the structure of certain α-helix bundles excepting topological degeneracy. In contrast, the current sidechain centric approach consisting of a single site per backbone and multiple sites per sidechain was demonstrated to be more useful in simulating the dynamics of diverse helical and β-sheet proteins.</p>
+<p>The limited success of pairwise alpha carbon interactions in folding prediction can be attributed to the fact that pairwise additive interactions at the residue level are not adequate to describe the highly cooperative process of protein folding <xref ref-type="bibr" rid="pcbi.1000827-Chan1">[71]</xref>. C<sub>α</sub> Gō models, for instance, require the introduction of either a desolvation barrier <xref ref-type="bibr" rid="pcbi.1000827-Ferguson1">[72]</xref> or native dihedral backbone angular restraints to ensure a cooperative folding transition <xref ref-type="bibr" rid="pcbi.1000827-Hills1">[7]</xref>. Desolvation of neighboring water molecules can be considered a multibody effect, as can the angular dependence of backbone hydrogen bonding. That the pairwise potentials developed and tested in the present work lack an appreciable desolvation barrier (<xref ref-type="fig" rid="pcbi-1000827-g002">Figures 2</xref>, <xref ref-type="supplementary-material" rid="pcbi.1000827.s003">S3</xref>) offers an additional explanation for their limited success in folding prediction.</p>
+<p>Misfolded structures have also been observed with high probability in atomistic folding studies employing implicit solvent models <xref ref-type="bibr" rid="pcbi.1000827-Chen1">[59]</xref>, <xref ref-type="bibr" rid="pcbi.1000827-Lei1">[73]</xref>–<xref ref-type="bibr" rid="pcbi.1000827-Irback2">[75]</xref>, suggesting surface tension and solvation effects are critical in reproducing the energy landscape of proteins. With current computational resources, the ability of modern all-atom force fields to capture the energy landscape can now be assessed in explicit solvent simulations using replica exchange methods <xref ref-type="bibr" rid="pcbi.1000827-Kannan1">[76]</xref>, <xref ref-type="bibr" rid="pcbi.1000827-Nymeyer1">[77]</xref>. Obtaining the delicate balance between α-helix and β-sheet energetics is challenging, but ongoing all-atom efforts are showing promise <xref ref-type="bibr" rid="pcbi.1000827-Best1">[78]</xref>, <xref ref-type="bibr" rid="pcbi.1000827-Freddolino1">[79]</xref>.</p>
+<p>Whether a single CG force field is capable of reproducing the full thermodynamic landscape of structurally diverse proteins remains a difficult question. A variety of useful CG models do exist for studying protein folding mechanisms <xref ref-type="bibr" rid="pcbi.1000827-Hills1">[7]</xref> and structure prediction <xref ref-type="bibr" rid="pcbi.1000827-Bradley1">[3]</xref>. The present work describes a general CG force field derived from molecular-scale interactions that is capable of stable native state simulations without the need for additional structural restraints, an improvement over existing CG models. Improved structural stability can be attributed to the explicit treatment of sidechain rotamers, their steric packing and energetics, resulting in the native state being a local energy minimum. Future refinements of the model to better describe backbone hydrogen bonding are expected to improve its performance. However, the current force field may also prove useful in the modeling of protein complexes and their transitions.</p>
+</sec><sec id="s5">
+<title>Supporting Information</title>
+<supplementary-material id="pcbi.1000827.s001" mimetype="image/tiff" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000827.s001" xlink:type="simple"><label>Figure S1</label><caption>
+<p><bold>Backbone angle distributions.</bold> (A) The inverted probability distributions are shown for all individual angles between three successive alpha carbons in all-atom MD of all proteins studied: Ala15, Leu15, Trpzip and Trp-cage. (B) The inverted distribution is shown for each backbone angle in Trpzip under CG-REMD at 0.6 <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000827.e021" xlink:type="simple"/></inline-formula>. Angles corresponding to α-helix (red) or β-sheet (black) structures could be weakly stabilized with equal probability. A single fourth order polynomial potential (green) was employed for all backbone angles in the CG model independent of sequence.</p>
+<p>(0.32 MB TIF)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1000827.s002" mimetype="image/tiff" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000827.s002" xlink:type="simple"><label>Figure S2</label><caption>
+<p><bold>Backbone dihedral distributions.</bold> (A) The inverted probability distribution is shown for the pseudodihedral angle between four successive alpha carbons in all-atom MD of Ala15 at 300 K (black) and 498 K (green). Sequence dependent statistical potentials derived from the PDB were scaled by a constant factor so that good agreement is obtained for polyalanine (pink). The result from CG-MD of Ala15 is shown in blue. (B) The inverted backbone pseudodihedral distribution of polyleucine in all-atom MD (black) is well predicted by the scaled statistical potential (pink).</p>
+<p>(0.29 MB TIF)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1000827.s003" mimetype="image/tiff" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000827.s003" xlink:type="simple"><label>Figure S3</label><caption>
+<p><bold>Tabulated nonbonded interaction potentials employed between CG site types.</bold> (A) Five potentials are shown for alpha carbons paired with the five site types: alpha carbon (green), apolar (black), polar (cyan), positive (blue) and negative (red). (B) Similarly, potentials are shown for apolar sites paired with four site types: apolar (black), polar (cyan), positive (blue) and negative (red). (C) Potentials are shown for polar sites paired with site types: polar (cyan), positive (blue) and negative (red). (D) Lastly, potentials are shown for three site pairings: positive-positive (blue), positive-negative (red) and negative-negative (pink). All 15 potentials have softer core repulsions than an LJ potential. Model parameters are available upon request.</p>
+<p>(0.48 MB TIF)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1000827.s004" mimetype="image/tiff" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000827.s004" xlink:type="simple"><label>Figure S4</label><caption>
+<p><bold>Energy minima in CG-REMD folding simulations.</bold> Representative snapshots are shown corresponding to the three energy minima of Trpzip (A) and the global minimum of Trp-cage (B), along with their C<sub>α</sub> RMSD from the native structure. Backbone C<sub>α</sub>-traces are shown in yellow along with Trp, Pro and other sidechains in blue. The Trp-cage native structure is shown in cyan (backbone). Snapshots were obtained from CG-REMD folding simulations collected at 0.6 <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000827.e022" xlink:type="simple"/></inline-formula> (see <xref ref-type="fig" rid="pcbi-1000827-g005">Figure 5</xref>).</p>
+<p>(1.99 MB TIF)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1000827.s005" mimetype="image/tiff" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000827.s005" xlink:type="simple"><label>Figure S5</label><caption>
+<p><bold>Sidechain prediction with CG-REMD.</bold> The final configuration is shown after 80 ns of CG-REMD at 0.6 <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000827.e023" xlink:type="simple"/></inline-formula> with the backbone (yellow) fixed in open AdK. Sidechain sites (blue) exhibited final RMSDs of 2.9 Å, 3.1 Å and 2.9 Å from their starting native positions (cyan) for the LID (A), CORE (B) and NMP (C) domains, respectively.</p>
+<p>(2.35 MB TIF)</p>
+</caption></supplementary-material></sec></body>
+<back>
+<ack>
+<p>We are grateful to Ian Thorpe and Hans Andersen for valuable discussions. Computing time was provided by the National Science Foundation through TeraGrid resources administered by the National Institute for Computational Sciences, the Texas Advanced Computing Center and the National Center for Supercomputing Applications.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1000827-Yue1"><label>1</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Yue</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Fiebig</surname><given-names>KM</given-names></name>
+<name name-style="western"><surname>Thomas</surname><given-names>PD</given-names></name>
+<name name-style="western"><surname>Chan</surname><given-names>HS</given-names></name>
+<name name-style="western"><surname>Shakhnovich</surname><given-names>EI</given-names></name>
+<etal/></person-group>             <year>1995</year>             <article-title>A test of lattice protein folding algorithms.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>92</volume>             <fpage>325</fpage>             <lpage>329</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Onuchic1"><label>2</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Onuchic</surname><given-names>JN</given-names></name>
+<name name-style="western"><surname>Wolynes</surname><given-names>PG</given-names></name>
+</person-group>             <year>2004</year>             <article-title>Theory of protein folding.</article-title>             <source>Curr Opin Struct Biol</source>             <volume>14</volume>             <fpage>70</fpage>             <lpage>75</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Bradley1"><label>3</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Bradley</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Misura</surname><given-names>KMS</given-names></name>
+<name name-style="western"><surname>Baker</surname><given-names>D</given-names></name>
+</person-group>             <year>2005</year>             <article-title>Toward high-resolution de novo structure prediction for small proteins.</article-title>             <source>Science</source>             <volume>309</volume>             <fpage>1868</fpage>             <lpage>1871</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Tama1"><label>4</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Tama</surname><given-names>F</given-names></name>
+<name name-style="western"><surname>Brooks</surname><given-names>CL</given-names><suffix>III</suffix></name>
+</person-group>             <year>2006</year>             <article-title>Symmetry, form, and shape: Guiding principles for robustness in macromolecular machines.</article-title>             <source>Annu Rev Biophys Biomol Struct</source>             <volume>35</volume>             <fpage>115</fpage>             <lpage>133</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Taketomi1"><label>5</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Taketomi</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Ueda</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Go</surname><given-names>N</given-names></name>
+</person-group>             <year>1975</year>             <article-title>Studies on protein folding, unfolding and fluctuations by computer simulation. 1. Effect of specific amino acid sequence represented by specific inter-unit interactions.</article-title>             <source>Int J Pept Protein Res</source>             <volume>7</volume>             <fpage>445</fpage>             <lpage>459</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Clementi1"><label>6</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Clementi</surname><given-names>C</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Coarse-grained models of protein folding: Toy models or predictive tools?</article-title>             <source>Curr Opin Struct Biol</source>             <volume>18</volume>             <fpage>10</fpage>             <lpage>15</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Hills1"><label>7</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Hills</surname><given-names>RD</given-names><suffix>Jr</suffix></name>
+<name name-style="western"><surname>Brooks</surname><given-names>CL</given-names><suffix>III</suffix></name>
+</person-group>             <year>2009</year>             <article-title>Insights from coarse-grained Go models for protein folding and dynamics.</article-title>             <source>Int J Mol Sci</source>             <volume>10</volume>             <fpage>889</fpage>             <lpage>905</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Bond1"><label>8</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Bond</surname><given-names>PJ</given-names></name>
+<name name-style="western"><surname>Sansom</surname><given-names>MSP</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Insertion and assembly of membrane proteins via simulation.</article-title>             <source>J Am Chem Soc</source>             <volume>128</volume>             <fpage>2697</fpage>             <lpage>2704</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Monticelli1"><label>9</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Monticelli</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Kandasamy</surname><given-names>SK</given-names></name>
+<name name-style="western"><surname>Periole</surname><given-names>X</given-names></name>
+<name name-style="western"><surname>Larson</surname><given-names>RG</given-names></name>
+<name name-style="western"><surname>Tieleman</surname><given-names>DP</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>The MARTINI coarse-grained force field: Extension to proteins.</article-title>             <source>J Chem Theory Comput</source>             <volume>4</volume>             <fpage>819</fpage>             <lpage>834</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Periole1"><label>10</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Periole</surname><given-names>X</given-names></name>
+<name name-style="western"><surname>Cavalli</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Marrink</surname><given-names>SJ</given-names></name>
+<name name-style="western"><surname>Ceruso</surname><given-names>MA</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Combining an elastic network with a coarse-grained molecular force field: Structure, dynamics, and intermolecular recognition.</article-title>             <source>J Chem Theory Comput</source>             <volume>5</volume>             <fpage>2531</fpage>             <lpage>2543</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Shih1"><label>11</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Shih</surname><given-names>AY</given-names></name>
+<name name-style="western"><surname>Arkhipov</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Freddolino</surname><given-names>PL</given-names></name>
+<name name-style="western"><surname>Schulten</surname><given-names>K</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Coarse grained protein-lipid model with application to lipoprotein particles.</article-title>             <source>J Phys Chem B</source>             <volume>110</volume>             <fpage>3674</fpage>             <lpage>3684</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Yap1"><label>12</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Yap</surname><given-names>EH</given-names></name>
+<name name-style="western"><surname>Fawzi</surname><given-names>NL</given-names></name>
+<name name-style="western"><surname>Head-Gordon</surname><given-names>T</given-names></name>
+</person-group>             <year>2008</year>             <article-title>A coarse-grained alpha-carbon protein model with anisotropic hydrogen-bonding.</article-title>             <source>Proteins</source>             <volume>70</volume>             <fpage>626</fpage>             <lpage>638</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Korkut1"><label>13</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Korkut</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Hendrickson</surname><given-names>WA</given-names></name>
+</person-group>             <year>2009</year>             <article-title>A force field for virtual atom molecular mechanics of proteins.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>106</volume>             <fpage>15667</fpage>             <lpage>15672</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-DeVane1"><label>14</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>DeVane</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Shinoda</surname><given-names>W</given-names></name>
+<name name-style="western"><surname>Moore</surname><given-names>PB</given-names></name>
+<name name-style="western"><surname>Klein</surname><given-names>ML</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Transferable coarse grain nonbonded interaction model for amino acids.</article-title>             <source>J Chem Theory Comput</source>             <volume>5</volume>             <fpage>2115</fpage>             <lpage>2124</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Han1"><label>15</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Han</surname><given-names>W</given-names></name>
+<name name-style="western"><surname>Wan</surname><given-names>CK</given-names></name>
+<name name-style="western"><surname>Wu</surname><given-names>YD</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Toward a coarse-grained protein model coupled with a coarse-grained solvent model: Solvation free energies of amino acid side chains.</article-title>             <source>J Chem Theory Comput</source>             <volume>4</volume>             <fpage>1891</fpage>             <lpage>1901</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Chiu1"><label>16</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Chiu</surname><given-names>SW</given-names></name>
+<name name-style="western"><surname>Scott</surname><given-names>HL</given-names></name>
+<name name-style="western"><surname>Jakobsson</surname><given-names>E</given-names></name>
+</person-group>             <year>2010</year>             <article-title>A coarse-grained model based on morse potential for water and n-alkanes.</article-title>             <source>J Chem Theory Comput</source>             <volume>6</volume>             <fpage>851</fpage>             <lpage>863</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Marrink1"><label>17</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Marrink</surname><given-names>SJ</given-names></name>
+<name name-style="western"><surname>Risselada</surname><given-names>HJ</given-names></name>
+<name name-style="western"><surname>Yefimov</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Tieleman</surname><given-names>DP</given-names></name>
+<name name-style="western"><surname>de Vries</surname><given-names>AH</given-names></name>
+</person-group>             <year>2007</year>             <article-title>The MARTINI force field: Coarse grained model for biomolecular simulations.</article-title>             <source>J Phys Chem B</source>             <volume>111</volume>             <fpage>7812</fpage>             <lpage>7824</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Bereau1"><label>18</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Bereau</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Deserno</surname><given-names>M</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Generic coarse-grained model for protein folding and aggregation.</article-title>             <source>J Chem Phys</source>             <volume>130</volume>             <fpage>235106</fpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Das1"><label>19</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Das</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Matysiak</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Clementi</surname><given-names>C</given-names></name>
+</person-group>             <year>2005</year>             <article-title>Balancing energy and entropy: A minimalist model for the characterization of protein folding landscapes.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>102</volume>             <fpage>10141</fpage>             <lpage>10146</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Maupetit1"><label>20</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Maupetit</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Tuffery</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Derreumaux</surname><given-names>P</given-names></name>
+</person-group>             <year>2007</year>             <article-title>A coarse-grained protein force field for folding and structure prediction.</article-title>             <source>Proteins</source>             <volume>69</volume>             <fpage>394</fpage>             <lpage>408</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Irback1"><label>21</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Irback</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Sjunnesson</surname><given-names>F</given-names></name>
+<name name-style="western"><surname>Wallin</surname><given-names>S</given-names></name>
+</person-group>             <year>2000</year>             <article-title>Three-helix-bundle protein in a Ramachandran model.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>97</volume>             <fpage>13614</fpage>             <lpage>13618</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Takada1"><label>22</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Takada</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Luthey-Schulten</surname><given-names>Z</given-names></name>
+<name name-style="western"><surname>Wolynes</surname><given-names>PG</given-names></name>
+</person-group>             <year>1999</year>             <article-title>Folding dynamics with nonadditive forces: A simulation study of a designed helical protein and a random heteropolymer.</article-title>             <source>J Chem Phys</source>             <volume>110</volume>             <fpage>11616</fpage>             <lpage>11629</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Betancourt1"><label>23</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Betancourt</surname><given-names>MR</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Another look at the conditions for the extraction of protein knowledge-based potentials.</article-title>             <source>Proteins</source>             <volume>76</volume>             <fpage>72</fpage>             <lpage>85</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Mukherjee1"><label>24</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Mukherjee</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Bhimalapuram</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Bagchi</surname><given-names>B</given-names></name>
+</person-group>             <year>2005</year>             <article-title>Orientation-dependent potential of mean force for protein folding.</article-title>             <source>J Chem Phys</source>             <volume>123</volume>             <fpage>14901</fpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Majek1"><label>25</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Majek</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Elber</surname><given-names>R</given-names></name>
+</person-group>             <year>2009</year>             <article-title>A coarse-grained potential for fold recognition and molecular dynamics simulations of proteins.</article-title>             <source>Proteins</source>             <volume>76</volume>             <fpage>822</fpage>             <lpage>836</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Wu1"><label>26</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Wu</surname><given-names>YH</given-names></name>
+<name name-style="western"><surname>Lu</surname><given-names>MY</given-names></name>
+<name name-style="western"><surname>Chen</surname><given-names>MZ</given-names></name>
+<name name-style="western"><surname>Li</surname><given-names>JL</given-names></name>
+<name name-style="western"><surname>Ma</surname><given-names>JP</given-names></name>
+</person-group>             <year>2007</year>             <article-title>OPUS-Ca: A knowledge-based potential function requiring only C alpha positions.</article-title>             <source>Protein Sci</source>             <volume>16</volume>             <fpage>1449</fpage>             <lpage>1463</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Buchete1"><label>27</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Buchete</surname><given-names>NV</given-names></name>
+<name name-style="western"><surname>Straub</surname><given-names>JE</given-names></name>
+<name name-style="western"><surname>Thirumalai</surname><given-names>D</given-names></name>
+</person-group>             <year>2004</year>             <article-title>Development of novel statistical potentials for protein fold recognition.</article-title>             <source>Curr Opin Struct Biol</source>             <volume>14</volume>             <fpage>225</fpage>             <lpage>232</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Makowski1"><label>28</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Makowski</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Sobolewski</surname><given-names>E</given-names></name>
+<name name-style="western"><surname>Czaplewski</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Oldziej</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Liwo</surname><given-names>A</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>Simple physics-based analytical formulas for the potentials of mean force for the interaction of amino acid side chains in water. IV. Pairs of different hydrophobic side chains.</article-title>             <source>J Phys Chem B</source>             <volume>112</volume>             <fpage>11385</fpage>             <lpage>11395</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-He1"><label>29</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>He</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Xiao</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Liwo</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Scheraga</surname><given-names>HA</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Exploring the parameter space of the coarse-grained UNRES force field by random search: Selecting a transferable medium-resolution force field.</article-title>             <source>J Comput Chem</source>             <volume>30</volume>             <fpage>2127</fpage>             <lpage>2135</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Betancourt2"><label>30</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Betancourt</surname><given-names>MR</given-names></name>
+<name name-style="western"><surname>Omovie</surname><given-names>SJ</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Pairwise energies for polypeptide coarse-grained models derived from atomic force fields.</article-title>             <source>J Chem Phys</source>             <volume>130</volume>             <fpage>195103</fpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Basdevant1"><label>31</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Basdevant</surname><given-names>N</given-names></name>
+<name name-style="western"><surname>Borgis</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Ha-Duong</surname><given-names>T</given-names></name>
+</person-group>             <year>2007</year>             <article-title>A coarse-grained protein-protein potential derived from an all-atom force field.</article-title>             <source>J Phys Chem B</source>             <volume>111</volume>             <fpage>9390</fpage>             <lpage>9399</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Ayton1"><label>32</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Ayton</surname><given-names>GS</given-names></name>
+<name name-style="western"><surname>Noid</surname><given-names>WG</given-names></name>
+<name name-style="western"><surname>Voth</surname><given-names>GA</given-names></name>
+</person-group>             <year>2007</year>             <article-title>Systematic coarse graining of biomolecular and soft-matter systems.</article-title>             <source>MRS Bull</source>             <volume>32</volume>             <fpage>929</fpage>             <lpage>934</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Izvekov1"><label>33</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Izvekov</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Voth</surname><given-names>GA</given-names></name>
+</person-group>             <year>2005</year>             <article-title>Multiscale coarse graining of liquid-state systems.</article-title>             <source>J Chem Phys</source>             <volume>123</volume>             <fpage>134105</fpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Izvekov2"><label>34</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Izvekov</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Voth</surname><given-names>GA</given-names></name>
+</person-group>             <year>2005</year>             <article-title>A multiscale coarse-graining method for biomolecular systems.</article-title>             <source>J Phys Chem B</source>             <volume>109</volume>             <fpage>2469</fpage>             <lpage>2473</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Noid1"><label>35</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Noid</surname><given-names>WG</given-names></name>
+<name name-style="western"><surname>Chu</surname><given-names>JW</given-names></name>
+<name name-style="western"><surname>Ayton</surname><given-names>GS</given-names></name>
+<name name-style="western"><surname>Krishna</surname><given-names>V</given-names></name>
+<name name-style="western"><surname>Izvekov</surname><given-names>S</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>The multiscale coarse-graining method. I. A rigorous bridge between atomistic and coarse-grained models.</article-title>             <source>J Chem Phys</source>             <volume>128</volume>             <fpage>244114</fpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Noid2"><label>36</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Noid</surname><given-names>WG</given-names></name>
+<name name-style="western"><surname>Chu</surname><given-names>JW</given-names></name>
+<name name-style="western"><surname>Ayton</surname><given-names>GS</given-names></name>
+<name name-style="western"><surname>Voth</surname><given-names>GA</given-names></name>
+</person-group>             <year>2007</year>             <article-title>Multiscale coarse-graining and structural correlations: Connections to liquid-state theory.</article-title>             <source>J Phys Chem B</source>             <volume>111</volume>             <fpage>4116</fpage>             <lpage>4127</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Noid3"><label>37</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Noid</surname><given-names>WG</given-names></name>
+<name name-style="western"><surname>Liu</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Wang</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Chu</surname><given-names>JW</given-names></name>
+<name name-style="western"><surname>Ayton</surname><given-names>GS</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>The multiscale coarse-graining method. II. Numerical implementation for coarse-grained molecular models.</article-title>             <source>J Chem Phys</source>             <volume>128</volume>             <fpage>244115</fpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Reith1"><label>38</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Reith</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Putz</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Muller-Plathe</surname><given-names>F</given-names></name>
+</person-group>             <year>2003</year>             <article-title>Deriving effective mesoscale potentials from atomistic simulations.</article-title>             <source>J Comput Chem</source>             <volume>24</volume>             <fpage>1624</fpage>             <lpage>1636</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Lyubartsev1"><label>39</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Lyubartsev</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Laaksonen</surname><given-names>A</given-names></name>
+</person-group>             <year>1995</year>             <article-title>Calculation of effective interaction potentials from radial distribution functions: A reverse Monte Carlo approach.</article-title>             <source>Phys Rev E</source>             <volume>52</volume>             <fpage>3730</fpage>             <lpage>3737</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Murtola1"><label>40</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Murtola</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Bunker</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Vattulainen</surname><given-names>I</given-names></name>
+<name name-style="western"><surname>Deserno</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Karttunen</surname><given-names>M</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Multiscale modeling of emergent materials: Biological and soft matter.</article-title>             <source>Phys Chem Chem Phys</source>             <volume>11</volume>             <fpage>1869</fpage>             <lpage>1892</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Liu1"><label>41</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Liu</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Shi</surname><given-names>Q</given-names></name>
+<name name-style="western"><surname>Daume</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Voth</surname><given-names>GA</given-names></name>
+</person-group>             <year>2008</year>             <article-title>A Bayesian statistics approach to multiscale coarse graining.</article-title>             <source>J Chem Phys</source>             <volume>129</volume>             <fpage>214114</fpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Thorpe1"><label>42</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Thorpe</surname><given-names>IF</given-names></name>
+<name name-style="western"><surname>Zhou</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Voth</surname><given-names>GA</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Peptide folding using multiscale coarse-grained models.</article-title>             <source>J Phys Chem B</source>             <volume>112</volume>             <fpage>13079</fpage>             <lpage>13090</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Zhou1"><label>43</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Zhou</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Thorpe</surname><given-names>IF</given-names></name>
+<name name-style="western"><surname>Izvekov</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Voth</surname><given-names>GA</given-names></name>
+</person-group>             <year>2007</year>             <article-title>Coarse-grained peptide modeling using a systematic multiscale approach.</article-title>             <source>Biophys J</source>             <volume>92</volume>             <fpage>4289</fpage>             <lpage>4303</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Sugita1"><label>44</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Sugita</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Okamoto</surname><given-names>Y</given-names></name>
+</person-group>             <year>1999</year>             <article-title>Replica-exchange molecular dynamics method for protein folding.</article-title>             <source>Chem Phys Lett</source>             <volume>314</volume>             <fpage>141</fpage>             <lpage>151</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Kwiecinska1"><label>45</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Kwiecinska</surname><given-names>JI</given-names></name>
+<name name-style="western"><surname>Cieplak</surname><given-names>M</given-names></name>
+</person-group>             <year>2005</year>             <article-title>Chirality and protein folding.</article-title>             <source>J Phys: Condens Matter</source>             <volume>17</volume>             <fpage>S1565</fpage>             <lpage>S1580</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Tozzini1"><label>46</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Tozzini</surname><given-names>V</given-names></name>
+<name name-style="western"><surname>Rocchia</surname><given-names>W</given-names></name>
+<name name-style="western"><surname>McCammon</surname><given-names>JA</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Mapping all-atom models onto one-bead coarse-grained models: General properties and applications to a minimal polypeptide model.</article-title>             <source>J Chem Theory Comput</source>             <volume>2</volume>             <fpage>667</fpage>             <lpage>673</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Izvekov3"><label>47</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Izvekov</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Voth</surname><given-names>GA</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Solvent-free lipid bilayer model using multiscale coarse-graining.</article-title>             <source>J Phys Chem B</source>             <volume>113</volume>             <fpage>4443</fpage>             <lpage>4455</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Lu1"><label>48</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Lu</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Voth</surname><given-names>GA</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Systematic coarse-graining of a multicomponent lipid bilayer.</article-title>             <source>J Phys Chem B</source>             <volume>113</volume>             <fpage>1501</fpage>             <lpage>1510</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Hess1"><label>49</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Hess</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Kutzner</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>van der Spoel</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Lindahl</surname><given-names>E</given-names></name>
+</person-group>             <year>2008</year>             <article-title>GROMACS 4: Algorithms for highly efficient, load-balanced, and scalable molecular simulation.</article-title>             <source>J Chem Theory Comput</source>             <volume>4</volume>             <fpage>435</fpage>             <lpage>447</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Karanicolas1"><label>50</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Karanicolas</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Brooks</surname><given-names>CL</given-names><suffix>III</suffix></name>
+</person-group>             <year>2002</year>             <article-title>The origins of asymmetry in the folding transition states of protein L and protein G.</article-title>             <source>Protein Sci</source>             <volume>11</volume>             <fpage>2351</fpage>             <lpage>2361</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Kaminski1"><label>51</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Kaminski</surname><given-names>GA</given-names></name>
+<name name-style="western"><surname>Friesner</surname><given-names>RA</given-names></name>
+<name name-style="western"><surname>Tirado-Rives</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Jorgensen</surname><given-names>WL</given-names></name>
+</person-group>             <year>2001</year>             <article-title>Evaluation and reparametrization of the OPLS-AA force field for proteins via comparison with accurate quantum chemical calculations on peptides.</article-title>             <source>J Phys Chem B</source>             <volume>105</volume>             <fpage>6474</fpage>             <lpage>6487</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Qian1"><label>52</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Qian</surname><given-names>HJ</given-names></name>
+<name name-style="western"><surname>Carbone</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Chen</surname><given-names>X</given-names></name>
+<name name-style="western"><surname>Karimi-Varzaneh</surname><given-names>HA</given-names></name>
+<name name-style="western"><surname>Liew</surname><given-names>CC</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>Temperature-transferable coarse-grained potentials for ethylbenzene, polystyrene, and their mixtures.</article-title>             <source>Macromolecules</source>             <volume>41</volume>             <fpage>9919</fpage>             <lpage>9929</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Zhu1"><label>53</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Zhu</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Elcock</surname><given-names>AH</given-names></name>
+</person-group>             <year>2010</year>             <article-title>A complete thermodynamic characterization of electrostatic and hydrophobic associations in the temperature range 0 to 100 C from explicit-solvent molecular dynamics simulations.</article-title>             <source>J Chem Theory Comput</source>             <volume>6</volume>             <fpage>1293</fpage>             <lpage>1306</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Cochran1"><label>54</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Cochran</surname><given-names>AG</given-names></name>
+<name name-style="western"><surname>Skelton</surname><given-names>NJ</given-names></name>
+<name name-style="western"><surname>Starovasnik</surname><given-names>MA</given-names></name>
+</person-group>             <year>2001</year>             <article-title>Tryptophan zippers: Stable, monomeric beta-hairpins.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>98</volume>             <fpage>5578</fpage>             <lpage>5583</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Neidigh1"><label>55</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Neidigh</surname><given-names>JW</given-names></name>
+<name name-style="western"><surname>Fesinmeyer</surname><given-names>RM</given-names></name>
+<name name-style="western"><surname>Andersen</surname><given-names>NH</given-names></name>
+</person-group>             <year>2002</year>             <article-title>Designing a 20-residue protein.</article-title>             <source>Nat Struct Biol</source>             <volume>9</volume>             <fpage>425</fpage>             <lpage>430</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Lu2"><label>56</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Lu</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Izvekov</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Das</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Andersen</surname><given-names>HC</given-names></name>
+<name name-style="western"><surname>Voth</surname><given-names>GA</given-names></name>
+</person-group>             <year>2010</year>             <article-title>Efficient, regularized, and scalable algorithms for multiscale coarse-graining.</article-title>             <source>J Chem Theory Comput</source>             <volume>6</volume>             <fpage>954</fpage>             <lpage>965</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Patriksson1"><label>57</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Patriksson</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>van der Spoel</surname><given-names>D</given-names></name>
+</person-group>             <year>2008</year>             <article-title>A temperature predictor for parallel tempering simulations.</article-title>             <source>Phys Chem Chem Phys</source>             <volume>10</volume>             <fpage>2073</fpage>             <lpage>2077</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Humphrey1"><label>58</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Humphrey</surname><given-names>W</given-names></name>
+<name name-style="western"><surname>Dalke</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Schulten</surname><given-names>K</given-names></name>
+</person-group>             <year>1996</year>             <article-title>VMD: Visual molecular dynamics.</article-title>             <source>J Mol Graph</source>             <volume>14</volume>             <fpage>33</fpage>             <lpage>38</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Chen1"><label>59</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Chen</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Brooks</surname><given-names>CL</given-names><suffix>III</suffix></name>
+</person-group>             <year>2008</year>             <article-title>Implicit modeling of nonpolar solvation for simulating protein folding and conformational transitions.</article-title>             <source>Phys Chem Chem Phys</source>             <volume>10</volume>             <fpage>471</fpage>             <lpage>481</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Johnson1"><label>60</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Johnson</surname><given-names>ME</given-names></name>
+<name name-style="western"><surname>Head-Gordon</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Louis</surname><given-names>AA</given-names></name>
+</person-group>             <year>2007</year>             <article-title>Representability problems for coarse-grained water potentials.</article-title>             <source>J Chem Phys</source>             <volume>126</volume>             <fpage>144509</fpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Villa1"><label>61</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Villa</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Peter</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>van der Vegt</surname><given-names>NFA</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Self-assembling dipeptides: Conformational sampling in solvent-free coarse-grained simulation.</article-title>             <source>Phys Chem Chem Phys</source>             <volume>11</volume>             <fpage>2077</fpage>             <lpage>2086</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Villa2"><label>62</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Villa</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>van der Vegt</surname><given-names>NFA</given-names></name>
+<name name-style="western"><surname>Peter</surname><given-names>C</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Self-assembling dipeptides: Including solvent degrees of freedom in a coarse-grained model.</article-title>             <source>Phys Chem Chem Phys</source>             <volume>11</volume>             <fpage>2068</fpage>             <lpage>2076</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Arora1"><label>63</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Arora</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Brooks</surname><given-names>CL</given-names><suffix>III</suffix></name>
+</person-group>             <year>2007</year>             <article-title>Large-scale allosteric conformational transitions of adenylate kinase appear to involve a population-shift mechanism.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>104</volume>             <fpage>18496</fpage>             <lpage>18501</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Rundqvist1"><label>64</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Rundqvist</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Aden</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Sparrman</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Wallgren</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Olsson</surname><given-names>U</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>Noncooperative folding of subdomains in adenylate kinase.</article-title>             <source>Biochemistry</source>             <volume>48</volume>             <fpage>1911</fpage>             <lpage>1927</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-HenzlerWildman1"><label>65</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Henzler-Wildman</surname><given-names>KA</given-names></name>
+<name name-style="western"><surname>Lei</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Thai</surname><given-names>V</given-names></name>
+<name name-style="western"><surname>Kerns</surname><given-names>SJ</given-names></name>
+<name name-style="western"><surname>Karplus</surname><given-names>M</given-names></name>
+<etal/></person-group>             <year>2007</year>             <article-title>A hierarchy of timescales in protein dynamics is linked to enzyme catalysis.</article-title>             <source>Nature</source>             <volume>450</volume>             <fpage>913</fpage>             <lpage>916</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Whitford1"><label>66</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Whitford</surname><given-names>PC</given-names></name>
+<name name-style="western"><surname>Miyashita</surname><given-names>O</given-names></name>
+<name name-style="western"><surname>Levy</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Onuchic</surname><given-names>JN</given-names></name>
+</person-group>             <year>2007</year>             <article-title>Conformational transitions of adenylate kinase: Switching by cracking.</article-title>             <source>J Mol Biol</source>             <volume>366</volume>             <fpage>1661</fpage>             <lpage>1671</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Korkut2"><label>67</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Korkut</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Hendrickson</surname><given-names>WA</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Computation of conformational transitions in proteins by virtual atom molecular mechanics as validated in application to adenylate kinase.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>106</volume>             <fpage>15673</fpage>             <lpage>15678</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Gopal1"><label>68</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Gopal</surname><given-names>SM</given-names></name>
+<name name-style="western"><surname>Mukherjee</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Cheng</surname><given-names>YM</given-names></name>
+<name name-style="western"><surname>Feig</surname><given-names>M</given-names></name>
+</person-group>             <year>2010</year>             <article-title>PRIMO/PRIMONA: A coarse-grained model for proteins and nucleic acids that preserves near-atomistic accuracy.</article-title>             <source>Proteins</source>             <volume>78</volume>             <fpage>1266</fpage>             <lpage>1281</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Shmygelska1"><label>69</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Shmygelska</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Levitt</surname><given-names>M</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Generalized ensemble methods for de novo structure prediction.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>106</volume>             <fpage>1415</fpage>             <lpage>1420</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-deAraujo1"><label>70</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>de Araujo</surname><given-names>AFP</given-names></name>
+<name name-style="western"><surname>Gomes</surname><given-names>ALC</given-names></name>
+<name name-style="western"><surname>Bursztyn</surname><given-names>AA</given-names></name>
+<name name-style="western"><surname>Shakhnovich</surname><given-names>EI</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Native atomic burials, supplemented by physically motivated hydrogen bond constraints, contain sufficient information to determine the tertiary structure of small globular proteins.</article-title>             <source>Proteins</source>             <volume>70</volume>             <fpage>971</fpage>             <lpage>983</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Chan1"><label>71</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Chan</surname><given-names>HS</given-names></name>
+<name name-style="western"><surname>Shimizu</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Kaya</surname><given-names>H</given-names></name>
+</person-group>             <year>2004</year>             <article-title>Cooperativity principles in protein folding.</article-title>             <source>Methods Enzymol</source>             <volume>380</volume>             <fpage>350</fpage>             <lpage>379</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Ferguson1"><label>72</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Ferguson</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Liu</surname><given-names>ZR</given-names></name>
+<name name-style="western"><surname>Chan</surname><given-names>HS</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Desolvation barrier effects are a likely contributor to the remarkable diversity in the folding rates of small proteins.</article-title>             <source>J Mol Biol</source>             <volume>389</volume>             <fpage>619</fpage>             <lpage>636</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Lei1"><label>73</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Lei</surname><given-names>HX</given-names></name>
+<name name-style="western"><surname>Wu</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Liu</surname><given-names>HG</given-names></name>
+<name name-style="western"><surname>Duan</surname><given-names>Y</given-names></name>
+</person-group>             <year>2007</year>             <article-title>Folding free-energy landscape of villin headpiece subdomain from molecular dynamics simulations.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>104</volume>             <fpage>4925</fpage>             <lpage>4930</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Verma1"><label>74</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Verma</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Wenzel</surname><given-names>W</given-names></name>
+</person-group>             <year>2009</year>             <article-title>A free-energy approach for all-atom protein simulation.</article-title>             <source>Biophys J</source>             <volume>96</volume>             <fpage>3483</fpage>             <lpage>3494</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Irback2"><label>75</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Irback</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Mitternacht</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Mohanty</surname><given-names>S</given-names></name>
+</person-group>             <year>2009</year>             <article-title>An effective all-atom potential for proteins.</article-title>             <source>PMC Biophys</source>             <volume>2</volume>             <fpage>2</fpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Kannan1"><label>76</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Kannan</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Zacharias</surname><given-names>M</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Folding simulations of Trp-cage mini protein in explicit solvent using biasing potential replica-exchange molecular dynamics simulations.</article-title>             <source>Proteins</source>             <volume>76</volume>             <fpage>448</fpage>             <lpage>460</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Nymeyer1"><label>77</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Nymeyer</surname><given-names>H</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Energy landscape of the Trpzip2 peptide.</article-title>             <source>J Phys Chem B</source>             <volume>113</volume>             <fpage>8288</fpage>             <lpage>8295</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Best1"><label>78</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Best</surname><given-names>RB</given-names></name>
+<name name-style="western"><surname>Buchete</surname><given-names>NV</given-names></name>
+<name name-style="western"><surname>Hummer</surname><given-names>G</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Are current molecular dynamics force fields too helical?</article-title>             <source>Biophys J</source>             <volume>95</volume>             <fpage>L7</fpage>             <lpage>L9</lpage>          </element-citation></ref>
+<ref id="pcbi.1000827-Freddolino1"><label>79</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Freddolino</surname><given-names>PL</given-names></name>
+<name name-style="western"><surname>Park</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Roux</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Schulten</surname><given-names>K</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Force field bias in protein folding simulations.</article-title>             <source>Biophys J</source>             <volume>96</volume>             <fpage>3772</fpage>             <lpage>3780</lpage>          </element-citation></ref>
+</ref-list>
+
+</back>
+</article>

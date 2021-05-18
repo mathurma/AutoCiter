@@ -1,0 +1,998 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="3.0" xml:lang="en">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">ploscomp</journal-id>
+<journal-title-group>
+<journal-title>PLOS Computational Biology</journal-title>
+</journal-title-group>
+<issn pub-type="ppub">1553-734X</issn>
+<issn pub-type="epub">1553-7358</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pcbi.1004207</article-id>
+<article-id pub-id-type="publisher-id">PCOMPBIOL-D-14-02229</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+</article-categories>
+<title-group>
+<article-title>Thermal Stabilization of Dihydrofolate Reductase Using Monte Carlo Unfolding Simulations and Its Functional Consequences</article-title>
+<alt-title alt-title-type="running-head">Thermal Stabilization of DHFR</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" equal-contrib="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Tian</surname>
+<given-names>Jian</given-names>
+</name>
+<xref rid="aff001" ref-type="aff"><sup>1</sup></xref>
+<xref rid="aff002" ref-type="aff"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" equal-contrib="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Woodard</surname>
+<given-names>Jaie C.</given-names>
+</name>
+<xref rid="aff003" ref-type="aff"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Whitney</surname>
+<given-names>Anna</given-names>
+</name>
+<xref rid="aff001" ref-type="aff"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Shakhnovich</surname>
+<given-names>Eugene I.</given-names>
+</name>
+<xref rid="aff001" ref-type="aff"><sup>1</sup></xref>
+<xref rid="cor001" ref-type="corresp">*</xref>
+</contrib>
+</contrib-group>
+<aff id="aff001"><label>1</label> <addr-line>Department of Chemistry and Chemical Biology, Harvard University, Cambridge, Massachusetts, United States of America</addr-line></aff>
+<aff id="aff002"><label>2</label> <addr-line>Biotechnology Research Institute, Chinese Academy of Agricultural Sciences, Beijing, China</addr-line></aff>
+<aff id="aff003"><label>3</label> <addr-line>Graduate Program in Biophysics, Harvard University, Cambridge, Massachusetts, United States of America</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Briggs</surname>
+<given-names>James M.</given-names>
+</name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>University of Houston, United States of America</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<fn fn-type="con" id="contrib001">
+<p>Conceived and designed the experiments: EIS JCW JT. Performed the experiments: JT JCW. Analyzed the data: EIS JT JCW. Contributed reagents/materials/analysis tools: AW. Wrote the paper: EIS JT JCW.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">shakhnovich@chemistry.harvard.edu</email></corresp>
+</author-notes>
+<pub-date pub-type="epub">
+<day>23</day>
+<month>4</month>
+<year>2015</year>
+</pub-date>
+<pub-date pub-type="collection">
+<month>4</month>
+<year>2015</year>
+</pub-date>
+<volume>11</volume>
+<issue>4</issue>
+<elocation-id>e1004207</elocation-id>
+<history>
+<date date-type="received">
+<day>11</day>
+<month>12</month>
+<year>2014</year>
+</date>
+<date date-type="accepted">
+<day>20</day>
+<month>2</month>
+<year>2015</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2015</copyright-year>
+<copyright-holder>Tian et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pcbi.1004207" xlink:type="simple"/>
+<abstract>
+<p>Design of proteins with desired thermal properties is important for scientific and biotechnological applications. Here we developed a theoretical approach to predict the effect of mutations on protein stability from non-equilibrium unfolding simulations. We establish a relative measure based on apparent simulated melting temperatures that is independent of simulation length and, under certain assumptions, proportional to equilibrium stability, and we justify this theoretical development with extensive simulations and experimental data. Using our new method based on all-atom Monte-Carlo unfolding simulations, we carried out a saturating mutagenesis of Dihydrofolate Reductase (DHFR), a key target of antibiotics and chemotherapeutic drugs. The method predicted more than 500 stabilizing mutations, several of which were selected for detailed computational and experimental analysis. We find a highly significant correlation of <italic>r</italic> = 0.65–0.68 between predicted and experimentally determined melting temperatures and unfolding denaturant concentrations for WT DHFR and 42 mutants. The correlation between energy of the native state and experimental denaturation temperature was much weaker, indicating the important role of entropy in protein stability. The most stabilizing point mutation was D27F, which is located in the active site of the protein, rendering it inactive. However for the rest of mutations outside of the active site we observed a weak yet statistically significant <italic>positive</italic> correlation between thermal stability and catalytic activity indicating the lack of a stability-activity tradeoff for DHFR. By combining stabilizing mutations predicted by our method, we created a highly stable catalytically active <italic>E</italic>. <italic>coli</italic> DHFR mutant with measured denaturation temperature 7.2°C higher than WT. Prediction results for DHFR and several other proteins indicate that computational approaches based on unfolding simulations are useful as a general technique to discover stabilizing mutations.</p>
+</abstract>
+<abstract abstract-type="summary">
+<title>Author Summary</title>
+<p>All-atom molecular simulations have provided valuable insight into the workings of molecular machines and the folding and unfolding of proteins. However, commonly employed molecular dynamics simulations suffer from a limitation in accessible time scale, making it difficult to model large-scale unfolding events in a realistic amount of simulation time without employing unrealistically high temperatures. Here, we describe a rapid all-atom Monte Carlo simulation approach to simulate unfolding of the essential bacterial enzyme Dihydrofolate Reductase (DHFR) and all possible single point-mutants. We use these simulations to predict which mutants will be more thermodynamically stable (<italic>i</italic>.<italic>e</italic>., reside more often in the native folded state vs. the unfolded state) than the wild-type protein, and we confirm our predictions experimentally, creating several highly stable and catalytically active mutants. Thermally stable active engineered proteins can be used as a starting point in directed evolution experiments to evolve new functions on the background of this additional “reservoir of stability.” The stabilized enzyme may be able to accumulate a greater number of destabilizing yet functionally important mutations before unfolding, protease digestion, and aggregation abolish its activity.</p>
+</abstract>
+<funding-group>
+<funding-statement>This work was supported by NIH grant RO1 GM06870 (EIS) <ext-link ext-link-type="uri" xlink:href="http://www.nih.gov" xlink:type="simple">www.nih.gov</ext-link>; NIH Biophysics training grant (JCW) <ext-link ext-link-type="uri" xlink:href="http://www.nih.gov" xlink:type="simple">www.nih.gov</ext-link>; National High Technology Research and Development Program of China (863 Program, 2013AA102804)<ext-link ext-link-type="uri" xlink:href="http://www.most.gov.cn/eng/programmes1/200610/t20061009_36225.htm" xlink:type="simple">http://www.most.gov.cn/eng/programmes1/200610/t20061009_36225.htm</ext-link>; and the National Natural Science Foundation of China (NSFC, Grant no. 31371748)(JT) <ext-link ext-link-type="uri" xlink:href="http://www.nsfc.gov.cn" xlink:type="simple">http://www.nsfc.gov.cn</ext-link>. The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="10"/>
+<table-count count="2"/>
+<page-count count="27"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability" xlink:type="simple">
+<meta-name>Data Availability</meta-name>
+<meta-value>All relevant data are within the paper and its Supporting Information files.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>Protein stability is an important determinant of organismal fitness and is central to the process of enzyme design for industrial applications [<xref rid="pcbi.1004207.ref001" ref-type="bibr">1</xref>–<xref rid="pcbi.1004207.ref003" ref-type="bibr">3</xref>]. Most proteins must be folded to carry out their functions <italic>in vitro</italic> or <italic>in vivo</italic>. In addition, non-functional aggregation of unfolded or partially-unfolded proteins can have a deleterious effect on the fitness of an organism and can lead to protein aggregation diseases, which include Alzheimer’s and Huntington’s, in humans [<xref rid="pcbi.1004207.ref004" ref-type="bibr">4</xref>–<xref rid="pcbi.1004207.ref006" ref-type="bibr">6</xref>]. Aggregation of poorly folded proteins can also hamper protein production for research and technological purposes [<xref rid="pcbi.1004207.ref007" ref-type="bibr">7</xref>].</p>
+<p>While most mutations in a natural protein are destabilizing [<xref rid="pcbi.1004207.ref008" ref-type="bibr">8</xref>,<xref rid="pcbi.1004207.ref009" ref-type="bibr">9</xref>], biological proteins are not generally at their highest possible stability; some mutations will stabilize a protein, increasing the equilibrium population of the folded state [<xref rid="pcbi.1004207.ref010" ref-type="bibr">10</xref>–<xref rid="pcbi.1004207.ref012" ref-type="bibr">12</xref>]. This stabilization can be achieved by either slowing the rate of unfolding or speeding the rate of folding, depending on the role of the mutated residue in the folding nucleation process [<xref rid="pcbi.1004207.ref013" ref-type="bibr">13</xref>,<xref rid="pcbi.1004207.ref014" ref-type="bibr">14</xref>]. The unfolding temperature, <italic>T</italic><sub>m</sub>, at which the free energy of the folded and unfolded states coincide (Δ<italic>G</italic> = 0) serves as a common measure of protein stability. <italic>T</italic><sub>m</sub> is obtainable by experiment and, in theory, from simulation, although current molecular dynamics simulations are limited in their ability to capture full folding or unfolding trajectories of most proteins (except very small fast folding domains [<xref rid="pcbi.1004207.ref015" ref-type="bibr">15</xref>]) in a tractable amount of simulation time [<xref rid="pcbi.1004207.ref016" ref-type="bibr">16</xref>].</p>
+<p>Several computational methods to predict protein stability or changes in stability upon mutation have been developed and tested [<xref rid="pcbi.1004207.ref017" ref-type="bibr">17</xref>–<xref rid="pcbi.1004207.ref019" ref-type="bibr">19</xref>]. However, the performance of these popular methods is still relatively weak [<xref rid="pcbi.1004207.ref020" ref-type="bibr">20</xref>–<xref rid="pcbi.1004207.ref022" ref-type="bibr">22</xref>]. Other existing techniques to rationally design proteins with improved stability have involved optimization of charge-charge interactions [<xref rid="pcbi.1004207.ref023" ref-type="bibr">23</xref>], saturation mutagenesis of residues with high crystallographic B-factors [<xref rid="pcbi.1004207.ref024" ref-type="bibr">24</xref>], methods based on protein simulation and calculation of free energies [<xref rid="pcbi.1004207.ref025" ref-type="bibr">25</xref>–<xref rid="pcbi.1004207.ref027" ref-type="bibr">27</xref>] and comparison to homologous proteins including the ultra-stable proteins of thermophiles [<xref rid="pcbi.1004207.ref028" ref-type="bibr">28</xref>,<xref rid="pcbi.1004207.ref029" ref-type="bibr">29</xref>]. We reasoned that better predictions of mutant stability might be obtained by evaluating the unfolding temperature <italic>T</italic><sub>m</sub> in realistic yet computationally tractable simulations of protein unfolding.</p>
+<p>Here, we use a Monte Carlo protein unfolding approach (MCPU) with an all-atom simulation method and knowledge-based potential developed earlier in our lab [<xref rid="pcbi.1004207.ref016" ref-type="bibr">16</xref>,<xref rid="pcbi.1004207.ref030" ref-type="bibr">30</xref>,<xref rid="pcbi.1004207.ref031" ref-type="bibr">31</xref>] to simulate unfolding and predict melting temperatures for all possible single point mutants of <italic>E</italic>. <italic>coli</italic> Dihydrofolate Reductase (DHFR). DHFR is an essential enzyme in bacteria and higher organisms, and it is an important target of antibiotics [<xref rid="pcbi.1004207.ref032" ref-type="bibr">32</xref>] and anti-cancer drugs [<xref rid="pcbi.1004207.ref033" ref-type="bibr">33</xref>,<xref rid="pcbi.1004207.ref034" ref-type="bibr">34</xref>]. Its moderate size (18 kDa) makes it amenable to both simulation and experiment. As described in the Materials and Methods section, the Monte Carlo move set consists of rotations about torsional angles. At high temperature, the higher entropy of unfolded states overcomes the increase in energy due to loss of favorable contacts and torsional preferences, leading to unfolding. We experimentally determine melting temperatures and catalytic activities for several predicted stabilizing mutants, and for mutants combining multiple stabilizing mutations. Our approach allows us to identify several stabilized mutants of DHFR, and our prediction method marks an improvement over existing stability predictors such as Eris [<xref rid="pcbi.1004207.ref019" ref-type="bibr">19</xref>], FoldX [<xref rid="pcbi.1004207.ref017" ref-type="bibr">17</xref>], and PopMusic [<xref rid="pcbi.1004207.ref018" ref-type="bibr">18</xref>]. Simulations of non-DHFR proteins likewise indicated that our method is useful as a general approach to simulate protein unfolding and select stabilizing mutations.</p>
+</sec>
+<sec id="sec002" sec-type="results">
+<title>Results</title>
+<sec id="sec003">
+<title>Predicting the effects of mutations on protein stability from non-equilibrium unfolding simulations</title>
+<p>Ideally, protein stability for any sequence should be predicted in all-atom equilibrium simulations that cover multiple folding-unfolding events to determine equilibrium populations of various states of the protein. However, despite recent progress in <italic>ab initio</italic> simulations of protein folding [<xref rid="pcbi.1004207.ref015" ref-type="bibr">15</xref>] this goal is not attainable for proteins of realistic size and biological relevance. Currently, non-equilibrium unfolding simulations are within reach for sufficiently large proteins and the question arises whether such simulations can be used to assess mutational effects on protein stability, which is an equilibrium property. The following analysis provides an affirmative answer to this question, under certain assumptions. Although the idea of obtaining equilibrium free energy differences from non-equilibrium measurements is not new [<xref rid="pcbi.1004207.ref035" ref-type="bibr">35</xref>], and protein stabilities have been calculated from molecular dynamics simulations using the Jarzynski equality, <italic>e</italic>.<italic>g</italic>., [<xref rid="pcbi.1004207.ref036" ref-type="bibr">36</xref>–<xref rid="pcbi.1004207.ref038" ref-type="bibr">38</xref>], such simulations require application of an external steering force; in the present paper we report the use of multi-temperature Monte-Carlo unfolding simulations in obtaining protein stabilities.</p>
+<p>Assuming two-state unfolding kinetics [<xref rid="pcbi.1004207.ref039" ref-type="bibr">39</xref>–<xref rid="pcbi.1004207.ref042" ref-type="bibr">42</xref>] we can estimate the characteristic time required to cross the unfolding free energy barrier (in fact it is the time spent in the native state waiting for sufficient thermal fluctuation to cross the barrier) as:
+<disp-formula id="pcbi.1004207.e001">
+<alternatives>
+<graphic id="pcbi.1004207.e001g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004207.e001" xlink:type="simple"/>
+<mml:math display="block" id="M1" overflow="scroll">
+<mml:mrow><mml:msubsup><mml:mi>τ</mml:mi><mml:mi>u</mml:mi><mml:mrow><mml:mi>f</mml:mi><mml:mi>p</mml:mi></mml:mrow></mml:msubsup><mml:mo>=</mml:mo><mml:msub><mml:mi>τ</mml:mi><mml:mn>0</mml:mn></mml:msub><mml:msup><mml:mi>e</mml:mi><mml:mrow><mml:mfrac><mml:mrow><mml:mi mathvariant="normal">Δ</mml:mi><mml:msup><mml:mi>G</mml:mi><mml:mo>#</mml:mo></mml:msup></mml:mrow><mml:mrow><mml:mi>k</mml:mi><mml:mi>T</mml:mi></mml:mrow></mml:mfrac></mml:mrow></mml:msup></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(1)</label>
+</disp-formula>
+where <inline-formula id="pcbi.1004207.e002"><alternatives><graphic id="pcbi.1004207.e002g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004207.e002" xlink:type="simple"/><mml:math display="inline" id="M2" overflow="scroll"><mml:mrow><mml:msubsup><mml:mi>τ</mml:mi><mml:mi>u</mml:mi><mml:mrow><mml:mi>f</mml:mi><mml:mi>p</mml:mi></mml:mrow></mml:msubsup></mml:mrow></mml:math></alternatives></inline-formula> is first-passage time from the folded to the unfolded state, Δ<italic>G</italic><sup>#</sup> is the free energy barrier between the folded state and the transition state for unfolding (see <xref rid="pcbi.1004207.g001" ref-type="fig">Fig. 1</xref>) and <italic>τ</italic><sub>0</sub> is the elementary time constant. When simulation time <italic>τ</italic><sub><italic>sim</italic></sub> approaches <inline-formula id="pcbi.1004207.e003"><alternatives><graphic id="pcbi.1004207.e003g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004207.e003" xlink:type="simple"/><mml:math display="inline" id="M3" overflow="scroll"><mml:mrow><mml:msubsup><mml:mi>τ</mml:mi><mml:mi>u</mml:mi><mml:mrow><mml:mi>f</mml:mi><mml:mi>p</mml:mi></mml:mrow></mml:msubsup></mml:mrow></mml:math></alternatives></inline-formula> unfolding events are observed in simulation. The apparent “melting temperature”, <italic>i</italic>.<italic>e</italic>., the temperature at which unfolding events occur in simulations, therefore depends on the simulation time <italic>τ</italic><sub><italic>sim</italic></sub> according to Eq. (<xref rid="pcbi.1004207.e001" ref-type="disp-formula">1</xref>):
+<disp-formula id="pcbi.1004207.e004">
+<alternatives>
+<graphic id="pcbi.1004207.e004g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004207.e004" xlink:type="simple"/>
+<mml:math display="block" id="M4" overflow="scroll">
+<mml:mrow><mml:mi>k</mml:mi><mml:msubsup><mml:mi>T</mml:mi><mml:mi>m</mml:mi><mml:mrow><mml:mi>a</mml:mi><mml:mi>p</mml:mi><mml:mi>p</mml:mi></mml:mrow></mml:msubsup><mml:mo>=</mml:mo><mml:mfrac><mml:mrow><mml:mi mathvariant="normal">Δ</mml:mi><mml:msup><mml:mi>G</mml:mi><mml:mo>#</mml:mo></mml:msup></mml:mrow><mml:mrow><mml:mtext>ln</mml:mtext><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mfrac><mml:mrow><mml:msub><mml:mi>τ</mml:mi><mml:mrow><mml:mi>s</mml:mi><mml:mi>i</mml:mi><mml:mi>m</mml:mi></mml:mrow></mml:msub></mml:mrow><mml:mrow><mml:msub><mml:mi>τ</mml:mi><mml:mn>0</mml:mn></mml:msub></mml:mrow></mml:mfrac></mml:mrow><mml:mo>)</mml:mo></mml:mrow></mml:mrow></mml:mfrac></mml:mrow></mml:math>
+</alternatives>
+<label>(2)</label>
+</disp-formula></p>
+<fig id="pcbi.1004207.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004207.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>Two state diagram depicting the protein native state N, transition state TS, and unfolded state U.</title>
+<p>The WT energy landscape is shown in solid blue and the mutant energy landscape in dotted blue. The difference in free energy between WT folded and unfolded states, Δ<italic>G</italic><sub><italic>eq</italic></sub>, the change in this quantity upon mutation, ΔΔ<italic>G</italic><sub><italic>eq</italic></sub>, and the height of the transition state barrier relative to the native state for WT (Δ<italic>G</italic><sup>#</sup>) and mutant (<inline-formula id="pcbi.1004207.e005"><alternatives><graphic id="pcbi.1004207.e005g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004207.e005" xlink:type="simple"/><mml:math display="inline" id="M5" overflow="scroll"><mml:mrow><mml:mi mathvariant="normal">Δ</mml:mi><mml:msubsup><mml:mi>G</mml:mi><mml:mrow><mml:mtext>mut</mml:mtext></mml:mrow><mml:mo>#</mml:mo></mml:msubsup></mml:mrow></mml:math></alternatives></inline-formula>) are labeled.</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004207.g001" position="float" xlink:type="simple"/>
+</fig>
+<p>This analysis suggests that non-equilibrium first passage unfolding simulations are not suitable to predict the temperature at which a protein would unfold at equilibrium. However the effect of mutations on stability can be predicted from unfolding simulations. In order to see this we note that the mutational effect on protein stability ΔΔ<italic>G</italic> is related to the change in the unfolding free energy barrier ΔΔ<italic>G</italic><sup>#</sup>, the difference between the WT barrier height and the mutant barrier height, shown in <xref rid="pcbi.1004207.g001" ref-type="fig">Fig. 1</xref>.
+<disp-formula id="pcbi.1004207.e006">
+<alternatives>
+<graphic id="pcbi.1004207.e006g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004207.e006" xlink:type="simple"/>
+<mml:math display="block" id="M6" overflow="scroll">
+<mml:mrow><mml:mi mathvariant="normal">ΔΔ</mml:mi><mml:msubsup><mml:mi>G</mml:mi><mml:mi>i</mml:mi><mml:mo>#</mml:mo></mml:msubsup><mml:mo>=</mml:mo><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mn>1</mml:mn><mml:mo>−</mml:mo><mml:msub><mml:mi>φ</mml:mi><mml:mi>i</mml:mi></mml:msub></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mi mathvariant="normal">ΔΔ</mml:mi><mml:msubsup><mml:mi>G</mml:mi><mml:mi>i</mml:mi><mml:mrow><mml:mi>e</mml:mi><mml:mi>q</mml:mi></mml:mrow></mml:msubsup></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(3)</label>
+</disp-formula>
+where <italic>i</italic> denotes the mutated amino acid and <italic>φ</italic><sub><italic>i</italic></sub> is the <italic>φ</italic>-value for residue <italic>i</italic> which determines the fraction of interactions that this residue forms in the folding/unfolding transition state [<xref rid="pcbi.1004207.ref040" ref-type="bibr">40</xref>,<xref rid="pcbi.1004207.ref043" ref-type="bibr">43</xref>,<xref rid="pcbi.1004207.ref044" ref-type="bibr">44</xref>]. We therefore obtain
+<disp-formula id="pcbi.1004207.e007">
+<alternatives>
+<graphic id="pcbi.1004207.e007g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004207.e007" xlink:type="simple"/>
+<mml:math display="block" id="M7" overflow="scroll">
+<mml:mrow><mml:mo> </mml:mo><mml:mi>k</mml:mi><mml:mi mathvariant="normal">Δ</mml:mi><mml:msubsup><mml:mi>T</mml:mi><mml:mi>m</mml:mi><mml:mrow><mml:mi>a</mml:mi><mml:mi>p</mml:mi><mml:mi>p</mml:mi></mml:mrow></mml:msubsup><mml:mrow><mml:mo>(</mml:mo><mml:mi>i</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>=</mml:mo><mml:mfrac><mml:mrow><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mn>1</mml:mn><mml:mo>−</mml:mo><mml:msub><mml:mi>φ</mml:mi><mml:mi>i</mml:mi></mml:msub></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mi mathvariant="normal">ΔΔ</mml:mi><mml:msubsup><mml:mi>G</mml:mi><mml:mi>i</mml:mi><mml:mrow><mml:mi>e</mml:mi><mml:mi>q</mml:mi></mml:mrow></mml:msubsup></mml:mrow><mml:mrow><mml:mtext>ln</mml:mtext><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mfrac><mml:mrow><mml:msub><mml:mi>τ</mml:mi><mml:mrow><mml:mi>s</mml:mi><mml:mi>i</mml:mi><mml:mi>m</mml:mi></mml:mrow></mml:msub></mml:mrow><mml:mrow><mml:msub><mml:mi>τ</mml:mi><mml:mn>0</mml:mn></mml:msub></mml:mrow></mml:mfrac></mml:mrow><mml:mo>)</mml:mo></mml:mrow></mml:mrow></mml:mfrac></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(4)</label>
+</disp-formula>
+where <inline-formula id="pcbi.1004207.e008"><alternatives><graphic id="pcbi.1004207.e008g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004207.e008" xlink:type="simple"/><mml:math display="inline" id="M8" overflow="scroll"><mml:mrow><mml:mi mathvariant="normal">Δ</mml:mi><mml:msubsup><mml:mi>T</mml:mi><mml:mi>m</mml:mi><mml:mrow><mml:mi>a</mml:mi><mml:mi>p</mml:mi><mml:mi>p</mml:mi></mml:mrow></mml:msubsup><mml:mrow><mml:mo>(</mml:mo><mml:mi>i</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>=</mml:mo><mml:msubsup><mml:mi>T</mml:mi><mml:mi>m</mml:mi><mml:mrow><mml:mi>a</mml:mi><mml:mi>p</mml:mi><mml:mi>p</mml:mi></mml:mrow></mml:msubsup><mml:mrow><mml:mo>(</mml:mo><mml:mi>i</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>−</mml:mo><mml:msubsup><mml:mi>T</mml:mi><mml:mi>m</mml:mi><mml:mrow><mml:mi>a</mml:mi><mml:mi>p</mml:mi><mml:mi>p</mml:mi></mml:mrow></mml:msubsup><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mi>W</mml:mi><mml:mi>T</mml:mi></mml:mrow><mml:mo>)</mml:mo></mml:mrow></mml:mrow></mml:math></alternatives></inline-formula> is the shift in apparent unfolding temperature upon a specific mutation in the <italic>i</italic>-th residue. Introducing the relative (to WT) unfolding temperature <inline-formula id="pcbi.1004207.e009"><alternatives><graphic id="pcbi.1004207.e009g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004207.e009" xlink:type="simple"/><mml:math display="inline" id="M9" overflow="scroll"><mml:mrow><mml:mi mathvariant="normal">Δ</mml:mi><mml:msubsup><mml:mi>T</mml:mi><mml:mi>m</mml:mi><mml:mrow><mml:mi>r</mml:mi><mml:mi>e</mml:mi><mml:mi>l</mml:mi></mml:mrow></mml:msubsup><mml:mrow><mml:mo>(</mml:mo><mml:mi>i</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>=</mml:mo><mml:mi mathvariant="normal">Δ</mml:mi><mml:msubsup><mml:mi>T</mml:mi><mml:mi>m</mml:mi><mml:mrow><mml:mi>a</mml:mi><mml:mi>p</mml:mi><mml:mi>p</mml:mi></mml:mrow></mml:msubsup><mml:mrow><mml:mo>(</mml:mo><mml:mi>i</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>/</mml:mo><mml:msubsup><mml:mi>T</mml:mi><mml:mi>m</mml:mi><mml:mrow><mml:mi>a</mml:mi><mml:mi>p</mml:mi><mml:mi>p</mml:mi></mml:mrow></mml:msubsup><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mi>W</mml:mi><mml:mi>T</mml:mi></mml:mrow><mml:mo>)</mml:mo></mml:mrow></mml:mrow></mml:math></alternatives></inline-formula> we get
+<disp-formula id="pcbi.1004207.e010">
+<alternatives>
+<graphic id="pcbi.1004207.e010g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004207.e010" xlink:type="simple"/>
+<mml:math display="block" id="M10" overflow="scroll">
+<mml:mrow><mml:mi mathvariant="normal">Δ</mml:mi><mml:msubsup><mml:mi>T</mml:mi><mml:mi>m</mml:mi><mml:mrow><mml:mi>r</mml:mi><mml:mi>e</mml:mi><mml:mi>l</mml:mi></mml:mrow></mml:msubsup><mml:mrow><mml:mo>(</mml:mo><mml:mi>i</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>=</mml:mo><mml:mfrac><mml:mrow><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mn>1</mml:mn><mml:mo>−</mml:mo><mml:msub><mml:mi>φ</mml:mi><mml:mi>i</mml:mi></mml:msub></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mi mathvariant="normal">ΔΔ</mml:mi><mml:msubsup><mml:mi>G</mml:mi><mml:mi>i</mml:mi><mml:mrow><mml:mi>e</mml:mi><mml:mi>q</mml:mi></mml:mrow></mml:msubsup></mml:mrow><mml:mrow><mml:mi mathvariant="normal">Δ</mml:mi><mml:msup><mml:mi>G</mml:mi><mml:mo>#</mml:mo></mml:msup></mml:mrow></mml:mfrac></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(5)</label>
+</disp-formula>
+<italic>i</italic>.<italic>e</italic>. the mutational shift in observed unfolding temperature, normalized to the observed unfolding temperature of the wild-type at the same simulation condition does not depend on the simulation length, provided that the simulation is sufficiently equilibrated <italic>in the native basin</italic> so that the rules of transition state theory apply. The analysis of extensive kinetic and equilibrium data for multiple proteins shows that for the majority of mutations (except for a small fraction of residues that participate in the folding nucleus) <italic>φ</italic><sub><italic>i</italic></sub> ≈ 0.24 with remarkable accuracy and consistency [<xref rid="pcbi.1004207.ref045" ref-type="bibr">45</xref>]. We get therefore
+<disp-formula id="pcbi.1004207.e011">
+<alternatives>
+<graphic id="pcbi.1004207.e011g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004207.e011" xlink:type="simple"/>
+<mml:math display="block" id="M11" overflow="scroll">
+<mml:mrow><mml:mi mathvariant="normal">Δ</mml:mi><mml:msubsup><mml:mi>T</mml:mi><mml:mi>m</mml:mi><mml:mrow><mml:mi>r</mml:mi><mml:mi>e</mml:mi><mml:mi>l</mml:mi></mml:mrow></mml:msubsup><mml:mrow><mml:mo>(</mml:mo><mml:mi>i</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>=</mml:mo><mml:mn>0.76</mml:mn><mml:mspace width="0.15em"/><mml:mfrac><mml:mrow><mml:mi mathvariant="normal">ΔΔ</mml:mi><mml:msubsup><mml:mi>G</mml:mi><mml:mi>i</mml:mi><mml:mrow><mml:mi>e</mml:mi><mml:mi>q</mml:mi></mml:mrow></mml:msubsup></mml:mrow><mml:mrow><mml:mi mathvariant="normal">Δ</mml:mi><mml:msup><mml:mi>G</mml:mi><mml:mo>#</mml:mo></mml:msup></mml:mrow></mml:mfrac></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(6)</label>
+</disp-formula>
+<italic>i</italic>.<italic>e</italic>. <inline-formula id="pcbi.1004207.e012"><alternatives><graphic id="pcbi.1004207.e012g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004207.e012" xlink:type="simple"/><mml:math display="inline" id="M12" overflow="scroll"><mml:mrow><mml:mi mathvariant="normal">Δ</mml:mi><mml:msubsup><mml:mi>T</mml:mi><mml:mi>m</mml:mi><mml:mrow><mml:mi>r</mml:mi><mml:mi>e</mml:mi><mml:mi>l</mml:mi></mml:mrow></mml:msubsup><mml:mrow><mml:mo>(</mml:mo><mml:mi>i</mml:mi><mml:mo>)</mml:mo></mml:mrow></mml:mrow></mml:math></alternatives></inline-formula> is independent of simulation time and proportional to the equilibrium free energy effect of mutations, provided that simulations have equilibrated in the native basin of attraction.</p>
+</sec>
+<sec id="sec004">
+<title>Monte Carlo protein unfolding simulation</title>
+<p>We ran MCPU on DHFR (PDB ID: 4DFR) at a range of temperatures, to generate simulated unfolding curves. Unfolding steps of a sample trajectory are shown in <xref rid="pcbi.1004207.g002" ref-type="fig">Fig. 2</xref>, and a flowchart of the simulation method is shown in <xref rid="pcbi.1004207.s001" ref-type="supplementary-material">S1 Fig</xref>. The protein was subject to a brief MD energy minimization, beginning from the WT crystallographic native state, followed by unfolding simulations at each of 32 different temperatures using all-atom Monte-Carlo (see <xref rid="sec014" ref-type="sec">Materials and Methods</xref> section). As shown in figures <xref rid="pcbi.1004207.s002" ref-type="supplementary-material">S2 Fig</xref>—<xref rid="pcbi.1004207.s004" ref-type="supplementary-material">S4 Fig</xref>, the RMSD and total energy increased and the number of contacts decreased as each simulation proceeded, and with increasing temperature. (Here, temperature is given in arbitrary simulation units.) Plots of RMSD and contact number vs. temperature showed sigmoidal behavior, with a clearly identifiable transition temperature, and the melting temperature (<italic>T</italic><sub>m</sub>) could be determined by fitting to a sigmoidal function (<xref rid="pcbi.1004207.g003" ref-type="fig">Fig. 3</xref>). Plots of energy vs. temperature (<xref rid="pcbi.1004207.s005" ref-type="supplementary-material">S5 Fig</xref>) were sigmoid-like, but with an additional rise in energy at low to intermediate temperatures, perhaps indicating pre-melting to a dry-molten globule state with loosened side chains but native-like topology [<xref rid="pcbi.1004207.ref046" ref-type="bibr">46</xref>,<xref rid="pcbi.1004207.ref047" ref-type="bibr">47</xref>]. This deviation from sigmoidal behavior becomes clearer as the simulation length is increased (<xref rid="pcbi.1004207.s006" ref-type="supplementary-material">S6 Fig</xref>).</p>
+<fig id="pcbi.1004207.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004207.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>A sample WT DHFR unfolding trajectory at simulation temperature 1.5 (arbitrary simulation units).</title>
+<p>In MC simulations, separation of the C-terminal beta hairpin from the rest of the protein (steps 1,000,000 through 1,200,000) is an early event in the unfolding process.</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004207.g002" position="float" xlink:type="simple"/>
+</fig>
+<fig id="pcbi.1004207.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004207.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title>WT DHFR unfolding curves from MC simulations, averaged over 2,000,000 simulation steps, with 50 replications.</title>
+<p>The <italic>T</italic><sub>m</sub> value was calculated based on the sigmoidal fit (solid blue line). (A) RMSD vs. simulation temperature. (B) Number of contacts vs. simulation temperature.</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004207.g003" position="float" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec005">
+<title>Computational identification of stabilizing single point mutations</title>
+<p>All possible single point mutations of DHFR (159 * 19 = 3,021) were simulated with the Monte Carlo protein unfolding simulation protocol. The simulated <italic>T</italic><sub>m</sub> values were calculated as described above. Of the 3,021 mutations, 523 mutations (17.3%) were predicted to have a stabilizing effect according to all three metrics (energy, contacts, and RMSD), while 42.1% of mutations had a destabilizing effect according to all three metrics. These predictions are in good agreement with statistical analysis of published experimental data and FoldX predictions [<xref rid="pcbi.1004207.ref008" ref-type="bibr">8</xref>,<xref rid="pcbi.1004207.ref012" ref-type="bibr">12</xref>]. The simulated <italic>T</italic><sub>m</sub> values evaluated using RMSD, total energy, and number of contacts are strongly correlated, as shown in <xref rid="pcbi.1004207.g004" ref-type="fig">Fig. 4A</xref>. The distribution of predicted melting temperatures (averaged over the 3 metrics) for all 3021 point mutants is shown in <xref rid="pcbi.1004207.g004" ref-type="fig">Fig. 4B</xref>. Next, we selected a subset of predicted stabilizing mutations for subsequent in depth computational and experimental analysis. To that end we selected the loci where multiple mutations were consistently predicted as stabilizing. Out of this set we selected one mutation at each loci which were predicted as most stabilizing. As a result we arrived at 23 single predicted stabilizing point mutants shown in <xref rid="pcbi.1004207.s010" ref-type="supplementary-material">S1 Table</xref>, which we deemed most promising for subsequent in depth computational and experimental analysis. Furthermore, five stabilizing mutations at different sites within DHFR, shown in <xref rid="pcbi.1004207.g005" ref-type="fig">Fig. 5</xref>, were combined to form the multiple mutants listed in <xref rid="pcbi.1004207.t001" ref-type="table">Table 1</xref>, with the rationale that the combination of individual stabilizing mutants often yields more stable proteins, and these mutants were likewise subjected to computational and experimental analysis.</p>
+<fig id="pcbi.1004207.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004207.g004</object-id>
+<label>Fig 4</label>
+<caption>
+<title>Simulated <italic>T</italic><sub>m</sub> values, based on RMSD, Total Energy and Contact number.</title>
+<p>(A) Scatter plot of <italic>T</italic><sub>m</sub> (RMSD) vs. <italic>T</italic><sub>m</sub> (Total energy), with <italic>T</italic><sub>m</sub> (contact number) represented by color (see color bar to right of plot). The green ball denotes WT and the gold ball denotes the destabilized mutant I155A. The correlation coefficients of simulated <italic>T</italic><sub>m</sub> between RMSD and total energy, RMSD and Contact number, and Contact number and total energy were 0.68, 0.79 and 0.84, respectively. (B) Histogram of <italic>T</italic><sub>m</sub> values, determined by averaging the values obtained from RMSD, energy, and contact number. The vertical red line denotes WT <italic>T</italic><sub>m.</sub></p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004207.g004" position="float" xlink:type="simple"/>
+</fig>
+<fig id="pcbi.1004207.g005" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004207.g005</object-id>
+<label>Fig 5</label>
+<caption>
+<title>The 3D structure of DHFR (PDB ID 4DFR), with residues that were altered in the stabilized quintuple mutant shown in blue.</title>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004207.g005" position="float" xlink:type="simple"/>
+</fig>
+<table-wrap id="pcbi.1004207.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004207.t001</object-id>
+<label>Table 1</label> <caption><title>The simulated and experimental results of the selected single point mutants and WT.</title></caption>
+<alternatives>
+<graphic id="pcbi.1004207.t001g" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004207.t001" xlink:type="simple"/>
+<table>
+<colgroup span="1">
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" rowspan="1" colspan="1">Mutation(s)</th>
+<th align="left" rowspan="1" colspan="1"><bold><italic>T</italic></bold><sub>m</sub> (DSC)</th>
+<th align="left" rowspan="1" colspan="1"><bold><italic>C</italic></bold><sub>m</sub> (CD)</th>
+<th align="left" rowspan="1" colspan="1"><bold><italic>k</italic></bold><sub>cat</sub></th>
+<th align="left" rowspan="1" colspan="1"><bold><italic>k</italic></bold><sub>cat</sub>/<bold><italic>K</italic></bold><sub>m</sub></th>
+<th align="left" rowspan="1" colspan="1">Simulated <bold><italic>T</italic></bold><sub>m</sub></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">WT</td>
+<td align="char" char="." rowspan="1" colspan="1">54.1</td>
+<td align="char" char="." rowspan="1" colspan="1">3.09</td>
+<td align="char" char="." rowspan="1" colspan="1">24.60</td>
+<td align="char" char="." rowspan="1" colspan="1">14.07</td>
+<td align="left" rowspan="1" colspan="1">1.358 ± 0.004</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">T113V</td>
+<td align="char" char="." rowspan="1" colspan="1">58.0</td>
+<td align="char" char="." rowspan="1" colspan="1">3.28</td>
+<td align="char" char="." rowspan="1" colspan="1">13.67</td>
+<td align="char" char="." rowspan="1" colspan="1">10.86</td>
+<td align="left" rowspan="1" colspan="1">1.389 ± 0.004</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Q108D</td>
+<td align="char" char="." rowspan="1" colspan="1">55.7</td>
+<td align="char" char="." rowspan="1" colspan="1">3.18</td>
+<td align="char" char="." rowspan="1" colspan="1">24.60</td>
+<td align="char" char="." rowspan="1" colspan="1">10.35</td>
+<td align="left" rowspan="1" colspan="1">1.361 ± 0.004</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">S138Y</td>
+<td align="char" char="." rowspan="1" colspan="1">55.6</td>
+<td align="char" char="." rowspan="1" colspan="1">3.33</td>
+<td align="char" char="." rowspan="1" colspan="1">24.51</td>
+<td align="char" char="." rowspan="1" colspan="1">9.33</td>
+<td align="left" rowspan="1" colspan="1">1.366 ± 0.004</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">D116F</td>
+<td align="char" char="." rowspan="1" colspan="1">55.5</td>
+<td align="char" char="." rowspan="1" colspan="1">3.43</td>
+<td align="char" char="." rowspan="1" colspan="1">24.80</td>
+<td align="char" char="." rowspan="1" colspan="1">9.53</td>
+<td align="left" rowspan="1" colspan="1">1.369 ± 0.004</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">T68N</td>
+<td align="char" char="." rowspan="1" colspan="1">55.5</td>
+<td align="char" char="." rowspan="1" colspan="1">3.26</td>
+<td align="char" char="." rowspan="1" colspan="1">29.36</td>
+<td align="char" char="." rowspan="1" colspan="1">13.32</td>
+<td align="left" rowspan="1" colspan="1">1.367 ± 0.003</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">E120P</td>
+<td align="char" char="." rowspan="1" colspan="1">55.3</td>
+<td align="char" char="." rowspan="1" colspan="1">3.25</td>
+<td align="char" char="." rowspan="1" colspan="1">30.02</td>
+<td align="char" char="." rowspan="1" colspan="1">13.91</td>
+<td align="left" rowspan="1" colspan="1">1.371 ± 0.004</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">T68N,Q108D,T113V,E120P,S138Y</td>
+<td align="char" char="." rowspan="1" colspan="1">61.3</td>
+<td align="char" char="." rowspan="1" colspan="1">3.52</td>
+<td align="char" char="." rowspan="1" colspan="1">32.63</td>
+<td align="char" char="." rowspan="1" colspan="1">12.20</td>
+<td align="left" rowspan="1" colspan="1">1.400 ± 0.004</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">T113V,E120P,S138Y</td>
+<td align="char" char="." rowspan="1" colspan="1">58.5</td>
+<td align="char" char="." rowspan="1" colspan="1">3.49</td>
+<td align="char" char="." rowspan="1" colspan="1">31.13</td>
+<td align="char" char="." rowspan="1" colspan="1">13.10</td>
+<td align="left" rowspan="1" colspan="1">1.384 ± 0.004</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">T68N,Q108D,E120P,S138Y</td>
+<td align="char" char="." rowspan="1" colspan="1">56.4</td>
+<td align="char" char="." rowspan="1" colspan="1">3.47</td>
+<td align="char" char="." rowspan="1" colspan="1">22.80</td>
+<td align="char" char="." rowspan="1" colspan="1">10.94</td>
+<td align="left" rowspan="1" colspan="1">1.377 ± 0.003</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">T68N,Q108D</td>
+<td align="char" char="." rowspan="1" colspan="1">55.8</td>
+<td align="char" char="." rowspan="1" colspan="1">3.14</td>
+<td align="char" char="." rowspan="1" colspan="1">17.99</td>
+<td align="char" char="." rowspan="1" colspan="1">15.24</td>
+<td align="left" rowspan="1" colspan="1">1.366 ± 0.003</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">E120P,S138Y</td>
+<td align="char" char="." rowspan="1" colspan="1">55.6</td>
+<td align="char" char="." rowspan="1" colspan="1">3.29</td>
+<td align="char" char="." rowspan="1" colspan="1">16.01</td>
+<td align="char" char="." rowspan="1" colspan="1">10.81</td>
+<td align="left" rowspan="1" colspan="1">1.371 ± 0.004</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t001fn001"><p>Note: The data were averaged over 50 replications. 2,000,000 MC steps were simulated in total, and the last 1,000,000 steps were used to calculate <italic>T</italic><sub>m</sub>.</p></fn>
+<fn id="t001fn002"><p>The units: <italic>T</italic><sub>m</sub>: °C, <italic>C</italic><sub>m</sub>: M, <italic>k</italic><sub>cat</sub>: s<sup>−1</sup>, <italic>k</italic><sub>cat</sub>∕<italic>K</italic><sub>M</sub>: s<sup>−1</sup> μM<sup>−1</sup></p></fn>
+</table-wrap-foot>
+</table-wrap>
+</sec>
+<sec id="sec006">
+<title>Computational test of the theoretical analysis</title>
+<p>First we test two predictions that emerge from the theoretical analysis of unfolding simulations. The first prediction is that the apparent unfolding temperature decreases as the length of the unfolding simulation increases (<xref rid="pcbi.1004207.e007" ref-type="disp-formula">Equation 4</xref>). Secondly and most importantly the mutational change in relative (normalized to WT) apparent unfolding temperature is a) robust with respect to simulation time provided that simulations have equilibrated in the native basin and b) directly proportional to the effect of mutations on equilibrium protein stability (<xref rid="pcbi.1004207.e011" ref-type="disp-formula">Equation 6</xref>). We test these predictions using MCPU simulations and experiment.</p>
+<p>We carried out two sets of MCPU simulations of different lengths: 2,000,000 and 20,000,000 steps for the 23 predicted stabilizing mutants, 15 mutants studied previously by experiment [<xref rid="pcbi.1004207.ref048" ref-type="bibr">48</xref>] (the complete set of single mutants is listed in <xref rid="pcbi.1004207.s010" ref-type="supplementary-material">S1 Table</xref>), and the 5 stabilizing multiple mutants combining individual mutations listed in <xref rid="pcbi.1004207.t001" ref-type="table">Table 1</xref>, and compared their predicted absolute and relative simulated unfolding temperatures (<xref rid="pcbi.1004207.g006" ref-type="fig">Fig. 6</xref>). Indeed both predictions of our theoretical analysis are confirmed, <italic>i</italic>.<italic>e</italic>., the apparent unfolding temperature decreases with simulation time (<xref rid="pcbi.1004207.g006" ref-type="fig">Fig. 6A</xref>) while the relative unfolding temperature <inline-formula id="pcbi.1004207.e013"><alternatives><graphic id="pcbi.1004207.e013g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004207.e013" xlink:type="simple"/><mml:math display="inline" id="M13" overflow="scroll"><mml:mrow><mml:mi mathvariant="normal">Δ</mml:mi><mml:msubsup><mml:mi>T</mml:mi><mml:mi>m</mml:mi><mml:mrow><mml:mi>r</mml:mi><mml:mi>e</mml:mi><mml:mi>l</mml:mi></mml:mrow></mml:msubsup></mml:mrow></mml:math></alternatives></inline-formula> is remarkably independent of simulation time (<xref rid="pcbi.1004207.g006" ref-type="fig">Fig. 6B</xref>). We note that due to the nature of the energy function used in our simulations, there is no obvious mapping of simulation temperature to real absolute temperature (<italic>i</italic>.<italic>e</italic>., in Celsius or Kelvin). Conversion of simulation temperature to physical temperature would require use of experimental data (<italic>e</italic>.<italic>g</italic>., WT unfolding temperature and deviation of temperatures over all mutants) and therefore would not provide a completely simulation- or theory-based prediction. Furthermore, as noted above, the apparent absolute value of the transition temperature in the Monte-Carlo unfolding approach depends on simulation time. Therefore, we used relative melting temperature, <inline-formula id="pcbi.1004207.e014"><alternatives><graphic id="pcbi.1004207.e014g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004207.e014" xlink:type="simple"/><mml:math display="inline" id="M14" overflow="scroll"><mml:mrow><mml:mi mathvariant="normal">Δ</mml:mi><mml:msubsup><mml:mi>T</mml:mi><mml:mi>m</mml:mi><mml:mrow><mml:mi>r</mml:mi><mml:mi>e</mml:mi><mml:mi>l</mml:mi></mml:mrow></mml:msubsup><mml:mrow><mml:mo>(</mml:mo><mml:mi>i</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>=</mml:mo><mml:mi mathvariant="normal">Δ</mml:mi><mml:msubsup><mml:mi>T</mml:mi><mml:mi>m</mml:mi><mml:mrow><mml:mi>a</mml:mi><mml:mi>p</mml:mi><mml:mi>p</mml:mi></mml:mrow></mml:msubsup><mml:mrow><mml:mo>(</mml:mo><mml:mi>i</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>/</mml:mo><mml:msubsup><mml:mi>T</mml:mi><mml:mi>m</mml:mi><mml:mrow><mml:mi>a</mml:mi><mml:mi>p</mml:mi><mml:mi>p</mml:mi></mml:mrow></mml:msubsup><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mi>W</mml:mi><mml:mi>T</mml:mi></mml:mrow><mml:mo>)</mml:mo></mml:mrow></mml:mrow></mml:math></alternatives></inline-formula>, when comparing simulation results with experimental results.</p>
+<fig id="pcbi.1004207.g006" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004207.g006</object-id>
+<label>Fig 6</label>
+<caption>
+<title>Correlation between <italic>T</italic><sub>m</sub> values for simulations of different lengths.</title>
+<p>WT is shown as a blue triangle and mutant I155A as a red diamond. (A) <italic>T</italic><sub>m</sub> calculated from simulation RMSD, for short (2,000,000-step) and long (20,000,000-step) simulations. Simulation <italic>T</italic><sub>m</sub> is clearly smaller for long simulations, in which the protein has more time to unfold. (B) Relative <italic>T</italic><sub>m</sub> normalized to WT, for short and long simulations. Remarkably, the points fall nearly on the line y = x, with a correlation of 0.86, with one distinct outlier I155A.</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004207.g006" position="float" xlink:type="simple"/>
+</fig>
+<p>As mentioned, the simulated <italic>T</italic><sub>m</sub> values evaluated using RMSD, total energy, and number of contacts are strongly correlated in our simulations as shown in <xref rid="pcbi.1004207.g004" ref-type="fig">Fig. 4A</xref> and <xref rid="pcbi.1004207.s010" ref-type="supplementary-material">S1 Table</xref>. In what follows we define the computational unfolding temperature <italic>T</italic><sub>m</sub> as averaged over <italic>T</italic><sub>m</sub> values determined using these three criteria.</p>
+</sec>
+<sec id="sec007">
+<title>Experimental characterization of predicted mutants</title>
+<p>We cloned, expressed, and purified the 23 single point mutants of DHFR listed in <xref rid="pcbi.1004207.s010" ref-type="supplementary-material">S1 Table</xref>, as well as the multiple mutants listed in <xref rid="pcbi.1004207.t001" ref-type="table">Table 1</xref> (see <xref rid="sec014" ref-type="sec">Materials and Methods</xref>). The biophysical properties of the mutants were measured and compared with WT DHFR, as shown in <xref rid="pcbi.1004207.s011" ref-type="supplementary-material">S2 Table</xref>. As many studies have shown that oligomerization can alter protein stability [<xref rid="pcbi.1004207.ref023" ref-type="bibr">23</xref>,<xref rid="pcbi.1004207.ref048" ref-type="bibr">48</xref>,<xref rid="pcbi.1004207.ref049" ref-type="bibr">49</xref>], we first tested whether mutations induce oligomerization and/or aggregation using the gel filtration method [<xref rid="pcbi.1004207.ref048" ref-type="bibr">48</xref>,<xref rid="pcbi.1004207.ref050" ref-type="bibr">50</xref>] and light scattering. The results indicated that all of the 23 mutants were monomeric at studied concentrations except for E154V, which appeared aggregation-prone. We excluded E154V from the subsequent analysis.</p>
+<p>As shown in <xref rid="pcbi.1004207.s011" ref-type="supplementary-material">S2 Table</xref>, all single mutants are catalytically active except for D27F. D27 is known to be a key catalytic residue of <italic>E</italic>. <italic>coli</italic> DHFR [<xref rid="pcbi.1004207.ref051" ref-type="bibr">51</xref>].</p>
+<p>For each mutant we obtained two measures of stability: the apparent melting temperature determined by Differential Scanning Calorimetry (DSC) and the urea midpoint unfolding concentration (<italic>C</italic><sub>m</sub>) determined by monitoring chemical denaturation by Circular Dichroism (CD) with subsequent fitting to a two-state model (see <xref rid="sec014" ref-type="sec">Materials and Methods</xref>). Both measures of stability were highly correlated, despite the fact that thermal unfolding was irreversible (<xref rid="pcbi.1004207.s007" ref-type="supplementary-material">S7 Fig</xref>). Of the selected 22 single point mutations, 10 mutations were stabilizing, according to their <italic>T</italic><sub>m</sub> or <italic>C</italic><sub>m</sub> values (<xref rid="pcbi.1004207.s011" ref-type="supplementary-material">S2 Table</xref>). Given that statistically most random mutations are destabilizing with only a small fraction (less than 18%) stabilizing [<xref rid="pcbi.1004207.ref008" ref-type="bibr">8</xref>,<xref rid="pcbi.1004207.ref012" ref-type="bibr">12</xref>], this statistically significant result (<italic>p</italic> = 0.002 under the null hypothesis that mutations are random) indicates that MCPU is an effective method for selecting stability-enhancing mutations.</p>
+<p>As expected, combinations of single stabilizing mutations led to more stable multiple mutant variants, [<xref rid="pcbi.1004207.ref024" ref-type="bibr">24</xref>,<xref rid="pcbi.1004207.ref025" ref-type="bibr">25</xref>,<xref rid="pcbi.1004207.ref052" ref-type="bibr">52</xref>] as predicted by simulation. In particular, the stability of the quintuple mutant (T68N,Q108D,T113V,E120P,S138Y) was found to be substantially higher than that of the wild type protein (<xref rid="pcbi.1004207.t001" ref-type="table">Table 1</xref>), with <italic>T</italic><sub>m</sub> 7.2°C higher than WT, and <italic>C</italic><sub>m</sub>, the urea concentration at the mid-unfolding point, was 0.43M higher than WT. All multiple mutants were catalytically active, and the quintuple mutant and triple mutant (T113V,E120P,S138Y) were found to be more catalytically active than WT. We note that while combination of stabilizing mutations generally increases stability, the effect is less than additive (<xref rid="pcbi.1004207.s008" ref-type="supplementary-material">S8 Fig</xref>); for instance, the quintuple mutant is about 4°C less stable than predicted under the assumption of additive <bold>Δ</bold><italic>T</italic><sub>m</sub> (a 7.2°C stability increase vs. predicted 9.6°C).</p>
+<p>We computationally predicted relative unfolding temperatures of 15 DHFR mutants published earlier [<xref rid="pcbi.1004207.ref048" ref-type="bibr">48</xref>] and added these mutants to the set for analysis resulting in 42 mutants in total. The correlation coefficient between experimental relative <italic>T</italic><sub>m</sub> and simulated relative <italic>T</italic><sub>m</sub> for the 42 mutants was about 0.65, as shown in <xref rid="pcbi.1004207.g007" ref-type="fig">Fig. 7A</xref>. To address the issue that both simulated <italic>T</italic><sub>m</sub> and DSC measurements are not strictly at equilibrium, we plotted the relation between simulated <italic>T</italic><sub>m</sub> and equilibrium measurement of stability in chemical denaturation by urea. The denaturation mid-transition urea concentration <italic>C</italic><sub>m</sub> and computationally determined unfolding temperature exhibit even a slightly higher correlation of <italic>r</italic> = 0.68 (<xref rid="pcbi.1004207.g007" ref-type="fig">Fig. 7B</xref>), demonstrating that our non-equilibrium simulation method shows good agreement with the equilibrium measurement of urea denaturation, as predicted by <xref rid="pcbi.1004207.e011" ref-type="disp-formula">Equation 6</xref>.</p>
+<fig id="pcbi.1004207.g007" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004207.g007</object-id>
+<label>Fig 7</label>
+<caption>
+<title>Correlation between the relative simulated and experimental <italic>T</italic><sub>m</sub> values.</title>
+<p>(A) Plot of simulated <italic>T</italic><sub>m</sub> vs. experimental <italic>T</italic><sub>m</sub>. The relative <italic>T</italic><sub>m</sub> values were calculated by normalizing to WT: (<italic>T</italic><sub>m</sub>(mutant)-<italic>T</italic><sub>m</sub>(wild type))/ <italic>T</italic><sub>m</sub>(wild type). Experimental values from this study and from Bershtein <italic>et al</italic>. [<xref rid="pcbi.1004207.ref048" ref-type="bibr">48</xref>] are included. WT is shown as a blue triangle. <italic>r</italic> = 0.65, <italic>p</italic> = 3 x 10<sup>−6</sup>. (B) Plot of simulated <italic>T</italic><sub>m</sub> vs. experimental C<sub>m</sub>. <italic>r</italic> = 0.68. <italic>p</italic> = 6 x 10<sup>−7</sup>.</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004207.g007" position="float" xlink:type="simple"/>
+</fig>
+<p>We also used the dataset to evaluate the effect of the number of replications and the number of MC steps on the performance of the method. As shown in <xref rid="pcbi.1004207.g008" ref-type="fig">Fig. 8A</xref>, the prediction accuracy is sensitive to the number of replications. To achieve reliable <italic>T</italic><sub>m</sub> predictions, at least 20 replications should be used. However, the number of MC steps did not greatly affect prediction accuracy, provided simulations were run for at least ~ 200,000 steps (see <xref rid="pcbi.1004207.g008" ref-type="fig">Fig. 8B</xref>). In the context of the theory developed in the earlier section: “Predicting the effects of mutations on protein stability from non-equilibrium unfolding simulations,” this initial equilibration period may allow time for equilibration within the native basin, after which simulation length does not appreciably affect the consistency of results with equilibrium stability measurements.</p>
+<fig id="pcbi.1004207.g008" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004207.g008</object-id>
+<label>Fig 8</label>
+<caption>
+<title>The effect of replication number and number of MC steps on simulation predictive power.</title>
+<p>(A) Correlation between simulated <italic>T</italic><sub>m</sub> and experimental <italic>T</italic><sub>m</sub>, averaging over different numbers of replications, for the DHFR wild type and mutants. Each protein was simulated for 2,000,000 MC steps, following MD minimization and equilibration at low temperature. (B) Correlation between the simulated <italic>T</italic><sub>m</sub> and experimental <italic>T</italic><sub>m</sub> with different numbers of MC steps and 50 replications, for the DHFR wild type and mutants. Each protein was first simulated for the number of steps given on the x-axis, and the next 100,000 steps were averaged in determining the simulated <italic>T</italic><sub>m</sub>.</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004207.g008" position="float" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec008">
+<title>Stability and activity do not trade-off for DHFR</title>
+<p>It has been proposed that stability imposes a constraint on protein function leading to stability-activity tradeoffs [<xref rid="pcbi.1004207.ref053" ref-type="bibr">53</xref>,<xref rid="pcbi.1004207.ref054" ref-type="bibr">54</xref>]. Our data, however, paints a different picture for DHFR—of a weak <italic>positive</italic> correlation between <italic>T</italic><sub>m</sub> and <italic>k</italic><sub>cat</sub> or <italic>k</italic><sub>cat</sub>/K<sub>M</sub> (<italic>r</italic> = 0.46, <italic>p</italic> = 0.02 and <italic>r</italic> = 0.41, <italic>p</italic> = 0.03 respectively) with one notable outlier D27F, where the stabilizing mutation is made right in the active site (<xref rid="pcbi.1004207.g009" ref-type="fig">Fig. 9</xref>). The D27F mutant has high thermal stability but, as noted above, is not catalytically active, indicating that there is in fact a stability-activity trade-off for this active-site residue.</p>
+<fig id="pcbi.1004207.g009" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004207.g009</object-id>
+<label>Fig 9</label>
+<caption>
+<title>Correlation between DHFR activity and stability.</title>
+<p>WT is shown as a blue triangle; D27F is shown as a red diamond at zero activity. (A) Plot of <italic>k</italic><sub>cat</sub> vs. experimental relative <italic>T</italic><sub>m</sub>. <italic>r</italic> = 0.46, <italic>p</italic> = 0.02 (excluding outlier D27F). (B) Plot of <italic>k</italic><sub>cat</sub>/<italic>K</italic><sub>m</sub> vs. experimental relative <italic>T</italic><sub>m</sub>. <italic>r</italic> = 0.41, <italic>p</italic> = 0.03 (excluding outlier D27F).</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004207.g009" position="float" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec009">
+<title>Evolutionary analysis</title>
+<p>Using an alignment of 290 bacterial DHFRs, we determined the DHFR consensus sequence (<xref rid="pcbi.1004207.s009" ref-type="supplementary-material">S9 Fig</xref>). Mutation of a non-consensus residue to the consensus residue generally resulted in protein stabilization [<xref rid="pcbi.1004207.ref029" ref-type="bibr">29</xref>]. In 4/16 of the experimentally stabilizing mutations, a residue was changed to the consensus residue, while only 2/29 destabilizing mutations resulted from a change to consensus. Likewise, in 18/29 destabilizing mutations, a residue was changed away from the consensus residue, while this was true for only 5/16 of stabilizing mutations.</p>
+</sec>
+<sec id="sec010">
+<title>Simulated melting temperatures by residue</title>
+<p>We compared the minimum and maximum simulated <italic>T</italic><sub>m</sub> values obtainable by mutating a single residue to any of the 19 other amino acids (<xref rid="pcbi.1004207.g010" ref-type="fig">Fig. 10A</xref>). There is a weak positive correlation between minimum and maximum melting temperatures (<italic>r</italic> = 0.30, <italic>p</italic> = 10<sup>−4</sup>). Apparently, protein loci where mutations can cause significant stabilization are statistically less susceptible to destabilizing mutations and vice versa, which may be expected: once a residue is already at its most stabilizing amino acid variant, the protein cannot be stabilized further by mutation. Distinct outliers correspond to the loci with the strongest stabilizing or destabilizing effects of mutations. Interestingly, these outliers, which may represent structural weak spots in DHFR, tend to fall on the interface connecting the C-terminal beta hairpin and the rest of the protein (<xref rid="pcbi.1004207.g010" ref-type="fig">Fig. 10B</xref>). This is in fact the interface that is the first to dissociate in the Monte Carlo simulations (see <xref rid="pcbi.1004207.g002" ref-type="fig">Fig. 2</xref>).</p>
+<fig id="pcbi.1004207.g010" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004207.g010</object-id>
+<label>Fig 10</label>
+<caption>
+<title>Maximum stabilization and destabilization induced by mutations at each residue position.</title>
+<p>(A) Plot comparing the minimum and maximum simulated <italic>T</italic><sub>m</sub> values, for each residue across all 19 simulated mutants. <italic>T</italic><sub>m</sub> is normalized to WT, by dividing each <italic>T</italic><sub>m</sub> value by the simulated WT <italic>T</italic><sub>m</sub> = 1.489 simulation units. Outliers are circled in purple (left), green (middle) and orange (right). (B) DHFR with outlier residues colored according to the color scheme from (A). Purple: residues F153, W30, Y111, L156, L110. Green: residues A107, I155, L112, H114. Orange: residues A6, E154. Excluding outlier residues, the C-terminal beta hairpin is colored yellow, and the rest of the protein is colored cyan.</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004207.g010" position="float" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec011">
+<title>Comparison with other methods</title>
+<p>We compared our computational DHFR predictions with four popular approaches to predict the effect of a mutation on protein stability: FoldX [<xref rid="pcbi.1004207.ref017" ref-type="bibr">17</xref>], Eris [<xref rid="pcbi.1004207.ref026" ref-type="bibr">26</xref>], PopMusic [<xref rid="pcbi.1004207.ref055" ref-type="bibr">55</xref>], and SDM [<xref rid="pcbi.1004207.ref056" ref-type="bibr">56</xref>]. (<xref rid="pcbi.1004207.s012" ref-type="supplementary-material">S3 Table</xref>). The MCPU performs better than these methods on DHFR mutants. PopMusic shows also strong performance with highly statistically significant <italic>r</italic> = 0.55 between theory and experiment, however the limitation of this method is that it can consider only single point mutations. To further evaluate MCPU performance we tested it on four additional proteins from four different SCOP structural classes: the Cro repressor protein from bacteriophage lambda (PDB-ID 5CRO), the <italic>B</italic>. <italic>Subtilis</italic> major cold shock protein (1CSP), <italic>E</italic>. <italic>coli</italic> Thioredoxin (2TRX), and Gln-25 ribonuclease T1 from <italic>Aspergillus oryzae</italic> (1RN1). Our predictions were compared with Eris and SDM. We did not compare MCPU results with FoldX and PopMusic as these mutations were selected in the training dataset for the two methods. As shown in <xref rid="pcbi.1004207.t002" ref-type="table">Table 2</xref>, the correlation coefficient between MCPU predictions and the experimental <italic>T</italic><sub>m</sub> values, averaged over all proteins, is about 0.71, which is higher than that provided by Eris (-0.05), for which predictions were quite poor for both DHFR and other proteins, and SDM (0.63). If we consider only the binary prediction of whether a mutation is stabilizing or destabilizing, MCPU can correctly predict 11 out of 16 mutations, while Eris and SDM correctly classify 9 and 8 mutations respectively.</p>
+<table-wrap id="pcbi.1004207.t002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004207.t002</object-id>
+<label>Table 2</label> <caption><title>Simulation results on non-DHFR proteins.</title></caption>
+<alternatives>
+<graphic id="pcbi.1004207.t002g" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004207.t002" xlink:type="simple"/>
+<table>
+<colgroup span="1">
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" rowspan="1" colspan="1">SCOP</th>
+<th align="left" rowspan="1" colspan="1">Length</th>
+<th align="left" rowspan="1" colspan="1">PDB</th>
+<th align="left" rowspan="1" colspan="1">Mutant</th>
+<th align="left" rowspan="1" colspan="1">Real Tm</th>
+<th align="left" rowspan="1" colspan="1">MCPU</th>
+<th align="left" rowspan="1" colspan="1">Eris</th>
+<th align="left" rowspan="1" colspan="1">SDM</th>
+<th align="left" rowspan="1" colspan="1">Native energy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">All alpha proteins</td>
+<td align="left" rowspan="1" colspan="1">66</td>
+<td align="left" rowspan="1" colspan="1">5CRO</td>
+<td align="left" rowspan="1" colspan="1">Y26D</td>
+<td align="left" rowspan="1" colspan="1">54.0</td>
+<td align="char" char="." rowspan="1" colspan="1">0.878</td>
+<td align="char" char="." rowspan="1" colspan="1">−6.958</td>
+<td align="char" char="." rowspan="1" colspan="1">−0.690</td>
+<td align="char" char="." rowspan="1" colspan="1">−2044.4</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">66</td>
+<td align="left" rowspan="1" colspan="1">5CRO</td>
+<td align="left" rowspan="1" colspan="1">Y26H</td>
+<td align="left" rowspan="1" colspan="1">49.5</td>
+<td align="char" char="." rowspan="1" colspan="1">0.869</td>
+<td align="char" char="." rowspan="1" colspan="1">−3.425</td>
+<td align="char" char="." rowspan="1" colspan="1">−0.660</td>
+<td align="char" char="." rowspan="1" colspan="1">−1908.2</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">66</td>
+<td align="left" rowspan="1" colspan="1">5CRO</td>
+<td align="left" rowspan="1" colspan="1">Y26L</td>
+<td align="left" rowspan="1" colspan="1">46.0</td>
+<td align="char" char="." rowspan="1" colspan="1">0.868</td>
+<td align="char" char="." rowspan="1" colspan="1">−3.458</td>
+<td align="char" char="." rowspan="1" colspan="1">0.300</td>
+<td align="char" char="." rowspan="1" colspan="1">−1891.8</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">66</td>
+<td align="left" rowspan="1" colspan="1">5CRO</td>
+<td align="left" rowspan="1" colspan="1">WT-5CRO</td>
+<td align="left" rowspan="1" colspan="1">39.5</td>
+<td align="char" char="." rowspan="1" colspan="1">0.869</td>
+<td align="char" char="." rowspan="1" colspan="1">0.000</td>
+<td align="char" char="." rowspan="1" colspan="1">0.000</td>
+<td align="char" char="." rowspan="1" colspan="1">−1886.0</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">66</td>
+<td align="left" rowspan="1" colspan="1">5CRO</td>
+<td align="left" rowspan="1" colspan="1">Y26W</td>
+<td align="left" rowspan="1" colspan="1">37.5</td>
+<td align="char" char="." rowspan="1" colspan="1">0.871</td>
+<td align="char" char="." rowspan="1" colspan="1">−1.200</td>
+<td align="char" char="." rowspan="1" colspan="1">0.350</td>
+<td align="char" char="." rowspan="1" colspan="1">−1872.7</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">All beta proteins</td>
+<td align="left" rowspan="1" colspan="1">67</td>
+<td align="left" rowspan="1" colspan="1">1CSP</td>
+<td align="left" rowspan="1" colspan="1">A46E</td>
+<td align="left" rowspan="1" colspan="1">48.6</td>
+<td align="char" char="." rowspan="1" colspan="1">1.015</td>
+<td align="char" char="." rowspan="1" colspan="1">1.203</td>
+<td align="char" char="." rowspan="1" colspan="1">0.020</td>
+<td align="char" char="." rowspan="1" colspan="1">−1624.9</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">67</td>
+<td align="left" rowspan="1" colspan="1">1CSP</td>
+<td align="left" rowspan="1" colspan="1">E3L</td>
+<td align="left" rowspan="1" colspan="1">62.7</td>
+<td align="char" char="." rowspan="1" colspan="1">1.033</td>
+<td align="char" char="." rowspan="1" colspan="1">2.271</td>
+<td align="char" char="." rowspan="1" colspan="1">−0.460</td>
+<td align="char" char="." rowspan="1" colspan="1">−1536.7</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">67</td>
+<td align="left" rowspan="1" colspan="1">1CSP</td>
+<td align="left" rowspan="1" colspan="1">E3R</td>
+<td align="left" rowspan="1" colspan="1">69.6</td>
+<td align="char" char="." rowspan="1" colspan="1">1.023</td>
+<td align="char" char="." rowspan="1" colspan="1">1.638</td>
+<td align="char" char="." rowspan="1" colspan="1">−0.650</td>
+<td align="char" char="." rowspan="1" colspan="1">−1878.0</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">67</td>
+<td align="left" rowspan="1" colspan="1">1CSP</td>
+<td align="left" rowspan="1" colspan="1">E66L</td>
+<td align="left" rowspan="1" colspan="1">66.4</td>
+<td align="char" char="." rowspan="1" colspan="1">1.042</td>
+<td align="char" char="." rowspan="1" colspan="1">2.510</td>
+<td align="char" char="." rowspan="1" colspan="1">1.320</td>
+<td align="char" char="." rowspan="1" colspan="1">−1568.1</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">67</td>
+<td align="left" rowspan="1" colspan="1">1CSP</td>
+<td align="left" rowspan="1" colspan="1">WT-1CSP</td>
+<td align="left" rowspan="1" colspan="1">53.6</td>
+<td align="char" char="." rowspan="1" colspan="1">1.022</td>
+<td align="char" char="." rowspan="1" colspan="1">0.000</td>
+<td align="char" char="." rowspan="1" colspan="1">0.000</td>
+<td align="char" char="." rowspan="1" colspan="1">−1596.3</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Alpha and beta proteins (a/b)</td>
+<td align="left" rowspan="1" colspan="1">109</td>
+<td align="left" rowspan="1" colspan="1">2TRX</td>
+<td align="left" rowspan="1" colspan="1">D26I</td>
+<td align="left" rowspan="1" colspan="1">98.0</td>
+<td align="char" char="." rowspan="1" colspan="1">1.135</td>
+<td align="char" char="." rowspan="1" colspan="1">2.847</td>
+<td align="char" char="." rowspan="1" colspan="1">4.290</td>
+<td align="char" char="." rowspan="1" colspan="1">−2478.5</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">109</td>
+<td align="left" rowspan="1" colspan="1">2TRX</td>
+<td align="left" rowspan="1" colspan="1">WT-2TRX</td>
+<td align="left" rowspan="1" colspan="1">87.0</td>
+<td align="char" char="." rowspan="1" colspan="1">1.107</td>
+<td align="char" char="." rowspan="1" colspan="1">0.000</td>
+<td align="char" char="." rowspan="1" colspan="1">0.000</td>
+<td align="char" char="." rowspan="1" colspan="1">−2558.4</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">109</td>
+<td align="left" rowspan="1" colspan="1">2TRX</td>
+<td align="left" rowspan="1" colspan="1">T66L</td>
+<td align="left" rowspan="1" colspan="1">85.0</td>
+<td align="char" char="." rowspan="1" colspan="1">1.124</td>
+<td align="char" char="." rowspan="1" colspan="1">3.540</td>
+<td align="char" char="." rowspan="1" colspan="1">2.180</td>
+<td align="char" char="." rowspan="1" colspan="1">−2552.0</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">109</td>
+<td align="left" rowspan="1" colspan="1">2TRX</td>
+<td align="left" rowspan="1" colspan="1">T77V</td>
+<td align="left" rowspan="1" colspan="1">82.0</td>
+<td align="char" char="." rowspan="1" colspan="1">1.124</td>
+<td align="char" char="." rowspan="1" colspan="1">−0.980</td>
+<td align="char" char="." rowspan="1" colspan="1">1.960</td>
+<td align="char" char="." rowspan="1" colspan="1">−2541.9</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">109</td>
+<td align="left" rowspan="1" colspan="1">2TRX</td>
+<td align="left" rowspan="1" colspan="1">C35A</td>
+<td align="left" rowspan="1" colspan="1">73.0</td>
+<td align="char" char="." rowspan="1" colspan="1">1.104</td>
+<td align="char" char="." rowspan="1" colspan="1">−14.670</td>
+<td align="char" char="." rowspan="1" colspan="1">−2.040</td>
+<td align="char" char="." rowspan="1" colspan="1">−2574.7</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Alpha and beta proteins (a+b)</td>
+<td align="left" rowspan="1" colspan="1">125</td>
+<td align="left" rowspan="1" colspan="1">1RN1</td>
+<td align="left" rowspan="1" colspan="1">V16A</td>
+<td align="left" rowspan="1" colspan="1">44.5</td>
+<td align="char" char="." rowspan="1" colspan="1">0.887</td>
+<td align="char" char="." rowspan="1" colspan="1">2.033</td>
+<td align="char" char="." rowspan="1" colspan="1">−1.530</td>
+<td align="char" char="." rowspan="1" colspan="1">−1934.1</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">125</td>
+<td align="left" rowspan="1" colspan="1">1RN1</td>
+<td align="left" rowspan="1" colspan="1">V16S</td>
+<td align="left" rowspan="1" colspan="1">36.9</td>
+<td align="char" char="." rowspan="1" colspan="1">0.876</td>
+<td align="char" char="." rowspan="1" colspan="1">3.027</td>
+<td align="char" char="." rowspan="1" colspan="1">−4.410</td>
+<td align="char" char="." rowspan="1" colspan="1">−1920.1</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">125</td>
+<td align="left" rowspan="1" colspan="1">1RN1</td>
+<td align="left" rowspan="1" colspan="1">V78S</td>
+<td align="left" rowspan="1" colspan="1">34.6</td>
+<td align="char" char="." rowspan="1" colspan="1">0.878</td>
+<td align="char" char="." rowspan="1" colspan="1">3.870</td>
+<td align="char" char="." rowspan="1" colspan="1">−4.450</td>
+<td align="char" char="." rowspan="1" colspan="1">−1943.8</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">125</td>
+<td align="left" rowspan="1" colspan="1">1RN1</td>
+<td align="left" rowspan="1" colspan="1">V89S</td>
+<td align="left" rowspan="1" colspan="1">29.6</td>
+<td align="char" char="." rowspan="1" colspan="1">0.877</td>
+<td align="char" char="." rowspan="1" colspan="1">3.414</td>
+<td align="char" char="." rowspan="1" colspan="1">−4.100</td>
+<td align="char" char="." rowspan="1" colspan="1">−1904.8</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">125</td>
+<td align="left" rowspan="1" colspan="1">1RN1</td>
+<td align="left" rowspan="1" colspan="1">WT-1RN1</td>
+<td align="left" rowspan="1" colspan="1">51.5</td>
+<td align="char" char="." rowspan="1" colspan="1">0.899</td>
+<td align="char" char="." rowspan="1" colspan="1">0.000</td>
+<td align="char" char="." rowspan="1" colspan="1">0.000</td>
+<td align="char" char="." rowspan="1" colspan="1">−1929.7</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Error number</td>
+<td align="char" char="." rowspan="1" colspan="1">5</td>
+<td align="char" char="." rowspan="1" colspan="1">7</td>
+<td align="char" char="." rowspan="1" colspan="1">8</td>
+<td align="char" char="." rowspan="1" colspan="1">7</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Error rate</td>
+<td align="char" char="." rowspan="1" colspan="1">0.313</td>
+<td align="char" char="." rowspan="1" colspan="1">0.438</td>
+<td align="char" char="." rowspan="1" colspan="1">0.500</td>
+<td align="char" char="." rowspan="1" colspan="1">0.438</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"><italic>r</italic></td>
+<td align="char" char="." rowspan="1" colspan="1">0.708</td>
+<td align="char" char="." rowspan="1" colspan="1">−0.053</td>
+<td align="char" char="." rowspan="1" colspan="1">0.635</td>
+<td align="char" char="." rowspan="1" colspan="1">−0.348</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t002fn001"><p>Error number and error rate describe the number and fraction of mutations not predicted in the correct direction (stabilizing vs. destabilizing)</p></fn>
+</table-wrap-foot>
+</table-wrap>
+</sec>
+<sec id="sec012">
+<title>Entropy of the native state is an important contributor to stability</title>
+<p>The theoretical analysis of the unfolding simulations relates the effect of mutations on the equilibrium between folded and unfolded states to the effect of mutations on free energy of the folded and transition states. It is widely believed that in the low-entropy folded state energetic factors dominate. If so that would imply that we can get an equally good correlation between prediction and experiment by estimating the mutational effect on energy of the native state as is the case for most empirical methods. To that end we evaluated the correlation between the energy of the minimized (after long MC equilibration) native state and the experimental <italic>T</italic><sub>m</sub> and found only a weak correlation with experimental melting temperatures (<xref rid="pcbi.1004207.t002" ref-type="table">Table 2</xref>, last column), indicating that protein entropy, which is accounted for in the MCPU, in addition to enthalpy, is important in determining protein stability.</p>
+</sec>
+</sec>
+<sec id="sec013" sec-type="conclusions">
+<title>Discussion</title>
+<p>Estimates of protein stability using Molecular Dynamics are prohibitive for all but the smallest protein domains. However using MCPU we were able to efficiently explore stabilities of all possible point mutants for an essential enzyme of a typical size (159 amino acids) in a manageable amount of computational time (approx. one hour for every 1,000,000 MC steps). Although the use of rapid Monte Carlo simulations reduces simulation time and allows for a greater number of replicates, our method to predict stability effects of mutations based on non-equilibrium unfolding simulations represents a general approach that could be modified for use with conventional MD simulations, especially given the current rate of improvement in simulation speed and accuracy.</p>
+<p>Since our method involves protein unfolding simulations and not equilibrium simulations of both folding and unfolding processes, we expect it to be especially useful for predicting mutations that mostly affect the rate of protein unfolding as highlighted in our theoretical analysis. Low <italic>φ</italic>-value residues, which acquire contacts with other residues late in the folding process and lose contacts early in the unfolding process [<xref rid="pcbi.1004207.ref014" ref-type="bibr">14</xref>] constitute the majority of residues in proteins, with <italic>φ</italic>-value roughly constant around 0.24 as noted in [<xref rid="pcbi.1004207.ref045" ref-type="bibr">45</xref>]. Combining this observation with assumptions of transition state theory, we found that for the majority of residues (those not part of the folding nucleus [<xref rid="pcbi.1004207.ref014" ref-type="bibr">14</xref>,<xref rid="pcbi.1004207.ref057" ref-type="bibr">57</xref>] exhibiting anomalously high <italic>φ</italic>-values) the observed simulation <italic>T</italic><sub>m</sub> relative to WT is proportional to the equilibrium stability change ΔΔ<italic>G</italic>, as verified by simulation and experiment. We establish that relative <italic>T</italic><sub>m</sub> is independent of simulation length, demonstrating that non-equilibrium simulations can in fact be used to quantify relative protein stability.</p>
+<p>Many of the experimentally verified stabilizing mutations in DHFR predicted by MCPU are found in the C-terminal beta hairpin region, which is the first to unfold in simulations, prior to the main unfolding event encompassing the entire structure (see <xref rid="pcbi.1004207.g002" ref-type="fig">Fig. 2</xref>). It has been shown that the source of ultra-stability in hyperthermophiles generally arises from slowing the unfolding rate, rather than increasing the folding rate [<xref rid="pcbi.1004207.ref028" ref-type="bibr">28</xref>], so our method may be particularly suitable for discovering biologically relevant stabilizing mutations. In addition, our results might be particularly applicable to <italic>in vivo</italic> studies, where protease digestion and/or aggregation proceed from the partially-unfolded state. We note, however, that some stabilizing residues predicted by MCPU lie in the region of the protein that is late to unfold in simulations, including I61V, which raises the experimental melting temperature by 1.7°C. These mutants, along with the destabilized outlier I155A for which relative <italic>T</italic><sub>m</sub> depends on simulation length (<xref rid="pcbi.1004207.g006" ref-type="fig">Fig. 6</xref>), are appealing candidates for further study, as they may reflect a breakdown in the simplifying assumptions of 2-state kinetic theory for proteins.</p>
+<p>It has been hypothesized that there exists a tradeoff between enzyme activity and stability, since certain regions of an enzyme must be sufficiently flexible to promote catalysis [<xref rid="pcbi.1004207.ref053" ref-type="bibr">53</xref>,<xref rid="pcbi.1004207.ref054" ref-type="bibr">54</xref>]. This conclusion was reached in [<xref rid="pcbi.1004207.ref053" ref-type="bibr">53</xref>,<xref rid="pcbi.1004207.ref058" ref-type="bibr">58</xref>], based on the exploration of stability effects of mutations in the active site of beta-lactamase [<xref rid="pcbi.1004207.ref053" ref-type="bibr">53</xref>] and rubisco [<xref rid="pcbi.1004207.ref058" ref-type="bibr">58</xref>]. Fersht and coauthors also found several stabilizing mutations in the active site of Barnase rendering the protein inactive [<xref rid="pcbi.1004207.ref059" ref-type="bibr">59</xref>]. While we observe a similar effect with the D27F mutation in DHFR, <xref rid="pcbi.1004207.g009" ref-type="fig">Fig. 9</xref> shows that exploring only mutations in the active site provides a biased view on the tradeoff between activity and stability. Rather a vast majority of mutations throughout the protein show a qualitatively opposite trend. The likely explanation of the distinction between an apparent tradeoff when mutations are made in the active site and the opposite trend for mutations outside of the active site is that “carving” an active site requires special selection of catalytic amino acids, which could indeed have a destabilizing effect, overall. However our observation of a small positive correlation argues against an obligate relation between global protein dynamics and activity for DHFR, at least for the aspects of dynamics that are correlated with stability. Warshel and colleagues reached a similar conclusion in their theoretical analysis of the role of dynamics for DHFR and other proteins in [<xref rid="pcbi.1004207.ref060" ref-type="bibr">60</xref>]. This point has likewise been made by Bloom <italic>et al</italic>. [<xref rid="pcbi.1004207.ref011" ref-type="bibr">11</xref>], who noted that a number of proteins have been stabilized experimentally without loss of activity, and Taverna and Goldstein argued that marginal stability is an inherent property of proteins due to the high dimensionality of sequence space and not due to a requirement of reduced stability in order to generate sufficient flexibility [<xref rid="pcbi.1004207.ref061" ref-type="bibr">61</xref>].</p>
+<p>A straightforward explanation for the weak yet statistically significant <italic>positive</italic> correlation between activity and stability observed in our case might be that more stable proteins have greater effective concentration of the folded (<italic>i</italic>.<italic>e</italic>. active) form. It is also important to note that a weak yet statistically significant positive correlation between activity and stability for DHFR can be revealed only when stabilizing mutations are included in the analysis. Our earlier study [<xref rid="pcbi.1004207.ref048" ref-type="bibr">48</xref>] analyzed a smaller set of primarily destabilizing mutants and did not reveal any statistically significant trend (positive or negative) in the stability-activity relation for DHFR.</p>
+<p>The development of highly-stabilized DHFR mutants through our combined <italic>in silico—in vitro</italic> approach opens up promising avenues for new <italic>in vivo</italic> studies. It has been postulated that protein stability places a fundamental constraint on the evolutionary pathways available to a protein [<xref rid="pcbi.1004207.ref029" ref-type="bibr">29</xref>,<xref rid="pcbi.1004207.ref062" ref-type="bibr">62</xref>] which has particular significance in the development of antibiotic resistance: higher protein stability can provide the microorganism with an increased capacity to evolve to evade antibiotic drugs [<xref rid="pcbi.1004207.ref063" ref-type="bibr">63</xref>] or, more generally, with capacity to evolve new functions [<xref rid="pcbi.1004207.ref062" ref-type="bibr">62</xref>]. We plan to use an approach developed in our lab [<xref rid="pcbi.1004207.ref048" ref-type="bibr">48</xref>] to endogenously introduce stabilized DHFR mutants into the bacterial chromosome and we will evaluate mutant fitness relative to wild-type using growth rates and competition experiments. These experiments will allow us to assess whether an evolutionary trade-off exists between stability and fitness <italic>in vivo</italic>, particularly in the presence of antibiotics.</p>
+<p>We plan to apply MCPU to predict stability effects of mutations in proteins other than DHFR, in particular to develop highly stabilized mutants. Comprehensive experimental analysis of fitness and/or stability effects of mutations [<xref rid="pcbi.1004207.ref064" ref-type="bibr">64</xref>] could be useful in assessing the predictive capabilities of this method. In addition to predicting mutant stabilities, MCPU can provide atomic-detail molecular trajectories to rationalize the stability effects of mutations; such analysis is left to future study.</p>
+</sec>
+<sec id="sec014" sec-type="materials|methods">
+<title>Materials and Methods</title>
+<sec id="sec015">
+<title>Monte Carlo simulations</title>
+<p>We employed an all-atom Monte Carlo simulation program incorporating a knowledge-based potential, described in previous publications [<xref rid="pcbi.1004207.ref016" ref-type="bibr">16</xref>,<xref rid="pcbi.1004207.ref031" ref-type="bibr">31</xref>,<xref rid="pcbi.1004207.ref065" ref-type="bibr">65</xref>]. Briefly, the energy function is a sum of contact energy, hydrogen-bonding, torsional angle, and sidechain torsional terms, with an additional term describing orientation of nearby aromatic residues. The move set consists of rotations about ϕ, ψ, and χ dihedral angles, with bonds and angles held fixed. Moves are accepted or rejected according to the Metropolis criterion.</p>
+<p>Mutations were introduced into the protein using the program Modeller v9.2 [<xref rid="pcbi.1004207.ref066" ref-type="bibr">66</xref>]. An initial minimization was carried out in NAMD [<xref rid="pcbi.1004207.ref067" ref-type="bibr">67</xref>] for 5,000 steps, using the default minimization algorithm and par_all27_prot_lipid.inp parameter file (without waters). An additional minimization step was carried out by running the Monte Carlo simulation program at low temperature (0.100 in simulation units) for 2,000,000 steps. A 2,000,000-step simulation was then run at each of 32 temperatures, averaging over all 2,000,000 steps to obtain Energy, RMSD, and number of contacts. These results were averaged over 50 simulations, for each temperature. Data was then plotted and fit to a sigmoid to obtain the computationally-predicted melting temperature, for each of Energy, RMSD, and number of contacts. To assess dependence of melting temperature on simulation length, longer simulations of 20,000,000 steps were carried out with 30 replications, averaging over the final 2,000,000 steps. For DHFR, 1,000,000 steps took approximately one hour of simulation time, on a single CPU.</p>
+<sec id="sec016">
+<title>Bioinformatics Analysis</title>
+<p>DHFR protein sequences from 290 bacterial species were aligned using the program MUSCLE and online server [<xref rid="pcbi.1004207.ref068" ref-type="bibr">68</xref>]. MATLAB, with the Bioinformatics Toolbox, was used to create sequence logo representations and to determine the consensus sequence.</p>
+</sec>
+</sec>
+<sec id="sec017">
+<title>Effect of number of replications on simulation accuracy</title>
+<p>We evaluated the effect of the number of MC simulation replications on the prediction results. As shown in <xref rid="pcbi.1004207.s009" ref-type="supplementary-material">S9 Fig</xref>, the prediction accuracy is sensitive to the number of replications, but converges to a constant value after approximately 20 replications. In addition, we saw that increasing the number of MC steps beyond 2,000,000 steps does not increase prediction accuracy when the protein has been simulated with at least 20 replications, despite the fact that not all simulations have converged by 2,000,000 steps (<xref rid="pcbi.1004207.s002" ref-type="supplementary-material">S2 Fig</xref>—<xref rid="pcbi.1004207.s004" ref-type="supplementary-material">S4 Fig</xref>).</p>
+</sec>
+<sec id="sec018">
+<title>Simulation analysis</title>
+<p>Sigmoidal fits were accomplished using the module “Sigmoidal, 4PL” using the software program Prism 6. The sigmoid function has the form:</p>
+<p>Y = Bottom + (Top-Bottom)/(1+10^((LogIC50-X)*HillSlope))</p>
+</sec>
+<sec id="sec019">
+<title>Method availability</title>
+<p>The tool is accessible from Shakhnovich lab website <ext-link ext-link-type="uri" xlink:href="http://faculty.chemistry.harvard.edu/shakhnovich/software" xlink:type="simple">http://faculty.chemistry.harvard.edu/shakhnovich/software</ext-link></p>
+</sec>
+<sec id="sec020">
+<title>Site-directed protein mutagenesis of DHFR</title>
+<p>The wild type dhfr gene was cloned in a pET24 expression vector under the inducible T7 promoter, then transformed into BL21(DE3) cells [<xref rid="pcbi.1004207.ref069" ref-type="bibr">69</xref>]. Single point mutations of DHFR were constructed based on a two-step PCR-mutagenesis strategy [<xref rid="pcbi.1004207.ref070" ref-type="bibr">70</xref>], in which the template for the PCR is the plasmid of WT DHFR. The multiple-mutant variants of DHFR were constructed based on the same method with the single point mutation, but the template of PCR was the plasmid of the corresponding dhfr mutant. To verify the mutations of dhfr, DNA sequencing was performed at the GENEWIZ Incorporation (MA, U.S.). The verified plasmids were transformed into competent <italic>E</italic>. <italic>coli</italic> BL21(DE3) cells for expression.</p>
+</sec>
+<sec id="sec021">
+<title>Protein expression and purification</title>
+<p>WT DHFR and all mutants used in this study were cloned into a pET24 expression vector and overexpressed in the BL21(DE3) pLys <italic>E</italic>. <italic>coli</italic> strain.</p>
+<p>A single colony of the transformed <italic>E</italic>. <italic>coli</italic> carrying the wild type or mutation dhfr was cultured in Luria-Bertani liquid medium containing 50 μg/mL kanamycin (LB-kana) at 30°C overnight, and then inoculated to fresh LB-kana (1:100 dilution) and incubated again at 30°C. When the OD<sub>600</sub> of the culture reached 0.6, isopropyl β-D-1-thiogalactopyranoside (final concentration, 0.4 mM) was added. Cultures were incubated for an additional 12–16 h at 25°C. The cells were then collected by centrifugation and disrupted by sonication. The recombinant proteins were purified with Ni-NTA Superflow (QIAGEN, U.S.) according to the manufacturer’s instructions. Then, the collected protein sample was run with Superdex 75pg Column and was desalted with the desalting Column in ÄKTA protein purification system (GE Healthcare, U.S.). The final concentration of the purified protein was determined using the BCA protein assay kit (PIERCE CHEMICAL, USA) or the NanoDrop instrument (GE Healthcare, U.S.).</p>
+</sec>
+<sec id="sec022">
+<title>Enzyme kinetics</title>
+<p>DHFR kinetic parameters were measured by the progress-curve kinetics, essentially as described [<xref rid="pcbi.1004207.ref069" ref-type="bibr">69</xref>,<xref rid="pcbi.1004207.ref071" ref-type="bibr">71</xref>]. A Scientific stopped flow apparatus, RX.2000 Rapid kinetics system (Applied Photophysics, UK) was used with absorbance monitoring at 340 nm, under single-turnover conditions. NADPH was preincubated with DHFR for 5 min in syringe 1 at the temperature 25°C in a thermostated syringe compartment, and then the reaction was initiated by rapidly mixing the contents with dihydropholate (DHF) from syringe 2. The final assay conditions are 25 nM DHFR, 120 μM NADPH(D), and 25 μM DHF in MTEN buffer (50 mM 2-(N-morpholino)ethanesulfonic acid, 25 mM tris(hydroxymethyl)aminomethane, 25 mM ethanolamine, and 100 mM sodium chloride, pH 7.6). The kinetics parameters (<italic>k</italic><sub>cat</sub> and <italic>K</italic><sub>M</sub>) were derived from progress-curves analysis using Global Kinetic explorer [<xref rid="pcbi.1004207.ref072" ref-type="bibr">72</xref>].</p>
+</sec>
+<sec id="sec023">
+<title>Stability measurements</title>
+<p>Thermal stability was characterized by differential scanning calorimetry (DSC), essentially as described in references [<xref rid="pcbi.1004207.ref069" ref-type="bibr">69</xref>,<xref rid="pcbi.1004207.ref073" ref-type="bibr">73</xref>]. Briefly, DHFR proteins in Buffer A (10 mM potassium-phosphate buffer pH 7.8 supplemented with 0.2 mM EDTA and 1 mM beta-mercaptoethanol) were subjected to a temperature increase of 1°C/min between 20 to 90°C (nano-DSC, TA instruments, U.S.), and the evolution of heat was recorded as a differential power between reference (buffer A) and sample (120 μM protein in buffer A) cells. The resulting thermogram (after buffer subtraction) was used to derive apparent thermal transition midpoints (Tm app). Thermal unfolding appeared irreversible for all DHFR proteins tested [<xref rid="pcbi.1004207.ref048" ref-type="bibr">48</xref>], and the two state scaled model provided in NanoAnalyze software (TA INstruments, U.S.) was used to fit the Tm app value. The mutants constructed in this study and the ones published earlier [<xref rid="pcbi.1004207.ref048" ref-type="bibr">48</xref>] were determined with different DSC instruments with slightly different calibration leading to a small offset of about 2°C for the WT DHFR for earlier published data[<xref rid="pcbi.1004207.ref048" ref-type="bibr">48</xref>].</p>
+<p>Urea unfolding was used to measure stability of the DHFR mutants against chemical denaturation. Proteins (25 μM in buffer A) were diluted in urea (0.2 mM increments up to a final urea concentration between 0 and 6 M), preequilibrated overnight at 25°C for 3 hours, and the change in the folded fraction was monitored by a circular dichroism signal at far-uv wavelength (221 nm) at 25°C (J-710 spectropolarimeter, Jasco). Fitting to a two-state model was used to derive the chemical transition midpoint (<italic>C</italic><sub>m</sub>).</p>
+</sec>
+</sec>
+<sec id="sec024">
+<title>Supporting Information</title>
+<supplementary-material id="pcbi.1004207.s001" xlink:href="info:doi/10.1371/journal.pcbi.1004207.s001" mimetype="image/tiff" position="float" xlink:type="simple">
+<label>S1 Fig</label>
+<caption>
+<title>The MCPU flow chart.</title>
+<p>(TIF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004207.s002" xlink:href="info:doi/10.1371/journal.pcbi.1004207.s002" mimetype="image/tiff" position="float" xlink:type="simple">
+<label>S2 Fig</label>
+<caption>
+<title>The RMSDs of DHFR wild type and mutants I115A and I155T vs. Monte Carlo step at temperatures from 0.1 to 3.2. RMSD is averaged over 50 replications.</title>
+<p>(TIFF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004207.s003" xlink:href="info:doi/10.1371/journal.pcbi.1004207.s003" mimetype="image/tiff" position="float" xlink:type="simple">
+<label>S3 Fig</label>
+<caption>
+<title>The total energy of DHFR wild type and mutants I115A and I155T vs. Monte Carlo step at temperatures from 0.1 to 3.2.</title>
+<p>Total energies are averaged over 50 replications.</p>
+<p>(TIFF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004207.s004" xlink:href="info:doi/10.1371/journal.pcbi.1004207.s004" mimetype="image/tiff" position="float" xlink:type="simple">
+<label>S4 Fig</label>
+<caption>
+<title>The number of contacts for DHFR wild type and mutants I115A and I155T vs. Monte Carlo step at temperatures from 0.1 to 3.2.</title>
+<p>Number of contacts were averaged over 50 replications.</p>
+<p>(TIFF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004207.s005" xlink:href="info:doi/10.1371/journal.pcbi.1004207.s005" mimetype="image/tiff" position="float" xlink:type="simple">
+<label>S5 Fig</label>
+<caption>
+<title>The unfolding curves of DHFR and mutants I115A and I155T.</title>
+<p>Data points are averaged over the 2,000,000 step simulation and 50 separate runs.</p>
+<p>(TIFF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004207.s006" xlink:href="info:doi/10.1371/journal.pcbi.1004207.s006" mimetype="image/tiff" position="float" xlink:type="simple">
+<label>S6 Fig</label>
+<caption>
+<title>Energy vs. Temperature simulated melting curve for WT DHFR and mutants I115A and I155T, averaging over the last 2,000,000 steps of a 20,000,000- step simulation, and 30 separate runs.</title>
+<p>The mutant melting temperatures show the same trend as in <xref rid="pcbi.1004207.s005" ref-type="supplementary-material">S5 Fig</xref>, although all melting temperatures are shifted to lower values (since the protein is given more time to unfold at each temperature), and the curve deviates more notably from a sigmoid. (A) Overlaid data points from all three mutants. (B) Fits to a sigmoidal function (blue line), for each of the three mutants.</p>
+<p>(TIFF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004207.s007" xlink:href="info:doi/10.1371/journal.pcbi.1004207.s007" mimetype="image/tiff" position="float" xlink:type="simple">
+<label>S7 Fig</label>
+<caption>
+<title>Correlation between urea denaturation midpoint, <italic>C</italic><sub>m</sub>, and melting temperature <italic>T</italic><sub>m</sub>, for WT and 22 mutants predicted to be stabilizing by MCPU.</title>
+<p>r = 0.81, p = 2 x 10<sup>−6</sup>. Blue triangle denotes WT, red diamond denotes D27F.</p>
+<p>(TIF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004207.s008" xlink:href="info:doi/10.1371/journal.pcbi.1004207.s008" mimetype="image/tiff" position="float" xlink:type="simple">
+<label>S8 Fig</label>
+<caption>
+<title>Protein stabilization for multiple mutants: deviation from additivity.</title>
+<p>Change in experimental melting temperature relative to WT is predicted by summing melting temperature changes of individual mutants. This predicted <bold>Δ</bold><italic>T</italic><sub>m</sub> is plotted relative to the observed <bold>Δ</bold><italic>T</italic><sub>m</sub> (blue circles). r = 0.80, p = 0.06. Red line denotes predicted <bold>Δ</bold><italic>T</italic><sub>m</sub> = observed <bold>Δ</bold><italic>T</italic>m.</p>
+<p>(TIFF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004207.s009" xlink:href="info:doi/10.1371/journal.pcbi.1004207.s009" mimetype="image/tiff" position="float" xlink:type="simple">
+<label>S9 Fig</label>
+<caption>
+<title>Sequence alignment and sequence entropy for 290 bacterial DHFRs.</title>
+<p>Sequence Logo for the alignment, generated using the MATLAB Bioinformatics Toolbox.</p>
+<p>(TIF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004207.s010" xlink:href="info:doi/10.1371/journal.pcbi.1004207.s010" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:type="simple">
+<label>S1 Table</label>
+<caption>
+<title>The simulated Tm values of the selected single point mutations and WT DHFR.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004207.s011" xlink:href="info:doi/10.1371/journal.pcbi.1004207.s011" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:type="simple">
+<label>S2 Table</label>
+<caption>
+<title>The experimental results for all single point mutations of DHFR.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004207.s012" xlink:href="info:doi/10.1371/journal.pcbi.1004207.s012" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:type="simple">
+<label>S3 Table</label>
+<caption>
+<title>Stability predictions for DHFR mutants, using MCPU/other methods.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ack>
+<p>We thank Bharat Adkar and Shimon Bershtein for help with the purification and Biophysical characterization of the DHFR mutants and Muyoung Heo for help and guidance in the use of the Monte Carlo simulations.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1004207.ref001"><label>1</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Serohijos</surname> <given-names>AW</given-names></name>, <name name-style="western"><surname>Shakhnovich</surname> <given-names>EI</given-names></name> (<year>2014</year>) <article-title>Merging molecular mechanism and evolution: theory and computation at the interface of biophysics and evolutionary population genetics</article-title>. <source>Curr Opin Struct Biol</source> <volume>26C</volume>: <fpage>84</fpage>–<lpage>91</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004207.ref002"><label>2</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Liberles</surname> <given-names>DA</given-names></name>, <name name-style="western"><surname>Teichmann</surname> <given-names>SA</given-names></name>, <name name-style="western"><surname>Bahar</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Bastolla</surname> <given-names>U</given-names></name>, <name name-style="western"><surname>Bloom</surname> <given-names>J</given-names></name>, <etal>et al</etal>. (<year>2012</year>) <article-title>The interface of protein structure, protein biophysics, and molecular evolution</article-title>. <source>Protein Sci</source> <volume>21</volume>: <fpage>769</fpage>–<lpage>785</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1002/pro.2071" xlink:type="simple">10.1002/pro.2071</ext-link></comment> <object-id pub-id-type="pmid">22528593</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref003"><label>3</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Shakhnovich</surname> <given-names>E</given-names></name> (<year>2006</year>) <article-title>Protein folding thermodynamics and dynamics: where physics, chemistry, and biology meet</article-title>. <source>Chem Rev</source> <volume>106</volume>: <fpage>1559</fpage>–<lpage>1588</lpage>. <object-id pub-id-type="pmid">16683745</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref004"><label>4</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Aguzzi</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>O'Connor</surname> <given-names>T</given-names></name> (<year>2010</year>) <article-title>Protein aggregation diseases: pathogenicity and therapeutic perspectives</article-title>. <source>Nat Rev Drug Discov</source> <volume>9</volume>: <fpage>237</fpage>–<lpage>248</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nrd3050" xlink:type="simple">10.1038/nrd3050</ext-link></comment> <object-id pub-id-type="pmid">20190788</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref005"><label>5</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Dobson</surname> <given-names>CM</given-names></name> (<year>2003</year>) <article-title>Protein folding and misfolding</article-title>. <source>Nature</source> <volume>426</volume>: <fpage>884</fpage>–<lpage>890</lpage>. <object-id pub-id-type="pmid">14685248</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref006"><label>6</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chiti</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Dobson</surname> <given-names>CM</given-names></name> (<year>2009</year>) <article-title>Amyloid formation by globular proteins under native conditions</article-title>. <source>Nat Chem Biol</source> <volume>5</volume>: <fpage>15</fpage>–<lpage>22</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nchembio.131" xlink:type="simple">10.1038/nchembio.131</ext-link></comment> <object-id pub-id-type="pmid">19088715</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref007"><label>7</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chennamsetty</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Voynov</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Kayser</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Helk</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Trout</surname> <given-names>BL</given-names></name> (<year>2009</year>) <article-title>Design of therapeutic proteins with enhanced stability</article-title>. <source>Proc Natl Acad Sci U S A</source> <volume>106</volume>: <fpage>11937</fpage>–<lpage>11942</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.0904191106" xlink:type="simple">10.1073/pnas.0904191106</ext-link></comment> <object-id pub-id-type="pmid">19571001</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref008"><label>8</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zeldovich</surname> <given-names>KB</given-names></name>, <name name-style="western"><surname>Chen</surname> <given-names>PQ</given-names></name>, <name name-style="western"><surname>Shakhnovich</surname> <given-names>EI</given-names></name> (<year>2007</year>) <article-title>Protein stability imposes limits on organism complexity and speed of molecular evolution</article-title>. <source>Proceedings of the National Academy of Sciences of the United States of America</source> <volume>104</volume>: <fpage>16152</fpage>–<lpage>16157</lpage>. <object-id pub-id-type="pmid">17913881</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref009"><label>9</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kumar</surname> <given-names>MD</given-names></name>, <name name-style="western"><surname>Bava</surname> <given-names>KA</given-names></name>, <name name-style="western"><surname>Gromiha</surname> <given-names>MM</given-names></name>, <name name-style="western"><surname>Prabakaran</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Kitajima</surname> <given-names>K</given-names></name>, <etal>et al</etal>. (<year>2006</year>) <article-title>ProTherm and ProNIT: thermodynamic databases for proteins and protein-nucleic acid interactions</article-title>. <source>Nucleic Acids Res</source> <volume>34</volume>: <fpage>D204</fpage>–<lpage>206</lpage>. <object-id pub-id-type="pmid">16381846</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref010"><label>10</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Duarte</surname> <given-names>NC</given-names></name>, <name name-style="western"><surname>Becker</surname> <given-names>SA</given-names></name>, <name name-style="western"><surname>Jamshidi</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Thiele</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Mo</surname> <given-names>ML</given-names></name>, <etal>et al</etal>. (<year>2007</year>) <article-title>Global reconstruction of the human metabolic network based on genomic and bibliomic data</article-title>. <source>Proceedings of the National Academy of Sciences of the United States of America</source> <volume>104</volume>: <fpage>1777</fpage>–<lpage>1782</lpage>. <object-id pub-id-type="pmid">17267599</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref011"><label>11</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bloom</surname> <given-names>JD</given-names></name>, <name name-style="western"><surname>Labthavikul</surname> <given-names>ST</given-names></name>, <name name-style="western"><surname>Otey</surname> <given-names>CR</given-names></name>, <name name-style="western"><surname>Arnold</surname> <given-names>FH</given-names></name> (<year>2006</year>) <article-title>Protein stability promotes evolvability</article-title>. <source>Proc Natl Acad Sci U S A</source> <volume>103</volume>: <fpage>5869</fpage>–<lpage>5874</lpage>. <object-id pub-id-type="pmid">16581913</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref012"><label>12</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Tokuriki</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Stricher</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Schymkowitz</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Serrano</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Tawfik</surname> <given-names>DS</given-names></name> (<year>2007</year>) <article-title>The Stability Effects of Protein Mutations Appear to be Universally Distributed</article-title>. <source>J Mol Biol</source> <volume>369</volume>: <fpage>1318</fpage>–<lpage>1332</lpage>. <object-id pub-id-type="pmid">17482644</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref013"><label>13</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fersht</surname> <given-names>AR</given-names></name> (<year>1995</year>) <article-title>Optimization of rates of protein folding: the nucleation-condensation mechanism and its implications</article-title>. <source>Proc Natl Acad Sci U S A</source> <volume>92</volume>: <fpage>10869</fpage>–<lpage>10873</lpage>. <object-id pub-id-type="pmid">7479900</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref014"><label>14</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Abkevich</surname> <given-names>VI</given-names></name>, <name name-style="western"><surname>Gutin</surname> <given-names>AM</given-names></name>, <name name-style="western"><surname>Shakhnovich</surname> <given-names>EI</given-names></name> (<year>1994</year>) <article-title>Specific nucleus as the transition state for protein folding: evidence from the lattice model</article-title>. <source>Biochemistry</source> <volume>33</volume>: <fpage>10026</fpage>–<lpage>10036</lpage>. <object-id pub-id-type="pmid">8060971</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref015"><label>15</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>McCarthy</surname> <given-names>MI</given-names></name>, <name name-style="western"><surname>Abecasis</surname> <given-names>GR</given-names></name>, <name name-style="western"><surname>Cardon</surname> <given-names>LR</given-names></name>, <name name-style="western"><surname>Goldstein</surname> <given-names>DB</given-names></name>, <name name-style="western"><surname>Little</surname> <given-names>J</given-names></name>, <etal>et al</etal>. (<year>2008</year>) <article-title>Genome-wide association studies for complex traits: consensus, uncertainty and challenges</article-title>. <source>Nature Reviews Genetics</source> <volume>9</volume>: <fpage>356</fpage>–<lpage>369</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nrg2344" xlink:type="simple">10.1038/nrg2344</ext-link></comment> <object-id pub-id-type="pmid">18398418</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref016"><label>16</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yang</surname> <given-names>JS</given-names></name>, <name name-style="western"><surname>Wallin</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Shakhnovich</surname> <given-names>EI</given-names></name> (<year>2008</year>) <article-title>Universality and diversity of folding mechanics for three-helix bundle proteins</article-title>. <source>Proc Natl Acad Sci U S A</source> <volume>105</volume>: <fpage>895</fpage>–<lpage>900</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.0707284105" xlink:type="simple">10.1073/pnas.0707284105</ext-link></comment> <object-id pub-id-type="pmid">18195374</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref017"><label>17</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bar-Even</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Noor</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Lewis</surname> <given-names>NE</given-names></name>, <name name-style="western"><surname>Milo</surname> <given-names>R</given-names></name> (<year>2010</year>) <article-title>Design and analysis of synthetic carbon fixation pathways</article-title>. <source>Proc Natl Acad Sci U S A</source> <volume>107</volume>: <fpage>8889</fpage>–<lpage>8894</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.0907176107" xlink:type="simple">10.1073/pnas.0907176107</ext-link></comment> <object-id pub-id-type="pmid">20410460</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref018"><label>18</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gilis</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Rooman</surname> <given-names>M</given-names></name> (<year>2000</year>) <article-title>PoPMuSiC, an algorithm for predicting protein mutant stability changes: application to prion proteins</article-title>. <source>Protein Eng</source> <volume>13</volume>: <fpage>849</fpage>–<lpage>856</lpage>. <object-id pub-id-type="pmid">11239084</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref019"><label>19</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yin</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Ding</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Dokholyan</surname> <given-names>NV</given-names></name> (<year>2007</year>) <article-title>Eris: an automated estimator of protein stability</article-title>. <source>Nat Methods</source> <volume>4</volume>: <fpage>466</fpage>–<lpage>467</lpage>. <object-id pub-id-type="pmid">17538626</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref020"><label>20</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Khan</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Vihinen</surname> <given-names>M</given-names></name> (<year>2010</year>) <article-title>Performance of protein stability predictors</article-title>. <source>Hum Mutat</source> <volume>31</volume>: <fpage>675</fpage>–<lpage>684</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1002/humu.21242" xlink:type="simple">10.1002/humu.21242</ext-link></comment> <object-id pub-id-type="pmid">20232415</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref021"><label>21</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Potapov</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Cohen</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Schreiber</surname> <given-names>G</given-names></name> (<year>2009</year>) <article-title>Assessing computational methods for predicting protein stability upon mutation: good on average but not in the details</article-title>. <source>Protein Eng Des Sel</source> <volume>22</volume>: <fpage>553</fpage>–<lpage>560</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/protein/gzp030" xlink:type="simple">10.1093/protein/gzp030</ext-link></comment> <object-id pub-id-type="pmid">19561092</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref022"><label>22</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Thiltgen</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Goldstein</surname> <given-names>RA</given-names></name> (<year>2012</year>) <article-title>Assessing predictors of changes in protein stability upon mutation using self-consistency</article-title>. <source>PLoS One</source> <volume>7</volume>: <fpage>e46084</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pone.0046084" xlink:type="simple">10.1371/journal.pone.0046084</ext-link></comment> <object-id pub-id-type="pmid">23144695</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref023"><label>23</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Neher</surname> <given-names>RA</given-names></name>, <name name-style="western"><surname>Shraiman</surname> <given-names>BI</given-names></name> (<year>2011</year>) <article-title>Genetic draft and quasi-neutrality in large facultatively sexual populations</article-title>. <source>Genetics</source> <volume>188</volume>: <fpage>975</fpage>–<lpage>996</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1534/genetics.111.128876" xlink:type="simple">10.1534/genetics.111.128876</ext-link></comment> <object-id pub-id-type="pmid">21625002</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref024"><label>24</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Reetz</surname> <given-names>MT</given-names></name>, <name name-style="western"><surname>Carballeira</surname> <given-names>JD</given-names></name>, <name name-style="western"><surname>Vogel</surname> <given-names>A</given-names></name> (<year>2006</year>) <article-title>Iterative saturation mutagenesis on the basis of B factors as a strategy for increasing protein thermostability</article-title>. <source>Angew Chem Int Ed Engl</source> <volume>45</volume>: <fpage>7745</fpage>–<lpage>7751</lpage>. <object-id pub-id-type="pmid">17075931</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref025"><label>25</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Tian</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Huang</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Chu</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Wu</surname> <given-names>N</given-names></name>, <etal>et al</etal>. (<year>2013</year>) <article-title>Improving the thermostability of methyl parathion hydrolase from Ochrobactrum sp. M231 using a computationally aided method</article-title>. <source>Appl Microbiol Biotechnol</source> <volume>97</volume>: <fpage>2997</fpage>–<lpage>3006</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1007/s00253-012-4411-7" xlink:type="simple">10.1007/s00253-012-4411-7</ext-link></comment> <object-id pub-id-type="pmid">23001009</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref026"><label>26</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Alfarano</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Varadamsetty</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Ewald</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Parmeggiani</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Pellarin</surname> <given-names>R</given-names></name>, <etal>et al</etal>. (<year>2012</year>) <article-title>Optimization of designed armadillo repeat proteins by molecular dynamics simulations and NMR spectroscopy</article-title>. <source>Protein Sci</source> <volume>21</volume>: <fpage>1298</fpage>–<lpage>1314</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1002/pro.2117" xlink:type="simple">10.1002/pro.2117</ext-link></comment> <object-id pub-id-type="pmid">22767482</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref027"><label>27</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Korkegian</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Black</surname> <given-names>ME</given-names></name>, <name name-style="western"><surname>Baker</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Stoddard</surname> <given-names>BL</given-names></name> (<year>2005</year>) <article-title>Computational thermostabilization of an enzyme</article-title>. <source>Science</source> <volume>308</volume>: <fpage>857</fpage>–<lpage>860</lpage>. <object-id pub-id-type="pmid">15879217</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref028"><label>28</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Luke</surname> <given-names>KA</given-names></name>, <name name-style="western"><surname>Higgins</surname> <given-names>CL</given-names></name>, <name name-style="western"><surname>Wittung-Stafshede</surname> <given-names>P</given-names></name> (<year>2007</year>) <article-title>Thermodynamic stability and folding of proteins from hyperthermophilic organisms</article-title>. <source>FEBS J</source> <volume>274</volume>: <fpage>4023</fpage>–<lpage>4033</lpage>. <object-id pub-id-type="pmid">17683332</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref029"><label>29</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mustonen</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Lassig</surname> <given-names>M</given-names></name> (<year>2009</year>) <article-title>From fitness landscapes to seascapes: non-equilibrium dynamics of selection and adaptation</article-title>. <source>Trends Genet</source> <volume>25</volume>: <fpage>111</fpage>–<lpage>119</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.tig.2009.01.002" xlink:type="simple">10.1016/j.tig.2009.01.002</ext-link></comment> <object-id pub-id-type="pmid">19232770</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref030"><label>30</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Xu</surname> <given-names>JB</given-names></name>, <name name-style="western"><surname>Huang</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Shakhnovich</surname> <given-names>EI</given-names></name> (<year>2011</year>) <article-title>The ensemble folding kinetics of the FBP28 WW domain revealed by an all-atom Monte Carlo simulation in a knowledge-based potential</article-title>. <source>Proteins-Structure Function and Bioinformatics</source> <volume>79</volume>: <fpage>1704</fpage>–<lpage>1714</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1002/prot.22993" xlink:type="simple">10.1002/prot.22993</ext-link></comment> <object-id pub-id-type="pmid">21365688</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref031"><label>31</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yang</surname> <given-names>JS</given-names></name>, <name name-style="western"><surname>Chen</surname> <given-names>WW</given-names></name>, <name name-style="western"><surname>Skolnick</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Shakhnovich</surname> <given-names>EI</given-names></name> (<year>2007</year>) <article-title>All-atom ab initio folding of a diverse set of proteins</article-title>. <source>Structure</source> <volume>15</volume>: <fpage>53</fpage>–<lpage>63</lpage>. <object-id pub-id-type="pmid">17223532</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref032"><label>32</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Boehr</surname> <given-names>DD</given-names></name>, <name name-style="western"><surname>McElheny</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Dyson</surname> <given-names>HJ</given-names></name>, <name name-style="western"><surname>Wright</surname> <given-names>PE</given-names></name> (<year>2006</year>) <article-title>The dynamic energy landscape of dihydrofolate reductase catalysis</article-title>. <source>Science</source> <volume>313</volume>: <fpage>1638</fpage>–<lpage>1642</lpage>. <object-id pub-id-type="pmid">16973882</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref033"><label>33</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Neradil</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Pavlasova</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Veselska</surname> <given-names>R</given-names></name> (<year>2012</year>) <article-title>New mechanisms for an old drug; DHFR- and non-DHFR-mediated effects of methotrexate in cancer cells</article-title>. <source>Klin Onkol</source> <volume>25</volume> <issue>Suppl 2</issue>: <fpage>2S87</fpage>–<lpage>92</lpage>. <object-id pub-id-type="pmid">23581023</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref034"><label>34</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>El-Subbagh</surname> <given-names>HIH, G.S.</given-names></name>; <name name-style="western"><surname>El-Messery</surname> <given-names>S.M.</given-names></name>, <name name-style="western"><surname>Al-Rashood</surname> <given-names>S.T.</given-names></name>; <name name-style="western"><surname>Al-Omary</surname> <given-names>F.A.</given-names></name>; <name name-style="western"><surname>Abulfadl</surname> <given-names>Y.S.</given-names></name>; <name name-style="western"><surname>Shabayek</surname> <given-names>M.I.</given-names></name> (<year>2014</year>) <article-title>Nonclassical antifolates, part 5. Benzodiazepine analogs as a new class of DHFR inhibitors: synthesis, antitumor testing and molecular modeling study</article-title>. <source>Eur J Med Chem</source> <volume>3</volume>: <fpage>234</fpage>–<lpage>245</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004207.ref035"><label>35</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jarzynski</surname> <given-names>C</given-names></name> (<year>1997</year>) <article-title>Equilibrium free-energy differences from nonequilibrium measurements: A master-equation approach</article-title>. <source>Phys Rev E Stat Nonlin Soft Matter Phys</source> <volume>56</volume>: <fpage>5018</fpage>–<lpage>5035</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004207.ref036"><label>36</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Imparato</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Luccioli</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Torcini</surname> <given-names>A</given-names></name> (<year>2007</year>) <article-title>Reconstructing the free-energy landscape of a mechanically unfolded model protein</article-title>. <source>Phys Rev Lett</source> <volume>99</volume>: <fpage>168101</fpage>. <object-id pub-id-type="pmid">17995298</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref037"><label>37</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Echeverria</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Amzel</surname> <given-names>LM</given-names></name> (<year>2010</year>) <article-title>Helix propensities calculations for amino acids in alanine based peptides using Jarzynski's equality</article-title>. <source>Proteins</source> <volume>78</volume>: <fpage>1302</fpage>–<lpage>1310</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1002/prot.22649" xlink:type="simple">10.1002/prot.22649</ext-link></comment> <object-id pub-id-type="pmid">20014024</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref038"><label>38</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schulten</surname> <given-names>KT, E.</given-names></name>; <name name-style="western"><surname>Park</surname> <given-names>S.</given-names></name>; <name name-style="western"><surname>Khalili-Araghi</surname> <given-names>F.</given-names></name> (<year>2003</year>) <article-title>Free energy calculation from steered molecular dynamics simulations using Jarzynski's equality</article-title>. <source>Journal of Chemical Physics</source> <volume>119</volume>: <fpage>3559</fpage>–<lpage>3566</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004207.ref039"><label>39</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Eyre-Walker</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Woolfit</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Phelps</surname> <given-names>T</given-names></name> (<year>2006</year>) <article-title>The distribution of fitness effects of new deleterious amino acid mutations in humans</article-title>. <source>Genetics</source> <volume>173</volume>: <fpage>891</fpage>–<lpage>900</lpage>. <object-id pub-id-type="pmid">16547091</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref040"><label>40</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Fersht</surname> <given-names>A</given-names></name> (<year>1999</year>) <chapter-title>Structure and mechanism in protein science: a guide to enzyme catalysis and protein folding</chapter-title>. <publisher-loc>New York</publisher-loc>: <publisher-name>W.H. Freeman</publisher-name>. <volume>xxi</volume>, 631 p. p.</mixed-citation></ref>
+<ref id="pcbi.1004207.ref041"><label>41</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Shakhnovich</surname> <given-names>EI</given-names></name>, <name name-style="western"><surname>Finkelstein</surname> <given-names>AV</given-names></name> (<year>1989</year>) <article-title>Theory of cooperative transitions in protein molecules. I. Why denaturation of globular protein is a first-order phase transition</article-title>. <source>Biopolymers</source> <volume>28</volume>: <fpage>1667</fpage>–<lpage>1680</lpage>. <object-id pub-id-type="pmid">2597723</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref042"><label>42</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gutin</surname> <given-names>AM</given-names></name>, <name name-style="western"><surname>Abkevich</surname> <given-names>VI</given-names></name>, <name name-style="western"><surname>Shakhnovich</surname> <given-names>EI</given-names></name> (<year>1998</year>) <article-title>A protein engineering analysis of the transition state for protein folding: simulation in the lattice model</article-title>. <source>Fold Des</source> <volume>3</volume>: <fpage>183</fpage>–<lpage>194</lpage>. <object-id pub-id-type="pmid">9562547</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref043"><label>43</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Matouschek</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Kellis</surname> <given-names>JT</given-names> <suffix>Jr.</suffix></name>, <name name-style="western"><surname>Serrano</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Fersht</surname> <given-names>AR</given-names></name> (<year>1989</year>) <article-title>Mapping the transition state and pathway of protein folding by protein engineering</article-title>. <source>Nature</source> <volume>340</volume>: <fpage>122</fpage>–<lpage>126</lpage>. <object-id pub-id-type="pmid">2739734</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref044"><label>44</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fersht</surname> <given-names>AR</given-names></name>, <name name-style="western"><surname>Sato</surname> <given-names>S</given-names></name> (<year>2004</year>) <article-title>Phi-value analysis and the nature of protein-folding transition states</article-title>. <source>Proc Natl Acad Sci USA</source> <volume>101</volume>: <fpage>7976</fpage>–<lpage>7981</lpage>. <object-id pub-id-type="pmid">15150406</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref045"><label>45</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Naganathan</surname> <given-names>AN</given-names></name>, <name name-style="western"><surname>Munoz</surname> <given-names>V</given-names></name> (<year>2010</year>) <article-title>Insights into protein folding mechanisms from large scale analysis of mutational effects</article-title>. <source>Proc Natl Acad Sci U S A</source> <volume>107</volume>: <fpage>8611</fpage>–<lpage>8616</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.1000988107" xlink:type="simple">10.1073/pnas.1000988107</ext-link></comment> <object-id pub-id-type="pmid">20418505</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref046"><label>46</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Baldwin</surname> <given-names>RL</given-names></name>, <name name-style="western"><surname>Frieden</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Rose</surname> <given-names>GD</given-names></name> (<year>2010</year>) <article-title>Dry molten globule intermediates and the mechanism of protein unfolding</article-title>. <source>Proteins</source> <volume>78</volume>: <fpage>2725</fpage>–<lpage>2737</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1002/prot.22803" xlink:type="simple">10.1002/prot.22803</ext-link></comment> <object-id pub-id-type="pmid">20635344</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref047"><label>47</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Finkelstein</surname> <given-names>AV</given-names></name>, <name name-style="western"><surname>Shakhnovich</surname> <given-names>EI</given-names></name> (<year>1989</year>) <article-title>Theory of cooperative transitions in protein molecules. II. Phase diagram for a protein molecule in solution</article-title>. <source>Biopolymers</source> <volume>28</volume>: <fpage>1681</fpage>–<lpage>1694</lpage>. <object-id pub-id-type="pmid">2597724</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref048"><label>48</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bershtein</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Mu</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Shakhnovich</surname> <given-names>EI</given-names></name> (<year>2012</year>) <article-title>Soluble oligomerization provides a beneficial fitness effect on destabilizing mutations</article-title>. <source>Proc Natl Acad Sci U S A</source> <volume>109</volume>: <fpage>4857</fpage>–<lpage>4862</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.1118157109" xlink:type="simple">10.1073/pnas.1118157109</ext-link></comment> <object-id pub-id-type="pmid">22411825</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref049"><label>49</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bershtein</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Mu</surname> <given-names>WM</given-names></name>, <name name-style="western"><surname>Serohijos</surname> <given-names>AWR</given-names></name>, <name name-style="western"><surname>Zhou</surname> <given-names>JW</given-names></name>, <name name-style="western"><surname>Shakhnovich</surname> <given-names>EI</given-names></name> (<year>2013</year>) <article-title>Protein Quality Control Acts on Folding Intermediates to Shape the Effects of Mutations on Organismal Fitness</article-title>. <source>Mol Cell</source> <volume>49</volume>: <fpage>133</fpage>–<lpage>144</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.molcel.2012.11.004" xlink:type="simple">10.1016/j.molcel.2012.11.004</ext-link></comment> <object-id pub-id-type="pmid">23219534</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref050"><label>50</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Karr</surname> <given-names>JR</given-names></name>, <name name-style="western"><surname>Sanghvi</surname> <given-names>JC</given-names></name>, <name name-style="western"><surname>Macklin</surname> <given-names>DN</given-names></name>, <name name-style="western"><surname>Gutschow</surname> <given-names>MV</given-names></name>, <name name-style="western"><surname>Jacobs</surname> <given-names>JM</given-names></name>, <etal>et al</etal>. (<year>2012</year>) <article-title>A whole-cell computational model predicts phenotype from genotype</article-title>. <source>Cell</source> <volume>150</volume>: <fpage>389</fpage>–<lpage>401</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.cell.2012.05.044" xlink:type="simple">10.1016/j.cell.2012.05.044</ext-link></comment> <object-id pub-id-type="pmid">22817898</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref051"><label>51</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ohmae</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Miyashita</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Tate</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Gekko</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Kitazawa</surname> <given-names>S</given-names></name>, <etal>et al</etal>. (<year>2013</year>) <article-title>Solvent environments significantly affect the enzymatic function of Escherichia coli dihydrofolate reductase: comparison of wild-type protein and active-site mutant D27E</article-title>. <source>Biochim Biophys Acta</source> <volume>1834</volume>: <fpage>2782</fpage>–<lpage>2794</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.bbapap.2013.09.024" xlink:type="simple">10.1016/j.bbapap.2013.09.024</ext-link></comment> <object-id pub-id-type="pmid">24140567</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref052"><label>52</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Reetz</surname> <given-names>MT</given-names></name>, <name name-style="western"><surname>Prasad</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Carballeira</surname> <given-names>JD</given-names></name>, <name name-style="western"><surname>Gumulya</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Bocola</surname> <given-names>M</given-names></name> (<year>2010</year>) <article-title>Iterative saturation mutagenesis accelerates laboratory evolution of enzyme stereoselectivity: rigorous comparison with traditional methods</article-title>. <source>J Am Chem Soc</source> <volume>132</volume>: <fpage>9144</fpage>–<lpage>9152</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1021/ja1030479" xlink:type="simple">10.1021/ja1030479</ext-link></comment> <object-id pub-id-type="pmid">20536132</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref053"><label>53</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Beadle</surname> <given-names>BM</given-names></name>, <name name-style="western"><surname>Shoichet</surname> <given-names>BK</given-names></name> (<year>2002</year>) <article-title>Structural bases of stability-function tradeoffs in enzymes</article-title>. <source>J Mol Biol</source> <volume>321</volume>: <fpage>285</fpage>–<lpage>296</lpage>. <object-id pub-id-type="pmid">12144785</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref054"><label>54</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>DePristo</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Weinreich</surname> <given-names>DM</given-names></name>, <name name-style="western"><surname>Hartl</surname> <given-names>DL</given-names></name> (<year>2005</year>) <article-title>Missense meanderings in sequence space: a biophysical view of protein evolution</article-title>. <source>Nat Rev Genet</source> <volume>6</volume>: <fpage>678</fpage>–<lpage>687</lpage>. <object-id pub-id-type="pmid">16074985</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref055"><label>55</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Milo</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Last</surname> <given-names>RL</given-names></name> (<year>2012</year>) <article-title>Achieving Diversity in the Face of Constraints: Lessons from Metabolism</article-title>. <source>Science</source> <volume>336</volume>: <fpage>1663</fpage>–<lpage>1667</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/science.1217665" xlink:type="simple">10.1126/science.1217665</ext-link></comment> <object-id pub-id-type="pmid">22745419</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref056"><label>56</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Worth</surname> <given-names>CL</given-names></name>, <name name-style="western"><surname>Preissner</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Blundell</surname> <given-names>TL</given-names></name> (<year>2011</year>) <article-title>SDM—a server for predicting effects of mutations on protein stability and malfunction</article-title>. <source>Nucleic Acids Res</source> <volume>39</volume>: <fpage>W215</fpage>–<lpage>222</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/nar/gkr363" xlink:type="simple">10.1093/nar/gkr363</ext-link></comment> <object-id pub-id-type="pmid">21593128</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref057"><label>57</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Itzhaki</surname> <given-names>LS</given-names></name>, <name name-style="western"><surname>Otzen</surname> <given-names>DE</given-names></name>, <name name-style="western"><surname>Fersht</surname> <given-names>AR</given-names></name> (<year>1995</year>) <article-title>The structure of the transition state for folding of chymotrypsin inhibitor 2 analysed by protein engineering methods: evidence for a nucleation-condensation mechanism for protein folding</article-title>. <source>J Mol Biol</source> <volume>254</volume>: <fpage>260</fpage>–<lpage>288</lpage>. <object-id pub-id-type="pmid">7490748</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref058"><label>58</label><mixed-citation publication-type="other" xlink:type="simple">Studer RA, Christin PA, Williams MA, Orengo CA (2014) Stability-activity tradeoffs constrain the adaptive evolution of RubisCO. Proc Natl Acad Sci U S A.</mixed-citation></ref>
+<ref id="pcbi.1004207.ref059"><label>59</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fersht</surname> <given-names>AR</given-names></name>, <name name-style="western"><surname>Matouschek</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Serrano</surname> <given-names>L</given-names></name> (<year>1992</year>) <article-title>The folding of an enzyme. I. Theory of protein engineering analysis of stability and pathway of protein folding</article-title>. <source>J Mol Biol</source> <volume>224</volume>: <fpage>771</fpage>–<lpage>782</lpage>. <object-id pub-id-type="pmid">1569556</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref060"><label>60</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Adamczyk</surname> <given-names>AJ</given-names></name>, <name name-style="western"><surname>Cao</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Kamerlin</surname> <given-names>SC</given-names></name>, <name name-style="western"><surname>Warshel</surname> <given-names>A</given-names></name> (<year>2011</year>) <article-title>Catalysis by dihydrofolate reductase and other enzymes arises from electrostatic preorganization, not conformational motions</article-title>. <source>Proc Natl Acad Sci U S A</source> <volume>108</volume>: <fpage>14115</fpage>–<lpage>14120</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.1111252108" xlink:type="simple">10.1073/pnas.1111252108</ext-link></comment> <object-id pub-id-type="pmid">21831831</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref061"><label>61</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Taverna</surname> <given-names>DM</given-names></name>, <name name-style="western"><surname>Goldstein</surname> <given-names>RA</given-names></name> (<year>2002</year>) <article-title>Why are proteins marginally stable?</article-title> <source>Proteins</source> <volume>46</volume>: <fpage>105</fpage>–<lpage>109</lpage>. <object-id pub-id-type="pmid">11746707</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref062"><label>62</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Romero</surname> <given-names>PA</given-names></name>, <name name-style="western"><surname>Arnold</surname> <given-names>FH</given-names></name> (<year>2009</year>) <article-title>Exploring protein fitness landscapes by directed evolution</article-title>. <source>Nat Rev Mol Cell Biol</source> <volume>10</volume>: <fpage>866</fpage>–<lpage>876</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nrm2805" xlink:type="simple">10.1038/nrm2805</ext-link></comment> <object-id pub-id-type="pmid">19935669</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref063"><label>63</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Brown</surname> <given-names>NG</given-names></name>, <name name-style="western"><surname>Pennington</surname> <given-names>JM</given-names></name>, <name name-style="western"><surname>Huang</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Ayvaz</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Palzkill</surname> <given-names>T</given-names></name> (<year>2010</year>) <article-title>Multiple global suppressors of protein stability defects facilitate the evolution of extended-spectrum TEM beta-lactamases</article-title>. <source>J Mol Biol</source> <volume>404</volume>: <fpage>832</fpage>–<lpage>846</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.jmb.2010.10.008" xlink:type="simple">10.1016/j.jmb.2010.10.008</ext-link></comment> <object-id pub-id-type="pmid">20955714</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref064"><label>64</label><mixed-citation publication-type="other" xlink:type="simple">Jacquier H, Birgy A, Le Nagard H, Mechulam Y, Schmitt E, et al. (2013) Capturing the mutational landscape of the beta-lactamase TEM-1. Proc Natl Acad Sci U S A.</mixed-citation></ref>
+<ref id="pcbi.1004207.ref065"><label>65</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Xu</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Huang</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Shakhnovich</surname> <given-names>EI</given-names></name> (<year>2011</year>) <article-title>The ensemble folding kinetics of the FBP28 WW domain revealed by an all-atom Monte Carlo simulation in a knowledge-based potential</article-title>. <source>Proteins</source> <volume>79</volume>: <fpage>1704</fpage>–<lpage>1714</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1002/prot.22993" xlink:type="simple">10.1002/prot.22993</ext-link></comment> <object-id pub-id-type="pmid">21365688</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref066"><label>66</label><mixed-citation publication-type="other" xlink:type="simple">Eswar N, Webb B, Marti-Renom MA, Madhusudhan MS, Eramian D, et al. (2006) Comparative protein structure modeling using Modeller. Curr Protoc Bioinformatics Chapter 5: Unit 5 6.</mixed-citation></ref>
+<ref id="pcbi.1004207.ref067"><label>67</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Phillips</surname> <given-names>JC</given-names></name>, <name name-style="western"><surname>Braun</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Gumbart</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Tajkhorshid</surname> <given-names>E</given-names></name>, <etal>et al</etal>. (<year>2005</year>) <article-title>Scalable molecular dynamics with NAMD</article-title>. <source>J Comput Chem</source> <volume>26</volume>: <fpage>1781</fpage>–<lpage>1802</lpage>. <object-id pub-id-type="pmid">16222654</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref068"><label>68</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Edgar</surname> <given-names>RC</given-names></name> (<year>2004</year>) <article-title>MUSCLE: multiple sequence alignment with high accuracy and high throughput</article-title>. <source>Nucleic Acids Res</source> <volume>32</volume>: <fpage>1792</fpage>–<lpage>1797</lpage>. <object-id pub-id-type="pmid">15034147</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref069"><label>69</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bershtein</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Mu</surname> <given-names>WM</given-names></name>, <name name-style="western"><surname>Shakhnovich</surname> <given-names>EI</given-names></name> (<year>2012</year>) <article-title>Soluble oligomerization provides a beneficial fitness effect on destabilizing mutations</article-title>. <source>Proc Natl Acad Sci U S A</source> <volume>109</volume>: <fpage>4857</fpage>–<lpage>4862</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.1118157109" xlink:type="simple">10.1073/pnas.1118157109</ext-link></comment> <object-id pub-id-type="pmid">22411825</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref070"><label>70</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kirsch</surname> <given-names>RD</given-names></name>, <name name-style="western"><surname>Joly</surname> <given-names>E</given-names></name> (<year>1998</year>) <article-title>An improved PCR-mutagenesis strategy for two-site mutagenesis or sequence swapping between related genes</article-title>. <source>Nucleic Acids Res</source> <volume>26</volume>: <fpage>1848</fpage>–<lpage>1850</lpage>. <object-id pub-id-type="pmid">9512562</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref071"><label>71</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kim</surname> <given-names>HS</given-names></name>, <name name-style="western"><surname>Damo</surname> <given-names>SM</given-names></name>, <name name-style="western"><surname>Lee</surname> <given-names>SY</given-names></name>, <name name-style="western"><surname>Wemmer</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Klinman</surname> <given-names>JP</given-names></name> (<year>2005</year>) <article-title>Structure and hydride transfer mechanism of a moderate thermophilic dihydrofolate reductase from Bacillus stearothermophilus and comparison to its mesophilic and hyperthermophilic homologues</article-title>. <source>Biochemistry</source> <volume>44</volume>: <fpage>11428</fpage>–<lpage>11439</lpage>. <object-id pub-id-type="pmid">16114879</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref072"><label>72</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Johnson</surname> <given-names>KA</given-names></name>, <name name-style="western"><surname>Simpson</surname> <given-names>ZB</given-names></name>, <name name-style="western"><surname>Blom</surname> <given-names>T</given-names></name> (<year>2009</year>) <article-title>FitSpace explorer: an algorithm to evaluate multidimensional parameter space in fitting kinetic data</article-title>. <source>Anal Biochem</source> <volume>387</volume>: <fpage>30</fpage>–<lpage>41</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.ab.2008.12.025" xlink:type="simple">10.1016/j.ab.2008.12.025</ext-link></comment> <object-id pub-id-type="pmid">19168024</object-id></mixed-citation></ref>
+<ref id="pcbi.1004207.ref073"><label>73</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lopez</surname> <given-names>MM</given-names></name>, <name name-style="western"><surname>Makhatadze</surname> <given-names>GI</given-names></name> (<year>2002</year>) <article-title>Differential scanning calorimetry</article-title>. <source>Methods Mol Biol</source> <volume>173</volume>: <fpage>113</fpage>–<lpage>119</lpage>. <object-id pub-id-type="pmid">11859754</object-id></mixed-citation></ref>
+</ref-list>
+</back>
+</article>

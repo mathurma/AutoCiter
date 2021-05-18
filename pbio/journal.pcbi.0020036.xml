@@ -1,0 +1,1665 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="discussion" dtd-version="3.0" xml:lang="EN">
+  <front>
+    <journal-meta><journal-id journal-id-type="publisher-id">plos</journal-id><journal-id journal-id-type="publisher">pcbi</journal-id><journal-id journal-id-type="flc">plcb</journal-id><journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id><journal-id journal-id-type="pmc">ploscomp</journal-id><!--===== Grouping journal title elements =====--><journal-title-group><journal-title>PLoS Computational Biology</journal-title></journal-title-group><issn pub-type="ppub">1553-734X</issn><issn pub-type="epub">1553-7358</issn><publisher>
+        <publisher-name>Public Library of Science</publisher-name>
+        <publisher-loc>San Francisco, USA</publisher-loc>
+      </publisher></journal-meta>
+    <article-meta><article-id pub-id-type="doi">10.1371/journal.pcbi.0020036</article-id><article-id pub-id-type="sici">plcb-02-04-10</article-id><article-categories>
+        <subj-group subj-group-type="heading">
+          <subject>Education</subject>
+        </subj-group>
+        <subj-group subj-group-type="Discipline">
+          <subject>Computational Biology/Sequence Motif Analysis</subject>
+          <subject>Computational Biology/Genomics</subject>
+          <subject>Cell Biology</subject>
+        </subj-group>
+      </article-categories><title-group><article-title>Practical Strategies for Discovering Regulatory DNA Sequence Motifs</article-title></title-group><contrib-group>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>MacIsaac</surname>
+            <given-names>Kenzie D</given-names>
+          </name>
+          <xref ref-type="fn" rid="aff1"/>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Fraenkel</surname>
+            <given-names>Ernest</given-names>
+          </name>
+          <xref ref-type="corresp" rid="cor1">
+            <sup>*</sup>
+          </xref>
+          <xref ref-type="fn" rid="aff1"/>
+        </contrib>
+      </contrib-group><author-notes>
+        <corresp id="cor1"> * To whom correspondence should be addressed. E-mail: <email xlink:type="simple">fraenkel-admin@mit.edu</email></corresp>
+        <fn fn-type="current-aff" id="aff1">
+          <p>Kenzie D. MacIsaac is in the Department of Electrical Engineering and Computer Science, Cambridge, Massachusetts, United States of America. Ernest Fraenkel is in the Biological Engineering Division, Massachusetts Institute of Technology, Cambridge, Massachusetts, United States of America. Kenzie D. MacIsaac and Ernest Fraenkel are both in the Computer Science and Artificial Intelligence Laboratory, Massachusetts Institute of Technology, Cambridge, Massachusetts, United States of America.</p>
+        </fn>
+      <fn fn-type="conflict" id="ack2">
+        <p> The authors have declared that no competing interests exist.</p>
+      </fn></author-notes><pub-date pub-type="ppub">
+        <month>4</month>
+        <year>2006</year>
+      </pub-date><pub-date pub-type="epub">
+        <day>28</day>
+        <month>4</month>
+        <year>2006</year>
+      </pub-date><volume>2</volume><issue>4</issue><elocation-id>e36</elocation-id><!--===== Grouping copyright info into permissions =====--><permissions><copyright-year>2006</copyright-year><copyright-holder>MacIsaac and Fraenkel</copyright-holder><license><license-p>This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license></permissions><funding-group><funding-statement>The authors acknowledge support from the Whitaker Foundation to EF.</funding-statement></funding-group><counts>
+        <page-count count="10"/>
+      </counts><!--===== Restructure custom-meta-wrap to custom-meta-group =====--><custom-meta-group>
+        <custom-meta>
+          <meta-name>Citation:</meta-name>
+          <meta-value>MacIsaac KD, Fraenkel E (2006) Practical strategies for discovering regulatory DNA sequence motifs. PLoS Comput Biol 2(4): e36. DOI: <ext-link ext-link-type="doi" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.0020036" xlink:type="simple">10.1371/journal.pcbi.0020036</ext-link></meta-value>
+        </custom-meta>
+      </custom-meta-group></article-meta>
+  </front>
+  <body>
+    <sec id="s1">
+      <title/>
+      <p>Many functionally important regions of the genome can be recognized by searching for sequence patterns, or “motifs.” Aside from the genes themselves, examples include CpG islands, often present in promoter regions, and splice sites that denote intron/exon boundaries. Other motifs of great interest correspond to sites bound by regulatory proteins. Differential expression of genes in response to environmental and developmental cues depends on the action of these proteins, which are also known as transcription factors. Identifying the regulatory motifs bound by transcription factors can provide crucial insight into the mechanisms of transcriptional regulation. However, the search for these sites is challenging because a single regulatory protein will often recognize a variety of similar sequences. In this tutorial, we review computational techniques, termed “motif discovery,” to learn representations of regulatory motifs from sequence data. In <xref ref-type="fig" rid="pcbi-0020036-g001">Figure 1</xref>, we present an overview of the basic workflow in a motif discovery analysis and some practical strategies for successfully mining sequence data for biologically important regulatory motifs. In the remainder of this tutorial, we discuss the main challenges associated with motif discovery in detail, and we review recent developments for addressing these challenges.</p>
+      <fig id="pcbi-0020036-g001" position="float">
+        <object-id pub-id-type="doi">10.1371/journal.pcbi.0020036.g001</object-id>
+        <label>Figure 1</label>
+        <caption>
+          <title>Motif Discovery Workflow</title>
+        </caption>
+        <graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.0020036.g001" xlink:type="simple"/>
+      </fig>
+    </sec>
+    <sec id="s1a">
+      <title>Theoretical Considerations</title>
+      <sec id="s2aa">
+        <title/>
+        <sec id="s1a1">
+          <title>Motif models.</title>
+          <p>There are many ways of representing the sequence specificity of a protein, and the choice of a particular representation is often determined by considerations such as simplicity, interpretability, representational power, or computational convenience. Perhaps the simplest way of representing a motif is by using a consensus sequence of preferred nucleotides (adenine [A], cytosine [C], guanine [G], or thymine [T]). A motif is then simply a short word embedded in a longer DNA sequence. Degeneracy in the binding specificity of a protein can be incorporated using the ambiguity codes (purine [R], pyrimidine [Y], strong [S], weak [W], keto [K], amino [M], and any nucleotide [N]) [<xref ref-type="bibr" rid="pcbi-0020036-b001">1</xref>]. A number of methods for generating consensus sequences from data are possible, and several methods have been compared by Day and McMorris [<xref ref-type="bibr" rid="pcbi-0020036-b002">2</xref>].</p>
+          <p>Another widely used motif model is the position weight matrix (PWM). In this formulation, the motif is represented as a matrix of nucleotide scores indexed by letter and position [<xref ref-type="bibr" rid="pcbi-0020036-b003">3</xref>]. In a PWM, the nucleotide observed at a particular position in the motif is assumed to be independent of the nucleotides observed at other positions [<xref ref-type="bibr" rid="pcbi-0020036-b004">4</xref>]. A closely related approach models a motif as a matrix of nucleotide probabilities, where each position is represented using a multinomial distribution over observed nucleotides. Motifs represented in this manner can be visualized conveniently using sequence logos. A sequence logo consists of an ordered stack of letters, where a letter's height indicates the information it contains at that position [<xref ref-type="bibr" rid="pcbi-0020036-b005">5</xref>]. For example, a nucleotide that appears 100% of the time at a particular position reduces our uncertainty about the binding site sequence by two bits, and therefore will have a height of two bits in the sequence logo. The nucleotide frequencies observed at different positions in a set of binding sites can be related to the theoretical contribution of a particular nucleotide to the free energy of protein binding [<xref ref-type="bibr" rid="pcbi-0020036-b004">4</xref>,<xref ref-type="bibr" rid="pcbi-0020036-b006">6</xref>,<xref ref-type="bibr" rid="pcbi-0020036-b007">7</xref>].</p>
+          <p>Consensus sequences and simple matrix models ignore some of the complexity of protein–DNA interaction. Dependencies between nucleotides at different positions in protein binding sites have been observed [<xref ref-type="bibr" rid="pcbi-0020036-b008">8</xref>,<xref ref-type="bibr" rid="pcbi-0020036-b009">9</xref>]. Several motif models have been proposed that take into account the possibility of positional correlations. Zhou and Liu modeled a motif using a generalized weight matrix that could incorporate pairwise dependencies [<xref ref-type="bibr" rid="pcbi-0020036-b010">10</xref>]. Barash and colleagues used Bayesian networks to model motifs, allowing for the incorporation of arbitrary dependencies between positions [<xref ref-type="bibr" rid="pcbi-0020036-b011">11</xref>]. Several other representationally powerful models have been proposed that can incorporate dependencies, including boosted classifiers [<xref ref-type="bibr" rid="pcbi-0020036-b012">12</xref>] and a hidden Markov Dirichlet multinomial model [<xref ref-type="bibr" rid="pcbi-0020036-b013">13</xref>].</p>
+          <p>While it is possible to use arbitrarily complex motif models to represent a transcription factor's binding specificity, increasing the model complexity requires more data to estimate the model's parameters. If data are limited, as they often are, complex models may overfit the data and subsequently yield a poor representation of the factor's true specificity. An important study by Benos, Bulyk, and Stormo suggested that while the consensus sequence and PWM may not fully capture all the subtleties of a protein's binding specificity, these simple and easily interpretable models usually provide a very good approximation to reality [<xref ref-type="bibr" rid="pcbi-0020036-b014">14</xref>].</p>
+        </sec>
+        <sec id="s1a2">
+          <title>Algorithms for motif discovery.</title>
+          <p>The motif discovery problem can be formulated in several ways, but the most common formulation is as follows: we have a set of DNA sequences that are believed, a priori, to be co-regulated and thus likely to be bound by one or more regulatory proteins. We wish to learn the parameters of motifs that could explain this binding. To a large extent, the algorithm used to perform motif discovery dictates which type of motif model will be used. The algorithmic approaches that have been used to tackle this problem may be grouped broadly into two categories: enumerative methods and alignment-based methods.</p>
+          <p>Enumerative methods typically involve exhaustive enumeration of words up to some maximum size in a dataset, and are thus best suited to consensus sequence motif models. Once the words are cataloged, they can be scored using an appropriate measure of statistical significance, and the most statistically significant motifs are then reported. The computational time complexity of enumerative methods is approximately <italic>O(NmA<sup>e</sup>L<sup>e</sup>),</italic> where <italic>N</italic> is the number of sequences, <italic>m</italic> is their length, <italic>A</italic> is the alphabet size, <italic>L</italic> is the motif length, and <italic>e</italic> is the number of errors allowed in a match to a catalog entry [<xref ref-type="bibr" rid="pcbi-0020036-b015">15</xref>]. Many enumerative methods use trade-offs on the alphabet size and the number of allowable errors to make these searches computationally feasible [<xref ref-type="bibr" rid="pcbi-0020036-b015">15</xref>–<xref ref-type="bibr" rid="pcbi-0020036-b018">18</xref>]. Recently, dictionary-based motif discovery methods have been proposed that are related to word enumeration methods, but which incorporate a probabilistic model of how sequences are generated from a dictionary of possible words [<xref ref-type="bibr" rid="pcbi-0020036-b019">19</xref>–<xref ref-type="bibr" rid="pcbi-0020036-b023">23</xref>].</p>
+          <p>Alignment methods take on a wide variety of forms, but often involve development of a probabilistic model of the observed sequence data and optimization to find motifs common to all input sequences. The MEME program, for example, treats a particular sequence as arising from a mixture model in which the small window of sequence containing the motif is generated from a motif model—represented by a probability matrix—and the rest of the sequence is treated as arising from a Markovian background [<xref ref-type="bibr" rid="pcbi-0020036-b024">24</xref>]. The generative model describes a family of parameterized probability distributions, and the motif is simply a parameter of this distribution. Any number of optimization techniques may be used to search for the parameter setting that maximizes the likelihood of the observed sequence data. Two frequently used techniques to perform this search are the expectation-maximization (EM) algorithm and Gibbs sampling.</p>
+          <p>The EM algorithm is a general approach for maximizing a likelihood function with hidden variables [<xref ref-type="bibr" rid="pcbi-0020036-b025">25</xref>]. In the case of alignment-based motif discovery applications, the hidden variables are the locations of the motif in the set of input sequences. EM consists of two steps: in the E-step, the expected likelihood of the observed sequence data is calculated based on the current setting of the parameters, and in the M-step, the parameters are updated to maximize the expected-likelihood function. EM is a local optimization procedure that is guaranteed to monotonically improve the expected likelihood, but it is sensitive to its initialization point and is therefore not guaranteed to converge to the global maximum. For this reason, motif discovery programs that use EM will typically restart the optimization from many distinct initialization points to improve the chances of converging to the global maximum. Multiple restarts also improve the chances of finding biologically relevant motifs that may not necessarily correspond to the global maximum. Interesting heuristics for selecting reasonable initialization points have been developed [<xref ref-type="bibr" rid="pcbi-0020036-b026">26</xref>,<xref ref-type="bibr" rid="pcbi-0020036-b027">27</xref>].</p>
+          <p>Gibbs sampling is a general technique for performing probabilistic inference [<xref ref-type="bibr" rid="pcbi-0020036-b028">28</xref>]. Like EM, it is well suited to problems such as motif discovery with incomplete information. However, unlike EM, it is an undirected and global search over a parameterized distribution. In the context of motif discovery, Gibbs sampling involves drawing random samples of the hidden variables (typically motif location) from a distribution. The parameters are reestimated based on the randomly generated samples, and then sampling is repeated. The global nature of the Gibbs sampling search comes at significant computational cost, and the algorithm may have to be run for many iterations to obtain adequate representations of the complicated likelihood surfaces typically encountered in motif discovery.</p>
+        </sec>
+      </sec>
+    </sec>
+    <sec id="s1b">
+      <title>Motif Discovery in Practice</title>
+      <sec id="s1ba">
+        <title/>
+        <sec id="s1b1">
+          <title>Co-regulated genes can be identified in a number of ways.</title>
+          <p>Motif discovery typically begins with a group of putatively co-regulated genes. These co-regulated sets are often obtained by using clustering to identify genes that share a functional category or are co-expressed under a number of different experimental conditions. Motif discovery is then performed on the relevant promoter regions [<xref ref-type="bibr" rid="pcbi-0020036-b029">29</xref>–<xref ref-type="bibr" rid="pcbi-0020036-b034">34</xref>]. Other approaches have been developed that do not necessarily require clustering [<xref ref-type="bibr" rid="pcbi-0020036-b035">35</xref>–<xref ref-type="bibr" rid="pcbi-0020036-b037">37</xref>]. Chromatin immunoprecipitation (ChIP) data are a second important source of co-regulated genes [<xref ref-type="bibr" rid="pcbi-0020036-b038">38</xref>–<xref ref-type="bibr" rid="pcbi-0020036-b046">46</xref>]. ChIP-chip experiments measure at low resolution, and, potentially, on a genome-wide scale, the binding of a particular protein to DNA using microarray technology. Analyzing these data with motif discovery programs can reveal motifs representing the specificity of the proteins, and can be used to improve the resolution of the data. Sequences in the bound regions that match the motif are the most likely binding sites. Regions that are bound but do not contain matches to the motif may be sites of indirect regulation or may be spurious binding events, arising from noise in the data. A third type of analysis has focused on genome-wide motif discovery, where potentially important regulatory motifs have been cataloged by examining entire genomes [<xref ref-type="bibr" rid="pcbi-0020036-b047">47</xref>–<xref ref-type="bibr" rid="pcbi-0020036-b050">50</xref>]. These analyses generally include information about phylogenetic conservation to help identify sequence signals that are conserved at a higher-than-expected rate, and are therefore more likely to be functional.</p>
+        </sec>
+        <sec id="s1b2">
+          <title>Some factors affecting motif discovery performance.</title>
+          <p>To understand the factors that affect motif discovery, it is helpful to think of a motif as a signal buried in genomic noise (i.e., the background sequence) [<xref ref-type="bibr" rid="pcbi-0020036-b006">6</xref>,<xref ref-type="bibr" rid="pcbi-0020036-b051">51</xref>–<xref ref-type="bibr" rid="pcbi-0020036-b054">54</xref>]. A motif with very low information content is difficult to distinguish from the background sequence, and therefore has low signal strength. Basic statistical considerations relating to motif frequency and overrepresentation in the dataset also affect performance. Adding false-positive inputs or increasing the length of the input sequences is akin to increasing the amount of noise within which the motif signal is hidden. Another important consideration is the number of input sequences. Hu and colleagues found that, for five separate programs, motif discovery performance leveled off after a certain number of input sequences [<xref ref-type="bibr" rid="pcbi-0020036-b052">52</xref>]. In light of these considerations, it appears that a smaller number of high-confidence sequences is preferable to a large number of low-confidence inputs for most motif discovery analyses. It is also advisable to keep input sequences short in order to minimize the amount of uninformative background DNA from which the motif must be distinguished.</p>
+          <p>Recent advances in experimental technology—such as the newly developed DNA immunoprecipitation with microarray detection (DIP-chip) technique for determining binding specificity [<xref ref-type="bibr" rid="pcbi-0020036-b055">55</xref>], densely tiled short oligonucleotide arrays used in ChIP-chip [<xref ref-type="bibr" rid="pcbi-0020036-b056">56</xref>], and computational techniques for increasing the resolution of these data [<xref ref-type="bibr" rid="pcbi-0020036-b057">57</xref>]—may ultimately prove to be very valuable in providing higher-quality input for motif discovery.</p>
+        </sec>
+        <sec id="s1b3">
+          <title>Using multiple motif discovery programs improves performance.</title>
+          <p>The emerging consensus from a number of comparative studies is that no single program is superior for all datasets. Harbison and colleagues used a suite of six different motif discovery tools to analyze a collection of ChIP experiments for 172 transcription factors in <named-content content-type="genus-species" xlink:type="simple">Saccharomyces cerevisiae</named-content>. They found that no program demonstrated clear superiority, and that all programs discovered at least one motif that none of the other programs could recover [<xref ref-type="bibr" rid="pcbi-0020036-b039">39</xref>]. In another recent and well-designed study, Tompa et al. assessed the performance of 14 motif discovery programs on a wide variety of real and synthetic datasets [<xref ref-type="bibr" rid="pcbi-0020036-b058">58</xref>]. They avoided a common pitfall of many of these types of comparisons by ensuring that the analyses were performed by those with expertise in operating the software. One notable result was that all programs performed well on yeast data; however, their performance degraded significantly when applied to the more complex sequence data in flies and humans. Again, no single program was superior across all performance measures and datasets, although the program Weeder [<xref ref-type="bibr" rid="pcbi-0020036-b015">15</xref>] stood out as having significantly better performance than most. A third study by Hu et al. [<xref ref-type="bibr" rid="pcbi-0020036-b052">52</xref>] compared the performance of five popular motif discovery programs and again observed comparable performance among all programs. In a formalization of the approach of Harbison et al., Hu and colleagues demonstrated that a significant improvement in performance could be achieved by combining the output of the five programs into a single “consensus ensemble algorithm.” These results underscore the utility of analyzing sequence datasets with several motif discovery tools. The potential benefit of using several programs often more than makes up for the effort associated with combining and postprocessing the results.</p>
+        </sec>
+        <sec id="s1b4">
+          <title>Recommended methods for scoring motifs.</title>
+          <p>During postprocessing of the motif discovery output, it is valuable to use a consistent scoring metric that allows motifs to be compared and ranked regardless of their source. Any scoring metric relies first and foremost on the ability to scan a sequence to determine whether the motif is present. For motifs represented as a consensus sequence, scanning is accomplished by searching for subsequences that match the consensus word, with a prespecified threshold on the number of allowable errors. For motifs represented with PWMs, it is necessary to specify a method for scoring sites, and also to specify a threshold score that defines a match. Statistically principled methods of assessing cutoff thresholds for motif matches have been presented [<xref ref-type="bibr" rid="pcbi-0020036-b059">59</xref>,<xref ref-type="bibr" rid="pcbi-0020036-b060">60</xref>]. Scanning sequences for motifs using PWMs is an important problem in its own right [<xref ref-type="bibr" rid="pcbi-0020036-b054">54</xref>,<xref ref-type="bibr" rid="pcbi-0020036-b059">59</xref>–<xref ref-type="bibr" rid="pcbi-0020036-b062">62</xref>], and we present an overview of the basic procedure in <xref ref-type="fig" rid="pcbi-0020036-g002">Figure 2</xref>.</p>
+          <fig id="pcbi-0020036-g002" position="float">
+            <object-id pub-id-type="doi">10.1371/journal.pcbi.0020036.g002</object-id>
+            <label>Figure 2</label>
+            <caption>
+              <title>Scanning for Motifs with PWMs</title>
+            </caption>
+            <graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.0020036.g002" xlink:type="simple"/>
+          </fig>
+          <p>Once a criterion for specifying a match to a motif has been determined, it is possible to evaluate particular motifs learned from a dataset. Various scoring criteria for motifs have been developed, and most motif discovery programs have their own preferred metric for scoring. Most scores involve a measure of information content [<xref ref-type="bibr" rid="pcbi-0020036-b063">63</xref>] or statistical overrepresentation [<xref ref-type="bibr" rid="pcbi-0020036-b032">32</xref>,<xref ref-type="bibr" rid="pcbi-0020036-b064">64</xref>,<xref ref-type="bibr" rid="pcbi-0020036-b065">65</xref>]. In our experience, two particularly intuitive and useful scores are the hypergeometric enrichment and the area under the receiver operating characteristic curve (ROC-AUC).</p>
+          <p>The hypergeometric enrichment score can be used to measure the statistical overrepresentation of a motif [<xref ref-type="bibr" rid="pcbi-0020036-b064">64</xref>]. We assume that there are many sequences representing the genomic background from which the input sequences were selected. If for example, motif discovery was performed on a set of <named-content content-type="genus-species" xlink:type="simple">Drosophila melanogaster</named-content> promoters, a suitable background might be the set of all known promoter regions in <italic>Drosophila</italic>. The enrichment score is calculated by counting the number of occurrences of the motif in the input and in the entire background. The hypergeometric <italic>p</italic>-value is the probability that we would observe an equal or greater number of motif occurrences if the input dataset had been drawn randomly and without replacement from the background. The enrichment score is the negative log of this <italic>p</italic>-value [<xref ref-type="bibr" rid="pcbi-0020036-b039">39</xref>]. If the motif is highly overrepresented in the input dataset, then the probability of observing a count that large at random will be very small, and the enrichment score will be large.</p>
+          <p>A receiver operating characteristic (ROC) curve presents the trade-off between the sensitivity (true-positive rate) and specificity (false-positive rate) of a classifier [<xref ref-type="bibr" rid="pcbi-0020036-b066">66</xref>]. If a very stringent threshold is specified when determining a match to the motif, only the strongest true-positive sites will be identified, and the weaker matches will be missed. As the stringency of the match threshold is reduced, more true sites are identified at the expense of selecting more false-positive sites. An ROC curve allows us to examine how the false-positive and true-positive rates change as the threshold used to determine a match is altered. A useful score for integrating these two characteristics is the ROC-AUC score [<xref ref-type="bibr" rid="pcbi-0020036-b067">67</xref>]. Intuitively, the closer the ROC-AUC is to 1.0, the better the motif. A score of 1.0 indicates that the motif is able to pick out all the true-positive sites with no false positives. If a motif is not able to do better than random, the ROC curve will be an approximately diagonal line, and the ROC-AUC score will be close to 0.5.</p>
+        </sec>
+        <sec id="s1b5">
+          <title>Clustering motifs eases analysis.</title>
+          <p>Analyzing large datasets with multiple motif discovery programs typically yields a large number of motifs. Even after filtering out spurious motifs that do not meet basic score-threshold requirements, there will often be many motifs left. These may correspond to subtle variants of a few distinct sequence signals present in the data. Thus, it is often desirable to cluster similar motifs together to reduce the total number of candidates to be validated. Clustering can be accomplished using any number of well-known algorithms [<xref ref-type="bibr" rid="pcbi-0020036-b068">68</xref>], provided an appropriate similarity metric between motifs can be defined. The similarity calculation should take into account the fact that the motifs to be clustered may be of varying size, may represent overlapping but distinct regions of a larger motif, or may have reverse complementarity.</p>
+          <p>Harbison and colleagues used average squared distance between entries in the aligned PWMs, searching for the orientation and alignment that gave the minimum distance between motifs while enforcing a minimum overlap of seven nucleotides [<xref ref-type="bibr" rid="pcbi-0020036-b039">39</xref>]. They then applied the k-medoids clustering algorithm [<xref ref-type="bibr" rid="pcbi-0020036-b069">69</xref>] to the motifs. Kellis et al. clustered motifs using the fraction of common bits as a similarity metric. They applied hierarchical clustering to the motifs and combined clusters with a similarity exceeding 70% by computing a consensus sequence. A second, iterative, clustering step was then applied to combine motifs by co-occurrence in intergenic regions [<xref ref-type="bibr" rid="pcbi-0020036-b049">49</xref>]. Similar procedures, using the Pearson correlation coefficient between motif PWMs as the similarity measure, have been applied [<xref ref-type="bibr" rid="pcbi-0020036-b034">34</xref>,<xref ref-type="bibr" rid="pcbi-0020036-b047">47</xref>]. Mahony and colleagues presented a method for clustering motifs using a self-organizing map [<xref ref-type="bibr" rid="pcbi-0020036-b070">70</xref>]. Other sophisticated techniques have been developed specifically for clustering PWM motifs in the context of identifying co-regulated genes [<xref ref-type="bibr" rid="pcbi-0020036-b071">71</xref>,<xref ref-type="bibr" rid="pcbi-0020036-b072">72</xref>]. These methods could, in principle, be adapted for use as a postprocessing step in motif discovery.</p>
+        </sec>
+        <sec id="s1b6">
+          <title>Empirical significance testing and cross-validation reduce the risk of overfitting.</title>
+          <p>Although hypergeometric enrichment, ROC-AUC, and other scores can be very useful for comparing and ranking motifs, great care should be taken when trying to draw conclusions regarding the significance of the observed motifs. An arbitrarily complex motif model could produce motifs with ROC-AUC scores of 1.0, and huge statistical enrichment scores for any dataset. Even for relatively simple models, application of a motif discovery program to a particular sequence set may result in motifs that are severely overfit to the data. Spurious overrepresented patterns can be found in almost any dataset, and a motif obtained from a particular analysis with a very high hypergeometric enrichment score may not be any more statistically enriched than a motif learned by the same program from random data. To avoid these problems, we advocate two strategies: empirical significance testing and cross-validation.</p>
+          <p>Statistical significance can be assessed using randomized control calculations to calibrate the scores produced by a particular program. Controls are performed by running motif discovery on a large number of input sequence sets selected randomly from the genomic background [<xref ref-type="bibr" rid="pcbi-0020036-b039">39</xref>,<xref ref-type="bibr" rid="pcbi-0020036-b073">73</xref>] or generated according to some reasonable background model [<xref ref-type="bibr" rid="pcbi-0020036-b063">63</xref>,<xref ref-type="bibr" rid="pcbi-0020036-b070">70</xref>]. The motifs from each of these randomization runs are used to estimate an empirical score distribution. Using this distribution, a <italic>p</italic>-value can be assigned to a particular score by determining the empirical probability that the algorithm would produce a motif with the observed score (or better) from a random dataset equal in size to the input set. For each program, separate distributions should be generated for representative dataset sizes, as well as for motif models with different representational power (e.g., different lengths).</p>
+          <p>Overfitting can be addressed by performing motif discovery on a fraction of the data, and then using held-out test data to evaluate the motifs learned. This yields an unbiased estimate of how well the motif generalizes to unseen data. The variance of this estimate can be reduced using cross-validation. In cross-validation, the training and testing procedure is repeated for several training and test-set partitions. The measure of generalization performance can then be averaged across all trials. This approach is particularly applicable to discriminative motifs [<xref ref-type="bibr" rid="pcbi-0020036-b074">74</xref>] used to build a classifier to distinguish bound from unbound sites. Two classification-based algorithms have recently demonstrated the utility of using cross-validation to protect against overfitting while learning motif models [<xref ref-type="bibr" rid="pcbi-0020036-b012">12</xref>,<xref ref-type="bibr" rid="pcbi-0020036-b027">27</xref>]. A review of cross-validation and other nonparametric techniques for estimating statistical error can be found in Efron et al [<xref ref-type="bibr" rid="pcbi-0020036-b075">75</xref>].</p>
+        </sec>
+        <sec id="s1b7">
+          <title>Phylogenetic conservation information improves motif discovery performance.</title>
+          <p>Standard motif discovery programs perform well on bacteria and yeast sequence data, but perform relatively poorly on complex sequences from higher eukaryotes [<xref ref-type="bibr" rid="pcbi-0020036-b058">58</xref>]. One way of augmenting sequence data to improve performance is by using orthologous sequences from related species. Transcription factor binding sites are important for ensuring proper control of gene expression, and therefore tend to be under selective pressure over evolutionary time. A significant fraction of evolutionarily conserved noncoding DNA has been shown to correspond to regions important for regulation [<xref ref-type="bibr" rid="pcbi-0020036-b047">47</xref>,<xref ref-type="bibr" rid="pcbi-0020036-b049">49</xref>,<xref ref-type="bibr" rid="pcbi-0020036-b076">76</xref>–<xref ref-type="bibr" rid="pcbi-0020036-b079">79</xref>]. One study found that 98% of known binding sites of skeletal muscle–specific transcription factors are confined to the 19% of human sequences most conserved in orthologous rodent sequences [<xref ref-type="bibr" rid="pcbi-0020036-b078">78</xref>]. This tendency of transcription factor binding sites to be conserved across species has been exploited in the context of motif discovery by several different research groups.</p>
+          <p>One approach to leveraging conservation data is to identify blocks of sequence that are conserved across multiple species using phylogenetic footprinting [<xref ref-type="bibr" rid="pcbi-0020036-b080">80</xref>,<xref ref-type="bibr" rid="pcbi-0020036-b081">81</xref>]. Phylogenetic footprinting is a general technique for identifying conserved regions based on the evolutionary relationship among species. These conserved blocks can then be used as inputs to standard motif discovery tools and otherwise analyzed [<xref ref-type="bibr" rid="pcbi-0020036-b071">71</xref>,<xref ref-type="bibr" rid="pcbi-0020036-b072">72</xref>]. By culling only the conserved sequence from the input data, uninformative background DNA is eliminated, and an effective increase in signal to noise is achieved that facilitates the search for motifs [<xref ref-type="bibr" rid="pcbi-0020036-b082">82</xref>].</p>
+          <p>Recently, several groups have developed motif discovery tools that integrate the ability to use conservation information directly into the motif search. One approach generated a catalog of motifs with potential regulatory importance by determining, on a genome-wide scale, which consensus sequences are highly conserved across species. Highly conserved motifs were validated by determining their overrepresentation among groups of co-regulated genes [<xref ref-type="bibr" rid="pcbi-0020036-b047">47</xref>,<xref ref-type="bibr" rid="pcbi-0020036-b049">49</xref>]. Many programs use an explicit, probabilistic model of evolution to relate orthologous sequences, and search for motifs using EM or a random sampling approach [<xref ref-type="bibr" rid="pcbi-0020036-b073">73</xref>,<xref ref-type="bibr" rid="pcbi-0020036-b083">83</xref>–<xref ref-type="bibr" rid="pcbi-0020036-b086">86</xref>]. Other programs, while not explicitly modeling the evolutionary relationship between orthologous sequences, bias the motif search to highly conserved regions [<xref ref-type="bibr" rid="pcbi-0020036-b087">87</xref>]. An alignment-based approach has been reported by Wang and Stormo that first generates profiles by aligning orthologous regions, and then merges similar profiles from nonorthologous regions to yield motifs [<xref ref-type="bibr" rid="pcbi-0020036-b088">88</xref>]. The performance of state-of-the-art conservation-based methods is generally superior to standard motif discovery tools. In two recent re-analyses of the ChIP data from Harbison et al. [<xref ref-type="bibr" rid="pcbi-0020036-b039">39</xref>], conservation-based tools demonstrated markedly better performance than the suite of six motif discovery tools used in the earlier study (some of which made simple use of conservation information) [<xref ref-type="bibr" rid="pcbi-0020036-b073">73</xref>,<xref ref-type="bibr" rid="pcbi-0020036-b086">86</xref>]. When alignments of orthologous sequences are available, using this data in concert with a conservation-based program will often improve performance, especially for highly degenerate or low-information-content motifs.</p>
+          <p>Phylogenetic conservation information may also be used to good effect when scanning sequences for putative transcription factor binding sites. While a good match to the motif is a very poor predictor of whether a site will be bound, matching sites that are also conserved in orthologous sequences are more likely to be functional. Very straightforward conservation thresholds on the number of matching orthologous sequences are easily applied, and have been used in generating maps of regulatory sites in yeast [<xref ref-type="bibr" rid="pcbi-0020036-b039">39</xref>,<xref ref-type="bibr" rid="pcbi-0020036-b073">73</xref>,<xref ref-type="bibr" rid="pcbi-0020036-b089">89</xref>]. More sophisticated incorporation of the phylogenetic relationship among the aligned species has been used in concert with orthologous sequence data to search for putative regulatory sites [<xref ref-type="bibr" rid="pcbi-0020036-b062">62</xref>]. When orthologous sequences in several species can be obtained, one can expect better motif discovery performance and more sensitive and specific identification of functional binding sites when scanning sequences. The use of these data is highly recommended. Some databases containing multiple sequence alignments, whole-genome sequences, and tools for performing cross-species motif analyses are listed in <xref ref-type="fig" rid="pcbi-0020036-g003">Figure 3</xref>.</p>
+          <fig id="pcbi-0020036-g003" position="float">
+            <object-id pub-id-type="doi">10.1371/journal.pcbi.0020036.g003</object-id>
+            <label>Figure 3</label>
+            <caption>
+              <title>Resources</title>
+            </caption>
+            <graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.0020036.g003" xlink:type="simple"/>
+          </fig>
+        </sec>
+      </sec>
+    </sec>
+    <sec id="s1c">
+      <title>Interpreting the Biological Role of Motifs</title>
+      <p>Once an interesting set of motifs has been identified by motif discovery, the next logical step is to interpret the biological role of these sequence features. It may be possible to associate motifs with specific observable effects like up-regulation or down-regulation of gene expression in certain experimental conditions. Further biological insight into regulatory networks can be obtained by associating specific transcription factors with the motifs to which they bind. Standard motif discovery tools do not directly address these issues of interpretation. However, more recently, techniques have been developed that explore these questions.</p>
+      <sec id="s1c1">
+        <title>Motifs can be linked to their effect on gene expression using regression.</title>
+        <p>Regression-based techniques evaluate motifs by using them as features that predict the level of an interesting observable variable. These approaches may be particularly valuable when searching for regulatory motifs associated with expression changes in an experimental condition of interest. Bussemaker et al. presented the “regulatory element detection using correlation with expression” (REDUCE) method that enumerates the short DNA sequences present upstream of a set of genes, and then uses multivariate linear regression to associate gene expression level with the presence of these motifs [<xref ref-type="bibr" rid="pcbi-0020036-b035">35</xref>]. Keles, van der Laan, and Eisen used motif enumeration with cross-validated feature selection to identify motifs that predict expression changes in a linear model [<xref ref-type="bibr" rid="pcbi-0020036-b037">37</xref>]. Conlon and colleagues presented a similar method called “motif regressor” [<xref ref-type="bibr" rid="pcbi-0020036-b036">36</xref>]. Their method extracts motifs using the MDScan program [<xref ref-type="bibr" rid="pcbi-0020036-b040">40</xref>], filters out insignificant motifs, and then performs stepwise selection to build a multivariate model that predicts gene expression and identifies motifs that act together in regulatory programs. Smith and colleagues have recently presented a method that integrates motif discovery with regression to identify motifs, or pairs of motifs, that predict enrichment ratios in a ChIP-chip experiment [<xref ref-type="bibr" rid="pcbi-0020036-b038">38</xref>]. Their method uses a modified linear regression model to first identify candidate motifs that correlate with binding from an initial set generated by motif discovery. A second motif discovery step identifies motifs located in close proximity to those in the candidate set. A nonparametric regression method is then used to identify interacting pairs.</p>
+      </sec>
+      <sec id="s1c2">
+        <title>Discovering regulatory modules.</title>
+        <p>Complex regulatory programs may be realized through the action of combinations of transcription factors. Combinatorial control has been shown to be important in many contexts, including regulation of the cell cycle in yeast [<xref ref-type="bibr" rid="pcbi-0020036-b090">90</xref>], sea urchin development [<xref ref-type="bibr" rid="pcbi-0020036-b091">91</xref>], and the interferon-beta enhanceosome [<xref ref-type="bibr" rid="pcbi-0020036-b092">92</xref>]. The binding sites of factors involved in combinatorial control are often clustered into cis-regulatory modules [<xref ref-type="bibr" rid="pcbi-0020036-b093">93</xref>]. These cis-regulatory modules may have a biologically important structure that constrains both the number and relative position of the constituent motifs [<xref ref-type="bibr" rid="pcbi-0020036-b094">94</xref>]. It is therefore of great interest to learn not only the representations of individual sequence motifs but also the higher-order structure of the modules into which motifs are organized.</p>
+        <p>Several algorithms have been developed that have the ability to search for pairs of interacting motif signals [<xref ref-type="bibr" rid="pcbi-0020036-b038">38</xref>,<xref ref-type="bibr" rid="pcbi-0020036-b063">63</xref>,<xref ref-type="bibr" rid="pcbi-0020036-b095">95</xref>]. Other approaches to regulatory module discovery have used statistical tests or learning algorithms to identify overrepresented combinations from a previously generated set of motifs determined computationally or culled from literature sources [<xref ref-type="bibr" rid="pcbi-0020036-b029">29</xref>,<xref ref-type="bibr" rid="pcbi-0020036-b033">33</xref>,<xref ref-type="bibr" rid="pcbi-0020036-b090">90</xref>,<xref ref-type="bibr" rid="pcbi-0020036-b096">96</xref>]. These types of analyses often incorporate expression data, allowing motif combinations to be associated with particular regulatory programs. More recently, investigators have designed algorithms that learn cis-regulatory modules and the parameters of their constituent motifs de novo [<xref ref-type="bibr" rid="pcbi-0020036-b097">97</xref>–<xref ref-type="bibr" rid="pcbi-0020036-b100">100</xref>]. The tendency of the motifs to be clustered to a particular region, as well as statistical correlations in their positions within the module, can be exploited to improve the sensitivity of motif discovery [<xref ref-type="bibr" rid="pcbi-0020036-b097">97</xref>]. These algorithms seem particularly promising since they may offer both improved performance over conventional motif discovery algorithms, as well as insight into the mechanism of regulation directed by the module's constituent transcription factors.</p>
+      </sec>
+      <sec id="s1c3">
+        <title>Structural information can associate motifs with transcription factors.</title>
+        <p>Information about transcription factor structure and sequence can improve motif discovery results and reveal connections between specific transcription factors and motifs. The structure of a DNA-binding protein is closely linked to the motifs it binds. Proteins that dimerize, for example, often bind bipartite motifs with a low-information-content linker region, and specialized algorithms have been developed to take advantage of this knowledge [<xref ref-type="bibr" rid="pcbi-0020036-b101">101</xref>,<xref ref-type="bibr" rid="pcbi-0020036-b102">102</xref>]. More generally, it is possible to group transcription factors into families based on their structure and sequence [<xref ref-type="bibr" rid="pcbi-0020036-b103">103</xref>]. Proteins from the same family tend to bind similar sequences, and Sandelin and Wasserman introduced the idea of biasing motif discovery toward motifs typical of the protein's family [<xref ref-type="bibr" rid="pcbi-0020036-b053">53</xref>]. Related approaches have been proposed by Xing and Karp, who presented a Bayesian model of structural family characteristics for motif discovery [<xref ref-type="bibr" rid="pcbi-0020036-b104">104</xref>], and by Mahony et al., who incorporated family binding profiles into a motif discovery algorithm based on the self-organizing map [<xref ref-type="bibr" rid="pcbi-0020036-b105">105</xref>]. Structural information has also been used in the recently presented motif hypothesis–testing algorithm, THEME [<xref ref-type="bibr" rid="pcbi-0020036-b027">27</xref>]. This study tested a series of binding specificity hypotheses derived from family binding profiles. Using a principled cross-validated approach, the THEME algorithm assigns an appropriate relative weighting to the initial hypothesis and the sequence information, performs a constrained optimization of the hypothesis, and evaluates the optimized motifs by their ability to correctly classify bound and unbound sequences.</p>
+        <p>The hypothesis-testing approach of THEME holds great promise for simultaneously learning both the family of the protein and the motif bound by that protein when neither is known in advance. MacIsaac and colleagues demonstrated that by testing the entire set of family binding profiles (representing 36 unique families) on the sequences bound in a ChIP experiment, they recovered the expected motif and the correct family as the top prediction for ten of 14 factors. In 13 of 14 cases, the correct prediction was ranked in the top five.</p>
+        <p>Tan, McCue, and Stormo have addressed the problem of connecting particular transcription factors to entries in a catalog of conserved motifs [<xref ref-type="bibr" rid="pcbi-0020036-b106">106</xref>]. By computing a score measuring the average similarity of motifs to members of various DNA-binding families, Tan and colleagues calculated a probability that a transcription factor, from a known family, was associated with the correct motif. Combining this information with both phylogenetic and spatial data, motifs could be associated with the correct transcription factors in <named-content content-type="genus-species" xlink:type="simple">Escherichia coli</named-content> with an impressive 85% accuracy rate for the top three predictions.</p>
+      </sec>
+    </sec>
+    <sec id="s1d">
+      <title>Resources</title>
+      <p>Many excellent resources are available for analyzing sequence data with motif discovery, postprocessing motifs, and obtaining sequence and motif data. Freely available packages exist that integrate multiple motif discovery tools, and can greatly facilitate motif discovery analyses. Many stand-alone motif discovery tools are available in downloadable and Web-enabled form. Tools for motif scanning are often available with prepackaged libraries of known motifs, but also allow scans with custom motifs learned by motif discovery. <xref ref-type="fig" rid="pcbi-0020036-g003">Figure 3</xref> contains some of these resources [15,24,30,40,54,61–63,87,88,107–119].</p>
+    </sec>
+    <sec id="s1e">
+      <title>Conclusions</title>
+      <p>Motif discovery can provide important insight into the mechanism of regulatory programs. Sophisticated tools and rich new data sources allow for greater success than ever before in learning motifs and in identifying in vivo binding sites. Recently developed techniques can help learn the context-specific effects of sequence motifs on gene expression, and offer the possibility of accurately associating specific proteins with discovered motifs. These advances open up the potential for building rich and accurate mechanistic models of genetic regulation.</p>
+      <p>There is a dizzying array of options available for undertaking sequence-based computational investigations, and experts can have very different opinions about the best tool or approach for a particular application. However, in our opinion, by following a few reasonable and simple guidelines, investigators can greatly increase their chances of successfully mining sequence data for motifs. Analyzing data with multiple motif discovery tools leverages the strengths of different algorithms and can greatly improve results. Postprocessing may include clustering to combine similar motifs and picking a common and intuitive scoring metric, but should always include a principled method for determining statistical significance of the motifs that takes into consideration the possibility of overfitting. Phylogenetic conservation information is useful both in aiding motif discovery and also as additional information used in distinguishing functional binding sites from spurious sites when scanning sequences. We recommend that this information be used wherever possible. Moving forward, we believe that cross-validated hypothesis testing and regression-based approaches will prove to be particularly valuable, as they combine the data-mining capabilities of classic motif discovery programs with a framework that offers an intuitive interpretation of the motifs. </p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <p>The authors wish to acknowledge Robin D. Dowell and two anonymous reviewers for their helpful suggestions and comments.</p>
+    </ack>
+    
+    <glossary>
+      <title>Abbreviations</title>
+      <def-list>
+        <def-item>
+          <term>A</term>
+          <def>
+            <p>adenine</p>
+          </def>
+        </def-item>
+        <def-item>
+          <term>C</term>
+          <def>
+            <p>cytosine</p>
+          </def>
+        </def-item>
+        <def-item>
+          <term>ChIP</term>
+          <def>
+            <p>chromatin immunoprecipitation</p>
+          </def>
+        </def-item>
+        <def-item>
+          <term>EM</term>
+          <def>
+            <p>expectation maximization</p>
+          </def>
+        </def-item>
+        <def-item>
+          <term>G</term>
+          <def>
+            <p>guanine</p>
+          </def>
+        </def-item>
+        <def-item>
+          <term>ROC</term>
+          <def>
+            <p>receiver operating characteristic</p>
+          </def>
+        </def-item>
+        <def-item>
+          <term>ROC-AUC</term>
+          <def>
+            <p>area under the receiver operating characteristic curve</p>
+          </def>
+        </def-item>
+        <def-item>
+          <term>T</term>
+          <def>
+            <p>thymine</p>
+          </def>
+        </def-item>
+      </def-list>
+    </glossary>
+    <ref-list>
+      <title>References</title>
+      <ref id="pcbi-0020036-b001">
+        <label>1</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Cornish-Bowden</surname><given-names>A</given-names></name></person-group>
+					<year>1985</year>
+					<article-title>Nomenclature for incompletely specified bases in nucleic acid sequences: Recommendations 1984.</article-title>
+					<source>Nucleic Acids Res</source>
+					<volume>13</volume>
+					<fpage>3021</fpage>
+					<lpage>3030</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b002">
+        <label>2</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Day</surname><given-names>WH</given-names></name><name name-style="western"><surname>McMorris</surname><given-names>FR</given-names></name></person-group>
+					<year>1992</year>
+					<article-title>Critical comparison of consensus methods for molecular sequences.</article-title>
+					<source>Nucleic Acids Res</source>
+					<volume>20</volume>
+					<fpage>1093</fpage>
+					<lpage>1099</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b003">
+        <label>3</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Stormo</surname><given-names>GD</given-names></name><name name-style="western"><surname>Schneider</surname><given-names>TD</given-names></name><name name-style="western"><surname>Gold</surname><given-names>L</given-names></name><name name-style="western"><surname>Ehrenfeucht</surname><given-names>A</given-names></name></person-group>
+					<year>1982</year>
+					<article-title>Use of the ‘Perceptron' algorithm to distinguish translational initiation sites in <italic>E</italic>. <italic>coli</italic>.</article-title>
+					<source>Nucleic Acids Res</source>
+					<volume>10</volume>
+					<fpage>2997</fpage>
+					<lpage>3011</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b004">
+        <label>4</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Stormo</surname><given-names>GD</given-names></name></person-group>
+					<year>2000</year>
+					<article-title>DNA binding sites: Representation and discovery.</article-title>
+					<source>Bioinformatics</source>
+					<volume>16</volume>
+					<fpage>16</fpage>
+					<lpage>23</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b005">
+        <label>5</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Schneider</surname><given-names>TD</given-names></name><name name-style="western"><surname>Stephens</surname><given-names>RM</given-names></name></person-group>
+					<year>1990</year>
+					<article-title>Sequence logos: A new way to display consensus sequences.</article-title>
+					<source>Nucleic Acids Res</source>
+					<volume>18</volume>
+					<fpage>6097</fpage>
+					<lpage>6100</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b006">
+        <label>6</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Leung</surname><given-names>HC</given-names></name><name name-style="western"><surname>Chin</surname><given-names>FY</given-names></name><name name-style="western"><surname>Yiu</surname><given-names>SM</given-names></name><name name-style="western"><surname>Rosenfeld</surname><given-names>R</given-names></name><name name-style="western"><surname>Tsang</surname><given-names>WW</given-names></name></person-group>
+					<year>2005</year>
+					<article-title>Finding motifs with insufficient number of strong binding sites.</article-title>
+					<source>J Comput Biol</source>
+					<volume>12</volume>
+					<fpage>686</fpage>
+					<lpage>701</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b007">
+        <label>7</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Djordjevic</surname><given-names>M</given-names></name><name name-style="western"><surname>Sengupta</surname><given-names>AM</given-names></name><name name-style="western"><surname>Shraiman</surname><given-names>BI</given-names></name></person-group>
+					<year>2003</year>
+					<article-title>A biophysical approach to transcription factor binding site discovery.</article-title>
+					<source>Genome Res</source>
+					<volume>13</volume>
+					<fpage>2381</fpage>
+					<lpage>2390</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b008">
+        <label>8</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Bulyk</surname><given-names>ML</given-names></name><name name-style="western"><surname>Johnson</surname><given-names>PL</given-names></name><name name-style="western"><surname>Church</surname><given-names>GM</given-names></name></person-group>
+					<year>2002</year>
+					<article-title>Nucleotides of transcription factor binding sites exert interdependent effects on the binding affinities of transcription factors.</article-title>
+					<source>Nucleic Acids Res</source>
+					<volume>30</volume>
+					<fpage>1255</fpage>
+					<lpage>1261</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b009">
+        <label>9</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Man</surname><given-names>TK</given-names></name><name name-style="western"><surname>Stormo</surname><given-names>GD</given-names></name></person-group>
+					<year>2001</year>
+					<article-title>Non-independence of Mnt repressor-operator interaction determined by a new quantitative multiple fluorescence relative affinity (QuMFRA) assay.</article-title>
+					<source>Nucleic Acids Res</source>
+					<volume>29</volume>
+					<fpage>2471</fpage>
+					<lpage>2478</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b010">
+        <label>10</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Zhou</surname><given-names>Q</given-names></name><name name-style="western"><surname>Liu</surname><given-names>JS</given-names></name></person-group>
+					<year>2004</year>
+					<article-title>Modeling within-motif dependence for transcription factor binding site predictions.</article-title>
+					<source>Bioinformatics</source>
+					<volume>20</volume>
+					<fpage>909</fpage>
+					<lpage>916</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b011">
+        <label>11</label>
+        <element-citation publication-type="other" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Barash</surname><given-names>Y</given-names></name><name name-style="western"><surname>Elidan</surname><given-names>G</given-names></name><name name-style="western"><surname>Friedman</surname><given-names>N</given-names></name><name name-style="western"><surname>Kaplan</surname><given-names>T</given-names></name></person-group>
+					<year>2003</year>
+					<source>Modeling dependencies in protein-DNA binding sites [abstract]. RECOMB; 2003 10 April–13 April; Berlin, Germany</source>
+					<publisher-loc>New York</publisher-loc>
+					<publisher-name>Association for Computing Machinery</publisher-name>
+					<comment>Available: <ext-link ext-link-type="uri" xlink:href="http://www.cs.huji.ac.il/~nir/Papers/BEFK1.pdf" xlink:type="simple">http://www.cs.huji.ac.il/~nir/Papers/BEFK1.pdf</ext-link>. Accessed 29 March 2006.</comment>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b012">
+        <label>12</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Hong</surname><given-names>P</given-names></name><name name-style="western"><surname>Liu</surname><given-names>XS</given-names></name><name name-style="western"><surname>Zhou</surname><given-names>Q</given-names></name><name name-style="western"><surname>Lu</surname><given-names>X</given-names></name><name name-style="western"><surname>Liu</surname><given-names>JS</given-names></name><etal/></person-group>
+					<year>2005</year>
+					<article-title>A boosting approach for motif modeling using ChIP-chip data.</article-title>
+					<source>Bioinformatics</source>
+					<volume>21</volume>
+					<fpage>2636</fpage>
+					<lpage>2643</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b013">
+        <label>13</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Xing</surname><given-names>EP</given-names></name><name name-style="western"><surname>Wu</surname><given-names>W</given-names></name><name name-style="western"><surname>Jordan</surname><given-names>MI</given-names></name><name name-style="western"><surname>Karp</surname><given-names>RM</given-names></name></person-group>
+					<year>2004</year>
+					<article-title>Logos: A modular Bayesian model for de novo motif detection.</article-title>
+					<source>J Bioinform Comput Biol</source>
+					<volume>2</volume>
+					<fpage>127</fpage>
+					<lpage>154</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b014">
+        <label>14</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Benos</surname><given-names>PV</given-names></name><name name-style="western"><surname>Bulyk</surname><given-names>ML</given-names></name><name name-style="western"><surname>Stormo</surname><given-names>GD</given-names></name></person-group>
+					<year>2002</year>
+					<article-title>Additivity in protein-DNA interactions: How good an approximation is it?</article-title>
+					<source>Nucleic Acids Res</source>
+					<volume>30</volume>
+					<fpage>4442</fpage>
+					<lpage>4451</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b015">
+        <label>15</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Pavesi</surname><given-names>G</given-names></name><name name-style="western"><surname>Mauri</surname><given-names>G</given-names></name><name name-style="western"><surname>Pesole</surname><given-names>G</given-names></name></person-group>
+					<year>2001</year>
+					<article-title>An algorithm for finding signals of unknown length in DNA sequences.</article-title>
+					<source>Bioinformatics</source>
+					<comment>17 Suppl</comment>
+					<volume>1</volume>
+					<fpage>S207</fpage>
+					<lpage>S214</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b016">
+        <label>16</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Regnier</surname><given-names>M</given-names></name><name name-style="western"><surname>Denis</surname><given-names>A</given-names></name></person-group>
+					<year>2004</year>
+					<article-title>Rare events and conditional events on random strings.</article-title>
+					<source>Discrete Math Theor C</source>
+					<volume>6</volume>
+					<fpage>191</fpage>
+					<lpage>214</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b017">
+        <label>17</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Eskin</surname><given-names>E</given-names></name><name name-style="western"><surname>Pevzner</surname><given-names>PA</given-names></name></person-group>
+					<year>2002</year>
+					<article-title>Finding composite regulatory patterns in DNA sequences.</article-title>
+					<source>Bioinformatics</source>
+					<volume>18</volume>
+					<fpage>S354</fpage>
+					<lpage>S363</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b018">
+        <label>18</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Blanchette</surname><given-names>M</given-names></name><name name-style="western"><surname>Sinha</surname><given-names>S</given-names></name></person-group>
+					<year>2001</year>
+					<article-title>Separating real motifs from their artifacts.</article-title>
+					<source>Bioinformatics</source>
+					<volume>17</volume>
+					<fpage>S30</fpage>
+					<lpage>S38</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b019">
+        <label>19</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Wang</surname><given-names>G</given-names></name><name name-style="western"><surname>Yu</surname><given-names>T</given-names></name><name name-style="western"><surname>Zhang</surname><given-names>W</given-names></name></person-group>
+					<year>2005</year>
+					<article-title>WordSpy: Identifying transcription factor binding motifs by building a dictionary and learning a grammar.</article-title>
+					<source>Nucleic Acids Res</source>
+					<volume>33</volume>
+					<fpage>W412</fpage>
+					<lpage>W416</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b020">
+        <label>20</label>
+        <element-citation publication-type="other" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Sabatti</surname><given-names>C</given-names></name><name name-style="western"><surname>Lange</surname><given-names>K</given-names></name></person-group>
+					<year>2002</year>
+					<source>Genomewide motif identification using a dictionary model</source>
+					<publisher-loc>IEEE Proc 90</publisher-loc>
+					<publisher-name>1803–1810</publisher-name>
+					<comment>Available: <ext-link ext-link-type="uri" xlink:href="http://www.stat.ucla.edu/~sabatti/Reprints/finalIEEE-manuscript.pdf" xlink:type="simple">http://www.stat.ucla.edu/~sabatti/Reprints/finalIEEE-manuscript.pdf</ext-link>. Accessed 29 March 2006.</comment>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b021">
+        <label>21</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Sabatti</surname><given-names>C</given-names></name><name name-style="western"><surname>Rohlin</surname><given-names>L</given-names></name><name name-style="western"><surname>Lange</surname><given-names>K</given-names></name><name name-style="western"><surname>Liao</surname><given-names>JC</given-names></name></person-group>
+					<year>2005</year>
+					<article-title>Vocabulon: A dictionary model approach for reconstruction and localization of transcription factor binding sites.</article-title>
+					<source>Bioinformatics</source>
+					<volume>21</volume>
+					<fpage>922</fpage>
+					<lpage>931</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b022">
+        <label>22</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Bussemaker</surname><given-names>HJ</given-names></name><name name-style="western"><surname>Li</surname><given-names>H</given-names></name><name name-style="western"><surname>Siggia</surname><given-names>ED</given-names></name></person-group>
+					<year>2000</year>
+					<article-title>Building a dictionary for genomes: Identification of presumptive regulatory sites by statistical analysis.</article-title>
+					<source>Proc Natl Acad Sci U S A</source>
+					<volume>97</volume>
+					<fpage>10096</fpage>
+					<lpage>10100</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b023">
+        <label>23</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Gupta</surname><given-names>M</given-names></name><name name-style="western"><surname>Liu</surname><given-names>JS</given-names></name></person-group>
+					<year>2003</year>
+					<article-title>Discovery of conserved sequence patterns using a stochastic dictionary model.</article-title>
+					<source>J Am Statist Assoc</source>
+					<volume>98</volume>
+					<fpage>55</fpage>
+					<lpage>66</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b024">
+        <label>24</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Bailey</surname><given-names>TL</given-names></name><name name-style="western"><surname>Elkan</surname><given-names>C</given-names></name></person-group>
+					<year>1995</year>
+					<article-title>The value of prior knowledge in discovering motifs with MEME.</article-title>
+					<source>Proc Int Conf Intell Syst Mol Biol</source>
+					<volume>3</volume>
+					<fpage>21</fpage>
+					<lpage>29</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b025">
+        <label>25</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Dempster</surname><given-names>A</given-names></name><name name-style="western"><surname>Laird</surname><given-names>N</given-names></name><name name-style="western"><surname>Rubin</surname><given-names>D</given-names></name></person-group>
+					<year>1977</year>
+					<article-title>Maximum likelihood from incomplete data via the EM algorithm.</article-title>
+					<source>J Roy Stat Soc B</source>
+					<volume>39</volume>
+					<fpage>1</fpage>
+					<lpage>38</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b026">
+        <label>26</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Blekas</surname><given-names>K</given-names></name><name name-style="western"><surname>Fotiadis</surname><given-names>DI</given-names></name><name name-style="western"><surname>Likas</surname><given-names>A</given-names></name></person-group>
+					<year>2003</year>
+					<article-title>Greedy mixture learning for multiple motif discovery in biological sequences.</article-title>
+					<source>Bioinformatics</source>
+					<volume>19</volume>
+					<fpage>607</fpage>
+					<lpage>617</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b027">
+        <label>27</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>MacIsaac</surname><given-names>KD</given-names></name><name name-style="western"><surname>Gordon</surname><given-names>DB</given-names></name><name name-style="western"><surname>Nekludova</surname><given-names>L</given-names></name><name name-style="western"><surname>Odom</surname><given-names>DT</given-names></name><name name-style="western"><surname>Schreiber</surname><given-names>J</given-names></name><etal/></person-group>
+					<year>2005</year>
+					<article-title>A hypothesis-based approach for identifying the binding specificity of regulatory proteins from chromatin immunoprecipitation data.</article-title>
+					<source>Bioinformatics</source>
+					<volume>22</volume>
+					<fpage>423</fpage>
+					<lpage>429</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b028">
+        <label>28</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Geman</surname><given-names>S</given-names></name><name name-style="western"><surname>Geman</surname><given-names>D</given-names></name></person-group>
+					<year>1984</year>
+					<article-title>Stochastic relaxation, Gibbs distributions, and the Bayesian restoration of images.</article-title>
+					<source>IEEE Trans Pattern Anal Mach Intell</source>
+					<volume>6</volume>
+					<fpage>721</fpage>
+					<lpage>741</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b029">
+        <label>29</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Beer</surname><given-names>MA</given-names></name><name name-style="western"><surname>Tavazoie</surname><given-names>S</given-names></name></person-group>
+					<year>2004</year>
+					<article-title>Predicting gene expression from sequence.</article-title>
+					<source>Cell</source>
+					<volume>117</volume>
+					<fpage>185</fpage>
+					<lpage>198</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b030">
+        <label>30</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Roth</surname><given-names>FP</given-names></name><name name-style="western"><surname>Hughes</surname><given-names>JD</given-names></name><name name-style="western"><surname>Estep</surname><given-names>PW</given-names></name><name name-style="western"><surname>Church</surname><given-names>GM</given-names></name></person-group>
+					<year>1998</year>
+					<article-title>Finding DNA regulatory motifs within unaligned noncoding sequences clustered by whole-genome mRNA quantitation.</article-title>
+					<source>Nat Biotechnol</source>
+					<volume>16</volume>
+					<fpage>939</fpage>
+					<lpage>945</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b031">
+        <label>31</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Zhu</surname><given-names>Z</given-names></name><name name-style="western"><surname>Pilpel</surname><given-names>Y</given-names></name><name name-style="western"><surname>Church</surname><given-names>GM</given-names></name></person-group>
+					<year>2002</year>
+					<article-title>Computational identification of transcription factor binding sites via a transcription-factor-centric clustering (TFCC) algorithm.</article-title>
+					<source>J Mol Biol</source>
+					<volume>318</volume>
+					<fpage>71</fpage>
+					<lpage>81</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b032">
+        <label>32</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Vilo</surname><given-names>J</given-names></name><name name-style="western"><surname>Brazma</surname><given-names>A</given-names></name><name name-style="western"><surname>Jonassen</surname><given-names>I</given-names></name><name name-style="western"><surname>Robinson</surname><given-names>A</given-names></name><name name-style="western"><surname>Ukkonen</surname><given-names>E</given-names></name></person-group>
+					<year>2000</year>
+					<article-title>Mining for putative regulatory elements in the yeast genome using gene expression data.</article-title>
+					<source>Proc Int Conf Intell Syst Mol Biol</source>
+					<volume>8</volume>
+					<fpage>384</fpage>
+					<lpage>394</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b033">
+        <label>33</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Pilpel</surname><given-names>Y</given-names></name><name name-style="western"><surname>Sudarsanam</surname><given-names>P</given-names></name><name name-style="western"><surname>Church</surname><given-names>GM</given-names></name></person-group>
+					<year>2001</year>
+					<article-title>Identifying regulatory networks by combinatorial analysis of promoter elements.</article-title>
+					<source>Nat Genet</source>
+					<volume>29</volume>
+					<fpage>153</fpage>
+					<lpage>159</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b034">
+        <label>34</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Hughes</surname><given-names>JD</given-names></name><name name-style="western"><surname>Estep</surname><given-names>PW</given-names></name><name name-style="western"><surname>Tavazoie</surname><given-names>S</given-names></name><name name-style="western"><surname>Church</surname><given-names>GM</given-names></name></person-group>
+					<year>2000</year>
+					<article-title>Computational identification of cis-regulatory elements associated with groups of functionally related genes in Saccharomyces cerevisiae.</article-title>
+					<source>J Mol Biol</source>
+					<volume>296</volume>
+					<fpage>1205</fpage>
+					<lpage>1214</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b035">
+        <label>35</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Bussemaker</surname><given-names>HJ</given-names></name><name name-style="western"><surname>Li</surname><given-names>H</given-names></name><name name-style="western"><surname>Siggia</surname><given-names>ED</given-names></name></person-group>
+					<year>2001</year>
+					<article-title>Regulatory element detection using correlation with expression.</article-title>
+					<source>Nat Genet</source>
+					<volume>27</volume>
+					<fpage>167</fpage>
+					<lpage>171</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b036">
+        <label>36</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Conlon</surname><given-names>EM</given-names></name><name name-style="western"><surname>Liu</surname><given-names>XS</given-names></name><name name-style="western"><surname>Lieb</surname><given-names>JD</given-names></name><name name-style="western"><surname>Liu</surname><given-names>JS</given-names></name></person-group>
+					<year>2003</year>
+					<article-title>Integrating regulatory motif discovery and genome-wide expression analysis.</article-title>
+					<source>Proc Natl Acad Sci U S A</source>
+					<volume>100</volume>
+					<fpage>3339</fpage>
+					<lpage>3344</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b037">
+        <label>37</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Keles</surname><given-names>S</given-names></name><name name-style="western"><surname>van der Laan</surname><given-names>M</given-names></name><name name-style="western"><surname>Eisen</surname><given-names>MB</given-names></name></person-group>
+					<year>2002</year>
+					<article-title>Identification of regulatory elements using a feature selection method.</article-title>
+					<source>Bioinformatics</source>
+					<volume>18</volume>
+					<fpage>1167</fpage>
+					<lpage>1175</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b038">
+        <label>38</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Smith</surname><given-names>AD</given-names></name><name name-style="western"><surname>Sumazin</surname><given-names>P</given-names></name><name name-style="western"><surname>Das</surname><given-names>D</given-names></name><name name-style="western"><surname>Zhang</surname><given-names>MQ</given-names></name></person-group>
+					<year>2005</year>
+					<article-title>Mining ChIP-chip data for transcription factor and cofactor binding sites.</article-title>
+					<source>Bioinformatics</source>
+					<comment>21 Suppl</comment>
+					<volume>1</volume>
+					<fpage>i403</fpage>
+					<lpage>i412</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b039">
+        <label>39</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Harbison</surname><given-names>CT</given-names></name><name name-style="western"><surname>Gordon</surname><given-names>DB</given-names></name><name name-style="western"><surname>Lee</surname><given-names>TI</given-names></name><name name-style="western"><surname>Rinaldi</surname><given-names>NJ</given-names></name><name name-style="western"><surname>Macisaac</surname><given-names>KD</given-names></name><etal/></person-group>
+					<year>2004</year>
+					<article-title>Transcriptional regulatory code of a eukaryotic genome.</article-title>
+					<source>Nature</source>
+					<volume>431</volume>
+					<fpage>99</fpage>
+					<lpage>104</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b040">
+        <label>40</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Liu</surname><given-names>XS</given-names></name><name name-style="western"><surname>Brutlag</surname><given-names>DL</given-names></name><name name-style="western"><surname>Liu</surname><given-names>JS</given-names></name></person-group>
+					<year>2002</year>
+					<article-title>An algorithm for finding protein-DNA binding sites with applications to chromatin-immunoprecipitation microarray experiments.</article-title>
+					<source>Nat Biotechnol</source>
+					<volume>20</volume>
+					<fpage>835</fpage>
+					<lpage>839</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b041">
+        <label>41</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Horak</surname><given-names>CE</given-names></name><name name-style="western"><surname>Mahajan</surname><given-names>MC</given-names></name><name name-style="western"><surname>Luscombe</surname><given-names>NM</given-names></name><name name-style="western"><surname>Gerstein</surname><given-names>M</given-names></name><name name-style="western"><surname>Weissman</surname><given-names>SM</given-names></name><etal/></person-group>
+					<year>2002</year>
+					<article-title>GATA-1 binding sites mapped in the beta-globin locus by using mammalian chIp-chip analysis.</article-title>
+					<source>Proc Natl Acad Sci U S A</source>
+					<volume>99</volume>
+					<fpage>2924</fpage>
+					<lpage>2929</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b042">
+        <label>42</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Phuc Le</surname><given-names>P</given-names></name><name name-style="western"><surname>Friedman</surname><given-names>JR</given-names></name><name name-style="western"><surname>Schug</surname><given-names>J</given-names></name><name name-style="western"><surname>Brestelli</surname><given-names>JE</given-names></name><name name-style="western"><surname>Parker</surname><given-names>JB</given-names></name><etal/></person-group>
+					<year>2005</year>
+					<article-title>Glucocorticoid receptor-dependent gene regulatory networks.</article-title>
+					<source>PLoS Genet</source>
+					<volume>1</volume>
+					<elocation-id>e16.</elocation-id>
+					<comment>DOI: <ext-link ext-link-type="doi" xlink:href="http://dx.doi.org/10.1371/journal.pgen.0010016" xlink:type="simple">10.1371/journal.pgen.0010016</ext-link></comment>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b043">
+        <label>43</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Kim</surname><given-names>TH</given-names></name><name name-style="western"><surname>Barrera</surname><given-names>LO</given-names></name><name name-style="western"><surname>Zheng</surname><given-names>M</given-names></name><name name-style="western"><surname>Qu</surname><given-names>C</given-names></name><name name-style="western"><surname>Singer</surname><given-names>MA</given-names></name><etal/></person-group>
+					<year>2005</year>
+					<article-title>A high-resolution map of active promoters in the human genome.</article-title>
+					<source>Nature</source>
+					<volume>436</volume>
+					<fpage>876</fpage>
+					<lpage>880</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b044">
+        <label>44</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Cawley</surname><given-names>S</given-names></name><name name-style="western"><surname>Bekiranov</surname><given-names>S</given-names></name><name name-style="western"><surname>Ng</surname><given-names>HH</given-names></name><name name-style="western"><surname>Kapranov</surname><given-names>P</given-names></name><name name-style="western"><surname>Sekinger</surname><given-names>EA</given-names></name><etal/></person-group>
+					<year>2004</year>
+					<article-title>Unbiased mapping of transcription factor binding sites along human chromosomes 21 and 22 points to widespread regulation of noncoding RNAs.</article-title>
+					<source>Cell</source>
+					<volume>116</volume>
+					<fpage>499</fpage>
+					<lpage>509</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b045">
+        <label>45</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Rada-Iglesias</surname><given-names>A</given-names></name><name name-style="western"><surname>Wallerman</surname><given-names>O</given-names></name><name name-style="western"><surname>Koch</surname><given-names>C</given-names></name><name name-style="western"><surname>Ameur</surname><given-names>A</given-names></name><name name-style="western"><surname>Enroth</surname><given-names>S</given-names></name><etal/></person-group>
+					<year>2005</year>
+					<article-title>Binding sites for metabolic disease related transcription factors inferred at base pair resolution by chromatin immunoprecipitation and genomic microarrays.</article-title>
+					<source>Hum Mol Genet</source>
+					<volume>14</volume>
+					<fpage>3435</fpage>
+					<lpage>3447</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b046">
+        <label>46</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Ren</surname><given-names>B</given-names></name><name name-style="western"><surname>Dynlacht</surname><given-names>BD</given-names></name></person-group>
+					<year>2004</year>
+					<article-title>Use of chromatin immunoprecipitation assays in genome-wide location analysis of mammalian transcription factors.</article-title>
+					<source>Methods Enzymol</source>
+					<volume>376</volume>
+					<fpage>304</fpage>
+					<lpage>315</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b047">
+        <label>47</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Xie</surname><given-names>X</given-names></name><name name-style="western"><surname>Lu</surname><given-names>J</given-names></name><name name-style="western"><surname>Kulbokas</surname><given-names>EJ</given-names></name><name name-style="western"><surname>Golub</surname><given-names>TR</given-names></name><name name-style="western"><surname>Mootha</surname><given-names>V</given-names></name><etal/></person-group>
+					<year>2005</year>
+					<article-title>Systematic discovery of regulatory motifs in human promoters and 3′ UTRs by comparison of several mammals.</article-title>
+					<source>Nature</source>
+					<volume>434</volume>
+					<fpage>338</fpage>
+					<lpage>345</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b048">
+        <label>48</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Elemento</surname><given-names>O</given-names></name><name name-style="western"><surname>Tavazoie</surname><given-names>S</given-names></name></person-group>
+					<year>2005</year>
+					<article-title>Fast and systematic genome-wide discovery of conserved regulatory elements using a non-alignment based approach.</article-title>
+					<source>Genome Biol</source>
+					<volume>6</volume>
+					<fpage>R18</fpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b049">
+        <label>49</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Kellis</surname><given-names>M</given-names></name><name name-style="western"><surname>Patterson</surname><given-names>N</given-names></name><name name-style="western"><surname>Endrizzi</surname><given-names>M</given-names></name><name name-style="western"><surname>Birren</surname><given-names>B</given-names></name><name name-style="western"><surname>Lander</surname><given-names>ES</given-names></name></person-group>
+					<year>2003</year>
+					<article-title>Sequencing and comparison of yeast species to identify genes and regulatory elements.</article-title>
+					<source>Nature</source>
+					<volume>423</volume>
+					<fpage>241</fpage>
+					<lpage>254</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b050">
+        <label>50</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Pritsker</surname><given-names>M</given-names></name><name name-style="western"><surname>Liu</surname><given-names>YC</given-names></name><name name-style="western"><surname>Beer</surname><given-names>MA</given-names></name><name name-style="western"><surname>Tavazoie</surname><given-names>S</given-names></name></person-group>
+					<year>2004</year>
+					<article-title>Whole-genome discovery of transcription factor binding sites by network-level conservation.</article-title>
+					<source>Genome Res</source>
+					<volume>14</volume>
+					<fpage>99</fpage>
+					<lpage>108</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b051">
+        <label>51</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Buhler</surname><given-names>J</given-names></name><name name-style="western"><surname>Tompa</surname><given-names>M</given-names></name></person-group>
+					<year>2002</year>
+					<article-title>Finding motifs using random projections.</article-title>
+					<source>J Comput Biol</source>
+					<volume>9</volume>
+					<fpage>225</fpage>
+					<lpage>242</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b052">
+        <label>52</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Hu</surname><given-names>J</given-names></name><name name-style="western"><surname>Li</surname><given-names>B</given-names></name><name name-style="western"><surname>Kihara</surname><given-names>D</given-names></name></person-group>
+					<year>2005</year>
+					<article-title>Limitations and potentials of current motif discovery algorithms.</article-title>
+					<source>Nucleic Acids Res</source>
+					<volume>33</volume>
+					<fpage>4899</fpage>
+					<lpage>4913</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b053">
+        <label>53</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Sandelin</surname><given-names>A</given-names></name><name name-style="western"><surname>Wasserman</surname><given-names>WW</given-names></name></person-group>
+					<year>2004</year>
+					<article-title>Constrained binding site diversity within families of transcription factors enhances pattern discovery bioinformatics.</article-title>
+					<source>J Mol Biol</source>
+					<volume>338</volume>
+					<fpage>207</fpage>
+					<lpage>215</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b054">
+        <label>54</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Aerts</surname><given-names>S</given-names></name><name name-style="western"><surname>Thijs</surname><given-names>G</given-names></name><name name-style="western"><surname>Coessens</surname><given-names>B</given-names></name><name name-style="western"><surname>Staes</surname><given-names>M</given-names></name><name name-style="western"><surname>Moreau</surname><given-names>Y</given-names></name><etal/></person-group>
+					<year>2003</year>
+					<article-title>Toucan: Deciphering the cis-regulatory logic of coregulated genes.</article-title>
+					<source>Nucleic Acids Res</source>
+					<volume>31</volume>
+					<fpage>1753</fpage>
+					<lpage>1764</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b055">
+        <label>55</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Liu</surname><given-names>X</given-names></name><name name-style="western"><surname>Noll</surname><given-names>DM</given-names></name><name name-style="western"><surname>Lieb</surname><given-names>JD</given-names></name><name name-style="western"><surname>Clarke</surname><given-names>ND</given-names></name></person-group>
+					<year>2005</year>
+					<article-title>DIP-chip: Rapid and accurate determination of DNA-binding specificity.</article-title>
+					<source>Genome Res</source>
+					<volume>15</volume>
+					<fpage>421</fpage>
+					<lpage>427</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b056">
+        <label>56</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Boyer</surname><given-names>LA</given-names></name><name name-style="western"><surname>Lee</surname><given-names>TI</given-names></name><name name-style="western"><surname>Cole</surname><given-names>MF</given-names></name><name name-style="western"><surname>Johnstone</surname><given-names>SE</given-names></name><name name-style="western"><surname>Levine</surname><given-names>SS</given-names></name><etal/></person-group>
+					<year>2005</year>
+					<article-title>Core transcriptional regulatory circuitry in human embryonic stem cells.</article-title>
+					<source>Cell</source>
+					<volume>122</volume>
+					<fpage>947</fpage>
+					<lpage>956</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b057">
+        <label>57</label>
+        <element-citation publication-type="other" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Qi</surname><given-names>Y</given-names></name><name name-style="western"><surname>Jaakkola</surname><given-names>T</given-names></name><name name-style="western"><surname>Gifford</surname><given-names>DK</given-names></name></person-group>
+					<year>2005</year>
+					<source>Approximate expectation propagation for Bayesian inference on large-scale problems [technical report]</source>
+					<publisher-loc>Cambridge (Massachusetts)</publisher-loc>
+					<publisher-name>Computer Science and Artificial Intelligence Laboratory, Massachusetts Institute of Technology</publisher-name>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b058">
+        <label>58</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Tompa</surname><given-names>M</given-names></name><name name-style="western"><surname>Li</surname><given-names>N</given-names></name><name name-style="western"><surname>Bailey</surname><given-names>TL</given-names></name><name name-style="western"><surname>Church</surname><given-names>GM</given-names></name><name name-style="western"><surname>De Moor</surname><given-names>B</given-names></name><etal/></person-group>
+					<year>2005</year>
+					<article-title>Assessing computational tools for the discovery of transcription factor binding sites.</article-title>
+					<source>Nat Biotechnol</source>
+					<volume>23</volume>
+					<fpage>137</fpage>
+					<lpage>144</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b059">
+        <label>59</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Claverie</surname><given-names>JM</given-names></name><name name-style="western"><surname>Audic</surname><given-names>S</given-names></name></person-group>
+					<year>1996</year>
+					<article-title>The statistical significance of nucleotide position-weight matrix matches.</article-title>
+					<source>Comput Appl Biosci</source>
+					<volume>12</volume>
+					<fpage>431</fpage>
+					<lpage>439</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b060">
+        <label>60</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Staden</surname><given-names>R</given-names></name></person-group>
+					<year>1989</year>
+					<article-title>Methods for calculating the probabilities of finding patterns in sequences.</article-title>
+					<source>Comput Appl Biosci</source>
+					<volume>5</volume>
+					<fpage>89</fpage>
+					<lpage>96</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b061">
+        <label>61</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Frith</surname><given-names>MC</given-names></name><name name-style="western"><surname>Fu</surname><given-names>Y</given-names></name><name name-style="western"><surname>Yu</surname><given-names>L</given-names></name><name name-style="western"><surname>Chen</surname><given-names>JF</given-names></name><name name-style="western"><surname>Hansen</surname><given-names>U</given-names></name><etal/></person-group>
+					<year>2004</year>
+					<article-title>Detection of functional DNA motifs via statistical over-representation.</article-title>
+					<source>Nucleic Acids Res</source>
+					<volume>32</volume>
+					<fpage>1372</fpage>
+					<lpage>1381</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b062">
+        <label>62</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Moses</surname><given-names>AM</given-names></name><name name-style="western"><surname>Chiang</surname><given-names>DY</given-names></name><name name-style="western"><surname>Pollard</surname><given-names>DA</given-names></name><name name-style="western"><surname>Iyer</surname><given-names>VN</given-names></name><name name-style="western"><surname>Eisen</surname><given-names>MB</given-names></name></person-group>
+					<year>2004</year>
+					<article-title>MONKEY: Identifying conserved transcription-factor binding sites in multiple alignments using a binding site-specific evolutionary model.</article-title>
+					<source>Genome Biol</source>
+					<volume>5</volume>
+					<fpage>R98</fpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b063">
+        <label>63</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Liu</surname><given-names>X</given-names></name><name name-style="western"><surname>Brutlag</surname><given-names>DL</given-names></name><name name-style="western"><surname>Liu</surname><given-names>JS</given-names></name></person-group>
+					<year>2001</year>
+					<article-title>BioProspector: Discovering conserved DNA motifs in upstream regulatory regions of co-expressed genes.</article-title>
+					<source>Pac Symp Biocomput</source>
+					<volume>2001</volume>
+					<fpage>127</fpage>
+					<lpage>138</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b064">
+        <label>64</label>
+        <element-citation publication-type="other" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Barash</surname><given-names>Y</given-names></name><name name-style="western"><surname>Bejerano</surname><given-names>G</given-names></name><name name-style="western"><surname>Friedman</surname><given-names>N</given-names></name></person-group>
+					<year>2001</year>
+					<article-title>A simple hyper-geometric approach for discovering putative transcription factor binding sites.</article-title>
+					<comment>In:</comment>
+					<person-group person-group-type="editor"><name name-style="western"><surname>Gascuel</surname><given-names>O</given-names></name><name name-style="western"><surname>Moret</surname><given-names>BME</given-names></name></person-group>
+					<source>Algorithms in bioinformatics: First International Workshop, WABI 2001, Aarhus, Denmark, August 28–31, 2001, proceedings (lecture notes in computer science)</source>
+					<publisher-loc>Berlin</publisher-loc>
+					<publisher-name>Springer</publisher-name>
+					<comment>pp.</comment>
+					<fpage>278</fpage>
+					<lpage>293</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b065">
+        <label>65</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Takusagawa</surname><given-names>KT</given-names></name><name name-style="western"><surname>Gifford</surname><given-names>DK</given-names></name></person-group>
+					<year>2004</year>
+					<article-title>Negative information for motif discovery.</article-title>
+					<source>Pac Symp Biocomput</source>
+					<volume>2004</volume>
+					<fpage>360</fpage>
+					<lpage>371</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b066">
+        <label>66</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Henderson</surname><given-names>AR</given-names></name></person-group>
+					<year>1993</year>
+					<article-title>Assessing test accuracy and its clinical consequences: A primer for receiver operating characteristic curve analysis.</article-title>
+					<source>Ann Clin Biochem</source>
+					<volume>30</volume>
+					<fpage>521</fpage>
+					<lpage>539</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b067">
+        <label>67</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Clarke</surname><given-names>ND</given-names></name><name name-style="western"><surname>Granek</surname><given-names>JA</given-names></name></person-group>
+					<year>2003</year>
+					<article-title>Rank order metrics for quantifying the association of sequence features with gene regulation.</article-title>
+					<source>Bioinformatics</source>
+					<volume>19</volume>
+					<fpage>212</fpage>
+					<lpage>218</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b068">
+        <label>68</label>
+        <element-citation publication-type="other" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Jain</surname><given-names>A</given-names></name><name name-style="western"><surname>Dubes</surname><given-names>R</given-names></name></person-group>
+					<year>1988</year>
+					<source>Algorithms for clustering data</source>
+					<publisher-loc>Upper Saddle River (New Jersey)</publisher-loc>
+					<publisher-name>Prentice Hall College Division</publisher-name>
+					<!--===== Restructure page-count as size[@units="page"] =====--><size units="page">320</size>
+					<comment>p.</comment>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b069">
+        <label>69</label>
+        <element-citation publication-type="other" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Kaufman</surname><given-names>L</given-names></name><name name-style="western"><surname>Rousseeuw</surname><given-names>PJ</given-names></name></person-group>
+					<year>1987</year>
+					<article-title>Clustering by means of medoids.</article-title>
+					<comment>In:</comment>
+					<person-group person-group-type="editor"><name name-style="western"><surname>Dodge</surname><given-names>Y</given-names></name></person-group>
+					<source>Statistical data analysis based on the L1 norm and related methods</source>
+					<publisher-loc>Amsterdam</publisher-loc>
+					<publisher-name>North Holland/Elsevier</publisher-name>
+					<comment>pp.</comment>
+					<fpage>405</fpage>
+					<lpage>416</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b070">
+        <label>70</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Mahony</surname><given-names>S</given-names></name><name name-style="western"><surname>Hendrix</surname><given-names>D</given-names></name><name name-style="western"><surname>Golden</surname><given-names>A</given-names></name><name name-style="western"><surname>Smith</surname><given-names>TJ</given-names></name><name name-style="western"><surname>Rokhsar</surname><given-names>DS</given-names></name></person-group>
+					<year>2005</year>
+					<article-title>Transcription factor binding site identification using the self-organizing map.</article-title>
+					<source>Bioinformatics</source>
+					<volume>21</volume>
+					<fpage>1807</fpage>
+					<lpage>1814</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b071">
+        <label>71</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Qin</surname><given-names>ZS</given-names></name><name name-style="western"><surname>McCue</surname><given-names>LA</given-names></name><name name-style="western"><surname>Thompson</surname><given-names>W</given-names></name><name name-style="western"><surname>Mayerhofer</surname><given-names>L</given-names></name><name name-style="western"><surname>Lawrence</surname><given-names>CE</given-names></name><etal/></person-group>
+					<year>2003</year>
+					<article-title>Identification of co-regulated genes through Bayesian clustering of predicted regulatory binding sites.</article-title>
+					<source>Nat Biotechnol</source>
+					<volume>21</volume>
+					<fpage>435</fpage>
+					<lpage>439</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b072">
+        <label>72</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Jensen</surname><given-names>ST</given-names></name><name name-style="western"><surname>Shen</surname><given-names>L</given-names></name><name name-style="western"><surname>Liu</surname><given-names>JS</given-names></name></person-group>
+					<year>2005</year>
+					<article-title>Combining phylogenetic motif discovery and motif clustering to predict co-regulated genes.</article-title>
+					<source>Bioinformatics</source>
+					<volume>21</volume>
+					<fpage>3832</fpage>
+					<lpage>3839</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b073">
+        <label>73</label>
+        <element-citation publication-type="other" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>MacIsaac</surname><given-names>KD</given-names></name><name name-style="western"><surname>Wang</surname><given-names>T</given-names></name><name name-style="western"><surname>Gordon</surname><given-names>DB</given-names></name><name name-style="western"><surname>Gifford</surname><given-names>DK</given-names></name><name name-style="western"><surname>Stormo</surname><given-names>GD</given-names></name><etal/></person-group>
+					<year>2006</year>
+					<article-title>An improved map of conserved regulatory sites for <named-content content-type="genus-species" xlink:type="simple">Saccharomyces cerevisiae</named-content>.</article-title>
+					<source>BMC Bioinformatics</source>
+					<comment>In press.</comment>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b074">
+        <label>74</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Sinha</surname><given-names>S</given-names></name></person-group>
+					<year>2003</year>
+					<article-title>Discriminative motifs.</article-title>
+					<source>J Comput Biol</source>
+					<volume>10</volume>
+					<fpage>599</fpage>
+					<lpage>615</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b075">
+        <label>75</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Efron</surname><given-names>B</given-names></name><name name-style="western"><surname>Gong</surname><given-names>G</given-names></name></person-group>
+					<year>1983</year>
+					<article-title>A leisurely look at the bootstrap, the jackknife, and cross-validation.</article-title>
+					<source>Am Stat</source>
+					<volume>37</volume>
+					<fpage>36</fpage>
+					<lpage>48</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b076">
+        <label>76</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Moses</surname><given-names>AM</given-names></name><name name-style="western"><surname>Chiang</surname><given-names>DY</given-names></name><name name-style="western"><surname>Kellis</surname><given-names>M</given-names></name><name name-style="western"><surname>Lander</surname><given-names>ES</given-names></name><name name-style="western"><surname>Eisen</surname><given-names>MB</given-names></name></person-group>
+					<year>2003</year>
+					<article-title>Position specific variation in the rate of evolution in transcription factor binding sites.</article-title>
+					<source>BMC Evol Biol</source>
+					<volume>3</volume>
+					<fpage>19</fpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b077">
+        <label>77</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Chin</surname><given-names>CS</given-names></name><name name-style="western"><surname>Chuang</surname><given-names>JH</given-names></name><name name-style="western"><surname>Li</surname><given-names>H</given-names></name></person-group>
+					<year>2005</year>
+					<article-title>Genome-wide regulatory complexity in yeast promoters: Separation of functionally conserved and neutral sequence.</article-title>
+					<source>Genome Res</source>
+					<volume>15</volume>
+					<fpage>205</fpage>
+					<lpage>213</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b078">
+        <label>78</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Wasserman</surname><given-names>WW</given-names></name><name name-style="western"><surname>Palumbo</surname><given-names>M</given-names></name><name name-style="western"><surname>Thompson</surname><given-names>W</given-names></name><name name-style="western"><surname>Fickett</surname><given-names>JW</given-names></name><name name-style="western"><surname>Lawrence</surname><given-names>CE</given-names></name></person-group>
+					<year>2000</year>
+					<article-title>Human-mouse genome comparisons to locate regulatory sites.</article-title>
+					<source>Nat Genet</source>
+					<volume>26</volume>
+					<fpage>225</fpage>
+					<lpage>228</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b079">
+        <label>79</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Lenhard</surname><given-names>B</given-names></name><name name-style="western"><surname>Sandelin</surname><given-names>A</given-names></name><name name-style="western"><surname>Mendoza</surname><given-names>L</given-names></name><name name-style="western"><surname>Engstrom</surname><given-names>P</given-names></name><name name-style="western"><surname>Jareborg</surname><given-names>N</given-names></name><etal/></person-group>
+					<year>2003</year>
+					<article-title>Identification of conserved regulatory elements by comparative genome analysis.</article-title>
+					<source>J Biol</source>
+					<volume>2</volume>
+					<fpage>13</fpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b080">
+        <label>80</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Duret</surname><given-names>L</given-names></name><name name-style="western"><surname>Bucher</surname><given-names>P</given-names></name></person-group>
+					<year>1997</year>
+					<article-title>Searching for regulatory elements in human noncoding sequences.</article-title>
+					<source>Curr Opin Struct Biol</source>
+					<volume>7</volume>
+					<fpage>399</fpage>
+					<lpage>406</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b081">
+        <label>81</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Zhang</surname><given-names>Z</given-names></name><name name-style="western"><surname>Gerstein</surname><given-names>M</given-names></name></person-group>
+					<year>2003</year>
+					<article-title>Of mice and men: Phylogenetic footprinting aids the discovery of regulatory elements.</article-title>
+					<source>J Biol</source>
+					<volume>2</volume>
+					<fpage>11</fpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b082">
+        <label>82</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Cliften</surname><given-names>P</given-names></name><name name-style="western"><surname>Sudarsanam</surname><given-names>P</given-names></name><name name-style="western"><surname>Desikan</surname><given-names>A</given-names></name><name name-style="western"><surname>Fulton</surname><given-names>L</given-names></name><name name-style="western"><surname>Fulton</surname><given-names>B</given-names></name><etal/></person-group>
+					<year>2003</year>
+					<article-title>Finding functional features in Saccharomyces genomes by phylogenetic footprinting.</article-title>
+					<source>Science</source>
+					<volume>301</volume>
+					<fpage>71</fpage>
+					<lpage>76</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b083">
+        <label>83</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Siddharthan</surname><given-names>R</given-names></name><name name-style="western"><surname>Siggia</surname><given-names>ED</given-names></name><name name-style="western"><surname>van Nimwegen</surname><given-names>E</given-names></name></person-group>
+					<year>2005</year>
+					<article-title>PhyloGibbs: A Gibbs sampling motif finder that incorporates phylogeny.</article-title>
+					<source>PLoS Comput Biol</source>
+					<volume>1</volume>
+					<elocation-id>e67.</elocation-id>
+					<comment>DOI: <ext-link ext-link-type="doi" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.0010067" xlink:type="simple">10.1371/journal.pcbi.0010067</ext-link></comment>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b084">
+        <label>84</label>
+        <element-citation publication-type="other" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Moses</surname><given-names>AM</given-names></name><name name-style="western"><surname>Chiang</surname><given-names>DY</given-names></name><name name-style="western"><surname>Eisen</surname><given-names>MB</given-names></name></person-group>
+					<year>2004</year>
+					<source>Phylogenetic motif detection by expectation-maximization on evolutionary mixtures</source>
+					<publisher-loc>Pac Symp Biocomput</publisher-loc>
+					<publisher-name>324–335</publisher-name>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b085">
+        <label>85</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Sinha</surname><given-names>S</given-names></name><name name-style="western"><surname>Blanchette</surname><given-names>M</given-names></name><name name-style="western"><surname>Tompa</surname><given-names>M</given-names></name></person-group>
+					<year>2004</year>
+					<article-title>PhyME: A probabilistic algorithm for finding motifs in sets of orthologous sequences.</article-title>
+					<source>BMC Bioinformatics</source>
+					<volume>5</volume>
+					<fpage>170</fpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b086">
+        <label>86</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Li</surname><given-names>X</given-names></name><name name-style="western"><surname>Wong</surname><given-names>WH</given-names></name></person-group>
+					<year>2005</year>
+					<article-title>Sampling motifs on phylogenetic trees.</article-title>
+					<source>Proc Natl Acad Sci U S A</source>
+					<volume>102</volume>
+					<fpage>9481</fpage>
+					<lpage>9486</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b087">
+        <label>87</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Liu</surname><given-names>Y</given-names></name><name name-style="western"><surname>Liu</surname><given-names>XS</given-names></name><name name-style="western"><surname>Wei</surname><given-names>L</given-names></name><name name-style="western"><surname>Altman</surname><given-names>RB</given-names></name><name name-style="western"><surname>Batzoglou</surname><given-names>S</given-names></name></person-group>
+					<year>2004</year>
+					<article-title>Eukaryotic regulatory element conservation analysis and identification using comparative genomics.</article-title>
+					<source>Genome Res</source>
+					<volume>14</volume>
+					<fpage>451</fpage>
+					<lpage>458</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b088">
+        <label>88</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Wang</surname><given-names>T</given-names></name><name name-style="western"><surname>Stormo</surname><given-names>GD</given-names></name></person-group>
+					<year>2003</year>
+					<article-title>Combining phylogenetic data with co-regulated genes to identify regulatory motifs.</article-title>
+					<source>Bioinformatics</source>
+					<volume>19</volume>
+					<fpage>2369</fpage>
+					<lpage>2380</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b089">
+        <label>89</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Gertz</surname><given-names>J</given-names></name><name name-style="western"><surname>Riles</surname><given-names>L</given-names></name><name name-style="western"><surname>Turnbaugh</surname><given-names>P</given-names></name><name name-style="western"><surname>Ho</surname><given-names>SW</given-names></name><name name-style="western"><surname>Cohen</surname><given-names>BA</given-names></name></person-group>
+					<year>2005</year>
+					<article-title>Discovery, validation, and genetic dissection of transcription factor binding sites by comparative and functional genomics.</article-title>
+					<source>Genome Res</source>
+					<volume>15</volume>
+					<fpage>1145</fpage>
+					<lpage>1152</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b090">
+        <label>90</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Kato</surname><given-names>M</given-names></name><name name-style="western"><surname>Hata</surname><given-names>N</given-names></name><name name-style="western"><surname>Banerjee</surname><given-names>N</given-names></name><name name-style="western"><surname>Futcher</surname><given-names>B</given-names></name><name name-style="western"><surname>Zhang</surname><given-names>MQ</given-names></name></person-group>
+					<year>2004</year>
+					<article-title>Identifying combinatorial regulation of transcription factors and binding motifs.</article-title>
+					<source>Genome Biol</source>
+					<volume>5</volume>
+					<fpage>R56</fpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b091">
+        <label>91</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Davidson</surname><given-names>EH</given-names></name><name name-style="western"><surname>Rast</surname><given-names>JP</given-names></name><name name-style="western"><surname>Oliveri</surname><given-names>P</given-names></name><name name-style="western"><surname>Ransick</surname><given-names>A</given-names></name><name name-style="western"><surname>Calestani</surname><given-names>C</given-names></name><etal/></person-group>
+					<year>2002</year>
+					<article-title>A provisional regulatory gene network for specification of endomesoderm in the sea urchin embryo.</article-title>
+					<source>Dev Biol</source>
+					<volume>246</volume>
+					<fpage>162</fpage>
+					<lpage>190</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b092">
+        <label>92</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Maniatis</surname><given-names>T</given-names></name><name name-style="western"><surname>Falvo</surname><given-names>JV</given-names></name><name name-style="western"><surname>Kim</surname><given-names>TH</given-names></name><name name-style="western"><surname>Kim</surname><given-names>TK</given-names></name><name name-style="western"><surname>Lin</surname><given-names>CH</given-names></name><etal/></person-group>
+					<year>1998</year>
+					<article-title>Structure and function of the interferon-beta enhanceosome.</article-title>
+					<source>Cold Spring Harb Symp Quant Biol</source>
+					<volume>63</volume>
+					<fpage>609</fpage>
+					<lpage>620</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b093">
+        <label>93</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Berman</surname><given-names>BP</given-names></name><name name-style="western"><surname>Pfeiffer</surname><given-names>BD</given-names></name><name name-style="western"><surname>Laverty</surname><given-names>TR</given-names></name><name name-style="western"><surname>Salzberg</surname><given-names>SL</given-names></name><name name-style="western"><surname>Rubin</surname><given-names>GM</given-names></name><etal/></person-group>
+					<year>2004</year>
+					<article-title>Computational identification of developmental enhancers: Conservation and function of transcription factor binding-site clusters in <named-content content-type="genus-species" xlink:type="simple">Drosophila melanogaster</named-content> and <named-content content-type="genus-species" xlink:type="simple">Drosophila pseudoobscura</named-content>.</article-title>
+					<source>Genome Biol</source>
+					<volume>5</volume>
+					<fpage>R61</fpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b094">
+        <label>94</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Remenyi</surname><given-names>A</given-names></name><name name-style="western"><surname>Scholer</surname><given-names>HR</given-names></name><name name-style="western"><surname>Wilmanns</surname><given-names>M</given-names></name></person-group>
+					<year>2004</year>
+					<article-title>Combinatorial control of gene expression.</article-title>
+					<source>Nat Struct Mol Biol</source>
+					<volume>11</volume>
+					<fpage>812</fpage>
+					<lpage>815</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b095">
+        <label>95</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>GuhaThakurta</surname><given-names>D</given-names></name><name name-style="western"><surname>Stormo</surname><given-names>GD</given-names></name></person-group>
+					<year>2001</year>
+					<article-title>Identifying target sites for cooperatively binding factors.</article-title>
+					<source>Bioinformatics</source>
+					<volume>17</volume>
+					<fpage>608</fpage>
+					<lpage>621</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b096">
+        <label>96</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Sudarsanam</surname><given-names>P</given-names></name><name name-style="western"><surname>Pilpel</surname><given-names>Y</given-names></name><name name-style="western"><surname>Church</surname><given-names>GM</given-names></name></person-group>
+					<year>2002</year>
+					<article-title>Genome-wide co-occurrence of promoter elements reveals a cis-regulatory cassette of rRNA transcription motifs in <named-content content-type="genus-species" xlink:type="simple">Saccharomyces cerevisiae</named-content>.</article-title>
+					<source>Genome Res</source>
+					<volume>12</volume>
+					<fpage>1723</fpage>
+					<lpage>1731</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b097">
+        <label>97</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Zhou</surname><given-names>Q</given-names></name><name name-style="western"><surname>Wong</surname><given-names>WH</given-names></name></person-group>
+					<year>2004</year>
+					<article-title>CisModule: De novo discovery of cis-regulatory modules by hierarchical mixture modeling.</article-title>
+					<source>Proc Natl Acad Sci U S A</source>
+					<volume>101</volume>
+					<fpage>12114</fpage>
+					<lpage>12119</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b098">
+        <label>98</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Thompson</surname><given-names>W</given-names></name><name name-style="western"><surname>Palumbo</surname><given-names>MJ</given-names></name><name name-style="western"><surname>Wasserman</surname><given-names>WW</given-names></name><name name-style="western"><surname>Liu</surname><given-names>JS</given-names></name><name name-style="western"><surname>Lawrence</surname><given-names>CE</given-names></name></person-group>
+					<year>2004</year>
+					<article-title>Decoding human regulatory circuits.</article-title>
+					<source>Genome Res</source>
+					<volume>14</volume>
+					<fpage>1967</fpage>
+					<lpage>1974</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b099">
+        <label>99</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Segal</surname><given-names>E</given-names></name><name name-style="western"><surname>Sharan</surname><given-names>R</given-names></name></person-group>
+					<year>2005</year>
+					<article-title>A discriminative model for identifying spatial cis-regulatory modules.</article-title>
+					<source>J Comput Biol</source>
+					<volume>12</volume>
+					<fpage>822</fpage>
+					<lpage>834</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b100">
+        <label>100</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Gupta</surname><given-names>M</given-names></name><name name-style="western"><surname>Liu</surname><given-names>JS</given-names></name></person-group>
+					<year>2005</year>
+					<article-title>De novo cis-regulatory module elicitation for eukaryotic genomes.</article-title>
+					<source>Proc Natl Acad Sci U S A</source>
+					<volume>102</volume>
+					<fpage>7079</fpage>
+					<lpage>7084</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b101">
+        <label>101</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Bi</surname><given-names>C</given-names></name><name name-style="western"><surname>Rogan</surname><given-names>PK</given-names></name></person-group>
+					<year>2004</year>
+					<article-title>Bipartite pattern discovery by entropy minimization-based multiple local alignment.</article-title>
+					<source>Nucleic Acids Res</source>
+					<volume>32</volume>
+					<fpage>4979</fpage>
+					<lpage>4991</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b102">
+        <label>102</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Favorov</surname><given-names>AV</given-names></name><name name-style="western"><surname>Gelfand</surname><given-names>MS</given-names></name><name name-style="western"><surname>Gerasimova</surname><given-names>AV</given-names></name><name name-style="western"><surname>Ravcheev</surname><given-names>DA</given-names></name><name name-style="western"><surname>Mironov</surname><given-names>AA</given-names></name><etal/></person-group>
+					<year>2005</year>
+					<article-title>A Gibbs sampler for identification of symmetrically structured, spaced DNA motifs with improved estimation of the signal length.</article-title>
+					<source>Bioinformatics</source>
+					<volume>21</volume>
+					<fpage>2240</fpage>
+					<lpage>2245</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b103">
+        <label>103</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Luscombe</surname><given-names>NM</given-names></name><name name-style="western"><surname>Austin</surname><given-names>SE</given-names></name><name name-style="western"><surname>Berman</surname><given-names>HM</given-names></name><name name-style="western"><surname>Thornton</surname><given-names>JM</given-names></name></person-group>
+					<year>2000</year>
+					<article-title>An overview of the structures of protein-DNA complexes.</article-title>
+					<source>Genome Biol</source>
+					<volume>1</volume>
+					<fpage>REVIEWS001</fpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b104">
+        <label>104</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Xing</surname><given-names>EP</given-names></name><name name-style="western"><surname>Karp</surname><given-names>RM</given-names></name></person-group>
+					<year>2004</year>
+					<article-title>MotifPrototyper: A Bayesian profile model for motif families.</article-title>
+					<source>Proc Natl Acad Sci U S A</source>
+					<volume>101</volume>
+					<fpage>10523</fpage>
+					<lpage>10528</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b105">
+        <label>105</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Mahony</surname><given-names>S</given-names></name><name name-style="western"><surname>Golden</surname><given-names>A</given-names></name><name name-style="western"><surname>Smith</surname><given-names>TJ</given-names></name><name name-style="western"><surname>Benos</surname><given-names>PV</given-names></name></person-group>
+					<year>2005</year>
+					<article-title>Improved detection of DNA motifs using a self-organized clustering of familial binding profiles.</article-title>
+					<source>Bioinformatics</source>
+					<comment>21 Suppl</comment>
+					<volume>1</volume>
+					<fpage>i283</fpage>
+					<lpage>i291</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b106">
+        <label>106</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Tan</surname><given-names>K</given-names></name><name name-style="western"><surname>McCue</surname><given-names>LA</given-names></name><name name-style="western"><surname>Stormo</surname><given-names>GD</given-names></name></person-group>
+					<year>2005</year>
+					<article-title>Making connections between novel transcription factors and their DNA motifs.</article-title>
+					<source>Genome Res</source>
+					<volume>15</volume>
+					<fpage>312</fpage>
+					<lpage>320</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b107">
+        <label>107</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Hinrichs</surname><given-names>AS</given-names></name><name name-style="western"><surname>Karolchik</surname><given-names>D</given-names></name><name name-style="western"><surname>Baertsch</surname><given-names>R</given-names></name><name name-style="western"><surname>Barber</surname><given-names>GP</given-names></name><name name-style="western"><surname>Bejerano</surname><given-names>G</given-names></name><etal/></person-group>
+					<year>2006</year>
+					<article-title>The UCSC Genome Browser Database: Update 2006.</article-title>
+					<source>Nucleic Acids Res</source>
+					<volume>34</volume>
+					<fpage>D590</fpage>
+					<lpage>D598</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b108">
+        <label>108</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Gordon</surname><given-names>DB</given-names></name><name name-style="western"><surname>Nekludova</surname><given-names>L</given-names></name><name name-style="western"><surname>McCallum</surname><given-names>S</given-names></name><name name-style="western"><surname>Fraenkel</surname><given-names>E</given-names></name></person-group>
+					<year>2005</year>
+					<article-title>TAMO: A flexible, object-oriented framework for analyzing transcriptional regulation using DNA-sequence motifs.</article-title>
+					<source>Bioinformatics</source>
+					<volume>21</volume>
+					<fpage>3164</fpage>
+					<lpage>3165</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b109">
+        <label>109</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Che</surname><given-names>D</given-names></name><name name-style="western"><surname>Jensen</surname><given-names>S</given-names></name><name name-style="western"><surname>Cai</surname><given-names>L</given-names></name><name name-style="western"><surname>Liu</surname><given-names>JS</given-names></name></person-group>
+					<year>2005</year>
+					<article-title>BEST: Binding-site estimation suite of tools.</article-title>
+					<source>Bioinformatics</source>
+					<volume>21</volume>
+					<fpage>2909</fpage>
+					<lpage>2911</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b110">
+        <label>110</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Jensen</surname><given-names>ST</given-names></name><name name-style="western"><surname>Liu</surname><given-names>JS</given-names></name></person-group>
+					<year>2004</year>
+					<article-title>BioOptimizer: A Bayesian scoring function approach to motif discovery.</article-title>
+					<source>Bioinformatics</source>
+					<volume>20</volume>
+					<fpage>1557</fpage>
+					<lpage>1564</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b111">
+        <label>111</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Bailey</surname><given-names>TL</given-names></name><name name-style="western"><surname>Gribskov</surname><given-names>M</given-names></name></person-group>
+					<year>1998</year>
+					<article-title>Methods and statistics for combining motif match scores.</article-title>
+					<source>J Comput Biol</source>
+					<volume>5</volume>
+					<fpage>211</fpage>
+					<lpage>221</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b112">
+        <label>112</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Shamir</surname><given-names>R</given-names></name><name name-style="western"><surname>Maron-Katz</surname><given-names>A</given-names></name><name name-style="western"><surname>Tanay</surname><given-names>A</given-names></name><name name-style="western"><surname>Linhart</surname><given-names>C</given-names></name><name name-style="western"><surname>Steinfeld</surname><given-names>I</given-names></name><etal/></person-group>
+					<year>2005</year>
+					<article-title>EXPANDER—An integrative program suite for microarray data analysis.</article-title>
+					<source>BMC Bioinformatics</source>
+					<volume>6</volume>
+					<fpage>232</fpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b113">
+        <label>113</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Hertz</surname><given-names>GZ</given-names></name><name name-style="western"><surname>Stormo</surname><given-names>GD</given-names></name></person-group>
+					<year>1999</year>
+					<article-title>Identifying DNA and protein patterns with statistically significant alignments of multiple sequences.</article-title>
+					<source>Bioinformatics</source>
+					<volume>15</volume>
+					<fpage>563</fpage>
+					<lpage>577</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b114">
+        <label>114</label>
+        <element-citation publication-type="other" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Mallela</surname><given-names>J</given-names></name><name name-style="western"><surname>Kacmarczyk</surname><given-names>T</given-names></name><name name-style="western"><surname>Papatsenko</surname><given-names>D</given-names></name><name name-style="western"><surname>Bonavia</surname><given-names>A</given-names></name><name name-style="western"><surname>Rajewsky</surname><given-names>N</given-names></name></person-group>
+					<year>2003</year>
+					<source>The Ahab Webserver</source>
+					<publisher-loc>New York</publisher-loc>
+					<publisher-name>New York University</publisher-name>
+					<comment>Available: <ext-link ext-link-type="uri" xlink:href="http://gaspard.bio.nyu.edu/Ahab.html" xlink:type="simple">http://gaspard.bio.nyu.edu/Ahab.html</ext-link>. Accessed 29 March 2006.</comment>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b115">
+        <label>115</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Robertson</surname><given-names>G</given-names></name><name name-style="western"><surname>Bilenky</surname><given-names>M</given-names></name><name name-style="western"><surname>Lin</surname><given-names>K</given-names></name><name name-style="western"><surname>He</surname><given-names>A</given-names></name><name name-style="western"><surname>Yuen</surname><given-names>W</given-names></name><etal/></person-group>
+					<year>2006</year>
+					<article-title>cisRED: A database system for genome-scale computational discovery of regulatory elements.</article-title>
+					<source>Nucleic Acids Res</source>
+					<volume>34</volume>
+					<fpage>D68</fpage>
+					<lpage>D73</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b116">
+        <label>116</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Montgomery</surname><given-names>SB</given-names></name><name name-style="western"><surname>Griffith</surname><given-names>OL</given-names></name><name name-style="western"><surname>Sleumer</surname><given-names>MC</given-names></name><name name-style="western"><surname>Bergman</surname><given-names>CM</given-names></name><name name-style="western"><surname>Bilenky</surname><given-names>M</given-names></name><etal/></person-group>
+					<year>2006</year>
+					<article-title>ORegAnno: An open access database and curation system for literature-derived promoters, transcription factor binding sites and regulatory variation.</article-title>
+					<source>Bioinformatics</source>
+					<volume>22</volume>
+					<fpage>637</fpage>
+					<lpage>640</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b117">
+        <label>117</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Birney</surname><given-names>E</given-names></name><name name-style="western"><surname>Andrews</surname><given-names>D</given-names></name><name name-style="western"><surname>Caccamo</surname><given-names>M</given-names></name><name name-style="western"><surname>Chen</surname><given-names>Y</given-names></name><name name-style="western"><surname>Clarke</surname><given-names>L</given-names></name><etal/></person-group>
+					<year>2006</year>
+					<article-title>Ensembl 2006.</article-title>
+					<source>Nucleic Acids Res</source>
+					<volume>34</volume>
+					<fpage>D556</fpage>
+					<lpage>D561</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b118">
+        <label>118</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Matys</surname><given-names>V</given-names></name><name name-style="western"><surname>Kel-Margoulis</surname><given-names>OV</given-names></name><name name-style="western"><surname>Fricke</surname><given-names>E</given-names></name><name name-style="western"><surname>Liebich</surname><given-names>I</given-names></name><name name-style="western"><surname>Land</surname><given-names>S</given-names></name><etal/></person-group>
+					<year>2006</year>
+					<article-title>TRANSFAC and its module TRANSCompel: Transcriptional gene regulation in eukaryotes.</article-title>
+					<source>Nucleic Acids Res</source>
+					<volume>34</volume>
+					<fpage>D108</fpage>
+					<lpage>D110</lpage>
+				</element-citation>
+      </ref>
+      <ref id="pcbi-0020036-b119">
+        <label>119</label>
+        <element-citation publication-type="journal" xlink:type="simple">
+					<person-group person-group-type="author"><name name-style="western"><surname>Vlieghe</surname><given-names>D</given-names></name><name name-style="western"><surname>Sandelin</surname><given-names>A</given-names></name><name name-style="western"><surname>De Bleser</surname><given-names>PJ</given-names></name><name name-style="western"><surname>Vleminckx</surname><given-names>K</given-names></name><name name-style="western"><surname>Wasserman</surname><given-names>WW</given-names></name><etal/></person-group>
+					<year>2006</year>
+					<article-title>A new generation of JASPAR, the open-access repository for transcription factor binding site profiles.</article-title>
+					<source>Nucleic Acids Res</source>
+					<volume>34</volume>
+					<fpage>D95</fpage>
+					<lpage>D97</lpage>
+				</element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
