@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" article-type="research-article" dtd-version="3.0" xml:lang="en">
+  <front>
+    <journal-meta><journal-id journal-id-type="publisher-id">plos</journal-id><journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id><journal-id journal-id-type="pmc">ploscomp</journal-id><issn pub-type="ppub">1553-734X</issn><issn pub-type="epub">1553-7358</issn><publisher>
+        <publisher-name>Public Library of Science</publisher-name>
+        <publisher-loc>San Francisco, USA</publisher-loc>
+      </publisher></journal-meta>
+    <article-meta><article-id pub-id-type="publisher-id">PCOMPBIOL-D-12-00758</article-id><article-id pub-id-type="doi">10.1371/journal.pcbi.1002662</article-id><article-categories>
+        <subj-group subj-group-type="heading">
+          <subject>Review</subject>
+        </subj-group>
+        <subj-group subj-group-type="Discipline-v2">
+          <subject>Biology</subject>
+          <subj-group>
+            <subject>Computational biology</subject>
+            <subj-group>
+              <subject>Metabolic networks</subject>
+              <subject>Microarrays</subject>
+              <subject>Regulatory networks</subject>
+              <subject>Systems biology</subject>
+            </subj-group>
+          </subj-group>
+          <subj-group>
+            <subject>Systems biology</subject>
+          </subj-group>
+        </subj-group>
+        <subj-group subj-group-type="Discipline">
+          <subject>Genetics and Genomics</subject>
+          <subject>Computational Biology</subject>
+        </subj-group>
+      </article-categories><title-group><article-title>Shrinking the Metabolic Solution Space Using Experimental Datasets</article-title></title-group><contrib-group>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Reed</surname>
+            <given-names>Jennifer L.</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1"/>
+          <xref ref-type="corresp" rid="cor1">
+            <sup>*</sup>
+          </xref>
+        </contrib>
+      </contrib-group><aff id="aff1">
+        <addr-line>Department of Chemical and Biological Engineering, University of Wisconsin–Madison, Madison, Wisconsin, United States of America</addr-line>
+      </aff><contrib-group>
+        <contrib contrib-type="editor" xlink:type="simple">
+          <name name-style="western">
+            <surname>Papin</surname>
+            <given-names>Jason A.</given-names>
+          </name>
+          <role>Editor</role>
+          <xref ref-type="aff" rid="edit1"/>
+        </contrib>
+      </contrib-group><aff id="edit1">
+        <addr-line>University of Virginia, United States of America</addr-line>
+      </aff><author-notes>
+        <corresp id="cor1">* E-mail: <email xlink:type="simple">reed@engr.wisc.edu</email></corresp>
+        <fn fn-type="conflict">
+          <p>The author has declared that no competing interests exist.</p>
+        </fn>
+      </author-notes><pub-date pub-type="collection">
+        <month>8</month>
+        <year>2012</year>
+      </pub-date><pub-date pub-type="epub">
+        <day>30</day>
+        <month>8</month>
+        <year>2012</year>
+      </pub-date><volume>8</volume><issue>8</issue><elocation-id>e1002662</elocation-id><permissions>
+        
+        <copyright-holder>Jennifer L. Reed</copyright-holder>
+        <license xlink:type="simple">
+          <license-p>This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+        </license>
+      </permissions><abstract>
+        <p>Constraint-based models of metabolism have been used in a variety of studies on drug discovery, metabolic engineering, evolution, and multi-species interactions. These genome-scale models can be generated for any sequenced organism since their main parameters (i.e., reaction stoichiometry) are highly conserved. Their relatively low parameter requirement makes these models easy to develop; however, these models often result in a solution space with multiple possible flux distributions, making it difficult to determine the precise flux state in the cell. Recent research efforts in this modeling field have investigated how additional experimental data, including gene expression, protein expression, metabolite concentrations, and kinetic parameters, can be used to reduce the solution space. This mini-review provides a summary of the data-driven computational approaches that are available for reducing the solution space and thereby improve predictions of intracellular fluxes by constraint-based models.</p>
+      </abstract><funding-group>
+        <funding-statement>This work was funded by the National Science Foundation [1053712] and the Genomic Science Program (GSP), Office of Biological and Environmental Research (OBER), U.S. Department of Energy, and is a contribution of the PNNL Biofuels Scientific Focus Area. The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+      </funding-group><counts>
+        <page-count count="5"/>
+      </counts></article-meta>
+  </front>
+  <body>
+    <sec id="s1">
+      <title/>
+      <disp-quote>
+        <p>This is an “Editors' Outlook” article for <italic>PLOS Computational Biology</italic>.</p>
+      </disp-quote>
+    </sec>
+    <sec id="s2">
+      <title>Introduction</title>
+      <p>Genome-scale constraint-based metabolic models can be used to predict or describe cellular behaviors, such as growth rates, uptake/secretion rates, and intracellular fluxes. These models have been used for a variety of applications, involving studies on drug discovery <xref ref-type="bibr" rid="pcbi.1002662-Kim1">[1]</xref>, metabolic engineering <xref ref-type="bibr" rid="pcbi.1002662-Park1">[2]</xref>, evolution <xref ref-type="bibr" rid="pcbi.1002662-Pal1">[3]</xref>, genome annotation <xref ref-type="bibr" rid="pcbi.1002662-Kumar1">[4]</xref>–<xref ref-type="bibr" rid="pcbi.1002662-SatishKumar1">[6]</xref>, and multi-species interactions <xref ref-type="bibr" rid="pcbi.1002662-Bordbar1">[7]</xref>–<xref ref-type="bibr" rid="pcbi.1002662-Zhuang1">[10]</xref>. Constraint-based metabolic models are developed by integrating genomic, biochemical, and physiological information for an organism, in a process that has been recently reviewed <xref ref-type="bibr" rid="pcbi.1002662-Thiele1">[11]</xref>. Computational and database efforts facilitate the construction of such models by automating some of the steps in the development process; for example, mapping genes to biochemical reactions or adding/removing reactions based on physiological data <xref ref-type="bibr" rid="pcbi.1002662-Kumar1">[4]</xref>, <xref ref-type="bibr" rid="pcbi.1002662-Reed1">[5]</xref>, <xref ref-type="bibr" rid="pcbi.1002662-Henry1">[12]</xref>–<xref ref-type="bibr" rid="pcbi.1002662-Karp1">[14]</xref>.</p>
+      <p>The variables used in constraint-based models include the fluxes through transport and metabolic reactions, and model parameters include reaction stoichiometry, biomass composition, ATP requirements, and the upper and lower bounds for individual fluxes. A common misconception is that these metabolic models rely on detailed kinetic parameters; however, such kinetic parameters are not required and are generally absent from most constraint-based models. Because there are often more variables (i.e., fluxes) than equations, no unique solution exists. The large number of solutions that satisfy the model's constraints define the model's solution space, which can be queried using a number of approaches <xref ref-type="bibr" rid="pcbi.1002662-Lewis1">[15]</xref>. Most of these constraints-based approaches utilize optimization to identify a subset of solutions of interest from within the solution space that are predicted to be physiologically relevant. For example, flux balance analysis (FBA) is often used to identify flux distributions that maximize biomass yields <xref ref-type="bibr" rid="pcbi.1002662-Orth1">[16]</xref>.</p>
+      <p>Given the non-uniqueness of constraint-based model solutions, a growing number of methods have focused recently on incorporating additional constraints to reduce the solution space and thereby improve the precision and accuracy of model predictions. This editorial reviews recent methods that utilize additional biological information (e.g., gene or protein expression, metabolite concentrations, and kinetic parameters) to further restrict metabolic fluxes, many of which are available in a variety of software packages <xref ref-type="bibr" rid="pcbi.1002662-Schellenberger1">[17]</xref>–<xref ref-type="bibr" rid="pcbi.1002662-Zur1">[20]</xref>. A brief description of the standard constraints used in all constraint-based models is first presented, followed by a survey of how additional constraints have been included into models that often make use of additional types of experimental data (<xref ref-type="fig" rid="pcbi-1002662-g001">Figure 1</xref>).</p>
+      <fig id="pcbi-1002662-g001" orientation="portrait" position="float">
+        <object-id pub-id-type="doi">10.1371/journal.pcbi.1002662.g001</object-id>
+        <label>Figure 1</label>
+        <caption>
+          <title>Experimental data and numerical constraints.</title>
+          <p>Shown on the left are the different types of experimental data that can be accounted for in the models using the different types of metabolic flux constraints, shown on the right. Here, v denotes the metabolic fluxes, C denotes the metabolite concentrations, and k represents different kinetic parameters.</p>
+        </caption>
+        <graphic mimetype="image" orientation="portrait" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002662.g001" xlink:type="simple"/>
+      </fig>
+    </sec>
+    <sec id="s3">
+      <title>Standard Constraints</title>
+      <p>All constraint-based models use two types of fundamental constraints. Steady-state mass-balance constraints ensure that for each metabolite in the network the net production rate equals the net consumption rate. Additional inequality constraints are used to place restrictions or bounds on the values of individual fluxes based on measured rates (e.g., metabolite uptake/secretion rates) or reaction reversibility, where irreversible fluxes have a zero lower bound. Most models to date base reversibility on biochemical characterization of enzymes or consideration of network properties (e.g., no free ATP production). In standard models, none of these constraints limit metabolic fluxes based on metabolite, mRNA, or protein concentrations; however, a variety of additional constraints can be included based on thermodynamic, molecular crowding, gene expression, and regulatory and kinetic considerations.</p>
+    </sec>
+    <sec id="s4">
+      <title>Thermodynamic Constraints</title>
+      <p>Thermodynamic constraints are used to place restrictions on the directionality of reactions by considering metabolite concentrations and Gibbs energies of formation. From thermodynamics, the change in Gibbs free energy for a reaction (ΔG) depends on the temperature, concentrations of substrates and products, and change in Gibbs free energies in a reference state (ΔG<sup>O</sup>). If a reaction is to proceed, the change in Gibbs free energy for a reaction must be negative. A few different approaches for incorporating these types of thermodynamic-based directionality constraints have been proposed. One of the first methods, network-embedded thermodynamic (NET) analysis, uses the directionality of reactions (based on pre-existing knowledge, experimental flux measurements, or constraint-based model results) to calculate ΔG or metabolite concentration ranges <xref ref-type="bibr" rid="pcbi.1002662-Kummel1">[21]</xref>. In NET analysis the reaction directions are determined a priori and a set of concentrations are found that are consistent with the thermodynamic constraints. However, analysis of thermodynamic constraints can also be done to identify reaction directionalities using specified metabolite concentrations (or concentration ranges). The results can then be used to limit the directionality of reactions in constraint-based models. Given the uncertainty in the Gibbs free energies of formation and metabolite concentrations, many reactions can operate in either direction and so probabilities can be used to assign uni-directional reactions <xref ref-type="bibr" rid="pcbi.1002662-Fleming2">[22]</xref>. Another approach, thermodynamic metabolic flux analysis (TMFA), directly imbeds the thermodynamic constraints into the models. TMFA uses integer variables to identify flux distributions that are consistent with thermodynamic constraints. In TMFA, fluxes and metabolite concentrations are variables in the models and constraints ensure that non-zero fluxes and ΔG values have opposite signs <xref ref-type="bibr" rid="pcbi.1002662-Henry2">[23]</xref>.</p>
+    </sec>
+    <sec id="s5">
+      <title>Molecular Crowding Constraints</title>
+      <p>Recent efforts have used spatial constraints to place upper limits on a sum of fluxes, rather than individual fluxes. Molecular crowding constraints were first proposed by Beg et al. to restrict the total amount of enzyme that could be packed into a cell <xref ref-type="bibr" rid="pcbi.1002662-Beg1">[24]</xref>. An upper limit on total enzyme volume was used and the volume of enzyme needed to sustain a given flux value was based on each enzyme's properties (e.g., kinetics and size). This molecular crowding constraint results in a restriction on the weighted sum of the fluxes, where the weights (w<sub>j</sub>) depend on an enzyme's volume and activity (less active, larger protein will have higher weights). Molecular crowding constraints have been used to predict cellular growth rates and acetate production in <italic>Escherichia coli</italic> <xref ref-type="bibr" rid="pcbi.1002662-Beg1">[24]</xref>, <xref ref-type="bibr" rid="pcbi.1002662-Vazquez1">[25]</xref>, to predict enzyme activities and metabolite concentrations in yeast <xref ref-type="bibr" rid="pcbi.1002662-Vazquez2">[26]</xref>, and to explain the Warburg effect of inefficient glucose catabolism in cancer cells <xref ref-type="bibr" rid="pcbi.1002662-Shlomi1">[27]</xref>. Zhuang et al. recently extended this concept to impose limitations on the amount of enzymes that could reside in the cell membrane <xref ref-type="bibr" rid="pcbi.1002662-Zhuang2">[28]</xref>, thus placing restrictions on the weighted sum of fluxes through reactions that take place at the cell membrane. The authors investigated how this crowding constraint imposes a trade-off between glucose transport and respiratory pathways and showed that it was able to explain acetate production by <italic>E. coli</italic> under glucose aerobic conditions.</p>
+    </sec>
+    <sec id="s6">
+      <title>Gene Expression Constraints</title>
+      <p>Gene expression is one of the most widely accessible measurements that can provide a global snapshot of a cell's metabolic state. A number of studies have compared constraint-based model flux predictions to expression data, to find consistencies and inconsistencies (e.g., <xref ref-type="bibr" rid="pcbi.1002662-Pinchuk1">[29]</xref>–<xref ref-type="bibr" rid="pcbi.1002662-Lewis2">[31]</xref>). For example, genes associated with reactions predicted to be essential for growth were found to have higher expression than those associated with reactions predicted to be inactive in <italic>E. coli</italic> <xref ref-type="bibr" rid="pcbi.1002662-Lewis2">[31]</xref>. On the other hand, fluxes predicted to be inactive in <italic>Shewanella oneidensis</italic> but whose genes were expressed identified pathways that were reducing biomass yields <xref ref-type="bibr" rid="pcbi.1002662-Pinchuk1">[29]</xref>. In these cases, the expression data are not used to help predict flux values, but instead are compared against flux predictions. As an alternative, a number of computational tools have been developed to integrate expression data into constraint-based models and restrict metabolic fluxes directly (<xref ref-type="table" rid="pcbi-1002662-t001">Table 1</xref>).</p>
+      <table-wrap id="pcbi-1002662-t001" orientation="portrait" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1002662.t001</object-id><label>Table 1</label><caption>
+          <title>Comparison of methods for incorporating gene expression data.</title>
+        </caption><alternatives>
+          <graphic id="pcbi-1002662-t001-1" mimetype="image" orientation="portrait" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1002662.t001" xlink:type="simple"/>
+          <table>
+            <colgroup span="1">
+              <col align="left" span="1"/>
+              <col align="center" span="1"/>
+              <col align="center" span="1"/>
+            </colgroup>
+            <thead>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">Method</td>
+                <td align="left" colspan="1" rowspan="1">Thresholds</td>
+                <td align="left" colspan="1" rowspan="1">Description of Solutions</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">E-Flux</td>
+                <td align="left" colspan="1" rowspan="1">None</td>
+                <td align="left" colspan="1" rowspan="1">Finds solutions with fluxes whose upper limits are proportional to relative expression values</td>
+              </tr>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">GIMME</td>
+                <td align="left" colspan="1" rowspan="1">One</td>
+                <td align="left" colspan="1" rowspan="1">Finds solutions with low flux through reactions associated with lowly expressed genes</td>
+              </tr>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">Shlomi 2008</td>
+                <td align="left" colspan="1" rowspan="1">Two</td>
+                <td align="left" colspan="1" rowspan="1">Finds solutions with non-zero flux through reactions associated with highly expressed genes and zero flux through reactions associated with lowly expressed genes</td>
+              </tr>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">MADE</td>
+                <td align="left" colspan="1" rowspan="1">None</td>
+                <td align="left" colspan="1" rowspan="1">Finds solutions whose gene's on/off states most closely match significant changes in gene expression across multiple conditions</td>
+              </tr>
+              <tr>
+                <td align="left" colspan="1" rowspan="1">Moxley 2009</td>
+                <td align="left" colspan="1" rowspan="1">None</td>
+                <td align="left" colspan="1" rowspan="1">Finds changes in flux values based on changes in gene expression values</td>
+              </tr>
+            </tbody>
+          </table>
+        </alternatives></table-wrap>
+      <p>Most current methods for incorporating gene expression data into the models compare gene expression levels in a single condition and disfavor fluxes through reactions that are associated with lowly expressed genes. The E-flux method uses gene expression values to set upper limits on metabolic fluxes, where reactions associated with more highly expressed genes will be allowed to take on higher flux values <xref ref-type="bibr" rid="pcbi.1002662-Colijn1">[32]</xref>. While E-flux places hard constraints on fluxes based on expression data, other methods instead use soft constraints that can be violated. GIMME tries to minimize the total inconsistency between fluxes and gene expression, where inconsistency depends on the flux value and the difference between a gene's expression value and a chosen threshold <xref ref-type="bibr" rid="pcbi.1002662-Becker1">[33]</xref>. In this case, GIMME will try and reduce fluxes through reactions whose associated gene's expression falls below the threshold. Another method, developed by Shlomi et al. <xref ref-type="bibr" rid="pcbi.1002662-Shlomi2">[34]</xref>, tries to encourage flux through reactions whose associated genes are highly expressed and discourage flux through reactions whose associated genes are lowly expressed. With this method, high and low expression thresholds are chosen and used to assign reactions to high, low, or moderate groups. Using optimization, fluxes are then favored through reactions belonging in the high group and disfavored through reactions belonging to the low group.</p>
+      <p>All of these previous methods typically use expression data from a single condition to constrain fluxes. A more recent approach (MADE) uses expression data from multiple conditions (or a time-series) to identify patterns of increased/decreased expression based on significant changes in expression across conditions <xref ref-type="bibr" rid="pcbi.1002662-Jensen1">[18]</xref>. With MADE, the measured patterns of expression increases and decreases are used to find gene on/off patterns in the model across all conditions, where more significant expression changes are weighted more heavily. In another study, Moxley et al. used expression changes between two conditions to predict flux changes <xref ref-type="bibr" rid="pcbi.1002662-Moxley1">[35]</xref>. Using two global parameters they were able to accurately predict flux changes from gene expression changes using non-linear functions that account for metabolite-enzyme interaction densities.</p>
+    </sec>
+    <sec id="s7">
+      <title>Transcriptional Regulatory Constraints</title>
+      <p>The methods described above for using gene expression-based constraints require expression data under the condition(s) of interest. In other words, to predict flux in a particular condition the methods would need gene expression data from that condition. Other methods can instead use models of transcriptional regulatory networks to predict the effects of transcriptional regulation on metabolic fluxes. In this case, integrated models of metabolism and regulation can predict metabolic fluxes under conditions (e.g., gene knockout mutants) for which gene expression data are not available. Transcriptional regulatory networks can be reconstructed from high-throughput data, such as gene expression, ChIP-chip, and genome sequencing datasets using a variety of approaches (reviewed in <xref ref-type="bibr" rid="pcbi.1002662-DeSmet1">[36]</xref>–<xref ref-type="bibr" rid="pcbi.1002662-Herrgard1">[38]</xref>). To date, two different types of approaches have been used to incorporate transcriptional regulatory constraints into genome-scale metabolic models. The first set of approaches used a Boolean (on/off) representation of transcriptional regulation, where Boolean rules are used to determine the state of transcription factors (active or inactive) and metabolic genes (expressed or not expressed). Based on the expression states of metabolic genes, the reactions in the metabolic network can (if necessary genes are expressed) or cannot (if necessary genes are not expressed) carry flux <xref ref-type="bibr" rid="pcbi.1002662-Covert1">[39]</xref>. Analysis of these Boolean types of models can be done by solving the regulatory and metabolic models separately in an iterative fashion (rFBA) or simultaneously (SR-FBA) by introducing integer variables to represent the transcription factor/gene expression/reaction on/off states <xref ref-type="bibr" rid="pcbi.1002662-Covert2">[40]</xref>–<xref ref-type="bibr" rid="pcbi.1002662-Shlomi3">[42]</xref>. Not all regulation can be captured using a Boolean approach; for example, essential genes must always be on even though their expression may be regulated. To overcome this limitation, another type of approach has recently been used to formulate regulatory constraints based on a probabilistic regulatory model, where a continuous rather than a Boolean flux constraint is used. Here, the regulatory model predicts the probability that a given gene is expressed and this probability is used to weight the upper and lower limits that a metabolic flux can achieve <xref ref-type="bibr" rid="pcbi.1002662-Chandrasekaran1">[43]</xref>. The resulting model integrates both the metabolic and regulatory networks using a method called probabilistic regulation of metabolism (PROM).</p>
+    </sec>
+    <sec id="s8">
+      <title>Kinetic Constraints</title>
+      <p>A variety of approaches have been developed to capture kinetic limitations in the models. These approaches involve constraining either the uptake/secretion rates using empirical rate laws that depend on extracellular concentrations or constraining intracellular fluxes using enzymatic rate laws that depend on intracellular and extracellular concentrations. Incorporating constraints on the uptake or secretion rates of metabolites often requires material balance equations for the bioreactor environment, in addition to the standard metabolic constraints for the cells. Empirical rate laws are found by fitting metabolite uptake/secretion rates to measured reactor concentrations. These rate laws are then used as additional constraints in the models. The resulting dynamic FBA (dFBA) models can then use bioreactor concentrations to constrain metabolic fluxes, which in turn affect the bioreactor concentrations. Feng et al. recently included rate laws for the uptake and secretion of organic acids into a genome-scale model for <italic>S. oneidensis</italic> to evaluate tradeoffs between maximizing growth and minimizing enzyme usage in batch culture <xref ref-type="bibr" rid="pcbi.1002662-Feng1">[44]</xref>. Such empirical constraints have also been used to restrict uptake rates in co-culture models of environmental and industrial microbes <xref ref-type="bibr" rid="pcbi.1002662-Zhuang1">[10]</xref>, <xref ref-type="bibr" rid="pcbi.1002662-Hanly1">[45]</xref>.</p>
+      <p>Traditional kinetic models already take into account the kinetic relationships between metabolic fluxes, metabolite, and protein concentrations. However, such detailed models are often available for only a few pathways in well-characterized organisms, such as <italic>E. coli</italic> and <italic>Saccharomyces cerevisiae</italic>, since the kinetic properties of their enzymes have been biochemically characterized. Databases, such as BRENDA <xref ref-type="bibr" rid="pcbi.1002662-Schomburg1">[46]</xref> and SABIO-RK <xref ref-type="bibr" rid="pcbi.1002662-Wittig1">[47]</xref>, contain an extensive collection of kinetic parameters assembled from the biochemical literature, and these in vitro estimates can be used to formulate kinetic constraints. While kinetic models exist for central metabolism and other isolated pathways, expanding these models to a genome scale is an active area of research <xref ref-type="bibr" rid="pcbi.1002662-Jamshidi1">[48]</xref>–<xref ref-type="bibr" rid="pcbi.1002662-Soh1">[51]</xref>. Yizhak et al. recently developed an approach called IOMA <xref ref-type="bibr" rid="pcbi.1002662-Yizhak1">[52]</xref>, which uses kinetic expressions for a subset of enzymes to constrain metabolic fluxes. By incorporating multi-omics datasets using kinetic constraints for 11 reactions into an <italic>E. coli</italic> model, the authors were able to improve flux predictions in 23 gene deletion strains <xref ref-type="bibr" rid="pcbi.1002662-Yizhak1">[52]</xref>.</p>
+    </sec>
+    <sec id="s9">
+      <title>Conclusions</title>
+      <p>As we continue to be able to measure intracellular levels of biological components with greater accuracy and precision, the need for computational approaches to integrate and analyze such large-scale datasets grows. As reviewed above, a variety of constraint-based approaches are available that use these types of datasets to reduce the solution space and improve model predictions of metabolic phenotypes. Over the coming years, more computational approaches for integrating individual and multiple types of experimental measurements will likely appear, as new biological measurement approaches are developed and more data becomes available. For example, we are likely to see integration of datasets into models of microbial communities, as multi-species models <xref ref-type="bibr" rid="pcbi.1002662-Stolyar1">[8]</xref>, <xref ref-type="bibr" rid="pcbi.1002662-Zhuang1">[10]</xref>, <xref ref-type="bibr" rid="pcbi.1002662-Taffs1">[53]</xref> and datasets become available. With recent advances in the ability to rapidly build genome-scale models <xref ref-type="bibr" rid="pcbi.1002662-Henry1">[12]</xref>, there will also be a need to design experiments whose results would best reduce the metabolic solution space. One of the future challenges is then to prioritize what types of data are important to measure and for which components. Other related questions need to be answered as well. How important is it to have absolute versus relative concentration measurements? What experimental precision is needed for different types of data? The answers to all of these questions will depend on both the biological hypotheses that are being investigated and the desired precision for predicted fluxes, which specifies how much the solution space needs to shrink.</p>
+      <boxed-text id="pcbi-1002662-box001" orientation="portrait" position="float">
+        <sec id="s10a">
+          <title>Author's Biography</title>
+          <p><bold>Jennifer L. Reed</bold> is an Assistant Professor in the Department of Chemical and Biological Engineering at the University of Wisconsin–Madison and a Project Lead at the Great Lakes Bioenergy Research Center. She is a recipient of an NSF CAREER award and a DOE Early Career award. She has been an Associate Editor for <italic>PLOS Computational Biology</italic> since 2010. She received her BS degree in Bioengineering: Biotechnology in 2000 and her PhD in Bioengineering in 2005 from the University of California, San Diego. She spent two years after her PhD as a Faculty Fellow at the University of California, San Diego, where she taught classes and conducted research in the Bioengineering Department. Her research interests are in the development and analysis of microbial metabolic and regulatory models for bioenergy, biotechnology, and health applications. Her research has included the development of genome-scale models for a variety of different microbes, including <italic>Escherichia coli</italic>, <italic>Salmonella</italic>, <italic>Shewanella</italic>, and Cyanobacteria species, as well as computational tools for metabolic engineering, model comparison, model refinement, and experimental design.</p>
+        </sec>
+      </boxed-text>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <p>The author would like to thank Josh Hamilton and Joonhoon Kim for their helpful comments on the manuscript.</p>
+    </ack>
+    <ref-list>
+      <title>References</title>
+      <ref id="pcbi.1002662-Kim1">
+        <label>1</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kim</surname><given-names>HU</given-names></name>, <name name-style="western"><surname>Kim</surname><given-names>SY</given-names></name>, <name name-style="western"><surname>Jeong</surname><given-names>H</given-names></name>, <name name-style="western"><surname>Kim</surname><given-names>TY</given-names></name>, <name name-style="western"><surname>Kim</surname><given-names>JJ</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>Integrative genome-scale metabolic analysis of Vibrio vulnificus for drug targeting and discovery</article-title>. <source>Mol Syst Biol</source> <volume>7</volume>: <fpage>460</fpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Park1">
+        <label>2</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Park</surname><given-names>JM</given-names></name>, <name name-style="western"><surname>Kim</surname><given-names>TY</given-names></name>, <name name-style="western"><surname>Lee</surname><given-names>SY</given-names></name> (<year>2009</year>) <article-title>Constraints-based genome-scale metabolic simulation for systems metabolic engineering</article-title>. <source>Biotechnol Adv</source> <volume>27</volume>: <fpage>979</fpage>–<lpage>988</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Pal1">
+        <label>3</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pal</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Papp</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Lercher</surname><given-names>MJ</given-names></name>, <name name-style="western"><surname>Csermely</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Oliver</surname><given-names>SG</given-names></name>, <etal>et al</etal>. (<year>2006</year>) <article-title>Chance and necessity in the evolution of minimal metabolic networks</article-title>. <source>Nature</source> <volume>440</volume>: <fpage>667</fpage>–<lpage>670</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Kumar1">
+        <label>4</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kumar</surname><given-names>VS</given-names></name>, <name name-style="western"><surname>Maranas</surname><given-names>CD</given-names></name> (<year>2009</year>) <article-title>GrowMatch: an automated method for reconciling in silico/in vivo growth predictions</article-title>. <source>PLoS Comput Biol</source> <volume>5</volume>: <fpage>e1000308</fpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.1000308" xlink:type="simple">10.1371/journal.pcbi.1000308</ext-link>.</comment></mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Reed1">
+        <label>5</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Reed</surname><given-names>JL</given-names></name>, <name name-style="western"><surname>Patel</surname><given-names>TR</given-names></name>, <name name-style="western"><surname>Chen</surname><given-names>KH</given-names></name>, <name name-style="western"><surname>Joyce</surname><given-names>AR</given-names></name>, <name name-style="western"><surname>Applebee</surname><given-names>MK</given-names></name>, <etal>et al</etal>. (<year>2006</year>) <article-title>Systems approach to refining genome annotation</article-title>. <source>Proc Natl Acad Sci U S A</source> <volume>103</volume>: <fpage>17480</fpage>–<lpage>17484</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-SatishKumar1">
+        <label>6</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Satish Kumar</surname><given-names>V</given-names></name>, <name name-style="western"><surname>Dasika</surname><given-names>MS</given-names></name>, <name name-style="western"><surname>Maranas</surname><given-names>CD</given-names></name> (<year>2007</year>) <article-title>Optimization based automated curation of metabolic reconstructions</article-title>. <source>BMC Bioinformatics</source> <volume>8</volume>: <fpage>212</fpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Bordbar1">
+        <label>7</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bordbar</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Lewis</surname><given-names>NE</given-names></name>, <name name-style="western"><surname>Schellenberger</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Palsson</surname><given-names>BO</given-names></name>, <name name-style="western"><surname>Jamshidi</surname><given-names>N</given-names></name> (<year>2010</year>) <article-title>Insight into human alveolar macrophage and M. tuberculosis interactions via metabolic reconstructions</article-title>. <source>Mol Syst Biol</source> <volume>6</volume>: <fpage>422</fpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Stolyar1">
+        <label>8</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Stolyar</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Van Dien</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Hillesland</surname><given-names>KL</given-names></name>, <name name-style="western"><surname>Pinel</surname><given-names>N</given-names></name>, <name name-style="western"><surname>Lie</surname><given-names>TJ</given-names></name>, <etal>et al</etal>. (<year>2007</year>) <article-title>Metabolic modeling of a mutualistic microbial community</article-title>. <source>Mol Syst Biol</source> <volume>3</volume>: <fpage>92</fpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Zomorrodi1">
+        <label>9</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zomorrodi</surname><given-names>AR</given-names></name>, <name name-style="western"><surname>Maranas</surname><given-names>CD</given-names></name> (<year>2012</year>) <article-title>OptCom: a multi-level optimization framework for the metabolic modeling and analysis of microbial communities</article-title>. <source>PLoS Comp Biol</source> <volume>8</volume>: <fpage>e1002363</fpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.1002363" xlink:type="simple">10.1371/journal.pcbi.1002363</ext-link>.</comment></mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Zhuang1">
+        <label>10</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zhuang</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Izallalen</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Mouser</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Richter</surname><given-names>H</given-names></name>, <name name-style="western"><surname>Risso</surname><given-names>C</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>Genome-scale dynamic modeling of the competition between Rhodoferax and Geobacter in anoxic subsurface environments</article-title>. <source>ISME J</source> <volume>5</volume>: <fpage>305</fpage>–<lpage>316</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Thiele1">
+        <label>11</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Thiele</surname><given-names>I</given-names></name>, <name name-style="western"><surname>Palsson</surname><given-names>BO</given-names></name> (<year>2010</year>) <article-title>A protocol for generating a high-quality genome-scale metabolic reconstruction</article-title>. <source>Nat Protoc</source> <volume>5</volume>: <fpage>93</fpage>–<lpage>121</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Henry1">
+        <label>12</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Henry</surname><given-names>CS</given-names></name>, <name name-style="western"><surname>DeJongh</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Best</surname><given-names>AA</given-names></name>, <name name-style="western"><surname>Frybarger</surname><given-names>PM</given-names></name>, <name name-style="western"><surname>Linsay</surname><given-names>B</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>High-throughput generation, optimization and analysis of genome-scale metabolic models</article-title>. <source>Nat Biotechnol</source> <volume>28</volume>: <fpage>977</fpage>–<lpage>982</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Kanehisa1">
+        <label>13</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kanehisa</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Goto</surname><given-names>S</given-names></name> (<year>2000</year>) <article-title>KEGG: kyoto encyclopedia of genes and genomes</article-title>. <source>Nucleic Acids Res</source> <volume>28</volume>: <fpage>27</fpage>–<lpage>30</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Karp1">
+        <label>14</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Karp</surname><given-names>PD</given-names></name>, <name name-style="western"><surname>Paley</surname><given-names>SM</given-names></name>, <name name-style="western"><surname>Krummenacker</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Latendresse</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Dale</surname><given-names>JM</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>Pathway Tools version 13.0: integrated software for pathway/genome informatics and systems biology</article-title>. <source>Brief Bioinform</source> <volume>11</volume>: <fpage>40</fpage>–<lpage>79</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Lewis1">
+        <label>15</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lewis</surname><given-names>NE</given-names></name>, <name name-style="western"><surname>Nagarajan</surname><given-names>H</given-names></name>, <name name-style="western"><surname>Palsson</surname><given-names>BO</given-names></name> (<year>2012</year>) <article-title>Constraining the metabolic genotype-phenotype relationship using a phylogeny of in silico methods</article-title>. <source>Nat Rev Microbiol</source> <volume>10</volume>: <fpage>291</fpage>–<lpage>305</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Orth1">
+        <label>16</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Orth</surname><given-names>JD</given-names></name>, <name name-style="western"><surname>Thiele</surname><given-names>I</given-names></name>, <name name-style="western"><surname>Palsson</surname><given-names>BO</given-names></name> (<year>2010</year>) <article-title>What is flux balance analysis?</article-title> <source>Nat Biotechnol</source> <volume>28</volume>: <fpage>245</fpage>–<lpage>248</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Schellenberger1">
+        <label>17</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schellenberger</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Que</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Fleming</surname><given-names>RM</given-names></name>, <name name-style="western"><surname>Thiele</surname><given-names>I</given-names></name>, <name name-style="western"><surname>Orth</surname><given-names>JD</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>Quantitative prediction of cellular metabolism with constraint-based models: the COBRA Toolbox v2.0</article-title>. <source>Nat Protoc</source> <volume>6</volume>: <fpage>1290</fpage>–<lpage>1307</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Jensen1">
+        <label>18</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jensen</surname><given-names>PA</given-names></name>, <name name-style="western"><surname>Papin</surname><given-names>JA</given-names></name> (<year>2011</year>) <article-title>Functional integration of a metabolic network model and expression data without arbitrary thresholding</article-title>. <source>Bioinformatics</source> <volume>27</volume>: <fpage>541</fpage>–<lpage>547</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Fleming1">
+        <label>19</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fleming</surname><given-names>RM</given-names></name>, <name name-style="western"><surname>Thiele</surname><given-names>I</given-names></name> (<year>2011</year>) <article-title>von Bertalanffy 1.0: a COBRA toolbox extension to thermodynamically constrain metabolic models</article-title>. <source>Bioinformatics</source> <volume>27</volume>: <fpage>142</fpage>–<lpage>143</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Zur1">
+        <label>20</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zur</surname><given-names>H</given-names></name>, <name name-style="western"><surname>Ruppin</surname><given-names>E</given-names></name>, <name name-style="western"><surname>Shlomi</surname><given-names>T</given-names></name> (<year>2010</year>) <article-title>iMAT: an integrative metabolic analysis tool</article-title>. <source>Bioinformatics</source> <volume>26</volume>: <fpage>3140</fpage>–<lpage>3142</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Kummel1">
+        <label>21</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kummel</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Panke</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Heinemann</surname><given-names>M</given-names></name> (<year>2006</year>) <article-title>Putative regulatory sites unraveled by network-embedded thermodynamic analysis of metabolome data</article-title>. <source>Mol Syst Biol</source> <volume>2</volume>: <fpage>2006.0034</fpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Fleming2">
+        <label>22</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fleming</surname><given-names>RM</given-names></name>, <name name-style="western"><surname>Thiele</surname><given-names>I</given-names></name>, <name name-style="western"><surname>Nasheuer</surname><given-names>HP</given-names></name> (<year>2009</year>) <article-title>Quantitative assignment of reaction directionality in constraint-based models of metabolism: application to Escherichia coli</article-title>. <source>Biophys Chem</source> <volume>145</volume>: <fpage>47</fpage>–<lpage>56</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Henry2">
+        <label>23</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Henry</surname><given-names>CS</given-names></name>, <name name-style="western"><surname>Broadbelt</surname><given-names>LJ</given-names></name>, <name name-style="western"><surname>Hatzimanikatis</surname><given-names>V</given-names></name> (<year>2007</year>) <article-title>Thermodynamics-based metabolic flux analysis</article-title>. <source>Biophys J</source> <volume>92</volume>: <fpage>1792</fpage>–<lpage>1805</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Beg1">
+        <label>24</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Beg</surname><given-names>QK</given-names></name>, <name name-style="western"><surname>Vazquez</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Ernst</surname><given-names>J</given-names></name>, <name name-style="western"><surname>de Menezes</surname><given-names>MA</given-names></name>, <name name-style="western"><surname>Bar-Joseph</surname><given-names>Z</given-names></name>, <etal>et al</etal>. (<year>2007</year>) <article-title>Intracellular crowding defines the mode and sequence of substrate uptake by Escherichia coli and constrains its metabolic activity</article-title>. <source>Proc Natl Acad Sci U S A</source> <volume>104</volume>: <fpage>12663</fpage>–<lpage>12668</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Vazquez1">
+        <label>25</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Vazquez</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Beg</surname><given-names>QK</given-names></name>, <name name-style="western"><surname>Demenezes</surname><given-names>MA</given-names></name>, <name name-style="western"><surname>Ernst</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Bar-Joseph</surname><given-names>Z</given-names></name>, <etal>et al</etal>. (<year>2008</year>) <article-title>Impact of the solvent capacity constraint on E. coli metabolism</article-title>. <source>BMC Syst Biol</source> <volume>2</volume>: <fpage>7</fpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Vazquez2">
+        <label>26</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Vazquez</surname><given-names>A</given-names></name>, <name name-style="western"><surname>de Menezes</surname><given-names>MA</given-names></name>, <name name-style="western"><surname>Barabasi</surname><given-names>AL</given-names></name>, <name name-style="western"><surname>Oltvai</surname><given-names>ZN</given-names></name> (<year>2008</year>) <article-title>Impact of limited solvent capacity on metabolic rate, enzyme activities, and metabolite concentrations of S. cerevisiae glycolysis</article-title>. <source>PLoS Comp Biol</source> <volume>4</volume>: <fpage>e1000195</fpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.1000195" xlink:type="simple">10.1371/journal.pcbi.1000195</ext-link>.</comment></mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Shlomi1">
+        <label>27</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Shlomi</surname><given-names>T</given-names></name>, <name name-style="western"><surname>Benyamini</surname><given-names>T</given-names></name>, <name name-style="western"><surname>Gottlieb</surname><given-names>E</given-names></name>, <name name-style="western"><surname>Sharan</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Ruppin</surname><given-names>E</given-names></name> (<year>2011</year>) <article-title>Genome-scale metabolic modeling elucidates the role of proliferative adaptation in causing the Warburg effect</article-title>. <source>PLoS Comput Biol</source> <volume>7</volume>: <fpage>e1002018</fpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.1002018" xlink:type="simple">10.1371/journal.pcbi.1002018</ext-link>.</comment></mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Zhuang2">
+        <label>28</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zhuang</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Vemuri</surname><given-names>GN</given-names></name>, <name name-style="western"><surname>Mahadevan</surname><given-names>R</given-names></name> (<year>2011</year>) <article-title>Economics of membrane occupancy and respiro-fermentation</article-title>. <source>Mol Syst Biol</source> <volume>7</volume>: <fpage>500</fpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Pinchuk1">
+        <label>29</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pinchuk</surname><given-names>GE</given-names></name>, <name name-style="western"><surname>Hill</surname><given-names>EA</given-names></name>, <name name-style="western"><surname>Geydebrekht</surname><given-names>OV</given-names></name>, <name name-style="western"><surname>De Ingeniis</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Zhang</surname><given-names>X</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>Constraint-based model of Shewanella oneidensis MR-1 metabolism: a tool for data analysis and hypothesis generation</article-title>. <source>PLoS Comput Biol</source> <volume>6</volume>: <fpage>e1000822</fpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.1000822" xlink:type="simple">10.1371/journal.pcbi.1000822</ext-link>.</comment></mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Raghunathan1">
+        <label>30</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Raghunathan</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Reed</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Shin</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Palsson</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Daefler</surname><given-names>S</given-names></name> (<year>2009</year>) <article-title>Constraint-based analysis of metabolic capacity of Salmonella typhimurium during host-pathogen interaction</article-title>. <source>BMC Syst Biol</source> <volume>3</volume>: <fpage>38</fpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Lewis2">
+        <label>31</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lewis</surname><given-names>NE</given-names></name>, <name name-style="western"><surname>Hixson</surname><given-names>KK</given-names></name>, <name name-style="western"><surname>Conrad</surname><given-names>TM</given-names></name>, <name name-style="western"><surname>Lerman</surname><given-names>JA</given-names></name>, <name name-style="western"><surname>Charusanti</surname><given-names>P</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>Omic data from evolved E. coli are consistent with computed optimal growth from genome-scale models</article-title>. <source>Mol Syst Biol</source> <volume>6</volume>: <fpage>390</fpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Colijn1">
+        <label>32</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Colijn</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Brandes</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Zucker</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Lun</surname><given-names>DS</given-names></name>, <name name-style="western"><surname>Weiner</surname><given-names>B</given-names></name>, <etal>et al</etal>. (<year>2009</year>) <article-title>Interpreting expression data with metabolic flux models: predicting mycobacterium tuberculosis mycolic acid production</article-title>. <source>PLoS Comput Biol</source> <volume>5</volume>: <fpage>e1000489</fpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.1000489" xlink:type="simple">10.1371/journal.pcbi.1000489</ext-link>.</comment></mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Becker1">
+        <label>33</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Becker</surname><given-names>SA</given-names></name>, <name name-style="western"><surname>Palsson</surname><given-names>BO</given-names></name> (<year>2008</year>) <article-title>Context-specific metabolic networks are consistent with experiments</article-title>. <source>PLoS Comput Biol</source> <volume>4</volume>: <fpage>e1000082</fpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.1000082" xlink:type="simple">10.1371/journal.pcbi.1000082</ext-link>.</comment></mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Shlomi2">
+        <label>34</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Shlomi</surname><given-names>T</given-names></name>, <name name-style="western"><surname>Cabili</surname><given-names>MN</given-names></name>, <name name-style="western"><surname>Herrgard</surname><given-names>MJ</given-names></name>, <name name-style="western"><surname>Palsson</surname><given-names>BO</given-names></name>, <name name-style="western"><surname>Ruppin</surname><given-names>E</given-names></name> (<year>2008</year>) <article-title>Network-based prediction of human tissue-specific metabolism</article-title>. <source>Nat Biotechnol</source> <volume>26</volume>: <fpage>1003</fpage>–<lpage>1010</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Moxley1">
+        <label>35</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Moxley</surname><given-names>JF</given-names></name>, <name name-style="western"><surname>Jewett</surname><given-names>MC</given-names></name>, <name name-style="western"><surname>Antoniewicz</surname><given-names>MR</given-names></name>, <name name-style="western"><surname>Villas-Boas</surname><given-names>SG</given-names></name>, <name name-style="western"><surname>Alper</surname><given-names>H</given-names></name>, <etal>et al</etal>. (<year>2009</year>) <article-title>Linking high-resolution metabolic flux phenotypes and transcriptional regulation in yeast modulated by the global regulator Gcn4p</article-title>. <source>Proc Natl Acad Sci U S A</source> <volume>106</volume>: <fpage>6477</fpage>–<lpage>6482</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-DeSmet1">
+        <label>36</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>De Smet</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Marchal</surname><given-names>K</given-names></name> (<year>2010</year>) <article-title>Advantages and limitations of current network inference methods</article-title>. <source>Nat Rev Microbiol</source> <volume>8</volume>: <fpage>717</fpage>–<lpage>729</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Rodionov1">
+        <label>37</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rodionov</surname><given-names>DA</given-names></name> (<year>2007</year>) <article-title>Comparative genomic reconstruction of transcriptional regulatory networks in bacteria</article-title>. <source>Chem Rev</source> <volume>107</volume>: <fpage>3467</fpage>–<lpage>3497</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Herrgard1">
+        <label>38</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Herrgard</surname><given-names>MJ</given-names></name>, <name name-style="western"><surname>Covert</surname><given-names>MW</given-names></name>, <name name-style="western"><surname>Palsson</surname><given-names>BO</given-names></name> (<year>2004</year>) <article-title>Reconstruction of microbial transcriptional regulatory networks</article-title>. <source>Curr Opin Biotechnol</source> <volume>15</volume>: <fpage>70</fpage>–<lpage>77</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Covert1">
+        <label>39</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Covert</surname><given-names>MW</given-names></name>, <name name-style="western"><surname>Schilling</surname><given-names>CH</given-names></name>, <name name-style="western"><surname>Palsson</surname><given-names>B</given-names></name> (<year>2001</year>) <article-title>Regulation of gene expression in flux balance models of metabolism</article-title>. <source>J Theor Biol</source> <volume>213</volume>: <fpage>73</fpage>–<lpage>88</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Covert2">
+        <label>40</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Covert</surname><given-names>MW</given-names></name>, <name name-style="western"><surname>Knight</surname><given-names>EM</given-names></name>, <name name-style="western"><surname>Reed</surname><given-names>JL</given-names></name>, <name name-style="western"><surname>Herrgard</surname><given-names>MJ</given-names></name>, <name name-style="western"><surname>Palsson</surname><given-names>BO</given-names></name> (<year>2004</year>) <article-title>Integrating high-throughput and computational data elucidates bacterial networks</article-title>. <source>Nature</source> <volume>429</volume>: <fpage>92</fpage>–<lpage>96</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Covert3">
+        <label>41</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Covert</surname><given-names>MW</given-names></name>, <name name-style="western"><surname>Palsson</surname><given-names>BO</given-names></name> (<year>2002</year>) <article-title>Transcriptional regulation in constraints-based metabolic models of Escherichia coli</article-title>. <source>J Biol Chem</source> <volume>277</volume>: <fpage>28058</fpage>–<lpage>28064</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Shlomi3">
+        <label>42</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Shlomi</surname><given-names>T</given-names></name>, <name name-style="western"><surname>Eisenberg</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Sharan</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Ruppin</surname><given-names>E</given-names></name> (<year>2007</year>) <article-title>A genome-scale computational study of the interplay between transcriptional regulation and metabolism</article-title>. <source>Mol Syst Biol</source> <volume>3</volume>: <fpage>101</fpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Chandrasekaran1">
+        <label>43</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chandrasekaran</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Price</surname><given-names>ND</given-names></name> (<year>2010</year>) <article-title>Probabilistic integrative modeling of genome-scale metabolic and regulatory networks in Escherichia coli and Mycobacterium tuberculosis</article-title>. <source>Proc Natl Acad Sci U S A</source> <volume>107</volume>: <fpage>17845</fpage>–<lpage>17850</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Feng1">
+        <label>44</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Feng</surname><given-names>X</given-names></name>, <name name-style="western"><surname>Xu</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Chen</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Tang</surname><given-names>YJ</given-names></name> (<year>2012</year>) <article-title>Integrating flux balance analysis into kinetic models to decipher the dynamic metabolism of Shewanella oneidensis MR-1</article-title>. <source>PLoS Comput Biol</source> <volume>8</volume>: <fpage>e1002376</fpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.1002376" xlink:type="simple">10.1371/journal.pcbi.1002376</ext-link>.</comment></mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Hanly1">
+        <label>45</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hanly</surname><given-names>TJ</given-names></name>, <name name-style="western"><surname>Henson</surname><given-names>MA</given-names></name> (<year>2011</year>) <article-title>Dynamic flux balance modeling of microbial co-cultures for efficient batch fermentation of glucose and xylose mixtures</article-title>. <source>Biotechnol Bioeng</source> <volume>108</volume>: <fpage>376</fpage>–<lpage>385</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Schomburg1">
+        <label>46</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schomburg</surname><given-names>I</given-names></name>, <name name-style="western"><surname>Chang</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Ebeling</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Gremse</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Heldt</surname><given-names>C</given-names></name>, <etal>et al</etal>. (<year>2004</year>) <article-title>BRENDA, the enzyme database: updates and major new developments</article-title>. <source>Nucleic Acids Res</source> <volume>32</volume>: <fpage>D431</fpage>–<lpage>D433</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Wittig1">
+        <label>47</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wittig</surname><given-names>U</given-names></name>, <name name-style="western"><surname>Kania</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Golebiewski</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Rey</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Shi</surname><given-names>L</given-names></name>, <etal>et al</etal>. (<year>2012</year>) <article-title>SABIO-RK–database for biochemical reaction kinetics</article-title>. <source>Nucleic acids res</source> <volume>40</volume>: <fpage>D790</fpage>–<lpage>D796</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Jamshidi1">
+        <label>48</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jamshidi</surname><given-names>N</given-names></name>, <name name-style="western"><surname>Palsson</surname><given-names>BO</given-names></name> (<year>2008</year>) <article-title>Formulating genome-scale kinetic models in the post-genome era</article-title>. <source>Mol Syst Biol</source> <volume>4</volume>: <fpage>171</fpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Fleming3">
+        <label>49</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fleming</surname><given-names>RM</given-names></name>, <name name-style="western"><surname>Thiele</surname><given-names>I</given-names></name>, <name name-style="western"><surname>Provan</surname><given-names>G</given-names></name>, <name name-style="western"><surname>Nasheuer</surname><given-names>HP</given-names></name> (<year>2010</year>) <article-title>Integrated stoichiometric, thermodynamic and kinetic modelling of steady state metabolism</article-title>. <source>J Theor Biol</source> <volume>264</volume>: <fpage>683</fpage>–<lpage>692</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Smallbone1">
+        <label>50</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Smallbone</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Simeonidis</surname><given-names>E</given-names></name>, <name name-style="western"><surname>Swainston</surname><given-names>N</given-names></name>, <name name-style="western"><surname>Mendes</surname><given-names>P</given-names></name> (<year>2010</year>) <article-title>Towards a genome-scale kinetic model of cellular metabolism</article-title>. <source>BMC Syst Biol</source> <volume>4</volume>: <fpage>6</fpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Soh1">
+        <label>51</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Soh</surname><given-names>KC</given-names></name>, <name name-style="western"><surname>Miskovic</surname><given-names>L</given-names></name>, <name name-style="western"><surname>Hatzimanikatis</surname><given-names>V</given-names></name> (<year>2012</year>) <article-title>From network models to network responses: integration of thermodynamic and kinetic properties of yeast genome-scale metabolic networks</article-title>. <source>FEMS Yeast Res</source> <volume>12</volume>: <fpage>129</fpage>–<lpage>143</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Yizhak1">
+        <label>52</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yizhak</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Benyamini</surname><given-names>T</given-names></name>, <name name-style="western"><surname>Liebermeister</surname><given-names>W</given-names></name>, <name name-style="western"><surname>Ruppin</surname><given-names>E</given-names></name>, <name name-style="western"><surname>Shlomi</surname><given-names>T</given-names></name> (<year>2010</year>) <article-title>Integrating quantitative proteomics and metabolomics with a genome-scale metabolic network model</article-title>. <source>Bioinformatics</source> <volume>26</volume>: <fpage>i255</fpage>–<lpage>i260</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pcbi.1002662-Taffs1">
+        <label>53</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Taffs</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Aston</surname><given-names>JE</given-names></name>, <name name-style="western"><surname>Brileya</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Jay</surname><given-names>Z</given-names></name>, <name name-style="western"><surname>Klatt</surname><given-names>CG</given-names></name>, <etal>et al</etal>. (<year>2009</year>) <article-title>In silico approaches to study mass and energy flows in microbial consortia: a syntrophic case study</article-title>. <source>BMC Syst Biol</source> <volume>3</volume>: <fpage>114</fpage>.</mixed-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>

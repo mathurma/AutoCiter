@@ -1,0 +1,534 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" dtd-version="3.0" xml:lang="en" article-type="research-article">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">ploscomp</journal-id>
+<journal-title-group>
+<journal-title>PLOS Computational Biology</journal-title>
+</journal-title-group>
+<issn pub-type="ppub">1553-734X</issn>
+<issn pub-type="epub">1553-7358</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="publisher-id">PCOMPBIOL-D-15-00479</article-id>
+<article-id pub-id-type="doi">10.1371/journal.pcbi.1004410</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+</article-categories>
+<title-group>
+<article-title>Inflow/Outflow Boundary Conditions for Particle-Based Blood Flow Simulations: Application to Arterial Bifurcations and Trees</article-title>
+<alt-title alt-title-type="running-head">Particel-Based Blood Flow Simulations with Open Boundaries</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" equal-contrib="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Lykov</surname> <given-names>Kirill</given-names></name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" equal-contrib="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Li</surname> <given-names>Xuejin</given-names></name>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Lei</surname> <given-names>Huan</given-names></name>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Pivkin</surname> <given-names>Igor V.</given-names></name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff004"><sup>4</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Karniadakis</surname> <given-names>George Em</given-names></name>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+</contrib-group>
+<aff id="aff001">
+<label>1</label>
+<addr-line>Institute of Computational Science, Faculty of Informatics, University of Lugano, Lugano, Switzerland</addr-line>
+</aff>
+<aff id="aff002">
+<label>2</label>
+<addr-line>Division of Applied Mathematics, Brown University, Providence, Rhode Island, United States of America</addr-line>
+</aff>
+<aff id="aff003">
+<label>3</label>
+<addr-line>Pacific Northwest National Laboratory, Richland, Washington, United States of America,</addr-line>
+</aff>
+<aff id="aff004">
+<label>4</label>
+<addr-line>Swiss Institute of Bioinformatics, Lausanne, Switzerland</addr-line>
+</aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Feng</surname> <given-names>James</given-names></name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1">
+<addr-line>CANADA</addr-line>
+</aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<fn fn-type="con" id="contrib001">
+<p>Conceived and designed the experiments: KL XL HL IVP GEK. Performed the experiments: KL XL IVP. Analyzed the data: KL XL HL IVP GEK. Contributed reagents/materials/analysis tools: KL XL HL IVP GEK. Wrote the paper: KL XL HL IVP GEK.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">igor.pivkin@usi.ch</email> (IVP); <email xlink:type="simple">George_Karniadakis@brown.edu</email> (GEK)</corresp>
+</author-notes>
+<pub-date pub-type="collection">
+<month>8</month>
+<year>2015</year>
+</pub-date>
+<pub-date pub-type="epub">
+<day>28</day>
+<month>8</month>
+<year>2015</year>
+</pub-date>
+<volume>11</volume>
+<issue>8</issue>
+<elocation-id>e1004410</elocation-id>
+<history>
+<date date-type="received">
+<day>23</day>
+<month>3</month>
+<year>2015</year>
+</date>
+<date date-type="accepted">
+<day>18</day>
+<month>6</month>
+<year>2015</year>
+</date>
+</history>
+<permissions>
+<license xlink:href="https://creativecommons.org/publicdomain/zero/1.0/" xlink:type="simple">
+<license-p>This is an open access article, free of all copyright, and may be freely reproduced, distributed, transmitted, modified, built upon, or otherwise used by anyone for any lawful purpose. The work is made available under the <ext-link ext-link-type="uri" xlink:href="https://creativecommons.org/publicdomain/zero/1.0/" xlink:type="simple">Creative Commons CC0</ext-link> public domain dedication</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pcbi.1004410" xlink:type="simple"/>
+<abstract>
+<p>When blood flows through a bifurcation, red blood cells (RBCs) travel into side branches at different hematocrit levels, and it is even possible that all RBCs enter into one branch only, leading to a complete separation of plasma and RBCs. To quantify this phenomenon via particle-based mesoscopic simulations, we developed a general framework for open boundary conditions in multiphase flows that is effective even for high hematocrit levels. The inflow at the inlet is duplicated from a fully developed flow generated in a pilot simulation with periodic boundary conditions. The outflow is controlled by adaptive forces to maintain the flow rate and velocity gradient at fixed values, while the particles leaving the arteriole at the outlet are removed from the system. Upon validation of this approach, we performed systematic 3D simulations to study plasma skimming in arterioles of diameters 20 to 32 microns. For a flow rate ratio 6:1 at the branches, we observed the “all-or-nothing” phenomenon with plasma only entering the low flow rate branch. We then simulated blood-plasma separation in arteriolar bifurcations with different bifurcation angles and same diameter of the daughter branches. Our simulations predict a significant increase in RBC flux through the main daughter branch as the bifurcation angle is increased. Finally, we demonstrated the effectiveness of the new methodology in simulations of blood flow in vessels with multiple inlets and outlets, constructed using an angiogenesis model.</p>
+</abstract>
+<abstract abstract-type="summary">
+<title>Author Summary</title>
+<p>Blood tests, which provide a wealth of information on the state of human health, are often performed on cell-free samples. Therefore, blood-plasma separation needs to be achieved. A simple but effective solution for isolating plasma from blood utilizes capillary bifurcations. In a particle-based simulation study of plasma skimming in capillary bifurcations, the blood flow properties such as velocity and pressure fields differ drastically at the inlet and outlet regions. Therefore, a new open (non-periodic) boundary is required. In this paper, we have developed and validated a general parallel framework for open boundary conditions. This is a non-trivial enabling technology that could be used in all open boundary systems and all particle-based Lagrangian simulations. We performed systematic 3D simulations of blood flow in arteriolar bifurcations and elucidated the biophysical mechanism of blood-plasma separation as well as quantified the effects of branch size and bifurcation angle on cell separation efficiency, which have not been addressed before. We also demonstrated the applicability of the methodology in arterial trees with multiple inlets and outlets.</p>
+</abstract>
+<funding-group>
+<funding-statement>KL and IVP acknowledge support from the Swiss National Science Foundation grant 200021_138231 and grant from Swiss Platform for Advanced Scientific Computing. XL and GEK acknowledge support from National Institutes of Health (NIH) grants U01HL114476 and U01HL116323. HL and GEK acknowledge support from the new DOE Collaboratory on Mathematics for Mesoscopic Modeling of Materials (CM4). The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="7"/>
+<table-count count="0"/>
+<page-count count="13"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability" xlink:type="simple">
+<meta-name>Data Availability</meta-name>
+<meta-value>All relevant data are within the paper and its Supporting Information file.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>Blood is a biological fluid that delivers nutrients and oxygen to living cells and removes their waste products. The two major components of whole blood are red blood cells (RBCs) and plasma, <italic>i</italic>.<italic>e</italic>., RBCs constitute approximately 40% of the total blood volume, plasma around 55%, while the rest is taken up by white blood cells (WBCs) and platelets. Lateral migration of RBCs takes place in blood flow, leading to the formation of two phases, <italic>i</italic>.<italic>e</italic>., a core consisting mainly of RBCs and a cell-free plasma layer adjacent to the vessel wall where the platelets tend to concentrate [<xref ref-type="bibr" rid="pcbi.1004410.ref001">1</xref>, <xref ref-type="bibr" rid="pcbi.1004410.ref002">2</xref>]. WBCs, which are larger and more rigid than RBCs, migrate toward the vessel wall through a process called margination [<xref ref-type="bibr" rid="pcbi.1004410.ref003">3</xref>]. The tendency of RBCs to concentrate at the vessel center also leads to plasma skimming—an asymmetric distribution of RBCs and plasma between two daughter branches when blood flows through a microvascular bifurcation. The RBCs prefer a daughter branch with higher flow rate leaving very few RBCs (even reaching zero) flowing into lower flow rate daughter branch [<xref ref-type="bibr" rid="pcbi.1004410.ref004">4</xref>].</p>
+<p>Blood-plasma separation in bifurcations has been extensively investigated in the past few decades, and it is generally believed that three factors, feed hematocrit [<xref ref-type="bibr" rid="pcbi.1004410.ref005">5</xref>–<xref ref-type="bibr" rid="pcbi.1004410.ref007">7</xref>], size of parent channel [<xref ref-type="bibr" rid="pcbi.1004410.ref008">8</xref>, <xref ref-type="bibr" rid="pcbi.1004410.ref009">9</xref>] and flow rate ratio of daughter branches [<xref ref-type="bibr" rid="pcbi.1004410.ref001">1</xref>], mainly determine the degree of plasma skimming that will occur [<xref ref-type="bibr" rid="pcbi.1004410.ref008">8</xref>]. Studies of blood flow through bifurcations have revealed significant variability for a complete RBC separation from the whole blood (<italic>all-or-nothing</italic> phenomenon). The theoretical critical flow rate ratio between the daughter branches for predicting such phenomenon is approximately 2.5:1 [<xref ref-type="bibr" rid="pcbi.1004410.ref005">5</xref>]. However, more recent experimental measurements showed that for this flow rate ratio only 88.7% of RBCs enter into the higher flow rate daughter branches [<xref ref-type="bibr" rid="pcbi.1004410.ref010">10</xref>]. This raises the question as to what ratio value is more meaningful in determining total blood-plasma separation.</p>
+<p>Computational modeling and simulations can help us to investigate this issue. In past decades, numerical modeling of blood flow in capillaries has attracted increasing attention [<xref ref-type="bibr" rid="pcbi.1004410.ref011">11</xref>, <xref ref-type="bibr" rid="pcbi.1004410.ref012">12</xref>]. For example, dynamic simulations can model how blood flow behaves in microfluidic channels [<xref ref-type="bibr" rid="pcbi.1004410.ref013">13</xref>–<xref ref-type="bibr" rid="pcbi.1004410.ref018">18</xref>] and predict human blood viscosity in silico [<xref ref-type="bibr" rid="pcbi.1004410.ref019">19</xref>]. Different cell models have also been employed for various qualitative and quantitative interpretations as well as predictions of biomechanical properties of RBCs with hematological diseases [<xref ref-type="bibr" rid="pcbi.1004410.ref020">20</xref>–<xref ref-type="bibr" rid="pcbi.1004410.ref023">23</xref>]. Examples include dynamic cell deformability for various stages of malaria-infected RBCs [<xref ref-type="bibr" rid="pcbi.1004410.ref024">24</xref>–<xref ref-type="bibr" rid="pcbi.1004410.ref028">28</xref>] and vaso-occlusion phenomena in sickle cell anemica [<xref ref-type="bibr" rid="pcbi.1004410.ref023">23</xref>]. However, most of these blood flow simulations were performed in systems with periodic boundary conditions (PBCs) along the flow direction, whereas very few studies so far have reported simulations of non-periodic flow [<xref ref-type="bibr" rid="pcbi.1004410.ref029">29</xref>–<xref ref-type="bibr" rid="pcbi.1004410.ref031">31</xref>]. In a previous study, we simulated the blood-plasma separation for healthy and diseased blood in microfluidic channels with geometrically symmetric bifurcation and confluence to satisfy the periodic flow assumption along the flow direction [<xref ref-type="bibr" rid="pcbi.1004410.ref032">32</xref>]. However, for a simulation study of plasma skimming in capillary bifurcations, the blood flow properties such as velocity and pressure fields differ drastically at the inlet and outlet regions. Therefore, the choice of PBCs is inappropriate for general cases, especially in arterial trees, and hence a new open (non-periodic) boundary is required; this is a non-trivial issue, especially for particle-based Lagrangian methods.</p>
+<p>For an open boundary system, the velocity profile at the inlet is generally specified, whereas the outflow profiles are rarely known. For a single-phase system, the inflow condition could be simply obtained by extending the inflow length so that the flow becomes fully developed at the inlet. However, for multiphase systems the inflow conditions even for a fully developed flow are unknown—a situation similar to turbulent inflow in single phase. For example, for a blood flow, the flow and viscous properties as well as the cell-free layer (CFL) distribution in arteries differ greatly with change in hematocrit level and shear rate. Thus, the inflow length should be long enough to generate inflow condition for blood flow. As a consequence, it is totally inefficient and perhaps impossible to perform blood flow simulations using this “brute-force” approach because of prohibitively expensive computations. Recent works have focused on the development of new methods to solve these problems. For example, an attempt to develop new boundary conditions has been presented by Flekkoy <italic>et al</italic>. [<xref ref-type="bibr" rid="pcbi.1004410.ref033">33</xref>], in which the simulation domain includes an auxiliary buffer domain for particle generation. However, the complexity of the flux control makes it difficult to perform flow simulations. Recently, a new method for such open systems has been developed by Lei <italic>et al</italic>. [<xref ref-type="bibr" rid="pcbi.1004410.ref034">34</xref>], where they generated particles at the inlet according to the local flux and introduced adaptive forces to control the flow rate at the outlet. This method has been successfully applied to single phase flow in straight channels and in bifurcations [<xref ref-type="bibr" rid="pcbi.1004410.ref034">34</xref>]. However, in multiphase systems, e.g., flows with colloids, polymer chains or RBCs, it is difficult to insert them at the inlet and remove them at the outlet. Thus, existing methods cannot be readily extended to the cases of complex flows such as blood flow.</p>
+<p>In this paper we present a general framework for open boundary systems including the inflow and outflow boundaries for particle-based approaches targeting simulations of multiphase flows. We implemented this framework in the context of parallel computations. We show that the particles flowing in a complex computational domain can be treated as a system in contact with a simpler subsystem with a fully developed flow for the inflow combined with an osmotic membrane to control the outflow.</p>
+</sec>
+<sec id="sec002" sec-type="materials|methods">
+<title>Methods</title>
+<sec id="sec003">
+<title>Multiscale RBC model</title>
+<p>We simulated the blood flow in arterioles with the help of a multiscale RBC (MS-RBC) model [<xref ref-type="bibr" rid="pcbi.1004410.ref035">35</xref>] based on the dissipative particle dynamics (DPD) approach [<xref ref-type="bibr" rid="pcbi.1004410.ref036">36</xref>–<xref ref-type="bibr" rid="pcbi.1004410.ref038">38</xref>]. For completeness, the MS-RBC model is briefly reviewed below, whereas details on the RBC model are available elsewhere [<xref ref-type="bibr" rid="pcbi.1004410.ref035">35</xref>, <xref ref-type="bibr" rid="pcbi.1004410.ref039">39</xref>].</p>
+<p>In the MS-RBC model, the cell membrane is modeled by a 2D triangulated network with <italic>N</italic><sub><italic>v</italic></sub> vertices connected by springs, where each vertex is represented by a DPD particle. The RBC membrane model takes into account the elastic energy, bending energy, and constraints of fixed surface area and enclosed volume, which is defined as
+<disp-formula id="pcbi.1004410.e001"><alternatives><graphic id="pcbi.1004410.e001g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004410.e001"/><mml:math id="M1" display="block" overflow="scroll"><mml:mrow><mml:mi>V</mml:mi> <mml:mo>=</mml:mo> <mml:msub><mml:mi>V</mml:mi> <mml:mi>s</mml:mi></mml:msub> <mml:mo>+</mml:mo> <mml:msub><mml:mi>V</mml:mi> <mml:mi>b</mml:mi></mml:msub> <mml:mo>+</mml:mo> <mml:msub><mml:mi>V</mml:mi> <mml:mi>a</mml:mi></mml:msub> <mml:mo>+</mml:mo> <mml:msub><mml:mi>V</mml:mi> <mml:mi>v</mml:mi></mml:msub></mml:mrow></mml:math></alternatives> <label>(1)</label></disp-formula>
+where <italic>V</italic><sub><italic>s</italic></sub> is the elastic energy that mimics the elastic spectrin network, given by
+<disp-formula id="pcbi.1004410.e002"><alternatives><graphic id="pcbi.1004410.e002g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004410.e002"/><mml:math id="M2" display="block" overflow="scroll"><mml:mrow><mml:msub><mml:mi>V</mml:mi> <mml:mi>s</mml:mi></mml:msub> <mml:mo>=</mml:mo> <mml:munder><mml:mo>∑</mml:mo> <mml:mrow><mml:mi>i</mml:mi> <mml:mo>∈</mml:mo> <mml:mtext>springs</mml:mtext></mml:mrow></mml:munder> <mml:mo>[</mml:mo> <mml:mrow><mml:mfrac><mml:mrow><mml:msub><mml:mi>k</mml:mi> <mml:mi>B</mml:mi></mml:msub> <mml:mi>T</mml:mi> <mml:msub><mml:mi>l</mml:mi> <mml:mi>m</mml:mi></mml:msub></mml:mrow> <mml:mrow><mml:mn>4</mml:mn> <mml:mi>p</mml:mi></mml:mrow></mml:mfrac> <mml:mfrac><mml:mrow><mml:mn>3</mml:mn> <mml:msubsup><mml:mi>x</mml:mi> <mml:mi>i</mml:mi> <mml:mn>2</mml:mn></mml:msubsup> <mml:mo>-</mml:mo> <mml:mn>2</mml:mn> <mml:msubsup><mml:mi>x</mml:mi> <mml:mi>i</mml:mi> <mml:mn>3</mml:mn></mml:msubsup></mml:mrow> <mml:mrow><mml:mn>1</mml:mn> <mml:mo>-</mml:mo> <mml:msub><mml:mi>x</mml:mi> <mml:mi>i</mml:mi></mml:msub></mml:mrow></mml:mfrac></mml:mrow> <mml:mo>]</mml:mo> <mml:mo>+</mml:mo> <mml:munder><mml:mo>∑</mml:mo> <mml:mrow><mml:mi>α</mml:mi> <mml:mo>∈</mml:mo> <mml:mtext>triangles</mml:mtext></mml:mrow></mml:munder> <mml:mfrac><mml:mn>1</mml:mn> <mml:msub><mml:mi>A</mml:mi> <mml:mi>α</mml:mi></mml:msub></mml:mfrac> <mml:mo>[</mml:mo> <mml:mrow><mml:mfrac><mml:mrow><mml:mn>3</mml:mn> <mml:msqrt><mml:mn>3</mml:mn></mml:msqrt> <mml:msub><mml:mi>k</mml:mi> <mml:mi>B</mml:mi></mml:msub> <mml:mi>T</mml:mi> <mml:msubsup><mml:mi>l</mml:mi> <mml:mi>m</mml:mi> <mml:mn>3</mml:mn></mml:msubsup> <mml:msubsup><mml:mi>x</mml:mi> <mml:mn>0</mml:mn> <mml:mn>4</mml:mn></mml:msubsup></mml:mrow> <mml:mrow><mml:mn>64</mml:mn> <mml:mi>p</mml:mi></mml:mrow></mml:mfrac> <mml:mfrac><mml:mrow><mml:mn>4</mml:mn> <mml:msubsup><mml:mi>x</mml:mi> <mml:mn>0</mml:mn> <mml:mn>2</mml:mn></mml:msubsup> <mml:mo>-</mml:mo> <mml:mn>9</mml:mn> <mml:msub><mml:mi>x</mml:mi> <mml:mn>0</mml:mn></mml:msub> <mml:mo>+</mml:mo> <mml:mn>6</mml:mn></mml:mrow> <mml:mrow><mml:mo>(</mml:mo> <mml:mn>1</mml:mn> <mml:mo>-</mml:mo> <mml:msubsup><mml:mi>x</mml:mi> <mml:mn>0</mml:mn> <mml:mn>2</mml:mn></mml:msubsup> <mml:mo>)</mml:mo></mml:mrow></mml:mfrac></mml:mrow> <mml:mo>]</mml:mo> <mml:mo>,</mml:mo></mml:mrow></mml:math></alternatives> <label>(2)</label></disp-formula>
+where <italic>k</italic><sub><italic>B</italic></sub><italic>T</italic> is the energy unit, <italic>A</italic><sub><italic>α</italic></sub> is the area of triangle <italic>α</italic> formed by three vertices. Also, <italic>x</italic><sub><italic>i</italic></sub> = <italic>l</italic><sub><italic>i</italic></sub>/<italic>l</italic><sub><italic>m</italic></sub>, <italic>x</italic><sub>0</sub> = <italic>l</italic><sub>0</sub>/<italic>l</italic><sub><italic>m</italic></sub>, where <italic>l</italic><sub><italic>i</italic></sub> is the length of spring <italic>i</italic>, <italic>l</italic><sub>0</sub> and <italic>l</italic><sub><italic>m</italic></sub> are the equilibrium spring length and maximum spring extension, and <italic>p</italic> is the persistence length.</p>
+<p>The cell membrane viscoelasticity is imposed by introducing a viscous force on each spring, which has the form,
+<disp-formula id="pcbi.1004410.e003"><alternatives><graphic id="pcbi.1004410.e003g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004410.e003"/><mml:math id="M3" display="block" overflow="scroll"><mml:mrow><mml:msubsup><mml:mi mathvariant="bold">F</mml:mi> <mml:mrow><mml:mi>i</mml:mi> <mml:mi>j</mml:mi></mml:mrow> <mml:mi>D</mml:mi></mml:msubsup> <mml:mo>=</mml:mo> <mml:mo>-</mml:mo> <mml:msup><mml:mrow><mml:mi>γ</mml:mi></mml:mrow> <mml:mi>T</mml:mi></mml:msup> <mml:msub><mml:mi mathvariant="bold">v</mml:mi> <mml:mrow><mml:mi>i</mml:mi> <mml:mi>j</mml:mi></mml:mrow></mml:msub> <mml:mo>-</mml:mo> <mml:msup><mml:mrow><mml:mi>γ</mml:mi></mml:mrow> <mml:mi>C</mml:mi></mml:msup> <mml:mrow><mml:mo>(</mml:mo> <mml:msub><mml:mi mathvariant="bold">v</mml:mi> <mml:mrow><mml:mi>i</mml:mi> <mml:mi>j</mml:mi></mml:mrow></mml:msub> <mml:mo>·</mml:mo> <mml:msub><mml:mi mathvariant="bold">e</mml:mi> <mml:mrow><mml:mi>i</mml:mi> <mml:mi>j</mml:mi></mml:mrow></mml:msub> <mml:mo>)</mml:mo></mml:mrow> <mml:msub><mml:mi mathvariant="bold">e</mml:mi> <mml:mrow><mml:mi>i</mml:mi> <mml:mi>j</mml:mi></mml:mrow></mml:msub> <mml:mo>,</mml:mo></mml:mrow></mml:math></alternatives> <label>(3)</label></disp-formula> <disp-formula id="pcbi.1004410.e004"><alternatives><graphic id="pcbi.1004410.e004g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004410.e004"/><mml:math id="M4" display="block" overflow="scroll"><mml:mrow><mml:msubsup><mml:mi mathvariant="bold">F</mml:mi> <mml:mrow><mml:mi>i</mml:mi> <mml:mi>j</mml:mi></mml:mrow> <mml:mi>R</mml:mi></mml:msubsup> <mml:mi>d</mml:mi> <mml:mi>t</mml:mi> <mml:mo>=</mml:mo> <mml:msqrt><mml:mrow><mml:mn>2</mml:mn> <mml:msub><mml:mi>k</mml:mi> <mml:mi mathvariant="normal">B</mml:mi></mml:msub> <mml:mi>T</mml:mi></mml:mrow></mml:msqrt> <mml:mo>(</mml:mo> <mml:msqrt><mml:mrow><mml:mn>2</mml:mn> <mml:msup><mml:mrow><mml:mi>γ</mml:mi></mml:mrow> <mml:mi>T</mml:mi></mml:msup></mml:mrow></mml:msqrt> <mml:mi>d</mml:mi> <mml:mover><mml:msubsup><mml:mi mathvariant="bold">W</mml:mi> <mml:mrow><mml:mi>i</mml:mi> <mml:mi>j</mml:mi></mml:mrow> <mml:mi>S</mml:mi></mml:msubsup> <mml:mo>¯</mml:mo></mml:mover> <mml:mo>+</mml:mo> <mml:msqrt><mml:mrow><mml:mn>3</mml:mn> <mml:msup><mml:mrow><mml:mi>γ</mml:mi></mml:mrow> <mml:mi>C</mml:mi></mml:msup> <mml:mo>-</mml:mo> <mml:msup><mml:mrow><mml:mi>γ</mml:mi></mml:mrow> <mml:mi>T</mml:mi></mml:msup></mml:mrow></mml:msqrt> <mml:mfrac><mml:mrow><mml:mi>t</mml:mi> <mml:mi>r</mml:mi> <mml:mo>[</mml:mo> <mml:mi>d</mml:mi> <mml:msub><mml:mi mathvariant="bold">W</mml:mi> <mml:mrow><mml:mi>i</mml:mi> <mml:mi>j</mml:mi></mml:mrow></mml:msub> <mml:mo>]</mml:mo></mml:mrow> <mml:mn>3</mml:mn></mml:mfrac> <mml:mn mathvariant="bold">1</mml:mn> <mml:mo>)</mml:mo> <mml:mo>·</mml:mo> <mml:msub><mml:mi mathvariant="bold">e</mml:mi> <mml:mrow><mml:mi>i</mml:mi> <mml:mi>j</mml:mi></mml:mrow></mml:msub> <mml:mo>,</mml:mo></mml:mrow></mml:math></alternatives> <label>(4)</label></disp-formula>
+where <italic>γ</italic><sup><italic>T</italic></sup> and <italic>γ</italic><sup><italic>C</italic></sup> are dissipative parameters; <bold>v</bold><sub><italic>ij</italic></sub> is the relative velocity of spring ends, and <inline-formula id="pcbi.1004410.e005"><alternatives><graphic id="pcbi.1004410.e005g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004410.e005"/><mml:math id="M5" display="inline" overflow="scroll"><mml:mrow><mml:mi>d</mml:mi> <mml:mover><mml:msubsup><mml:mtext mathvariant="bold">W</mml:mtext> <mml:mrow><mml:mi>i</mml:mi> <mml:mi>j</mml:mi></mml:mrow> <mml:mi>S</mml:mi></mml:msubsup> <mml:mo accent="true">¯</mml:mo></mml:mover> <mml:mo>=</mml:mo> <mml:mi>d</mml:mi> <mml:msubsup><mml:mtext mathvariant="bold">W</mml:mtext> <mml:mrow><mml:mi>i</mml:mi> <mml:mi>j</mml:mi></mml:mrow> <mml:mi>S</mml:mi></mml:msubsup> <mml:mo>−</mml:mo> <mml:mi>t</mml:mi> <mml:mi>r</mml:mi> <mml:mo stretchy="false">[</mml:mo> <mml:mi>d</mml:mi> <mml:msubsup><mml:mtext mathvariant="bold">W</mml:mtext> <mml:mrow><mml:mi>i</mml:mi> <mml:mi>j</mml:mi></mml:mrow> <mml:mi>S</mml:mi></mml:msubsup> <mml:mo stretchy="false">]</mml:mo> <mml:mtext mathvariant="bold">1</mml:mtext> <mml:mo>/</mml:mo> <mml:mn>3</mml:mn></mml:mrow></mml:math></alternatives></inline-formula> is the traceless symmetric part of a random matrix representing the Wiener increment.</p>
+<p>The bending resistance of the RBC membrane is modeled by
+<disp-formula id="pcbi.1004410.e006"><alternatives><graphic id="pcbi.1004410.e006g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004410.e006"/><mml:math id="M6" display="block" overflow="scroll"><mml:mrow><mml:msub><mml:mi>V</mml:mi> <mml:mi>b</mml:mi></mml:msub> <mml:mo>=</mml:mo> <mml:munder><mml:mo>∑</mml:mo> <mml:mrow><mml:mi>α</mml:mi> <mml:mo>,</mml:mo> <mml:mi>β</mml:mi> <mml:mspace width="4pt"/><mml:mtext>pair</mml:mtext></mml:mrow></mml:munder> <mml:msub><mml:mi>k</mml:mi> <mml:mi>b</mml:mi></mml:msub> <mml:mo>[</mml:mo> <mml:mn>1</mml:mn> <mml:mo>-</mml:mo> <mml:mo form="prefix">cos</mml:mo> <mml:mo>(</mml:mo> <mml:msub><mml:mi>θ</mml:mi> <mml:mrow><mml:mi>α</mml:mi> <mml:mi>β</mml:mi></mml:mrow></mml:msub> <mml:mo>-</mml:mo> <mml:msub><mml:mi>θ</mml:mi> <mml:mn>0</mml:mn></mml:msub> <mml:mo>)</mml:mo> <mml:mo>]</mml:mo> <mml:mo>,</mml:mo></mml:mrow></mml:math></alternatives> <label>(5)</label></disp-formula>
+where <italic>k</italic><sub><italic>b</italic></sub> is the bending modulus constant, <italic>θ</italic><sub><italic>αβ</italic></sub> is the instantaneous angle between two adjacent triangles having common edge, and <italic>θ</italic><sub>0</sub> is the spontaneous angle. In addition, the RBC model includes the area and volume conservation constraints, which mimic the area-incompressibility of the lipid bilayer and the incompressibility of the interior fluid, respectively. The corresponding energy terms are given by
+<disp-formula id="pcbi.1004410.e007"><alternatives><graphic id="pcbi.1004410.e007g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004410.e007"/><mml:math id="M7" display="block" overflow="scroll"><mml:mrow><mml:msub><mml:mi>V</mml:mi> <mml:mi>a</mml:mi></mml:msub> <mml:mo>=</mml:mo> <mml:mfrac><mml:mrow><mml:msub><mml:mi>k</mml:mi> <mml:mi>a</mml:mi></mml:msub> <mml:msub><mml:mi>k</mml:mi> <mml:mi>B</mml:mi></mml:msub> <mml:mi>T</mml:mi> <mml:msup><mml:mrow><mml:mo>(</mml:mo> <mml:mi>A</mml:mi> <mml:mo>-</mml:mo> <mml:msub><mml:mi>A</mml:mi> <mml:mn>0</mml:mn></mml:msub> <mml:mo>)</mml:mo></mml:mrow> <mml:mn>2</mml:mn></mml:msup></mml:mrow> <mml:mrow><mml:mn>2</mml:mn> <mml:msubsup><mml:mi>l</mml:mi> <mml:mn>0</mml:mn> <mml:mn>2</mml:mn></mml:msubsup> <mml:msub><mml:mi>A</mml:mi> <mml:mn>0</mml:mn></mml:msub></mml:mrow></mml:mfrac> <mml:mo>,</mml:mo> <mml:mspace width="1.em"/><mml:msub><mml:mi>V</mml:mi> <mml:mi>v</mml:mi></mml:msub> <mml:mo>=</mml:mo> <mml:mfrac><mml:mrow><mml:msub><mml:mi>k</mml:mi> <mml:mi>v</mml:mi></mml:msub> <mml:msub><mml:mi>k</mml:mi> <mml:mi>B</mml:mi></mml:msub> <mml:mi>T</mml:mi> <mml:msup><mml:mrow><mml:mo>(</mml:mo> <mml:mi>V</mml:mi> <mml:mo>-</mml:mo> <mml:msub><mml:mi>V</mml:mi> <mml:mn>0</mml:mn></mml:msub> <mml:mo>)</mml:mo></mml:mrow> <mml:mn>2</mml:mn></mml:msup></mml:mrow> <mml:mrow><mml:mn>2</mml:mn> <mml:msubsup><mml:mi>l</mml:mi> <mml:mn>0</mml:mn> <mml:mn>3</mml:mn></mml:msubsup> <mml:msub><mml:mi>V</mml:mi> <mml:mn>0</mml:mn></mml:msub></mml:mrow></mml:mfrac></mml:mrow></mml:math></alternatives> <label>(6)</label></disp-formula>
+where <italic>k</italic><sub><italic>a</italic></sub> and <italic>k</italic><sub><italic>v</italic></sub> are the area and volume constraint coefficients. Here <italic>A</italic><sub>0</sub> and <italic>V</italic><sub>0</sub> are the equilibrium area and volume of a cell, respectively.</p>
+<p>The MS-RBC model is multiscale, as the RBC can be represented on the spectrin level, where each spring in the network corresponds to a single spectrin tetramer with the equilibrium distance between two neighboring actin connections of ∼ 75 <italic>nm</italic>. On the other hand, for more efficient computations, the RBC network can also be highly coarse-grained with the equilibrium spring lengths of up to 500 ∼ 600 <italic>nm</italic>. In most simulations, we use <italic>N</italic><sub><italic>v</italic></sub> = 500, a highly coarse-grained RBC model which has been employed to conduct efficient simulations of RBCs in microcirculation [<xref ref-type="bibr" rid="pcbi.1004410.ref016">16</xref>, <xref ref-type="bibr" rid="pcbi.1004410.ref035">35</xref>, <xref ref-type="bibr" rid="pcbi.1004410.ref040">40</xref>, <xref ref-type="bibr" rid="pcbi.1004410.ref041">41</xref>]. For comparison, we also consider two finer DPD cases with <italic>N</italic><sub><italic>v</italic></sub> = 2560 and <italic>N</italic><sub><italic>v</italic></sub> = 5000. The internal and external fluids are modeled by free DPD particles.</p>
+</sec>
+<sec id="sec004">
+<title>Inflow and outflow boundary conditions</title>
+<p>For simple computational domains where PBCs can be applied, our framework is shown to exhibit exactly the same flow characteristics as those obtained by imposing PBCs. Of course, what is more important is that it can be applied to domains where PBCs can not be employed. Unlike previous works, the proposed approach has a great advantage of being applicable to both simple fluid flows and suspensions. In the proposed scheme, the computational domain is divided into three regions as illustrated in <xref ref-type="fig" rid="pcbi.1004410.g001">Fig 1</xref>. Here, the simulation is performed in region B, while regions A and C are auxiliary. In order to generate an inflow in the main computational domain, we use the generating region as a source of new particles. At the same time, when a particle leaves the main simulation domain, it enters into the region C and is removed from the system.</p>
+<fig id="pcbi.1004410.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004410.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>Simulation of blood flow in a microvascular bifurcation using the proposed open boundary conditions.</title>
+<p>The simulation domain is subdivided into three regions: <bold>(A)</bold> generating region with fully developed flow; <bold>(B)</bold> the main simulation domain; <bold>(C)</bold> the outlet region where particles are deleted. Fluid particles and frozen wall particles are not shown for clarity.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004410.g001"/>
+</fig>
+<p>To illustrate the approach in detail, let us consider a microtube flow of RBCs and plasma suspension as shown in <xref ref-type="fig" rid="pcbi.1004410.g002">Fig 2</xref>. In order to have a fully developed inflow in the main computational domain, the generating region is expected to mimic the flow in an infinite tube and be independent of the simulation in the main simulation domain. To reach these requirements, the PBCs in the generating region were implemented by ghost particles along with the particles shifting from one side of the domain to another side when they leave the periodic box. For all particles from zone A2 we create ghost particles and place them in zone A4, and a similar procedure is used for zones A3 and A1. The width of zones A1-A4 is the maximum of the cutoff radii of the force interaction used in simulations. Ghost particles are created after integration in the velocity-Verlet algorithm, but before computer processors exchange forces. The independence of the generating region from the main simulation domain is achieved by turning off forces acting from particles in the main simulation domain on the particles in the generating region. At the same time, the interactions in the opposite direction are preserved because it is desirable to prevent penetration of created particles and their topological structures into the generating region. To connect the aforementioned regions, we design a procedure to duplicate particles from the generating region to the main simulation domain. That is, when a particle in the generating region crosses the copy border, a duplication of the particle is created in the main simulation domain. This duplicated particle is created in the main simulation domain, and hence the inflow is fully developed.</p>
+<fig id="pcbi.1004410.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004410.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>Schematic illustration of the computational domain of an open system.</title>
+<p>The generating region is divided into zones: zones A2 and A3 are sources of ghost particles while zones A1 and A4 are used for placing ghost particles. As soon as a particle crosses the copy border, its copy is created. There is one way interaction between particles in the generating region and particles in the main simulation domain.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004410.g002"/>
+</fig>
+<p>The extension of the proposed inflow boundary conditions for blood flow requires extra care for the cell topology. Specifically, for the ghost interaction implementation, a ghost particle corresponding to a cell vertex needs to keep bonded potential terms such as bonds, angles, and dihedral angles. In addition, the size effect of the periodic domain for computing the corresponding interactions needs to be considered. The procedure of RBC generation at the inlet is also different from the one for a single particle. First, the RBC cannot be duplicated particle by particle, instead, the whole RBC is expected to be duplicated once its center-of-mass (COM) crosses the copy border between the generating domain and main simulation domain. Second, when a new RBC has been generated in the main simulation domain, some vertices of the new duplicated RBC may still be in the generating domain. Thus, we have to pay more attention to the RBC particles and their duplications in the generating domain because they may be in close contact and cause artificial strong repulsive interactions. To avoid this, we enforce the duplicated RBC to move exactly like the original RBC in the generating domain until the entire RBC lies fully inside the main simulation domain. Without extra effort, the proposed procedure allows us to add RBCs and fluid naturally to the main simulation domain. In particular, there are no artificial interactions because of the one way interaction between particles in the generating region and particles in the main simulation domain. It is worth mentioning that the proposed method can achieve a “seamless” connection between the generating region and main simulation domain, so the RBCs flowing in a complex computational domain can be treated as a system in contact with a simpler subsystem with a fully developed flow for the inflow. The periodic pattern observed in regions A2 and A3 is not unexpected since we run the simulation in this region periodically to generate the full developed inflow. An increase of the length of the generating region leads to a better time-averaged flow properties at the inlet and may eliminate or reduce such periodic pattern, but its effect to the simulation results is insignificant since the flow has already been fully developed at the inlet. Also, it requires extra computation time.</p>
+<p>In order to impose the outflow boundary conditions for the simple fluid flow, we employ a method similar to Lei <italic>et al</italic>. [<xref ref-type="bibr" rid="pcbi.1004410.ref034">34</xref>]. Specifically, those particles leaving the simulation domain and entering into particle deletion region are reflected back to the main simulation domain with a probability (1 − <italic>P</italic>) depending on the particle number density <italic>ρ</italic> we want to preserve. They are computed at each iteration using the following algorithm:
+<list list-type="order"><list-item><p>Calculate density <italic>ρ</italic> in the main simulation domain.</p></list-item> <list-item><p>Compute probability increment <inline-formula id="pcbi.1004410.e008"><alternatives><graphic id="pcbi.1004410.e008g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004410.e008"/><mml:math id="M8" display="inline" overflow="scroll"><mml:mrow><mml:mi>d</mml:mi> <mml:mi>P</mml:mi> <mml:mo>=</mml:mo> <mml:mi>h</mml:mi> <mml:mo>*</mml:mo> <mml:mfrac><mml:mrow><mml:mo stretchy="false">∣</mml:mo> <mml:msub><mml:mi>ρ</mml:mi> <mml:mrow><mml:mi>c</mml:mi> <mml:mi>u</mml:mi> <mml:mi>r</mml:mi> <mml:mi>r</mml:mi> <mml:mi>e</mml:mi> <mml:mi>n</mml:mi> <mml:mi>t</mml:mi></mml:mrow></mml:msub> <mml:mo>−</mml:mo> <mml:msub><mml:mi>ρ</mml:mi> <mml:mrow><mml:mi>t</mml:mi> <mml:mi>a</mml:mi> <mml:mi>r</mml:mi> <mml:mi>g</mml:mi> <mml:mi>e</mml:mi> <mml:mi>t</mml:mi></mml:mrow></mml:msub> <mml:mo stretchy="false">∣</mml:mo></mml:mrow> <mml:msub><mml:mi>ρ</mml:mi> <mml:mrow><mml:mi>t</mml:mi> <mml:mi>a</mml:mi> <mml:mi>r</mml:mi> <mml:mi>g</mml:mi> <mml:mi>e</mml:mi> <mml:mi>t</mml:mi></mml:mrow></mml:msub></mml:mfrac></mml:mrow></mml:math></alternatives></inline-formula>, where <italic>h</italic> is a weighting factor and it is set at 0.05 in this study.</p></list-item> <list-item><p>If <italic>ρ</italic> ≤ <italic>ρ</italic><sub><italic>target</italic></sub>, <italic>P</italic> is updated to (<italic>P</italic> + <italic>dP</italic>); otherwise it is <italic>P</italic> = (<italic>P</italic> − <italic>dP</italic>).</p></list-item> <list-item><p>For a particle crossing the outflow plane, reflect the particle back with probability (1 − <italic>P</italic>).</p></list-item></list></p>
+<p>We note that identical outflow boundary conditions might be implemented by applying adaptive forces in the vicinity of the outflow plane [<xref ref-type="bibr" rid="pcbi.1004410.ref034">34</xref>]; however, the formulation proposed here is much simpler to implement. A similar reflecting membrane has been used to generate a fluid flow in previous molecular dynamics simulations [<xref ref-type="bibr" rid="pcbi.1004410.ref042">42</xref>]. The outflow boundary conditions for RBCs are implemented in a different way. When the whole RBC is inside the region for cell deletion, we destroy the cell topology but leave particles in place and change their properties from the cell-like particles to fluid-like particles, which are removed downstream as described above. We found that this method outperforms an alternative implementation, where the whole cell is deleted because the removal may create density artifacts in the region of cell deletion.</p>
+</sec>
+</sec>
+<sec id="sec005" sec-type="conclusions">
+<title>Results/Discussion</title>
+<p>To validate the proposed open boundary conditions (OBCs), first a single phase flow (without RBCs) in straight microtubes is simulated and compared with an analytical solution. Numerical simulations are carried out in a 3D geometry representing the microtube used in DPD simulations. In all simulations, the solid walls are modeled by freezing layers of particles with bounce-back reflection to satisfy the no-slip boundary condition [<xref ref-type="bibr" rid="pcbi.1004410.ref043">43</xref>, <xref ref-type="bibr" rid="pcbi.1004410.ref044">44</xref>]. Here, for simple fluid and, later, for plasma in blood suspension, the following DPD parameters are employed [<xref ref-type="bibr" rid="pcbi.1004410.ref034">34</xref>]: <italic>a</italic> = 4.0, <italic>γ</italic> = 30.0, <italic>r</italic><sub><italic>c</italic></sub> = 1.5, <italic>k</italic><sub>B</sub> <italic>T</italic> = 0.0945, <italic>n</italic> = 2.96. A generalized weight function, <italic>w</italic>(<italic>r</italic>) = (1 − <italic>r</italic>/<italic>r</italic><sub><italic>c</italic></sub>)<sup><italic>s</italic></sup>, for dissipative force with <italic>s</italic> = 0.5 is also used in order to increase the viscosity of the DPD fluid [<xref ref-type="bibr" rid="pcbi.1004410.ref045">45</xref>, <xref ref-type="bibr" rid="pcbi.1004410.ref046">46</xref>]. An external body force with magnitude of <italic>g</italic> = 0.1 is exerted on each fluid particle to generate a Poiseuille flow in the microtube. The microtube diameter is <italic>d</italic> = 10.0 <italic>μm</italic>.</p>
+<p>
+<xref ref-type="fig" rid="pcbi.1004410.g003">Fig 3<bold><italic>a</italic></bold></xref> shows the average velocity profiles obtained from the simulations with the OBCs. The velocity profile is parabolic, which agrees well with the analytical prediction and proves the correctness of the scheme. For a more quantitative analysis, we compute the pressure profile along the flow (<italic>z</italic>-axis) direction (see <xref ref-type="fig" rid="pcbi.1004410.g003">Fig 3<bold><italic>b</italic></bold></xref>). We find that the DPD simulation results are in good agreement with the analytical prediction given by <italic>dP</italic>/<italic>dz</italic> = 16<italic>v</italic><sub><italic>max</italic></sub> <italic>η</italic>/<italic>d</italic><sup>2</sup> = <italic>ng</italic>, where <italic>η</italic> is the viscosity of the DPD fluid.</p>
+<fig id="pcbi.1004410.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004410.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title>Verification of the accuracy of the proposed method.</title>
+<p>(<bold><italic>a</italic></bold>) Velocity profiles in the cross-flow (<italic>x</italic>-axis) direction of the Poiseuille flow corresponding to open boundary conditions. The incompressible Navier-Stokes solution is shown with lines. (<bold><italic>b</italic></bold>) Pressure profile for the Poiseuille flow along the flow (<italic>z</italic>-axis) direction. The symbols represent the DPD simulation results and the solid line represents the analytical solution.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004410.g003"/>
+</fig>
+<p>Having verified the single phase flow, we simulate the motion of RBC suspension through a straight tube. <xref ref-type="fig" rid="pcbi.1004410.g004">Fig 4</xref> shows the average velocity profiles for blood flow at two different hematocrit levels (<italic>H</italic><sub><italic>t</italic></sub>), <italic>i</italic>.<italic>e</italic>., <italic>H</italic><sub><italic>t</italic></sub> = 15.0% and 30.0%. In this plot, quasi-parabolic (or flat plug-like) shapes of the typical velocity profiles of blood flow are shown and compared against results obtained with PBCs. These results indicate that the blood flow in microtubes can be simply and accurately implemented by the described scheme.</p>
+<fig id="pcbi.1004410.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004410.g004</object-id>
+<label>Fig 4</label>
+<caption>
+<title>Validation of the open boundary conditions.</title>
+<p>Typical velocity profiles of blood flow in microtubes at <italic>H</italic><sub><italic>t</italic></sub> = 15.0% and 30.0%. The simulation results are compared to those in periodic systems at same hematocrit levels. <italic>x</italic> and <italic>z</italic> represent the radial and axial distances for the cylinder geometry; <italic>v</italic><sub><italic>z</italic></sub> is the velocity along the flow direction.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004410.g004"/>
+</fig>
+<p>Next, we apply the proposed OBCs to model the blood flow in microvascular bifurcations. We used flow rate ratios, <italic>ϕ</italic><sub><italic>d</italic></sub>, between branches 1.0, 1.2, 2.5, 4.0 and 6.0 and studied the particle recovery efficiency (the proportion of parent RBC flux entering each daughter branch) with respect to the flow rate ratios between two daughter branches. We perform simulations with three hematocrit levels (<italic>H</italic><sub><italic>t</italic></sub> = 15.0%, 30.0% and 45.0%) and find that the higher flow rate ratio yields the higher particle recovery efficiency. A 100% recovery efficiency is achieved for the flow rate ratios starting at 6:1. We also demonstrate that the higher the hematocrit is the higher the probability for a RBC is to follow a lower flow rate branch (see <xref ref-type="fig" rid="pcbi.1004410.g005">Fig 5<bold><italic>a</italic></bold></xref>). This trend is similar to our previous observation from simulations of blood flow with the PBCs [<xref ref-type="bibr" rid="pcbi.1004410.ref032">32</xref>]. We also simulate the blood flow and study the particle recovery efficiency at different levels of coarse graining with <italic>N</italic><sub><italic>v</italic></sub> = 500, 2560 and 5000, using the MS-RBC model, see <xref ref-type="fig" rid="pcbi.1004410.g005">Fig 5<bold><italic>b</italic></bold></xref>. We find that the particle recovery efficiency value increases somewhat with finer DPD resolution. For example, for <italic>ϕ</italic><sub><italic>d</italic></sub> = 1.5, the value of particle recovery efficiency shifts from 66.7% with <italic>N</italic><sub><italic>v</italic></sub> = 500 to 69.9% with <italic>N</italic><sub><italic>v</italic></sub> = 2560 and further to 70.9% with <italic>N</italic><sub><italic>v</italic></sub> = 5000; for <italic>ϕ</italic><sub><italic>d</italic></sub> = 2.0, it rises from 79.1% with <italic>N</italic><sub><italic>v</italic></sub> = 500 up to 81.0% with <italic>N</italic><sub><italic>v</italic></sub> = 2560 and then to 83.3% with <italic>N</italic><sub><italic>v</italic></sub> = 5000. At <italic>ϕ</italic><sub><italic>d</italic></sub> = 6:1, we find that 100% recovery efficiency can be achieved for all three of these cases.</p>
+<fig id="pcbi.1004410.g005" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004410.g005</object-id>
+<label>Fig 5</label>
+<caption>
+<title>Particle recovery efficiency with respect to flow rate ratio.</title>
+<p>(<italic>a</italic>) Particle recovery efficiency at different hematocrit levels. Two snapshots of the RBCs at microvascular bifurcations with flow rate ratios of 2.5 and 4.0 at <italic>H</italic><sub><italic>t</italic></sub> = 45.0% are shown. Simulation data (black squares) from [<xref ref-type="bibr" rid="pcbi.1004410.ref032">32</xref>] are shown. (<italic>b</italic>) Particle recovery efficiency at different levels of coarse-graining of the MS-RBC model at <italic>H</italic><sub><italic>t</italic></sub> = 15.0%. The simulations are conducted using the MS-RBC model with <italic>N</italic><sub><italic>v</italic></sub> = 500, 2560 and 5000.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004410.g005"/>
+</fig>
+<p>The blood flow and stress characteristics in human arteriolar bifurcations are affected by the branch location and bifurcation angle variation [<xref ref-type="bibr" rid="pcbi.1004410.ref047">47</xref>, <xref ref-type="bibr" rid="pcbi.1004410.ref048">48</xref>]. The proposed approach offers an effective method in investigating these effects on the behavior of RBCs flowing through a microvascular bifurcation. We then control the flow rate ratio by changing the bifurcation angle, <italic>θ</italic>, between the two daughter branches (see <xref ref-type="fig" rid="pcbi.1004410.g006">Fig 6<bold><italic>a</italic></bold></xref>) at a fixed flow rate in the parent branch. We find that the particle recovery efficiency is clearly different in the small angle and in the large angle bifurcation, see <xref ref-type="fig" rid="pcbi.1004410.g006">Fig 6<bold><italic>b</italic></bold></xref>. More RBCs move into the side branch at a smaller angle bifurcation, while more RBCs move into the main branch at a larger <italic>θ</italic>. A critical angle value can be estimated at <italic>θ</italic> ≈ 78<sup><italic>o</italic></sup> when nearly half of the RBCs move into each branch. Therefore, our 3D DPD simulations demonstrated that the bifurcation angle influences the RBC flux to the daughter branches so that its effect on the RBC flux distributions in microvascular bifurcation cannot be neglected.</p>
+<fig id="pcbi.1004410.g006" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004410.g006</object-id>
+<label>Fig 6</label>
+<caption>
+<title>Effect of bifurcation angle on particle recovery efficiency.</title>
+<p>(<bold><italic>a</italic></bold>) A sketch of the microvascular bifurcation model by changing the bifurcation angle <italic>θ</italic>. In this model, the diameter of the parent branch is 20.0 <italic>μm</italic>, and the diameters of two daughter branches are both 16.5 <italic>μm</italic>. The average velocity of blood flow in parent branch is about 0.12 <italic>mm</italic>/<italic>s</italic>. (<bold><italic>b</italic></bold>) Relationship between the particle recovery efficiency and bifurcation angle.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004410.g006"/>
+</fig>
+<p>Finally, we demonstrate that the proposed approach can be employed to target blood flow simulations for multiple inlets and outlets. Here, for illustration purposes, we present a simulation of blood flow in a complex arterial network, which was constructed using the angiogenesis model [<xref ref-type="bibr" rid="pcbi.1004410.ref049">49</xref>]. As shown in <xref ref-type="fig" rid="pcbi.1004410.g007">Fig 7</xref> and the <xref ref-type="supplementary-material" rid="pcbi.1004410.s001">S1 Video</xref>, the network has three inlets and multiple outlets. An interesting observation is that the number of fluid particles and the number of RBCs are almost constant during the simulations. Thus, we can simulate arterial blood flow and study the effect of combined different outflow and Dirichlet boundaries on the flow pattern.</p>
+<fig id="pcbi.1004410.g007" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004410.g007</object-id>
+<label>Fig 7</label>
+<caption>
+<title>Snaphot for simulation of the blood flow in part of arterial network with three inlets and multiple outlets.</title>
+<p>The complex microvascular network was constructed using an angiogenesis model [<xref ref-type="bibr" rid="pcbi.1004410.ref049">49</xref>]. The walls of the microvascular network were formed by stationary DPD particles. An extra bounce-back reflection was applied to fluid particles to prevent them from entering the solid wall domain.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004410.g007"/>
+</fig>
+<p>In summary, in this paper, we have developed a general parallel framework for open boundary conditions including the inflow and outflow boundaries for particle-based methods. The approach presented above offers a straightforward way for an open system simulations such as blood flow in arteriolar bifurcations, which provides the possibility to simulate particulate flows for various systems with open boundaries. It was implemented as an extension to the Large-scale Atomic/Molecular Massively Parallel Simulator (LAMMPS) [<xref ref-type="bibr" rid="pcbi.1004410.ref050">50</xref>] and extensively tested in simulations for different domains in the High Performance Computing environment. To the best of our knowledge, this is the first simulation of blood flow in an arterial network with the MS-RBC model. Due to the nature of the proposed technique, there are some disadvantages to consider. First, the inflow at the inlet is duplicated from a fully developed flow generated in a pilot simulation with PBCs, thus, the proposed technique can not be used if the recirculation region is present at the inflow. Second, as the implementation of the proposed technique requires significant increase in communication among computational nodes in comparison to that of normal PBC systems. It is efficient for flow of bodies whose size is much smaller than that of the computational subdomains assigned to a process; however, it may be inappropriate when modeling an immersed body with a long chain structure (such as long polymer chains) due to overhead on the communication when generating and removing the immersed body.</p>
+</sec>
+<sec id="sec006">
+<title>Supporting Information</title>
+<supplementary-material id="pcbi.1004410.s001" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004410.s001" mimetype="image/gif" xlink:type="simple">
+<label>S1 Video</label>
+<caption>
+<title>Simulation of blood flow at <italic>H</italic><sub><italic>t</italic></sub> = 15.0% in a 3D arterial network.</title>
+<p>The arterial network has three inlets and multiple outlets, and each of them has an internal diameter ranged from 28.0 <italic>μm</italic> to 40.0 <italic>μm</italic>. The network is modeled in a simulation box of size 192.0 <italic>μm</italic> × 250.0 <italic>μm</italic> × 311.0 <italic>μm</italic> with a total of 3,254,000 plasma particles in the system.</p>
+<p>(GIF)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ack>
+<p>Simulations were carried out at the Swiss National Supercomputer Center under projects s311 and s340 and also at the Argonne Leadership Computing Facility through the Innovative and Novel Computational Impact on Theory and Experiment program at Argonne National Laboratory.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1004410.ref001">
+<label>1</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Fung</surname> <given-names>YC</given-names></name>. <article-title>Stochastic flow in capillary blood vessels</article-title>. <source>Microvasc Res</source>. <year>1973</year>;<volume>5</volume>:<fpage>34</fpage>–<lpage>48</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/S0026-2862(73)80005-6" xlink:type="simple">10.1016/S0026-2862(73)80005-6</ext-link></comment> <object-id pub-id-type="pmid">4684755</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref002">
+<label>2</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Bishop</surname> <given-names>JJ</given-names></name>, <name name-style="western"><surname>Popel</surname> <given-names>AS</given-names></name>, <name name-style="western"><surname>Intaglietta</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Johnson</surname> <given-names>PC</given-names></name>. <article-title>Effects of erythrocyte aggregation and venous network geometry on red blood cell axial migration</article-title>. <source>Am J Physiol Heart Circ Physiol</source>. <year>2001</year>;<volume>281</volume>:<fpage>H939</fpage>–<lpage>H950</lpage>. <object-id pub-id-type="pmid">11454601</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref003">
+<label>3</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Goldsmith</surname> <given-names>HL</given-names></name>, <name name-style="western"><surname>Spain</surname> <given-names>S</given-names></name>. <article-title>Margination of leukocytes in blood flow through small tubes</article-title>. <source>Microvasc Res</source>. <year>1984</year>;<volume>27</volume>:<fpage>204</fpage>–<lpage>222</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/0026-2862(84)90054-2" xlink:type="simple">10.1016/0026-2862(84)90054-2</ext-link></comment> <object-id pub-id-type="pmid">6708830</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref004">
+<label>4</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Enden</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Popel</surname> <given-names>AS</given-names></name>. <article-title>A numerical study of plasma skimming in small vascular bifurcations</article-title>. <source>J Biomech Eng</source>. <year>1994</year>;<volume>116</volume>:<fpage>79</fpage>–<lpage>88</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1115/1.2895708" xlink:type="simple">10.1115/1.2895708</ext-link></comment> <object-id pub-id-type="pmid">8189718</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref005">
+<label>5</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Pries</surname> <given-names>AR</given-names></name>, <name name-style="western"><surname>Ley</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Claassen</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Gaehtgens</surname> <given-names>P</given-names></name>. <article-title>Red cell distribution at microvascular bifurcations</article-title>. <source>Microvasc Res</source>. <year>1989</year>;<volume>38</volume>:<fpage>81</fpage>–<lpage>101</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/0026-2862(89)90018-6" xlink:type="simple">10.1016/0026-2862(89)90018-6</ext-link></comment> <object-id pub-id-type="pmid">2761434</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref006">
+<label>6</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Enden</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Popel</surname> <given-names>AS</given-names></name>. <article-title>A numerical study of the shape of the surface separating flow into branches in microvascular bifurcations</article-title>. <source>J Biomech Eng</source>. <year>1991</year>;<volume>114</volume>:<fpage>398</fpage>–<lpage>405</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1115/1.2891401" xlink:type="simple">10.1115/1.2891401</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref007">
+<label>7</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Sherwood</surname> <given-names>JM</given-names></name>, <name name-style="western"><surname>Kaliviotis</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Dusting</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Balabani</surname> <given-names>S</given-names></name>. <article-title>Hematocrit, viscosity and velocity distributions of aggregating and non-aggregating blood in a bifurcating microchannel</article-title>. <source>Biomech Model Mechanobiol</source>. <year>2014</year>;<volume>13</volume>:<fpage>259</fpage>–<lpage>273</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1007/s10237-012-0449-9" xlink:type="simple">10.1007/s10237-012-0449-9</ext-link></comment> <object-id pub-id-type="pmid">23114881</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref008">
+<label>8</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Fenton</surname> <given-names>BM</given-names></name>, <name name-style="western"><surname>Carr</surname> <given-names>RT</given-names></name>, <name name-style="western"><surname>Cokelet</surname> <given-names>GR</given-names></name>. <article-title>Nonuniform red cell distribution in 20 to 100 <italic>μm</italic> bifurcations</article-title>. <source>Microvas Res</source>. <year>1985</year>;<volume>29</volume>:<fpage>103</fpage>–<lpage>126</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/0026-2862(85)90010-X" xlink:type="simple">10.1016/0026-2862(85)90010-X</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref009">
+<label>9</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Pries</surname> <given-names>AR</given-names></name>, <name name-style="western"><surname>Secomb</surname> <given-names>TW</given-names></name>. <article-title>Microvascular blood viscosity in vivo and the endothelial surface layer</article-title>. <source>Am J Physiol Heart Circ Physiol</source>. <year>2005</year>;<volume>289</volume>:<fpage>H2657</fpage>–<lpage>H2664</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1152/ajpheart.00297.2005" xlink:type="simple">10.1152/ajpheart.00297.2005</ext-link></comment> <object-id pub-id-type="pmid">16040719</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref010">
+<label>10</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Yang</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Undar</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Zahn</surname> <given-names>J</given-names></name>. <article-title>A microfluidic device for continuous, real time blood plasma separation</article-title>. <source>Lab Chip</source>. <year>2006</year>;<volume>6</volume>:<fpage>871</fpage>–<lpage>880</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1039/b516401j" xlink:type="simple">10.1039/b516401j</ext-link></comment> <object-id pub-id-type="pmid">16804591</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref011">
+<label>11</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Freund</surname> <given-names>JB</given-names></name>. <article-title>Numerical simulation of flowing blood cells</article-title>. <source>Annu Rev Fluid Mech</source>. <year>2014</year>;<volume>46</volume>:<fpage>67</fpage>–<lpage>95</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1146/annurev-fluid-010313-141349" xlink:type="simple">10.1146/annurev-fluid-010313-141349</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref012">
+<label>12</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Li</surname> <given-names>XJ</given-names></name>, <name name-style="western"><surname>Vlahovska</surname> <given-names>PV</given-names></name>, <name name-style="western"><surname>Karniadakis</surname> <given-names>GE</given-names></name>. <article-title>Continuum- and particle-based modeling of shapes and dynamics of red blood cells in health and disease</article-title>. <source>Soft Matter</source>. <year>2013</year>;<volume>9</volume>:<fpage>28</fpage>–<lpage>37</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1039/C2SM26891D" xlink:type="simple">10.1039/C2SM26891D</ext-link></comment> <object-id pub-id-type="pmid">23230450</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref013">
+<label>13</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Noguchi</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Gompper</surname> <given-names>G</given-names></name>. <article-title>Shape transitions of fluid vesicles and red blood cells in capillary flows</article-title>. <source>Proc Natl Acad Sci USA</source>. <year>2005</year>;<volume>102</volume>:<fpage>14159</fpage>–<lpage>14164</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.0504243102" xlink:type="simple">10.1073/pnas.0504243102</ext-link></comment> <object-id pub-id-type="pmid">16186506</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref014">
+<label>14</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>McWhirter</surname> <given-names>JL</given-names></name>, <name name-style="western"><surname>Noguchi</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Gompper</surname> <given-names>G</given-names></name>. <article-title>Flow-induced clustering and alignment of vesicles and red blood cells in microcapillaries</article-title>. <source>Proc Natl Acad Sci USA</source>. <year>2009</year>;<volume>106</volume>:<fpage>6039</fpage>–<lpage>6043</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.0811484106" xlink:type="simple">10.1073/pnas.0811484106</ext-link></comment> <object-id pub-id-type="pmid">19369212</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref015">
+<label>15</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>McWhirter</surname> <given-names>JL</given-names></name>, <name name-style="western"><surname>Noguchi</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Gompper</surname> <given-names>G</given-names></name>. <article-title>Deformation and clustering of red blood cells in microcapillary flows</article-title>. <source>Soft Matter</source>. <year>2011</year>;<volume>7</volume>:<fpage>10967</fpage>–<lpage>10977</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1039/c1sm05794d" xlink:type="simple">10.1039/c1sm05794d</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref016">
+<label>16</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Quinn</surname> <given-names>DJ</given-names></name>, <name name-style="western"><surname>Pivkin</surname> <given-names>IV</given-names></name>, <name name-style="western"><surname>Wong</surname> <given-names>SK</given-names></name>, <name name-style="western"><surname>Chiam</surname> <given-names>KH</given-names></name>, <name name-style="western"><surname>Dao</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Karniadakis</surname> <given-names>GE</given-names></name>, <name name-style="western"><surname>Suresh</surname> <given-names>S</given-names></name>. <article-title>Combined simulation and experimental study of large deformation of red blood cells in microfluidic systems</article-title>. <source>Ann Biomed Eng</source>. <year>2011</year>;<volume>39</volume>:<fpage>1041</fpage>–<lpage>1050</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1007/s10439-010-0232-y" xlink:type="simple">10.1007/s10439-010-0232-y</ext-link></comment> <object-id pub-id-type="pmid">21240637</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref017">
+<label>17</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Fedosov</surname> <given-names>DA</given-names></name>, <name name-style="western"><surname>Fornleitner</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Gompper</surname> <given-names>G</given-names></name>. <article-title>Margination of white blood cells in microcapillary flow</article-title>. <source>Phys Rev Lett</source>. <year>2012</year>;<volume>108</volume>:<fpage>028104</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1103/PhysRevLett.108.028104" xlink:type="simple">10.1103/PhysRevLett.108.028104</ext-link></comment> <object-id pub-id-type="pmid">22324714</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref018">
+<label>18</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Li</surname> <given-names>XJ</given-names></name>, <name name-style="western"><surname>Peng</surname> <given-names>ZL</given-names></name>, <name name-style="western"><surname>Lei</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Dao</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Karniadakis</surname> <given-names>GE</given-names></name>. <article-title>Probing red blood cell mechanics, rheology and dynamics with a two-component multiscale model</article-title>. <source>Phil Trans R Soc A</source>. <year>2014</year>;<volume>372</volume>:<fpage>20130389</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1098/rsta.2013.0389" xlink:type="simple">10.1098/rsta.2013.0389</ext-link></comment> <object-id pub-id-type="pmid">24982252</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref019">
+<label>19</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Fedosov</surname> <given-names>DA</given-names></name>, <name name-style="western"><surname>Pan</surname> <given-names>WX</given-names></name>, <name name-style="western"><surname>Caswell</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Gompper</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Karniadakis</surname> <given-names>GE</given-names></name>. <article-title>Predicting human blood viscosity in silico</article-title>. <source>Proc Natl Acad Sci USA</source>. <year>2011</year>;<volume>108</volume>:<fpage>11772</fpage>–<lpage>11777</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.1101210108" xlink:type="simple">10.1073/pnas.1101210108</ext-link></comment> <object-id pub-id-type="pmid">21730178</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref020">
+<label>20</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Fedosov</surname> <given-names>DA</given-names></name>, <name name-style="western"><surname>Caswell</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Suresh</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Karniadakis</surname> <given-names>GE</given-names></name>. <article-title>Quantifying the biophysical characteristics of <italic>Plasmodium-falciparum</italic>-parasitized red blood cells in microcirculation</article-title>. <source>Proc Natl Acad Sci USA</source>. <year>2011</year>;<volume>108</volume>:<fpage>35</fpage>–<lpage>39</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.1009492108" xlink:type="simple">10.1073/pnas.1009492108</ext-link></comment> <object-id pub-id-type="pmid">21173269</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref021">
+<label>21</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Hosseini</surname> <given-names>SM</given-names></name>, <name name-style="western"><surname>Feng</surname> <given-names>JJ</given-names></name>. <article-title>How malaria parasites reduce the deformability of infected RBC</article-title>. <source>Biophys J</source>. <year>2012</year>;<volume>103</volume>:<fpage>1</fpage>–<lpage>10</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.bpj.2012.05.026" xlink:type="simple">10.1016/j.bpj.2012.05.026</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref022">
+<label>22</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Peng</surname> <given-names>ZL</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>XJ</given-names></name>, <name name-style="western"><surname>Pivkin</surname> <given-names>IV</given-names></name>, <name name-style="western"><surname>Dao</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Karniadakis</surname> <given-names>GE</given-names></name>, <name name-style="western"><surname>Suresh</surname> <given-names>S</given-names></name>. <article-title>Lipid-bilayer and cytoskeletal interactions in a red blood cell</article-title>. <source>Proc Natl Acad Sci USA</source>. <year>2013</year>;<volume>110</volume>:<fpage>13356</fpage>–<lpage>13361</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.1311827110" xlink:type="simple">10.1073/pnas.1311827110</ext-link></comment> <object-id pub-id-type="pmid">23898181</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref023">
+<label>23</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Lei</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Karniadakis</surname> <given-names>GE</given-names></name>. <article-title>Probing vasoocclusion phenomena in sickle cell anemia via mesoscopic simulations</article-title>. <source>Proc Natl Acad Sci USA</source>. <year>2013</year>;<volume>110</volume>:<fpage>11326</fpage>–<lpage>11330</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.1221297110" xlink:type="simple">10.1073/pnas.1221297110</ext-link></comment> <object-id pub-id-type="pmid">23798393</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref024">
+<label>24</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Imai</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Kondo</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Ishikawa</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Lim</surname> <given-names>CT</given-names></name>, <name name-style="western"><surname>Yamaguchi</surname> <given-names>T</given-names></name>. <article-title>Modeling of hemodynamics arising from malaria infection</article-title>. <source>J Biomech</source>. <year>2010</year>;<volume>43</volume>:<fpage>1386</fpage>–<lpage>1393</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.jbiomech.2010.01.011" xlink:type="simple">10.1016/j.jbiomech.2010.01.011</ext-link></comment> <object-id pub-id-type="pmid">20176360</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref025">
+<label>25</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Bow</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Pivkin</surname> <given-names>IV</given-names></name>, <name name-style="western"><surname>Diez-Silva</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Goldfless</surname> <given-names>SJ</given-names></name>, <name name-style="western"><surname>Dao</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Niles</surname> <given-names>JC</given-names></name>, <etal>et al</etal>. <article-title>A microfabricated deformability-based flow cytometer with application to malaria</article-title>. <source>Lab Chip</source>. <year>2011</year>;<volume>11</volume>:<fpage>1065</fpage>–<lpage>1073</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1039/c0lc00472c" xlink:type="simple">10.1039/c0lc00472c</ext-link></comment> <object-id pub-id-type="pmid">21293801</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref026">
+<label>26</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Fedosov</surname> <given-names>DA</given-names></name>, <name name-style="western"><surname>Lei</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Caswell</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Suresh</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Karniadakis</surname> <given-names>GE</given-names></name>. <article-title>Multiscale modeling of red blood cell mechanics and blood flow in malaria</article-title>. <source>PLoS Comput Biol</source>. <year>2011</year>;<volume>7</volume>:<fpage>e1002270</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.1002270" xlink:type="simple">10.1371/journal.pcbi.1002270</ext-link></comment> <object-id pub-id-type="pmid">22144878</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref027">
+<label>27</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Imai</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Nakaaki</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Kondo</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Ishikawa</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Lim</surname> <given-names>CT</given-names></name>, <name name-style="western"><surname>Yamaguchi</surname> <given-names>T</given-names></name>. <article-title>Margination of red blood cells infected by Plasmodium falciparum in a microvessel</article-title>. <source>J Biomech</source>. <year>2011</year>;<volume>44</volume>:<fpage>1553</fpage>–<lpage>1558</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.jbiomech.2011.02.084" xlink:type="simple">10.1016/j.jbiomech.2011.02.084</ext-link></comment> <object-id pub-id-type="pmid">21420683</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref028">
+<label>28</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Wu</surname> <given-names>TH</given-names></name>, <name name-style="western"><surname>Feng</surname> <given-names>JJ</given-names></name>. <article-title>Simulation of malaria-infected red blood cells in microfluidic channels: Passage and blockage</article-title>. <source>Biomicrofluidics</source>. <year>2013</year>;<volume>7</volume>:<fpage>044115</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1063/1.4817959" xlink:type="simple">10.1063/1.4817959</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref029">
+<label>29</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Boryczko</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Dzwinel</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Yuen</surname> <given-names>DA</given-names></name>. <article-title>Dynamical clustering of red blood cells in capillary vessels</article-title>. <source>J Mol Model</source>. <year>2003</year>;<volume>9</volume>:<fpage>16</fpage>–<lpage>33</lpage>. <object-id pub-id-type="pmid">12638008</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref030">
+<label>30</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Boryczko</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Dzwinel</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Yuen</surname> <given-names>DA</given-names></name>. <article-title>Modeling heterogeneous mesoscopic fluids in irregular geometries using shared memory systems</article-title>. <source>Mol Simul</source>. <year>2005</year>;<volume>31</volume>:<fpage>45</fpage>–<lpage>56</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1080/08927020412331299341" xlink:type="simple">10.1080/08927020412331299341</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref031">
+<label>31</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Janoschek</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Toschi</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Harting</surname> <given-names>J</given-names></name>. <article-title>Simplified particulate model for coarse-grained hemodynamics simulations</article-title>. <source>Phys Rev E</source>. <year>2010</year>;<volume>82</volume>:<fpage>056710</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1103/PhysRevE.82.056710" xlink:type="simple">10.1103/PhysRevE.82.056710</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref032">
+<label>32</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Li</surname> <given-names>XJ</given-names></name>, <name name-style="western"><surname>Popel</surname> <given-names>AS</given-names></name>, <name name-style="western"><surname>Karniadakis</surname> <given-names>GE</given-names></name>. <article-title>Blood-plasma separation in Y-shaped bifurcating microfluidic channels: a dissipative particle dynamics simulation study</article-title>. <source>Phys Biol</source>. <year>2012</year>;<volume>9</volume>:<fpage>026010</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1088/1478-3975/9/2/026010" xlink:type="simple">10.1088/1478-3975/9/2/026010</ext-link></comment> <object-id pub-id-type="pmid">22476709</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref033">
+<label>33</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Flekkoy</surname> <given-names>EG</given-names></name>, <name name-style="western"><surname>Delgado-Buscalioni</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Coveney</surname> <given-names>PV</given-names></name>. <article-title>Flux boundary conditions in particle simulations</article-title>. <source>Phys Rev E</source>. <year>2005</year>;<volume>72</volume>:<fpage>026703</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1103/PhysRevE.72.026703" xlink:type="simple">10.1103/PhysRevE.72.026703</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref034">
+<label>34</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Lei</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Fedosov</surname> <given-names>DA</given-names></name>, <name name-style="western"><surname>Karniadakis</surname> <given-names>GE</given-names></name>. <article-title>Time-dependent and outflow boundary conditions for Dissipative Particle Dynamics</article-title>. <source>J Comput Phys</source>. <year>2011</year>;<volume>230</volume>:<fpage>3765</fpage>–<lpage>3779</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.jcp.2011.02.003" xlink:type="simple">10.1016/j.jcp.2011.02.003</ext-link></comment> <object-id pub-id-type="pmid">21499548</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref035">
+<label>35</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Pivkin</surname> <given-names>IV</given-names></name>, <name name-style="western"><surname>Karniadakis</surname> <given-names>GE</given-names></name>. <article-title>Accurate coarse-grained modeling of red blood cells</article-title>. <source>Phys Rev Lett</source>. <year>2008</year>;<volume>101</volume>:<fpage>118105</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1103/PhysRevLett.101.118105" xlink:type="simple">10.1103/PhysRevLett.101.118105</ext-link></comment> <object-id pub-id-type="pmid">18851338</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref036">
+<label>36</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Hoogerbrugge</surname> <given-names>PJ</given-names></name>, <name name-style="western"><surname>Koelman</surname> <given-names>JMVA</given-names></name>. <article-title>Simulating microscopic hydrodynamic phenomena with dissipative particle dynamics</article-title>. <source>Europhys Lett</source>. <year>1992</year>;<volume>19</volume>:<fpage>155</fpage>–<lpage>160</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1209/0295-5075/19/3/001" xlink:type="simple">10.1209/0295-5075/19/3/001</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref037">
+<label>37</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Li</surname> <given-names>XJ</given-names></name>, <name name-style="western"><surname>Pivkin</surname> <given-names>IV</given-names></name>, <name name-style="western"><surname>Liang</surname> <given-names>HJ</given-names></name>, <name name-style="western"><surname>Karniadakis</surname> <given-names>GE</given-names></name>. <article-title>Shape transformations of membrane vesicles from amphiphilic triblock copolymers: A dissipative particle dynamics simulation study</article-title>. <source>Macromolecules</source>. <year>2009</year>;<volume>42</volume>:<fpage>3195</fpage>–<lpage>3200</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1021/ma9000918" xlink:type="simple">10.1021/ma9000918</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref038">
+<label>38</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Li</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Bian</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Caswell</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Karniadakis</surname> <given-names>GE</given-names></name>. <article-title>Construction of dissipative particle dynamics models for complex fluids via the Mori-Zwanzig formulation</article-title>. <source>Soft Matter</source>. <year>2014</year>;<volume>10</volume>:<fpage>8659</fpage>–<lpage>8672</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1039/C4SM01387E" xlink:type="simple">10.1039/C4SM01387E</ext-link></comment> <object-id pub-id-type="pmid">25252001</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref039">
+<label>39</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Fedosov</surname> <given-names>DA</given-names></name>, <name name-style="western"><surname>Caswell</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Karniadakis</surname> <given-names>GE</given-names></name>. <article-title>A multiscale red blood cell model with accurate mechanics, rheology, and dynamics</article-title>. <source>Biophys J</source>. <year>2010</year>;<volume>98</volume>:<fpage>2215</fpage>–<lpage>2225</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.bpj.2010.02.002" xlink:type="simple">10.1016/j.bpj.2010.02.002</ext-link></comment> <object-id pub-id-type="pmid">20483330</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref040">
+<label>40</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Fedosov</surname> <given-names>DA</given-names></name>, <name name-style="western"><surname>Caswell</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Popel</surname> <given-names>AS</given-names></name>, <name name-style="western"><surname>Karniadakis</surname> <given-names>GE</given-names></name>. <article-title>Blood flow and cell-free layer in microvessels</article-title>. <source>Microcirculation</source>. <year>2010</year>;<volume>17</volume>:<fpage>615</fpage>–<lpage>628</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1111/j.1549-8719.2010.00056.x" xlink:type="simple">10.1111/j.1549-8719.2010.00056.x</ext-link></comment> <object-id pub-id-type="pmid">21044216</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref041">
+<label>41</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Lei</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Fedosov</surname> <given-names>DA</given-names></name>, <name name-style="western"><surname>Caswell</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Karniadakis</surname> <given-names>GE</given-names></name>. <article-title>Blood flow in small tubes: quantifying the transition to the non-continuum regime</article-title>. <source>J Fluid Mech</source>. <year>2013</year>;<volume>722</volume>:<fpage>214</fpage>–<lpage>239</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1017/jfm.2013.91" xlink:type="simple">10.1017/jfm.2013.91</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref042">
+<label>42</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Li</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Liao</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Yip</surname> <given-names>S</given-names></name>. <article-title>Coupling continuum to molecular-dynamics simulation: Reflecting particle method and the field estimator</article-title>. <source>Phys Rev E</source>. <year>1998</year>;<volume>57</volume>:<fpage>7259</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1103/PhysRevE.57.7259" xlink:type="simple">10.1103/PhysRevE.57.7259</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref043">
+<label>43</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Pivkin</surname> <given-names>IV</given-names></name>, <name name-style="western"><surname>Karniadakis</surname> <given-names>GE</given-names></name>. <article-title>A new method to impose no-slip boundary conditions in dissipative particles dynamics</article-title>. <source>J Comput Phys</source>. <year>2005</year>;<volume>207</volume>:<fpage>114</fpage>–<lpage>128</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.jcp.2005.01.006" xlink:type="simple">10.1016/j.jcp.2005.01.006</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref044">
+<label>44</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Pivkin</surname> <given-names>IV</given-names></name>, <name name-style="western"><surname>Karniadakis</surname> <given-names>GE</given-names></name>. <article-title>Controlling density fluctuations in wall-bounded dissipative particle dynamics systems</article-title>. <source>Phys Rev Lett</source>. <year>2006</year>;<volume>96</volume>:<fpage>206001</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1103/PhysRevLett.96.206001" xlink:type="simple">10.1103/PhysRevLett.96.206001</ext-link></comment> <object-id pub-id-type="pmid">16803187</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref045">
+<label>45</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Fan</surname> <given-names>XJ</given-names></name>, <name name-style="western"><surname>Phan-Thien</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Chen</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Wu</surname> <given-names>XH</given-names></name>, <name name-style="western"><surname>Ng</surname> <given-names>TY</given-names></name>. <article-title>Simulating flow of DNA suspension using dissipative particle dynamics</article-title>. <source>Phys Fluid</source>. <year>2006</year>;<volume>18</volume>:<fpage>063102</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1063/1.2206595" xlink:type="simple">10.1063/1.2206595</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref046">
+<label>46</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Pan</surname> <given-names>WX</given-names></name>, <name name-style="western"><surname>Fedosov</surname> <given-names>DA</given-names></name>, <name name-style="western"><surname>Karniadakis</surname> <given-names>GE</given-names></name>, <name name-style="western"><surname>Caswell</surname> <given-names>B</given-names></name>. <article-title>Hydrodynamic interactions for single dissipative-particle-dynamics particles and their clusters and filaments</article-title>. <source>Phys Rev E</source>. <year>2008</year>;<volume>78</volume>:<fpage>046706</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1103/PhysRevE.78.046706" xlink:type="simple">10.1103/PhysRevE.78.046706</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref047">
+<label>47</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Perktold</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Peter</surname> <given-names>RO</given-names></name>, <name name-style="western"><surname>Resch</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Langs</surname> <given-names>G</given-names></name>. <article-title>Pulsatile non-Newtonian blood flow in three-dimensional carotid bifurcation models: a numerical study of flow phenomena under different bifurcation angles</article-title>. <source>J Biomed Eng</source>. <year>1991</year>;<volume>13</volume>:<fpage>507</fpage>–<lpage>515</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/0141-5425(91)90100-L" xlink:type="simple">10.1016/0141-5425(91)90100-L</ext-link></comment> <object-id pub-id-type="pmid">1770813</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref048">
+<label>48</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Sherwood</surname> <given-names>JM</given-names></name>, <name name-style="western"><surname>Holmes</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Kaliviotis</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Balabani</surname> <given-names>S</given-names></name>. <article-title>Spatial distributions of red blood cells significantly alter local haemodynamics</article-title>. <source>PLOS ONE</source>. <year>2014</year>;<volume>9</volume>:<fpage>e100473</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pone.0100473" xlink:type="simple">10.1371/journal.pone.0100473</ext-link></comment> <object-id pub-id-type="pmid">24950214</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref049">
+<label>49</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Milde</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Bergdorf</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Koumoutsakos</surname> <given-names>P</given-names></name>. <article-title>A hybrid model for three-dimensional simulations of sprouting angiogenesis</article-title>. <source>Biophys J</source>. <year>2008</year>;<volume>95</volume>:<fpage>3146</fpage>–<lpage>3160</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1529/biophysj.107.124511" xlink:type="simple">10.1529/biophysj.107.124511</ext-link></comment> <object-id pub-id-type="pmid">18586846</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004410.ref050">
+<label>50</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Plimpton</surname> <given-names>S</given-names></name>. <article-title>Fast parallel algorithms for short-range molecular dynamics</article-title>. <source>J Comput Phys</source>. <year>1995</year>;<volume>117</volume>:<fpage>1</fpage>–<lpage>19</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1006/jcph.1995.1039" xlink:type="simple">10.1006/jcph.1995.1039</ext-link></comment></mixed-citation>
+</ref>
+</ref-list>
+</back>
+</article>

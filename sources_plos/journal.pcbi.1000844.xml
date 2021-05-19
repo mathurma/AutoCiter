@@ -1,0 +1,1235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="3.0" xml:lang="EN">
+<front>
+<journal-meta><journal-id journal-id-type="publisher-id">plos</journal-id><journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id><journal-id journal-id-type="pmc">ploscomp</journal-id><!--===== Grouping journal title elements =====--><journal-title-group><journal-title>PLoS Computational Biology</journal-title></journal-title-group><issn pub-type="ppub">1553-734X</issn><issn pub-type="epub">1553-7358</issn><publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, USA</publisher-loc></publisher></journal-meta>
+<article-meta><article-id pub-id-type="publisher-id">10-PLCB-RA-1859R3</article-id><article-id pub-id-type="doi">10.1371/journal.pcbi.1000844</article-id><article-categories><subj-group subj-group-type="heading"><subject>Research Article</subject></subj-group><subj-group subj-group-type="Discipline"><subject>Computational Biology/Comparative Sequence Analysis</subject><subject>Computational Biology/Genomics</subject><subject>Microbiology/Environmental Microbiology</subject></subj-group></article-categories><title-group><article-title>The Effects of Alignment Quality, Distance Calculation Method, Sequence Filtering, and Region on the Analysis of 16S rRNA Gene-Based Studies</article-title><alt-title alt-title-type="running-head">Insights into 16S rRNA Sequence Analysis</alt-title></title-group><contrib-group>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Schloss</surname><given-names>Patrick D.</given-names></name><xref ref-type="aff" rid="aff1"/><xref ref-type="corresp" rid="cor1"><sup>*</sup></xref></contrib>
+</contrib-group><aff id="aff1">          <addr-line>Department of Microbiology &amp; Immunology, The University of Michigan, Ann Arbor, Michigan, United States of America</addr-line>       </aff><contrib-group>
+<contrib contrib-type="editor" xlink:type="simple"><name name-style="western"><surname>Eisen</surname><given-names>Jonathan A.</given-names></name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/></contrib>
+</contrib-group><aff id="edit1">University of California Davis, United States of America</aff><author-notes>
+<corresp id="cor1">* E-mail: <email xlink:type="simple">pschloss@umich.edu</email></corresp>
+<fn fn-type="con"><p>Conceived and designed the experiments: PDS. Performed the experiments: PDS. Analyzed the data: PDS. Contributed reagents/materials/analysis tools: PDS. Wrote the paper: PDS.</p></fn>
+<fn fn-type="conflict"><p>The author has declared that no competing interests exist.</p></fn></author-notes><pub-date pub-type="collection"><month>7</month><year>2010</year></pub-date><pub-date pub-type="epub"><day>8</day><month>7</month><year>2010</year></pub-date><volume>6</volume><issue>7</issue><elocation-id>e1000844</elocation-id><history>
+<date date-type="received"><day>25</day><month>2</month><year>2010</year></date>
+<date date-type="accepted"><day>1</day><month>6</month><year>2010</year></date>
+</history><!--===== Grouping copyright info into permissions =====--><permissions><copyright-year>2010</copyright-year><copyright-holder>Patrick D. Schloss</copyright-holder><license><license-p>This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license></permissions><abstract>
+<p>Pyrosequencing of PCR-amplified fragments that target variable regions within the 16S rRNA gene has quickly become a powerful method for analyzing the membership and structure of microbial communities. This approach has revealed and introduced questions that were not fully appreciated by those carrying out traditional Sanger sequencing-based methods. These include the effects of alignment quality, the best method of calculating pairwise genetic distances for 16S rRNA genes, whether it is appropriate to filter variable regions, and how the choice of variable region relates to the genetic diversity observed in full-length sequences. I used a diverse collection of 13,501 high-quality full-length sequences to assess each of these questions. First, alignment quality had a significant impact on distance values and downstream analyses. Specifically, the greengenes alignment, which does a poor job of aligning variable regions, predicted higher genetic diversity, richness, and phylogenetic diversity than the SILVA and RDP-based alignments. Second, the effect of different gap treatments in determining pairwise genetic distances was strongly affected by the variation in sequence length for a region; however, the effect of different calculation methods was subtle when determining the sample's richness or phylogenetic diversity for a region. Third, applying a sequence mask to remove variable positions had a profound impact on genetic distances by muting the observed richness and phylogenetic diversity. Finally, the genetic distances calculated for each of the variable regions did a poor job of correlating with the full-length gene. Thus, while it is tempting to apply traditional cutoff levels derived for full-length sequences to these shorter sequences, it is not advisable. Analysis of β-diversity metrics showed that each of these factors can have a significant impact on the comparison of community membership and structure. Taken together, these results urge caution in the design and interpretation of analyses using pyrosequencing data.</p>
+</abstract><abstract abstract-type="summary"><title>Author Summary</title>
+<p>Microbial communities are notoriously difficult to analyze because of their inaccessibility via culturing and high diversity. Next generation sequencing technologies have made it possible to obtain deep sampling coverage of the 16S rRNA gene; however, interpretation of the resulting data is complicated by the inability to relate sequences from variable regions within the gene to the full-length gene and ultimately, the parent genome. Here, I present a comprehensive analysis quantifying the effects of varying sequence alignment quality, pairwise distances calculation methods, sequence filtering, and regions within the 16S rRNA gene on downstream analysis using OTU- and phylogeny-based methods. This analysis indicates that each factor can have a significant effect on descriptions of α- and β-diversity. Because it is not possible to relate pyrotags to full-length 16S rRNA gene sequences directly, I encourage scientists to view pyrotags as markers within a microbiome in an analogous fashion to how geneticists view single nucleotide polymorphisms as markers within genomes.</p>
+</abstract><funding-group><funding-statement>This project was funded by the School of Medicine at the University of Michigan and a grant from the National Science Foundation (award #0743432). The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement></funding-group><counts><page-count count="16"/></counts></article-meta>
+</front>
+<body><sec id="s1">
+<title>Introduction</title>
+<p>The recent advent of massively-parallelized pyrosequencing platforms has enabled a renaissance in the field of microbial ecology <xref ref-type="bibr" rid="pcbi.1000844-Margulies1">[1]</xref>, <xref ref-type="bibr" rid="pcbi.1000844-Sogin1">[2]</xref>. Pyrosequencing has engendered much enthusiasm since it is now possible to obtain nearly 100-times as many sequences by pyrosequencing for the same cost as using traditional Sanger sequencing technology. Although pyrosequencing is capable of generating 10<sup>5</sup>–10<sup>6</sup> sequences per run, the sequences are between 100 and 400 bp in length. This method has become widely used among microbial ecologists to sequence PCR amplicons from variable regions within the ca. 1,500-bp 16S rRNA gene.</p>
+<p>These massive datasets have been analyzed through the generation of phylogenetic trees <xref ref-type="bibr" rid="pcbi.1000844-Costello1">[e.g. 3]</xref>, assignment of sequences to operational taxonomic units (OTUs) for based on distance thresholds <xref ref-type="bibr" rid="pcbi.1000844-Roesch1">[e.g. 4]</xref>, and classification of sequences to phylogenentic bins based on similarity to reference sequences <xref ref-type="bibr" rid="pcbi.1000844-Huber1">[e.g. 5]</xref>. Each approach has received some level of evaluation using pyrotag sequencing. Liu et al. <xref ref-type="bibr" rid="pcbi.1000844-Liu1">[6]</xref> asserted that phylogenies generated using pyrotags were as good as full-length sequences based on similarity of UniFrac test statistics. Several studies have evaluated various regions and methods for assigning sequences to phylotypes <xref ref-type="bibr" rid="pcbi.1000844-Huse1">[7]</xref>–<xref ref-type="bibr" rid="pcbi.1000844-Liu2">[9]</xref>. Finally, a recent study emphasized differences in α-diversity metrics using different regions within the 16S rRNA gene and OTU definitions <xref ref-type="bibr" rid="pcbi.1000844-Youssef1">[10]</xref>.</p>
+<p>Each of these studies have focused on a limited range of phylogenetic groups found in a particular environment (e.g. soil, mouse cecum, human feces) and have glossed over more fundamental questions related to how alignment quality, methods of calculating pairwise genetic distances, sequence filtering, and region affects downstream analysis and their relationship to full-length sequences. Alignment quality is expected to significantly affect pairwise distances. Investigators have either used reference alignments to align sequences that implicitly incorporate the secondary structure of the 16S rRNA molecule <xref ref-type="bibr" rid="pcbi.1000844-Schloss1">[11]</xref>–<xref ref-type="bibr" rid="pcbi.1000844-Cole1">[14]</xref> or they have used methods that do not consider the secondary structure <xref ref-type="bibr" rid="pcbi.1000844-Edgar1">[15]</xref>, <xref ref-type="bibr" rid="pcbi.1000844-Sun1">[16]</xref>. Previous results have shown that the manually-curated SILVA reference alignment provides superior complementary base-pairing within the secondary structure compared to the greengenes alignment, which appears haphazard; the RDP alignment does not align the variable regions <xref ref-type="bibr" rid="pcbi.1000844-Schloss1">[11]</xref>. Considering the focus of these studies is on the variable region, there is the added complication that these areas are difficult to align accurately. To overcome limitations in alignment of variable regions, many studies have employed the use of masks to filter the troublesome regions <xref ref-type="bibr" rid="pcbi.1000844-Costello1">[e.g. 3]</xref>. Yet, these filters remove a considerable amount of information from already information-sparse data (<xref ref-type="table" rid="pcbi-1000844-t001">Table 1</xref>). The actual method of calculating distances is also typically taken for granted. Practically every 16S rRNA survey has made use of substitution models that assume that an alignment gap represents missing data instead of a mutation <xref ref-type="bibr" rid="pcbi.1000844-Schloss2">[e.g. 17]</xref>. The decision to use such a model seems motivated more by a sense of phylogenetic guilt than by biology. It is also unknown how distances calculated between partial sequences predict distances between full-length sequences. To make data analysis more tractable, some have employed heuristics based on correlations between kmer- and sequence-based pairwise distances to select which pairs of sequences to align and group within OTUs <xref ref-type="bibr" rid="pcbi.1000844-Sun1">[16]</xref>. It is unclear how these correlations vary across regions within the 16S rRNA gene or what the level of risk is for falsely ignoring pairs of similar sequences. Finally, most studies make the implicit assumption that distances between partial sequences are not significantly different from those of full-length sequences; however, this is a questionable assumption as it is well-established that the 16S rRNA gene does not evolve uniformly along its length. This is apparent in the choice a 3% distance cutoff, which is used as a proxy species definition for full-length sequences, to define species using sequences from variable regions <xref ref-type="bibr" rid="pcbi.1000844-Sogin1">[e.g. 2]</xref>, <xref ref-type="bibr" rid="pcbi.1000844-Roesch1">[4]</xref>. Each of these factors is expected to have a significant effect on the analysis, interpretation, and generalizability of 16S rRNA gene surveys.</p>
+<table-wrap id="pcbi-1000844-t001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000844.t001</object-id><label>Table 1</label><caption>
+<title>Summary of the 13 regions within the 16S rRNA gene that were used in this study.</title>
+</caption><!--===== Grouping alternate versions of objects =====--><alternatives><graphic id="pcbi-1000844-t001-1" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000844.t001" xlink:type="simple"/><table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" colspan="1" rowspan="1">Region</td>
+<td align="left" colspan="1" rowspan="1"><italic>E. coli</italic> numbering</td>
+<td align="left" colspan="1" rowspan="1">Platform</td>
+<td align="left" colspan="1" rowspan="1">Example Ref.</td>
+<td align="left" colspan="1" rowspan="1">Masking</td>
+<td align="left" colspan="1" rowspan="1">Average number of bases<xref ref-type="table-fn" rid="nt102">a</xref></td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V19</bold></td>
+<td align="left" colspan="1" rowspan="1">2–1491</td>
+<td align="left" colspan="1" rowspan="1">Sanger<xref ref-type="table-fn" rid="nt103">b</xref></td>
+<td align="left" colspan="1" rowspan="1"><xref ref-type="bibr" rid="pcbi.1000844-Eckburg1">[32]</xref></td>
+<td align="left" colspan="1" rowspan="1">None</td>
+<td align="left" colspan="1" rowspan="1">1454 (1399–1490)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">Lane</td>
+<td align="left" colspan="1" rowspan="1">1255 (1244–1256)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V12</bold></td>
+<td align="left" colspan="1" rowspan="1">28–337</td>
+<td align="left" colspan="1" rowspan="1">Titanium<xref ref-type="table-fn" rid="nt104">c</xref></td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">None</td>
+<td align="left" colspan="1" rowspan="1">306 (276–332)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">Lane</td>
+<td align="left" colspan="1" rowspan="1">239 (238–239)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V13</bold></td>
+<td align="left" colspan="1" rowspan="1">28–514</td>
+<td align="left" colspan="1" rowspan="1">Titanium</td>
+<td align="left" colspan="1" rowspan="1">HMP<xref ref-type="table-fn" rid="nt107">f</xref></td>
+<td align="left" colspan="1" rowspan="1">None</td>
+<td align="left" colspan="1" rowspan="1">480 (428–508)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">Lane</td>
+<td align="left" colspan="1" rowspan="1">386 (384–386)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V14</bold></td>
+<td align="left" colspan="1" rowspan="1">28–784</td>
+<td align="left" colspan="1" rowspan="1">Sanger</td>
+<td align="left" colspan="1" rowspan="1"><xref ref-type="bibr" rid="pcbi.1000844-Schloss2">[17]</xref></td>
+<td align="left" colspan="1" rowspan="1">None</td>
+<td align="left" colspan="1" rowspan="1">750 (698–779)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">Lane</td>
+<td align="left" colspan="1" rowspan="1">656 (653–656)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V2</bold></td>
+<td align="left" colspan="1" rowspan="1">100–337</td>
+<td align="left" colspan="1" rowspan="1">FLX<xref ref-type="table-fn" rid="nt105">d</xref></td>
+<td align="left" colspan="1" rowspan="1"><xref ref-type="bibr" rid="pcbi.1000844-Costello1">[3]</xref></td>
+<td align="left" colspan="1" rowspan="1">None</td>
+<td align="left" colspan="1" rowspan="1">240 (223–257)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">Lane</td>
+<td align="left" colspan="1" rowspan="1">198 (197–198)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V23</bold></td>
+<td align="left" colspan="1" rowspan="1">100–514</td>
+<td align="left" colspan="1" rowspan="1">Titanium</td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">None</td>
+<td align="left" colspan="1" rowspan="1">415 (378–437)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">Lane</td>
+<td align="left" colspan="1" rowspan="1">345 (343–345)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V3</bold></td>
+<td align="left" colspan="1" rowspan="1">357–514</td>
+<td align="left" colspan="1" rowspan="1">FLX/Illumina<xref ref-type="table-fn" rid="nt106">e</xref></td>
+<td align="left" colspan="1" rowspan="1"><xref ref-type="bibr" rid="pcbi.1000844-Dethlefsen1">[33]</xref></td>
+<td align="left" colspan="1" rowspan="1">None</td>
+<td align="left" colspan="1" rowspan="1">158 (135–161)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">Lane</td>
+<td align="left" colspan="1" rowspan="1">128 (127–128)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V35</bold></td>
+<td align="left" colspan="1" rowspan="1">357–906</td>
+<td align="left" colspan="1" rowspan="1">Titanium</td>
+<td align="left" colspan="1" rowspan="1">HMP</td>
+<td align="left" colspan="1" rowspan="1">None</td>
+<td align="left" colspan="1" rowspan="1">546 (523–552)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">Lane</td>
+<td align="left" colspan="1" rowspan="1">507 (504–507)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V4</bold></td>
+<td align="left" colspan="1" rowspan="1">578–784</td>
+<td align="left" colspan="1" rowspan="1">FLX</td>
+<td align="left" colspan="1" rowspan="1"><xref ref-type="bibr" rid="pcbi.1000844-Wang1">[8]</xref></td>
+<td align="left" colspan="1" rowspan="1">None</td>
+<td align="left" colspan="1" rowspan="1">207 (206–208)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">Lane</td>
+<td align="left" colspan="1" rowspan="1">207 (206–207)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V6</bold></td>
+<td align="left" colspan="1" rowspan="1">986–1045</td>
+<td align="left" colspan="1" rowspan="1">FLX/Illumina</td>
+<td align="left" colspan="1" rowspan="1"><xref ref-type="bibr" rid="pcbi.1000844-Huber1">[5]</xref></td>
+<td align="left" colspan="1" rowspan="1">None</td>
+<td align="left" colspan="1" rowspan="1">60 (57–66)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">Lane</td>
+<td align="left" colspan="1" rowspan="1">27 (27–27)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V69</bold></td>
+<td align="left" colspan="1" rowspan="1">986–1491</td>
+<td align="left" colspan="1" rowspan="1">Titanium</td>
+<td align="left" colspan="1" rowspan="1">HMP</td>
+<td align="left" colspan="1" rowspan="1">None</td>
+<td align="left" colspan="1" rowspan="1">507 (489–516)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">Lane</td>
+<td align="left" colspan="1" rowspan="1">411 (407–412)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V89</bold></td>
+<td align="left" colspan="1" rowspan="1">1100–1491</td>
+<td align="left" colspan="1" rowspan="1">Titanium</td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">None</td>
+<td align="left" colspan="1" rowspan="1">392 (373–403)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">Lane</td>
+<td align="left" colspan="1" rowspan="1">330 (326–331)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V9</bold></td>
+<td align="left" colspan="1" rowspan="1">1300–1491</td>
+<td align="left" colspan="1" rowspan="1">FLX</td>
+<td align="left" colspan="1" rowspan="1"><xref ref-type="bibr" rid="pcbi.1000844-Roesch1">[4]</xref></td>
+<td align="left" colspan="1" rowspan="1">None</td>
+<td align="left" colspan="1" rowspan="1">192 (182–197)</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">Lane</td>
+<td align="left" colspan="1" rowspan="1">170 (146–147)</td>
+</tr>
+</tbody>
+</table></alternatives><table-wrap-foot><fn id="nt101"><label/><p>Each sub-region was generated from the sequences in the V19 database.</p></fn><fn id="nt102"><label>a</label><p>The numbers in the parentheses represent the 95% confidence interval.</p></fn><fn id="nt103"><label>b</label><p>Sanger reads are estimated to be up to 800 bp and can be used to sequence the same molecule multiple times.</p></fn><fn id="nt104"><label>c</label><p>GS FLX Titanium reads average ∼400 bp (amplicon kit released 11/2009).</p></fn><fn id="nt105"><label>d</label><p>GS FLX reads average ∼240 bp.</p></fn><fn id="nt106"><label>e</label><p>Illumina reads average ∼200 bp.</p></fn><fn id="nt107"><label>f</label><p>The NIH Human Microbiome Project is considering these regions for their cross-sectional studies.</p></fn></table-wrap-foot></table-wrap>
+<p>Here, I used a collection of full-length 16S rRNA gene sequences representing 43 bacterial phyla to quantify how alignment quality, distance calculation methods, masking, and region within the 16S rRNA gene affect out ability to assess α- and β-diversity. The results of these analyses urge greater caution in how surveys are designed and interpreted.</p>
+</sec><sec id="s2">
+<title>Results</title>
+<sec id="s2a">
+<title>The effect of alignment on genetic distances</title>
+<p>For each of the 13 regions I used various alignment methods to calculate 91,131,750 pairwise distances assuming that a series of consecutive gaps represented one insertion or deletion. The SILVA, greengenes, and RDP alignments represent a gradation in the level of attention given to aligning the variable regions and are each guided by the secondary structure of the 16S rRNA gene. In contrast, the MUSCLE and pairwise alignments are attempts to optimize the alignment between sequences based on a limited number of parameters that are set <italic>a priori</italic>. To compare the pairwise distances calculated for the same pairs of sequences across alignments, I calculated the regression coefficients describing the relationship between the distances for the greengenes, RDP, MUSCLE, and pairwise alignments and the SILVA alignment for each region (<xref ref-type="table" rid="pcbi-1000844-t002">Table 2</xref>). Distance calculations for this analysis assumed that consecutive gap positions were the product of a single insertion or deletion mutation (i.e. one gap). With the exception of the V3 and V4 regions, the RDP alignment for each of the regions predicted greater genetic diversity than that of the SILVA alignment. Interestingly, the greengenes alignment, which does a poor job of aligning the variable regions, predicted between 9 and 33% more genetic diversity for each region than the RDP alignment, which does not attempt to align the variable regions. Visual inspection of the greengenes alignment suggests that in many instances the variable region alignments are somewhat random <xref ref-type="bibr" rid="pcbi.1000844-Schloss1">[11]</xref>. I observed that the MUSCLE-generated alignments described considerably greater genetic diversity than any of the other methods for the V3, V6, and V9 regions (<xref ref-type="table" rid="pcbi-1000844-t002">Table 2</xref>); however, the use of pairwise alignments yielded smaller distances than those calculated with the other alignment methods because pairwise alignment methods optimize the alignment without the constraint of preserving positional homology across multiple sequences (<xref ref-type="table" rid="pcbi-1000844-t002">Table 2</xref>). Perhaps most worrisome is the observation that with the exception of the distances calculated from pairwise alignments, regressions of the other alignment methods to the SILVA-based alignment typically did a poor job of accounting for the variation in the distances (<xref ref-type="table" rid="pcbi-1000844-t002">Table 2</xref>). These data make it clear that variation in alignment quality can have a significant impact on the genetic diversity that is calculated between the same pairs of sequences.</p>
+<table-wrap id="pcbi-1000844-t002" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000844.t002</object-id><label>Table 2</label><caption>
+<title>Slope coefficients and R<sup>2</sup> values for the comparison of one gap distances calculated for SINA-aligned sequences extracted from different regions within the 16S rRNA gene sequence to one gap distances calculated using sequences aligned by different methods.</title>
+</caption><!--===== Grouping alternate versions of objects =====--><alternatives><graphic id="pcbi-1000844-t002-2" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000844.t002" xlink:type="simple"/><table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" colspan="1" rowspan="1">Region</td>
+<td align="left" colspan="1" rowspan="1">Statistic</td>
+<td align="left" colspan="1" rowspan="1">RDP</td>
+<td align="left" colspan="1" rowspan="1">greengenes</td>
+<td align="left" colspan="1" rowspan="1">MUSCLE</td>
+<td align="left" colspan="1" rowspan="1">Needleman</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V19</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">1.06</td>
+<td align="left" colspan="1" rowspan="1">1.17</td>
+<td align="left" colspan="1" rowspan="1">1.04</td>
+<td align="left" colspan="1" rowspan="1">0.93</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.97</td>
+<td align="left" colspan="1" rowspan="1">0.77</td>
+<td align="left" colspan="1" rowspan="1">0.98</td>
+<td align="left" colspan="1" rowspan="1">0.99</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V12</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">1.13</td>
+<td align="left" colspan="1" rowspan="1">1.25</td>
+<td align="left" colspan="1" rowspan="1">1.11</td>
+<td align="left" colspan="1" rowspan="1">0.93</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.80</td>
+<td align="left" colspan="1" rowspan="1">0.52</td>
+<td align="left" colspan="1" rowspan="1">0.77</td>
+<td align="left" colspan="1" rowspan="1">0.91</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V13</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">1.08</td>
+<td align="left" colspan="1" rowspan="1">1.20</td>
+<td align="left" colspan="1" rowspan="1">1.07</td>
+<td align="left" colspan="1" rowspan="1">0.93</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.88</td>
+<td align="left" colspan="1" rowspan="1">0.62</td>
+<td align="left" colspan="1" rowspan="1">0.92</td>
+<td align="left" colspan="1" rowspan="1">0.93</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V14</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">1.06</td>
+<td align="left" colspan="1" rowspan="1">1.16</td>
+<td align="left" colspan="1" rowspan="1">1.05</td>
+<td align="left" colspan="1" rowspan="1">0.94</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.94</td>
+<td align="left" colspan="1" rowspan="1">0.74</td>
+<td align="left" colspan="1" rowspan="1">0.96</td>
+<td align="left" colspan="1" rowspan="1">0.97</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V2</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">1.04</td>
+<td align="left" colspan="1" rowspan="1">1.21</td>
+<td align="left" colspan="1" rowspan="1">1.16</td>
+<td align="left" colspan="1" rowspan="1">0.97</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.94</td>
+<td align="left" colspan="1" rowspan="1">0.67</td>
+<td align="left" colspan="1" rowspan="1">0.64</td>
+<td align="left" colspan="1" rowspan="1">0.95</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V23</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">1.04</td>
+<td align="left" colspan="1" rowspan="1">1.18</td>
+<td align="left" colspan="1" rowspan="1">1.09</td>
+<td align="left" colspan="1" rowspan="1">0.95</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.96</td>
+<td align="left" colspan="1" rowspan="1">0.74</td>
+<td align="left" colspan="1" rowspan="1">0.92</td>
+<td align="left" colspan="1" rowspan="1">0.96</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V3</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">1.00</td>
+<td align="left" colspan="1" rowspan="1">1.11</td>
+<td align="left" colspan="1" rowspan="1">2.07</td>
+<td align="left" colspan="1" rowspan="1">1.02</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.91</td>
+<td align="left" colspan="1" rowspan="1">0.67</td>
+<td align="left" colspan="1" rowspan="1">0.14</td>
+<td align="left" colspan="1" rowspan="1">0.96</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V35</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">1.01</td>
+<td align="left" colspan="1" rowspan="1">1.12</td>
+<td align="left" colspan="1" rowspan="1">1.04</td>
+<td align="left" colspan="1" rowspan="1">0.95</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.98</td>
+<td align="left" colspan="1" rowspan="1">0.83</td>
+<td align="left" colspan="1" rowspan="1">0.97</td>
+<td align="left" colspan="1" rowspan="1">0.98</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V4</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">1.00</td>
+<td align="left" colspan="1" rowspan="1">1.09</td>
+<td align="left" colspan="1" rowspan="1">1.08</td>
+<td align="left" colspan="1" rowspan="1">0.98</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.99</td>
+<td align="left" colspan="1" rowspan="1">0.77</td>
+<td align="left" colspan="1" rowspan="1">0.87</td>
+<td align="left" colspan="1" rowspan="1">0.98</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V6</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">1.09</td>
+<td align="left" colspan="1" rowspan="1">1.42</td>
+<td align="left" colspan="1" rowspan="1">3.04</td>
+<td align="left" colspan="1" rowspan="1">0.98</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.66</td>
+<td align="left" colspan="1" rowspan="1">0.14</td>
+<td align="left" colspan="1" rowspan="1">0.30</td>
+<td align="left" colspan="1" rowspan="1">0.97</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V69</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">1.07</td>
+<td align="left" colspan="1" rowspan="1">1.21</td>
+<td align="left" colspan="1" rowspan="1">1.10</td>
+<td align="left" colspan="1" rowspan="1">0.94</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.92</td>
+<td align="left" colspan="1" rowspan="1">0.70</td>
+<td align="left" colspan="1" rowspan="1">0.91</td>
+<td align="left" colspan="1" rowspan="1">0.97</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V89</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">1.05</td>
+<td align="left" colspan="1" rowspan="1">1.18</td>
+<td align="left" colspan="1" rowspan="1">1.12</td>
+<td align="left" colspan="1" rowspan="1">0.96</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.94</td>
+<td align="left" colspan="1" rowspan="1">0.78</td>
+<td align="left" colspan="1" rowspan="1">0.86</td>
+<td align="left" colspan="1" rowspan="1">0.98</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V9</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">1.08</td>
+<td align="left" colspan="1" rowspan="1">1.19</td>
+<td align="left" colspan="1" rowspan="1">1.58</td>
+<td align="left" colspan="1" rowspan="1">0.96</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.80</td>
+<td align="left" colspan="1" rowspan="1">0.67</td>
+<td align="left" colspan="1" rowspan="1">0.36</td>
+<td align="left" colspan="1" rowspan="1">0.96</td>
+</tr>
+</tbody>
+</table></alternatives></table-wrap></sec><sec id="s2b">
+<title>Effect of alignment on interpretation of α-diversity</title>
+<p>Considering the poor correlation between the distances generated from the five alignment methods, it was necessary to determine the effect of this variation on the ability to accurately describe and compare communities. As expected based on the genetic distance analysis, the number of OTUs observed using the greengenes alignment was routinely higher than that observed using the other alignment methods and the number of OTUs observed using the pairwise alignment method was routinely the lowest (<xref ref-type="fig" rid="pcbi-1000844-g001">Fig. 1</xref>). Inspection of these lineage through time plots identified a stair-like appearance for many of the regions. This was due to the loss of information as sequence length decreased. The most extreme example of this phenomenon was for the V6 region that had an average sequence length of 60 bp. Each difference between a pair of V6 sequences changed the distance by approximately 0.0167 units, which is the step-length observed for the V6 data in <xref ref-type="fig" rid="pcbi-1000844-g001">Fig. 1</xref>. When the phylogenetic diversity of the datasets was calculated, the greengenes aligned sequences had the highest phylogenetic diversity and the pairwise aligned sequences had the lowest (<xref ref-type="fig" rid="pcbi-1000844-g002">Fig. 2</xref>). One limitation of the phylogenetic diversity metric is that it is difficult to interpret the statistic and so it is unclear how biologically meaningful the level of variation observed is in <xref ref-type="fig" rid="pcbi-1000844-g002">Fig. 2</xref>.</p>
+<fig id="pcbi-1000844-g001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000844.g001</object-id><label>Figure 1</label><caption>
+<title>The number of OTUs observed as a function of genetic distance for various regions within the 16S rRNA gene when using different sequence alignments.</title>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000844.g001" xlink:type="simple"/></fig><fig id="pcbi-1000844-g002" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000844.g002</object-id><label>Figure 2</label><caption>
+<title>The phylogenetic diversity observed for different regions within the 16S rRNA gene when using different alignments.</title>
+<p>Phylogenetic diversity was measured by calculating the total branch length for a phylogenetic tree.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000844.g002" xlink:type="simple"/></fig></sec><sec id="s2c">
+<title>Effect of alignment on interpretation of β-diversity</title>
+<p>To describe β-diversity, I used two OTU-based metrics (<xref ref-type="fig" rid="pcbi-1000844-g003">Figs. 3</xref> and <xref ref-type="fig" rid="pcbi-1000844-g004">4</xref>) and two phylogenetic-based metrics (<xref ref-type="fig" rid="pcbi-1000844-g005">Fig. 5</xref>) to measure the sensitivity of the metrics to alignment quality. Sequences were partitioned so that they would represent two samplings of communities whose Jaccard similarity index was 0.80, but whose Morisita-Horn similarity index was 0.60 with a cutoff of 0.05 when defining OTUs with full-length sequences. Because the sampling of the two simulated communities was limited (ca. 6,750 sequences per community), the Jaccard and unweighted UniFrac statistics did not equal the expected values. Within this simulation framework, the effect of alignment was generally highly statistically significant across metrics of β-diversity (p≪0.001); however it is unclear how biologically meaningful the observed differences were.</p>
+<fig id="pcbi-1000844-g003" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000844.g003</object-id><label>Figure 3</label><caption>
+<title>The Jaccard coefficient calculated between two mock communities (described in <xref ref-type="sec" rid="s4">Materials &amp; Methods</xref>) for different OTU definitions and alignments.</title>
+<p>Each bar represents the average coefficient value for 100 randomized partitionings of the data. Within the same OTU cutoff, alignment strategies with the same symbol and regions with the same letter were not significantly different from each other.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000844.g003" xlink:type="simple"/></fig><fig id="pcbi-1000844-g004" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000844.g004</object-id><label>Figure 4</label><caption>
+<title>The Morisita-Horn coefficient calculated between two mock communities (described in <xref ref-type="sec" rid="s4">Materials &amp; Methods</xref>) using different OTU definitions and alignments.</title>
+<p>Each bar represents the average coefficient value for 100 randomized partitionings of the data. Within the same OTU cutoff, alignment strategies with the same symbol and regions with the same letter were not significantly different from each other.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000844.g004" xlink:type="simple"/></fig><fig id="pcbi-1000844-g005" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000844.g005</object-id><label>Figure 5</label><caption>
+<title>Unweighted and weighted UniFrac similarity values calculated between two mock communities (described in <xref ref-type="sec" rid="s4">Materials &amp; Methods</xref>) using different alignments.</title>
+<p>Each bar represents the average coefficient value for 100 randomized partitionings of the data. Within the same UniFrac approach, alignment strategies with the same symbol and regions with the same letter were not significantly different from each other.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000844.g005" xlink:type="simple"/></fig></sec><sec id="s2d">
+<title>The effect of distance calculation method on genetic distances</title>
+<p>Using the same SILVA-aligned sequences that I analyzed above, I investigated the effect of different distance calculation methods on downstream analyses. Specifically, I considered the one gap calculator (i.e. a gap of any length between two sequences represents a single mutation) and each gap (i.e. gaps length <italic>n</italic>, represent <italic>n</italic> mutations) and ignore gap calculators (i.e. gapped characters are not considered in calculating a distance; <xref ref-type="table" rid="pcbi-1000844-t003">Table 3</xref>). The slope of lines forced through the origin indicated that the each gap calculator calculated between 0 (V4) and 9% (V3) more genetic diversity than the one gap calculator. With the exception of the V3 region (69%), the regression between the each gap and one gap calculators accounted for more than 87% of the variation in the distances. The differences in the explanatory power of the regression were a function of frequency of gaps longer than 1 nucleotide. The ignore gap calculator calculated between 2 (V4) and 7% (V9) less genetic diversity than the one gap calculator. The regression between the ignore gap and one gap calculators accounted for more than 94% of the variation in the data. Until there is a more well-developed theoretical basis for selecting a method for treating gaps in sequence alignments, these results suggest that treating gaps of any length as a single mutation is a middle ground between ignoring them and treating each of them as a separate evolutionary event.</p>
+<table-wrap id="pcbi-1000844-t003" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000844.t003</object-id><label>Table 3</label><caption>
+<title>Slope and R<sup>2</sup> values for the regression of one gap pairwise distances onto each gap, ignore gap, Lane mask-filtered one gap, and kmer distances using SINA-aligned sequences over the same region.</title>
+</caption><!--===== Grouping alternate versions of objects =====--><alternatives><graphic id="pcbi-1000844-t003-3" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000844.t003" xlink:type="simple"/><table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" colspan="1" rowspan="1">Region</td>
+<td align="left" colspan="1" rowspan="1">Statistic</td>
+<td align="left" colspan="1" rowspan="1">Each gap</td>
+<td align="left" colspan="1" rowspan="1">Ignore gaps</td>
+<td align="left" colspan="1" rowspan="1">Filtered</td>
+<td align="left" colspan="1" rowspan="1">kmer</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V19</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">1.02</td>
+<td align="left" colspan="1" rowspan="1">0.94</td>
+<td align="left" colspan="1" rowspan="1">0.66</td>
+<td align="left" colspan="1" rowspan="1">3.73</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.99</td>
+<td align="left" colspan="1" rowspan="1">0.99</td>
+<td align="left" colspan="1" rowspan="1">0.89</td>
+<td align="left" colspan="1" rowspan="1">0.97</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V12</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">1.02</td>
+<td align="left" colspan="1" rowspan="1">0.94</td>
+<td align="left" colspan="1" rowspan="1">0.56</td>
+<td align="left" colspan="1" rowspan="1">3.91</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.87</td>
+<td align="left" colspan="1" rowspan="1">0.97</td>
+<td align="left" colspan="1" rowspan="1">0.47</td>
+<td align="left" colspan="1" rowspan="1">0.89</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V13</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">1.02</td>
+<td align="left" colspan="1" rowspan="1">0.94</td>
+<td align="left" colspan="1" rowspan="1">0.55</td>
+<td align="left" colspan="1" rowspan="1">3.80</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.92</td>
+<td align="left" colspan="1" rowspan="1">0.97</td>
+<td align="left" colspan="1" rowspan="1">0.56</td>
+<td align="left" colspan="1" rowspan="1">0.91</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V14</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">1.02</td>
+<td align="left" colspan="1" rowspan="1">0.95</td>
+<td align="left" colspan="1" rowspan="1">0.67</td>
+<td align="left" colspan="1" rowspan="1">3.87</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.96</td>
+<td align="left" colspan="1" rowspan="1">0.98</td>
+<td align="left" colspan="1" rowspan="1">0.75</td>
+<td align="left" colspan="1" rowspan="1">0.95</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V2</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">1.01</td>
+<td align="left" colspan="1" rowspan="1">0.97</td>
+<td align="left" colspan="1" rowspan="1">0.71</td>
+<td align="left" colspan="1" rowspan="1">4.31</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.90</td>
+<td align="left" colspan="1" rowspan="1">0.99</td>
+<td align="left" colspan="1" rowspan="1">0.58</td>
+<td align="left" colspan="1" rowspan="1">0.92</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V23</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">1.01</td>
+<td align="left" colspan="1" rowspan="1">0.96</td>
+<td align="left" colspan="1" rowspan="1">0.64</td>
+<td align="left" colspan="1" rowspan="1">3.99</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.92</td>
+<td align="left" colspan="1" rowspan="1">0.98</td>
+<td align="left" colspan="1" rowspan="1">0.66</td>
+<td align="left" colspan="1" rowspan="1">0.93</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V3</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">1.09</td>
+<td align="left" colspan="1" rowspan="1">0.95</td>
+<td align="left" colspan="1" rowspan="1">0.77</td>
+<td align="left" colspan="1" rowspan="1">4.69</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.69</td>
+<td align="left" colspan="1" rowspan="1">0.94</td>
+<td align="left" colspan="1" rowspan="1">0.52</td>
+<td align="left" colspan="1" rowspan="1">0.83</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V35</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">1.01</td>
+<td align="left" colspan="1" rowspan="1">0.97</td>
+<td align="left" colspan="1" rowspan="1">0.79</td>
+<td align="left" colspan="1" rowspan="1">4.24</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.99</td>
+<td align="left" colspan="1" rowspan="1">0.98</td>
+<td align="left" colspan="1" rowspan="1">0.84</td>
+<td align="left" colspan="1" rowspan="1">0.94</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V4</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">1.00</td>
+<td align="left" colspan="1" rowspan="1">0.98</td>
+<td align="left" colspan="1" rowspan="1">0.99</td>
+<td align="left" colspan="1" rowspan="1">4.70</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">1.00</td>
+<td align="left" colspan="1" rowspan="1">0.98</td>
+<td align="left" colspan="1" rowspan="1">0.99</td>
+<td align="left" colspan="1" rowspan="1">0.93</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V6</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">1.00</td>
+<td align="left" colspan="1" rowspan="1">0.96</td>
+<td align="left" colspan="1" rowspan="1">1.17</td>
+<td align="left" colspan="1" rowspan="1">4.82</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">1.00</td>
+<td align="left" colspan="1" rowspan="1">0.95</td>
+<td align="left" colspan="1" rowspan="1">0.38</td>
+<td align="left" colspan="1" rowspan="1">0.86</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V69</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">1.02</td>
+<td align="left" colspan="1" rowspan="1">0.94</td>
+<td align="left" colspan="1" rowspan="1">0.73</td>
+<td align="left" colspan="1" rowspan="1">3.94</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.98</td>
+<td align="left" colspan="1" rowspan="1">0.98</td>
+<td align="left" colspan="1" rowspan="1">0.79</td>
+<td align="left" colspan="1" rowspan="1">0.94</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V89</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">1.03</td>
+<td align="left" colspan="1" rowspan="1">0.93</td>
+<td align="left" colspan="1" rowspan="1">0.85</td>
+<td align="left" colspan="1" rowspan="1">4.35</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.94</td>
+<td align="left" colspan="1" rowspan="1">0.97</td>
+<td align="left" colspan="1" rowspan="1">0.86</td>
+<td align="left" colspan="1" rowspan="1">0.95</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V9</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">1.01</td>
+<td align="left" colspan="1" rowspan="1">0.93</td>
+<td align="left" colspan="1" rowspan="1">0.76</td>
+<td align="left" colspan="1" rowspan="1">4.60</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.95</td>
+<td align="left" colspan="1" rowspan="1">0.94</td>
+<td align="left" colspan="1" rowspan="1">0.69</td>
+<td align="left" colspan="1" rowspan="1">0.91</td>
+</tr>
+</tbody>
+</table></alternatives></table-wrap>
+<p>Pairwise kmer distances were much larger than the alignment-based calculators and their regression onto the one gap calculated distances accounted for between 83 and 97% of the variation observed between the distances. In order to have no risk of falsely ignoring true one gap pairwise distances smaller than 0.10, it was necessary to keep kmer distances smaller than 0.45 (V19) to 0.73 (V6). This would result in needing to calculate between 3.3- and 9.1-fold more distances than would be needed by alignment-based methods.</p>
+</sec><sec id="s2e">
+<title>Effect of distance calculation method on interpretation of α-diversity</title>
+<p>Lacking a theoretical basis for treating gaps as a single evolutionary event, I was curious how much measures of α- and β-diversity are affected by the choice of a distance calculator. I used an OTU-based approach to determine the effect of distance calculation methods on the richness of OTUs within the dataset (<xref ref-type="fig" rid="pcbi-1000844-g006">Fig. 6</xref>) and a phylogeny-based approach using total branch length to measure phylogenetic diversity (<xref ref-type="fig" rid="pcbi-1000844-g007">Fig. 7</xref>). As would be predicted, the number of observed OTUs at any genetic distance was greatest with the each gap and least with the ignore gap calculators; the one gap and each gap calculators generated comparable numbers of OTUs. When I analyzed the effect of region and distance calculation method on the phylogenetic diversity of the datasets, there were qualitative trends between methods and regions that could have been predicted from the regression analysis in <xref ref-type="table" rid="pcbi-1000844-t002">Table 2</xref> (<xref ref-type="fig" rid="pcbi-1000844-g007">Fig. 7</xref>). These analyses suggest that the difference observed in α-diversity when using either the one gap or each gap calculator is unlikely to be biologically meaningful.</p>
+<fig id="pcbi-1000844-g006" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000844.g006</object-id><label>Figure 6</label><caption>
+<title>The number of OTUs observed as a function of genetic distance for various regions within the 16S rRNA gene when using different methods of calculating distances and masking sequences.</title>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000844.g006" xlink:type="simple"/></fig><fig id="pcbi-1000844-g007" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000844.g007</object-id><label>Figure 7</label><caption>
+<title>The phylogenetic diversity observed for different regions within the 16S rRNA gene when using different methods of calculating distances and masking sequences.</title>
+<p>Phylogenetic diversity was measured by calculating the total branch length for a phylogenetic tree.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000844.g007" xlink:type="simple"/></fig></sec><sec id="s2f">
+<title>Effect of distance calculation method on interpretation of β-diversity</title>
+<p>I next investigated what effect each calculator method had on two OTU-based (<xref ref-type="fig" rid="pcbi-1000844-g008">Figs. 8</xref> and <xref ref-type="fig" rid="pcbi-1000844-g009">9</xref>) and two phylogeny-based β-diversity measures (<xref ref-type="fig" rid="pcbi-1000844-g010">Fig. 10</xref>). For the OTU-based metrics, ignoring gaps resulted in an over-estimate of the similarity between the two communities and counting each gap resulted in an under-estimate. Increasing and decreasing the cutoff used to define the OTUs had a parallel effect on the Jaccard and Morisita-Horn indices (<xref ref-type="fig" rid="pcbi-1000844-g008">Figs. 8</xref> and <xref ref-type="fig" rid="pcbi-1000844-g009">9</xref>). These results occurred because ignoring gaps and increasing the threshold each dampen the differences between sequences and pull more sequences into an OTU so that more OTUs are likely to be shared; the same phenomenon was observed when sequences were filtered using the Lane mask (see below). Penalizing each gap or making the OTU definition more stringent had the opposite effect. The calculated Jaccard coefficients were not significantly different between the one gap and each gap distance calculation methods when using the 0.03 and 0.05 OTU cutoffs (<xref ref-type="fig" rid="pcbi-1000844-g008">Fig. 8</xref>); all four distance calculation methods yielded statistically significant differences in Morisita-Horn coefficients, regardless of the OTU cutoff. For the phylogeny-based methods, the observed differences between each of the distance calculation methods were statistically significant (<xref ref-type="fig" rid="pcbi-1000844-g010">Fig 10</xref>). Although the differences between distance calculation methods were highly statistically significant (p≪0.001), it is unclear how biologically meaningful the differences were.</p>
+<fig id="pcbi-1000844-g008" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000844.g008</object-id><label>Figure 8</label><caption>
+<title>Jaccard similarity values calculated between two mock communities (described in <xref ref-type="sec" rid="s4">Materials &amp; Methods</xref>) for different OTU definitions, methods of calculating distances, and masking sequences.</title>
+<p>Each bar represents the average coefficient value for 100 randomized partitionings of the data. Within the same OTU cutoff, regions with the same letter were not significantly different from each other; for each OTU cutoff all distance calculation methods were significantly different from each other.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000844.g008" xlink:type="simple"/></fig><fig id="pcbi-1000844-g009" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000844.g009</object-id><label>Figure 9</label><caption>
+<title>The Morisita-Horn coefficient calculated between two mock communities (described in <xref ref-type="sec" rid="s4">Materials &amp; Methods</xref>) using different OTU definitions, methods of calculating distances, and masking sequences.</title>
+<p>Each bar represents the average coefficient value for 100 randomized partitionings of the data. Within the same OTU cutoff, distance calculation methods with the same symbol and regions with the same letter were not significantly different from each other.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000844.g009" xlink:type="simple"/></fig><fig id="pcbi-1000844-g010" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000844.g010</object-id><label>Figure 10</label><caption>
+<title>Unweighted and weighted UniFrac similarity values calculated between two mock communities (described in <xref ref-type="sec" rid="s4">Materials &amp; Methods</xref>) using different methods of calculating distances and masking sequences.</title>
+<p>Each bar represents the average coefficient value for 100 randomized partitionings of the data. Within the same UniFrac method, regions with the same letter were not significantly different from each other; for both UniFrac methods the distance calculation methods were all significantly different from each other.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000844.g010" xlink:type="simple"/></fig></sec><sec id="s2g">
+<title>Effects of filtering sequences using the Lane mask on analysis</title>
+<p>To circumvent alignment quality problems, the Lane mask has been used to filter variable regions from 16S rRNA genes. Results of analyses using filtered sequences aligned by any method or when distances were calculated by any method did not vary to a meaningful degree. Comparison of distances calculated using filtered sequences to those calculated using unfiltered sequences showed that filtering significantly reduced the genetic diversity observed between sequences (<xref ref-type="table" rid="pcbi-1000844-t003">Table 3</xref>). With the exception of the V4 and V6 regions, masking removed between 15 and 45% of the genetic diversity. The V4 region is largely unaffected by the Lane mask and the average length of V6 sequences following the Lane mask treatment was only 27 bp, which made the resulting pairwise distances of dubious value (<xref ref-type="table" rid="pcbi-1000844-t001">Table 1</xref>). As would be expected, the number of OTUs and phylogenetic diversity observed using Lane mask-filtered sequences was significantly lower than those calculated with the unfiltered sequences. For the four β-diversity measures, when the Lane mask-filtered sequences were analyzed, the communities appeared more similar than for non-filtered SILVA-aligned sequences (<xref ref-type="fig" rid="pcbi-1000844-g008">Figs. 8</xref>–<xref ref-type="fig" rid="pcbi-1000844-g009"/><xref ref-type="fig" rid="pcbi-1000844-g010">10</xref>). One explanation for this observation is that because filtering makes sequences more similar to each other, it also makes communities appear more similar to each other. Although useful for broad-scale phylogenetic analysis at the level of a kingdom or phylum, filters remove the sequence information necessary to differentiate populations within a community. Ultimately, application of such filters is troublesome because it mutes the signals that differentiate communities.</p>
+</sec><sec id="s2h">
+<title>Relationship between the genetic diversity calculated between full-length and regional sequences</title>
+<p>I compared the one gap distances calculated for each of the 12 regions from each alignment to the one gap distances calculated from the full-length SILVA alignments (<xref ref-type="table" rid="pcbi-1000844-t004">Table 4</xref>). The regression of pairwise distances calculated from a sub-region onto distances calculated from full-length sequences was rarely near 1.00. The most extreme case was the V6 region for which distances were nearly 3-fold higher than distances calculated using full-length sequences. Conversely, sequences from the V9 region were 33% less diverse than their full-length counterparts. In general, genetic diversity decreased along the length of the 16S rRNA gene. Although one could use these regression coefficients to relate data collected from one region to that from full-length sequences, the ability of the regression to explain the variation observed between sub-region and full-length sequences was quite poor. As expected, longer regions did the best job of relating the variation between sub-regions and full-length sequences. For example, when using the SILVA alignments, the regression of the V14, V35, and V69 distances onto the full-length distances accounted for 87, 77, and 77% of the variation in distances. Shorter regions such as the V3, V6, and V9 accounted for 26, 36, and 46% of the variation (<xref ref-type="table" rid="pcbi-1000844-t004">Table 4</xref>). This analysis revealed that all sub-regions are limited in their capacity to serve as surrogates for full-length 16S rRNA gene sequences.</p>
+<table-wrap id="pcbi-1000844-t004" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000844.t004</object-id><label>Table 4</label><caption>
+<title>Regression coefficients and R<sup>2</sup> values for the comparison of one gap distances calculated for different regions within the 16S rRNA gene sequence and aligned by different methods to the one gap distances calculated using SINA aligned full-length sequences.</title>
+</caption><!--===== Grouping alternate versions of objects =====--><alternatives><graphic id="pcbi-1000844-t004-4" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000844.t004" xlink:type="simple"/><table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" colspan="1" rowspan="1">Region</td>
+<td align="left" colspan="1" rowspan="1">Statistic</td>
+<td align="left" colspan="1" rowspan="1">SILVA</td>
+<td align="left" colspan="1" rowspan="1">greengenes</td>
+<td align="left" colspan="1" rowspan="1">RDP</td>
+<td align="left" colspan="1" rowspan="1">MUSCLE</td>
+<td align="left" colspan="1" rowspan="1">Needleman</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V19</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">NA</td>
+<td align="left" colspan="1" rowspan="1">1.17</td>
+<td align="left" colspan="1" rowspan="1">1.06</td>
+<td align="left" colspan="1" rowspan="1">1.04</td>
+<td align="left" colspan="1" rowspan="1">0.93</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">NA</td>
+<td align="left" colspan="1" rowspan="1">0.77</td>
+<td align="left" colspan="1" rowspan="1">0.97</td>
+<td align="left" colspan="1" rowspan="1">0.98</td>
+<td align="left" colspan="1" rowspan="1">0.99</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V12</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">1.50</td>
+<td align="left" colspan="1" rowspan="1">1.79</td>
+<td align="left" colspan="1" rowspan="1">1.65</td>
+<td align="left" colspan="1" rowspan="1">1.74</td>
+<td align="left" colspan="1" rowspan="1">1.36</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.70</td>
+<td align="left" colspan="1" rowspan="1">0.55</td>
+<td align="left" colspan="1" rowspan="1">0.64</td>
+<td align="left" colspan="1" rowspan="1">0.57</td>
+<td align="left" colspan="1" rowspan="1">0.70</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V13</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">1.31</td>
+<td align="left" colspan="1" rowspan="1">1.52</td>
+<td align="left" colspan="1" rowspan="1">1.40</td>
+<td align="left" colspan="1" rowspan="1">1.40</td>
+<td align="left" colspan="1" rowspan="1">1.19</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.73</td>
+<td align="left" colspan="1" rowspan="1">0.60</td>
+<td align="left" colspan="1" rowspan="1">0.66</td>
+<td align="left" colspan="1" rowspan="1">0.74</td>
+<td align="left" colspan="1" rowspan="1">0.72</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V14</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">1.13</td>
+<td align="left" colspan="1" rowspan="1">1.29</td>
+<td align="left" colspan="1" rowspan="1">1.19</td>
+<td align="left" colspan="1" rowspan="1">1.18</td>
+<td align="left" colspan="1" rowspan="1">1.05</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.87</td>
+<td align="left" colspan="1" rowspan="1">0.72</td>
+<td align="left" colspan="1" rowspan="1">0.83</td>
+<td align="left" colspan="1" rowspan="1">0.88</td>
+<td align="left" colspan="1" rowspan="1">0.87</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V2</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">1.39</td>
+<td align="left" colspan="1" rowspan="1">1.61</td>
+<td align="left" colspan="1" rowspan="1">1.43</td>
+<td align="left" colspan="1" rowspan="1">1.57</td>
+<td align="left" colspan="1" rowspan="1">1.31</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.70</td>
+<td align="left" colspan="1" rowspan="1">0.59</td>
+<td align="left" colspan="1" rowspan="1">0.69</td>
+<td align="left" colspan="1" rowspan="1">0.62</td>
+<td align="left" colspan="1" rowspan="1">0.70</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V23</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">1.21</td>
+<td align="left" colspan="1" rowspan="1">1.38</td>
+<td align="left" colspan="1" rowspan="1">1.26</td>
+<td align="left" colspan="1" rowspan="1">1.29</td>
+<td align="left" colspan="1" rowspan="1">1.13</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.73</td>
+<td align="left" colspan="1" rowspan="1">0.64</td>
+<td align="left" colspan="1" rowspan="1">0.71</td>
+<td align="left" colspan="1" rowspan="1">0.72</td>
+<td align="left" colspan="1" rowspan="1">0.74</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V3</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">1.05</td>
+<td align="left" colspan="1" rowspan="1">1.15</td>
+<td align="left" colspan="1" rowspan="1">1.06</td>
+<td align="left" colspan="1" rowspan="1">1.63</td>
+<td align="left" colspan="1" rowspan="1">0.97</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.26</td>
+<td align="left" colspan="1" rowspan="1">0.26</td>
+<td align="left" colspan="1" rowspan="1">0.24</td>
+<td align="left" colspan="1" rowspan="1">0.23</td>
+<td align="left" colspan="1" rowspan="1">0.27</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V35</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">0.90</td>
+<td align="left" colspan="1" rowspan="1">0.99</td>
+<td align="left" colspan="1" rowspan="1">0.90</td>
+<td align="left" colspan="1" rowspan="1">0.93</td>
+<td align="left" colspan="1" rowspan="1">0.85</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.77</td>
+<td align="left" colspan="1" rowspan="1">0.68</td>
+<td align="left" colspan="1" rowspan="1">0.76</td>
+<td align="left" colspan="1" rowspan="1">0.75</td>
+<td align="left" colspan="1" rowspan="1">0.76</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V4</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">0.97</td>
+<td align="left" colspan="1" rowspan="1">1.05</td>
+<td align="left" colspan="1" rowspan="1">0.97</td>
+<td align="left" colspan="1" rowspan="1">1.05</td>
+<td align="left" colspan="1" rowspan="1">0.94</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.57</td>
+<td align="left" colspan="1" rowspan="1">0.50</td>
+<td align="left" colspan="1" rowspan="1">0.56</td>
+<td align="left" colspan="1" rowspan="1">0.55</td>
+<td align="left" colspan="1" rowspan="1">0.57</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V6</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">2.98</td>
+<td align="left" colspan="1" rowspan="1">3.52</td>
+<td align="left" colspan="1" rowspan="1">3.30</td>
+<td align="left" colspan="1" rowspan="1">4.99</td>
+<td align="left" colspan="1" rowspan="1">2.62</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.36</td>
+<td align="left" colspan="1" rowspan="1">0.31</td>
+<td align="left" colspan="1" rowspan="1">0.34</td>
+<td align="left" colspan="1" rowspan="1">0.24</td>
+<td align="left" colspan="1" rowspan="1">0.37</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V69</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">0.98</td>
+<td align="left" colspan="1" rowspan="1">1.16</td>
+<td align="left" colspan="1" rowspan="1">1.05</td>
+<td align="left" colspan="1" rowspan="1">1.04</td>
+<td align="left" colspan="1" rowspan="1">0.90</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.77</td>
+<td align="left" colspan="1" rowspan="1">0.62</td>
+<td align="left" colspan="1" rowspan="1">0.72</td>
+<td align="left" colspan="1" rowspan="1">0.77</td>
+<td align="left" colspan="1" rowspan="1">0.78</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V89</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">0.79</td>
+<td align="left" colspan="1" rowspan="1">0.93</td>
+<td align="left" colspan="1" rowspan="1">0.84</td>
+<td align="left" colspan="1" rowspan="1">0.86</td>
+<td align="left" colspan="1" rowspan="1">0.75</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.70</td>
+<td align="left" colspan="1" rowspan="1">0.62</td>
+<td align="left" colspan="1" rowspan="1">0.67</td>
+<td align="left" colspan="1" rowspan="1">0.68</td>
+<td align="left" colspan="1" rowspan="1">0.70</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"><bold>V9</bold></td>
+<td align="left" colspan="1" rowspan="1">Slope</td>
+<td align="left" colspan="1" rowspan="1">0.67</td>
+<td align="left" colspan="1" rowspan="1">0.83</td>
+<td align="left" colspan="1" rowspan="1">0.76</td>
+<td align="left" colspan="1" rowspan="1">0.85</td>
+<td align="left" colspan="1" rowspan="1">0.63</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">R<sup>2</sup></td>
+<td align="left" colspan="1" rowspan="1">0.46</td>
+<td align="left" colspan="1" rowspan="1">0.43</td>
+<td align="left" colspan="1" rowspan="1">0.42</td>
+<td align="left" colspan="1" rowspan="1">0.39</td>
+<td align="left" colspan="1" rowspan="1">0.46</td>
+</tr>
+</tbody>
+</table></alternatives></table-wrap></sec><sec id="s2i">
+<title>Relationship between sub-region differences and differences in α-diversity</title>
+<p>The distance-based analysis clearly showed significant differences between distances calculated from sub-regions and full-length sequences. The OTU-based analysis in <xref ref-type="fig" rid="pcbi-1000844-g001">Fig. 1</xref> demonstrates that there was a clear difference in the number of OTUs observed across regions for a given genetic distance as well as the level of curvature observe observed in the lineage-through-time plots (<xref ref-type="fig" rid="pcbi-1000844-g001">Figs. 1</xref> and <xref ref-type="fig" rid="pcbi-1000844-g006">6</xref>). In the phylogenetic-based analysis those regions that described more genetic diversity than the full-length sequences had greater phylogenetic diversity than the phylogenetic diversity calculated for the full-length sequences whereas the regions that described less genetic diversity yielded greater phylogenetic diversity (<xref ref-type="fig" rid="pcbi-1000844-g002">Figs. 2</xref> and <xref ref-type="fig" rid="pcbi-1000844-g007">7</xref>).</p>
+</sec><sec id="s2j">
+<title>Relationship between sub-region differences and differences in β-diversity</title>
+<p>Using pyrotag data introduces several complexities to β-diversity analyses. Moving across regions, but using the same OTU definition could lead one to overestimate community similarity. For example, the average Morisita-Horn similarity for full-length SILVA-aligned sequences with one gap distances was 0.56. Using similarly treated sequences from the V12, V13, V14, and V23 regions I calculated Morisita-Horn values between 0.57 and 0.60; however those from the other 8 regions yielded values between 0.64 (V2) and 0.79 (V9). For a single region, changing the OTU cutoff also had a significant effect on the Morisita-Horn index. For instance, full-length SILVA-aligned sequences yielded 0.52, 0.56, and 0.86 for cutoffs of 0.03, 0.05, and 0.10. This spread in Morisita-Horn values between the 0.03 and 0.10 OTU cutoffs (0.34) was the largest of any region. The narrowest spread was observed for the V6 region (0.06). In contrast to the Morisita-Horn values, there was little variation in the unweighted or weighted UniFrac statistic when comparing sequences analyzed by the same alignment and distance calculation method. With the exception of the V6 region (0.33), the average unweighted UniFrac values varied between 0.24 (V13, V14, V19) and 0.30 (V9) and with the exception of the V12 region (0.69), the average weighted UniFrac values varied between 0.80 (V13) and 0.87 (V9); the value for the full-length sequence was 0.82. Similar to the α-diversity measure of phylogenetic diversity, an added complication of phylogeny-based methods is the complexity of interpreting the proportion of branch length that is shared between or unique to two communities and how such proportions relate to classical β-diversity measures. Thus, it is difficult to interpret the biological significance of such variation. Regardless, the results of the OTU- and phylogeny-based analyses demonstrate that caution must be taken in extrapolating results from one region to another.</p>
+</sec></sec><sec id="s3">
+<title>Discussion</title>
+<p>The ability to define OTUs and reconstruct phylogenies allows an investigator to approach their problem using the data as they present themselves without being confined to an <italic>a priori</italic> taxonomy. Regardless, the analysis I have presented indicates that comparing results obtained by sequencing one region of the 16S rRNA gene can not be easily compared to those obtained using full-length sequences. Ultimately, the fact that the 16S rRNA gene does not evolve uniformly across its length complicates its analysis. Technical limitations require investigators to select a region based on the availability of conserved PCR primers, fragment length, and the ability to generate high quality sequence. Analytical limitations require investigators to select a region based on the availability of database sequences for that region, the ability to accurately classify sequences, and the level of genetic diversity found in the region. Until there is a standardized approach, individual investigators will continue to select different regions for their analysis. Studies such as this are necessary to inform investigators about the strengths and weaknesses of the various regions within the 16S rRNA gene. Based on this analysis, it is clear that regardless of the region, longer reads will improve one's ability to relate their analysis to full-length sequences. As sequence lengths increase to the point that pyrosequencing full-length 16S rRNA genes is possible, this discussion will be unnecessary. Ultimately, all pyrotag regions represent a marker of a marker of genomic diversity. Even if full-length 16S rRNA gene sequencing is possible, it is still just a marker of genomic diversity. Correlations between the complete genome sequence and full-length 16S rRNA gene sequences are probably just as poor as correlations between full-length 16S rRNA gene sequences and their sub-regions <xref ref-type="bibr" rid="pcbi.1000844-Welch1">[e.g. 18]</xref>. Although one may endeavor to characterize and compare the composition of multiple communities, any cutoffs that are employed are at best empirical and hopefully have some biological meaning.</p>
+<p>I have shown that alignment quality has a significant impact on downstream data analysis. Because the 16S rRNA gene sequence follows a well-determined secondary structure, it is possible to objectively state that one alignment is better than another. Furthermore, pairwise and multiple sequence alignments that ignore the secondary structure are unadvisable on theoretical grounds. Such methods are also unadvisable on technical grounds as the time and memory required to complete them typically scales in excess of the number of sequences squared; the time required to perform a profile-based alignment scales linearly with the number of sequences.</p>
+<p>A significant factor in the analysis of DNA sequences is the calculation of pairwise distances. The rich literature developed for protein-coding sequences has generated the Jukes-Cantor, Kimura, Hasegawa-Kishino-Yano and other substitution models <xref ref-type="bibr" rid="pcbi.1000844-Felsenstein1">[reviewed in 19]</xref>. Yet these models ignore gapped positions, which I have shown to have a significant impact on downstream analyses. Substitution models for structural RNA molecules such as the 16S rRNA gene are not well developed or widely used <xref ref-type="bibr" rid="pcbi.1000844-Smith1">[20]</xref>, <xref ref-type="bibr" rid="pcbi.1000844-Tillier1">[21]</xref>. It is underappreciated that use of short sequence or filtering methods such as the Lane mask reduces the precision and information represented by a distance. For instance, if there are fewer than 200 bases being considered, then it is difficult to place much confidence in an OTU threshold of 0.03 (i.e. 6 differences) when one considers the potential impact of PCR, sequencing, and alignment artifacts. Furthermore, reducing the information content of a 1,500 bp molecule to a 200-bp sequence read will affect the confidence placed in the generation of phylogenetic trees and OTU assignments. Althoguh removing non-informative positions can be helpful for reconstructing broad phylogenies, the α- and β-diversity analyses described here are adversely affected by removing this fine level sequence diversity. These are clearly issues that warrant further attention.</p>
+<p>This study has ramifications on how analyses are performed. Since it is clear that the 16S rRNA gene does not evolve uniformly across its length, it is critical that sequences fully overlap before they are compared. For example, consider an analysis that includes sequences from the V2 region and those from the V12 region. The V12 sequences will have higher pairwise distances amongst each other than compared to the V2 region because the V1 region is evolving at a faster rate. Thus, the comparison of short and long sequence reads will add artifacts into the analysis, which will overstate the richness within the community. Although not explored here, it is likely that similar problems will be encountered in analyses where a taxonomy hierarchy is used to assign sequences to bins. Thus it is critical that sequences are trimmed to start and end at the same sequence-based landmarks. Because pyrosequencing does not yield a uniform length sequence read, this introduces a conundrum of whether to favor fewer long reads or many short reads. Because it is impossible to compare pyrotags to the full-length sequences accurately, it seems appropriate to increase the power of other statistical analyses by sacrificing sequence length in favor of having more sequence reads.</p>
+<p>Next generation sequence analysis of 16S rRNA genes offers the first opportunity to replicate analyses, develop more complex experimental designs, and to increase sampling depth and breadth. The results of this study encourage one to see pyrotags as markers within a metagenome and suggest a different way of considering microbial community analysis. Just as single nucleotide polymorphisms (SNPs) have been used as markers of disease in genome-wide association studies (GWAS), which may have no direct effect on a genes phenotype, pyrotags no doubt will serve as a useful analog to SNPs for the nascent field of metagenome-wide association studies (MWAS).</p>
+</sec><sec id="s4" sec-type="materials|methods">
+<title>Materials and Methods</title>
+<sec id="s4a">
+<title>Sequence collection</title>
+<p>I obtained the SSURef 16S rRNA gene sequence database from the SILVA project (version 98; <ext-link ext-link-type="uri" xlink:href="http://www.arb-silva.de" xlink:type="simple">http://www.arb-silva.de</ext-link>) <xref ref-type="bibr" rid="pcbi.1000844-Pruesse1">[22]</xref>. From this collection of sequences longer than 1,200 bp, I identified bacterial sequences that had an alignment quality score (ARB database field “align_quality_slv”) of 100 and were not chloroplasts, mitochondria, or suspected of being chimeric. The collection was further screened to remove sequences that had more than 5 ambiguous base positions and did not start by <italic>E. coli</italic> position 28 or end after position 1491. Of the remaining sequences, 13,501 sequences were unique and shared between the SILVA <xref ref-type="bibr" rid="pcbi.1000844-Pruesse1">[22]</xref>, greengenes <xref ref-type="bibr" rid="pcbi.1000844-DeSantis2">[23]</xref>, and RDP sequence collections <xref ref-type="bibr" rid="pcbi.1000844-Cole1">[14]</xref>. I then generated 12 datasets from the full-length sequences using the SILVA, greengenes, and RDP alignments by extracting sub-regions of various lengths (<xref ref-type="table" rid="pcbi-1000844-t001">Table 1</xref>). These regions were selected because they had already been used in publications or are amenable to the available sequencing platforms. Lane masks were generated by mapping the original mask onto the <italic>E. coli</italic> reference sequence and then it was applied to each of the three reference alignments <xref ref-type="bibr" rid="pcbi.1000844-Lane1">[24]</xref>. In addition to the three reference alignments I generated pairwise alignments between all pairs of sequences using the Needleman-Wunsch algorithm <xref ref-type="bibr" rid="pcbi.1000844-Needleman1">[25]</xref> and multiple sequence alignments using MUSCLE with two iterations (maxiters = 2) and the diags option <xref ref-type="bibr" rid="pcbi.1000844-Edgar1">[15]</xref>.</p>
+</sec><sec id="s4b">
+<title>Distance calculation methods</title>
+<p>I implemented three sequence-based methods for calculating pairwise distances and a kmer-based distance metric. The first sequence-based method ignored any site that contained a gap; this method is implemented in the commonly used DNADIST program from the PHYLIP package <xref ref-type="bibr" rid="pcbi.1000844-Felsenstein2">[26]</xref>. The second sequence-based method counted gaps as a fifth character so that any comparison between a gap and a base was penalized as a mismatch; comparisons between two gaps were ignored. This approach asserts that every gap represents a distinct mutation. The third sequence-based method calculated distances by only penalizing a string of gaps as one mismatch <xref ref-type="bibr" rid="pcbi.1000844-Sogin1">[2]</xref>. This approach asserts that a gap, of any length, represents a single mutation. Distances were not corrected for multiple substitutions to simplify analysis of the data. Furthermore, some distances were so large that when they were corrected, they yielded undefined values. Distances were calculated as implemented in the mothur software package with precision to 0.0001 <xref ref-type="bibr" rid="pcbi.1000844-Schloss3">[27]</xref>. Finally, kmer-based distances were calculated between pairs of unaligned sequences based on their 7-base kmer profiles <xref ref-type="bibr" rid="pcbi.1000844-Edgar2">[28]</xref>.</p>
+</sec><sec id="s4c">
+<title>Distance analysis</title>
+<p>Pairwise distances were compared using a custom C++-coded program that calculated the linear regression coefficient using the origin as the intercept and the Pearson product-moment correlation coefficient <xref ref-type="bibr" rid="pcbi.1000844-Sokal1">[29]</xref>. Because several of the datasets did not demonstrate a linear correlation with the V19 region when the V19 pairwise distances were larger than 0.10, all regression and correlation coefficients are presented for V19 distances smaller than 0.10. Assessments of how much genetic diversity was either gained or lost represent the deviation from a slope of 1.0. The square of the Pearson product-moment correlation coefficient (i.e. R<sup>2</sup>) was used to quantify the fraction of the variation that was accounted for by the linear regression.</p>
+</sec><sec id="s4d">
+<title>α-diversity analysis</title>
+<p>OTU- and phylogeny-based analyses were performed to assess the intra-sample biodiversity. Sequences were assigned to OTUs using the mothur implementation of the furthest-neighbor clustering algorithm <xref ref-type="bibr" rid="pcbi.1000844-Schloss3">[27]</xref>; although parallel analyses using the nearest and average neighbor algorithms yielded different α- and β-diversity values, the overall relationships observed with furthest neighbor algorithm were observed. The observed richness (i.e. the number of OTUs in a sample) of the dataset was calculated using every possible cutoff that the data could describe. Traditional neighbor-joining trees were generated using the clearcut software program and the distance matrices that were used in the OTU-based analyses <xref ref-type="bibr" rid="pcbi.1000844-Sheneman1">[30]</xref>; however, the relaxed neighbor-joining algorithm was not used. The phylogenetic diversity of the data was calculated by summing the branch length for the entire tree <xref ref-type="bibr" rid="pcbi.1000844-Faith1">[31]</xref>. Both analyses were replicated 50 times to assess the effects of randomization on α-diversity.</p>
+</sec><sec id="s4e">
+<title>β-diversity analysis</title>
+<p>The OTU assignments and neighbor-joining trees created to study α-diversity were used to evaluate the effects of each variable on the ability to calculate β-diversity. Towards this end, I segregated the sequences to create two mock communities that shared 80% of their membership but had different structures. To create the mock communities full-length SILVA-aligned sequences were first assigned to OTUs using a furthest neighbor clustering of one gap distances with a cutoff of 0.05. Second, OTUs were randomly ordered. Third, 10% of the OTUs were assigned exclusively to the first community, another 10% were assigned exclusively to the second community, and the remaining OTUs were shared. For half of the shared OTUs, the probability of a sequence being from the first community was 0.375 and for the other half of the shared OTUs, the probability was 0.625. These probabilities were selected to simulate sampling two communities that had a Jaccard similarity index of 0.80 and Morisita-Horn Index value of 0.60. This process was repeated to create 100 simulated communities. Because the mock communities were not exhaustively sampled, it was unlikely that the measures would actually equal 0.80 and 0.60 for the Jaccard and Morisita-Horn indices. All β-diversity calculations were made using the mothur software package <xref ref-type="bibr" rid="pcbi.1000844-Schloss3">[27]</xref>. The same 100 partitions were used to analyze all distance calculation methods, alignments, regions, and β-diversity measures. I analyzed the effects of region and the alignment or distance calculation methods using a two-way analysis of variance. Each factor was highly significant (p≪0.001) and so I used the Tukey's honestly significant difference test for pairwise comparisons. Only those differences, which were non-significant (p&gt;0.05) are indicated in figures. All test were performed within an OTU cutoff or UniFrac method.</p>
+</sec></sec></body>
+<back><ref-list>
+<title>References</title>
+<ref id="pcbi.1000844-Margulies1"><label>1</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Margulies</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Egholm</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Altman</surname><given-names>WE</given-names></name>
+<name name-style="western"><surname>Attiya</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Bader</surname><given-names>JS</given-names></name>
+<etal/></person-group>             <year>2005</year>             <article-title>Genome sequencing in microfabricated high-density picolitre reactors.</article-title>             <source>Nature</source>             <volume>437</volume>             <fpage>376</fpage>             <lpage>380</lpage>          </element-citation></ref>
+<ref id="pcbi.1000844-Sogin1"><label>2</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Sogin</surname><given-names>ML</given-names></name>
+<name name-style="western"><surname>Morrison</surname><given-names>HG</given-names></name>
+<name name-style="western"><surname>Huber</surname><given-names>JA</given-names></name>
+<name name-style="western"><surname>Welch</surname><given-names>DM</given-names></name>
+<name name-style="western"><surname>Huse</surname><given-names>SM</given-names></name>
+<etal/></person-group>             <year>2006</year>             <article-title>Microbial diversity in the deep sea and the underexplored “rare biosphere”.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>103</volume>             <fpage>12115</fpage>             <lpage>12120</lpage>          </element-citation></ref>
+<ref id="pcbi.1000844-Costello1"><label>3</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Costello</surname><given-names>EK</given-names></name>
+<name name-style="western"><surname>Lauber</surname><given-names>CL</given-names></name>
+<name name-style="western"><surname>Hamady</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Fierer</surname><given-names>N</given-names></name>
+<name name-style="western"><surname>Gordon</surname><given-names>JI</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>Bacterial community variation in human body habitats across space and time.</article-title>             <source>Science</source>             <volume>326</volume>             <fpage>1694</fpage>             <lpage>1697</lpage>          </element-citation></ref>
+<ref id="pcbi.1000844-Roesch1"><label>4</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Roesch</surname><given-names>LFW</given-names></name>
+<name name-style="western"><surname>Fulthorpe</surname><given-names>RR</given-names></name>
+<name name-style="western"><surname>Riva</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Casella</surname><given-names>G</given-names></name>
+<name name-style="western"><surname>Hadwin</surname><given-names>AKM</given-names></name>
+<etal/></person-group>             <year>2007</year>             <article-title>Pyrosequencing enumerates and contrasts soil microbial diversity.</article-title>             <source>ISME J</source>             <volume>1</volume>             <fpage>283</fpage>             <lpage>290</lpage>          </element-citation></ref>
+<ref id="pcbi.1000844-Huber1"><label>5</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Huber</surname><given-names>JA</given-names></name>
+<name name-style="western"><surname>Mark Welch</surname><given-names>DB</given-names></name>
+<name name-style="western"><surname>Morrison</surname><given-names>HG</given-names></name>
+<name name-style="western"><surname>Huse</surname><given-names>SM</given-names></name>
+<name name-style="western"><surname>Neal</surname><given-names>PR</given-names></name>
+<etal/></person-group>             <year>2007</year>             <article-title>Microbial population structures in the deep marine biosphere.</article-title>             <source>Science</source>             <volume>318</volume>             <fpage>97</fpage>             <lpage>100</lpage>          </element-citation></ref>
+<ref id="pcbi.1000844-Liu1"><label>6</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Liu</surname><given-names>Z</given-names></name>
+<name name-style="western"><surname>Lozupone</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Hamady</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Bushman</surname><given-names>FD</given-names></name>
+<name name-style="western"><surname>Knight</surname><given-names>R</given-names></name>
+</person-group>             <year>2007</year>             <article-title>Short pyrosequencing reads suffice for accurate microbial community analysis.</article-title>             <source>Nucleic Acids Res</source>             <volume>35</volume>             <fpage>e120</fpage>          </element-citation></ref>
+<ref id="pcbi.1000844-Huse1"><label>7</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Huse</surname><given-names>SM</given-names></name>
+<name name-style="western"><surname>Dethlefsen</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Huber</surname><given-names>JA</given-names></name>
+<name name-style="western"><surname>Welch</surname><given-names>DM</given-names></name>
+<name name-style="western"><surname>Relman</surname><given-names>DA</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>Exploring microbial diversity and taxonomy using SSU rRNA hypervariable tag sequencing.</article-title>             <source>PLoS Genet</source>             <volume>4</volume>             <fpage>e1000255</fpage>          </element-citation></ref>
+<ref id="pcbi.1000844-Wang1"><label>8</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Wang</surname><given-names>Q</given-names></name>
+<name name-style="western"><surname>Garrity</surname><given-names>GM</given-names></name>
+<name name-style="western"><surname>Tiedje</surname><given-names>JM</given-names></name>
+<name name-style="western"><surname>Cole</surname><given-names>JR</given-names></name>
+</person-group>             <year>2007</year>             <article-title>Naive Bayesian classifier for rapid assignment of rRNA sequences into the new bacterial taxonomy.</article-title>             <source>Appl Environ Microbiol</source>             <volume>73</volume>             <fpage>5261</fpage>             <lpage>5267</lpage>          </element-citation></ref>
+<ref id="pcbi.1000844-Liu2"><label>9</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Liu</surname><given-names>Z</given-names></name>
+<name name-style="western"><surname>DeSantis</surname><given-names>TZ</given-names></name>
+<name name-style="western"><surname>Andersen</surname><given-names>GL</given-names></name>
+<name name-style="western"><surname>Knight</surname><given-names>R</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Accurate taxonomy assignments from 16S rRNA sequences produced by highly parallel pyrosequencers.</article-title>             <source>Nucleic Acids Res</source>             <volume>36</volume>             <fpage>e120</fpage>          </element-citation></ref>
+<ref id="pcbi.1000844-Youssef1"><label>10</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Youssef</surname><given-names>N</given-names></name>
+<name name-style="western"><surname>Sheik</surname><given-names>CS</given-names></name>
+<name name-style="western"><surname>Krumholz</surname><given-names>LR</given-names></name>
+<name name-style="western"><surname>Najar</surname><given-names>FZ</given-names></name>
+<name name-style="western"><surname>Roe</surname><given-names>BA</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>Comparison of species richness estimates obtained using nearly complete fragments and simulated pyrosequencing-generated fragments in 16S rRNA gene-based environmental surveys.</article-title>             <source>Appl Environ Microbiol</source>             <volume>75</volume>             <fpage>5227</fpage>             <lpage>5236</lpage>          </element-citation></ref>
+<ref id="pcbi.1000844-Schloss1"><label>11</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Schloss</surname><given-names>PD</given-names></name>
+</person-group>             <year>2009</year>             <article-title>A high-throughput DNA sequence aligner for microbial ecology studies.</article-title>             <source>PLoS ONE</source>             <volume>4</volume>             <fpage>e8230</fpage>          </element-citation></ref>
+<ref id="pcbi.1000844-DeSantis1"><label>12</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>DeSantis</surname><given-names>TZ</given-names><suffix>Jr</suffix></name>
+<name name-style="western"><surname>Hugenholtz</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Keller</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Brodie</surname><given-names>EL</given-names></name>
+<name name-style="western"><surname>Larsen</surname><given-names>N</given-names></name>
+<etal/></person-group>             <year>2006</year>             <article-title>NAST: a multiple sequence alignment server for comparative analysis of 16S rRNA genes.</article-title>             <source>Nucleic Acids Res</source>             <volume>34</volume>             <fpage>W394</fpage>             <lpage>399</lpage>          </element-citation></ref>
+<ref id="pcbi.1000844-Caporaso1"><label>13</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Caporaso</surname><given-names>JG</given-names></name>
+<name name-style="western"><surname>Bittinger</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Bushman</surname><given-names>FD</given-names></name>
+<name name-style="western"><surname>DeSantis</surname><given-names>TZ</given-names></name>
+<name name-style="western"><surname>Andersen</surname><given-names>GL</given-names></name>
+<etal/></person-group>             <year>2010</year>             <article-title>PyNAST: a flexible tool for aligning sequences to a template alignment.</article-title>             <source>Bioinformatics</source>             <volume>26</volume>             <fpage>266</fpage>             <lpage>267</lpage>          </element-citation></ref>
+<ref id="pcbi.1000844-Cole1"><label>14</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Cole</surname><given-names>JR</given-names></name>
+<name name-style="western"><surname>Wang</surname><given-names>Q</given-names></name>
+<name name-style="western"><surname>Cardenas</surname><given-names>E</given-names></name>
+<name name-style="western"><surname>Fish</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Chai</surname><given-names>B</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>The Ribosomal Database Project: improved alignments and new tools for rRNA analysis.</article-title>             <source>Nucleic Acids Res</source>             <volume>37</volume>             <fpage>D141</fpage>             <lpage>145</lpage>          </element-citation></ref>
+<ref id="pcbi.1000844-Edgar1"><label>15</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Edgar</surname><given-names>RC</given-names></name>
+</person-group>             <year>2004</year>             <article-title>MUSCLE: a multiple sequence alignment method with reduced time and space complexity.</article-title>             <source>BMC Bioinformatics</source>             <volume>5</volume>             <fpage>113</fpage>          </element-citation></ref>
+<ref id="pcbi.1000844-Sun1"><label>16</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Sun</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Cai</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Liu</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Yu</surname><given-names>F</given-names></name>
+<name name-style="western"><surname>Farrell</surname><given-names>ML</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>ESPRIT: estimating species richness using large collections of 16S rRNA pyrosequences.</article-title>             <source>Nucleic Acids Research</source>             <fpage>e76</fpage>             <lpage>e76</lpage>          </element-citation></ref>
+<ref id="pcbi.1000844-Schloss2"><label>17</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Schloss</surname><given-names>PD</given-names></name>
+<name name-style="western"><surname>Handelsman</surname><given-names>J</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Toward a census of bacteria in soil.</article-title>             <source>PLoS Comp Biol</source>             <volume>2</volume>             <fpage>e92</fpage>          </element-citation></ref>
+<ref id="pcbi.1000844-Welch1"><label>18</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Welch</surname><given-names>RA</given-names></name>
+<name name-style="western"><surname>Burland</surname><given-names>V</given-names></name>
+<name name-style="western"><surname>Plunkett</surname><given-names>G</given-names><suffix>3rd</suffix></name>
+<name name-style="western"><surname>Redford</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Roesch</surname><given-names>P</given-names></name>
+<etal/></person-group>             <year>2002</year>             <article-title>Extensive mosaic structure revealed by the complete genome sequence of uropathogenic <italic>Escherichia coli</italic>.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>99</volume>             <fpage>17020</fpage>             <lpage>17024</lpage>          </element-citation></ref>
+<ref id="pcbi.1000844-Felsenstein1"><label>19</label><element-citation publication-type="other" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Felsenstein</surname><given-names>J</given-names></name>
+</person-group>             <year>2004</year>             <source>Inferring phylogenies</source>             <publisher-loc>Sunderland, , Mass.</publisher-loc>             <publisher-name>Sinauer Associates.</publisher-name> <fpage>xx, 664</fpage>           </element-citation></ref>
+<ref id="pcbi.1000844-Smith1"><label>20</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Smith</surname><given-names>AD</given-names></name>
+<name name-style="western"><surname>Lui</surname><given-names>TW</given-names></name>
+<name name-style="western"><surname>Tillier</surname><given-names>ER</given-names></name>
+</person-group>             <year>2004</year>             <article-title>Empirical models for substitution in ribosomal RNA.</article-title>             <source>Mol Biol Evol</source>             <volume>21</volume>             <fpage>419</fpage>             <lpage>427</lpage>          </element-citation></ref>
+<ref id="pcbi.1000844-Tillier1"><label>21</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Tillier</surname><given-names>ER</given-names></name>
+<name name-style="western"><surname>Collins</surname><given-names>RA</given-names></name>
+</person-group>             <year>1998</year>             <article-title>High apparent rate of simultaneous compensatory base-pair substitutions in ribosomal RNA.</article-title>             <source>Genetics</source>             <volume>148</volume>             <fpage>1993</fpage>             <lpage>2002</lpage>          </element-citation></ref>
+<ref id="pcbi.1000844-Pruesse1"><label>22</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Pruesse</surname><given-names>E</given-names></name>
+<name name-style="western"><surname>Quast</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Knittel</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Fuchs</surname><given-names>BM</given-names></name>
+<name name-style="western"><surname>Ludwig</surname><given-names>W</given-names></name>
+<etal/></person-group>             <year>2007</year>             <article-title>SILVA: a comprehensive online resource for quality checked and aligned ribosomal RNA sequence data compatible with ARB.</article-title>             <source>Nucleic Acids Res</source>             <volume>35</volume>             <fpage>7188</fpage>             <lpage>7196</lpage>          </element-citation></ref>
+<ref id="pcbi.1000844-DeSantis2"><label>23</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>DeSantis</surname><given-names>TZ</given-names></name>
+<name name-style="western"><surname>Hugenholtz</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Larsen</surname><given-names>N</given-names></name>
+<name name-style="western"><surname>Rojas</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Brodie</surname><given-names>EL</given-names></name>
+<etal/></person-group>             <year>2006</year>             <article-title>Greengenes, a chimera-checked 16S rRNA gene database and workbench compatible with ARB.</article-title>             <source>Appl Environ Microbiol</source>             <volume>72</volume>             <fpage>5069</fpage>             <lpage>5072</lpage>          </element-citation></ref>
+<ref id="pcbi.1000844-Lane1"><label>24</label><element-citation publication-type="other" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Lane</surname><given-names>DJ</given-names></name>
+</person-group>             <year>1991</year>             <article-title>16S/23S rRNA sequencing.</article-title>             <person-group person-group-type="editor">
+<name name-style="western"><surname>Stackebrandt</surname><given-names>E</given-names></name>
+<name name-style="western"><surname>Goodfellow</surname><given-names>M</given-names></name>
+</person-group>             <source>Nucleic Acid Techniques in Bacterial Systematics</source>             <publisher-loc>New York</publisher-loc>             <publisher-name>Wiley</publisher-name>             <fpage>115</fpage>             <lpage>175</lpage>          </element-citation></ref>
+<ref id="pcbi.1000844-Needleman1"><label>25</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Needleman</surname><given-names>SB</given-names></name>
+<name name-style="western"><surname>Wunsch</surname><given-names>CD</given-names></name>
+</person-group>             <year>1970</year>             <article-title>A general method applicable to the search for similarities in the amino acid sequence of two proteins.</article-title>             <source>J Mol Biol</source>             <volume>48</volume>             <fpage>443</fpage>             <lpage>453</lpage>          </element-citation></ref>
+<ref id="pcbi.1000844-Felsenstein2"><label>26</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Felsenstein</surname><given-names>J</given-names></name>
+</person-group>             <year>1989</year>             <article-title>PHYLIP – Phylogeny Inference Package.</article-title>             <source>Cladistics</source>             <volume>5</volume>             <fpage>164</fpage>             <lpage>166</lpage>          </element-citation></ref>
+<ref id="pcbi.1000844-Schloss3"><label>27</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Schloss</surname><given-names>PD</given-names></name>
+<name name-style="western"><surname>Westcott</surname><given-names>SL</given-names></name>
+<name name-style="western"><surname>Ryabin</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Hall</surname><given-names>JR</given-names></name>
+<name name-style="western"><surname>Hartmann</surname><given-names>M</given-names></name>
+<etal/></person-group>             <year>2009</year>             <article-title>Introducing mothur: Open-source, platform-independent, community-supported software for describing and comparing microbial communities.</article-title>             <source>Appl Environ Microbiol</source>             <volume>75</volume>             <fpage>7537</fpage>             <lpage>7541</lpage>          </element-citation></ref>
+<ref id="pcbi.1000844-Edgar2"><label>28</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Edgar</surname><given-names>RC</given-names></name>
+</person-group>             <year>2004</year>             <article-title>MUSCLE: multiple sequence alignment with high accuracy and high throughput.</article-title>             <source>Nucleic Acids Res</source>             <volume>32</volume>             <fpage>1792</fpage>             <lpage>1797</lpage>          </element-citation></ref>
+<ref id="pcbi.1000844-Sokal1"><label>29</label><element-citation publication-type="other" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Sokal</surname><given-names>RR</given-names></name>
+<name name-style="western"><surname>Rohlf</surname><given-names>FJ</given-names></name>
+</person-group>             <year>1995</year>             <source>Biometry: the principles and practice of statistics in biological research</source>             <publisher-loc>New York</publisher-loc>             <publisher-name>Freeman.</publisher-name> <fpage>xix, 887</fpage>           </element-citation></ref>
+<ref id="pcbi.1000844-Sheneman1"><label>30</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Sheneman</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Evans</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Foster</surname><given-names>JA</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Clearcut: a fast implementation of relaxed neighbor joining.</article-title>             <source>Bioinformatics</source>             <volume>22</volume>             <fpage>2823</fpage>             <lpage>2824</lpage>          </element-citation></ref>
+<ref id="pcbi.1000844-Faith1"><label>31</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Faith</surname><given-names>DP</given-names></name>
+<name name-style="western"><surname>Lozupone</surname><given-names>CA</given-names></name>
+<name name-style="western"><surname>Nipperess</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Knight</surname><given-names>R</given-names></name>
+</person-group>             <year>2009</year>             <article-title>The cladistic basis for the phylogenetic diversity (PD) measure links evolutionary features to environmental gradients and supports broad applications of microbial ecology's “phylogenetic beta diversity” framework.</article-title>             <source>Int J Mol Sci</source>             <volume>10</volume>             <fpage>4723</fpage>             <lpage>4741</lpage>          </element-citation></ref>
+<ref id="pcbi.1000844-Eckburg1"><label>32</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Eckburg</surname><given-names>PB</given-names></name>
+<name name-style="western"><surname>Bik</surname><given-names>EM</given-names></name>
+<name name-style="western"><surname>Bernstein</surname><given-names>CN</given-names></name>
+<name name-style="western"><surname>Purdom</surname><given-names>E</given-names></name>
+<name name-style="western"><surname>Dethlefsen</surname><given-names>L</given-names></name>
+<etal/></person-group>             <year>2005</year>             <article-title>Diversity of the human intestinal microbial flora.</article-title>             <source>Science</source>             <volume>308</volume>             <fpage>1635</fpage>             <lpage>1638</lpage>          </element-citation></ref>
+<ref id="pcbi.1000844-Dethlefsen1"><label>33</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Dethlefsen</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Huse</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Sogin</surname><given-names>ML</given-names></name>
+<name name-style="western"><surname>Relman</surname><given-names>DA</given-names></name>
+</person-group>             <year>2008</year>             <article-title>The pervasive effects of an antibiotic on the human gut microbiota, as revealed by deep 16S rRNA sequencing.</article-title>             <source>PLoS Biol</source>             <volume>6</volume>             <fpage>e280</fpage>          </element-citation></ref>
+</ref-list>
+
+</back>
+</article>

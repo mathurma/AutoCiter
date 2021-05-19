@@ -1,0 +1,1076 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="3.0" xml:lang="en">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">ploscomp</journal-id>
+<journal-title-group>
+<journal-title>PLOS Computational Biology</journal-title>
+</journal-title-group>
+<issn pub-type="ppub">1553-734X</issn>
+<issn pub-type="epub">1553-7358</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pcbi.1004300</article-id>
+<article-id pub-id-type="publisher-id">PCOMPBIOL-D-15-00033</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+</article-categories>
+<title-group>
+<article-title>Design of Protein Multi-specificity Using an Independent Sequence Search Reduces the Barrier to Low Energy Sequences</article-title>
+<alt-title alt-title-type="running-head">Multi-specificity Design with Independent Sequence Searching</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Sevy</surname>
+<given-names>Alexander M.</given-names>
+</name>
+<xref rid="aff001" ref-type="aff"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Jacobs</surname>
+<given-names>Tim M.</given-names>
+</name>
+<xref rid="aff002" ref-type="aff"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Crowe</surname>
+<given-names>James E.</given-names>
+<suffix>Jr.</suffix>
+</name>
+<xref rid="aff003" ref-type="aff"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Meiler</surname>
+<given-names>Jens</given-names>
+</name>
+<xref rid="aff001" ref-type="aff"><sup>1</sup></xref>
+<xref rid="aff004" ref-type="aff"><sup>4</sup></xref>
+<xref rid="cor001" ref-type="corresp">*</xref>
+</contrib>
+</contrib-group>
+<aff id="aff001"><label>1</label> <addr-line>Center for Structural Biology, Vanderbilt University, Nashville, Tennessee, United States of America</addr-line></aff>
+<aff id="aff002"><label>2</label> <addr-line>Department of Biochemistry, University of North Carolina at Chapel Hill, Chapel Hill, North Carolina, United States of America</addr-line></aff>
+<aff id="aff003"><label>3</label> <addr-line>Vanderbilt Vaccine Center, Vanderbilt University Medical Center, Nashville, Tennessee, United States of America</addr-line></aff>
+<aff id="aff004"><label>4</label> <addr-line>Department of Chemistry, Vanderbilt University, Nashville, Tennessee, United States of America</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Peters</surname>
+<given-names>Bjoern</given-names>
+</name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>La Jolla Institute for Allergy and Immunology, UNITED STATES</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<fn fn-type="con" id="contrib001">
+<p>Conceived and designed the experiments: AMS JEC JM. Performed the experiments: AMS. Analyzed the data: AMS JEC JM. Wrote the paper: AMS JM. Validated computational protocol: TMJ.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">jens.meiler@vanderbilt.edu</email></corresp>
+</author-notes>
+<pub-date pub-type="epub">
+<day>6</day>
+<month>7</month>
+<year>2015</year>
+</pub-date>
+<pub-date pub-type="collection">
+<month>7</month>
+<year>2015</year>
+</pub-date>
+<volume>11</volume>
+<issue>7</issue>
+<elocation-id>e1004300</elocation-id>
+<history>
+<date date-type="received">
+<day>10</day>
+<month>1</month>
+<year>2015</year>
+</date>
+<date date-type="accepted">
+<day>27</day>
+<month>4</month>
+<year>2015</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2015</copyright-year>
+<copyright-holder>Sevy et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pcbi.1004300" xlink:type="simple"/>
+<abstract>
+<p>Computational protein design has found great success in engineering proteins for thermodynamic stability, binding specificity, or enzymatic activity in a ‘single state’ design (SSD) paradigm. Multi-specificity design (MSD), on the other hand, involves considering the stability of multiple protein states simultaneously. We have developed a novel MSD algorithm, which we refer to as REstrained CONvergence in multi-specificity design (RECON). The algorithm allows each state to adopt its own sequence throughout the design process rather than enforcing a single sequence on all states. Convergence to a single sequence is encouraged through an incrementally increasing convergence restraint for corresponding positions. Compared to MSD algorithms that enforce (constrain) an identical sequence on all states the energy landscape is simplified, which accelerates the search drastically. As a result, RECON can readily be used in simulations with a flexible protein backbone. We have benchmarked RECON on two design tasks. First, we designed antibodies derived from a common germline gene against their diverse targets to assess recovery of the germline, polyspecific sequence. Second, we design “promiscuous”, polyspecific proteins against all binding partners and measure recovery of the native sequence. We show that RECON is able to efficiently recover native-like, biologically relevant sequences in this diverse set of protein complexes.</p>
+</abstract>
+<abstract abstract-type="summary">
+<title>Author Summary</title>
+<p>The ability to design a new protein with a desired activity has been a longstanding goal of computational biologists, to create proteins with new binding activity or increased stability. An even more ambitious goal is multi-specificity design, which extends general protein design by creating a sequence that has low energy with multiple binding partners. We have developed a new algorithm for multi-specificity design that more efficiently finds a low energy sequence for all complexes. This increased efficiency enables simulation of biologically relevant motion between binding partners, such as backbone movement and shifts in orientation. We show that our algorithm outperforms existing approaches, and compare the predicted low energy sequences to the sequences naturally seen through evolution of each protein. We find that this algorithm is able to more accurately represent the scope of sequences that are found in biological contexts. This method can be applied to design new proteins with the ability to bind multiple distinct partners.</p>
+</abstract>
+<funding-group>
+<funding-statement>This work was supported by National Institute of Allergy and Infection Disease/National Institutes of Health R56 AI 110750 and National Institute of Allergy and Infection Disease/National Institutes of Health T32 AI 89554. The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="7"/>
+<table-count count="6"/>
+<page-count count="23"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability" xlink:type="simple">
+<meta-name>Data Availability</meta-name>
+<meta-value>All relevant data are within the paper and its Supporting Information files.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>Computational protein design is an invaluable tool for protein engineers seeking to create a protein with novel properties. Protein design, also known as the inverse folding problem, involves searching for a sequence that stabilizes a given conformation. Besides the obvious goal–to give the protein increased thermodynamic stability [<xref rid="pcbi.1004300.ref001" ref-type="bibr">1</xref>–<xref rid="pcbi.1004300.ref003" ref-type="bibr">3</xref>]–protein design often pursues the goal of creating new function. This can include for example redesigning an antibody to recognize a new variant of a target protein [<xref rid="pcbi.1004300.ref004" ref-type="bibr">4</xref>], designing an enzyme to bind the transition state for a new chemical reaction [<xref rid="pcbi.1004300.ref005" ref-type="bibr">5</xref>], or redesigning a DNA-binding protein to recognize a different DNA sequence [<xref rid="pcbi.1004300.ref006" ref-type="bibr">6</xref>]. Most success in protein design has been achieved through a single state design (SSD) task, i.e. the free energy minimization of a single protein conformation to increase its stability [<xref rid="pcbi.1004300.ref001" ref-type="bibr">1</xref>,<xref rid="pcbi.1004300.ref007" ref-type="bibr">7</xref>,<xref rid="pcbi.1004300.ref008" ref-type="bibr">8</xref>].</p>
+<sec id="sec002">
+<title>Multistate design approaches</title>
+<p>In contrast to SSD, multistate design (MSD) minimizes the free energy of multiple protein conformations (“states”) simultaneously. This enables negative design, which involves destabilizing a certain conformation to shift relative occupancy to alternate conformations, which is useful in designing proteins with binding selectivity. MSD has been applied successfully in a number of cases, including the design of a protein conformational switch [<xref rid="pcbi.1004300.ref009" ref-type="bibr">9</xref>], design of selective b-ZIP binding peptides [<xref rid="pcbi.1004300.ref010" ref-type="bibr">10</xref>], and design of an enzyme with DNA cleavage specificity [<xref rid="pcbi.1004300.ref011" ref-type="bibr">11</xref>], among others [<xref rid="pcbi.1004300.ref012" ref-type="bibr">12</xref>,<xref rid="pcbi.1004300.ref013" ref-type="bibr">13</xref>].</p>
+</sec>
+<sec id="sec003">
+<title>Algorithmic requirements for multistate design</title>
+<p>All MSD algorithms have at their core a fitness function that defines the favorability of a given sequence based on its corresponding energy in each state. The major challenge in fixed backbone MSD is efficient optimization of side chain rotational isomer (“rotamer”) placement, using the fitness function as the objective function. As more states are considered it becomes increasingly difficult to find the minimum energy sequence on a fixed backbone. As the same sequence on all states is constrained, extensive sampling in sequence and rotamer space is required. This is often accomplished via thorough but slow genetic algorithms [<xref rid="pcbi.1004300.ref012" ref-type="bibr">12</xref>,<xref rid="pcbi.1004300.ref014" ref-type="bibr">14</xref>,<xref rid="pcbi.1004300.ref015" ref-type="bibr">15</xref>].</p>
+</sec>
+<sec id="sec004">
+<title>Challenges in expanding the scope of multistate design</title>
+<p>This difficulty in reaching the global minimum in a basic fixed backbone design problem precludes the possibility of using alternate sampling strategies, such as iterating between backbone minimization and rotamer optimization. However, these techniques have been used in SSD to great effect and are often critical to find the lowest energy conformation and sequence [<xref rid="pcbi.1004300.ref001" ref-type="bibr">1</xref>,<xref rid="pcbi.1004300.ref008" ref-type="bibr">8</xref>]. In result, MSD algorithms can arrive at an incorrect solution even after successful sequence optimization just because the fixed backbone precludes the lowest energy sequence and conformation from being sampled. This issue can be partially resolved by the inclusion of multiple backbone conformations as separate states [<xref rid="pcbi.1004300.ref016" ref-type="bibr">16</xref>]. However, there is a need for a method that can more efficiently reach the optimal MSD solution for an arbitrary number of input states without relying on the commonly held “fixed backbone assumption”.</p>
+</sec>
+<sec id="sec005">
+<title>Multi-specificity design as single state design with restraints</title>
+<p>To this end, we have developed a novel MSD algorithm, referred to as REstrained CONvergence in multi-specificity design (RECON). The algorithm is based on a different conception of MSD, wherein each state independently explores sequence space to reach its energetic minimum. A step-wise increasing convergence restraint is applied such that corresponding positions in different states converge on the same amino acid. By encouraging sequence convergence between different states rather than enforcing a single sequence, we hypothesize that energetic barriers to the fittest solution collapse, reducing the ruggedness of the energetic landscape in a MSD problem to SSD-like complexity. In result the search efficiency and speed are substantially increased allowing for the sampling of additional degrees of freedom. Further, we hypothesize that including backbone conformational sampling reduces the chance that the low energy and possibly correct solutions are excluded from the search space.</p>
+</sec>
+</sec>
+<sec id="sec006" sec-type="results">
+<title>Results</title>
+<sec id="sec007">
+<title>The restrained convergence algorithm</title>
+<p>The RECON algorithm allows separate states to explore their own local sequence and conformational space to optimize free energy, while restraining corresponding residues in different states with a convergence restraint to encourage sequence convergence. Convergence restraints are kept small in early rounds, to allow each state to explore its own lowest energy sequence, and ramped up in later rounds to encourage sequence convergence between different states. This is followed by a greedy selection step, which evaluates all candidate amino acids at positions that fail to converge, and selects the one that results in the lowest fitness when applied over all states. This greedy selection is included in order to ensure that one multi-specific sequence is generated from each design trajectory. Backbone minimization steps can be included between design rounds to relieve slight clashes between side chains. Pseudocode describing the implementation of the algorithm is shown in <xref rid="pcbi.1004300.g001" ref-type="fig">Fig 1</xref>. Individual states optimize rotamer placement using a simulated annealing Monte Carlo search, sampling from a predefined rotamer library [<xref rid="pcbi.1004300.ref017" ref-type="bibr">17</xref>,<xref rid="pcbi.1004300.ref018" ref-type="bibr">18</xref>]. However, we emphasize that this method can be applied to any multi-specificity problem using an arbitrary optimization method and scoring function.</p>
+<fig id="pcbi.1004300.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004300.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>Pseudocode describing the implementation of the RECON algorithm.</title>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004300.g001" position="float" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec008">
+<title>Reduction of energy barriers in restrained multi-specificity design</title>
+<p>By allowing each state to determine its optimal sequence independently, we can collapse the energy barrier to reaching a “compromised” sequence that results in low energy in all states. We propose a scenario in which encouraging sequencing convergence in this way can reduce the energetic barrier and enable convergence on a low energy solution (<xref rid="pcbi.1004300.g002" ref-type="fig">Fig 2</xref>). In this scenario, two separate mutations from residue identity A to B are needed for the lowest fitness over both states. Each single mutation will encounter a high energy penalty and rarely selected by a genetic algorithm–only when both mutations are stochastically placed together will the solution emerge, which may take a large number of evaluations. However, when sequence convergence is encouraged rather than enforced, each state will identify an intermediate solution in early rounds, and in later rounds the most favorable solution will be selected from the differing states. This collapses the barrier on the pathway to a favorable solution and reduces the steps necessary to find that solution.</p>
+<fig id="pcbi.1004300.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004300.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>Schematic showing proposed energy landscape of forced vs. encouraged sequence convergence in MSD.</title>
+<p>By allowing each state to maintain its own sequence and explore sequence space independently, RECON is able to provide an intermediate solution in a MSD problem, enabling more rapid determination of a low energy solution. Dashed lines represent forced convergence, where both states must adopt the same sequence (either AB or BA), whereas the solid line represents encouraged convergence, where state 1 can adopt sequence AB while state 2 adopts BA. This creates a lower energy intermediate state leading to more rapid adoption of the optimal solution, sequence BB.</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004300.g002" position="float" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec009">
+<title>Common germline gene reversion benchmark</title>
+<p>To benchmark RECON, we considered two types of design problems. In the first, mature antibodies derived from a common germline gene were entered into MSD in complex with their target antigens. It has been shown that MSD of mature antibodies results in a higher rate of germline sequence reversion than SSD, implying that the germline sequence is near-optimal for polyspecificity [<xref rid="pcbi.1004300.ref019" ref-type="bibr">19</xref>,<xref rid="pcbi.1004300.ref020" ref-type="bibr">20</xref>]. Therefore, we designed each antibody against its respective targets and used germline sequence recovery as an indirect measure of the rate of recovery of an optimal solution. We used antibodies derived from three different germline genes—V<sub>H</sub>1-69, V<sub>H</sub>3-23, and V<sub>H</sub>5-51. The number of antibody-antigen complexes per germline gene ranged from 3 to 6 (<xref rid="pcbi.1004300.t001" ref-type="table">Table 1</xref>).</p>
+<table-wrap id="pcbi.1004300.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004300.t001</object-id>
+<label>Table 1</label> <caption><title>Complexes used in common germline antibody benchmark.</title></caption>
+<alternatives>
+<graphic id="pcbi.1004300.t001g" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004300.t001" xlink:type="simple"/>
+<table>
+<colgroup span="1">
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" rowspan="1" colspan="1">V<sub>H</sub> germline gene</th>
+<th align="left" rowspan="1" colspan="1">Variable positions<xref rid="t001fn002" ref-type="table-fn"><sup>a</sup></xref></th>
+<th align="left" rowspan="1" colspan="1">Antibody</th>
+<th align="left" rowspan="1" colspan="1">Ligand</th>
+<th align="left" rowspan="1" colspan="1">PDB ID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">V<sub>H</sub>1-69</td>
+<td align="left" rowspan="1" colspan="1">40</td>
+<td align="left" rowspan="1" colspan="1">D5</td>
+<td align="left" rowspan="1" colspan="1">gp41</td>
+<td align="left" rowspan="1" colspan="1">2CMR</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">F10</td>
+<td align="left" rowspan="1" colspan="1">H5/Vietnam/1203/2004</td>
+<td align="left" rowspan="1" colspan="1">3FKU</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">CR6261</td>
+<td align="left" rowspan="1" colspan="1">H5/Vietnam/1203/2004</td>
+<td align="left" rowspan="1" colspan="1">3GBM</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">8066</td>
+<td align="left" rowspan="1" colspan="1">gp41</td>
+<td align="left" rowspan="1" colspan="1">3MA9</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">8062</td>
+<td align="left" rowspan="1" colspan="1">gp120</td>
+<td align="left" rowspan="1" colspan="1">3MAC</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">1281</td>
+<td align="left" rowspan="1" colspan="1">gp41</td>
+<td align="left" rowspan="1" colspan="1">3P30</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">V<sub>H</sub>3-23</td>
+<td align="left" rowspan="1" colspan="1">31</td>
+<td align="left" rowspan="1" colspan="1">Pertuzumab</td>
+<td align="left" rowspan="1" colspan="1">ErbB2</td>
+<td align="left" rowspan="1" colspan="1">1S78</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">G6</td>
+<td align="left" rowspan="1" colspan="1">VEGF</td>
+<td align="left" rowspan="1" colspan="1">2FJG</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Apu2.16</td>
+<td align="left" rowspan="1" colspan="1">Ubiquitin</td>
+<td align="left" rowspan="1" colspan="1">3DVN</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">E2</td>
+<td align="left" rowspan="1" colspan="1">MT-SP1</td>
+<td align="left" rowspan="1" colspan="1">3BN9</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">V<sub>H</sub>5-51</td>
+<td align="left" rowspan="1" colspan="1">30</td>
+<td align="left" rowspan="1" colspan="1">2219</td>
+<td align="left" rowspan="1" colspan="1">UG1033</td>
+<td align="left" rowspan="1" colspan="1">2B1A</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">K1-70</td>
+<td align="left" rowspan="1" colspan="1">TSHR</td>
+<td align="left" rowspan="1" colspan="1">2XWT</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Ustekinumab</td>
+<td align="left" rowspan="1" colspan="1">IL-12</td>
+<td align="left" rowspan="1" colspan="1">3HMX</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t001fn001"><p>RECON was benchmarked on three sets of mature antibodies derived from the same V<sub>H</sub> gene. Effective MSD should result in reversion of mature antibodies to the polyspecific germline sequence.</p></fn>
+<fn id="t001fn002"><p><sup>a</sup>Germline sequence and positions varying from germline are inferred from IMGT/3D Structure-DB [<xref rid="pcbi.1004300.ref021" ref-type="bibr">21</xref>].</p></fn>
+</table-wrap-foot>
+</table-wrap>
+</sec>
+<sec id="sec010">
+<title>Promiscuous protein design benchmark</title>
+<p>The second task was to design a set of “promiscuous” proteins, proteins that have been crystallized in complex with multiple binding partners, against each of these partners. Similar to polyspecific germline antibodies, promiscuous proteins have been shown to have a native sequence that is near-optimal for binding to all of the partners [<xref rid="pcbi.1004300.ref014" ref-type="bibr">14</xref>,<xref rid="pcbi.1004300.ref022" ref-type="bibr">22</xref>]. Therefore an effective MSD protocol would result in a high rate of native sequence recovery. A set of five promiscuous proteins derived from a study done by Humphris et al. was used [<xref rid="pcbi.1004300.ref014" ref-type="bibr">14</xref>], in addition to two broadly neutralizing anti-influenza hemagglutinin antibodies (<xref rid="pcbi.1004300.t002" ref-type="table">Table 2</xref>) [<xref rid="pcbi.1004300.ref023" ref-type="bibr">23</xref>,<xref rid="pcbi.1004300.ref024" ref-type="bibr">24</xref>].</p>
+<table-wrap id="pcbi.1004300.t002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004300.t002</object-id>
+<label>Table 2</label> <caption><title>Complexes used in promiscuous protein benchmark.</title></caption>
+<alternatives>
+<graphic id="pcbi.1004300.t002g" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004300.t002" xlink:type="simple"/>
+<table>
+<colgroup span="1">
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" rowspan="1" colspan="1">Promiscuous protein</th>
+<th align="left" rowspan="1" colspan="1">Binding partner</th>
+<th align="left" rowspan="1" colspan="1">PDB ID</th>
+<th align="left" rowspan="1" colspan="1">Designable positions<xref rid="t002fn002" ref-type="table-fn"><sup>a</sup></xref></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">CR6261</td>
+<td align="left" rowspan="1" colspan="1">H5/Vietnam/1203/2004</td>
+<td align="left" rowspan="1" colspan="1">3GBM</td>
+<td align="left" rowspan="1" colspan="1">19</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">H1/BrevigMission/1/1918</td>
+<td align="left" rowspan="1" colspan="1">3GBN</td>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">FI6v3</td>
+<td align="left" rowspan="1" colspan="1">H1/California/04/2009</td>
+<td align="left" rowspan="1" colspan="1">3ZTN</td>
+<td align="left" rowspan="1" colspan="1">21</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">H3/Aichi/2/1968</td>
+<td align="left" rowspan="1" colspan="1">3ZTJ</td>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">CheY</td>
+<td align="left" rowspan="1" colspan="1">FLiM</td>
+<td align="left" rowspan="1" colspan="1">1F4V</td>
+<td align="left" rowspan="1" colspan="1">15</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">CheA</td>
+<td align="left" rowspan="1" colspan="1">1FFG</td>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">CheZ</td>
+<td align="left" rowspan="1" colspan="1">1KMI</td>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Elastase</td>
+<td align="left" rowspan="1" colspan="1">Elastase Inhibitor</td>
+<td align="left" rowspan="1" colspan="1">1EAI</td>
+<td align="left" rowspan="1" colspan="1">25</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Elafin</td>
+<td align="left" rowspan="1" colspan="1">1FLE</td>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Hybrid Squash Inhibitor</td>
+<td align="left" rowspan="1" colspan="1">1MCV</td>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">FYN SH3 Domain</td>
+<td align="left" rowspan="1" colspan="1">HIV-1 NEF Protein</td>
+<td align="left" rowspan="1" colspan="1">1AVZ</td>
+<td align="left" rowspan="1" colspan="1">7</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">SAP</td>
+<td align="left" rowspan="1" colspan="1">1M27</td>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">PapD Chaperone</td>
+<td align="left" rowspan="1" colspan="1">PapE</td>
+<td align="left" rowspan="1" colspan="1">1N0L</td>
+<td align="left" rowspan="1" colspan="1">28</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">PapK</td>
+<td align="left" rowspan="1" colspan="1">1PDK</td>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">PapD Homodimer</td>
+<td align="left" rowspan="1" colspan="1">1QPP</td>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Ran</td>
+<td align="left" rowspan="1" colspan="1">Importin beta</td>
+<td align="left" rowspan="1" colspan="1">1IBR</td>
+<td align="left" rowspan="1" colspan="1">24</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Exportin CSE1P/KAP60P</td>
+<td align="left" rowspan="1" colspan="1">1WA5</td>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t002fn001"><p>RECON was benchmarked on a set of promiscuous proteins that have been crystallized in complex with multiple partners. As the native sequence is near optimal for binding of all partners, MSD should recover the native sequence at a high rate.</p></fn>
+<fn id="t002fn002"><p><sup>a</sup>Residues determined to be at the interface with all binding partners. See <xref rid="sec031" ref-type="sec">methods</xref> for details on interface residue calculations.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+</sec>
+<sec id="sec011">
+<title>Design algorithms included in benchmark</title>
+<p>Benchmark cases were designed using three separate design methods. First, design was performed using RECON with a fixed backbone. Fixed backbone design has to this point been the standard in MSD due to the complexity involved in recalculating rotamer interactions for each backbone movement. However, using fixed backbone design alone is prone to false negatives, as sequences that may be highly favorable with a small shift in backbone conformation are discarded. One of the unique advantages of RECON is its ability to incorporate iterative rounds of rotamer packing and backbone minimization. Therefore, we included such an iterative protocol as the second approach in our benchmark. For comparison purposes, all complexes were also designed using the existing MSD application in <sc>Rosetta</sc> (MPI_MSD), which operates on a fixed backbone [<xref rid="pcbi.1004300.ref015" ref-type="bibr">15</xref>]. MPI_MSD differs from RECON in that it uses a genetic algorithm to create and advance mutations and a user-defined fitness function to assess fitness of each sequence. However, as both methods are built into the <sc>Rosetta</sc> framework, they sample from the same rotamer library and use the same scoring function and are therefore suitable for comparison. In addition to native sequence recovery, we used the fitness of the top ten designs, defined as the sum of <sc>Rosetta</sc> energies of all complexes, to analyze how effectively each protocol reached an energetic minimum. This fitness function has been previously used in studies of design of protein multi-specificity [<xref rid="pcbi.1004300.ref014" ref-type="bibr">14</xref>]. We use the term “design” to refer to sequence optimization of existing protein-protein complexes—however, it is important to note that these sequences were not experimentally characterized, and results reported are purely <italic>in silico</italic>.</p>
+</sec>
+<sec id="sec012">
+<title>Common germline derived antibodies</title>
+<p>For common germline gene-derived antibodies, RECON was consistently able to recover the germline sequence at a higher rate than MPI_MSD (<xref rid="pcbi.1004300.t003" ref-type="table">Table 3</xref> and <xref rid="pcbi.1004300.g003" ref-type="fig">Fig 3</xref>). Germline sequence recovery for RECON ranged from 55–94% using fixed backbone and 51–95% using backbone minimization, while recovery for designs using MPI_MSD ranged from 32–64%. When comparing RECON fixed backbone to MPI_MSD, it appeared that designs created by RECON, although higher in native sequence content, were also energetically less favorable. We therefore subjected all fixed backbone designs to a single round of <sc>Rosetta</sc> relax energy minimization to relieve frustrations and allow for direct comparison of fitness of RECON incorporating backbone minimization to fixed backbone designs (<xref rid="pcbi.1004300.s001" ref-type="supplementary-material">S1 Table</xref>). These post-minimization fitness values show that the energetic gap between RECON- and MPI_MSD-generated designs was substantially closed, and that designs generated by any method occupied similar ranges of fitness. We observed that MPI_MSD tended to produce designs with the lowest fitness—however, it is important to note that rotamer optimization within <sc>Rosetta</sc> is a stochastic process, with no guarantee of reaching the global minimum. Therefore a protocol that performs hundreds of rounds of rotamer optimization, such as MPI_MSD, would be expected to produce better energies than one performing four rounds of optimization, such as RECON, independent of the sequence identity of structures being optimized.</p>
+<fig id="pcbi.1004300.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004300.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title>Native/germline sequence recovery of designed complexes.</title>
+<p>100 designs were generated using RECON, with both fixed backbone (FBB) and backbone minimized (BBM) protocols, and MPI_MSD. Sequences of the top 10% of models were compared to either the native sequence or, in the case of common germline-derived antibodies, to the germline sequence. See <xref rid="sec031" ref-type="sec">methods</xref> for details of native sequence recovery calculations.</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004300.g003" position="float" xlink:type="simple"/>
+</fig>
+<table-wrap id="pcbi.1004300.t003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004300.t003</object-id>
+<label>Table 3</label> <caption><title>Results of common germline gene multi-specificity design benchmark.</title></caption>
+<alternatives>
+<graphic id="pcbi.1004300.t003g" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004300.t003" xlink:type="simple"/>
+<table>
+<colgroup span="1">
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" rowspan="1" colspan="1"/>
+<th colspan="3" align="center" rowspan="1">Native Sequence Recovery (%)</th>
+<th colspan="3" align="center" rowspan="1">Fitness<xref rid="t003fn002" ref-type="table-fn"><sup>a</sup></xref> (REU)</th>
+</tr>
+<tr>
+<th align="left" rowspan="1" colspan="1">Germline gene</th>
+<th align="left" rowspan="1" colspan="1">RECON FBB</th>
+<th align="left" rowspan="1" colspan="1">RECON BBM</th>
+<th align="left" rowspan="1" colspan="1">MPI_MSD</th>
+<th align="left" rowspan="1" colspan="1">RECON FBB</th>
+<th align="left" rowspan="1" colspan="1">RECON BBM</th>
+<th align="left" rowspan="1" colspan="1">MPI_MSD</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>V</bold><sub><bold>H</bold></sub><bold>1-69</bold></td>
+<td align="char" char="." rowspan="1" colspan="1">94.2</td>
+<td align="char" char="." rowspan="1" colspan="1">95.1</td>
+<td align="char" char="." rowspan="1" colspan="1">64.0</td>
+<td align="char" char="." rowspan="1" colspan="1">-3015.9</td>
+<td align="char" char="." rowspan="1" colspan="1">-5306.7</td>
+<td align="char" char="." rowspan="1" colspan="1">-5131.9</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>V</bold><sub><bold>H</bold></sub><bold>3-23</bold></td>
+<td align="char" char="." rowspan="1" colspan="1">55.3</td>
+<td align="char" char="." rowspan="1" colspan="1">51.7</td>
+<td align="char" char="." rowspan="1" colspan="1">39.5</td>
+<td align="char" char="." rowspan="1" colspan="1">-911.7</td>
+<td align="char" char="." rowspan="1" colspan="1">-3427.1</td>
+<td align="char" char="." rowspan="1" colspan="1">-3320.9</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>V</bold><sub><bold>H</bold></sub><bold>5-51</bold></td>
+<td align="char" char="." rowspan="1" colspan="1">65.9</td>
+<td align="char" char="." rowspan="1" colspan="1">65.2</td>
+<td align="char" char="." rowspan="1" colspan="1">32.0</td>
+<td align="char" char="." rowspan="1" colspan="1">-840.5</td>
+<td align="char" char="." rowspan="1" colspan="1">-2348.3</td>
+<td align="char" char="." rowspan="1" colspan="1">-2260.8</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>Average</bold></td>
+<td align="char" char="." rowspan="1" colspan="1"><bold>71.8</bold></td>
+<td align="char" char="." rowspan="1" colspan="1"><bold>70.7</bold></td>
+<td align="char" char="." rowspan="1" colspan="1"><bold>45.2</bold></td>
+<td align="char" char="." rowspan="1" colspan="1"><bold>-1589.4</bold></td>
+<td align="char" char="." rowspan="1" colspan="1"><bold>-3694.0</bold></td>
+<td align="char" char="." rowspan="1" colspan="1"><bold>-3571.2</bold></td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t003fn001"><p>Three sets of antibodies encoded by a common germline gene were designed against their targets using RECON, both by fixed backbone (FBB) and backbone minimized (BBM) designs, and MPI_MSD algorithms. Designs were evaluated by recovery of the germline sequence and the fitness of designed models.</p></fn>
+<fn id="t003fn002"><p><sup>a</sup>Fitness is defined as the sum of the <sc>Rosetta</sc> score of all input complexes, in <sc>Rosetta</sc> Energy Units (REU). Fitness was reported for the top ten complexes generated by each design method.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+</sec>
+<sec id="sec013">
+<title>Promiscuous protein complexes</title>
+<p>RECON was able to recover the native sequence at a very high level for all promiscuous protein complexes–native sequence recovery ranged from 72–100% and 73–100%, using fixed backbone and backbone minimization, respectively. MPI_MSD generated designs with native sequence recovery ranging from 70–94% (<xref rid="pcbi.1004300.t004" ref-type="table">Table 4</xref> and <xref rid="pcbi.1004300.g003" ref-type="fig">Fig 3</xref>). In most cases fitness of designs generated by RECON fixed backbone and MPI_MSD were very similar, suggesting that both methods have reached the energetic minimum (<xref rid="pcbi.1004300.s001" ref-type="supplementary-material">S1 Table</xref>). Even though all methods reached a similar level of native sequence recovery and energetic fitness in a majority of these benchmark cases, RECON was able to reach these minima by searching a compressed sequence space, allowing for increased computational efficiency.</p>
+<table-wrap id="pcbi.1004300.t004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004300.t004</object-id>
+<label>Table 4</label> <caption><title>Results of promiscuous protein multi-specificity design benchmark.</title></caption>
+<alternatives>
+<graphic id="pcbi.1004300.t004g" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004300.t004" xlink:type="simple"/>
+<table>
+<colgroup span="1">
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" rowspan="1" colspan="1"/>
+<th colspan="3" align="center" rowspan="1">Native Sequence Recovery (%)</th>
+<th colspan="3" align="center" rowspan="1">Fitness<xref rid="t004fn002" ref-type="table-fn"><sup>a</sup></xref> (REU)</th>
+</tr>
+<tr>
+<th align="left" rowspan="1" colspan="1">Promiscuous protein</th>
+<th align="left" rowspan="1" colspan="1">RECON FBB</th>
+<th align="left" rowspan="1" colspan="1">RECON BBM</th>
+<th align="left" rowspan="1" colspan="1">MPI_MSD</th>
+<th align="left" rowspan="1" colspan="1">RECON FBB</th>
+<th align="left" rowspan="1" colspan="1">RECON BBM</th>
+<th align="left" rowspan="1" colspan="1">MPI_MSD</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>CheY</bold></td>
+<td align="char" char="." rowspan="1" colspan="1">80.6</td>
+<td align="char" char="." rowspan="1" colspan="1">84.9</td>
+<td align="char" char="." rowspan="1" colspan="1">75.6</td>
+<td align="char" char="." rowspan="1" colspan="1">-1093.1</td>
+<td align="char" char="." rowspan="1" colspan="1">-1119.7</td>
+<td align="char" char="." rowspan="1" colspan="1">-1090.8</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>CR6261</bold></td>
+<td align="char" char="." rowspan="1" colspan="1">79.0</td>
+<td align="char" char="." rowspan="1" colspan="1">79.0</td>
+<td align="char" char="." rowspan="1" colspan="1">79.1</td>
+<td align="char" char="." rowspan="1" colspan="1">-2499.5</td>
+<td align="char" char="." rowspan="1" colspan="1">-2537.7</td>
+<td align="char" char="." rowspan="1" colspan="1">-2499.9</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>Elastase</bold></td>
+<td align="char" char="." rowspan="1" colspan="1">84.8</td>
+<td align="char" char="." rowspan="1" colspan="1">87.3</td>
+<td align="char" char="." rowspan="1" colspan="1">84.9</td>
+<td align="char" char="." rowspan="1" colspan="1">-1383.8</td>
+<td align="char" char="." rowspan="1" colspan="1">-1445.1</td>
+<td align="char" char="." rowspan="1" colspan="1">-1394.7</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>FI6v3</bold></td>
+<td align="char" char="." rowspan="1" colspan="1">72.2</td>
+<td align="char" char="." rowspan="1" colspan="1">72.7</td>
+<td align="char" char="." rowspan="1" colspan="1">70.2</td>
+<td align="char" char="." rowspan="1" colspan="1">-2459.1</td>
+<td align="char" char="." rowspan="1" colspan="1">-2515.2</td>
+<td align="char" char="." rowspan="1" colspan="1">-2464.3</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>FYN</bold></td>
+<td align="char" char="." rowspan="1" colspan="1">100.0</td>
+<td align="char" char="." rowspan="1" colspan="1">100.0</td>
+<td align="char" char="." rowspan="1" colspan="1">94.7</td>
+<td align="char" char="." rowspan="1" colspan="1">-758.3</td>
+<td align="char" char="." rowspan="1" colspan="1">-780.3</td>
+<td align="char" char="." rowspan="1" colspan="1">-760.8</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>PapD</bold></td>
+<td align="char" char="." rowspan="1" colspan="1">92.5</td>
+<td align="char" char="." rowspan="1" colspan="1">87.3</td>
+<td align="char" char="." rowspan="1" colspan="1">78.4</td>
+<td align="char" char="." rowspan="1" colspan="1">-1685.5</td>
+<td align="char" char="." rowspan="1" colspan="1">-1789.2</td>
+<td align="char" char="." rowspan="1" colspan="1">-1758.6</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>Ran</bold></td>
+<td align="char" char="." rowspan="1" colspan="1">87.1</td>
+<td align="char" char="." rowspan="1" colspan="1">86.2</td>
+<td align="char" char="." rowspan="1" colspan="1">84.8</td>
+<td align="char" char="." rowspan="1" colspan="1">-2682.3</td>
+<td align="char" char="." rowspan="1" colspan="1">-3716.4</td>
+<td align="char" char="." rowspan="1" colspan="1">-3696.5</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>Average</bold></td>
+<td align="char" char="." rowspan="1" colspan="1"><bold>85.2</bold></td>
+<td align="char" char="." rowspan="1" colspan="1"><bold>85.3</bold></td>
+<td align="char" char="." rowspan="1" colspan="1"><bold>81.1</bold></td>
+<td align="char" char="." rowspan="1" colspan="1"><bold>-1794.5</bold></td>
+<td align="char" char="." rowspan="1" colspan="1"><bold>-1986.2</bold></td>
+<td align="char" char="." rowspan="1" colspan="1"><bold>-1952.2</bold></td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t004fn001"><p>Designs were generated using RECON, both by fixed backbone (FBB) and backbone minimized (BBM) designs, and MPI_MSD algorithms. Models were evaluated by recovery of the native starting sequence, and the energetic fitness of design models.</p></fn>
+<fn id="t004fn002"><p><sup>a</sup>Fitness is defined as the sum of the <sc>Rosetta</sc> score of all input complexes, in <sc>Rosetta</sc> Energy Units (REU). Fitness was reported for the top ten complexes generated by each design method.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+</sec>
+<sec id="sec014">
+<title>Importance of ramping convergence restraints on algorithm performance</title>
+<p>We hypothesized that gradually ramping the convergence restraints will allow for sequence divergence in early rounds of design and enforce convergence in later rounds, leading to an improved result as it smoothens the energy landscape. To confirm the effects of gradually increasing the weight of the convergence restraint, we performed a control in which sequences were designed independently for each state with no convergence restraint, followed by sequence selection by the greedy selection used at the end of RECON (<xref rid="pcbi.1004300.s002" ref-type="supplementary-material">S2 Table</xref>). This greedy selection algorithm performed significantly worse than RECON with gradual ramping convergence restraints, with worse native sequence recovery in all benchmark cases but one. In addition, in many benchmark cases fitness was significantly worsened for designs generated by this greedy selection protocol. These results indicate that ramping convergence restraints throughout the design protocol is critical for the increased performance of RECON.</p>
+</sec>
+<sec id="sec015">
+<title>Sequence recovery at positions that fail to converge</title>
+<p>Based on the decreased performance of this greedy selection algorithm, it would be expected that RECON works best at positions where amino acids converge between different states by the end of the protocol and are not greedily selected. We therefore evaluated the convergence of amino acids at each position for the V<sub>H</sub>5-51 benchmark set. We report the number of times a position failed to converge in 100 design trajectories for the 30 designed positions in this benchmark set (<xref rid="pcbi.1004300.s003" ref-type="supplementary-material">S3 Table</xref>). The results suggest that most positions tend to be consistent in their patterns of convergence, and that the majority (21 out of 30) reach a common amino acid solution by the end of the protocol. The results of the greedy selection protocol suggest that failure to converge leads to a decrease in performance of the algorithm and selection of non-native amino acids. We therefore compared germline sequence recovery for positions that failed to converge in at least half of the design trajectories, as compared to those that converged in more than half of the trajectories, to determine whether these positions are substantially decreasing overall germline sequence recovery (<xref rid="pcbi.1004300.s003" ref-type="supplementary-material">S3 Table</xref>). Surprisingly, positions that failed to converge actually showed a higher rate of germline sequence recovery than those that were able to converge through the application of convergence restraints (<xref rid="pcbi.1004300.s003" ref-type="supplementary-material">S3 Table</xref>). These results indicate that, although the greedy selection algorithm should not be applied without first ramping convergence restraints to encourage convergence, the use of greedy selection for positions that fail to converge is not a limiting factor for obtaining high native sequence recovery.</p>
+</sec>
+<sec id="sec016">
+<title>RECON is able to circumvent high-energy intermediates</title>
+<p>In the scenario proposed in <xref rid="pcbi.1004300.g002" ref-type="fig">Fig 2</xref>, we hypothesize that RECON is able to circumvent high-energy intermediate sequences by encouraging rather than enforcing sequence convergence. We therefore analyzed the sequence trajectory of an example from the FI6v3 benchmark to support this scenario (<xref rid="pcbi.1004300.g004" ref-type="fig">Fig 4A</xref>). In early rounds, the two states diverge in sequence to explore their own energy landscapes. As restraints are increased in later rounds the two states converge on a compromised sequence that is the multi-specific solution for both, only adopting mutations when they are beneficial to both states. Although fitness values continue to decrease after encountering the compromised sequence, this is primarily due to the stochastic nature of rotamer optimization, such that increased optimization will result in a lower score. We focused on a set of complementary mutations that diverged in early rounds with a low convergence restraint, to test the hypothesis that the sequence preference of one state results in a high energy on the other state, and vice versa (<xref rid="pcbi.1004300.g004" ref-type="fig">Fig 4A</xref>, highlighted in red). We found that the sequences preferred by state 1 (TSY) and state 2 (QQW) indeed resulted in higher energy when forcing one state to adopt both sequences than when each state was allowed to adopt its own sequence (<xref rid="pcbi.1004300.g004" ref-type="fig">Fig 4B</xref>). This lowers the barrier to reaching the “compromised” sequence, adopting residues favorable to both state 1 and state 2, which in this case is the sequence QQY. Although this barrier is not as large as proposed in <xref rid="pcbi.1004300.g002" ref-type="fig">Fig 2</xref>, we expect that this barrier will be lower in cases where two binding partners have highly similar binding surfaces, as is the case in our benchmark sets. However, when binding surfaces are more dissimilar, and therefore finding compromise residues is more critical to a favorable binding energy, we expect this barrier to be larger, and the benefit of an independent sequence search to be even greater.</p>
+<fig id="pcbi.1004300.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004300.g004</object-id>
+<label>Fig 4</label>
+<caption>
+<title>Encouraging sequence convergence in RECON can avoid high-energy sequence intermediates.</title>
+<p>A. An example design trajectory of RECON in the FI6v3 benchmark through four design rounds is shown. Sequences tend to diverge in early rounds when convergence restraints are kept low, whereas in later rounds when restraints are increased states are encouraged to adopt a single solution. The figure displays one example from the fixed backbone design protocol, with convergence restraints removed before reporting fitness. The two states showed different preferences for residues highlighted in red. B. Residues highlighted in panel A were applied to the opposing state to analyze the energetic barrier of forced sequence convergence. The energy of these three residues was analyzed when the sequence favored by state 1 (TSY) was applied to state 2, and vice versa with the sequence QQW (intermediate sequence, black/red lines). This was compared to the three-residue fitness when each state was allowed to adopt its own preferred sequence (intermediate sequence, blue line). Energies were compared to the final, “compromised” sequence (QQY). These three amino acids occurred at positions 28, 30, and 53, respectively.</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004300.g004" position="float" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec017">
+<title>Computational efficiency of design methods</title>
+<p>In addition to measuring the sequence recovery and energetic fitness, we compared the computational efficiency of these three design protocols. We argue that, although in certain cases all methods were able to reach the same energetic minimum, RECON provides an added benefit in that it reached this minimum in a fraction of the time required to run MPI_MSD. To this end we compared CPU hours of runtime for generating the previously discussed designs (<xref rid="pcbi.1004300.t005" ref-type="table">Table 5</xref>). As expected, RECON using a fixed backbone was the most efficient of the three protocols, followed by RECON incorporating backbone minimization, and MPI_MSD. This increase in efficiency is due to the reduction in search space by allowing each state to adopt its own sequence.</p>
+<table-wrap id="pcbi.1004300.t005" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004300.t005</object-id>
+<label>Table 5</label> <caption><title>Comparison of CPU runtimes for multi-specificity design using different algorithms.</title></caption>
+<alternatives>
+<graphic id="pcbi.1004300.t005g" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004300.t005" xlink:type="simple"/>
+<table>
+<colgroup span="1">
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" rowspan="1" colspan="1"/>
+<th colspan="3" align="center" rowspan="1">CPU Hours</th>
+</tr>
+<tr>
+<th align="left" rowspan="1" colspan="1">Benchmarkcase</th>
+<th align="left" rowspan="1" colspan="1">RECON FBB</th>
+<th align="left" rowspan="1" colspan="1">RECON BBM</th>
+<th align="left" rowspan="1" colspan="1">MPI_MSD</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>CheY</bold></td>
+<td align="char" char="." rowspan="1" colspan="1">12.0</td>
+<td align="char" char="." rowspan="1" colspan="1">24.0</td>
+<td align="char" char="." rowspan="1" colspan="1">61.1</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>CR6261</bold></td>
+<td align="char" char="." rowspan="1" colspan="1">20.8</td>
+<td align="char" char="." rowspan="1" colspan="1">66.0</td>
+<td align="char" char="." rowspan="1" colspan="1">137.5</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>Elastase</bold></td>
+<td align="char" char="." rowspan="1" colspan="1">24.2</td>
+<td align="char" char="." rowspan="1" colspan="1">47.7</td>
+<td align="char" char="." rowspan="1" colspan="1">198.9</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>FI6v3</bold></td>
+<td align="char" char="." rowspan="1" colspan="1">21.2</td>
+<td align="char" char="." rowspan="1" colspan="1">80.2</td>
+<td align="char" char="." rowspan="1" colspan="1">46.1</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>FYN</bold></td>
+<td align="char" char="." rowspan="1" colspan="1">0.8</td>
+<td align="char" char="." rowspan="1" colspan="1">12.8</td>
+<td align="char" char="." rowspan="1" colspan="1">21.2</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>PAPD</bold></td>
+<td align="char" char="." rowspan="1" colspan="1">37.9</td>
+<td align="char" char="." rowspan="1" colspan="1">99.5</td>
+<td align="char" char="." rowspan="1" colspan="1">129.1</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>Ran</bold></td>
+<td align="char" char="." rowspan="1" colspan="1">23.1</td>
+<td align="char" char="." rowspan="1" colspan="1">153.3</td>
+<td align="char" char="." rowspan="1" colspan="1">276.9</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>V</bold><sub><bold>H</bold></sub><bold>1-69</bold></td>
+<td align="char" char="." rowspan="1" colspan="1">48.7</td>
+<td align="char" char="." rowspan="1" colspan="1">171.1</td>
+<td align="char" char="." rowspan="1" colspan="1">487.1</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>V</bold><sub><bold>H</bold></sub><bold>3-23</bold></td>
+<td align="char" char="." rowspan="1" colspan="1">43.7</td>
+<td align="char" char="." rowspan="1" colspan="1">98.1</td>
+<td align="char" char="." rowspan="1" colspan="1">167.5</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>V</bold><sub><bold>H</bold></sub><bold>5-51</bold></td>
+<td align="char" char="." rowspan="1" colspan="1">19.5</td>
+<td align="char" char="." rowspan="1" colspan="1">71.7</td>
+<td align="char" char="." rowspan="1" colspan="1">95.7</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>Average</bold></td>
+<td align="char" char="." rowspan="1" colspan="1"><bold>25.2</bold></td>
+<td align="char" char="." rowspan="1" colspan="1"><bold>82.4</bold></td>
+<td align="char" char="." rowspan="1" colspan="1"><bold>162.1</bold></td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t005fn001"><p>Runtimes in CPU hours for generation of 100 designs using RECON, both by fixed backbone (FBB) and backbone minimized (BBM) methods, and MPI_MSD algorithms.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+</sec>
+<sec id="sec018">
+<title>Generation of evolutionary sequence profiles</title>
+<p>We hypothesize that RECON is able to operate at higher efficiency by restricting sampled sequences to more relevant sequence space. We further believe that our conception of “relevant” sequence space is reflected in an ensemble of biologically observed sequences, and that RECON should recover not only a native protein sequence, but also biologically tolerated mutations. To address this question we generated a position-specific scoring matrix (PSSM) of amino acid frequencies in evolutionarily related proteins to each benchmark protein using a PSI-Blast query [<xref rid="pcbi.1004300.ref025" ref-type="bibr">25</xref>]. Among the promiscuous proteins we restricted this analysis to non-antibodies, since the full-length sequence of a mature antibody is unlikely to have a large number of meaningful evolutionary counterparts. However, since antibodies in the common germline-encoded benchmark set were only designed in positions deriving from the V<sub>H</sub> gene, we were able to derive a PSSM from other common V<sub>H</sub>-encoded antibodies in the database. We then compared the PSSM to the amino acid frequency in corresponding positions in designed sequences to estimate how well the design protocol mimicked evolution. We measured agreement of sequence profiles using a modified Sandelin-Wasserman similarity to yield a percent similarity for each designed position that could then be averaged over the protein [<xref rid="pcbi.1004300.ref026" ref-type="bibr">26</xref>]. <xref rid="pcbi.1004300.g005" ref-type="fig">Fig 5A</xref> shows a comparison of positions in the V<sub>H</sub>5-51 benchmark where designs either agreed or disagreed with evolutionary sequence profiles—the degree of agreement could then be quantitated by the percent similarity calculated over each position.</p>
+<fig id="pcbi.1004300.g005" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004300.g005</object-id>
+<label>Fig 5</label>
+<caption>
+<title>Recapitulation of evolutionary sequence profiles by multi-specificity design.</title>
+<p>A. For each protein in the benchmark set, an evolutionary sequence profile (top) was calculated and compared to the sequences generated by MSD (bottom). A similarity score was calculated for each position and averaged over designed positions to measure how well design searches biologically relevant sequence space. Highlighted are example positions where designed sequences either agreed (blue) or disagreed (red) with naturally occurring sequences. The figure displays the designed amino acid profile for a subset of positions in the V<sub>H</sub>5-51 benchmark set. See <xref rid="sec031" ref-type="sec">methods</xref> for details on percent similarity calculation. Amino acids are colored according to chemical properties. B. RECON-generated designs were more similar to observed evolutionary sequence profiles than those produced by MPI_MSD. Percent similarity was averaged over designed positions that had been mutated by any design method. Plotted are mean and SEM values. Design protocols are colored as in panel D. C. Improvement in recapitulating evolutionary sequence profiles of RECON increases with the number of designed positions. For each benchmark set, the number of designed positions is plotted against the difference in evolutionary sequence similarity between RECON backbone minimized and MPI_MSD. Least-squares linear fit is shown, with an R-value of 0.61 and p value of 0.02. D. Difference in recapitulation of evolutionary sequence profile for the four largest benchmark sets by designs generated by RECON using fixed backbone (FBB) or backbone minimization (BBM) protocols, or MPI_MSD. P values were calculated using a paired two-tailed t test.</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004300.g005" position="float" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec019">
+<title>Comparison of designs to observed sequence profiles</title>
+<p>We found that RECON was able to create sequences that more closely mirrored natural sequence variation than MPI_MSD (<xref rid="pcbi.1004300.t006" ref-type="table">Table 6</xref> and <xref rid="pcbi.1004300.g005" ref-type="fig">Fig 5B</xref>). Averaging over the benchmark cases, we observed 69, 73, and 57% similarity to evolutionary sequence profiles using RECON fixed backbone, backbone minimized, and MPI_MSD, respectively. This pattern was especially strong in benchmark cases with large numbers of designable residues, as the number of designed residues correlated positively with the improvement of RECON over MPI_MSD in recapitulating evolutionary sequence profiles (<xref rid="pcbi.1004300.g005" ref-type="fig">Fig 5C</xref>). When comparing the four largest benchmark cases by number of designable residues (three common germline-derived antibodies and the PAPD complex), RECON shows a marked improvement over MPI_MSD in recovery of evolutionary sequence profile (<xref rid="pcbi.1004300.g005" ref-type="fig">Fig 5D</xref>). Although this result is not significant due to a small sample size, it is suggestive of the additional benefit provided by RECON when applied to large, computationally intensive design problems. We hypothesize that this is due to compressed sequence space explored by RECON. When design problems are relatively small, the genetic algorithm employed by MPI_MSD is able to efficiently search through sequence space for a low-energy solution. However, when the sequence space increases in a large design problem the compressed sequence search is more advantageous.</p>
+<table-wrap id="pcbi.1004300.t006" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004300.t006</object-id>
+<label>Table 6</label> <caption><title>Comparison of design-generated sequences to evolutionary sequence profiles of input proteins.</title></caption>
+<alternatives>
+<graphic id="pcbi.1004300.t006g" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004300.t006" xlink:type="simple"/>
+<table>
+<colgroup span="1">
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" rowspan="1" colspan="1"/>
+<th colspan="3" align="center" rowspan="1">Evolutionary sequence similarity (%)<xref rid="t006fn002" ref-type="table-fn"><sup>a</sup></xref></th>
+</tr>
+<tr>
+<th align="left" rowspan="1" colspan="1">Benchmarkcase</th>
+<th align="left" rowspan="1" colspan="1">RECON FBB</th>
+<th align="left" rowspan="1" colspan="1">RECON BBM</th>
+<th align="left" rowspan="1" colspan="1">MPI_MSD</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>CheY</bold></td>
+<td align="char" char="." rowspan="1" colspan="1">56.3</td>
+<td align="char" char="." rowspan="1" colspan="1">70.5</td>
+<td align="char" char="." rowspan="1" colspan="1">57.5</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>Elastase</bold></td>
+<td align="char" char="." rowspan="1" colspan="1">60.3</td>
+<td align="char" char="." rowspan="1" colspan="1">70.7</td>
+<td align="char" char="." rowspan="1" colspan="1">65.9</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>FYN</bold></td>
+<td align="char" char="." rowspan="1" colspan="1">87.0</td>
+<td align="char" char="." rowspan="1" colspan="1">87.0</td>
+<td align="char" char="." rowspan="1" colspan="1">96.0</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>PAPD</bold></td>
+<td align="char" char="." rowspan="1" colspan="1">61.7</td>
+<td align="char" char="." rowspan="1" colspan="1">65.3</td>
+<td align="char" char="." rowspan="1" colspan="1">52.4</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>Ran</bold></td>
+<td align="char" char="." rowspan="1" colspan="1">76.6</td>
+<td align="char" char="." rowspan="1" colspan="1">79.3</td>
+<td align="char" char="." rowspan="1" colspan="1">82.5</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>V</bold><sub><bold>H</bold></sub><bold>1-69</bold></td>
+<td align="char" char="." rowspan="1" colspan="1">90.6</td>
+<td align="char" char="." rowspan="1" colspan="1">91.7</td>
+<td align="char" char="." rowspan="1" colspan="1">32.0</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>V</bold><sub><bold>H</bold></sub><bold>3-23</bold></td>
+<td align="char" char="." rowspan="1" colspan="1">50.7</td>
+<td align="char" char="." rowspan="1" colspan="1">50.7</td>
+<td align="char" char="." rowspan="1" colspan="1">36.4</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>V</bold><sub><bold>H</bold></sub><bold>5-51</bold></td>
+<td align="char" char="." rowspan="1" colspan="1">69.0</td>
+<td align="char" char="." rowspan="1" colspan="1">67.0</td>
+<td align="char" char="." rowspan="1" colspan="1">30.4</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"><bold>Average</bold></td>
+<td align="char" char="." rowspan="1" colspan="1"><bold>69.0</bold></td>
+<td align="char" char="." rowspan="1" colspan="1"><bold>72.8</bold></td>
+<td align="char" char="." rowspan="1" colspan="1"><bold>56.6</bold></td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t006fn001"><p>Designs produced by MPI_MSD or fixed backbone (FBB) or backbone minimized (BBM) RECON algorithms were compared to sequence profiles of evolutionarily related proteins at designed positions.</p></fn>
+<fn id="t006fn002"><p><sup>a</sup>Sequence similarity is computed as the Sandelin-Wasserman similarity, normalized as a percentage. See <xref rid="sec031" ref-type="sec">methods</xref> for details.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+</sec>
+<sec id="sec020">
+<title>RECON searches a compressed, more relevant sequence space</title>
+<p>We have shown that designs generated by RECON tend to more closely represent the evolutionary sequence profiles of our benchmark proteins when compared with MPI_MSD. We propose that this is accomplished via a more focused sequence search within the biologically relevant space. To further support this claim, we have analyzed the sequence space searched by RECON and MPI_MSD and compared it to the final output sequences of the top ten designs for the V<sub>H</sub>5-51 benchmark set (<xref rid="pcbi.1004300.s004" ref-type="supplementary-material">S1 Fig</xref>). We generated the sequence space profile by including any residue that was sampled at any step of the design protocol at each position, and then compared this profile to the final sequences among the top ten designs. Presumably the most efficient algorithm would only sample the sequences that are eventually selected as low energy solutions, resulting in a similarity of 100% between sequence space explored and output designed sequences. Therefore we used this similarity as an indicator of the degree of “wasted” sequence space, which is explored but never part of a low energy solution. Comparison of the profiles generated by RECON on a fixed backbone and MPI_MSD show that RECON explores space much more closely constrained to the final low energy sequences, with a similarity score of 92%, as compared to 80% for MPI_MSD. This further supports the claim that RECON searches a compressed search space to encounter a low energy multi-specific solution.</p>
+</sec>
+<sec id="sec021">
+<title>Structural differences in residues preferred by different algorithms</title>
+<p>The algorithms RECON and MPI_MSD feature substantial differences in sequence and structure at many positions of the output design models, particularly in the common germline antibody benchmark sets. We hypothesized that this difference in preference may be due to a failure by MPI_MSD to exhaustively search through sequence space in a large design problem. Concurrently we expect that the sequences selected for by RECON are actually lower in overall fitness. We present structural analysis of three positions, residues 32, 33, and 74 in the V<sub>H</sub>3-23 benchmark, to support this claim. Position 32 showed a preference for tyrosine in RECON-generated designs, whereas MPI_MSD prefers glycine. Tyrosine is able to fill a cross-interface gap in the 1S78 complex, and can establish hydrogen bonding to an amide nitrogen across the interface (<xref rid="pcbi.1004300.g006" ref-type="fig">Fig 6A</xref>). This additional hydrogen bonding produces a large drop in fitness for this residue across all states (-1.85 versus -5.97 REU). Interestingly, tyrosine is the germline residue at this position, and was only recovered using RECON with backbone minimization—both RECON fixed backbone and MPI_MSD favor glycine at this position. Position 33 also showed difference preferences between design methods—alanine was favored by MPI_MSD, whereas RECON favored serine. Serine results in a lower overall fitness due to additional hydrogen bonding with a glutamine residue on the heavy chain CDR3 loop of the antibody (<xref rid="pcbi.1004300.g006" ref-type="fig">Fig 6B</xref>). At this position, alanine is the germline residue—however the per-residue fitness values indicate that serine is able to stabilize this loop in the 3BN9 complex without compromising stability of the other states (<xref rid="pcbi.1004300.g006" ref-type="fig">Fig 6B</xref>, fitness shown in parenthesis). Lastly, position 74 showed a preference for threonine in RECON-generated designs, as opposed to serine in MPI_MSD-generated designs. Threonine is able to establish cross-interface hydrogen bonding in the 1S78 complex without causing clashes in other states, whereas serine is somewhat surprisingly not positioned to create this interaction (<xref rid="pcbi.1004300.g006" ref-type="fig">Fig 6C</xref>). This is partially due to backbone movements in the RECON-generated structure that position the hydroxyl group for optimal hydrogen bond geometry. In addition to hydrogen bonding, threonine scores more favorably on the basis of increased van der Waals attractive forces of the additional methyl group with surrounding atoms. At this position, asparagine is the germline amino acid, which was recovered by neither RECON nor MPI_MSD.</p>
+<fig id="pcbi.1004300.g006" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004300.g006</object-id>
+<label>Fig 6</label>
+<caption>
+<title>Structural analysis of sequence preferences of RECON and MPI_MSD.</title>
+<p>At positions 32 (A), 33 (B), and 74 (C), RECON and MPI_MSD showed consistent difference in sequence preference in the V<sub>H</sub>3-23 benchmark. Circled in red are positions that differ between the two structures. Shown in parenthesis are per-residue energy scores in REU summed across all post-minimization states. Shown above are post-minimization structures from designs generated by RECON and MPI_MSD. Structures shown in panels A and C are from the 1S78 complex, and those in panel B are from the 3BN9 complex.</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004300.g006" position="float" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec022">
+<title>Incorporating backbone motion results in increased recapitulation of evolutionary sequence profile</title>
+<p>From our initial benchmark results, we did not observe a difference in evolutionary sequence similarity for designs created with fixed backbone versus backbone minimization protocols (<xref rid="pcbi.1004300.g005" ref-type="fig">Fig 5D</xref>). However, as previous reports have shown the utility of incorporating backbone motion into a design protocol [<xref rid="pcbi.1004300.ref008" ref-type="bibr">8</xref>,<xref rid="pcbi.1004300.ref027" ref-type="bibr">27</xref>–<xref rid="pcbi.1004300.ref029" ref-type="bibr">29</xref>], we hypothesized that the initial minimization of structures before entering them into multi-specificity design reduced the impact of alternating backbone minimization with design. We hypothesize that backbone movement should have a larger impact on design of structures that have not been pre-minimized. To test this hypothesis, we repeated the benchmark with structures that had not been pre-minimized, and performed multi-specificity design with three protocols: 1) fixed backbone design, 2) alternating design with minimization of φ, ψ, and χ angles, and 3) alternating design with backrub movements. The backrub motion involves rotation of a rigid backbone around axes between nearby Cα atoms, and has been shown to recapitulate alternative backbone conformations in high-resolution crystal structures [<xref rid="pcbi.1004300.ref030" ref-type="bibr">30</xref>] as well as improving prediction of the conformation of point mutant side chains [<xref rid="pcbi.1004300.ref031" ref-type="bibr">31</xref>]. We predicted that a design protocol including backrub motions between design rounds should result in the highest agreement to evolutionary sequence profiles, given the sampling of more biologically relevant conformational space than simple minimization. We therefore analyzed the similarity to evolutionary sequence profiles for the top ten designs produced by the three methods and compared to evaluate whether backbone motion in this context confers any additional benefit. As expected, incorporating backrub movements results in a statistically significant increase in similarity to evolutionary profiles as compared to a fixed backbone protocol or one involving minimization (<xref rid="pcbi.1004300.g007" ref-type="fig">Fig 7</xref>). This agrees with previous studies indicated that backrub motions are able to sample biologically relevant conformational space, and shows that backrub motions can be incorporated in a multi-specificity context to provide more robust results in terms of evolutionary sequence recovery.</p>
+<fig id="pcbi.1004300.g007" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004300.g007</object-id>
+<label>Fig 7</label>
+<caption>
+<title>Incorporation of backbone motion into RECON recapitulates evolutionary sequence profiles in un-minimized structures.</title>
+<p>Multi-specificity design using RECON was repeated on structures that had not been previously energy minimized to evaluate the benefit of incorporating backbone movements. Designs were generated using either a fixed backbone protocol (Fixed BB), alternating rounds of φ, ψ, and χ angle minimization (Minimize), or using backrub motions (Backrub). P values were calculated by a paired two-tailed t test.</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004300.g007" position="float" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec023">
+<title>Advantage of multi-specificity vs. single-state design</title>
+<p>In previous works involving both germline antibodies and promiscuous proteins, the difference in sequence recovery between sequences generated by single state and multi-specificity design has been analyzed [<xref rid="pcbi.1004300.ref014" ref-type="bibr">14</xref>,<xref rid="pcbi.1004300.ref019" ref-type="bibr">19</xref>]. Multi-specificity design in both cases was shown to recover the native or germline sequence at a higher rate than single state design, supporting the proposition that the increased performance of multistate design justifies the increased computational complexity. Given the increased performance of RECON in native sequence recovery, we hypothesized that multi-specificity design performed by RECON would result in a larger difference in germline vs. mature sequence recovery in the common germline antibody dataset. We therefore performed fixed backbone single state design for each complex in this dataset and calculated recovery of the germline sequence and the mature antibody sequences. We can recover the difference in germline and mature sequence recovery as observed in [<xref rid="pcbi.1004300.ref019" ref-type="bibr">19</xref>], and show that design performed by RECON results in a larger difference between germline and mature sequence recovery compared to MPI_MSD (<xref rid="pcbi.1004300.s005" ref-type="supplementary-material">S2 Fig</xref>). We can therefore conclude that in these cases RECON is more robust at generating germline-like, multi-specific sequences compared to MPI_MSD.</p>
+</sec>
+</sec>
+<sec id="sec024" sec-type="conclusions">
+<title>Discussion</title>
+<sec id="sec025">
+<title>Summary of results</title>
+<p>We have developed and benchmarked a new method for multi-specificity design, REstrained CONvergence in multi-specificity design (RECON). This algorithm operates by allowing each state to search sequence space independently with a restraint system that gradually encourages convergence between different states on a common sequence. Allowing each state to adopt a unique sequence reduces the space of sequences required to search in order to find a native-like low energy solution. In two separate benchmark sets consisting of ten total cases, we were able to show that RECON, both with and without iterative backbone minimization cycles, was able to more accurately recapitulate the native, multi-specific sequence of input proteins than the existing MSD application in <sc>Rosetta</sc>, MPI_MSD. In addition, we analyzed agreement of designed sequences with observed evolutionary sequence profiles to measure how well MSD simulates natural sequence tolerance. In large design problems with many residues being optimized simultaneously, RECON was able to create sequences that more closely mirrored the natural distribution of sequences seen in evolutionary profiles.</p>
+</sec>
+<sec id="sec026">
+<title>Diversity in predicted sequence tolerance</title>
+<p>In this study we analyzed the degree of convergence of a designed protein sequence profiles with the natural sequence variation seen in evolutionary homologs. It is well known that many proteins tolerate a wider variety of sequences than simply the native sequence [<xref rid="pcbi.1004300.ref013" ref-type="bibr">13</xref>,<xref rid="pcbi.1004300.ref029" ref-type="bibr">29</xref>,<xref rid="pcbi.1004300.ref032" ref-type="bibr">32</xref>,<xref rid="pcbi.1004300.ref033" ref-type="bibr">33</xref>]—therefore a major goal of multi-specificity design is to recover not only the native sequence of a protein, but also sequence variations that are tolerated by all binding partners. We found that RECON is able to recover evolutionary sequence profiles more effectively in large complexes—however, it is clear from analysis of sequences sampled by each method (<xref rid="pcbi.1004300.s004" ref-type="supplementary-material">S1 Fig</xref>) that MPI_MSD is exploring a much larger sequence space. In certain cases this diversity of sampling may be desired, especially in cases where the interface with both binding partners is compatible with a large number of sequence polymorphisms. Our benchmark cases suggest that sampling near the energy minimum for each individual state is sufficient to recover the sequences compatible with all states. However, in cases where generating sequence diversity is at a premium, for example to explore the tolerated sequence space of a given backbone, it may be advantageous to use RECON and MPI_MSD as complementary approaches.</p>
+</sec>
+<sec id="sec027">
+<title>Comparison of rotamer packing algorithms</title>
+<p>RECON in the current study was used with the standard <sc>Rosetta</sc> simulated annealing rotamer optimization protocol [<xref rid="pcbi.1004300.ref034" ref-type="bibr">34</xref>]–however, other rotamer optimization methods have shown superior performance in certain instances. For example, MPI_MSD uses a modified form of the FASTER algorithm [<xref rid="pcbi.1004300.ref035" ref-type="bibr">35</xref>], referred to as backbone-minimum-energy conformation followed by single-residue perturbation/relaxation (BMEC-sPR) [<xref rid="pcbi.1004300.ref015" ref-type="bibr">15</xref>]. Leaver-Fay et al. compared the effectiveness of these two algorithms and found that BMEC-sPR consistently reached the global minimum solution in a higher proportion of cases [<xref rid="pcbi.1004300.ref015" ref-type="bibr">15</xref>]. Additional rotamer optimization algorithms have been adapted for use in MSD, such as dead-end elimination [<xref rid="pcbi.1004300.ref036" ref-type="bibr">36</xref>], probabilistic graphical models [<xref rid="pcbi.1004300.ref037" ref-type="bibr">37</xref>], and iterative batch relaxation/single perturbation and relaxation [<xref rid="pcbi.1004300.ref035" ref-type="bibr">35</xref>]. The benefit of RECON is that it can be adapted to work with any single state-compatible rotamer optimization method, as communication between different states is conducted solely by the restraint system. This opens up the possibility of adapting many more optimization methods for MSD.</p>
+</sec>
+<sec id="sec028">
+<title>Fixed backbone versus backbone flexibility in restrained multi-state design</title>
+<p>One important benefit of RECON is the ability to incorporate backbone motion into an MSD protocol. Traditionally protein flexibility in MSD has been modeled by including multiple backbone conformations as input states [<xref rid="pcbi.1004300.ref009" ref-type="bibr">9</xref>,<xref rid="pcbi.1004300.ref013" ref-type="bibr">13</xref>,<xref rid="pcbi.1004300.ref016" ref-type="bibr">16</xref>,<xref rid="pcbi.1004300.ref032" ref-type="bibr">32</xref>,<xref rid="pcbi.1004300.ref038" ref-type="bibr">38</xref>]. This is a reasonable strategy for running MSD using RECON. However, RECON offers the benefit that each state can be subject to additional backbone minimization between design rounds. When incorporating backbone motion into design the conformational and sequence space explodes, making it difficult to reach a global minimum. However the fact that RECON reduces the sampling needed to reach the optimal sequence allows for more search space to be explored. We have shown that incorporating backbone flexibility in the form of backrub motions can improve accuracy of sequences when applied to un-minimized structures. Single state design protocols have successfully incorporated backbone movement, allowing the introduction of mutations that would have been unfavorable on the original backbone [<xref rid="pcbi.1004300.ref001" ref-type="bibr">1</xref>,<xref rid="pcbi.1004300.ref008" ref-type="bibr">8</xref>,<xref rid="pcbi.1004300.ref027" ref-type="bibr">27</xref>]. The ideal protocol for flexible backbone design remains elusive, considering the different methods of backbone perturbation [<xref rid="pcbi.1004300.ref028" ref-type="bibr">28</xref>,<xref rid="pcbi.1004300.ref030" ref-type="bibr">30</xref>]. In addition it remains unclear how to best alternate fixed backbone sequence optimization with backbone motion [<xref rid="pcbi.1004300.ref039" ref-type="bibr">39</xref>]. RECON opens up the possibility of incorporating these backbone design methods into an MSD context.</p>
+</sec>
+<sec id="sec029">
+<title>Negative design capabilities</title>
+<p>One of the most challenging aspects of MSD is the inclusion of unfavorable states to destabilize. The current implementation of RECON is limited in scope compared to approaches such as MPI_MSD due to the inability to perform negative design to disfavor certain states. This limitation is not fundamental as in principle unfavorable states could be designed against with an energy penalty. However, it is outside the scope of the current work to benchmark such an approach. MSD has been successful in engineering proteins when both including [<xref rid="pcbi.1004300.ref006" ref-type="bibr">6</xref>,<xref rid="pcbi.1004300.ref007" ref-type="bibr">7</xref>,<xref rid="pcbi.1004300.ref010" ref-type="bibr">10</xref>,<xref rid="pcbi.1004300.ref012" ref-type="bibr">12</xref>] and ignoring [<xref rid="pcbi.1004300.ref009" ref-type="bibr">9</xref>,<xref rid="pcbi.1004300.ref013" ref-type="bibr">13</xref>,<xref rid="pcbi.1004300.ref038" ref-type="bibr">38</xref>] these negative design states. Bolon et al. have shown that including negative states produces designs that exhibit better specificity between competing states [<xref rid="pcbi.1004300.ref040" ref-type="bibr">40</xref>]–however, this comes at the cost of target protein stability [<xref rid="pcbi.1004300.ref022" ref-type="bibr">22</xref>,<xref rid="pcbi.1004300.ref040" ref-type="bibr">40</xref>], and therefore may not be ideal for every design problem. In addition, negative design states result in a significantly more complicated computational protocol–differences between backbone conformations can cause failures in rotamer placement that lead to artificially high energies [<xref rid="pcbi.1004300.ref015" ref-type="bibr">15</xref>]. This complicates the inclusion of multiple backbone states in an MSD problem, which mimics the natural flexibility of a protein in solution and results in higher quality designs [<xref rid="pcbi.1004300.ref009" ref-type="bibr">9</xref>,<xref rid="pcbi.1004300.ref013" ref-type="bibr">13</xref>,<xref rid="pcbi.1004300.ref016" ref-type="bibr">16</xref>,<xref rid="pcbi.1004300.ref038" ref-type="bibr">38</xref>]. Explicit negative design is not currently supported using RECON–the lack of an explicit fitness function makes it difficult to reconcile energies of positive states with negative ones. Grigoryan et al. used an intriguing “specificity sweep” protocol that alternates design rounds optimizing stability of positive states with specificity rounds, accepting mutations that destabilize the negative states without a negative effect on the positive ones [<xref rid="pcbi.1004300.ref010" ref-type="bibr">10</xref>]. A similar strategy could incorporate RECON to optimize stability and specificity without explicitly designing against a negative state.</p>
+</sec>
+<sec id="sec030">
+<title>Integration of restrained multi-state design into <sc>Rosetta</sc> code base</title>
+<p>RECON was designed with the intent to be easily integrated into the <sc>RosettaScripts</sc> computational framework [<xref rid="pcbi.1004300.ref041" ref-type="bibr">41</xref>]. To this end we emphasize that RECON is compatible with any other protocol that is available within <sc>RosettaScripts</sc>, which is not available for MPI_MSD. This makes it easier for users with experience running SSD protocols in <sc>RosettaScripts</sc> to expand their capabilities by including RECON. This can be used to include additional conformational states, explicitly model bound and unbound conformations, or simultaneously design against multiple partners. We describe in the supplemental materials (<xref rid="pcbi.1004300.s006" ref-type="supplementary-material">S1 File</xref>) a comprehensive example of how to run RECON in an XML file.</p>
+</sec>
+</sec>
+<sec id="sec031" sec-type="materials|methods">
+<title>Methods</title>
+<sec id="sec032">
+<title>Selection of datasets for benchmark</title>
+<p>Common germline gene-derived antibody complexes were selected and processed as in [<xref rid="pcbi.1004300.ref019" ref-type="bibr">19</xref>]–briefly, candidate complexes were selected by querying the Immunogenetics Information System (IMGT) 3D structural query system for antibodies derived from either V<sub>H</sub>1-69, V<sub>H</sub>3-23, or V<sub>H</sub>5-51 germline genes [<xref rid="pcbi.1004300.ref021" ref-type="bibr">21</xref>]. Only complexes containing protein or peptide ligands were considered. Common germline antibodies were only considered for multi-specificity design when derived from the same allele. Promiscuous proteins used were derived from the multi-specificity design study described in Humphris et al. 2007 [<xref rid="pcbi.1004300.ref014" ref-type="bibr">14</xref>]. Complexes were selected to maximize diversity of structure and function, as well as to select proteins with diverse ligands.</p>
+</sec>
+<sec id="sec033">
+<title>Preparation of structures for design simulations</title>
+<p>Structures were downloaded from the Protein Data Bank (PDB; <ext-link ext-link-type="uri" xlink:href="http://www.rcsb.org" xlink:type="simple">www.rcsb.org</ext-link>), and manually processed to remove water and non-proteinogenic molecules. Any chain breaks were closed using kinematic loop closure [<xref rid="pcbi.1004300.ref042" ref-type="bibr">42</xref>]. Due to extensive chain breaks in CDR loops, chains H and L in structure 3GBM were replaced by the same chains in 3GBN. Structures were subject to energy minimization in <sc>Rosetta</sc> using the talaris 2013 score function [<xref rid="pcbi.1004300.ref017" ref-type="bibr">17</xref>]. The lowest energy model of 50 energy-minimized models for each complex was selected for design.</p>
+</sec>
+<sec id="sec034">
+<title>Multi-specificity design</title>
+<p>For common germline antibody multi-specificity design, amino acid sequences deriving from the V<sub>H</sub> gene were aligned using ClustalW sequence alignment [<xref rid="pcbi.1004300.ref043" ref-type="bibr">43</xref>], and positions that varied in any of the antibodies were specified for design. Germline sequences were inferred from IMGT/3D Structure DB [<xref rid="pcbi.1004300.ref021" ref-type="bibr">21</xref>]. Designable residues in promiscuous proteins were selected as those present in the interface of all binding partners. To define interface residues, a set of filters was applied to select residues that are likely to engage in interactions with the opposing chain. The first filter eliminates any residue with a Cβ distance larger than 10 Å from the closest residue in the opposing chain. Residues were then selected that either had a heavy atom within 5.5 Å of a heavy atom across the interface, or those with an angle of less than 75° between two vectors, Cα-Cβ of the residue and Cβ-Cβ to the closest residue Cβ on the opposing chain. This vector angle filter allows inclusion of residues where the sidechain is oriented to face the opposing chain. In addition, any residues at the interface on the side of the binding partner were specified for repacking. Identical residues for design and repacking were used for both RECON and MPI_MSD. For RECON benchmarking, fixed backbone design was used with 4 rounds of rotamer packing. RECON constraints were ramped through the 4 rounds of design using convergence restraints of 0.5, 1.0, 1.5, and 2.0 REU. Sequence convergence was enforced at the end of the protocol using a greedy selection algorithm. RECON was also benchmarked with backbone minimization–this protocol was identical to the fixed backbone protocol with the addition of a cycle of minimization of φ, ψ, and χ angles after each design round. At the end of the backbone minimization protocol we performed one full round of a <sc>Rosetta</sc> relax protocol, which involves rotamer packing and minimization using a gradually increasing repulsive force [<xref rid="pcbi.1004300.ref044" ref-type="bibr">44</xref>]. In simulations performed with backrub motions, all backbone atoms on the protein chain being designed were specified as pivot residues. The backrub motion as implemented in <sc>Rosetta</sc> is described in detail in [<xref rid="pcbi.1004300.ref031" ref-type="bibr">31</xref>]. MPI_MSD was run with default parameters, with the number of rounds defined as 15 times the number of designable residues [<xref rid="pcbi.1004300.ref015" ref-type="bibr">15</xref>]. For MPI_MSD, the fitness function was defined as the sum of energy of the complexes. Single state design was run as four rounds of fixed backbone rotamer optimization, using the same designable and repackable residues as previously specified. The talaris 2013 scoring function was used for all methods of design.</p>
+</sec>
+<sec id="sec035">
+<title>Quantitative measures for analysis of resulting sequences</title>
+<p>For each complex, 100 designs were created as described using both RECON and MPI_MSD applications. Sequence logos were created using the Berkeley web logo server (<ext-link ext-link-type="uri" xlink:href="http://weblogo.berkeley.edu" xlink:type="simple">http://weblogo.berkeley.edu</ext-link>). Bitscore was computed for each design trajectory, defined as the Shannon entropy of each amino acid occurring at each designed position, described in [<xref rid="pcbi.1004300.ref019" ref-type="bibr">19</xref>] [<xref rid="pcbi.1004300.ref045" ref-type="bibr">45</xref>,<xref rid="pcbi.1004300.ref046" ref-type="bibr">46</xref>]. Bitscore was calculated using the following equation: I<sub>i</sub> = p<sub>i</sub> x log<sub>2</sub>(20 x p<sub>i</sub>), where i represents the amino acid and p<sub>i</sub> is the frequency in the top ten designs. When p<sub>i</sub> is 100% the bitscore becomes 4.32, which was used as the maximum possible bitscore in our calculations. To calculate native sequence recovery, the summed bitscore of the native amino acid at each position was divided by the sum of the bitscore of all amino acids at all positions. Designs were analyzed on the basis of the fitness of the top ten designs, with fitness defined as the sum of <sc>Rosetta</sc> energy of all states, and native sequence recovery. <sc>Rosetta</sc> energy was reported in all cases with convergence restraints subtracted from the total.</p>
+<p>To generate an evolutionary sequence profile we used PSI-Blast with default parameters, querying a non-redundant protein database [<xref rid="pcbi.1004300.ref025" ref-type="bibr">25</xref>,<xref rid="pcbi.1004300.ref047" ref-type="bibr">47</xref>]. This position-specific scoring matrix (PSSM) of amino acid frequencies was then compared to a PSSM constructed from observed frequencies in the top ten designs by fitness resulting from RECON or MPI_MSD. To compare PSSMs we used a modified Sandelin-Wasserman similarity score [<xref rid="pcbi.1004300.ref026" ref-type="bibr">26</xref>]. This score was calculated by computing the squared difference for each amino acid frequency at each position. The squared difference was summed for all amino acids at a given position, and subtracted from two to yield a similarity score from 0 (no similarity) to 2 (identical). This value was then normalized by a factor of two to yield a percent similarity for each position and summed over all designed positions to give an overall similarity score. To reduce background noise when comparing PSSMs we only compared positions that had any observed mutations in the top ten designs produced by any design method. Inclusion of positions where no mutations are observed would inflate evolutionary similarity values for all methods. This reduced the total number of positions considered from 200 among eight benchmark sets to 97. In the benchmark cases of un-minimized structures, eliminating positions with no variation by any method left 151 of 200 possible positions.</p>
+</sec>
+</sec>
+<sec id="sec036">
+<title>Supporting Information</title>
+<supplementary-material id="pcbi.1004300.s001" xlink:href="info:doi/10.1371/journal.pcbi.1004300.s001" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:type="simple">
+<label>S1 Table</label>
+<caption>
+<title>Post-minimization fitnesses of benchmark sets.</title>
+<p>Structures generated by design were energy minimized to relieve small clashes. Fitnesses reported are the sum of energy of all states. Best values in each row are shown in bold.</p>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004300.s002" xlink:href="info:doi/10.1371/journal.pcbi.1004300.s002" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:type="simple">
+<label>S2 Table</label>
+<caption>
+<title>Performance of a control greedy selection algorithm.</title>
+<p>Design of benchmark cases was repeated for a greedy selection algorithm, which lacks the ramping convergence restraints of RECON. This algorithm performs a single round of unrestrained design followed by a greedy selection of amino acids that maximize fitness over all states.</p>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004300.s003" xlink:href="info:doi/10.1371/journal.pcbi.1004300.s003" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:type="simple">
+<label>S3 Table</label>
+<caption>
+<title>Non-converging positions in the V<sub>H</sub>5-51 benchmark set.</title>
+<p>Failure to converge by the end of the RECON convergence restraint protocol was counted for each designed residue in the V<sub>H</sub>5-51 benchmark set, over 100 design trajectories.</p>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004300.s004" xlink:href="info:doi/10.1371/journal.pcbi.1004300.s004" mimetype="application/eps" position="float" xlink:type="simple">
+<label>S1 Fig</label>
+<caption>
+<title>The sequence space explored by RECON and MPI_MSD is compared to the sequence profiles of the top ten designs for the V<sub>H</sub>5-51 benchmark case.</title>
+<p>Sequence space was determined as any amino acid that was sampled at any point throughout the design protocol. A similarity score was calculated between the sequence space explored by an algorithm and the top ten designs produced by the same algorithm.</p>
+<p>(EPS)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004300.s005" xlink:href="info:doi/10.1371/journal.pcbi.1004300.s005" mimetype="application/eps" position="float" xlink:type="simple">
+<label>S2 Fig</label>
+<caption>
+<title>Germline and mature sequence recovery for sequences generated by RECON and MPI_MSD multi-specificity design, compared to the sequences generated by single state design.</title>
+<p>(EPS)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004300.s006" xlink:href="info:doi/10.1371/journal.pcbi.1004300.s006" mimetype="application/pdf" position="float" xlink:type="simple">
+<label>S1 File</label>
+<caption>
+<title>Protocol capture file containing in-detail description of the computational methodology, as well as scripts useful in generating input files and analyzing results.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ack>
+<p>The authors would like to thank Vanderbilt University and the Advanced Computing Center for Research and Education for the computational resources to complete this project.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1004300.ref001"><label>1</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kuhlman</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Dantas</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Ireton</surname> <given-names>GC</given-names></name>, <name name-style="western"><surname>Varani</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Stoddard</surname> <given-names>BL</given-names></name>, <etal>et al</etal>. (<year>2003</year>) <article-title>Design of a novel globular protein fold with atomic-level accuracy</article-title>. <source>Science</source> <volume>302</volume>: <fpage>1364</fpage>–<lpage>1368</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/science.1089427" xlink:type="simple">10.1126/science.1089427</ext-link></comment> <object-id pub-id-type="pmid">14631033</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref002"><label>2</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yang C-</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Renfrew</surname> <given-names>PD</given-names></name>, <name name-style="western"><surname>Olsen</surname> <given-names>AJ</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Yuvienco</surname> <given-names>C</given-names></name>, <etal>et al</etal>. (<year>2014</year>) <article-title>Improved stability and half-life of fluorinated phosphotriesterase using rosetta</article-title>. <source>Chembiochem</source> <volume>15</volume>: <fpage>1761</fpage>–<lpage>1764</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1002/cbic.201402062" xlink:type="simple">10.1002/cbic.201402062</ext-link></comment> <object-id pub-id-type="pmid">25066940</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref003"><label>3</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Miklos</surname> <given-names>AE</given-names></name>, <name name-style="western"><surname>Kluwe</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Der</surname> <given-names>BS</given-names></name>, <name name-style="western"><surname>Pai</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Sircar</surname> <given-names>A</given-names></name>, <etal>et al</etal>. (<year>2012</year>) <article-title>Structure-based design of supercharged, highly thermoresistant antibodies</article-title>. <source>Chem Biol</source> <volume>19</volume>: <fpage>449</fpage>–<lpage>455</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.chembiol.2012.01.018" xlink:type="simple">10.1016/j.chembiol.2012.01.018</ext-link></comment> <object-id pub-id-type="pmid">22520751</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref004"><label>4</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Farady</surname> <given-names>CJ</given-names></name>, <name name-style="western"><surname>Sellers</surname> <given-names>BD</given-names></name>, <name name-style="western"><surname>Jacobson</surname> <given-names>MP</given-names></name>, <name name-style="western"><surname>Craik</surname> <given-names>CS</given-names></name> (<year>2009</year>) <article-title>Improving the species cross-reactivity of an antibody using computational design</article-title>. <source>Bioorg Med Chem Lett</source> <volume>19</volume>: <fpage>3744</fpage>–<lpage>3747</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.bmcl.2009.05.005" xlink:type="simple">10.1016/j.bmcl.2009.05.005</ext-link></comment> <object-id pub-id-type="pmid">19477127</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref005"><label>5</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Siegel</surname> <given-names>JB</given-names></name>, <name name-style="western"><surname>Zanghellini</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Lovick</surname> <given-names>HM</given-names></name>, <name name-style="western"><surname>Kiss</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Lambert</surname> <given-names>AR</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>Computational design of an enzyme catalyst for a stereoselective bimolecular Diels-Alder reaction</article-title>. <source>Science</source> <volume>329</volume>: <fpage>309</fpage>–<lpage>313</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/science.1190239" xlink:type="simple">10.1126/science.1190239</ext-link></comment> <object-id pub-id-type="pmid">20647463</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref006"><label>6</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ashworth</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Taylor</surname> <given-names>GK</given-names></name>, <name name-style="western"><surname>Havranek</surname> <given-names>JJ</given-names></name>, <name name-style="western"><surname>Quadri</surname> <given-names>SA</given-names></name>, <name name-style="western"><surname>Stoddard</surname> <given-names>BL</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>Computational reprogramming of homing endonuclease specificity at multiple adjacent base pairs</article-title>. <source>Nucleic Acids Res</source> <volume>38</volume>: <fpage>5601</fpage>–<lpage>5608</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/nar/gkq283" xlink:type="simple">10.1093/nar/gkq283</ext-link></comment> <object-id pub-id-type="pmid">20435674</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref007"><label>7</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kortemme</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Joachimiak</surname> <given-names>LA</given-names></name>, <name name-style="western"><surname>Bullock</surname> <given-names>AN</given-names></name>, <name name-style="western"><surname>Schuler</surname> <given-names>AD</given-names></name>, <name name-style="western"><surname>Stoddard</surname> <given-names>BL</given-names></name>, <etal>et al</etal>. (<year>2004</year>) <article-title>Computational redesign of protein-protein interaction specificity</article-title>. <source>Nat Struct Mol Biol</source> <volume>11</volume>: <fpage>371</fpage>–<lpage>379</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nsmb749" xlink:type="simple">10.1038/nsmb749</ext-link></comment> <object-id pub-id-type="pmid">15034550</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref008"><label>8</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Harbury</surname> <given-names>PB</given-names></name>, <name name-style="western"><surname>Plecs</surname> <given-names>JJ</given-names></name>, <name name-style="western"><surname>Tidor</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Alber</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Kim</surname> <given-names>PS</given-names></name> (<year>1998</year>) <article-title>High-resolution protein design with backbone freedom</article-title>. <source>Science</source> <volume>282</volume>: <fpage>1462</fpage>–<lpage>1467</lpage>. <object-id pub-id-type="pmid">9822371</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref009"><label>9</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ambroggio</surname> <given-names>XI</given-names></name>, <name name-style="western"><surname>Kuhlman</surname> <given-names>B</given-names></name> (<year>2006</year>) <article-title>Computational Design of a Single Amino Acid Sequence that Can Switch between Two Distinct Protein Folds</article-title>. <source>J Am Chem Soc</source> <volume>128</volume>: <fpage>1154</fpage>–<lpage>1161</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1021/ja054718w" xlink:type="simple">10.1021/ja054718w</ext-link></comment> <object-id pub-id-type="pmid">16433531</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref010"><label>10</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Grigoryan</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Reinke</surname> <given-names>AW</given-names></name>, <name name-style="western"><surname>Keating</surname> <given-names>AE</given-names></name> (<year>2009</year>) <article-title>Design of protein-interaction specificity gives selective bZIP-binding peptides</article-title>. <source>Nature</source> <volume>458</volume>: <fpage>859</fpage>–<lpage>864</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nature07885" xlink:type="simple">10.1038/nature07885</ext-link></comment> <object-id pub-id-type="pmid">19370028</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref011"><label>11</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ashworth</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Havranek</surname> <given-names>JJ</given-names></name>, <name name-style="western"><surname>Duarte</surname> <given-names>CM</given-names></name>, <name name-style="western"><surname>Sussman</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Monnat</surname> <given-names>RJ</given-names></name>, <etal>et al</etal>. (<year>2006</year>) <article-title>Computational redesign of endonuclease DNA binding and cleavage specificity</article-title>. <source>Nature</source> <volume>441</volume>: <fpage>656</fpage>–<lpage>659</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nature04818" xlink:type="simple">10.1038/nature04818</ext-link></comment> <object-id pub-id-type="pmid">16738662</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref012"><label>12</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Havranek</surname> <given-names>JJ</given-names></name>, <name name-style="western"><surname>Harbury</surname> <given-names>PB</given-names></name> (<year>2003</year>) <article-title>Automated design of specificity in molecular recognition</article-title>. <source>Nat Struct Biol</source> <volume>10</volume>: <fpage>45</fpage>–<lpage>52</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nsb877" xlink:type="simple">10.1038/nsb877</ext-link></comment> <object-id pub-id-type="pmid">12459719</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref013"><label>13</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Allen</surname> <given-names>BD</given-names></name>, <name name-style="western"><surname>Nisthal</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Mayo</surname> <given-names>SL</given-names></name> (<year>2010</year>) <article-title>Experimental library screening demonstrates the successful application of computational protein design to large structural ensembles</article-title>. <source>Proc Natl Acad Sci USA</source> <volume>107</volume>: <fpage>19838</fpage>–<lpage>19843</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.1012985107" xlink:type="simple">10.1073/pnas.1012985107</ext-link></comment> <object-id pub-id-type="pmid">21045132</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref014"><label>14</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Humphris</surname> <given-names>EL</given-names></name>, <name name-style="western"><surname>Kortemme</surname> <given-names>T</given-names></name> (<year>2007</year>) <article-title>Design of multi-specificity in protein interfaces</article-title>. <volume>3</volume>: <fpage>e164</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.0030164" xlink:type="simple">10.1371/journal.pcbi.0030164</ext-link></comment> <object-id pub-id-type="pmid">17722975</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref015"><label>15</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Leaver-Fay</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Jacak</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Stranges</surname> <given-names>PB</given-names></name>, <name name-style="western"><surname>Kuhlman</surname> <given-names>B</given-names></name> (<year>2011</year>) <article-title>A generic program for multistate protein design</article-title>. <source>PLoS ONE</source> <volume>6</volume>: <fpage>e20937</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pone.0020937" xlink:type="simple">10.1371/journal.pone.0020937</ext-link></comment> <object-id pub-id-type="pmid">21754981</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref016"><label>16</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Davey</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Chica</surname> <given-names>RA</given-names></name> (<year>2014</year>) <article-title>Improving the accuracy of protein stability predictions with multistate design using a variety of backbone ensembles</article-title>. <source>Proteins</source> <volume>82</volume>: <fpage>771</fpage>–<lpage>784</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1002/prot.24457" xlink:type="simple">10.1002/prot.24457</ext-link></comment> <object-id pub-id-type="pmid">24174277</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref017"><label>17</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Leaver-Fay</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Tyka</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Lewis</surname> <given-names>SM</given-names></name>, <name name-style="western"><surname>Lange</surname> <given-names>OF</given-names></name>, <name name-style="western"><surname>Thompson</surname> <given-names>J</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>ROSETTA3: an object-oriented software suite for the simulation and design of macromolecules</article-title>. <source>Meth Enzymol</source> <volume>487</volume>: <fpage>545</fpage>–<lpage>574</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/B978-0-12-381270-4.00019–6" xlink:type="simple">10.1016/B978-0-12-381270-4.00019–6</ext-link></comment> <object-id pub-id-type="pmid">21187238</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref018"><label>18</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Dunbrack</surname> <given-names>RL</given-names></name> (<year>2002</year>) <article-title>Rotamer libraries in the 21st century</article-title>. <source>Curr Opin Struct Biol</source> <volume>12</volume>: <fpage>431</fpage>–<lpage>440</lpage>. <object-id pub-id-type="pmid">12163064</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref019"><label>19</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Willis</surname> <given-names>JR</given-names></name>, <name name-style="western"><surname>Briney</surname> <given-names>BS</given-names></name>, <name name-style="western"><surname>DeLuca</surname> <given-names>SL</given-names></name>, <name name-style="western"><surname>Crowe</surname> <given-names>JE</given-names></name>, <name name-style="western"><surname>Meiler</surname> <given-names>J</given-names></name> (<year>2013</year>) <article-title>Human germline antibody gene segments encode polyspecific antibodies</article-title>. <source>PLoS Comput Biol</source> <volume>9</volume>: <fpage>e1003045</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.1003045" xlink:type="simple">10.1371/journal.pcbi.1003045</ext-link></comment> <object-id pub-id-type="pmid">23637590</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref020"><label>20</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Babor</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Kortemme</surname> <given-names>T</given-names></name> (<year>2009</year>) <article-title>Multi-constraint computational design suggests that native sequences of germline antibody H3 loops are nearly optimal for conformational flexibility</article-title>. <source>Proteins</source> <volume>75</volume>: <fpage>846</fpage>–<lpage>858</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1002/prot.22293" xlink:type="simple">10.1002/prot.22293</ext-link></comment> <object-id pub-id-type="pmid">19194863</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref021"><label>21</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kaas</surname> <given-names>Q</given-names></name>, <name name-style="western"><surname>Ruiz</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Lefranc M-</surname> <given-names>P</given-names></name> (<year>2004</year>) <article-title>IMGT/3Dstructure-DB and IMGT/StructuralQuery, a database and a tool for immunoglobulin, T cell receptor and MHC structural data</article-title>. <source>Nucleic Acids Res</source> <volume>32</volume>: <fpage>D208</fpage>–<lpage>D210</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/nar/gkh042" xlink:type="simple">10.1093/nar/gkh042</ext-link></comment> <object-id pub-id-type="pmid">14681396</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref022"><label>22</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fromer</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Shifman</surname> <given-names>JM</given-names></name> (<year>2009</year>) <article-title>Tradeoff between stability and multispecificity in the design of promiscuous proteins</article-title>. <source>PLoS Comput Biol</source> <volume>5</volume>: <fpage>e1000627</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.1000627" xlink:type="simple">10.1371/journal.pcbi.1000627</ext-link></comment> <object-id pub-id-type="pmid">20041208</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref023"><label>23</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ekiert</surname> <given-names>DC</given-names></name>, <name name-style="western"><surname>Bhabha</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Elsliger M-</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Friesen</surname> <given-names>RHE</given-names></name>, <name name-style="western"><surname>Jongeneelen</surname> <given-names>M</given-names></name>, <etal>et al</etal>. (<year>2009</year>) <article-title>Antibody recognition of a highly conserved influenza virus epitope</article-title>. <source>Science</source> <volume>324</volume>: <fpage>246</fpage>–<lpage>251</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/science.1171491" xlink:type="simple">10.1126/science.1171491</ext-link></comment> <object-id pub-id-type="pmid">19251591</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref024"><label>24</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Corti</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Voss</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Gamblin</surname> <given-names>SJ</given-names></name>, <name name-style="western"><surname>Codoni</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Macagno</surname> <given-names>A</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>A neutralizing antibody selected from plasma cells that binds to group 1 and group 2 influenza A hemagglutinins</article-title>. <source>Science</source> <volume>333</volume>: <fpage>850</fpage>–<lpage>856</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/science.1205669" xlink:type="simple">10.1126/science.1205669</ext-link></comment> <object-id pub-id-type="pmid">21798894</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref025"><label>25</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Altschul</surname> <given-names>SF</given-names></name>, <name name-style="western"><surname>Madden</surname> <given-names>TL</given-names></name>, <name name-style="western"><surname>Schäffer</surname> <given-names>AA</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>Z</given-names></name>, <etal>et al</etal>. (<year>1997</year>) <article-title>Gapped BLAST and PSI-BLAST: a new generation of protein database search programs</article-title>. <source>Nucleic Acids Res</source> <volume>25</volume>: <fpage>3389</fpage>–<lpage>3402</lpage>. <object-id pub-id-type="pmid">9254694</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref026"><label>26</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Sandelin</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Wasserman</surname> <given-names>WW</given-names></name> (<year>2004</year>) <article-title>Constrained binding site diversity within families of transcription factors enhances pattern discovery bioinformatics</article-title>. <source>J Mol Biol</source> <volume>338</volume>: <fpage>207</fpage>–<lpage>215</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.jmb.2004.02.048" xlink:type="simple">10.1016/j.jmb.2004.02.048</ext-link></comment> <object-id pub-id-type="pmid">15066426</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref027"><label>27</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mandell</surname> <given-names>DJ</given-names></name>, <name name-style="western"><surname>Kortemme</surname> <given-names>T</given-names></name> (<year>2009</year>) <article-title>Backbone flexibility in computational protein design</article-title>. <source>Curr Opin Biotechnol</source> <volume>20</volume>: <fpage>420</fpage>–<lpage>428</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.copbio.2009.07.006" xlink:type="simple">10.1016/j.copbio.2009.07.006</ext-link></comment> <object-id pub-id-type="pmid">19709874</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref028"><label>28</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hu</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Ke</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Kuhlman</surname> <given-names>B</given-names></name> (<year>2007</year>) <article-title>High-resolution design of a protein loop</article-title>. <source>Proc Natl Acad Sci USA</source> <volume>104</volume>: <fpage>17668</fpage>–<lpage>17673</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.0707977104" xlink:type="simple">10.1073/pnas.0707977104</ext-link></comment> <object-id pub-id-type="pmid">17971437</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref029"><label>29</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Humphris</surname> <given-names>EL</given-names></name>, <name name-style="western"><surname>Kortemme</surname> <given-names>T</given-names></name> (<year>2008</year>) <article-title>Prediction of protein-protein interface sequence diversity using flexible backbone computational protein design</article-title>. <source>Structure</source> <volume>16</volume>: <fpage>1777</fpage>–<lpage>1788</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.str.2008.09.012" xlink:type="simple">10.1016/j.str.2008.09.012</ext-link></comment> <object-id pub-id-type="pmid">19081054</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref030"><label>30</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Davis</surname> <given-names>IW</given-names></name>, <name name-style="western"><surname>Arendall</surname> <given-names>WB</given-names></name>, <name name-style="western"><surname>Richardson</surname> <given-names>DC</given-names></name>, <name name-style="western"><surname>Richardson</surname> <given-names>JS</given-names></name> (<year>2006</year>) <article-title>The backrub motion: how protein backbone shrugs when a sidechain dances</article-title>. <source>Structure</source> <volume>14</volume>: <fpage>265</fpage>–<lpage>274</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.str.2005.10.007" xlink:type="simple">10.1016/j.str.2005.10.007</ext-link></comment> <object-id pub-id-type="pmid">16472746</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref031"><label>31</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Smith</surname> <given-names>CA</given-names></name>, <name name-style="western"><surname>Kortemme</surname> <given-names>T</given-names></name> (<year>2008</year>) <article-title>Backrub-like backbone simulation recapitulates natural protein conformational variability and improves mutant side-chain prediction</article-title>. <source>J Mol Biol</source> <volume>380</volume>: <fpage>742</fpage>–<lpage>756</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.jmb.2008.05.023" xlink:type="simple">10.1016/j.jmb.2008.05.023</ext-link></comment> <object-id pub-id-type="pmid">18547585</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref032"><label>32</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Howell</surname> <given-names>SC</given-names></name>, <name name-style="western"><surname>Inampudi</surname> <given-names>KK</given-names></name>, <name name-style="western"><surname>Bean</surname> <given-names>DP</given-names></name>, <name name-style="western"><surname>Wilson</surname> <given-names>CJ</given-names></name> (<year>2014</year>) <article-title>Understanding thermal adaptation of enzymes through the multistate rational design and stability prediction of 100 adenylate kinases</article-title>. <source>Structure</source> <volume>22</volume>: <fpage>218</fpage>–<lpage>229</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.str.2013.10.019" xlink:type="simple">10.1016/j.str.2013.10.019</ext-link></comment> <object-id pub-id-type="pmid">24361272</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref033"><label>33</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Smith</surname> <given-names>CA</given-names></name>, <name name-style="western"><surname>Kortemme</surname> <given-names>T</given-names></name> (<year>2011</year>) <article-title>Predicting the tolerated sequences for proteins and protein interfaces using RosettaBackrub flexible backbone design</article-title>. <source>PLoS ONE</source> <volume>6</volume>: <fpage>e20451</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pone.0020451" xlink:type="simple">10.1371/journal.pone.0020451</ext-link></comment> <object-id pub-id-type="pmid">21789164</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref034"><label>34</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kuhlman</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Baker</surname> <given-names>D</given-names></name> (<year>2000</year>) <article-title>Native protein sequences are close to optimal for their structures</article-title>. <source>Proc Natl Acad Sci USA</source> <volume>97</volume>: <fpage>10383</fpage>–<lpage>10388</lpage>. <object-id pub-id-type="pmid">10984534</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref035"><label>35</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Allen</surname> <given-names>BD</given-names></name>, <name name-style="western"><surname>Mayo</surname> <given-names>SL</given-names></name> (<year>2009</year>) <article-title>An efficient algorithm for multistate protein design based on FASTER</article-title>. <source>J Comput Chem</source> <volume>31</volume>: NA–NA. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1002/jcc.21375" xlink:type="simple">10.1002/jcc.21375</ext-link></comment></mixed-citation></ref>
+<ref id="pcbi.1004300.ref036"><label>36</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yanover</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Fromer</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Shifman</surname> <given-names>JM</given-names></name> (<year>2007</year>) <article-title>Dead-end elimination for multistate protein design</article-title>. <source>J Comput Chem</source> <volume>28</volume>: <fpage>2122</fpage>–<lpage>2129</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1002/jcc.20661" xlink:type="simple">10.1002/jcc.20661</ext-link></comment> <object-id pub-id-type="pmid">17471460</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref037"><label>37</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fromer</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Yanover</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Harel</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Shachar</surname> <given-names>O</given-names></name>, <name name-style="western"><surname>Weiss</surname> <given-names>Y</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>SPRINT: side-chain prediction inference toolbox for multistate protein design</article-title>. <source>Bioinformatics</source> <volume>26</volume>: <fpage>2466</fpage>–<lpage>2467</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/bioinformatics/btq445" xlink:type="simple">10.1093/bioinformatics/btq445</ext-link></comment> <object-id pub-id-type="pmid">20685957</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref038"><label>38</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kapp</surname> <given-names>GT</given-names></name>, <name name-style="western"><surname>Liu</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Stein</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Wong</surname> <given-names>DT</given-names></name>, <name name-style="western"><surname>Reményi</surname> <given-names>A</given-names></name>, <etal>et al</etal>. (<year>2012</year>) <article-title>Control of protein signaling using a computationally designed GTPase/GEF orthogonal pair</article-title>. <source>Proc Natl Acad Sci USA</source> <volume>109</volume>: <fpage>5277</fpage>–<lpage>5282</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.1114487109" xlink:type="simple">10.1073/pnas.1114487109</ext-link></comment> <object-id pub-id-type="pmid">22403064</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref039"><label>39</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fung</surname> <given-names>HK</given-names></name>, <name name-style="western"><surname>Floudas</surname> <given-names>CA</given-names></name>, <name name-style="western"><surname>Taylor</surname> <given-names>MS</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Morikis</surname> <given-names>D</given-names></name> (<year>2008</year>) <article-title>Toward full-sequence de novo protein design with flexible templates for human beta-defensin-2</article-title>. <source>Biophys J</source> <volume>94</volume>: <fpage>584</fpage>–<lpage>599</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1529/biophysj.107.110627" xlink:type="simple">10.1529/biophysj.107.110627</ext-link></comment> <object-id pub-id-type="pmid">17827237</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref040"><label>40</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bolon</surname> <given-names>DN</given-names></name>, <name name-style="western"><surname>Grant</surname> <given-names>RA</given-names></name>, <name name-style="western"><surname>Baker</surname> <given-names>TA</given-names></name>, <name name-style="western"><surname>Sauer</surname> <given-names>RT</given-names></name> (<year>2005</year>) <article-title>Specificity versus stability in computational protein design</article-title>. <source>Proc Natl Acad Sci USA</source> <volume>102</volume>: <fpage>12724</fpage>–<lpage>12729</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.0506124102" xlink:type="simple">10.1073/pnas.0506124102</ext-link></comment> <object-id pub-id-type="pmid">16129838</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref041"><label>41</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fleishman</surname> <given-names>SJ</given-names></name>, <name name-style="western"><surname>Leaver-Fay</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Corn</surname> <given-names>JE</given-names></name>, <name name-style="western"><surname>Strauch E-</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Khare</surname> <given-names>SD</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>RosettaScripts: a scripting language interface to the Rosetta macromolecular modeling suite</article-title>. <source>PLoS ONE</source> <volume>6</volume>: <fpage>e20161</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pone.0020161" xlink:type="simple">10.1371/journal.pone.0020161</ext-link></comment> <object-id pub-id-type="pmid">21731610</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref042"><label>42</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Stein</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Kortemme</surname> <given-names>T</given-names></name> (<year>2013</year>) <article-title>Improvements to robotics-inspired conformational sampling in rosetta</article-title>. <source>PLoS ONE</source> <volume>8</volume>: <fpage>e63090</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pone.0063090" xlink:type="simple">10.1371/journal.pone.0063090</ext-link></comment> <object-id pub-id-type="pmid">23704889</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref043"><label>43</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Larkin</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Blackshields</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Brown</surname> <given-names>NP</given-names></name>, <name name-style="western"><surname>Chenna</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>McGettigan</surname> <given-names>PA</given-names></name>, <etal>et al</etal>. (<year>2007</year>) <article-title>Clustal W and Clustal X version 2.0</article-title>. <source>Bioinformatics</source> <volume>23</volume>: <fpage>2947</fpage>–<lpage>2948</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/bioinformatics/btm404" xlink:type="simple">10.1093/bioinformatics/btm404</ext-link></comment> <object-id pub-id-type="pmid">17846036</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref044"><label>44</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Combs</surname> <given-names>SA</given-names></name>, <name name-style="western"><surname>DeLuca</surname> <given-names>SL</given-names></name>, <name name-style="western"><surname>Deluca</surname> <given-names>SH</given-names></name>, <name name-style="western"><surname>Lemmon</surname> <given-names>GH</given-names></name>, <name name-style="western"><surname>Nannemann</surname> <given-names>DP</given-names></name>, <etal>et al</etal>. (<year>2013</year>) <article-title>Small-molecule ligand docking into comparative models with Rosetta</article-title>. <source>Nat Protoc</source> <volume>8</volume>: <fpage>1277</fpage>–<lpage>1298</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nprot.2013.074" xlink:type="simple">10.1038/nprot.2013.074</ext-link></comment> <object-id pub-id-type="pmid">23744289</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref045"><label>45</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schneider</surname> <given-names>TD</given-names></name>, <name name-style="western"><surname>Stephens</surname> <given-names>RM</given-names></name> (<year>1990</year>) <article-title>Sequence logos: a new way to display consensus sequences</article-title>. <source>Nucleic Acids Res</source> <volume>18</volume>: <fpage>6097</fpage>–<lpage>6100</lpage>. <object-id pub-id-type="pmid">2172928</object-id></mixed-citation></ref>
+<ref id="pcbi.1004300.ref046"><label>46</label><mixed-citation publication-type="other" xlink:type="simple">Shannon CE (1997) The mathematical theory of communication. 1963. 12 pp.</mixed-citation></ref>
+<ref id="pcbi.1004300.ref047"><label>47</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pruitt</surname> <given-names>KD</given-names></name>, <name name-style="western"><surname>Tatusova</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Maglott</surname> <given-names>DR</given-names></name> (<year>2005</year>) <article-title>NCBI Reference Sequence (RefSeq): a curated non-redundant sequence database of genomes, transcripts and proteins</article-title>. <source>Nucleic Acids Res</source> <volume>33</volume>: <fpage>D501</fpage>–<lpage>D504</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/nar/gki025" xlink:type="simple">10.1093/nar/gki025</ext-link></comment> <object-id pub-id-type="pmid">15608248</object-id></mixed-citation></ref>
+</ref-list>
+</back>
+</article>
