@@ -1,0 +1,812 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="3.0" xml:lang="EN">
+<front>
+<journal-meta><journal-id journal-id-type="publisher-id">plos</journal-id><journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id><journal-id journal-id-type="pmc">ploscomp</journal-id><!--===== Grouping journal title elements =====--><journal-title-group><journal-title>PLoS Computational Biology</journal-title></journal-title-group><issn pub-type="ppub">1553-734X</issn><issn pub-type="epub">1553-7358</issn><publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, USA</publisher-loc></publisher></journal-meta>
+<article-meta><article-id pub-id-type="publisher-id">08-PLCB-RA-0962R2</article-id><article-id pub-id-type="doi">10.1371/journal.pcbi.1000307</article-id><article-categories><subj-group subj-group-type="heading"><subject>Research Article</subject></subj-group><subj-group subj-group-type="Discipline"><subject>Biophysics/Experimental Biophysical Methods</subject><subject>Biotechnology/Protein Chemistry and Proteomics</subject><subject>Chemical Biology/Protein Chemistry and Proteomics</subject><subject>Computational Biology</subject><subject>Mathematics</subject></subj-group></article-categories><title-group><article-title>Probabilistic Interaction Network of Evidence Algorithm and its Application to Complete Labeling of Peak Lists from Protein NMR Spectroscopy</article-title><alt-title alt-title-type="running-head">Protein NMR Analysis by PINE</alt-title></title-group><contrib-group>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Bahrami</surname><given-names>Arash</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff3"><sup>3</sup></xref><xref ref-type="aff" rid="aff4"><sup>4</sup></xref><xref ref-type="corresp" rid="cor1"><sup>*</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Assadi</surname><given-names>Amir H.</given-names></name><xref ref-type="aff" rid="aff2"><sup>2</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Markley</surname><given-names>John L.</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff3"><sup>3</sup></xref><xref ref-type="aff" rid="aff4"><sup>4</sup></xref></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Eghbalnia</surname><given-names>Hamid R.</given-names></name><xref ref-type="aff" rid="aff1"><sup>1</sup></xref><xref ref-type="aff" rid="aff2"><sup>2</sup></xref><xref ref-type="corresp" rid="cor1"><sup>*</sup></xref><xref ref-type="fn" rid="fn1"><sup>¤</sup></xref></contrib>
+</contrib-group><aff id="aff1"><label>1</label><addr-line>National Magnetic Resonance Facility at Madison, Biochemistry Department, University of Wisconsin Madison, Madison, Wisconsin, United States of America</addr-line>       </aff><aff id="aff2"><label>2</label><addr-line>Mathematics Department, University of Wisconsin Madison, Madison, Wisconsin, United States of America</addr-line>       </aff><aff id="aff3"><label>3</label><addr-line>Center for Eukaryotic Structural Genomics, University of Wisconsin Madison, Madison, Wisconsin, United States of America</addr-line>       </aff><aff id="aff4"><label>4</label><addr-line>Graduate Program in Biophysics, University of Wisconsin Madison, Madison, Wisconsin, United States of America</addr-line>       </aff><contrib-group>
+<contrib contrib-type="editor" xlink:type="simple"><name name-style="western"><surname>Cowburn</surname><given-names>David</given-names></name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/></contrib>
+</contrib-group><aff id="edit1">New York Structural Biology Center, United States of America</aff><author-notes>
+<corresp id="cor1">* E-mail: <email xlink:type="simple">arash@nmrfam.wisc.edu</email> (AB); <email xlink:type="simple">hamid.eghbalnia@uc.edu</email> (HRE)</corresp>
+<fn fn-type="current-aff" id="fn1"><label>¤</label><p>Current address: Department of Molecular and Cellular Physiology, University of Cincinnati, Cincinnati, Ohio, United States of America</p></fn>
+<fn fn-type="con"><p>Conceived and designed the experiments: AB JLM HRE. Performed the experiments: AB. Wrote the paper: AB JLM HRE. Conceived the mathematical approaches used: AHA HRE. Conceived the PINE approach: AB JLM HRE. Developed, tested, and evaluated the software and PINE-NMR website: AB.</p></fn>
+<fn fn-type="conflict"><p>The authors have declared that no competing interests exist.</p></fn></author-notes><pub-date pub-type="collection"><month>3</month><year>2009</year></pub-date><pub-date pub-type="epub"><day>13</day><month>3</month><year>2009</year></pub-date><volume>5</volume><issue>3</issue><elocation-id>e1000307</elocation-id><history>
+<date date-type="received"><day>27</day><month>10</month><year>2008</year></date>
+<date date-type="accepted"><day>28</day><month>1</month><year>2009</year></date>
+</history><!--===== Grouping copyright info into permissions =====--><permissions><copyright-year>2009</copyright-year><copyright-holder>Bahrami et al</copyright-holder><license><license-p>This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license></permissions><abstract>
+<p>The process of assigning a finite set of tags or labels to a collection of observations, subject to side conditions, is notable for its computational complexity. This labeling paradigm is of theoretical and practical relevance to a wide range of biological applications, including the analysis of data from DNA microarrays, metabolomics experiments, and biomolecular nuclear magnetic resonance (NMR) spectroscopy. We present a novel algorithm, called Probabilistic Interaction Network of Evidence (PINE), that achieves robust, unsupervised probabilistic labeling of data. The computational core of PINE uses estimates of evidence derived from empirical distributions of previously observed data, along with consistency measures, to drive a fictitious system <italic>M</italic> with Hamiltonian <italic>H</italic> to a quasi-stationary state that produces probabilistic label assignments for relevant subsets of the data. We demonstrate the successful application of PINE to a key task in protein NMR spectroscopy: that of converting peak lists extracted from various NMR experiments into assignments associated with probabilities for their correctness. This application, called PINE-NMR, is available from a freely accessible computer server (<ext-link ext-link-type="uri" xlink:href="http://pine.nmrfam.wisc.edu" xlink:type="simple">http://pine.nmrfam.wisc.edu</ext-link>). The PINE-NMR server accepts as input the sequence of the protein plus user-specified combinations of data corresponding to an extensive list of NMR experiments; it provides as output a probabilistic assignment of NMR signals (chemical shifts) to sequence-specific backbone and aliphatic side chain atoms plus a probabilistic determination of the protein secondary structure. PINE-NMR can accommodate prior information about assignments or stable isotope labeling schemes. As part of the analysis, PINE-NMR identifies, verifies, and rectifies problems related to chemical shift referencing or erroneous input data. PINE-NMR achieves robust and consistent results that have been shown to be effective in subsequent steps of NMR structure determination.</p>
+</abstract><abstract abstract-type="summary"><title>Author Summary</title>
+<p>What mathematicians call the “labeling problem” underlies difficulties in interpreting many classes of complex biological data. To derive valid inferences from multiple, noisy datasets, one must consider all possible combinations of the data to find the solution that best matches the experimental evidence. Exhaustive searches totally outstrip current computer resources, and, as a result, it has been necessary to resort to approximations such as branch and bound or Monte Carlo simulations, which have the disadvantages of being limited to use in separate steps of the analysis and not providing the final results in a probabilistic fashion that allows the quality of the answers to be evaluated. The Probabilistic Interaction Network of Evidence (PINE) algorithm that we present here offers a general solution to this problem. We have demonstrated the usefulness of the PINE approach by applying it to one of the major bottlenecks in NMR spectroscopy. The PINE-NMR server takes as input the sequence of a protein and the peak lists from one or more multidimensional NMR experiments and provides as output a probabilistic assignment of the NMR signals to specific atoms in the protein's covalent structure and a self-consistent probabilistic analysis of the protein's secondary structure.</p>
+</abstract><funding-group><funding-statement>This work was funded by the National Institutes of Health, grants P41 RR02301 from the Center for Research Resources, 1U54 GM074901 from the National Institute of General Medical Sciences, and 5K22 LM8992 from the National Library of Medicine.</funding-statement></funding-group><counts><page-count count="15"/></counts></article-meta>
+</front>
+<body><sec id="s1">
+<title>Introduction</title>
+<p>Labeling a set of fixed data with another representative set is the generic description for a large family of problems. This family includes clustering and dimensionality reduction, an approach in which the original dataset is represented by a set of typically far lower dimension (the representative set). The representative set, often the parameter vector that signifies a set of data points, can be simply the cluster mean (center) or may include additional parameters, such as the cluster diameter. The labeling problem is important, because it is encountered in many applications involving data analysis, particularly where prior knowledge of the probability distributions is incomplete or lacking.</p>
+<p>A challenging instance of the labeling problem arises naturally in nuclear magnetic resonance (NMR) spectroscopy, which along with X-ray crystallography is one of the two major methods for determining protein structures. Although NMR spectroscopy is not as highly automated as the more mature X-ray field, it has advantages over X-ray crystallography for structural studies of small proteins that are partially disordered, exist in multiple stable conformations in solution, exhibit weak interactions with ligands, or fail to crystallize readily <xref ref-type="bibr" rid="pcbi.1000307-Markwick1">[1]</xref>, provided that the NMR signals can be assigned to specific atoms in the covalent structure of the protein. The labeling problem known as the “assignment problem”, has been one of the major bottlenecks in protein NMR spectroscopy.</p>
+<p>Protein NMR structure determination generally proceeds through a series of steps (<xref ref-type="fig" rid="pcbi-1000307-g001">Figure 1</xref>). The usual approach is first to collect data used in determining backbone and aliphatic side chain assignments (front-end labeling). These assignments are then used to interpret data collected in order to determine interatomic or torsion angular constraints (back-end labeling) used in structure determination.</p>
+<fig id="pcbi-1000307-g001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000307.g001</object-id><label>Figure 1</label><caption>
+<title>Conventional stages in protein structure determination by NMR.</title>
+<p>After the data have been collected, the challenging “front-end” process leads to sequence-specific amino acid labeling. The “back-end” process then leads to the three-dimensional structure.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000307.g001" xlink:type="simple"/></fig>
+<p>The front-end “labeling process” associates one or more NMR parameters with a physical entity (e.g., nucleus, residue, tripeptide, helix, chain); the back-end “labeling process” associates NMR parameters with constraints that define or refine conformational states. In reality, the distinction between front-end and back-end is artificial. Strategies have been developed that use NOESY data for assignments <xref ref-type="bibr" rid="pcbi.1000307-Billeter1">[2]</xref>,<xref ref-type="bibr" rid="pcbi.1000307-Xu1">[3]</xref> or for direct structure determination without assignments <xref ref-type="bibr" rid="pcbi.1000307-Grishaev1">[4]</xref>. In addition, as demonstrated recently, structures of small proteins can be determined directly from assigned chemical shifts by a process that largely bypasses the back-end <xref ref-type="bibr" rid="pcbi.1000307-Shen1">[5]</xref>,<xref ref-type="bibr" rid="pcbi.1000307-Cavalli1">[6]</xref>. Ideally, all available data should be used in a unified process that yields the best set of assignments and best structure consistent with experiment and with a probabilistic analysis that provides levels of confidence in the assignments and atomic coordinates.</p>
+<sec id="s1a">
+<title>Prior Approaches to the Problem</title>
+<p>The usual approach to the solution of the problem of assigning labels to subsets of peaks (spin subsystems) assembled from multiple sets of noisy spectra is to collect a number of multidimensional, multinuclear datasets. After converting the time domain data to frequency domain spectra by Fourier transformation, peaks are picked from each spectrum for analysis. Methods have been developed for automated peak picking or global analysis of spectra to yield models consisting of peaks with known intensity, frequency, phase, and decay rate or linewidth <xref ref-type="bibr" rid="pcbi.1000307-Chylla1">[7]</xref>,<xref ref-type="bibr" rid="pcbi.1000307-Chylla2">[8]</xref>. In the ideal case, the resulting peak-lists identify <italic>combinatorial subsets</italic> of two or more covalently bonded nuclei by their respective frequencies (<xref ref-type="fig" rid="pcbi-1000307-g002">Figure 2</xref>). These subsets must be “assembled” in a coherent way to “best” correspond to specific atoms in the amino acid sequence of the protein. In practice, peak lists do not report on all nuclei (because some peaks are missing), and “noise peaks” (peaks incorrectly reported as true peaks) are commonplace. In the examples analyzed here (<xref ref-type="table" rid="pcbi-1000307-t001">Table 1</xref>), the level of missing peaks varied between 9% and 38%, while the level of noise peaks varied between 10% and 135%. The large number of false positives as well as false negatives typically present in the data result in an explosion of “ambiguities” during the assembly of subsets.</p>
+<fig id="pcbi-1000307-g002" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000307.g002</object-id><label>Figure 2</label><caption>
+<title>Conventional process of resonance assignments for a protein labeled with stable isotopes (<sup>13</sup>C and <sup>15</sup>N).</title>
+<p>Peaks observed in multidimensional spectra are matched to search for common frequencies. Some common frequencies identify atoms within a residue; others identify atoms in neighboring residues. The common visual aid in this process is a series of paired strip plots from complementary NMR experiments. Strips from CBCA(CO)NH (<italic>a</italic> and <italic>c</italic>) and HNCACB (<italic>b</italic> and <italic>d</italic>) experiments can be used here to assign the tripeptide Thr-Tyr-His. Starting with C<sup>α</sup> (CA) and C<sup>β</sup> (CB) frequencies assumed to belong to Thr<sup>66</sup> (strip <italic>a</italic>), a horizontal trace (line), arising from the common frequency of NH nuclei, is used to locate C<sup>α</sup> and C<sup>β</sup> of Tyr<sup>67</sup> in (strip <italic>b</italic>). To continue the process, the same peaks are located in (strip <italic>c</italic>), and the peaks are traced to strip <italic>d</italic>. In strip <italic>d</italic>, given the accepted tolerances across spectra (shown by boxes around the selected peaks), several alternative assignments are plausible for His<sup>68</sup>. These additional peaks may be artifacts (false peaks), or peaks from other nuclei with similar frequency. Depending on the starting point of the assignment process, the choice of experiments, the amount of conflicting information, or other factors, an exponentially expanding number of alternative assignments can arise, rendering a computational solution intractable. This difficulty has proved to be a major drawback for NMR structure determination, particularly for larger proteins.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000307.g002" xlink:type="simple"/></fig><table-wrap id="pcbi-1000307-t001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000307.t001</object-id><label>Table 1</label><caption>
+<title>Backbone and side chain assignment performance of PINE-NMR with NMR data from a representative group of twelve proteins.</title>
+</caption><!--===== Grouping alternate versions of objects =====--><alternatives><graphic id="pcbi-1000307-t001-1" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000307.t001" xlink:type="simple"/><table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" colspan="1" rowspan="1">Protein Designator</td>
+<td align="left" colspan="1" rowspan="1">Number of Residues</td>
+<td align="left" colspan="1" rowspan="1">Backbone Data Completeness<xref ref-type="table-fn" rid="nt101">a</xref></td>
+<td align="left" colspan="1" rowspan="1">Correct Backbone Assignment Coverage<xref ref-type="table-fn" rid="nt102">b</xref></td>
+<td align="left" colspan="1" rowspan="1">Backbone Assignment Accuracy<xref ref-type="table-fn" rid="nt103">c</xref></td>
+<td align="left" colspan="1" rowspan="1">Side chain Assignment Accuracy<xref ref-type="table-fn" rid="nt103">c</xref></td>
+<td align="left" colspan="1" rowspan="1">Secondary Structure Accuracy<xref ref-type="table-fn" rid="nt104">d</xref></td>
+<td align="left" colspan="1" rowspan="1">Outlier Count<xref ref-type="table-fn" rid="nt105">e</xref></td>
+<td align="left" colspan="1" rowspan="1">Data Quality<xref ref-type="table-fn" rid="nt106">f</xref></td>
+<td align="left" colspan="1" rowspan="1">Running Time on 1.8Ghz Intel CPU (h)</td>
+<td align="left" colspan="1" rowspan="1">PISTACHIO Backbone Assignment Accuracy</td>
+<td align="left" colspan="1" rowspan="1">Level of Missing Peaks in HNCACB Dataset</td>
+<td align="left" colspan="1" rowspan="1">Noise Level in HNCACB Dataset<xref ref-type="table-fn" rid="nt107">g</xref></td>
+<td align="left" colspan="9" rowspan="1">Experiments represented in the input peak lists<xref ref-type="table-fn" rid="nt108">h</xref></td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"><italic>1</italic></td>
+<td align="left" colspan="1" rowspan="1"><italic>2</italic></td>
+<td align="left" colspan="1" rowspan="1"><italic>3</italic></td>
+<td align="left" colspan="1" rowspan="1"><italic>4</italic></td>
+<td align="left" colspan="1" rowspan="1"><italic>5</italic></td>
+<td align="left" colspan="1" rowspan="1"><italic>6</italic></td>
+<td align="left" colspan="1" rowspan="1"><italic>7</italic></td>
+<td align="left" colspan="1" rowspan="1"><italic>8</italic></td>
+<td align="left" colspan="1" rowspan="1"><italic>9</italic></td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" colspan="22" rowspan="1">Proteins with both backbone and side chain experiments available:</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">Ubiquitin</td>
+<td align="left" colspan="1" rowspan="1">76</td>
+<td align="left" colspan="1" rowspan="1">99%</td>
+<td align="left" colspan="1" rowspan="1">96%</td>
+<td align="left" colspan="1" rowspan="1">97%</td>
+<td align="left" colspan="1" rowspan="1">94%</td>
+<td align="left" colspan="1" rowspan="1">97%</td>
+<td align="left" colspan="1" rowspan="1">1</td>
+<td align="left" colspan="1" rowspan="1">0.91</td>
+<td align="left" colspan="1" rowspan="1">0.2</td>
+<td align="left" colspan="1" rowspan="1">91%</td>
+<td align="left" colspan="1" rowspan="1">12%</td>
+<td align="left" colspan="1" rowspan="1">20%</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">Mm202773</td>
+<td align="left" colspan="1" rowspan="1">101</td>
+<td align="left" colspan="1" rowspan="1">98%</td>
+<td align="left" colspan="1" rowspan="1">96%</td>
+<td align="left" colspan="1" rowspan="1">98%</td>
+<td align="left" colspan="1" rowspan="1">92%</td>
+<td align="left" colspan="1" rowspan="1">97%</td>
+<td align="left" colspan="1" rowspan="1">3</td>
+<td align="left" colspan="1" rowspan="1">0.92</td>
+<td align="left" colspan="1" rowspan="1">0.2</td>
+<td align="left" colspan="1" rowspan="1">97%</td>
+<td align="left" colspan="1" rowspan="1">24%</td>
+<td align="left" colspan="1" rowspan="1">42%</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1"/>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">At1g77540</td>
+<td align="left" colspan="1" rowspan="1">103</td>
+<td align="left" colspan="1" rowspan="1">97%</td>
+<td align="left" colspan="1" rowspan="1">96%</td>
+<td align="left" colspan="1" rowspan="1">99%</td>
+<td align="left" colspan="1" rowspan="1">93%</td>
+<td align="left" colspan="1" rowspan="1">94%</td>
+<td align="left" colspan="1" rowspan="1">2</td>
+<td align="left" colspan="1" rowspan="1">0.93</td>
+<td align="left" colspan="1" rowspan="1">0.2</td>
+<td align="left" colspan="1" rowspan="1">99%</td>
+<td align="left" colspan="1" rowspan="1">37%</td>
+<td align="left" colspan="1" rowspan="1">48%</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">At2g24940</td>
+<td align="left" colspan="1" rowspan="1">109</td>
+<td align="left" colspan="1" rowspan="1">99%</td>
+<td align="left" colspan="1" rowspan="1">99%</td>
+<td align="left" colspan="1" rowspan="1">100%</td>
+<td align="left" colspan="1" rowspan="1">95%</td>
+<td align="left" colspan="1" rowspan="1">95%</td>
+<td align="left" colspan="1" rowspan="1">1</td>
+<td align="left" colspan="1" rowspan="1">0.91</td>
+<td align="left" colspan="1" rowspan="1">0.2</td>
+<td align="left" colspan="1" rowspan="1">100%</td>
+<td align="left" colspan="1" rowspan="1">29%</td>
+<td align="left" colspan="1" rowspan="1">10%</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">At5g22580</td>
+<td align="left" colspan="1" rowspan="1">111</td>
+<td align="left" colspan="1" rowspan="1">98%</td>
+<td align="left" colspan="1" rowspan="1">94%</td>
+<td align="left" colspan="1" rowspan="1">96%</td>
+<td align="left" colspan="1" rowspan="1">93%</td>
+<td align="left" colspan="1" rowspan="1">90%</td>
+<td align="left" colspan="1" rowspan="1">1</td>
+<td align="left" colspan="1" rowspan="1">0.89</td>
+<td align="left" colspan="1" rowspan="1">0.2</td>
+<td align="left" colspan="1" rowspan="1">92%</td>
+<td align="left" colspan="1" rowspan="1">21%</td>
+<td align="left" colspan="1" rowspan="1">17%</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1"/>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">At3g17210</td>
+<td align="left" colspan="1" rowspan="1">112</td>
+<td align="left" colspan="1" rowspan="1">97%</td>
+<td align="left" colspan="1" rowspan="1">92%</td>
+<td align="left" colspan="1" rowspan="1">95%</td>
+<td align="left" colspan="1" rowspan="1">92%</td>
+<td align="left" colspan="1" rowspan="1">90%</td>
+<td align="left" colspan="1" rowspan="1">1</td>
+<td align="left" colspan="1" rowspan="1">0.84</td>
+<td align="left" colspan="1" rowspan="1">1</td>
+<td align="left" colspan="1" rowspan="1">90%</td>
+<td align="left" colspan="1" rowspan="1">9%</td>
+<td align="left" colspan="1" rowspan="1">14%</td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">At3g51030</td>
+<td align="left" colspan="1" rowspan="1">124</td>
+<td align="left" colspan="1" rowspan="1">96%</td>
+<td align="left" colspan="1" rowspan="1">92%</td>
+<td align="left" colspan="1" rowspan="1">96%</td>
+<td align="left" colspan="1" rowspan="1">91%</td>
+<td align="left" colspan="1" rowspan="1">88%</td>
+<td align="left" colspan="1" rowspan="1">2</td>
+<td align="left" colspan="1" rowspan="1">0.88</td>
+<td align="left" colspan="1" rowspan="1">1</td>
+<td align="left" colspan="1" rowspan="1">90%</td>
+<td align="left" colspan="1" rowspan="1">38%</td>
+<td align="left" colspan="1" rowspan="1">68%</td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">At2g46140</td>
+<td align="left" colspan="1" rowspan="1">174</td>
+<td align="left" colspan="1" rowspan="1">98%</td>
+<td align="left" colspan="1" rowspan="1">92%</td>
+<td align="left" colspan="1" rowspan="1">94%</td>
+<td align="left" colspan="1" rowspan="1">98%</td>
+<td align="left" colspan="1" rowspan="1">90%</td>
+<td align="left" colspan="1" rowspan="1">1</td>
+<td align="left" colspan="1" rowspan="1">0.86</td>
+<td align="left" colspan="1" rowspan="1">1</td>
+<td align="left" colspan="1" rowspan="1">91%</td>
+<td align="left" colspan="1" rowspan="1">20%</td>
+<td align="left" colspan="1" rowspan="1">35%</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">At3g16450<xref ref-type="table-fn" rid="nt109">i</xref></td>
+<td align="left" colspan="1" rowspan="1">299</td>
+<td align="left" colspan="1" rowspan="1">95%</td>
+<td align="left" colspan="1" rowspan="1">82%</td>
+<td align="left" colspan="1" rowspan="1">86%</td>
+<td align="left" colspan="1" rowspan="1">77%</td>
+<td align="left" colspan="1" rowspan="1">NA</td>
+<td align="left" colspan="1" rowspan="1">1</td>
+<td align="left" colspan="1" rowspan="1">0.89</td>
+<td align="left" colspan="1" rowspan="1">2</td>
+<td align="left" colspan="1" rowspan="1">80%</td>
+<td align="left" colspan="1" rowspan="1">23%</td>
+<td align="left" colspan="1" rowspan="1">135%</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1"/>
+</tr>
+<tr>
+<td align="left" colspan="22" rowspan="1">Proteins with only backbone experiments available:</td>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">BMRB5106</td>
+<td align="left" colspan="1" rowspan="1">70</td>
+<td align="left" colspan="1" rowspan="1">96%</td>
+<td align="left" colspan="1" rowspan="1">91%</td>
+<td align="left" colspan="1" rowspan="1">95%</td>
+<td align="left" colspan="1" rowspan="1">NA</td>
+<td align="left" colspan="1" rowspan="1">90%</td>
+<td align="left" colspan="1" rowspan="1">1</td>
+<td align="left" colspan="1" rowspan="1">0.88</td>
+<td align="left" colspan="1" rowspan="1">0.2</td>
+<td align="left" colspan="1" rowspan="1">90%</td>
+<td align="left" colspan="1" rowspan="1">10%</td>
+<td align="left" colspan="1" rowspan="1">25%</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">At2g23090</td>
+<td align="left" colspan="1" rowspan="1">86</td>
+<td align="left" colspan="1" rowspan="1">87%</td>
+<td align="left" colspan="1" rowspan="1">87%</td>
+<td align="left" colspan="1" rowspan="1">100%</td>
+<td align="left" colspan="1" rowspan="1">NA</td>
+<td align="left" colspan="1" rowspan="1">92%</td>
+<td align="left" colspan="1" rowspan="1">3</td>
+<td align="left" colspan="1" rowspan="1">0.89</td>
+<td align="left" colspan="1" rowspan="1">0.2</td>
+<td align="left" colspan="1" rowspan="1">97%</td>
+<td align="left" colspan="1" rowspan="1">30%</td>
+<td align="left" colspan="1" rowspan="1">44%</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+</tr>
+<tr>
+<td align="left" colspan="1" rowspan="1">At5g01610</td>
+<td align="left" colspan="1" rowspan="1">170</td>
+<td align="left" colspan="1" rowspan="1">96%</td>
+<td align="left" colspan="1" rowspan="1">81%</td>
+<td align="left" colspan="1" rowspan="1">84%</td>
+<td align="left" colspan="1" rowspan="1">NA</td>
+<td align="left" colspan="1" rowspan="1">83%</td>
+<td align="left" colspan="1" rowspan="1">3</td>
+<td align="left" colspan="1" rowspan="1">0.76</td>
+<td align="left" colspan="1" rowspan="1">1</td>
+<td align="left" colspan="1" rowspan="1">80%</td>
+<td align="left" colspan="1" rowspan="1">24%</td>
+<td align="left" colspan="1" rowspan="1">117%</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1">X</td>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+<td align="left" colspan="1" rowspan="1"/>
+</tr>
+</tbody>
+</table></alternatives><table-wrap-foot><fn id="nt101"><label>a</label><p>The maximum number of backbone assignment achievable theoretically on the basis of the peak lists provided as input to PINE, divided by the total number of backbone assignments deposited in BMRB, multiplied by 100.</p></fn><fn id="nt102"><label>b</label><p>Number of correct PINE-NMR backbone assignments, divided by the total number of backbone assignments deposited in BMRB, multiplied by 100.</p></fn><fn id="nt103"><label>c</label><p>Number of correct PINE-NMR (backbone/side chain) assignments (i.e. in agreement with those in BMRB), divided by the maximum number of (backbone/side chain) assignments achievable theoretically on the basis the peak lists provided as input to PINE, multiplied by 100.</p></fn><fn id="nt104"><label>d</label><p>Percentage of residues correctly assigned to helix, strand, or “other” by PINE-NMR on the basis of agreement with DSSP <xref ref-type="bibr" rid="pcbi.1000307-Kabsch1">[50]</xref> analysis of the deposited three-dimensional structure of the protein.</p></fn><fn id="nt105"><label>e</label><p>Total number of C′, C<sup>α</sup>, and C<sup>β</sup> atoms detected as possible outliers by LACS method <xref ref-type="bibr" rid="pcbi.1000307-Wang1">[16]</xref> in the final assignment.</p></fn><fn id="nt106"><label>f</label><p>Defined as <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000307.e001" xlink:type="simple"/></inline-formula> (see <xref ref-type="supplementary-material" rid="pcbi.1000307.s003">Table S1</xref>).</p></fn><fn id="nt107"><label>g</label><p>Defined as number of noise peaks divided by number of real peaks in HNCACB.</p></fn><fn id="nt108"><label>h</label><p>All input included data from an HSQC or HNCO experiment; data from additional experiments were as indicated by shaded boxes: <italic>1</italic> CBCA(CO)NH or HN(CO)CACB, <italic>2</italic> HNCACB, <italic>3</italic> HNCA, <italic>4</italic> HN(CO)CA, <italic>5</italic> HN(CA)CO, <italic>6</italic> H(CCO)NH, <italic>7</italic> C(CO)NH, <italic>8</italic> HBHA(CO)NH, <italic>9</italic> HCCH-TOCSY.</p></fn><fn id="nt109"><label>i</label><p>Stereo array isotope labeled (SAIL) protein; data were analyzed without corrections for isotope shifts due to deuterium labeling.</p></fn></table-wrap-foot></table-wrap>
+<p>A common feature among prior approaches has been to divide the assignment of labels into a sequence of discrete steps and to apply varying methods at each step. These steps typically include an “assignment step” <xref ref-type="bibr" rid="pcbi.1000307-Olson1">[9]</xref>–<xref ref-type="bibr" rid="pcbi.1000307-Eghbalnia1">[12]</xref>, a secondary structure determination step <xref ref-type="bibr" rid="pcbi.1000307-Eghbalnia2">[13]</xref>–<xref ref-type="bibr" rid="pcbi.1000307-Wishart2">[15]</xref>, and a “validation step” <xref ref-type="bibr" rid="pcbi.1000307-Wang1">[16]</xref>. The validation step, in which a discrete reliability measure indicates the possible presence of outliers, misassignments, or abnormal backbone chemical shift values, is sometimes omitted. Other steps can be added, or steps can be split further into simpler tasks. For example, backbone and side chain assignments frequently are carried out sequentially as separate processes. Some approaches to sequence-specific assignment rely on a substantially reduced combinatorial set of input data by assuming a prior subset selection, e.g., prior spin system assembly <xref ref-type="bibr" rid="pcbi.1000307-Jung1">[17]</xref>,<xref ref-type="bibr" rid="pcbi.1000307-Lin1">[18]</xref>. The specification of conformational states can be added as yet another labeling step. For example, backbone dihedral angles can be specified on a grid (e.g., 30° intervals) as determined from chemical shifts <xref ref-type="bibr" rid="pcbi.1000307-Cornilescu1">[19]</xref>, coupling constants and/or NOEs <xref ref-type="bibr" rid="pcbi.1000307-Hyberts1">[20]</xref>, or reduced dipolar couplings <xref ref-type="bibr" rid="pcbi.1000307-Clore1">[21]</xref>.</p>
+<p>The NMR assignment problem has been highly researched, and is most naturally formulated as a combinatorial optimization problem, which can be subsequently solved using a variety of algorithms. A 2004 review listed on the order of 100 algorithms and software packages <xref ref-type="bibr" rid="pcbi.1000307-Gronwald1">[22]</xref>, and additional approaches are given in a 2008 review <xref ref-type="bibr" rid="pcbi.1000307-Gntert1">[23]</xref>. Prior methods have included stochastic approaches, such as simulated annealing/Monte Carlo algorithms <xref ref-type="bibr" rid="pcbi.1000307-Leutner1">[24]</xref>–<xref ref-type="bibr" rid="pcbi.1000307-Buchler1">[26]</xref>, genetic algorithms <xref ref-type="bibr" rid="pcbi.1000307-Bartels2">[27]</xref>, exhaustive search algorithms <xref ref-type="bibr" rid="pcbi.1000307-Jung1">[17]</xref>, <xref ref-type="bibr" rid="pcbi.1000307-Andrec1">[28]</xref>–<xref ref-type="bibr" rid="pcbi.1000307-Atreya1">[30]</xref>, heuristic comparison to predicted chemical shifts derived from homologous proteins <xref ref-type="bibr" rid="pcbi.1000307-Gronwald2">[31]</xref>, heuristic best-first algorithms <xref ref-type="bibr" rid="pcbi.1000307-Hyberts2">[32]</xref>–<xref ref-type="bibr" rid="pcbi.1000307-Zimmerman2">[34]</xref>, and constraint-based expert system that use heuristic best-first mapping algorithm <xref ref-type="bibr" rid="pcbi.1000307-Moseley1">[35]</xref>. Of these, the most established, as judged from BMRB entries that cite the assignment software packages used, are Autoassign <xref ref-type="bibr" rid="pcbi.1000307-Zimmerman1">[10]</xref> and GARANT <xref ref-type="bibr" rid="pcbi.1000307-Bartels2">[27]</xref>.</p>
+<p>Similarly, a wide range of methods have been used to predict the protein secondary structural elements that play an important role in classifying proteins <xref ref-type="bibr" rid="pcbi.1000307-Lesk1">[36]</xref>,<xref ref-type="bibr" rid="pcbi.1000307-Przytycka1">[37]</xref>. Prior approaches to assigning a secondary structure label to each residue of the protein have included the Δδ method <xref ref-type="bibr" rid="pcbi.1000307-Reily1">[38]</xref>, the chemical shift index method <xref ref-type="bibr" rid="pcbi.1000307-Wishart1">[14]</xref>, a database approach (TALOS) <xref ref-type="bibr" rid="pcbi.1000307-Cornilescu1">[19]</xref>, an empirical probability-based method <xref ref-type="bibr" rid="pcbi.1000307-Wang2">[39]</xref>, a supervised machine learning approach <xref ref-type="bibr" rid="pcbi.1000307-Hung1">[40]</xref>, and a probabilistic approach that utilizes a local statistical potential to combine predictive potentials derived from the sequence and chemical shifts <xref ref-type="bibr" rid="pcbi.1000307-Eghbalnia2">[13]</xref>. Recently, a fully automated approach to protein structure determination, FLYA, has been described that pipelines the standard steps from NMR spectra to structure and utilizes GARANT as the assignment engine <xref ref-type="bibr" rid="pcbi.1000307-LopezMendez1">[41]</xref>. The FLYA approach demonstrates the benefits of making use of information from each step in an iterative fashion to achieve a high number of backbone and side chain assignments.</p>
+<p>Our goal is to implement a comprehensive approach that utilizes a network model rather than a pipeline model and relies on a probabilistic analysis for the results. We reformulate the combinatorial optimization problem whereby each labeling configuration in the ensemble has an associated but unknown non-vanishing probability. The PINE algorithm enables full integration of information from disparate steps to achieve a probabilistic analysis. The use of probabilities provides the means for sharing and refining incomplete information among the current standard steps, or steps introduced by future developments. In addition, probabilistic analysis deals directly with the multiple minima problem that arises in cases where the data does not support a single optimal and self-consistent state. A common example is a protein that populates two stable conformational states.</p>
+<p>The PINE-NMR package described here represents a first step in approaching the goal of a full probabilistic approach to protein NMR spectroscopy. PINE-NMR accepts as input the sequence of the protein plus peak lists derived from one or more NMR experiments chosen by the user from an extensive list of possibilities. PINE-NMR provides as output a probabilistic assignment of backbone and aliphatic side chain chemical shifts and the secondary structure of the protein. At the same time, it identifies, verifies, and, if needed, rectifies, problems related to chemical shift referencing or the consistency of assignments with determined secondary structure. PINE-NMR can make use of prior information derived independently by other means, such as selective labeling patterns or spin system assignments. In principle, the networked model of PINE-NMR is extensible in both directions within the pipeline for protein structure determination (<xref ref-type="fig" rid="pcbi-1000307-g001">Figure 1</xref>): it can be combined with adaptive data collection at the front or with three-dimensional structure determination at the back end. Such extensions should lead to a rapid and fully automated approach to NMR structure determination that would yield the structure most consistent with all available data and with confidence limits on atom positions explicitly represented.</p>
+<p>In addition to its application to NMR spectroscopy, the PINE approach should be applicable to the unbiased classification of biological data in other domains of interest, such as systems biology, in which data of various types need to be integrated: genomics (DNA chips), proteomics (MS analysis of proteins), and metabolomics (GC-MS, LC-MS, and NMR) data collected as a function of time and environmental variables.</p>
+</sec></sec><sec id="s2">
+<title>Methods</title>
+<sec id="s2a">
+<title>General Approach</title>
+<p>The fundamental idea of PINE is to embed the original assignment problem into a higher dimensional setting and to use empirically estimated compatibility (or similarity) conditions to iteratively arrive at an internally coherent labeling state. These conditions are embodied in the form of a parameterized Hamiltonian (energy function) that evolves at each iteration step. In the quasi-stationary regime, this construction yields clusters, defined as subsets of chemical shift data with assigned labels. The clusters have strong intra-cluster links and highly localized inter-cluster couplings. We view each possible cluster of related experimental data in the domain as a “site” that is to be potentially labeled. More specifically, our goal is to discover (learn) the map <italic>f</italic> that relates the “domain” (set of subsets of data) to the “codomain” (set of subsets of labels):<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000307.e002" xlink:type="simple"/></disp-formula>where <italic>X</italic> = [<italic>x</italic><sub>1</sub>, <italic>x</italic><sub>2</sub>, …, <italic>x</italic><sub>m</sub>] is the set of data values available from all experiments, and <italic>L</italic> = [<italic>L</italic><sub>1</sub>, <italic>L</italic><sub>2</sub>, …, <italic>L</italic><sub>n</sub>] is the set of labels associated to the chemical shifts. At first it may appear that this map is trivial, because one protein has precisely one set of correct chemical shifts. However, breaks in the backbone sequential data, incompleteness of <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000307.e003" xlink:type="simple"/></inline-formula> experimental peak lists, and the presence of many noise peaks renders the discovery of a deterministic one-to-one map to the sequential labels unpromising. Rather than discovering a single map, we opt to find a set of maps, each with its associated probability. More directly, we choose to associate subsets of labels from the list <italic>L</italic> to subsets of data from the list <italic>X</italic>, each with a commensurate probability:</p>
+<p>In order to formulate the computational problem, we require that the labels for data values satisfy constraints that arise from the system of neighborhoods built around each data value. The system of neighborhoods is a dynamic state variable that co-evolves with the probability values. We assign an initial set of labels, L, with associated weights to each input data point, S (e.g., chemical shift) and introduce a measure of similarity based on distances between “neighboring points” (<xref ref-type="fig" rid="pcbi-1000307-g003">Figure 3</xref>). Typically, in our starting configuration, the possible labels for each data value far exceed the number of sites. The set of labels contains the “<italic>null</italic>” label to allow for the case where a data element cannot be labeled.</p>
+<fig id="pcbi-1000307-g003" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000307.g003</object-id><label>Figure 3</label><caption>
+<title>Illustration of the system of neighborhoods built around each data value in PINE.</title>
+<p>Each input data point (S) is linked to a set of labels (L) with associated weights. Similarity measures and constraints are utilized to construct each neighborhood system or topology (as denoted by the arrows).</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000307.g003" xlink:type="simple"/></fig>
+<p>The approach used to measure the global compatibility or support for the specific labeling of site <italic>S</italic> at iteration step <italic>m</italic> is to aggregate the compatibilities over versions of individual evidences by applying a variation of the belief propagation algorithm <xref ref-type="bibr" rid="pcbi.1000307-Yedidia1">[42]</xref>. The evidence for assignment is weighted by the probability of each “neighbor” being correct, and the probabilities at stage <italic>m</italic> can be updated by replacing them by the new weight configuration state. As probabilities evolve, the information content of changing configurations is monitored for the optimally “informative” state. The resulting model is analogous to the random cluster Fortuin and Kasteleyn (FK) model <xref ref-type="bibr" rid="pcbi.1000307-Fortuin1">[43]</xref>. In practice, a straightforward implementation leads to densely connected networks with noisy weights and no principled way to control the iteration steps.</p>
+<p>To implement the intuitively appealing ideas presented above that are designed to find the optimal state in the form of marginal probabilities, we have devised an iterative approach that utilizes topology selection followed by a variation of belief propagation algorithm <xref ref-type="bibr" rid="pcbi.1000307-Yedidia1">[42]</xref> and subsequent adjustment of initial weights and topology. This topology selection step plays a key role in achieving robust and computationally efficient results.</p>
+</sec><sec id="s2b">
+<title>Mathematical Formulation</title>
+<p>We proceed by analogy to FK <xref ref-type="bibr" rid="pcbi.1000307-Fortuin1">[43]</xref>. Let <italic>G</italic> = (<italic>V</italic>,<italic>E</italic>) be any general graph, with <italic>e</italic>∈<italic>E</italic> an edge in <italic>G</italic>, and <italic>ν∈V</italic> a vertex. The set of assignments (or labels) for each vertex is designated by [1,2,…,<italic>q</italic>]. The “configuration energy” of this system is encoded in the partition function:<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000307.e004" xlink:type="simple"/><label>(1)</label></disp-formula></p>
+<p>In this formula, the outside sum is performed over the configuration states of the system represented by the map λ, and the inside product measures the compatibility of the vertex labels joined by the edge <italic>e</italic>. Each edge is weighted by the factor <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000307.e005" xlink:type="simple"/></inline-formula> and has end-point vertices <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000307.e006" xlink:type="simple"/></inline-formula>, and δ is the compatibility measure of end-point vertices configuration. By defining <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000307.e007" xlink:type="simple"/></inline-formula> and <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000307.e008" xlink:type="simple"/></inline-formula>, Eq 1 can be rewritten as:<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000307.e009" xlink:type="simple"/><label>(2)</label></disp-formula></p>
+<p>In the setting of statistical physics, the Boltzmann weight of a configuration is <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000307.e010" xlink:type="simple"/></inline-formula>, where <italic>H</italic> (the sum in the exponential) represents the energy of the configuration and <italic>β</italic> is a parameter called the inverse temperature. Because the weights are assumed to be positive, they can be interpreted probabilistically (after normalization by <italic>Z</italic>) as a probability measure on the <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000307.e011" xlink:type="simple"/></inline-formula> states for the graph <italic>G</italic> where <italic>N</italic> is the number of vertices.</p>
+<p>In the standard random-cluster model, the neighborhood structure, or topology, of the graph is prescribed, and the objective is to find the ground state for a given set of weights by varying the “spin”, or labeling, configurations. In our case, we are determining the ground state ensemble and the topology of the model at the same time. At each iteration step <italic>i</italic>, we define <italic>A<sub>i</sub></italic>, a subset of the graph G, where <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000307.e012" xlink:type="simple"/></inline-formula>, and evaluate the partition function for this subset. We evolve the topology of the graph at each iteration by the addition and removal of edges and by refining the edge weights toward the optimum topology as described in the algorithm section. A local Bayesian updating procedure updates the weights, and the local rate of change of weights is used to modify the corresponding local topology of the graph. On the subsequent iteration, our algorithm reintegrates these local modifications in the context of the entire network and attempts to establish a new quasi-stationary state.</p>
+<p>The algorithm must address two critical challenges. The data that describe edge weights and states in Eq 2 are derived from empirical relationships that involve noisy data, and, therefore, a straightforward deterministic search of the resulting combinatorial space would be infeasible. In addition, the computational complexity of the resulting problem grows rapidly with the number of labels and the topology of the graph; thus, a suitable starting and evolving representation of the topology, and a corresponding approximation algorithm is the key to obtaining a robust solution to this problem.</p>
+</sec><sec id="s2c">
+<title>PINE-NMR</title>
+<p>The probabilistic construction used in PINE-NMR belongs to the general class of graphical models in which dependencies among random variables are constructed ahead of the inference task. In cases where the graph of dependencies is acyclic, there are powerful and efficient algorithms that correctly maximize the marginal probabilities through collecting messages from all leaf nodes at a root node <xref ref-type="bibr" rid="pcbi.1000307-Pearl1">[44]</xref>. When the graph is not acyclic, current algorithms for graphs with cycles often reach oscillatory states, converge to local maxima, or achieve incorrect marginals due to computational difficulties. Approaches have been described in the literature for dealing with a single loop condition <xref ref-type="bibr" rid="pcbi.1000307-Weiss1">[45]</xref> or for converging under alternative free energy approximations <xref ref-type="bibr" rid="pcbi.1000307-Mooij1">[46]</xref>,<xref ref-type="bibr" rid="pcbi.1000307-Tatikonda1">[47]</xref>. “Tree-based reparameterization” algorithms <xref ref-type="bibr" rid="pcbi.1000307-Wainwright1">[48]</xref> have been described as a general approach that iteratively reparameterizes the distributions without changing them on the subtrees in the original graph. These algorithms, which are geared toward addressing the approximation of marginals in the presence of loops, represent trade-offs among robustness, accuracy, computational speed, and efficiency of implementation. Our modification provides a simple extension that can be described as an adaptive form of coarse-to-fine approximation. We start with a “coarser topology” and explore more refined factorizations of the probability distribution and look for stable fixed points. In our adaptive approach, the extension of the state space (embodied in the algorithm) plays a critical role. In intuitive terms, the additional degrees of freedom (null states) provide “room for change” for existing distributions as the topology is being refined. The internal working of the stepwise factorization of the probability distribution requires a coarse estimate on the initial threshold that reduces the connectivity degree of the graph. In our case, this approximation is arrived at using a combination of theory and empirical investigation.</p>
+<p><xref ref-type="fig" rid="pcbi-1000307-g004">Figure 4</xref> presents an overview of the probabilistic network implemented in PINE-NMR. Sets of probabilistic influence sub-networks are combined into a larger influence network, and each sub-network may have its own computational model used to perform the inference task. The entire probabilistic network is constructed by considering the conditional dependencies of the sub-networks. The actual implementation of PINE-NMR entails a fairly complicated network with more than 30,000 lines of code in Matlab and other supporting scripting language. A descriptive and stepwise version is given below.</p>
+<fig id="pcbi-1000307-g004" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000307.g004</object-id><label>Figure 4</label><caption>
+<title>Global network of relationships in PINE-NMR.</title>
+<p>A set of probabilistic influence sub-networks are combined into a larger influence network. The iterative probabilistic inference on the complex network ensures globally consistent labeling.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000307.g004" xlink:type="simple"/></fig></sec><sec id="s2d">
+<title>Basic Algorithm for PINE-NMR</title>
+<p>1. Read input data and check for errors. If errors are found, report errors and abort.</p>
+<p>2. Align the <sup>1</sup>H, <sup>15</sup>N, and <sup>13</sup>C dimensions of all spectra independently.</p>
+<p>3. Generate spin systems (<xref ref-type="fig" rid="pcbi-1000307-g005">Figure 5</xref>).</p>
+<list list-type="alpha-lower"><list-item>
+<p>Derive the similarity scores of peaks <italic>X<sup>i</sup><sub>j</sub></italic> across spectra.<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000307.e013" xlink:type="simple"/><label>(3)</label></disp-formula>The distance function denoted by <italic>d</italic> is the ordinary Euclidean distance along the common dimensions of the vectors, and <italic>C</italic> is determined by the spectral resolution in each dimension of a multidimensional experiment. The default values are 0.25 ppm for <sup>15</sup>N and <sup>13</sup>C, and 0.02 ppm for <sup>1</sup>H. The existence of peaks closer than default values in any spectra adjusts <italic>C</italic> accordingly. The values can also be overridden manually.</p>
+</list-item><list-item>
+<p>Begin with sensitive spectra; build probabilistic spin systems for backbone atoms:<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000307.e014" xlink:type="simple"/></disp-formula></p>
+</list-item><list-item>
+<p>The resulting spin systems have the following fields (some fields might be empty or have several choices with different probabilities):<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000307.e015" xlink:type="simple"/></disp-formula></p>
+</list-item><list-item>
+<p>Derive connectivity scores for spin systems by a formula analogous to 3.a. The score <italic>P(SS<sub>i</sub>,SS<sub>j</sub>)</italic> is measured using fields <italic>7–10</italic> of <italic>SS<sub>i</sub></italic> and fields <italic>1–4</italic> of <italic>SS<sub>j</sub></italic>.</p>
+</list-item><list-item>
+<p>Utilize the scores to assemble the spin systems to triplet spin systems.</p>
+</list-item></list>
+<fig id="pcbi-1000307-g005" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000307.g005</object-id><label>Figure 5</label><caption>
+<title>Spin system generation network in PINE-NMR.</title>
+<p>The peaks in the most sensitive experiments in the data are used initially as reference peaks. Aligning the peaks along the common dimensions and registering them with respect to reference peaks enables us to define a common putative object called the spin system. Spin systems are then assembled to derive triplet spin systems.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000307.g005" xlink:type="simple"/></fig>
+<p>4. Estimate the <italic>b factor</italic> and <italic>c factor</italic>, which are the measures of data quality defined as follows:<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000307.e016" xlink:type="simple"/></disp-formula>In calculating any of the above formulas, only the fields with choices are considered. For example if none of the experiments provided by the user has HA information, HA fields are not used in the calculation.</p>
+<p>5. If <italic>(b&lt;0.4 or c factor&lt;0.2)</italic> # comment: Report low data quality to the user and stop. The low data quality check can be manually overridden through user requests. However, low “quality factors” are strong indicators of “highly incomplete” data and the web service discourages the use of results from low quality data.</p>
+<p>6. Otherwise, set <italic>K = 0</italic> (iteration counter).</p>
+<p><bold>Repeat</bold>:</p>
+<p>7. <italic>K = K+1</italic>; (iteration counter).</p>
+<p>8. Triplet amino acid typing:</p>
+<list list-type="alpha-lower"><list-item>
+<p>Score each atom based on the probability distribution of chemical shifts derived from BMRB, and the latest secondary structure prediction.<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000307.e017" xlink:type="simple"/><label>(4)</label></disp-formula><inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000307.e018" xlink:type="simple"/></inline-formula>, are the chemical shift probabilities of the related atom in residue <italic>i</italic> derived from BMRB and PDB databases, and <italic>p<sub>i</sub>(helix)</italic>, <italic>p<sub>i</sub>(strand)</italic>, and <italic>p<sub>i</sub>(coil)</italic> are the secondary structure probabilities in the current iteration step.</p>
+</list-item><list-item>
+<p>Adjust the scoring if any pre-assignment exists:<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000307.e019" xlink:type="simple"/></disp-formula></p>
+</list-item><list-item>
+<p>Adjust the scoring if any selective labeling experiment exists while taking into account the possibility of overlap:<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000307.e020" xlink:type="simple"/></disp-formula>We set the minimum probability of a peak to possibly overlap with another one to 0.01, even if the number of peaks in the dataset exceeds the number of residues.</p>
+</list-item><list-item>
+<p>The total score S<italic>x(y)</italic> of labeling a triplet spin system <italic>y</italic> to a triplet residue <italic>x</italic> is the product of scores of individual atoms in the triplet residue. Both triplet spin systems and triplet residues contain an extra state called the “null” state to allow for the case where they cannot be labeled.</p>
+</list-item></list>
+<p>9. Derive the backbone assignment network weights based on amino acid typing scoring, connectivity experiments, latest backbone assignment, and possible outlier detections from the last iteration (<xref ref-type="fig" rid="pcbi-1000307-g006">Figure 6</xref>):<disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000307.e021" xlink:type="simple"/></disp-formula><italic>T</italic> is a threshold value for the connectivity score, which is defined as, <italic>c*max_connectivity_score</italic>, <italic>c</italic> is the quality factor defined in <italic>5</italic>, and <italic>P<sub>k-1</sub>(x<sub>n</sub>(i))</italic> is the probability of assigning <italic>x<sub>n</sub>(i)</italic> to triplet residue <italic>n</italic> in the iteration <italic>k−1</italic>.</p>
+<fig id="pcbi-1000307-g006" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1000307.g006</object-id><label>Figure 6</label><caption>
+<title>Graphical network for backbone chemical shift assignments.</title>
+<p>Overlapping tripeptides (triplet residue) are evaluated. The weights on the edges are derived from amino acid typing, secondary structures, connectivity experiments, and possible outlier assignments. According to the statistical physics model described in the text, application of the belief propagation algorithm yields the marginal probabilities for backbone assignments.</p>
+</caption><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000307.g006" xlink:type="simple"/></fig>
+<p>10. Select the network topology; calculate the threshold for removing low-weight edges from the network based on the quality of the data, use: <inline-formula><inline-graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1000307.e022" xlink:type="simple"/></inline-formula></p>
+<p>11. Apply the belief propagation algorithm <xref ref-type="bibr" rid="pcbi.1000307-Yedidia1">[42]</xref> to find the marginal probabilities <italic>P<sub>k</sub><sup>n</sup>(x<sub>n</sub>(j))</italic> of assigning triplet spin systems <italic>x<sub>n</sub>(j)</italic> to triplet (tripeptide) residues <italic>n</italic>.</p>
+<p>12. Given the marginal probabilities of the triplet residue assignments, derive the probabilistic assignment of the individual backbone atoms.</p>
+<p>13. Detect and remove the outliers in the backbone assignments <xref ref-type="bibr" rid="pcbi.1000307-Wang1">[16]</xref>.</p>
+<p>14. Derive the secondary structure of each amino acid based on the formula: <disp-formula><graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000307.e023" xlink:type="simple"/><label>(5)</label></disp-formula><italic>p<sub>n</sub>(s|x<sub>n</sub>(j))</italic> is the probability of residue <italic>n</italic> to be in the secondary structure state <italic>s</italic> given the assignment <italic>x<sub>n</sub>(j)</italic> derived from the method described in <xref ref-type="bibr" rid="pcbi.1000307-Eghbalnia2">[13]</xref>, and <italic>P<sub>k</sub><sup>n</sup>(x<sub>n</sub>(j))</italic> is the assignment probability of triplet residue with the center residue <italic>n</italic>, to triplet spin system <italic>x<sub>n</sub>(j)</italic>. The summation is over all the possible choices of tripeptides in the protein sequence.</p>
+</sec><sec id="s2e">
+<title>Until the assignment probabilities converge or K = 10 (the maximum number of iterations)</title>
+<p>15. If no convergence, probabilities are the average probability of last three iterations. “No convergence” indicates the presence of “nearby” local minima.</p>
+<p>16. For every amino acid, generate an energetic model network and apply the Belief Propagation <xref ref-type="bibr" rid="pcbi.1000307-Yedidia1">[42]</xref> to derive final probabilistic side chain assignments as described in supplementary material <xref ref-type="supplementary-material" rid="pcbi.1000307.s002">Protocol S1</xref>.</p>
+<p>17. Report the final probabilistic assignments: backbone, side chain, secondary structure prediction, and possible outliers. The output can be specified to conform to variety of formats, including Xeasy, SPARKY, and NMR-STAR (BMRB).</p>
+<p>The input to PINE-NMR consists of the amino acid sequence and multiple datasets known as peak lists (chemical shifts) obtained separately from selected, defined NMR experiments. The peak lists consist of sets of real-valued two-dimensional, three-dimensional, or four-dimensional vectors, denoted by <italic><sup>l</sup>X</italic><sup>i</sup><sub>j</sub>∈<italic>R<sup>l</sup> l = 2,3,4</italic>. The dimension of the data is denoted by <italic>l</italic>, the index <italic>j</italic> indicates that the observation is from the <italic>j</italic><sup>th</sup> dataset, and the index <italic>i</italic> denotes the <italic>i</italic><sup>th</sup> observation within the dataset. To compare data from different experimental sets (different <italic>j</italic>) that have shared subspaces (signals from nuclei in common), we consider only the common subspace. This allows us to omit the index <italic>l</italic> in subsequent formulas. The similarity (or nearness) is used to build an initial system of neighborhoods. The approximate starting value for similarity is given a probabilistic interpretation by using Eq 3 (Basic Algorithm: 3.a) to compare each datum (peak) <italic>X<sup>i</sup><sub>j</sub></italic> with the reference datum (peak) <italic>X<sup>m</sup><sub>n</sub></italic>. The peaks in the most sensitive experiments in the dataset (normally <sup>15</sup>N-HSQC or HNCO) are used as the initial reference set. We define a common putative object, called the spin system (<xref ref-type="fig" rid="pcbi-1000307-g006">Figure 6</xref>), by aligning the peaks along the common dimensions and by registering them with respect to reference peaks according to Eq 3. The total number of states of the spin system is equal to the combinatorial set of all label choices including the null state. The preservation of all neighborhood information at this step is particularly important for the analysis of data from larger proteins in which noise peaks and real peaks are closely interspersed.</p>
+</sec><sec id="s2f">
+<title>Amino Acid Typing (Spin System Scoring)</title>
+<p>The spin-system scoring step is used to integrate the spin system sub networks by assigning a score to each possible label that can be associated to a spin system. This process makes use of empirical chemical shift probability density functions, calculated from combined BMRB (chemical shift) and PDB (coordinate) data from proteins of known structure, for each atom of every amino acid type in three label states: α-helix, β-strand, and neither helix nor strand (other) <xref ref-type="bibr" rid="pcbi.1000307-Eghbalnia2">[13]</xref>. The general form of the score is obtained by computing the probability of a chemical shift <italic>X</italic> having the label <italic>n</italic> (residue number) as described in Basic Algorithm: 8.a. This approach connects amino acid typing and secondary structure state determination through a conditional dependency model. The successive application of weighted measures (Basic Algorithm), leads to the definition of a complex network of relationships and weights among correlated sets of information at the global level (<xref ref-type="fig" rid="pcbi-1000307-g003">Figure 3</xref>). This process establishes an initial system of neighborhoods (<xref ref-type="fig" rid="pcbi-1000307-g002">Figure 2</xref>). Whenever an initial set of probabilities is unavailable, a uniform distribution is assumed as the starting state.</p>
+</sec><sec id="s2g">
+<title>Backbone and Side Chain Assignments</title>
+<p>The challenge is to address the computationally demanding problem of deriving the backbone and side chain assignments from amino acid typing and other experimental data (connectivity experiments) according to the model described above. Rather than modeling the assignment of labels to individual peaks, or assigning spin systems to a single amino acid, we generate triplet spin systems and label them to overlapping triplets of amino acids in the protein sequence (<xref ref-type="fig" rid="pcbi-1000307-g005">Figure 5</xref>). The selection of tripeptides instead of single residues reduces the complexity of the graph by eliminating a substantial number of labeling choices; however, it may introduce additional noise to the network due to possible erroneous spin system assembly. Given the trade-off between noise level and network complexity, we found that triplets yielded the optimum choice among other combinations of residues. However, the resulting network of weights and relationships has a complex topology in which a large fraction of relationships (edges) arise entirely from noise in the data, and the resulting random field is not amenable to a straightforward implementation. To overcome this problem, we determine, from spin system scoring and connectivity constraints, an initial topology and the sets of weights for the backbone (<xref ref-type="fig" rid="pcbi-1000307-g006">Figure 6</xref> and Basic Algorithm: 9) and side chain assignments (<xref ref-type="supplementary-material" rid="pcbi.1000307.s002">Protocol S1</xref>). The topology ordinarily is dependent on the weights and a set of parameters (thresholds). These values typically are noisy and incomplete and are contaminated by false positives and false negatives. Our goal is to evolve the initial state of the system toward an “optimally coherent” state without the need for any manual parameter settings by carefully managing the selection of network topology. An initial topology for the network is determined by removing all edges with potential weights below a threshold value. The threshold value is calculated (Basic Algorithm: 10) automatically by approximating the level of success achievable by each threshold (<xref ref-type="supplementary-material" rid="pcbi.1000307.s001">Figure S1</xref>). For a fixed set of edge values, this function is generally unimodal and defines the appropriate threshold for the starting state. At each threshold, a variation of the belief propagation algorithm <xref ref-type="bibr" rid="pcbi.1000307-Yedidia1">[42]</xref> operates on the dense multigraph to effectively prune many edges and to derive the posterior probabilities that define clusters (or labels). After each iteration step, the posterior probabilities of all label assignments are utilized to determine local topology modifications and new edge weights.</p>
+</sec><sec id="s2h">
+<title>Assignment of Secondary Structure Labels</title>
+<p>Secondary structure labels are dependent variables derived from prior chemical shift assignments. Each chemical shift assignment has an associated probability, and we derive the probabilities for the assignment of secondary structure labels from a normalized and weighted sum of associated probabilities. After computing the probability of each residue <italic>n</italic> to be in each of three conformational states (<italic>s</italic> = helix, strand, other) by the method described in <xref ref-type="bibr" rid="pcbi.1000307-Eghbalnia2">[13]</xref> for different assignment configurations, the overall secondary structure probability is calculated by Eq 5 (Basic Algorithm). Note that this step involves a shift in the point of view from chemical shift centric to residue centric.</p>
+</sec><sec id="s2i">
+<title>Iteration Rules</title>
+<p>Posterior probabilities derived in each iteration of the assignment process are used as local prior probabilities in the next round of assignment, provided that (1) the assignment has not been detected as an outlier, (2) the assignment of chemical shift is correlated with the assignment of secondary structure consistent with known empirical distributions, and (3) the assignment is consistent with established connectivity constraints.</p>
+<p>If one or more of the above conditions are not met, the results are deemed inconsistent because the resulting probabilities appear as outliers of the marginals supported by the current graph topology. This view is driven by the notion that the equilibrium of our fictitious system is the fixed point of the energy functional, with the factorization induced by our graph. In order to reach the consistent state, scores are re-evaluated and a new local score is computed for the next iteration; a new topology is generated, and the computational steps are repeated. The iteration process continues until a stationary or quasi-stationary state is reached, i.e., when the topology of the network and the labeling probabilities do not vary significantly. The iteration process leads to “self-correction” through appropriate adjustments to the topology of the underlying network in order to preserve maximum information.</p>
+</sec></sec><sec id="s3">
+<title>Results</title>
+<p>PINE-NMR is designed to analyze peak lists derived from one or more of a large set of NMR experiments commonly used by protein NMR spectroscopists. This set (listed on the PINE-NMR website) currently includes data types used for backbone and aliphatic side chain assignments. (PINE-NMR will be expanded in the future to handle aromatic side chain assignment.) To test the software, we asked colleagues at the Center for Eukaryotic Structural Genomics (CESG) and the National Magnetic Resonance Facility at Madison (NMRFAM) to provide subsets of data from projects that had led to structure determinations with assigned chemical shifts deposited in the BMRB <xref ref-type="bibr" rid="pcbi.1000307-Ulrich1">[49]</xref>. We wanted the assignments to have been refined and vetted in light of a structure determination, because we took the BMRB deposited values to be “correct”. In most cases, the input data supported the determination of both backbone and aliphatic side chain assignments. In some cases, the input data supplied supported only the determination of backbone assignments. The peak lists were provided by the persons submitting the data without any specification for the peak picking software, threshold, or other parameters.</p>
+<p><xref ref-type="table" rid="pcbi-1000307-t001">Table 1</xref> summarizes the PINE-NMR results for all datasets provided. The input datasets are indicated along with the size of the protein. A backbone or side chain assignment was scored as “correct” if the top ranked (highest probability) PINE-NMR assignment corresponded that in the BMRB deposition. The assignment accuracy is given as the number of “correct” assignments divided by the total number of assignments supported in theory by the input data expressed as a percentage. “The “correct” (BMRB) assignments had the benefit of additional information coming from NOESY data and filtering with respect to structure determination. Also listed in <xref ref-type="table" rid="pcbi-1000307-t001">Table 1</xref> is the backbone “assignment coverage” achieved by PINE-NMR (defined as the total number of correct backbone assignments in comparison to the total backbone assignments in the corresponding BMRB deposition expressed as a percentage).</p>
+<p>The secondary structure accuracy reported in <xref ref-type="table" rid="pcbi-1000307-t001">Table 1</xref> compares the PINE-NMR result with the secondary structure of the deposited three-dimensional structure as determined by the DSSP software <xref ref-type="bibr" rid="pcbi.1000307-Kabsch1">[50]</xref>. It can be seen that the accuracy of the PINE-NMR results correlates with the data quality factor. The outlier count is defined as the number of C′, C<sup>α</sup>, or C<sup>β</sup> atoms detected as possible outliers in the final assignment by the LACS method <xref ref-type="bibr" rid="pcbi.1000307-Wang1">[16]</xref>.</p>
+<p>In the majority of cases, the assignment accuracy was above 90% for backbone resonances and above 80% for aliphatic side chain resonances. Two cases in <xref ref-type="table" rid="pcbi-1000307-t001">Table 1</xref> yielded assignment accuracies below 90%. In the case of the 177-residue protein (At5g01610), the lower performance was due to the poor quality of data from a highly disordered region of the protein. A human expert was unable to go beyond the PINE-NMR assignments, and additional data were required to complete the protein structure determination. In the case of the 299-residue protein (At3g16450), its stereo array isotope labeling (SAIL) pattern <xref ref-type="bibr" rid="pcbi.1000307-Kainosho1">[51]</xref> gave rise to chemical shift deviations that degraded expected matches. In this case the performance of PINE-NMR could be improved by incorporating corrections for the deuterium isotope effects on the chemical shifts.</p>
+<p>An illustration of the improvement achieved by combining information comes from comparing the assignment accuracy results from PINE with those from PISTACHIO <xref ref-type="bibr" rid="pcbi.1000307-Eghbalnia1">[12]</xref> (<xref ref-type="table" rid="pcbi-1000307-t001">Table 1</xref>). PISTACHIO is an automated assignment tool developed earlier that does not make use of inferred secondary structure or outlier detection implemented in PINE-NMR. The results from PINE-NMR also are superior to those achieved by iterative pipelining of the individual assignment (PISTACHIO <xref ref-type="bibr" rid="pcbi.1000307-Eghbalnia1">[12]</xref>), secondary structure determination (PECAN <xref ref-type="bibr" rid="pcbi.1000307-Eghbalnia2">[13]</xref>), and outlier detection (LACS <xref ref-type="bibr" rid="pcbi.1000307-Wang1">[16]</xref>) steps (results not shown). The tests of PINE-NMR shown in <xref ref-type="table" rid="pcbi-1000307-t001">Table 1</xref> are highly stringent, in that minimal information is provided. Separate tests (results not shown) demonstrate that the performance is improved if the input peak lists have been pre-filtered to correspond to spin systems.</p>
+<p>The results of website users provide a separate measure of the performance of PINE-NMR. Since July, 2006, users have analyzed more than 1,300 sets of chemical shift data. Without access to the final structures and chemical shift assignments for these proteins, these results could not be analyzed, as in <xref ref-type="table" rid="pcbi-1000307-t001">Table 1</xref>, with regard to correct assignments and secondary structure. Instead, we used the results from <xref ref-type="table" rid="pcbi-1000307-t001">Table 1</xref> to estimate the empirical conditional probability of incorrect labeling in the user PINE-NMR output: <italic>P(incorrect label| p<sub>label</sub> = x)</italic>. Assignments with a probability higher than 0.95 generally were found to be correct (<xref ref-type="table" rid="pcbi-1000307-t001">Table 1</xref>). Using the data submitted to the PINE-NMR web site, we selected a representative sample of proteins with numbers of residues and data quality factors similar to those in <xref ref-type="table" rid="pcbi-1000307-t001">Table 1</xref>. We then used the empirical estimate of accuracy to analyze the results from these proteins (<xref ref-type="supplementary-material" rid="pcbi.1000307.s003">Table S1</xref>). The outcome was in substantial agreement (in a statistical sense) with the results shown in <xref ref-type="table" rid="pcbi-1000307-t001">Table 1</xref>. Of particular note are two proteins submitted to PINE twice (the proteins with 120 residues and 160 residues in <xref ref-type="supplementary-material" rid="pcbi.1000307.s003">Table S1</xref>). In each case, after an initial submission of the data, the user provided additional experimental data prior to another round of analysis. The additional data improved the empirical estimate of accuracy and led to additional assignments at improved levels of confidence.</p>
+<p>The level of accuracy and completeness achieved in favorable cases by a single automatic PINE-NMR computation was sufficient for the initial downstream steps of structure determination. For example, the PINE assignment output for ubiquitin, which was obtained from the input of automatically picked peak lists from HSQC, HNCO, CBCA(CO)NH, HNCACB, C(CO)NH, H(CCO)NH, HCCH-TOCSY, HBHA(CO)NH, and C13-HSQC spectra, along with <sup>15</sup>N-NOESY and <sup>13</sup>C-NOESY spectra for this protein were provided as input to the Atnos <xref ref-type="bibr" rid="pcbi.1000307-Herrmann1">[52]</xref>/Candid <xref ref-type="bibr" rid="pcbi.1000307-Herrmann2">[53]</xref> program. The only manual step in the structure calculation was the determination of cross β-strand hydrogen bond constraints for the amino acid residues shown to be in β-sheet by the PINE analysis of secondary structure (an effort taking only about one hour). Hydrogen bond constraints for α-helical regions were introduced based on the results of the PINE secondary structure analysis. The resulting 20 conformers that best fit the input data had an rmsd of 1.1 Å for backbone atoms and 1.7 Å for all heavy atoms (0.8 Å for backbone residues and 1.3 Å for all heavy atoms in ordered residues as analyzed by PSVS <xref ref-type="bibr" rid="pcbi.1000307-Bhattacharya1">[54]</xref>. This structure had a backbone rmsd of 1.23 Å from the highly refined ubiquitin structure determined from NMR data deposited in the PDB (1d3z). Without the manual hydrogen bond constraints the structure had a backbone rmsd of 2.77 Å from the 1d3z structure.</p>
+<p>The level of assignments achieved by PINE-NMR for small proteins meets or exceeds the assignment levels that led to successful structure determination of small (under 100 residue) proteins from chemical shift data alone <xref ref-type="bibr" rid="pcbi.1000307-Shen1">[5]</xref>.</p>
+<p>PINE-NMR also can be useful for semi-automated analysis of larger proteins that require for structure determination the collection of additional data such as dipolar couplings, manual NOESY assignments, or aromatic side chain assignments. We have developed PINE-NMR in ways that enable expert input, for example, by specifying a selective labeling scheme, pre-assigned cluster labels, pre-assigned spin systems, or pre-assigned cluster labels for subsets of the data. For pre-assigned cluster labels, PINE-NMR can act as a verification tool, for example, by checking their internal consistency with peak lists or by detecting chemical shift referencing problems or outliers (the LACS report). The software performs spectral alignment, detects excessive noise peaks, uncovers experimental inconsistencies, recognizes the insufficiency of input data, and identifies nomenclature conflicts.</p>
+<p>The latest version of PINE-NMR is available for public use through a webserver at <ext-link ext-link-type="uri" xlink:href="http://pine.nmrfam.wisc.edu" xlink:type="simple">http://pine.nmrfam.wisc.edu</ext-link>. The PINE-NMR server offers complete backbone and side chain chemical shift assignment, secondary structure determination, and possible referencing error or outlier detection. The server supports a variety of convenient input and output formats, including Sparky, Xeasy, and BMRB (NMR-STAR). PINE-NMR also accepts prior information that reflects experimental information the user wishes to specify, such as fixed input (pre-assigned labels), selective labeling pattern, or assembled spin systems in cases where segments of the protein have been labeled by other means.</p>
+</sec><sec id="s4">
+<title>Discussion</title>
+<p>Application of the PINE algorithm to the NMR assignment problem has led to a tool that is capable of analyzing data in a self-correcting manner without the need for the user to manipulate any parameters in the software. The public availability of PINE-NMR through an online server has made it possible for a variety of users to test its accuracy and robustness. The PINE algorithm reformulates an otherwise intractable network of interactions within the context of an energy minimization problem. To address the high computational complexity of the minimization problem, we have devised a local approximation algorithm with reliable global properties. To address the non-convexity of the energy functional and the potential of “getting stuck” in local minima, we perform successive approximations with increasingly more complex energy functionals and with the reweighting of solutions.</p>
+<p>Our evolution and selection of the initial network topology of PINE-NMR emerged through the examination of two quantities: (1) the estimated conformity across all datasets with respect to a single reference dataset (<italic>b</italic> factor), and (2) the estimated conformity between pairs of datasets that contained complementary information (<italic>c</italic> factor). These quantities, which are calculated as described in the Basic Algorithm, were found to be generally dependent on the size of the protein and the number of false positive and false negatives in the input data. In intuitive terms, the combination of these quantities measures the degree of conformity between the vertex and edge potentials in the network model. The numerical approximation of this quantity (in analogy to quantity called a matching polynomial) is encoded in the fourth root of the product of <italic>b</italic> and <italic>c</italic>. For example, when pairs of data in the dataset have low conformity measures, the network topology (e.g. change in the edge set) is strongly influenced by label assignments. These same quantities are also used in the computation of the quality factor and the predicted number of residues assigned (<xref ref-type="supplementary-material" rid="pcbi.1000307.s003">Table S1</xref>). After a user submits input data to the server, PINE-NMR performs a preliminary evaluation. If factors <italic>b</italic> and <italic>c</italic> do not satisfy the required threshold, PINE reports the problem to the user and suggests possible remedies. Otherwise the assignment process continues. Typically the datasets that yielded high-quality assignments in PINE-NMR had <italic>b</italic> factors equal to 0.65–0.85 and <italic>c</italic> factors equal to 0.4–0.6.</p>
+<p>The impact of topology selection can be investigated computationally by running simulations that test the computational complexity (running time) and accuracy of the results as a function of increasing network complexity. For small proteins, where the number of false positives and negatives is small, increasing network complexity leads asymptotically to higher accuracy (<xref ref-type="supplementary-material" rid="pcbi.1000307.s001">Figure S1A</xref>). The network energy remains stable as more edges are added, and the computational complexity drops sharply as soon as an “essential network topology” is achieved. For larger proteins, increasing network complexity initially leads to higher accuracy, but accuracy falls off at the highest levels of complexity (<xref ref-type="supplementary-material" rid="pcbi.1000307.s001">Figure S1B</xref>). The most accurate label assignments are achieved when the cardinality of the edge set for the network is small. Therefore, selecting a more complex network of interactions not only is computationally inefficient but may also lead to decreased accuracy. Inaccuracies within more complex networks tend to propagate. Specifically, high complexity neighborhoods with large numbers of edges were found to degrade the accuracy of their neighbors, and, although this effect typically is local, it also can have long-range impact. These findings reinforce the importance of selecting good initial topology and underscore the advantages of local, as opposed to global, topology modification.</p>
+<p>In practical terms, additional knowledge about the structure of a protein can improve the data interpretation. For example, NMR experts often use their experience and knowledge of similar structures or structural folds to make decisions – this knowledge is often hard to codify in an algorithm. In some instances, the bias is subtle. For example, the use of data from BMRB in order to generate simulated peaklists that are to be subsequently assigned is afflicted with bias, because the data in BRMB are highly likely to be associated with a known structure and, therefore, higher information content (sharper localization of parameters according to Bayes' formula).</p>
+<p>One of the challenges in protein NMR spectroscopy is to minimize the time required for multidimensional data collection and analysis without sacrificing the quality of the resulting protein structure. We are in the process of coupling PINE-NMR to (HIFI-NMR) <xref ref-type="bibr" rid="pcbi.1000307-Eghbalnia3">[55]</xref>, an innovative approach that uses adaptive reduced dimensionality NMR data collection. For 3D triple-resonance experiments of the kind used to assign protein backbone and side chain resonances, the probabilistic algorithm used by HIFI-NMR automatically extracts the positions (chemical shifts) of peaks with considerable time-savings compared with conventional stepwise approaches to data collection, processing, and peak picking. The combination of HIFI- and PINE-NMR will support fully automated, probabilistic, NMR data collection and analysis through assignments, determination of secondary structure and backbone dihedral angles. We are currently developing protocols for including H(C)CH-COSY, CCH-TOCSY and common four dimensional NMR experiments in the PINE-NMR network. Our future plans also include the inclusion of NOESY data, which will extend side chain assignments to aromatic residues <xref ref-type="bibr" rid="pcbi.1000307-Lin2">[56]</xref> and support assignments of larger proteins <xref ref-type="bibr" rid="pcbi.1000307-Xu1">[3]</xref>.</p>
+<p>The core computational model of PINE should be applicable to other problems where automated clustering is needed. For example, when DNA microarray data are used to explore all genes of an organism in order to detail their biochemical networks, automated clustering of gene networks can provide unbiased information about the underlying biology.</p>
+</sec><sec id="s5">
+<title>Supporting Information</title>
+<supplementary-material id="pcbi.1000307.s001" mimetype="image/tiff" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000307.s001" xlink:type="simple"><label>Figure S1</label><caption>
+<p>Running time and assignment accuracy of the results as a function of increasing network complexity. Network complexity is defined as: network complexity = −log(cutoff threshold). The results for smaller proteins or proteins with higher quality data (A) differ from those for larger proteins with low quality data (B). The results underscore the importance of proper setting the cut-off threshold in selecting the edge set when constructing the topology of the graph.</p>
+<p>(0.09 MB TIF)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1000307.s002" mimetype="application/msword" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000307.s002" xlink:type="simple"><label>Protocol S1</label><caption>
+<p>Side chain chemical shift assignment algorithm.</p>
+<p>(0.03 MB DOC)</p>
+</caption></supplementary-material><supplementary-material id="pcbi.1000307.s003" mimetype="application/msword" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1000307.s003" xlink:type="simple"><label>Table S1</label><caption>
+<p>Examples of ten PINE-NMR runs with experimental NMR data showing how the data quality measure <italic>t</italic> correlates with the agreement between the actual and predicted number of assignments with probability <italic>p</italic>&gt;0.95. The strong correlation can be best observed in the cases where additional data for the same protein have been uploaded to the server.</p>
+<p>(0.23 MB DOC)</p>
+</caption></supplementary-material></sec></body>
+<back>
+<ack>
+<p>We thank the members of NMRFAM and CESG who provided NMR data for this study and are pleased to acknowledge the many users of the PINE-NMR server, who provided useful feedback on its operation. William M. Westler carried out the combined PINE-NMR / Cyana structural analysis as part of an NMRFAM workshop.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1000307-Markwick1"><label>1</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Markwick</surname><given-names>PR</given-names></name>
+<name name-style="western"><surname>Malliavin</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Nilges</surname><given-names>M</given-names></name>
+</person-group>             <year>2008</year>             <article-title>Structural biology by NMR: structure, dynamics, and interactions.</article-title>             <source>PLoS Comput Biol</source>             <volume>4</volume>             <fpage>e1000168</fpage>             <comment>doi:10.1371/journal.pcbi.1000168</comment>          </element-citation></ref>
+<ref id="pcbi.1000307-Billeter1"><label>2</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Billeter</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Basus</surname><given-names>VJ</given-names></name>
+<name name-style="western"><surname>Kuntz</surname><given-names>ID</given-names></name>
+</person-group>             <year>1988</year>             <article-title>A program for semi-automatic sequential resonance assignments in protein <sup>1</sup>H nuclear magnetic resonance spectra.</article-title>             <source>J Magn Reson</source>             <volume>76</volume>             <fpage>400</fpage>             <lpage>415</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Xu1"><label>3</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Xu</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Zheng</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Fan</surname><given-names>JS</given-names></name>
+<name name-style="western"><surname>Yang</surname><given-names>D</given-names></name>
+</person-group>             <year>2006</year>             <article-title>A new strategy for structure determination of large proteins in solution without deuteration.</article-title>             <source>Nat Methods</source>             <volume>3</volume>             <fpage>931</fpage>             <lpage>937</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Grishaev1"><label>4</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Grishaev</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Llinas</surname><given-names>M</given-names></name>
+</person-group>             <year>2002</year>             <article-title>CLOUDS, a protocol for deriving a molecular proton density via NMR.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>99</volume>             <fpage>6707</fpage>             <lpage>6712</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Shen1"><label>5</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Shen</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Lange</surname><given-names>O</given-names></name>
+<name name-style="western"><surname>Delaglio</surname><given-names>F</given-names></name>
+<name name-style="western"><surname>Rossi</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Aramini</surname><given-names>JM</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>Consistent blind protein structure generation from NMR chemical shift data.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>105</volume>             <fpage>4685</fpage>             <lpage>4690</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Cavalli1"><label>6</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Cavalli</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Salvatella</surname><given-names>X</given-names></name>
+<name name-style="western"><surname>Dobson</surname><given-names>CM</given-names></name>
+<name name-style="western"><surname>Vendruscolo</surname><given-names>M</given-names></name>
+</person-group>             <year>2007</year>             <article-title>Protein structure determination from NMR chemical shifts.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>104</volume>             <fpage>9615</fpage>             <lpage>9620</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Chylla1"><label>7</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Chylla</surname><given-names>RA</given-names></name>
+<name name-style="western"><surname>Markley</surname><given-names>JL</given-names></name>
+</person-group>             <year>1995</year>             <article-title>Theory and application of the maximum likelihood principle to NMR parameter estimation of multidimensional NMR data.</article-title>             <source>J Biomol NMR</source>             <volume>5</volume>             <fpage>245</fpage>             <lpage>258</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Chylla2"><label>8</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Chylla</surname><given-names>RA</given-names></name>
+<name name-style="western"><surname>Volkman</surname><given-names>BF</given-names></name>
+<name name-style="western"><surname>Markley</surname><given-names>JL</given-names></name>
+</person-group>             <year>1998</year>             <article-title>Practical model fitting approaches to the direct extraction of NMR parameters simultaneously from all dimensions of multidimensional NMR spectra.</article-title>             <source>J Biomol NMR</source>             <volume>12</volume>             <fpage>277</fpage>             <lpage>297</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Olson1"><label>9</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Olson</surname><given-names>JB</given-names><suffix>Jr</suffix></name>
+<name name-style="western"><surname>Markley</surname><given-names>JL</given-names></name>
+</person-group>             <year>1994</year>             <article-title>Evaluation of an algorithm for the automated sequential assignment of protein backbone resonances: a demonstration of the connectivity tracing assignment tools (CONTRAST) software package.</article-title>             <source>J Biomol NMR</source>             <volume>4</volume>             <fpage>385</fpage>             <lpage>410</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Zimmerman1"><label>10</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Zimmerman</surname><given-names>DE</given-names></name>
+<name name-style="western"><surname>Kulikowski</surname><given-names>CA</given-names></name>
+<name name-style="western"><surname>Huang</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Feng</surname><given-names>W</given-names></name>
+<name name-style="western"><surname>Tashiro</surname><given-names>M</given-names></name>
+<etal/></person-group>             <year>1997</year>             <article-title>Automated analysis of protein NMR assignments using methods from artificial intelligence.</article-title>             <source>J Mol Biol</source>             <volume>269</volume>             <fpage>592</fpage>             <lpage>610</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Bartels1"><label>11</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Bartels</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Billeter</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Güntert</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Wüthrich</surname><given-names>K</given-names></name>
+</person-group>             <year>1996</year>             <article-title>Automated sequence-specific NMR assignment of homologous proteins using the program GARANT.</article-title>             <source>J Biomol NMR</source>             <volume>7</volume>             <fpage>207</fpage>             <lpage>213</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Eghbalnia1"><label>12</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Eghbalnia</surname><given-names>HR</given-names></name>
+<name name-style="western"><surname>Bahrami</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Wang</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Assadi</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Markley</surname><given-names>JL</given-names></name>
+</person-group>             <year>2005</year>             <article-title>Probabilistic identification of spin systems and their assignments including coil-helix inference as output (PISTACHIO).</article-title>             <source>J Biomol NMR</source>             <volume>32</volume>             <fpage>219</fpage>             <lpage>233</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Eghbalnia2"><label>13</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Eghbalnia</surname><given-names>HR</given-names></name>
+<name name-style="western"><surname>Wang</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Bahrami</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Assadi</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Markley</surname><given-names>JL</given-names></name>
+</person-group>             <year>2005</year>             <article-title>Protein energetic conformational analysis from NMR chemical shifts (PECAN) and its use in determining secondary structural elements.</article-title>             <source>J Biomol NMR</source>             <volume>32</volume>             <fpage>71</fpage>             <lpage>81</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Wishart1"><label>14</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Wishart</surname><given-names>DS</given-names></name>
+<name name-style="western"><surname>Sykes</surname><given-names>BD</given-names></name>
+</person-group>             <year>1994</year>             <article-title>The <sup>13</sup>C chemical shift index: a simple method for the identification of protein secondary structure using <sup>13</sup>C chemical shifts.</article-title>             <source>J Biomol NMR</source>             <volume>4</volume>             <fpage>171</fpage>             <lpage>180</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Wishart2"><label>15</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Wishart</surname><given-names>DS</given-names></name>
+<name name-style="western"><surname>Case</surname><given-names>DA</given-names></name>
+</person-group>             <year>2001</year>             <article-title>Use of chemical shifts in macromolecular structure determination.</article-title>             <source>Methods Enzymol</source>             <volume>338</volume>             <fpage>3</fpage>             <lpage>34</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Wang1"><label>16</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Wang</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Eghbalnia</surname><given-names>HR</given-names></name>
+<name name-style="western"><surname>Bahrami</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Markley</surname><given-names>JL</given-names></name>
+</person-group>             <year>2005</year>             <article-title>Linear analysis of carbon-13 chemical shift differences and its application to the detection and correction of errors in referencing and spin system identifications.</article-title>             <source>J Biomol NMR</source>             <volume>32</volume>             <fpage>13</fpage>             <lpage>22</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Jung1"><label>17</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Jung</surname><given-names>Y-S</given-names></name>
+<name name-style="western"><surname>Zweckstetter</surname><given-names>M</given-names></name>
+</person-group>             <year>2004</year>             <article-title>Mars—robust automatic backbone assignment of proteins.</article-title>             <source>J Biomol NMR</source>             <volume>30</volume>             <fpage>11</fpage>             <lpage>23</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Lin1"><label>18</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Lin</surname><given-names>HN</given-names></name>
+<name name-style="western"><surname>Wu</surname><given-names>KP</given-names></name>
+<name name-style="western"><surname>Chang</surname><given-names>JM</given-names></name>
+<name name-style="western"><surname>Sung</surname><given-names>TY</given-names></name>
+<name name-style="western"><surname>Hsu</surname><given-names>WL</given-names></name>
+</person-group>             <year>2005</year>             <article-title>GANA—a genetic algorithm for NMR backbone resonance assignment.</article-title>             <source>Nucleic Acids Res</source>             <volume>33</volume>             <fpage>4593</fpage>             <lpage>4601</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Cornilescu1"><label>19</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Cornilescu</surname><given-names>G</given-names></name>
+<name name-style="western"><surname>Delaglio</surname><given-names>F</given-names></name>
+<name name-style="western"><surname>Bax</surname><given-names>A</given-names></name>
+</person-group>             <year>1999</year>             <article-title>Protein backbone angle restraints from searching a database for chemical shift and sequence homology.</article-title>             <source>J Biomol NMR</source>             <volume>13</volume>             <fpage>289</fpage>             <lpage>302</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Hyberts1"><label>20</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Hyberts</surname><given-names>SG</given-names></name>
+<name name-style="western"><surname>Goldberg</surname><given-names>MS</given-names></name>
+<name name-style="western"><surname>Havel</surname><given-names>TF</given-names></name>
+<name name-style="western"><surname>Wagner</surname><given-names>G</given-names></name>
+</person-group>             <year>1992</year>             <article-title>The solution structure of eglin c based on measurements of many NOEs and coupling constants and its comparison with X-ray structures.</article-title>             <source>Protein Science</source>             <volume>1</volume>             <fpage>736</fpage>             <lpage>751</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Clore1"><label>21</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Clore</surname><given-names>GM</given-names></name>
+<name name-style="western"><surname>Gronenborn</surname><given-names>AM</given-names></name>
+</person-group>             <year>1998</year>             <article-title>New methods of structure refinement for macromolecular structure determination by NMR.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>95</volume>             <fpage>5891</fpage>             <lpage>5898</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Gronwald1"><label>22</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Gronwald</surname><given-names>W</given-names></name>
+<name name-style="western"><surname>Kalbitzer</surname><given-names>HR</given-names></name>
+</person-group>             <year>2004</year>             <article-title>Automated structure determination of proteins by NMR spectroscopy.</article-title>             <source>Prog Nucl Magn Reson Spectrosc</source>             <volume>44</volume>             <fpage>33</fpage>             <lpage>96</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Gntert1"><label>23</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Güntert</surname><given-names>P</given-names></name>
+</person-group>             <year>2009</year>             <article-title>Automated structure determination from NMR spectra.</article-title>             <source>Eur Biophys J</source>             <volume>38</volume>             <fpage>129</fpage>             <lpage>143</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Leutner1"><label>24</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Leutner</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Gschwind</surname><given-names>RM</given-names></name>
+<name name-style="western"><surname>Liermann</surname><given-names>J</given-names></name>
+<name name-style="western"><surname>Schwarz</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Gemmecker</surname><given-names>G</given-names></name>
+<etal/></person-group>             <year>1998</year>             <article-title>Automated backbone assignment of labeled proteins using the threshold accepting algorithm.</article-title>             <source>J Biomol NMR</source>             <volume>11</volume>             <fpage>31</fpage>             <lpage>43</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Lukin1"><label>25</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Lukin</surname><given-names>JA</given-names></name>
+<name name-style="western"><surname>Gove</surname><given-names>AP</given-names></name>
+<name name-style="western"><surname>Talukdar</surname><given-names>SN</given-names></name>
+<name name-style="western"><surname>Ho</surname><given-names>C</given-names></name>
+</person-group>             <year>1997</year>             <article-title>Automated probabilistic method for assigning backbone resonances of (13C,15N)-labeled proteins.</article-title>             <source>J Biomol NMR</source>             <volume>9</volume>             <fpage>151</fpage>             <lpage>166</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Buchler1"><label>26</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Buchler</surname><given-names>NE</given-names></name>
+<name name-style="western"><surname>Zuiderweg</surname><given-names>ER</given-names></name>
+<name name-style="western"><surname>Wang</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Goldstein</surname><given-names>RA</given-names></name>
+</person-group>             <year>1997</year>             <article-title>Protein heteronuclear NMR assignments using mean-field simulated annealing.</article-title>             <source>J Magn Reson</source>             <volume>125</volume>             <fpage>34</fpage>             <lpage>42</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Bartels2"><label>27</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Bartels</surname><given-names>C</given-names></name>
+<name name-style="western"><surname>Güntert</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Billeter</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Wüthrich</surname><given-names>K</given-names></name>
+</person-group>             <year>1997</year>             <article-title>GARANT—a general algorithm for resonance assignment of multidimensional nuclear magnetic resonance spectra.</article-title>             <source>J Comput Chem</source>             <volume>18</volume>             <fpage>139</fpage>             <lpage>149</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Andrec1"><label>28</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Andrec</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Levy</surname><given-names>RM</given-names></name>
+</person-group>             <year>2002</year>             <article-title>Protein sequential resonance assignments by combinatorial enumeration using <sup>13</sup>Cα chemical shifts and their (i, i–1) sequential connectivities.</article-title>             <source>J Biomol NMR</source>             <volume>23</volume>             <fpage>263</fpage>             <lpage>270</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Coggins1"><label>29</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Coggins</surname><given-names>BE</given-names></name>
+<name name-style="western"><surname>Zhou</surname><given-names>P</given-names></name>
+</person-group>             <year>2003</year>             <article-title>PACES: Protein sequential assignment by computer-assisted exhaustive search.</article-title>             <source>J Biomol NMR</source>             <volume>26</volume>             <fpage>93</fpage>             <lpage>111</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Atreya1"><label>30</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Atreya</surname><given-names>HS</given-names></name>
+<name name-style="western"><surname>Sahu</surname><given-names>SC</given-names></name>
+<name name-style="western"><surname>Chary</surname><given-names>KV</given-names></name>
+<name name-style="western"><surname>Govil</surname><given-names>G</given-names></name>
+</person-group>             <year>2000</year>             <article-title>A tracked approach for automated NMR assignments in proteins (TATAPRO).</article-title>             <source>J Biomol NMR</source>             <volume>17</volume>             <fpage>125</fpage>             <lpage>136</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Gronwald2"><label>31</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Gronwald</surname><given-names>W</given-names></name>
+<name name-style="western"><surname>Willard</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Jellard</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Boyko</surname><given-names>RF</given-names></name>
+<name name-style="western"><surname>Rajarathnam</surname><given-names>K</given-names></name>
+<etal/></person-group>             <year>1998</year>             <article-title>CAMRA: Chemical Shift Based Computer Aided Protein NMR Assignments.</article-title>             <source>J Biomol NMR</source>             <volume>12</volume>             <fpage>395</fpage>             <lpage>405</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Hyberts2"><label>32</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Hyberts</surname><given-names>SG</given-names></name>
+<name name-style="western"><surname>Wagner</surname><given-names>G</given-names></name>
+</person-group>             <year>2003</year>             <article-title>IBIS—a tool for automated sequential assignment of protein spectra from triple resonance experiments.</article-title>             <source>J Biomol NMR</source>             <volume>26</volume>             <fpage>335</fpage>             <lpage>344</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Li1"><label>33</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Li</surname><given-names>KB</given-names></name>
+<name name-style="western"><surname>Sanctuary</surname><given-names>BC</given-names></name>
+</person-group>             <year>1997</year>             <article-title>Automated resonance assignment of proteins using heteronuclear 3D NMR. 2. Side chain and sequence-specific assignment.</article-title>             <source>J Chem Inf Comput Sci</source>             <volume>37</volume>             <fpage>467</fpage>             <lpage>477</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Zimmerman2"><label>34</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Zimmerman</surname><given-names>DE</given-names></name>
+<name name-style="western"><surname>Kulikowski</surname><given-names>CA</given-names></name>
+<name name-style="western"><surname>Wang</surname><given-names>L</given-names></name>
+<name name-style="western"><surname>Lyons</surname><given-names>BA</given-names></name>
+<name name-style="western"><surname>Montelione</surname><given-names>GT</given-names></name>
+</person-group>             <year>1994</year>             <article-title>Automated sequencing of amino acid spin systems in proteins using multidimensional HCC(CO)NH-TOCSY spectroscopy and constraint propagation methods from artificial intelligence.</article-title>             <source>J Biomol NMR</source>             <volume>4</volume>             <fpage>241</fpage>             <lpage>256</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Moseley1"><label>35</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Moseley</surname><given-names>HN</given-names></name>
+<name name-style="western"><surname>Monleon</surname><given-names>D</given-names></name>
+<name name-style="western"><surname>Montelione</surname><given-names>GT</given-names></name>
+</person-group>             <year>2001</year>             <article-title>Automatic determination of protein backbone resonance assignments from triple resonance nuclear magnetic resonance data.</article-title>             <source>Methods Enzymol</source>             <volume>339</volume>             <fpage>91</fpage>             <lpage>108</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Lesk1"><label>36</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Lesk</surname><given-names>AM</given-names></name>
+<name name-style="western"><surname>Rose</surname><given-names>GD</given-names></name>
+</person-group>             <year>1981</year>             <article-title>Folding units in globular proteins.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>78</volume>             <fpage>4304</fpage>             <lpage>4308</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Przytycka1"><label>37</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Przytycka</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Aurora</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Rose</surname><given-names>GD</given-names></name>
+</person-group>             <year>1999</year>             <article-title>A protein taxonomy based on secondary structure.</article-title>             <source>Nat Struct Biol</source>             <volume>6</volume>             <fpage>672</fpage>             <lpage>682</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Reily1"><label>38</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Reily</surname><given-names>MD</given-names></name>
+<name name-style="western"><surname>Thanabal</surname><given-names>V</given-names></name>
+<name name-style="western"><surname>Omecinsky</surname><given-names>DO</given-names></name>
+</person-group>             <year>1992</year>             <article-title>Structure-induced carbon-13 chemical shifts: a sensitive measure of transient localized secondary structure in peptides.</article-title>             <source>J Am Chem Soc</source>             <volume>114</volume>             <fpage>6251</fpage>             <lpage>6252</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Wang2"><label>39</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Wang</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Jardetzky</surname><given-names>O</given-names></name>
+</person-group>             <year>2002</year>             <article-title>Probability-based protein secondary structure identification using combined NMR chemical-shift data.</article-title>             <source>Protein Sci</source>             <volume>11</volume>             <fpage>852</fpage>             <lpage>861</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Hung1"><label>40</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Hung</surname><given-names>LH</given-names></name>
+<name name-style="western"><surname>Samudrala</surname><given-names>R</given-names></name>
+</person-group>             <year>2003</year>             <article-title>Accurate and automated classification of protein secondary structure with PsiCSI.</article-title>             <source>Protein Sci</source>             <volume>12</volume>             <fpage>288</fpage>             <lpage>295</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-LopezMendez1"><label>41</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Lopez-Mendez</surname><given-names>B</given-names></name>
+<name name-style="western"><surname>Güntert</surname><given-names>P</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Automated protein structure determination from NMR spectra.</article-title>             <source>J Am Chem Soc</source>             <volume>128</volume>             <fpage>13112</fpage>             <lpage>13122</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Yedidia1"><label>42</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Yedidia</surname><given-names>JS</given-names></name>
+<name name-style="western"><surname>Freeman</surname><given-names>WT</given-names></name>
+<name name-style="western"><surname>Weiss</surname><given-names>Y</given-names></name>
+</person-group>             <year>2005</year>             <article-title>Constructing free-energy approximations and generalized belief propagation algorithms.</article-title>             <source>IEEE Trans Inf Theory</source>             <volume>51</volume>             <fpage>2282</fpage>             <lpage>2312</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Fortuin1"><label>43</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Fortuin</surname><given-names>CM</given-names></name>
+<name name-style="western"><surname>Kasteleyn</surname><given-names>PW</given-names></name>
+</person-group>             <year>1972</year>             <article-title>Random-cluster model .1. Introduction and relation to other models.</article-title>             <source>Physica</source>             <volume>57</volume>             <fpage>536</fpage>             <lpage>564</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Pearl1"><label>44</label><element-citation publication-type="other" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Pearl</surname><given-names>J</given-names></name>
+</person-group>             <year>1988</year>             <source>Probabilistic Reasoning in Intelligent Systems: Networks of Plausible Inference</source>             <publisher-loc>San Mateo (California)</publisher-loc>             <publisher-name>Morgan Kaufmann Publishers</publisher-name>          </element-citation></ref>
+<ref id="pcbi.1000307-Weiss1"><label>45</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Weiss</surname><given-names>Y</given-names></name>
+</person-group>             <year>2000</year>             <article-title>Correctness of local probability propagation in graphical models with loops.</article-title>             <source>Neural Comput</source>             <volume>12</volume>             <fpage>1</fpage>             <lpage>41</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Mooij1"><label>46</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Mooij</surname><given-names>JM</given-names></name>
+<name name-style="western"><surname>Kappen</surname><given-names>HJ</given-names></name>
+</person-group>             <year>2005</year>             <article-title>On the properties of the Bethe approximation and loopy belief propagation on binary networks.</article-title>             <source>J Stat Mech</source>             <volume>P11012</volume>          </element-citation></ref>
+<ref id="pcbi.1000307-Tatikonda1"><label>47</label><element-citation publication-type="other" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Tatikonda</surname><given-names>SC</given-names></name>
+<name name-style="western"><surname>Jordan</surname><given-names>MI</given-names></name>
+</person-group>             <year>2002</year>             <source>Loopy belief propagation and Gibbs measures.</source>             <source>Uncertainty in Artificial Intelligence</source>             <publisher-loc>San Francisco</publisher-loc>             <publisher-name>Morgan Kaufmann</publisher-name>             <fpage>pp 493</fpage>             <lpage>500</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Wainwright1"><label>48</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Wainwright</surname><given-names>MJ</given-names></name>
+<name name-style="western"><surname>Jaakkola</surname><given-names>TS</given-names></name>
+<name name-style="western"><surname>Willsky</surname><given-names>AS</given-names></name>
+</person-group>             <year>2003</year>             <article-title>Tree-based reparameterization framework for analysis of sum-product and related algorithms.</article-title>             <source>IEEE Trans Inf Theory</source>             <volume>49</volume>             <fpage>1120</fpage>             <lpage>1146</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Ulrich1"><label>49</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Ulrich</surname><given-names>EL</given-names></name>
+<name name-style="western"><surname>Akutsu</surname><given-names>H</given-names></name>
+<name name-style="western"><surname>Doreleijers</surname><given-names>JF</given-names></name>
+<name name-style="western"><surname>Harano</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Ioannidis</surname><given-names>YE</given-names></name>
+<etal/></person-group>             <year>2008</year>             <article-title>BioMagResBank.</article-title>             <source>Nucleic Acids Res</source>             <volume>36</volume>             <fpage>D402</fpage>             <lpage>D408</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Kabsch1"><label>50</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Kabsch</surname><given-names>W</given-names></name>
+<name name-style="western"><surname>Sander</surname><given-names>C</given-names></name>
+</person-group>             <year>1984</year>             <article-title>On the use of sequence homologies to predict protein structure: identical pentapeptides can have completely different conformations.</article-title>             <source>Proc Natl Acad Sci U S A</source>             <volume>81</volume>             <fpage>1075</fpage>             <lpage>1078</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Kainosho1"><label>51</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Kainosho</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Torizawa</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Iwashita</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Terauchi</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Mei Ono</surname><given-names>A</given-names></name>
+<etal/></person-group>             <year>2006</year>             <article-title>Optimal isotope labelling for NMR protein structure determinations.</article-title>             <source>Nature</source>             <volume>440</volume>             <fpage>52</fpage>             <lpage>57</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Herrmann1"><label>52</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Herrmann</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Güntert</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Wüthrich</surname><given-names>K</given-names></name>
+</person-group>             <year>2002</year>             <article-title>Protein NMR structure determination with automated NOE-identification in the NOESY spectra using the new software ATNOS.</article-title>             <source>J Biomol NMR</source>             <volume>24</volume>             <fpage>171</fpage>             <lpage>189</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Herrmann2"><label>53</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Herrmann</surname><given-names>T</given-names></name>
+<name name-style="western"><surname>Güntert</surname><given-names>P</given-names></name>
+<name name-style="western"><surname>Wüthrich</surname><given-names>K</given-names></name>
+</person-group>             <year>2002</year>             <article-title>Protein NMR structure determination with automated NOE assignment using the new software CANDID and the torsion angle dynamics algorithm DYANA.</article-title>             <source>J Mol Biol</source>             <volume>319</volume>             <fpage>209</fpage>             <lpage>227</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Bhattacharya1"><label>54</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Bhattacharya</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Tejero</surname><given-names>R</given-names></name>
+<name name-style="western"><surname>Montelione</surname><given-names>GT</given-names></name>
+</person-group>             <year>2007</year>             <article-title>Evaluating protein structures determined by structural genomics consortia.</article-title>             <source>Proteins</source>             <volume>66</volume>             <fpage>778</fpage>             <lpage>795</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Eghbalnia3"><label>55</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Eghbalnia</surname><given-names>HR</given-names></name>
+<name name-style="western"><surname>Bahrami</surname><given-names>A</given-names></name>
+<name name-style="western"><surname>Tonelli</surname><given-names>M</given-names></name>
+<name name-style="western"><surname>Hallenga</surname><given-names>K</given-names></name>
+<name name-style="western"><surname>Markley</surname><given-names>JL</given-names></name>
+</person-group>             <year>2005</year>             <article-title>High-resolution iterative frequency identification for NMR as a general strategy for multidimensional data collection.</article-title>             <source>J Am Chem Soc</source>             <volume>127</volume>             <fpage>12528</fpage>             <lpage>12536</lpage>          </element-citation></ref>
+<ref id="pcbi.1000307-Lin2"><label>56</label><element-citation publication-type="journal" xlink:type="simple">             <person-group person-group-type="author">
+<name name-style="western"><surname>Lin</surname><given-names>Z</given-names></name>
+<name name-style="western"><surname>Xu</surname><given-names>Y</given-names></name>
+<name name-style="western"><surname>Yang</surname><given-names>S</given-names></name>
+<name name-style="western"><surname>Yang</surname><given-names>D</given-names></name>
+</person-group>             <year>2006</year>             <article-title>Sequence-specific assignment of aromatic resonances of uniformly <sup>13</sup>C,<sup>15</sup>N-labeled proteins by using <sup>13</sup>C- and <sup>15</sup>N-edited NOESY spectra.</article-title>             <source>Angew Chem Int Ed Engl</source>             <volume>45</volume>             <fpage>1960</fpage>             <lpage>1963</lpage>          </element-citation></ref>
+</ref-list>
+
+</back>
+</article>

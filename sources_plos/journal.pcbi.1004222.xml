@@ -1,0 +1,912 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" dtd-version="3.0" xml:lang="en" article-type="research-article">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">ploscomp</journal-id>
+<journal-title-group>
+<journal-title>PLOS Computational Biology</journal-title>
+</journal-title-group>
+<issn pub-type="ppub">1553-734X</issn>
+<issn pub-type="epub">1553-7358</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="publisher-id">PCOMPBIOL-D-14-01690</article-id>
+<article-id pub-id-type="doi">10.1371/journal.pcbi.1004222</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+</article-categories>
+<title-group>
+<article-title>Accurate Encoding and Decoding by Single Cells: Amplitude Versus Frequency Modulation</article-title>
+<alt-title alt-title-type="running-head">Accurate Encoding and Decoding by Single Cells</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Micali</surname> <given-names>Gabriele</given-names></name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Aquino</surname> <given-names>Gerardo</given-names></name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Richards</surname> <given-names>David M.</given-names></name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Endres</surname> <given-names>Robert G.</given-names></name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+</contrib-group>
+<aff id="aff001">
+<label>1</label>
+<addr-line>Department of Life Sciences, Imperial College, London, United Kingdom</addr-line>
+</aff>
+<aff id="aff002">
+<label>2</label>
+<addr-line>Centre for Integrative Systems Biology and Bioinformatics, Imperial College, London, United Kingdom</addr-line>
+</aff>
+<aff id="aff003">
+<label>3</label>
+<addr-line>Dipartimento di Fisica, Università degli Studi di Milano, Milano, Italy</addr-line>
+</aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Stelling</surname> <given-names>Jorg</given-names></name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1">
+<addr-line>ETH Zurich, SWITZERLAND</addr-line>
+</aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<fn fn-type="con" id="contrib001">
+<p>Wrote the paper: GM GA DMR RGE. Designed the research: RGE. Performed the research: GM GA DMR.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">r.endres@imperial.ac.uk</email></corresp>
+</author-notes>
+<pub-date pub-type="collection">
+<month>6</month>
+<year>2015</year>
+</pub-date>
+<pub-date pub-type="epub">
+<day>1</day>
+<month>6</month>
+<year>2015</year>
+</pub-date>
+<volume>11</volume>
+<issue>6</issue>
+<elocation-id>e1004222</elocation-id>
+<history>
+<date date-type="received">
+<day>16</day>
+<month>9</month>
+<year>2014</year>
+</date>
+<date date-type="accepted">
+<day>3</day>
+<month>3</month>
+<year>2015</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2015</copyright-year>
+<copyright-holder>Micali et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pcbi.1004222" xlink:type="simple"/>
+<abstract>
+<p>Cells sense external concentrations and, via biochemical signaling, respond by regulating the expression of target proteins. Both in signaling networks and gene regulation there are two main mechanisms by which the concentration can be encoded internally: amplitude modulation (AM), where the absolute concentration of an internal signaling molecule encodes the stimulus, and frequency modulation (FM), where the period between successive bursts represents the stimulus. Although both mechanisms have been observed in biological systems, the question of when it is beneficial for cells to use either AM or FM is largely unanswered. Here, we first consider a simple model for a single receptor (or ion channel), which can either signal continuously whenever a ligand is bound, or produce a burst in signaling molecule upon receptor binding. We find that bursty signaling is more accurate than continuous signaling only for sufficiently fast dynamics. This suggests that modulation based on bursts may be more common in signaling networks than in gene regulation. We then extend our model to multiple receptors, where continuous and bursty signaling are equivalent to AM and FM respectively, finding that AM is always more accurate. This implies that the reason some cells use FM is related to factors other than accuracy, such as the ability to coordinate expression of multiple genes or to implement threshold crossing mechanisms.</p>
+</abstract>
+<abstract abstract-type="summary">
+<title>Author Summary</title>
+<p>Signals, and hence information, can generally be transmitted either by amplitude (AM) or frequency (FM) modulation, as used, for example, in the transmission of radio waves since the 1930s. Both types of modulation are known to play a role in biology with AM conventionally associated with signaling and gene expression, and FM used to reliably transmit electrical signals over large distances between neurons. Surprisingly, FM was recently also observed in gene regulation, making their roles less distinct than previously thought. Although the engineering advantages and disadvantages of AM and FM are well understood, the equivalent question in biological systems is still largely unsolved. Here, we propose a simple model of signaling by receptors (or ion channels) with subsequent gene regulation, thus implementing both AM and FM in different types of biological pathways. We then compare the accuracy in the production of target proteins. We find that FM can be more accurate than AM only for a single receptor with fast signaling, whereas AM is more accurate in slow gene regulation and with signaling by multiple receptors. Finally, we propose possible reasons that cells use FM despite the potential decrease in accuracy.</p>
+</abstract>
+<funding-group>
+<funding-statement>GM acknowledges funding from ERC Starting-Grant N. 280492-PPHPI. GA was supported by Leverhulme-Trust grant N. RPG-181, and DMR was supported by BBSRC grant N. BB/I019987/1. RGE was supported by all three. The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="6"/>
+<table-count count="0"/>
+<page-count count="21"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability" xlink:type="simple">
+<meta-name>Data Availability</meta-name>
+<meta-value>All relevant data are within the paper and its Supporting Information files.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>Cells are exposed to changing environmental conditions and need to respond to external stimuli with high accuracy, e.g. to utilize nutrients and to avoid lethal stresses [<xref ref-type="bibr" rid="pcbi.1004222.ref001">1</xref>, <xref ref-type="bibr" rid="pcbi.1004222.ref002">2</xref>]. To represent (encode) chemicals in the environment, either ligand-bound receptors trigger chemical signals or ion channels allow entry of secondary messengers. These in turn activate transcription factors (TFs), which then regulate target-protein production (decoding). In eukaryotic cells, the conventional view is that the level of signaling within the cell directly encodes the external stimuli, with consequent gradual changes in the nuclear TF concentrations. This is effectively an amplitude modulation (AM) mechanism [<xref ref-type="bibr" rid="pcbi.1004222.ref003">3</xref>–<xref ref-type="bibr" rid="pcbi.1004222.ref010">10</xref>]. However, recent single-cell experiments also show pulsating signals [<xref ref-type="bibr" rid="pcbi.1004222.ref003">3</xref>, <xref ref-type="bibr" rid="pcbi.1004222.ref011">11</xref>–<xref ref-type="bibr" rid="pcbi.1004222.ref014">14</xref>] and bursty entry of TFs into the nucleus [<xref ref-type="bibr" rid="pcbi.1004222.ref003">3</xref>, <xref ref-type="bibr" rid="pcbi.1004222.ref010">10</xref>, <xref ref-type="bibr" rid="pcbi.1004222.ref015">15</xref>–<xref ref-type="bibr" rid="pcbi.1004222.ref017">17</xref>], in close analogy to frequency modulation (FM). (Note that, although there is no modulation of an underlying carrier wave as in radio broadcasting [<xref ref-type="bibr" rid="pcbi.1004222.ref018">18</xref>], the AM/FM terminology is commonly used in quantitative biology [<xref ref-type="bibr" rid="pcbi.1004222.ref010">10</xref>, <xref ref-type="bibr" rid="pcbi.1004222.ref015">15</xref>].) Although several hypotheses have been put forward, the benefits and detrimental effects of either type of response remain largely unclear.</p>
+<p>There is experimental evidence that both types of modulation occur in gene regulation. For example, take the budding yeast <italic>Saccharomyces cerevisiae</italic>. Under oxidative stress the nuclear concentration of transcription factor Msn2 is proportional to the H<sub>2</sub>O<sub>2</sub> concentration, suggesting an AM mechanism (Fig <xref ref-type="fig" rid="pcbi.1004222.g001">1A</xref> and <xref ref-type="fig" rid="pcbi.1004222.g001">1B</xref>) [<xref ref-type="bibr" rid="pcbi.1004222.ref010">10</xref>]. However, in response to a calcium stimulus, Crz1, which is normally cytoplasmic, enters the nucleus in unsynchronized bursts, regulating at least a hundred target genes (<xref ref-type="fig" rid="pcbi.1004222.g001">Fig 1C</xref>) [<xref ref-type="bibr" rid="pcbi.1004222.ref015">15</xref>]. The level of stimulus affects only the frequency of bursts, not their amplitude and duration, which implies FM (<xref ref-type="fig" rid="pcbi.1004222.g001">Fig 1D</xref> and inset) [<xref ref-type="bibr" rid="pcbi.1004222.ref015">15</xref>, <xref ref-type="bibr" rid="pcbi.1004222.ref019">19</xref>]. Similarly, Msn2 and its homologue Msn4 exhibit FM under glucose limitation [<xref ref-type="bibr" rid="pcbi.1004222.ref010">10</xref>]. Bursty FM is also found in bacteria and mammals, indicating that this is a general modulation scheme across different cell types. For example, during energy-depletion stress, the bacterium <italic>Bacillus subtilis</italic> activates the alternative sigma factor <italic>σ</italic><sup>B</sup> in discrete stochastic pulses, regulating around 150 downstream genes [<xref ref-type="bibr" rid="pcbi.1004222.ref020">20</xref>]. In addition, isoform NFAT4 in activated T-cells shows similar behavior [<xref ref-type="bibr" rid="pcbi.1004222.ref021">21</xref>].</p>
+<fig id="pcbi.1004222.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004222.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>Experimental evidence for amplitude and frequency modulation.</title>
+<p>(A and B) Example data showing amplitude modulation from [<xref ref-type="bibr" rid="pcbi.1004222.ref010">10</xref>]. (A) Single-cell nuclear localization of Msn2 transcription factor in response to H<sub>2</sub>O<sub>2</sub> stress as a function of time. The stimulus profile (input) is a step change applied at <italic>t</italic> = 0 (inset) which applies to all figure panels. (B) Average time trace for different concentrations of H<sub>2</sub>O<sub>2</sub> stress. (C and D) Example data showing frequency modulation from [<xref ref-type="bibr" rid="pcbi.1004222.ref015">15</xref>]. (C) Single-cell nuclear localization of Crz1 in response to calcium stress as a function of time, showing bursts of Crz1. (D) The average frequency of bursts against calcium concentration, showing an increased frequency with increased concentration. (Inset) Burst duration distribution for low (blue bars) and high (red bars) concentration. Both histograms are well described by the Gamma distribution <inline-formula id="pcbi.1004222.e001"><mml:math id="M1" display="inline" overflow="scroll"><mml:mrow><mml:mi>h</mml:mi> <mml:mo stretchy="false">(</mml:mo> <mml:mi>t</mml:mi> <mml:mo stretchy="false">)</mml:mo> <mml:mo>=</mml:mo> <mml:mi>t</mml:mi> <mml:msup><mml:mi>e</mml:mi> <mml:mrow><mml:mo>−</mml:mo> <mml:mi>t</mml:mi> <mml:mo>/</mml:mo> <mml:msub><mml:mi>τ</mml:mi> <mml:mi>b</mml:mi></mml:msub></mml:mrow></mml:msup></mml:mrow></mml:math></inline-formula>, with <italic>τ</italic><sub><italic>b</italic></sub> = 70s (black solid line), demonstrating that pulse duration is independent of calcium concentration. Experimental data in arbitrary units (AU) of fluorescence.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004222.g001"/>
+</fig>
+<p>What are the relative benefits of AM and FM? One important issue is the susceptibility to noise, which affects the accuracy of sensing. For example, in broadcasting radio signals it is well known that FM is less affected by noise than AM. This is because noise mainly deteriorates the amplitude, which is where the information is stored in AM. A similar argument also favors action potentials in communicating neuronal signals over long distances [<xref ref-type="bibr" rid="pcbi.1004222.ref022">22</xref>]. In contrast, it has been hypothesized that for other cell types, such as yeast, the bursty nature of FM may introduce more noise than AM, so that AM might be preferable (Fig <xref ref-type="fig" rid="pcbi.1004222.g002">2A</xref> and <xref ref-type="fig" rid="pcbi.1004222.g002">2B</xref>) [<xref ref-type="bibr" rid="pcbi.1004222.ref015">15</xref>]. However, two recent articles (which we discuss below) disagree with this and suggest that FM may still be more accurate [<xref ref-type="bibr" rid="pcbi.1004222.ref023">23</xref>, <xref ref-type="bibr" rid="pcbi.1004222.ref024">24</xref>]. In addition, it is important to remember that there are often other factors than noise minimization. For example, it has been suggested that, in situations where multiple genes need to be up or down regulated, FM can provide greater coordination and reliability (Fig <xref ref-type="fig" rid="pcbi.1004222.g002">2C</xref> and <xref ref-type="fig" rid="pcbi.1004222.g002">2D</xref>) [<xref ref-type="bibr" rid="pcbi.1004222.ref015">15</xref>, <xref ref-type="bibr" rid="pcbi.1004222.ref019">19</xref>].</p>
+<fig id="pcbi.1004222.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004222.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>Advantages and disadvantages of amplitude and frequency modulation.</title>
+<p>AM may be less noisy than FM (A,B), but FM may allow coordinated expression of many genes (C,D) [<xref ref-type="bibr" rid="pcbi.1004222.ref015">15</xref>, <xref ref-type="bibr" rid="pcbi.1004222.ref019">19</xref>]. (A) In AM, low/high stimuli result in low/high levels of transcription factor (TF) inside the nucleus. (B) In AM, different nuclear TF concentrations (blue and red curves) lead to gene expression of proteins A and B (see orange and green promoter functions respectively) with variable ratios (order of dot and square changes). (C) In FM, the stimulus strength only affects the frequency of bursts, not their amplitude. (Inset) Schematic of TF (purple dots) binding promoter <italic>P</italic><sub><italic>A</italic></sub> of gene <italic>A</italic> (orange) and promoter <italic>P</italic><sub><italic>B</italic></sub> of gene <italic>B</italic> (green) with different binding strengths. (D) In FM, the nuclear TF concentration is always the same during a burst, only the frequency of occurrence changes. As a consequence, the protein ratio stays constant.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004222.g002"/>
+</fig>
+<p>Mora and Wingreen considered a model for a single receptor embedded in a cell membrane and compared the noise in the output for two signaling mechanisms: continuous (CM) and bursty (BM) modulation [<xref ref-type="bibr" rid="pcbi.1004222.ref023">23</xref>]. In CM, the receptor signals continuously whenever a ligand is bound, whereas in BM the receptor signals for a short, fixed-sized burst only upon binding of a ligand. As we explain below, for multiple receptors these mechanisms become equivalent to AM and FM, respectively. By considering integral feedback control, a common network for sensing concentration ramps and precise adaptation [<xref ref-type="bibr" rid="pcbi.1004222.ref025">25</xref>–<xref ref-type="bibr" rid="pcbi.1004222.ref027">27</xref>], it was found that, for fast binding and unbinding, the noise in CM can be twice that from BM, suggesting that FM leads to greater accuracy. Despite this unexpected result, there are two key points that need further clarification. First, the response was only calculated to lowest order in the small-ramp parameter, thus neglecting any time dependence of the noise. Second, the derivation solely relied on the small-noise approximation, which might work well for fast signaling, but could be inadequate for slow gene regulation.</p>
+<p>Similarly, Tostevin <italic>et al</italic>. found biologically relevant parameter regimes of promoter switching in gene regulation in which an oscillating input can produce a more constant and hence less noisy protein output level than a constant input with noise [<xref ref-type="bibr" rid="pcbi.1004222.ref024">24</xref>]. Although interesting, this model is restricted to decoding and linear pathways, and requires fine-tuning. Its general applicability remains unclear, such as whether an oscillatory input signal can be replaced by random bursts and still remain more accurate than a constant input. In fact, oscillating signals are well-known to maximize target responsiveness while bypassing desensitization from constant signals [<xref ref-type="bibr" rid="pcbi.1004222.ref028">28</xref>]. They also globally entrain with its period robust to noise [<xref ref-type="bibr" rid="pcbi.1004222.ref029">29</xref>]. Such oscillators are found in circadian clocks, segmentation clocks, cell cycle, p53 DNA repair pathways, as well as nuclear factor NF-<italic>κ</italic>B, epidermal growth factor ERK, cAMP and Ca<sup>2+</sup> signaling [<xref ref-type="bibr" rid="pcbi.1004222.ref017">17</xref>, <xref ref-type="bibr" rid="pcbi.1004222.ref030">30</xref>–<xref ref-type="bibr" rid="pcbi.1004222.ref039">39</xref>]. This leaves the question of the relative benefits of AM and FM (with respect to random bursts) largely unanswered.</p>
+<p>Here, we aim to investigate the advantages and disadvantages of CM and BM (AM and FM) for encoding and decoding of constant concentrations and ramps. To build intuition, we start with a single receptor/ion channel (CM and BM). We consider concentration sensing by a linear pathway, allowing us to gain exact results for different temporal regimes (as suitable for fast signaling and slow gene regulation). To provide analytical results, we extend the single-receptor model for ramp sensing by Mora and Wingreen. First, we introduce an alternative mechanism to integral feedback, the incoherent feedforward loop (another common pathway motif for ramp sensing and precise adaptation [<xref ref-type="bibr" rid="pcbi.1004222.ref040">40</xref>–<xref ref-type="bibr" rid="pcbi.1004222.ref042">42</xref>]). This allows us to generalize the model to more than one pathway. Second, by explicitly including the time-dependence of signaling noise, we are able to provide first-order analytical results for the accuracy of ramp sensing. Taken together, a general principle emerges, favoring BM for fast signaling and CM for slow gene regulation. Finally, we generalize to many receptors and ion channels, a far more realistic situation for biological systems, allowing us to make connection with AM and FM. While we found that AM is generally more accurate than FM, we speculate why cells may still utilize FM in certain cases of gene regulation.</p>
+</sec>
+<sec id="sec002" sec-type="results">
+<title>Results</title>
+<p>Cells sense external stimuli with cell-surface receptors and/or ion channels, which ultimately lead to changes in the concentration and dynamics of active transcription factors (TFs) inside the nucleus. Cells control the response at two different levels. Firstly, cell-surface receptors signal to regulate the activity of TFs in the cytoplasm. Secondly, inportin and exportin regulate the entry of active TFs into the nucleus, thereby regulating transcription (<xref ref-type="fig" rid="pcbi.1004222.g003">Fig 3A</xref>). Here, we build a theoretical model that encodes information from an extra-cellular environment in an intra-cellular representation. We distinguish two ways of encoding this information: continuous modulation (CM) and bursty modulation (BM). Once the information is encoded, various proteins can act together to implement a response (decoding), involving regulatory networks. To provide a general analysis for arbitrary noise we first address concentration sensing in a simple linear pathway using the master equation. However, to derive analytical results for ramp sensing and pathways with feedback we apply the small-noise approximation. We finally extend these models to implement amplitude (AM) and frequency modulation (FM) for many receptors or ion channels. Accuracy is assessed by comparing the protein output noise for the different modulation schemes, assuming that the signal is decoded by the average concentration.</p>
+<fig id="pcbi.1004222.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004222.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title>Schematic view of signaling and gene regulation.</title>
+<p>(A) Cartoon of <italic>S. cerevisiae</italic> in presence of extracellular calcium, considered a paradigm of bursty frequency modulation. Calcium enters through plasma-membrane ion channels and can be stored (released) in (from) vacuoles. Intracellular calcium activates calcineurin, which dephosphorylates Crz1p. Once dephosphorylated, Crz1 binds inporting Nmd5p and enters the nucleus. Exportin Msn5p subsequently removes Crz1 from the nucleus. Cytoplasmic calcium pulses may correspond to Crz1 bursts in the nucleus [<xref ref-type="bibr" rid="pcbi.1004222.ref015">15</xref>]. Red arrows indicate movement while blue arrows stand for chemical signaling. (B) Single receptor/ion channel activity, <italic>r</italic>(<italic>t</italic>) (blue line), depends on the concentration of extra-cellular stimulus <italic>c</italic>. The signaling rate <italic>u</italic> differs between continuous (CM) and bursty modulation (BM). In CM, <italic>u</italic> is constant rate <italic>α</italic> during bound intervals, with <italic>p</italic><sub><italic>b</italic></sub> the probability of being bound. In BM, <italic>ζ</italic> molecules are realized at the time of binding with <italic>τ</italic><sub>bursts</sub> the duration between consecutive bursts (binding events). (C) Different regulatory networks. Linear pathway used for concentration sensing. Incoherent feedforward loop and integral feedback control allow chemical ramps to be sensed.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004222.g003"/>
+</fig>
+<sec id="sec003">
+<title>Single-receptor/ion-channel model</title>
+<p>Following Mora and Wingreen [<xref ref-type="bibr" rid="pcbi.1004222.ref023">23</xref>] we build a single-receptor model that implements CM and BM. We call the extra-cellular species <italic>c</italic>, which is encoded intra-cellularly by the signaling rate <italic>u</italic>. Assuming we are in the fast diffusion regime in which each ligand molecule can bind the receptor only once, the receptor can be in either of two uncorrelated states: <italic>on</italic> when bound and <italic>off</italic> when unbound. This allows the receptor activity, <italic>r</italic>(<italic>t</italic>), to be written mathematically as a binary response, which takes value 1 in the <italic>on</italic> state and 0 in the <italic>off</italic> state. The extra-cellular concentration <italic>c</italic> affects the unbound time intervals <italic>τ</italic><sub><italic>u</italic></sub>, such that the binding rate is given by ⟨<italic>τ</italic><sub><italic>u</italic></sub>⟩<sup>−1</sup> = <italic>k</italic><sub>+</sub> <italic>c</italic>(<italic>t</italic>), where <italic>k</italic><sub>+</sub> is the binding rate constant. In contrast, the bound time intervals, <italic>τ</italic><sub><italic>b</italic></sub>, are exponentially distributed random numbers with average ⟨<italic>τ</italic><sub><italic>b</italic></sub>⟩<sup>−1</sup> = <italic>k</italic><sub>−</sub>, where <italic>k</italic><sub>−</sub> is the unbinding rate constant, which is independent of the extra-cellular stimulus concentration (inset in <xref ref-type="fig" rid="pcbi.1004222.g003">Fig 3A</xref>). As for ion channels, some are ligand-gated or regulated by receptors, while others are voltage-gated and hence dependent on action potentials [<xref ref-type="bibr" rid="pcbi.1004222.ref043">43</xref>]. In all these cases the stimulus affects the opening or closing times. In CM downstream proteins are produced with a constant rate <italic>α</italic> during each <italic>on</italic> time interval, which leads to a signaling rate <italic>u</italic><sub>CM</sub> = <italic>αr</italic>(<italic>t</italic>), while in BM <inline-formula id="pcbi.1004222.e002"><mml:math id="M2" display="inline" overflow="scroll"><mml:mrow><mml:mi>ζ</mml:mi> <mml:mo>=</mml:mo> <mml:mi>α</mml:mi> <mml:msubsup><mml:mi>k</mml:mi> <mml:mo>−</mml:mo> <mml:mrow><mml:mo>−</mml:mo> <mml:mn>1</mml:mn></mml:mrow></mml:msubsup></mml:mrow></mml:math></inline-formula> molecules are produced instantly at the moment of binding with rate <inline-formula id="pcbi.1004222.e003"><mml:math id="M3" display="inline" overflow="scroll"><mml:mrow><mml:msub><mml:mi>u</mml:mi> <mml:mtext mathvariant="normal">BM</mml:mtext></mml:msub> <mml:mo>=</mml:mo> <mml:mi>ζ</mml:mi> <mml:mo>∑</mml:mo> <mml:mi>δ</mml:mi> <mml:mo stretchy="false">(</mml:mo> <mml:mi>t</mml:mi> <mml:mo>−</mml:mo> <mml:msubsup><mml:mi>t</mml:mi> <mml:mi>i</mml:mi> <mml:mo>+</mml:mo></mml:msubsup> <mml:mo stretchy="false">)</mml:mo></mml:mrow></mml:math></inline-formula>, where <inline-formula id="pcbi.1004222.e004"><mml:math id="M4" display="inline" overflow="scroll"><mml:mrow><mml:msubsup><mml:mi>t</mml:mi> <mml:mi>i</mml:mi> <mml:mo>+</mml:mo></mml:msubsup></mml:mrow></mml:math></inline-formula> are the binding times (<xref ref-type="fig" rid="pcbi.1004222.g003">Fig 3B</xref>). This choice for <italic>ζ</italic> allows a meaningful comparison of CM and BM as both produce, on average, the same amount of intracellular species.</p>
+</sec>
+<sec id="sec004">
+<title>General approach to concentration sensing exhibits two regimes of accuracy</title>
+<p>In order to provide a general result for arbitrary input fluctuations, we write down the chemical master equation. For simplicity, we only consider concentration sensing with <italic>c</italic>(<italic>t</italic>) = <italic>c</italic><sub>0</sub>, but the model can also be applied to ramps. Furthermore, we assume a linear pathway in which the receptor/ion channel activity <italic>r</italic> directly regulates an output species with copy number <italic>n</italic> (with production rate <italic>u</italic> and degradation rate <italic>γ</italic>) (<xref ref-type="fig" rid="pcbi.1004222.g003">Fig 3C</xref>, left). Since the receptor/ion channel activity is a two-state system (<italic>on</italic>/<italic>off</italic>), there are two resulting master equations for CM (one for each state) describing the probability of being in the <italic>on</italic> and <italic>off</italic> states, i.e. <italic>p</italic><sub>on</sub>(<italic>n</italic>, <italic>t</italic>) and <italic>p</italic><sub>off</sub>(<italic>n</italic>, <italic>t</italic>):
+<disp-formula id="pcbi.1004222.e005"><alternatives><graphic id="pcbi.1004222.e005g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004222.e005"/><mml:math id="M5" display="block" overflow="scroll"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:mfrac><mml:mrow><mml:mi>d</mml:mi> <mml:msub><mml:mi>p</mml:mi> <mml:mtext>on</mml:mtext></mml:msub> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>n</mml:mi> <mml:mo>,</mml:mo> <mml:mi>t</mml:mi> <mml:mo>)</mml:mo></mml:mrow></mml:mrow> <mml:mrow><mml:mi>d</mml:mi> <mml:mi>t</mml:mi></mml:mrow></mml:mfrac> <mml:mo>=</mml:mo> <mml:mi>γ</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>n</mml:mi> <mml:mo>+</mml:mo> <mml:mn>1</mml:mn> <mml:mo>)</mml:mo></mml:mrow> <mml:msub><mml:mi>p</mml:mi> <mml:mtext>on</mml:mtext></mml:msub> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>n</mml:mi> <mml:mo>+</mml:mo> <mml:mn>1</mml:mn> <mml:mo>,</mml:mo> <mml:mi>t</mml:mi> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>+</mml:mo> <mml:mi>α</mml:mi> <mml:msub><mml:mi>p</mml:mi> <mml:mtext>on</mml:mtext></mml:msub> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>n</mml:mi> <mml:mo>-</mml:mo> <mml:mn>1</mml:mn> <mml:mo>,</mml:mo> <mml:mi>t</mml:mi> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>+</mml:mo> <mml:msub><mml:mi>k</mml:mi> <mml:mo>+</mml:mo></mml:msub> <mml:mi>c</mml:mi> <mml:msub><mml:mi>p</mml:mi> <mml:mtext>off</mml:mtext></mml:msub> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>n</mml:mi> <mml:mo>,</mml:mo> <mml:mi>t</mml:mi> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>-</mml:mo> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>γ</mml:mi> <mml:mi>n</mml:mi> <mml:mo>+</mml:mo> <mml:mi>α</mml:mi> <mml:mo>+</mml:mo> <mml:msub><mml:mi>k</mml:mi> <mml:mo>-</mml:mo></mml:msub> <mml:mo>)</mml:mo></mml:mrow> <mml:msub><mml:mi>p</mml:mi> <mml:mtext>on</mml:mtext></mml:msub> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>n</mml:mi> <mml:mo>,</mml:mo> <mml:mi>t</mml:mi> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>,</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives> <label>(1a)</label></disp-formula>
+<disp-formula id="pcbi.1004222.e006"><alternatives><graphic id="pcbi.1004222.e006g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004222.e006"/><mml:math id="M6" display="block" overflow="scroll"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:mfrac><mml:mrow><mml:mi>d</mml:mi> <mml:msub><mml:mi>p</mml:mi> <mml:mtext>off</mml:mtext></mml:msub> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>n</mml:mi> <mml:mo>,</mml:mo> <mml:mi>t</mml:mi> <mml:mo>)</mml:mo></mml:mrow></mml:mrow> <mml:mrow><mml:mi>d</mml:mi> <mml:mi>t</mml:mi></mml:mrow></mml:mfrac> <mml:mo>=</mml:mo> <mml:mi>γ</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>n</mml:mi> <mml:mo>+</mml:mo> <mml:mn>1</mml:mn> <mml:mo>)</mml:mo></mml:mrow> <mml:msub><mml:mi>p</mml:mi> <mml:mtext>off</mml:mtext></mml:msub> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>n</mml:mi> <mml:mo>+</mml:mo> <mml:mn>1</mml:mn> <mml:mo>,</mml:mo> <mml:mi>t</mml:mi> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>+</mml:mo> <mml:msub><mml:mi>k</mml:mi> <mml:mo>-</mml:mo></mml:msub> <mml:msub><mml:mi>p</mml:mi> <mml:mtext>on</mml:mtext></mml:msub> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>n</mml:mi> <mml:mo>,</mml:mo> <mml:mi>t</mml:mi> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>-</mml:mo> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>γ</mml:mi> <mml:mi>n</mml:mi> <mml:mo>+</mml:mo> <mml:msub><mml:mi>k</mml:mi> <mml:mo>+</mml:mo></mml:msub> <mml:mi>c</mml:mi> <mml:mo>)</mml:mo></mml:mrow> <mml:msub><mml:mi>p</mml:mi> <mml:mtext>off</mml:mtext></mml:msub> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>n</mml:mi> <mml:mo>,</mml:mo> <mml:mi>t</mml:mi> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>.</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives> <label>(1b)</label></disp-formula>
+Note that <italic>α</italic> ≥ <italic>k</italic><sub>−</sub>, so molecules are generally produced in the <italic>on</italic> state. In BM, instead, the master equations which describe the probabilities <italic>p</italic><sub><italic>on</italic></sub>(<italic>n</italic>, <italic>t</italic>) and <italic>p</italic><sub><italic>off</italic></sub>(<italic>n</italic>, <italic>t</italic>) of having <italic>n</italic> proteins at time <italic>t</italic>, are given respectively by
+<disp-formula id="pcbi.1004222.e007"><alternatives><graphic id="pcbi.1004222.e007g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004222.e007"/><mml:math id="M7" display="block" overflow="scroll"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:mfrac><mml:mrow><mml:mi>d</mml:mi> <mml:msub><mml:mi>p</mml:mi> <mml:mtext>on</mml:mtext></mml:msub> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>n</mml:mi> <mml:mo>,</mml:mo> <mml:mi>t</mml:mi> <mml:mo>)</mml:mo></mml:mrow></mml:mrow> <mml:mrow><mml:mi>d</mml:mi> <mml:mi>t</mml:mi></mml:mrow></mml:mfrac> <mml:mo>=</mml:mo> <mml:mi>γ</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>n</mml:mi> <mml:mo>+</mml:mo> <mml:mn>1</mml:mn> <mml:mo>)</mml:mo></mml:mrow> <mml:msub><mml:mi>p</mml:mi> <mml:mtext>on</mml:mtext></mml:msub> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>n</mml:mi> <mml:mo>+</mml:mo> <mml:mn>1</mml:mn> <mml:mo>,</mml:mo> <mml:mi>t</mml:mi> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>+</mml:mo> <mml:msub><mml:mi>k</mml:mi> <mml:mo>+</mml:mo></mml:msub> <mml:mi>c</mml:mi> <mml:msub><mml:mi>p</mml:mi> <mml:mtext>off</mml:mtext></mml:msub> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>n</mml:mi> <mml:mo>-</mml:mo> <mml:mi>ζ</mml:mi> <mml:mo>,</mml:mo> <mml:mi>t</mml:mi> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>-</mml:mo> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>γ</mml:mi> <mml:mi>n</mml:mi> <mml:mo>+</mml:mo> <mml:msub><mml:mi>k</mml:mi> <mml:mo>-</mml:mo></mml:msub> <mml:mo>)</mml:mo></mml:mrow> <mml:msub><mml:mi>p</mml:mi> <mml:mtext>on</mml:mtext></mml:msub> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>n</mml:mi> <mml:mo>,</mml:mo> <mml:mi>t</mml:mi> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>,</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives> <label>(2a)</label></disp-formula> <disp-formula id="pcbi.1004222.e008"><alternatives><graphic id="pcbi.1004222.e008g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004222.e008"/><mml:math id="M8" display="block" overflow="scroll"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:mfrac><mml:mrow><mml:mi>d</mml:mi> <mml:msub><mml:mi>p</mml:mi> <mml:mtext>off</mml:mtext></mml:msub> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>n</mml:mi> <mml:mo>,</mml:mo> <mml:mi>t</mml:mi> <mml:mo>)</mml:mo></mml:mrow></mml:mrow> <mml:mrow><mml:mi>d</mml:mi> <mml:mi>t</mml:mi></mml:mrow></mml:mfrac> <mml:mo>=</mml:mo> <mml:mi>γ</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>n</mml:mi> <mml:mo>+</mml:mo> <mml:mn>1</mml:mn> <mml:mo>)</mml:mo></mml:mrow> <mml:msub><mml:mi>p</mml:mi> <mml:mtext>off</mml:mtext></mml:msub> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>n</mml:mi> <mml:mo>+</mml:mo> <mml:mn>1</mml:mn> <mml:mo>,</mml:mo> <mml:mi>t</mml:mi> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>+</mml:mo> <mml:msub><mml:mi>k</mml:mi> <mml:mo>-</mml:mo></mml:msub> <mml:msub><mml:mi>p</mml:mi> <mml:mtext>on</mml:mtext></mml:msub> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>n</mml:mi> <mml:mo>,</mml:mo> <mml:mi>t</mml:mi> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>-</mml:mo> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>γ</mml:mi> <mml:mi>n</mml:mi> <mml:mo>+</mml:mo> <mml:msub><mml:mi>k</mml:mi> <mml:mo>+</mml:mo></mml:msub> <mml:mi>c</mml:mi> <mml:mo>)</mml:mo></mml:mrow> <mml:msub><mml:mi>p</mml:mi> <mml:mtext>off</mml:mtext></mml:msub> <mml:mrow><mml:mo>(</mml:mo> <mml:mi>n</mml:mi> <mml:mo>,</mml:mo> <mml:mi>t</mml:mi> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>,</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives> <label>(2b)</label></disp-formula>
+with burst size <italic>ζ</italic> a positive integer. We solve Eqs (<xref ref-type="disp-formula" rid="pcbi.1004222.e005">1a</xref>) and (<xref ref-type="disp-formula" rid="pcbi.1004222.e006">1b</xref>) with generating functions and simulate Eqs (<xref ref-type="disp-formula" rid="pcbi.1004222.e007">2a</xref>) and (<xref ref-type="disp-formula" rid="pcbi.1004222.e008">2b</xref>) with the Gillespie algorithm (see <xref ref-type="sec" rid="sec011">Materials and Methods</xref>).</p>
+<p>Simulations via the Gillespie algorithm show different outcomes for fast (small-noise approximation limit, Fig <xref ref-type="fig" rid="pcbi.1004222.g004">4A</xref> and <xref ref-type="fig" rid="pcbi.1004222.g004">4B</xref>) and slow (Fig <xref ref-type="fig" rid="pcbi.1004222.g004">4C</xref> and <xref ref-type="fig" rid="pcbi.1004222.g004">4D</xref>) dynamics of the receptor. For fast switching (<italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub>, <italic>k</italic><sub>−</sub> ≫ <italic>γ</italic>), for both CM and BM, the probability has an unimodal distribution (<xref ref-type="fig" rid="pcbi.1004222.g004">Fig 4B</xref>). On the other hand, in the slow switching regime (<italic>k</italic><sub>+</sub> <italic>c</italic>, <italic>k</italic><sub>−</sub> ≪ <italic>γ</italic>), the probability distribution becomes bimodal for CM and unimodal with a long tail for BM, leading to drastically increased noise (<xref ref-type="fig" rid="pcbi.1004222.g004">Fig 4D</xref>). The unimodal distribution for BM, which is simply due to the use of infinitely short pulses, would become bimodal for finite width pulses.</p>
+<fig id="pcbi.1004222.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004222.g004</object-id>
+<label>Fig 4</label>
+<caption>
+<title>The two regimes in the linear pathway model based on the master equation.</title>
+<p>(A-B) fast (<italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub> = 20<italic>s</italic><sup>−1</sup>, <italic>k</italic><sub>−</sub> = 100<italic>s</italic><sup>−1</sup>, <italic>γ</italic> = 0.1<italic>s</italic><sup>−1</sup>, <italic>α</italic> = 100<italic>s</italic><sup>−1</sup>, <italic>ζ</italic> = 1) and (C-D) slow (<italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub> = 0.01<italic>s</italic><sup>−1</sup>, <italic>k</italic><sub>−</sub> = 0.05<italic>s</italic><sup>−1</sup>, <italic>γ</italic> = 1<italic>s</italic><sup>−1</sup>, <italic>α</italic> = 25<italic>s</italic><sup>−1</sup>, <italic>ζ</italic> = 500) switching. (A,C) Protein number as a function of time from Gillespie simulations for CM (blue lines) and BM (red lines). (B) The probability distribution for <italic>n</italic> target proteins is unimodal for both AM (blue) and FM (red). (D) The probability distribution is bimodal for AM (blue) and remains unimodal for BM (red) but with a long tail in the slow switching regime.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004222.g004"/>
+</fig>
+<p>In order to classify the different dynamics and to compare CM and BM for arbitrary noise, we require information on the probability distribution of <italic>n</italic> output proteins. In particular, we study the average, variance and skewness (the latter is encoded in the third moment) of the distribution for both CM and BM. Constraining the average output of CM and BM to be the same (Fig <xref ref-type="fig" rid="pcbi.1004222.g005">5A</xref> and <xref ref-type="fig" rid="pcbi.1004222.g005">5B</xref>), we identify two regimes for fast dynamics: <italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub> &lt; <italic>k</italic><sub>−</sub> (<xref ref-type="fig" rid="pcbi.1004222.g005">Fig 5C</xref>) and <italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub> &gt; <italic>k</italic><sub>−</sub> (<xref ref-type="fig" rid="pcbi.1004222.g005">Fig 5D</xref>). Specifically, for <italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub> &lt; <italic>k</italic><sub>−</sub>, BM is more accurate (<xref ref-type="fig" rid="pcbi.1004222.g005">Fig 5C</xref>, inset), while CM is generally more accurate when <italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub> &gt; <italic>k</italic><sub>−</sub> (<xref ref-type="fig" rid="pcbi.1004222.g005">Fig 5D</xref>, inset), except for minimal burst size (<italic>ζ</italic> = 1). However, for slow dynamics (and hence large noise), CM is always more accurate than BM. The study of the third moment shows that, for slow switching and hence bimodality, BM has large asymmetry (Fig <xref ref-type="fig" rid="pcbi.1004222.g005">5E</xref> and <xref ref-type="fig" rid="pcbi.1004222.g005">5F</xref>).</p>
+<fig id="pcbi.1004222.g005" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004222.g005</object-id>
+<label>Fig 5</label>
+<caption>
+<title>First three moments of the protein distribution in concentration sensing from the master equation.</title>
+<p>Averages (A,B), variance (C,D), and skewness (E,F) as a function of the frequency of binding events, <italic>f</italic> = <italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub>/(1+<italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub>/<italic>k</italic><sub>−</sub>). (Insets) Magnification of small-noise approximation region (fast switching). Analytical results for CM (blue) and numerical results for BM (red) as function of the frequency of binding events (logarithmic scale). Two regimes are shown: <italic>k</italic><sub>−</sub> = 10 <italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub> (<italic>α</italic> = 100<italic>s</italic><sup>−1</sup>, <italic>γ</italic> = 1<italic>s</italic><sup>−1</sup>, <italic>ζ</italic> from 1000 to 1) (left column) and <italic>k</italic><sub>−</sub> = 0.1 <italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub> (<italic>α</italic> = 10<italic>s</italic><sup>−1</sup>, <italic>γ</italic> = 1<italic>s</italic><sup>−1</sup>, <italic>ζ</italic> from 1000 to 1) (right column). Averages from CM and BM are constrained to be equal, <italic>i.e</italic>. <inline-formula id="pcbi.1004222.e009"><mml:math id="M9" display="inline" overflow="scroll"><mml:mrow><mml:mi>ζ</mml:mi> <mml:mo>=</mml:mo> <mml:mi>α</mml:mi> <mml:msubsup><mml:mi>k</mml:mi> <mml:mo>−</mml:mo> <mml:mrow><mml:mo>−</mml:mo> <mml:mn>1</mml:mn></mml:mrow></mml:msubsup></mml:mrow></mml:math></inline-formula>. Variances of CM and BM exhibit two different regimes for fast switching: for <italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub> &lt; <italic>k</italic><sub>−</sub> BM is more accurate than CM (inset in C), while for <italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub> &gt; <italic>k</italic><sub>−</sub> CM is generally more accurate (inset in D), except for <italic>ζ</italic> = 1. Third moments show that, for large noise, the probability distributions become asymmetric.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004222.g005"/>
+</fig>
+<p>These observations can be explained as follows, using the fact that the receptor/ion channel can only detect information from the extra-cellular environment during unbound (<italic>off</italic>) time intervals, as the extra-cellular stimulus only affects the binding rate (<xref ref-type="fig" rid="pcbi.1004222.g003">Fig 3</xref>). For fast dynamics, the two regimes can be understood by comparison with maximum-likelihood estimation (MLE), the most accurate strategy for encoding [<xref ref-type="bibr" rid="pcbi.1004222.ref044">44</xref>]. MLE estimates the ligand concentration <inline-formula id="pcbi.1004222.e010"><mml:math id="M10" display="inline" overflow="scroll">
+<mml:mrow>
+<mml:msub>
+<mml:mi>c</mml:mi>
+<mml:mrow>
+<mml:mtext>ML</mml:mtext></mml:mrow>
+</mml:msub>
+<mml:mo>=</mml:mo><mml:msubsup>
+<mml:mi>k</mml:mi>
+<mml:mo>+</mml:mo>
+<mml:mrow>
+<mml:mo>−</mml:mo><mml:mn>1</mml:mn></mml:mrow>
+</mml:msubsup>
+<mml:msup>
+<mml:mrow>
+<mml:mo>〈</mml:mo><mml:msub>
+<mml:mi>τ</mml:mi>
+<mml:mi>u</mml:mi>
+</mml:msub>
+<mml:mo>〉</mml:mo></mml:mrow>
+<mml:mrow>
+<mml:mo>−</mml:mo><mml:mn>1</mml:mn></mml:mrow>
+</mml:msup>
+</mml:mrow>
+</mml:math>
+</inline-formula> from the average unbound time interval ⟨<italic>τ</italic><sub><italic>u</italic></sub>⟩. The bound time intervals are discarded as they only contribute noise [<xref ref-type="bibr" rid="pcbi.1004222.ref044">44</xref>]. BM, which produces fixed-size bursts at the times of binding, approaches MLE when the bound intervals are shorter than the unbound intervals. In this case, the times of the bursts effectively estimate the unbound time intervals (<xref ref-type="fig" rid="pcbi.1004222.g003">Fig 3B</xref>, bottom) and BM is more accurate than CM. However, when the bound intervals are longer than the unbound intervals, BM cannot estimate the unbound time intervals anymore and becomes less accurate than CM. Since CM produces protein during the bound intervals, it signals according to the average receptor activity <italic>p</italic><sub><italic>b</italic></sub> = ⟨<italic>τ</italic><sub><italic>b</italic></sub>⟩/(⟨<italic>τ</italic><sub><italic>b</italic></sub>⟩+⟨<italic>τ</italic><sub><italic>u</italic></sub>⟩) (<xref ref-type="fig" rid="pcbi.1004222.g003">Fig 3B</xref>, top). Hence, CM effectively contains information on both bound and unbound intervals, and thus can still provide a reasonable estimate of unbound time intervals. An interesting exception is <inline-formula id="pcbi.1004222.e011"><mml:math id="M11" display="inline" overflow="scroll"><mml:mrow><mml:mi>α</mml:mi><mml:msubsup><mml:mi>k</mml:mi><mml:mo>−</mml:mo><mml:mrow><mml:mo>−</mml:mo><mml:mn>1</mml:mn></mml:mrow></mml:msubsup><mml:mo>=</mml:mo><mml:mi>ζ</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow></mml:math></inline-formula>, for which BM becomes slightly more accurate than CM. In the latter case, since the rate of protein production during a bound interval in CM is very low, there is uncertainty as to whether CM actually produces protein or not, which reduces its accuracy. In contrast, for slow switching the burst size needs to increase since BM produces the same level of protein as CM. Hence, BM is always less accurate than CM, independent of whether bound or unbound time intervals are longer. While we analytically demonstrate the connection with MLE for fast dynamics in the next section, an extended discussion without comparison to MLE can be found in <xref ref-type="supplementary-material" rid="pcbi.1004222.s001">S1 Text</xref> and <xref ref-type="supplementary-material" rid="pcbi.1004222.s002">S1</xref>–<xref ref-type="supplementary-material" rid="pcbi.1004222.s004">S3</xref> Figs.</p>
+</sec>
+<sec id="sec005">
+<title>Small-noise approximation to ramp sensing confirms two regimes for fast dynamics</title>
+<p>To further investigate fast dynamics, we extend an analytical model for ramp sensing in the small-noise approximation [<xref ref-type="bibr" rid="pcbi.1004222.ref023">23</xref>]. Considering the single-receptor described in Fig <xref ref-type="fig" rid="pcbi.1004222.g003">3A</xref> and <xref ref-type="fig" rid="pcbi.1004222.g003">3B</xref>, we linearize the system by averaging over a time much larger than the binding and unbinding times. We further assume exponential distributions for <italic>τ</italic><sub><italic>b</italic></sub> and <italic>τ</italic><sub><italic>u</italic></sub> so that <inline-formula id="pcbi.1004222.e012"><mml:math id="M12" display="inline" overflow="scroll">
+<mml:mrow>
+<mml:mo>〈</mml:mo><mml:msup>
+<mml:mrow>
+<mml:mo stretchy="false">(</mml:mo><mml:mi>δ</mml:mi><mml:msub>
+<mml:mi>τ</mml:mi>
+<mml:mi>b</mml:mi>
+</mml:msub>
+<mml:mo stretchy="false">)</mml:mo></mml:mrow>
+<mml:mn>2</mml:mn>
+</mml:msup>
+<mml:mo>〉</mml:mo><mml:mo>=</mml:mo><mml:msup>
+<mml:mrow>
+<mml:mo>〈</mml:mo><mml:msub>
+<mml:mi>τ</mml:mi>
+<mml:mi>b</mml:mi>
+</mml:msub>
+<mml:mo>〉</mml:mo></mml:mrow>
+<mml:mn>2</mml:mn>
+</mml:msup>
+<mml:mo>=</mml:mo><mml:msubsup>
+<mml:mi>k</mml:mi>
+<mml:mo>−</mml:mo>
+<mml:mrow>
+<mml:mo>−</mml:mo><mml:mn>2</mml:mn></mml:mrow>
+</mml:msubsup>
+</mml:mrow>
+</mml:math>
+</inline-formula> and ⟨(<italic>δτ</italic><sub><italic>u</italic></sub>)<sup>2</sup>⟩ = ⟨<italic>τ</italic><sub><italic>u</italic></sub>⟩<sup>2</sup> = (<italic>k</italic><sub>+</sub> <italic>c</italic>(<italic>t</italic>))<sup>−2</sup>, where <italic>c</italic>(<italic>t</italic>) increases only very slowly with time (see below). Hence, signaling noise arises in CM due to variable bound time intervals (ignoring stochastic production of protein during bound intervals), while in BM the binding times (bursting times) vary. Without loss of generality, we set <italic>α</italic> = <italic>k</italic><sub>−</sub>, which is equivalent to <italic>ζ</italic> = 1. Hence, as we show in <xref ref-type="supplementary-material" rid="pcbi.1004222.s001">S1 Text</xref>, for averaging time much longer than <inline-formula id="pcbi.1004222.e013"><mml:math id="M13" display="inline" overflow="scroll"><mml:mrow><mml:msubsup><mml:mi>k</mml:mi><mml:mo>−</mml:mo><mml:mrow><mml:mo>−</mml:mo><mml:mn>1</mml:mn></mml:mrow></mml:msubsup></mml:mrow></mml:math></inline-formula> and (<italic>k</italic><sub>+</sub> <italic>c</italic>(<italic>t</italic>))<sup>−1</sup>, the average and autocorrelation (variance) of <italic>u</italic>(<italic>t</italic>) are given by [<xref ref-type="bibr" rid="pcbi.1004222.ref023">23</xref>]
+<disp-formula id="pcbi.1004222.e014"><alternatives><graphic id="pcbi.1004222.e014g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004222.e014"/><mml:math id="M14" display="block" overflow="scroll"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:mrow><mml:mo>⟨</mml:mo><mml:mi>u</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mi>t</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>⟩</mml:mo></mml:mrow><mml:mo>=</mml:mo><mml:mfrac><mml:mrow><mml:msub><mml:mi>k</mml:mi><mml:mo>+</mml:mo></mml:msub><mml:mi>c</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mi>t</mml:mi><mml:mo>)</mml:mo></mml:mrow></mml:mrow><mml:mrow><mml:mn>1</mml:mn><mml:mo>+</mml:mo><mml:msub><mml:mi>k</mml:mi><mml:mo>+</mml:mo></mml:msub><mml:mi>c</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mi>t</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>/</mml:mo><mml:msub><mml:mi>k</mml:mi><mml:mo>-</mml:mo></mml:msub></mml:mrow></mml:mfrac><mml:mo>,</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives><label>(3)</label></disp-formula> <disp-formula id="pcbi.1004222.e015"><alternatives><graphic id="pcbi.1004222.e015g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004222.e015"/><mml:math id="M15" display="block" overflow="scroll"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:mrow><mml:mo>⟨</mml:mo><mml:mi>δ</mml:mi><mml:mi>u</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mi>t</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mi>δ</mml:mi><mml:mi>u</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:msup><mml:mi>t</mml:mi><mml:mo>′</mml:mo></mml:msup><mml:mo>)</mml:mo></mml:mrow><mml:mo>⟩</mml:mo></mml:mrow><mml:mo>=</mml:mo><mml:mi>g</mml:mi><mml:mfrac><mml:mrow><mml:msub><mml:mi>k</mml:mi><mml:mo>+</mml:mo></mml:msub><mml:mi>c</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mi>t</mml:mi><mml:mo>)</mml:mo></mml:mrow></mml:mrow><mml:msup><mml:mrow><mml:mo>(</mml:mo><mml:mn>1</mml:mn><mml:mo>+</mml:mo><mml:msub><mml:mi>k</mml:mi><mml:mo>+</mml:mo></mml:msub><mml:mi>c</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mi>t</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>/</mml:mo><mml:msub><mml:mi>k</mml:mi><mml:mo>-</mml:mo></mml:msub><mml:mo>)</mml:mo></mml:mrow><mml:mn>3</mml:mn></mml:msup></mml:mfrac><mml:mspace width="0.166667em"/><mml:mi>δ</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mspace width="4pt"/><mml:mi>t</mml:mi><mml:mo>-</mml:mo><mml:msup><mml:mi>t</mml:mi><mml:mo>′</mml:mo></mml:msup><mml:mo>)</mml:mo></mml:mrow><mml:mo>,</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives><label>(4)</label></disp-formula>
+with ⟨<italic>δu</italic>(<italic>t</italic>)⟩ = 0 and
+<disp-formula id="pcbi.1004222.e016"><alternatives><graphic id="pcbi.1004222.e016g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004222.e016"/><mml:math id="M16" display="block" overflow="scroll"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:mi>g</mml:mi><mml:mo>=</mml:mo><mml:mo>{</mml:mo><mml:mtable><mml:mtr><mml:mtd columnalign="left"><mml:mrow><mml:mn>1</mml:mn><mml:mo>+</mml:mo><mml:msup><mml:mrow><mml:mo>⟨</mml:mo><mml:mrow><mml:mo>(</mml:mo><mml:mi>δ</mml:mi><mml:msub><mml:mi>τ</mml:mi><mml:mi>b</mml:mi></mml:msub><mml:mo>)</mml:mo></mml:mrow></mml:mrow><mml:mn>2</mml:mn></mml:msup><mml:mrow><mml:mo>⟩</mml:mo><mml:mo>/</mml:mo></mml:mrow><mml:msup><mml:mrow><mml:mo>⟨</mml:mo><mml:msub><mml:mi>τ</mml:mi><mml:mi>b</mml:mi></mml:msub><mml:mo>⟩</mml:mo></mml:mrow><mml:mn>2</mml:mn></mml:msup></mml:mrow></mml:mtd><mml:mtd columnalign="left"><mml:mrow><mml:mo>=</mml:mo><mml:mn>2</mml:mn><mml:mspace width="4pt"/><mml:mspace width="4pt"/><mml:mspace width="4pt"/><mml:mspace width="4pt"/><mml:mspace width="4pt"/><mml:mspace width="4pt"/><mml:mspace width="4pt"/><mml:mspace width="4pt"/><mml:mspace width="4pt"/><mml:mspace width="4pt"/><mml:mspace width="4pt"/><mml:mspace width="4pt"/><mml:mspace width="4pt"/><mml:mspace width="4pt"/><mml:mspace width="4pt"/><mml:mspace width="4pt"/><mml:mspace width="4pt"/><mml:mspace width="4pt"/><mml:mspace width="4pt"/><mml:mspace width="4pt"/><mml:mspace width="4pt"/><mml:mspace width="4pt"/><mml:mspace width="4pt"/><mml:mspace width="4pt"/><mml:mspace width="4pt"/><mml:mtext>CM</mml:mtext></mml:mrow></mml:mtd></mml:mtr><mml:mtr><mml:mtd columnalign="left"><mml:mrow><mml:mn>1</mml:mn><mml:mo>+</mml:mo><mml:msup><mml:mrow><mml:mo>⟨</mml:mo><mml:mrow><mml:mo>(</mml:mo><mml:mi>δ</mml:mi><mml:msub><mml:mi>τ</mml:mi><mml:mi>b</mml:mi></mml:msub><mml:mo>)</mml:mo></mml:mrow></mml:mrow><mml:mn>2</mml:mn></mml:msup><mml:mrow><mml:mo>⟩</mml:mo><mml:mo>/</mml:mo><mml:msup><mml:mrow><mml:mo>⟨</mml:mo><mml:mrow><mml:mo>(</mml:mo><mml:mi>δ</mml:mi><mml:msub><mml:mi>τ</mml:mi><mml:mi>u</mml:mi></mml:msub><mml:mo>)</mml:mo></mml:mrow></mml:mrow><mml:mn>2</mml:mn></mml:msup><mml:mo>⟩</mml:mo></mml:mrow></mml:mrow></mml:mtd><mml:mtd columnalign="left"><mml:mrow><mml:mo>=</mml:mo><mml:mn>1</mml:mn><mml:mo>+</mml:mo><mml:msup><mml:mrow><mml:mo>[</mml:mo><mml:msub><mml:mi>k</mml:mi><mml:mo>+</mml:mo></mml:msub><mml:mi>c</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mi>t</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>/</mml:mo><mml:msub><mml:mi>k</mml:mi><mml:mo>-</mml:mo></mml:msub><mml:mo>]</mml:mo></mml:mrow><mml:mn>2</mml:mn></mml:msup><mml:mspace width="4pt"/><mml:mspace width="4pt"/><mml:mspace width="4pt"/><mml:mspace width="4pt"/><mml:mspace width="4pt"/><mml:mtext>BM</mml:mtext><mml:mo>.</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable><mml:mo/></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives><label>(5)</label></disp-formula>
+Note that only the variance differs between CM and BM. In particular, in <xref ref-type="disp-formula" rid="pcbi.1004222.e016">Eq (5)</xref> the ratio <italic>k</italic><sub>+</sub> <italic>c</italic>(<italic>t</italic>)/<italic>k</italic><sub>−</sub> determines whether <italic>g</italic> is larger in BM or CM, which ultimately determines which scheme leads to the least noise. BM has the lower noise only when <italic>k</italic><sub>+</sub> <italic>c</italic>(<italic>t</italic>) &lt; <italic>k</italic><sub>−</sub>, <italic>i.e</italic>. when ⟨<italic>τ</italic><sub><italic>b</italic></sub>⟩ &lt; ⟨<italic>τ</italic><sub><italic>u</italic></sub>⟩. In particular, in the limit of fast unbinding (<italic>k</italic><sub>+</sub> <italic>c</italic>(<italic>t</italic>) ≪ <italic>k</italic><sub>−</sub>), the signaling noise for CM is twice as large as for BM.</p>
+<p>Sensing temporal ramps, <italic>i.e</italic>. the change of concentration with time, is crucial for locating nutrients and avoiding toxins. We start by considering a stimulus whose concentration is constant for <italic>t</italic> &lt; 0 and increases linearly and slowly in time after <italic>t</italic> = 0:
+<disp-formula id="pcbi.1004222.e017"><alternatives><graphic id="pcbi.1004222.e017g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004222.e017"/><mml:math id="M17" display="block" overflow="scroll"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:mi>c</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mi>t</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>=</mml:mo><mml:mo>{</mml:mo><mml:mtable><mml:mtr><mml:mtd columnalign="left"><mml:msub><mml:mi>c</mml:mi><mml:mn>0</mml:mn></mml:msub></mml:mtd><mml:mtd columnalign="left"><mml:mrow><mml:mi>t</mml:mi><mml:mo>&lt;</mml:mo><mml:mn>0</mml:mn></mml:mrow></mml:mtd></mml:mtr><mml:mtr><mml:mtd columnalign="left"><mml:mrow><mml:msub><mml:mi>c</mml:mi><mml:mn>0</mml:mn></mml:msub><mml:mo>+</mml:mo><mml:msub><mml:mi>c</mml:mi><mml:mn>1</mml:mn></mml:msub><mml:mi>t</mml:mi></mml:mrow></mml:mtd><mml:mtd columnalign="left"><mml:mrow><mml:mi>t</mml:mi><mml:mo>≥</mml:mo><mml:mn>0</mml:mn><mml:mo>,</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable><mml:mo/></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives><label>(6)</label></disp-formula>
+for constants <italic>c</italic><sub>0</sub> and <italic>c</italic><sub>1</sub> with <italic>c</italic><sub>1</sub> <italic>t</italic> ≪ <italic>c</italic><sub>0</sub>. By applying <xref ref-type="disp-formula" rid="pcbi.1004222.e017">Eq (6)</xref> to Eqs (<xref ref-type="disp-formula" rid="pcbi.1004222.e014">3</xref>–<xref ref-type="disp-formula" rid="pcbi.1004222.e016">5</xref>), the signaling rate can be rewritten to first order as
+<disp-formula id="pcbi.1004222.e018"><alternatives><graphic id="pcbi.1004222.e018g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004222.e018"/><mml:math id="M18" display="block" overflow="scroll"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:mi>u</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mi>t</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>≃</mml:mo><mml:mo>{</mml:mo><mml:mtable><mml:mtr><mml:mtd columnalign="left"><mml:mrow><mml:msub><mml:mi>u</mml:mi><mml:mn>0</mml:mn></mml:msub><mml:mo>+</mml:mo><mml:msub><mml:mi>u</mml:mi><mml:mn>1</mml:mn></mml:msub><mml:mi>t</mml:mi><mml:mo>+</mml:mo><mml:mi>δ</mml:mi><mml:mi>u</mml:mi></mml:mrow></mml:mtd><mml:mtd columnalign="left"><mml:mrow><mml:mi>t</mml:mi><mml:mo>≥</mml:mo><mml:mn>0</mml:mn></mml:mrow></mml:mtd></mml:mtr><mml:mtr><mml:mtd columnalign="left"><mml:mrow><mml:msub><mml:mi>u</mml:mi><mml:mn>0</mml:mn></mml:msub><mml:mo>+</mml:mo><mml:mi>δ</mml:mi><mml:mi>u</mml:mi></mml:mrow></mml:mtd><mml:mtd columnalign="left"><mml:mrow><mml:mi>t</mml:mi><mml:mo>&lt;</mml:mo><mml:mn>0</mml:mn><mml:mo>,</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable><mml:mo/></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives><label>(7)</label></disp-formula>
+where <italic>u</italic><sub>0</sub>, <italic>u</italic><sub>1</sub> are functions of <italic>c</italic><sub>0</sub> and <italic>c</italic><sub>1</sub>, and <italic>δu</italic> is the noise described by ⟨<italic>δu</italic>(<italic>t</italic>)<italic>δu</italic>(<italic>t</italic>′)⟩ (given in <xref ref-type="supplementary-material" rid="pcbi.1004222.s001">S1 Text</xref>). The condition <italic>c</italic><sub>1</sub> <italic>t</italic> ≪ <italic>c</italic><sub>0</sub> is necessary so that <italic>u</italic> behaves linearly in time with <italic>u</italic><sub>1</sub> <italic>t</italic> ≪ <italic>u</italic><sub>0</sub>. Under this condition, the factor <italic>g</italic><sub>BM</sub> of <xref ref-type="disp-formula" rid="pcbi.1004222.e016">Eq (5)</xref> becomes
+<disp-formula id="pcbi.1004222.e019"><alternatives><graphic id="pcbi.1004222.e019g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004222.e019"/><mml:math id="M19" display="block" overflow="scroll"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:msub><mml:mi>g</mml:mi><mml:mtext>BM</mml:mtext></mml:msub><mml:mo>≃</mml:mo><mml:munder><mml:munder accentunder="true"><mml:mrow><mml:mn>1</mml:mn><mml:mo>+</mml:mo><mml:mfrac><mml:mrow><mml:msubsup><mml:mi>k</mml:mi><mml:mo>+</mml:mo><mml:mn>2</mml:mn></mml:msubsup><mml:msubsup><mml:mi>c</mml:mi><mml:mn>0</mml:mn><mml:mn>2</mml:mn></mml:msubsup></mml:mrow><mml:msubsup><mml:mi>k</mml:mi><mml:mo>-</mml:mo><mml:mn>2</mml:mn></mml:msubsup></mml:mfrac></mml:mrow><mml:mo>︸</mml:mo></mml:munder><mml:msubsup><mml:mi>g</mml:mi><mml:mtext>BM</mml:mtext><mml:mo>*</mml:mo></mml:msubsup></mml:munder><mml:mo>+</mml:mo><mml:mfrac><mml:mrow><mml:mn>2</mml:mn><mml:msubsup><mml:mi>k</mml:mi><mml:mo>+</mml:mo><mml:mn>2</mml:mn></mml:msubsup><mml:msub><mml:mi>c</mml:mi><mml:mn>0</mml:mn></mml:msub><mml:msub><mml:mi>c</mml:mi><mml:mn>1</mml:mn></mml:msub></mml:mrow><mml:msubsup><mml:mi>k</mml:mi><mml:mo>-</mml:mo><mml:mn>2</mml:mn></mml:msubsup></mml:mfrac><mml:mi>t</mml:mi><mml:mo>,</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives><label>(8)</label></disp-formula>
+where <italic>g</italic><sub>BM</sub> is given by <inline-formula id="pcbi.1004222.e020"><mml:math id="M20" display="inline" overflow="scroll"><mml:mrow><mml:msubsup><mml:mi>g</mml:mi><mml:mtext mathvariant="normal">BM</mml:mtext><mml:mo>*</mml:mo></mml:msubsup></mml:mrow></mml:math></inline-formula> for a constant external concentration. We now assume that the extra-cellular stimulus is encoded in the signaling rate <italic>u</italic> which affects the production of two output proteins with concentrations <italic>x</italic> and <italic>y</italic>. Specifically, we compare the output noise of <italic>x</italic> and <italic>y</italic> between CM and BM using the incoherent feedforward (<xref ref-type="fig" rid="pcbi.1004222.g003">Fig 3C</xref>, middle) and integral feedback (<xref ref-type="fig" rid="pcbi.1004222.g003">Fig 3C</xref>, right) loops.</p>
+<sec id="sec006">
+<title>Incoherent feedforward loop</title>
+<p>The incoherent feedforward loop is a network motif in which <italic>u</italic> directly affects two outputs <italic>x</italic> and <italic>y</italic>, while <italic>y</italic> inhibits <italic>x</italic> (<xref ref-type="fig" rid="pcbi.1004222.g003">Fig 3C</xref>, middle). The loop provides precise adaptation to a step-change in stimulus and can also be used for ramp sensing. Mathematically, we use the following two coupled stochastic differential equations,
+<disp-formula id="pcbi.1004222.e021"><alternatives><graphic id="pcbi.1004222.e021g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004222.e021"/><mml:math id="M21" display="block" overflow="scroll"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mfrac><mml:mrow><mml:mi>d</mml:mi><mml:mi>x</mml:mi></mml:mrow><mml:mrow><mml:mi>d</mml:mi><mml:mi>t</mml:mi></mml:mrow></mml:mfrac></mml:mtd><mml:mtd><mml:mrow><mml:mo>=</mml:mo><mml:msub><mml:mi>k</mml:mi><mml:mi>x</mml:mi></mml:msub><mml:mo>(</mml:mo><mml:mfrac><mml:mrow><mml:mi>f</mml:mi><mml:mo>(</mml:mo><mml:mi>u</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mrow><mml:mi>g</mml:mi><mml:mo>(</mml:mo><mml:mi>y</mml:mi><mml:mo>)</mml:mo></mml:mrow></mml:mfrac><mml:mo>-</mml:mo><mml:mi>x</mml:mi><mml:mo>)</mml:mo><mml:mo>,</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives><label>(9)</label></disp-formula><disp-formula id="pcbi.1004222.e022"><alternatives><graphic id="pcbi.1004222.e022g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004222.e022"/><mml:math id="M22" display="block" overflow="scroll"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mfrac><mml:mrow><mml:mi>d</mml:mi><mml:mi>y</mml:mi></mml:mrow><mml:mrow><mml:mi>d</mml:mi><mml:mi>t</mml:mi></mml:mrow></mml:mfrac></mml:mtd><mml:mtd><mml:mrow><mml:mo>=</mml:mo><mml:mi>u</mml:mi><mml:mo>-</mml:mo><mml:msub><mml:mi>k</mml:mi><mml:mi>y</mml:mi></mml:msub><mml:mi>y</mml:mi><mml:mo>,</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives><label>(10)</label></disp-formula>
+where <italic>k</italic><sub><italic>x</italic></sub> is the rate constant for production and degradation of <italic>x</italic>, while <italic>k</italic><sub><italic>y</italic></sub> is the rate constant for degradation of <italic>y</italic>, and <italic>f</italic>(<italic>u</italic>) and <italic>g</italic>(<italic>y</italic>) are specified functions. In order to have adaptation the variable <italic>y</italic> needs to evolve slower than <italic>x</italic>, which requires <italic>k</italic><sub><italic>x</italic></sub> &gt; <italic>k</italic><sub><italic>y</italic></sub>. Here we choose <italic>f</italic>(<italic>u</italic>) = <italic>e</italic><sup><italic>bu</italic></sup> and <italic>g</italic>(<italic>y</italic>) = <italic>e</italic><sup><italic>bk</italic><sub><italic>y</italic></sub> <italic>y</italic></sup>, where constant <italic>b</italic> has units of time. This allows us to obtain an analytic solution (see <xref ref-type="supplementary-material" rid="pcbi.1004222.s001">S1 Text</xref> for details).</p>
+</sec>
+<sec id="sec007">
+<title>Integral feedback loop</title>
+<p>The integral feedback loop [<xref ref-type="bibr" rid="pcbi.1004222.ref023">23</xref>] is another network motif for precise adaptation and ramp sensing. Here, <italic>u</italic> affects <italic>x</italic> only (the main output), while <italic>x</italic> activates <italic>y</italic> and <italic>y</italic> inhibits <italic>x</italic> (<xref ref-type="fig" rid="pcbi.1004222.g003">Fig 3C</xref>, right). The general equations for this model are given by
+<disp-formula id="pcbi.1004222.e023"><alternatives><graphic id="pcbi.1004222.e023g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004222.e023"/><mml:math id="M23" display="block" overflow="scroll"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:mfrac><mml:mrow><mml:mi>d</mml:mi><mml:mi>x</mml:mi></mml:mrow><mml:mrow><mml:mi>d</mml:mi><mml:mi>t</mml:mi></mml:mrow></mml:mfrac><mml:mo>=</mml:mo><mml:mi>u</mml:mi><mml:mi>f</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mi>y</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>-</mml:mo><mml:msub><mml:mi>k</mml:mi><mml:mi>x</mml:mi></mml:msub><mml:mi>x</mml:mi><mml:mo>,</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives><label>(11)</label></disp-formula><disp-formula id="pcbi.1004222.e024"><alternatives><graphic id="pcbi.1004222.e024g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004222.e024"/><mml:math id="M24" display="block" overflow="scroll"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:mfrac><mml:mrow><mml:mi>d</mml:mi><mml:mi>y</mml:mi></mml:mrow><mml:mrow><mml:mi>d</mml:mi><mml:mi>t</mml:mi></mml:mrow></mml:mfrac><mml:mo>=</mml:mo><mml:msub><mml:mi>k</mml:mi><mml:mi>y</mml:mi></mml:msub><mml:mspace width="1pt"/><mml:mo>(</mml:mo><mml:mi>x</mml:mi><mml:mo>-</mml:mo><mml:mn>1</mml:mn><mml:mo>)</mml:mo><mml:mo>,</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives><label>(12)</label></disp-formula>
+where <italic>k</italic><sub><italic>x</italic></sub> is the rate constant for degradation of <italic>x</italic>, <italic>k</italic><sub><italic>y</italic></sub> is the rate constant for production and degradation of <italic>y</italic> satisfying <italic>k</italic><sub><italic>x</italic></sub> &gt; <italic>k</italic><sub><italic>y</italic></sub>, and <italic>f</italic>(<italic>y</italic>) is a monotonically decreasing function of <italic>y</italic>. Specifically, we choose <italic>f</italic>(<italic>y</italic>) = <italic>e</italic><sup>−<italic>by</italic></sup>, where <italic>b</italic> is a dimensionless constant. This again produces an analytic solution (see <xref ref-type="supplementary-material" rid="pcbi.1004222.s001">S1 Text</xref> for details).</p>
+</sec>
+<sec id="sec008">
+<title>Small-noise approximation</title>
+<p>To analytically solve Eqs (<xref ref-type="disp-formula" rid="pcbi.1004222.e021">9</xref>) and (<xref ref-type="disp-formula" rid="pcbi.1004222.e022">10</xref>) for the incoherent feedforward loop, and Eqs (<xref ref-type="disp-formula" rid="pcbi.1004222.e023">11</xref>) and (<xref ref-type="disp-formula" rid="pcbi.1004222.e024">12</xref>) for the integral feedback loop, we linearize these equations within the small-noise approximation, and assume that we are in the fast-switching regime. This allows us to find analytic solutions in a particular time window and under certain conditions which we define in <xref ref-type="supplementary-material" rid="pcbi.1004222.s001">S1 Text</xref>. Specifically, for the incoherent feedforward loop in the small-ramp regime, the average values of ⟨<italic>u</italic>(<italic>t</italic>)⟩, ⟨<italic>x</italic>(<italic>t</italic>)⟩ and ⟨<italic>y</italic>(<italic>t</italic>)⟩ are determined by the differential equations Eqs (<xref ref-type="disp-formula" rid="pcbi.1004222.e021">9</xref> and <xref ref-type="disp-formula" rid="pcbi.1004222.e022">10</xref>). Although there are no steady states for ramps, ⟨<italic>x</italic>(<italic>t</italic>)⟩ and ⟨<italic>y</italic>(<italic>t</italic>)⟩ show time-dependent stable solutions
+<disp-formula id="pcbi.1004222.e025"><alternatives><graphic id="pcbi.1004222.e025g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004222.e025"/><mml:math id="M25" display="block" overflow="scroll"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:mrow><mml:mo>⟨</mml:mo><mml:mi>x</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mi>t</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>⟩</mml:mo></mml:mrow><mml:mo>=</mml:mo><mml:msup><mml:mi>e</mml:mi><mml:mfrac><mml:mrow><mml:mi>b</mml:mi><mml:msub><mml:mi>u</mml:mi><mml:mn>1</mml:mn></mml:msub></mml:mrow><mml:msub><mml:mi>k</mml:mi><mml:mi>y</mml:mi></mml:msub></mml:mfrac></mml:msup><mml:mo>,</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives><label>(13a)</label></disp-formula><disp-formula id="pcbi.1004222.e026"><alternatives><graphic id="pcbi.1004222.e026g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004222.e026"/><mml:math id="M26" display="block" overflow="scroll"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:mrow><mml:mo>⟨</mml:mo><mml:mi>y</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mi>t</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>⟩</mml:mo></mml:mrow><mml:mo>=</mml:mo><mml:mfrac><mml:msub><mml:mi>u</mml:mi><mml:mn>0</mml:mn></mml:msub><mml:msub><mml:mi>k</mml:mi><mml:mi>y</mml:mi></mml:msub></mml:mfrac><mml:mo>-</mml:mo><mml:mfrac><mml:msub><mml:mi>u</mml:mi><mml:mn>1</mml:mn></mml:msub><mml:msubsup><mml:mi>k</mml:mi><mml:mi>y</mml:mi><mml:mn>2</mml:mn></mml:msubsup></mml:mfrac><mml:mo>+</mml:mo><mml:mfrac><mml:mrow><mml:msub><mml:mi>u</mml:mi><mml:mn>1</mml:mn></mml:msub><mml:mi>t</mml:mi></mml:mrow><mml:msub><mml:mi>k</mml:mi><mml:mi>y</mml:mi></mml:msub></mml:mfrac><mml:mo>.</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives><label>(13b)</label></disp-formula>
+Introducing <italic>x</italic> = ⟨<italic>x</italic>⟩ + <italic>δx</italic> and <italic>y</italic> = ⟨<italic>y</italic>⟩ + <italic>δy</italic> into Eqs (<xref ref-type="disp-formula" rid="pcbi.1004222.e021">9</xref>) and (<xref ref-type="disp-formula" rid="pcbi.1004222.e022">10</xref>) with subsequent linearization the variance of the target-protein copy numbers can be derived (see <xref ref-type="sec" rid="sec011">Materials and Methods</xref>). To first order in small-ramp parameters the variances of <italic>x</italic> for both types of modulation are
+<disp-formula id="pcbi.1004222.e027"><alternatives><graphic id="pcbi.1004222.e027g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004222.e027"/><mml:math id="M27" display="block" overflow="scroll">
+<mml:mrow>
+<mml:mtable>
+<mml:mtr>
+<mml:mtd>
+<mml:mrow>
+<mml:msub>
+<mml:mrow>
+<mml:mo>〈</mml:mo><mml:msup>
+<mml:mrow>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:mi>δ</mml:mi><mml:mi>x</mml:mi><mml:mrow><mml:mo>(</mml:mo>
+<mml:mi>t</mml:mi>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow>
+<mml:mn>2</mml:mn>
+</mml:msup>
+<mml:mo>〉</mml:mo></mml:mrow>
+<mml:mrow>
+<mml:mtext>CM</mml:mtext></mml:mrow>
+</mml:msub>
+<mml:mo>=</mml:mo><mml:mi>Δ</mml:mi><mml:mrow><mml:mo>[</mml:mo><mml:mrow>
+<mml:msub>
+<mml:mi>g</mml:mi>
+<mml:mrow>
+<mml:mtext>CM</mml:mtext></mml:mrow>
+</mml:msub>
+<mml:msub>
+<mml:mi>u</mml:mi>
+<mml:mn>0</mml:mn>
+</mml:msub>
+<mml:mo>−</mml:mo><mml:mfrac>
+<mml:mrow>
+<mml:mn>1</mml:mn><mml:mo>−</mml:mo><mml:mn>2</mml:mn><mml:msub>
+<mml:mi>c</mml:mi>
+<mml:mn>0</mml:mn>
+</mml:msub>
+<mml:msub>
+<mml:mi>k</mml:mi>
+<mml:mo>+</mml:mo>
+</mml:msub>
+<mml:mo>/</mml:mo><mml:msub>
+<mml:mi>k</mml:mi>
+<mml:mo>−</mml:mo>
+</mml:msub>
+</mml:mrow>
+<mml:mrow>
+<mml:msub>
+<mml:mi>k</mml:mi>
+<mml:mi>x</mml:mi>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:msub>
+<mml:mi>k</mml:mi>
+<mml:mi>y</mml:mi>
+</mml:msub>
+</mml:mrow>
+</mml:mfrac>
+<mml:msub>
+<mml:mi>u</mml:mi>
+<mml:mn>1</mml:mn>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:msub>
+<mml:mi>g</mml:mi>
+<mml:mrow>
+<mml:mtext>CM</mml:mtext></mml:mrow>
+</mml:msub>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:mn>1</mml:mn><mml:mo>−</mml:mo><mml:mn>2</mml:mn><mml:msub>
+<mml:mi>k</mml:mi>
+<mml:mo>+</mml:mo>
+</mml:msub>
+<mml:msub>
+<mml:mi>c</mml:mi>
+<mml:mn>0</mml:mn>
+</mml:msub>
+<mml:mo>/</mml:mo><mml:msub>
+<mml:mi>k</mml:mi>
+<mml:mo>−</mml:mo>
+</mml:msub>
+</mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow><mml:msub>
+<mml:mi>u</mml:mi>
+<mml:mn>1</mml:mn>
+</mml:msub>
+<mml:mi>t</mml:mi></mml:mrow><mml:mo>]</mml:mo></mml:mrow><mml:mo>,</mml:mo></mml:mrow>
+</mml:mtd>
+</mml:mtr>
+</mml:mtable></mml:mrow>
+</mml:math>
+</alternatives><label>(14a)</label></disp-formula> <disp-formula id="pcbi.1004222.e028"><alternatives><graphic id="pcbi.1004222.e028g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004222.e028"/><mml:math id="M28" display="block" overflow="scroll"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:msub><mml:mrow><mml:mo>⟨</mml:mo><mml:msup><mml:mrow><mml:mo>(</mml:mo><mml:mi>δ</mml:mi><mml:mi>x</mml:mi><mml:mo>(</mml:mo><mml:mi>t</mml:mi><mml:mo>)</mml:mo><mml:mo>)</mml:mo></mml:mrow><mml:mn>2</mml:mn></mml:msup><mml:mo>⟩</mml:mo></mml:mrow><mml:mtext>BM</mml:mtext></mml:msub><mml:mo>=</mml:mo><mml:mo>Δ</mml:mo><mml:mo>[</mml:mo><mml:msubsup><mml:mi>g</mml:mi><mml:mtext>BM</mml:mtext><mml:mo>*</mml:mo></mml:msubsup><mml:msub><mml:mi>u</mml:mi><mml:mn>0</mml:mn></mml:msub><mml:mo>-</mml:mo><mml:mfrac><mml:mrow><mml:mn>1</mml:mn><mml:mo>-</mml:mo><mml:mn>2</mml:mn><mml:msub><mml:mi>c</mml:mi><mml:mn>0</mml:mn></mml:msub><mml:msub><mml:mi>k</mml:mi><mml:mo>+</mml:mo></mml:msub><mml:mo>/</mml:mo><mml:msub><mml:mi>k</mml:mi><mml:mo>-</mml:mo></mml:msub><mml:mo>+</mml:mo><mml:mn>3</mml:mn><mml:msubsup><mml:mi>c</mml:mi><mml:mn>0</mml:mn><mml:mn>2</mml:mn></mml:msubsup><mml:msubsup><mml:mi>k</mml:mi><mml:mo>+</mml:mo><mml:mn>2</mml:mn></mml:msubsup><mml:mo>/</mml:mo><mml:msubsup><mml:mi>k</mml:mi><mml:mo>-</mml:mo><mml:mn>2</mml:mn></mml:msubsup></mml:mrow><mml:mrow><mml:mn>2</mml:mn><mml:msub><mml:mi>k</mml:mi><mml:mi>y</mml:mi></mml:msub></mml:mrow></mml:mfrac><mml:msub><mml:mi>u</mml:mi><mml:mn>1</mml:mn></mml:msub><mml:mo>+</mml:mo><mml:mo>(</mml:mo><mml:mn>1</mml:mn><mml:mo>-</mml:mo><mml:mn>2</mml:mn><mml:msub><mml:mi>k</mml:mi><mml:mo>+</mml:mo></mml:msub><mml:msub><mml:mi>c</mml:mi><mml:mn>0</mml:mn></mml:msub><mml:mo>/</mml:mo><mml:msub><mml:mi>k</mml:mi><mml:mo>-</mml:mo></mml:msub><mml:mo>+</mml:mo><mml:mn>3</mml:mn><mml:msubsup><mml:mi>k</mml:mi><mml:mo>+</mml:mo><mml:mn>2</mml:mn></mml:msubsup><mml:msubsup><mml:mi>c</mml:mi><mml:mn>0</mml:mn><mml:mn>2</mml:mn></mml:msubsup><mml:mo>/</mml:mo><mml:msubsup><mml:mi>k</mml:mi><mml:mo>-</mml:mo><mml:mn>2</mml:mn></mml:msubsup><mml:mo>)</mml:mo><mml:msub><mml:mi>u</mml:mi><mml:mn>1</mml:mn></mml:msub><mml:mi>t</mml:mi><mml:mo>]</mml:mo><mml:mo>,</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives><label>(14b)</label></disp-formula>
+where <inline-formula id="pcbi.1004222.e029"><mml:math id="M29" display="inline" overflow="scroll"><mml:mrow><mml:mo>Δ</mml:mo><mml:mo>=</mml:mo><mml:mfrac><mml:mrow><mml:msup><mml:mi>b</mml:mi><mml:mn>2</mml:mn></mml:msup><mml:msubsup><mml:mi>k</mml:mi><mml:mi>x</mml:mi><mml:mn>2</mml:mn></mml:msubsup><mml:msup><mml:mi>e</mml:mi><mml:mfrac><mml:mrow><mml:mn>2</mml:mn><mml:mi>b</mml:mi><mml:msub><mml:mi>u</mml:mi><mml:mn>1</mml:mn></mml:msub></mml:mrow><mml:msub><mml:mi>k</mml:mi><mml:mi>y</mml:mi></mml:msub></mml:mfrac></mml:msup></mml:mrow><mml:mrow><mml:mn>2</mml:mn><mml:mo stretchy="false">(</mml:mo><mml:msub><mml:mi>k</mml:mi><mml:mi>x</mml:mi></mml:msub><mml:mo>+</mml:mo><mml:msub><mml:mi>k</mml:mi><mml:mi>y</mml:mi></mml:msub><mml:mo stretchy="false">)</mml:mo><mml:msup><mml:mrow><mml:mo stretchy="false">(</mml:mo><mml:mn>1</mml:mn><mml:mo>+</mml:mo><mml:msub><mml:mi>k</mml:mi><mml:mo>+</mml:mo></mml:msub><mml:msub><mml:mi>c</mml:mi><mml:mn>0</mml:mn></mml:msub><mml:mo>/</mml:mo><mml:msub><mml:mi>k</mml:mi><mml:mo>−</mml:mo></mml:msub><mml:mo stretchy="false">)</mml:mo></mml:mrow><mml:mn>2</mml:mn></mml:msup></mml:mrow></mml:mfrac></mml:mrow></mml:math></inline-formula>, and <italic>g</italic><sub>CM</sub> and<inline-formula id="pcbi.1004222.e030"><mml:math id="M30" display="inline" overflow="scroll"><mml:mrow><mml:msubsup><mml:mi>g</mml:mi><mml:mtext mathvariant="normal">BM</mml:mtext><mml:mo>*</mml:mo></mml:msubsup></mml:mrow></mml:math></inline-formula> are parameters discussed in Eqs (<xref ref-type="disp-formula" rid="pcbi.1004222.e016">5</xref>) and (<xref ref-type="disp-formula" rid="pcbi.1004222.e019">8</xref>). The corresponding results for species <italic>y</italic> are provided in Eqs. (S56) and (S58), and plots for species <italic>x</italic> and <italic>y</italic> are shown in Fig <xref ref-type="fig" rid="pcbi.1004222.g006">6B</xref> and <xref ref-type="fig" rid="pcbi.1004222.g006">6D</xref>.</p>
+<fig id="pcbi.1004222.g006" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004222.g006</object-id>
+<label>Fig 6</label>
+<caption>
+<title>Two regimes in incoherent feedforward loop based on the small-noise approximation.</title>
+<p>Output noise, <italic>i.e</italic>. relative variance of <italic>x</italic> (top) and <italic>y</italic> (bottom), as function of the non-dimensional ramp time <italic>u</italic><sub>1</sub> <italic>t</italic>/<italic>u</italic><sub>0</sub> for <italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub> &lt; <italic>k</italic><sub>−</sub> <italic>i.e</italic>. ⟨<italic>τ</italic><sub><italic>b</italic></sub>⟩ &lt; ⟨<italic>τ</italic><sub><italic>u</italic></sub>⟩ (left) and <italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub> &gt; <italic>k</italic><sub>−</sub> <italic>i.e</italic>. ⟨<italic>τ</italic><sub><italic>b</italic></sub>⟩ &gt; ⟨<italic>τ</italic><sub><italic>u</italic></sub>⟩ (right). CM and BM are shown by blue and red lines respectively. (A,B) BM is more accurate than AM for <italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub> = 10<sup>7</sup> <italic>s</italic><sup>−1</sup> and <italic>k</italic><sub>−</sub> = 6.7 × 10<sup>7</sup> <italic>s</italic><sup>−1</sup>. (C,D) CM is more accurate then BM for <italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub> = 10<sup>7</sup> <italic>s</italic><sup>−1</sup> and <italic>k</italic><sub>−</sub> = 6.7 × 10<sup>6</sup> <italic>s</italic><sup>−1</sup>. Remaining parameters: <italic>k</italic><sub>+</sub> <italic>c</italic><sub>1</sub> = 10<sup>5</sup> <italic>s</italic><sup>−2</sup>, <italic>k</italic><sub><italic>x</italic></sub> = 5<italic>s</italic><sup>−1</sup> and <italic>k</italic><sub><italic>y</italic></sub> = 10<italic>s</italic><sup>−1</sup>.</p>
+</caption>
+<graphic mimetype="image" xlink:type="simple" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004222.g006"/>
+</fig>
+<p>Consistent with the master equation, these results show again two regimes: ramp sensing is more accurate for BM if <italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub> &lt; <italic>k</italic><sub>−</sub>, while CM is more accurate otherwise. For a constant environment (zeroth-order with <italic>c</italic><sub>1</sub> = <italic>u</italic><sub>1</sub> = 0) the regime is largely determined by the factor <italic>g</italic>. If <italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub> &lt; <italic>k</italic><sub>−</sub>, <italic>g</italic><sub>BM</sub> = 1+⟨(<italic>δτ</italic><sub><italic>b</italic></sub>)<sup>2</sup>⟩/⟨<italic>δ</italic>(<italic>τ</italic><sub><italic>u</italic></sub>)<sup>2</sup>⟩ &lt; 2 (see <xref ref-type="disp-formula" rid="pcbi.1004222.e016">Eq (5)</xref>), and BM is more accurate than CM with <italic>g</italic><sub>CM</sub> = 1+⟨(<italic>δτ</italic><sub><italic>b</italic></sub>)<sup>2</sup>⟩/⟨<italic>τ</italic><sub><italic>b</italic></sub>⟩<sup>2</sup> = 2 (Fig <xref ref-type="fig" rid="pcbi.1004222.g006">6A</xref> and <xref ref-type="fig" rid="pcbi.1004222.g006">6B</xref>). This is because the variability of the bound intervals ⟨(<italic>δτ</italic><sub><italic>b</italic></sub>)<sup>2</sup>⟩ can be eliminated in BM (but not in CM), and the unbound intervals are well approximated by the duration between bursts (<italic>τ</italic><sub>bursts</sub> in <xref ref-type="fig" rid="pcbi.1004222.g003">Fig 3</xref>). For <italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub> ≪ <italic>k</italic><sub>−</sub>, BM effectively implements MLE. In contrast, CM is more accurate for <italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub> &gt; <italic>k</italic><sub>−</sub>, where <italic>g</italic><sub>CM</sub> = 2 and <italic>g</italic><sub>BM</sub> &gt; 2 (Fig <xref ref-type="fig" rid="pcbi.1004222.g006">6C</xref> and <xref ref-type="fig" rid="pcbi.1004222.g006">6D</xref>). This is because BM contains no information on unbound time intervals, while CM still contains some information through the probability of being bound (<italic>p</italic><sub><italic>b</italic></sub> in <xref ref-type="fig" rid="pcbi.1004222.g003">Fig 3B</xref>). These results also apply to ramp sensing since the accuracy of the downstream proteins (decoding) relates again to the factor <italic>g</italic> and hence to the ratio between the bound and unbound time intervals. The integral feedback loop in Eqs (<xref ref-type="disp-formula" rid="pcbi.1004222.e023">11</xref>) and (<xref ref-type="disp-formula" rid="pcbi.1004222.e024">12</xref>) shows very similar behavior (provided in <xref ref-type="supplementary-material" rid="pcbi.1004222.s001">S1 Text</xref>). The validity of our analytical results are confirmed by simulations of the stochastic differential equation for both pathways in <xref ref-type="supplementary-material" rid="pcbi.1004222.s005">S4</xref> and <xref ref-type="supplementary-material" rid="pcbi.1004222.s006">S5</xref> Figs.</p>
+</sec>
+</sec>
+<sec id="sec009">
+<title>AM is more accurate than FM for multiple receptors/ion channels</title>
+<p>To address the question of whether AM or FM is more accurate in encoding and decoding, we consider a straightforward generalization to multiple receptors (or ion channels) (see <xref ref-type="supplementary-material" rid="pcbi.1004222.s001">S1 Text</xref> and <xref ref-type="supplementary-material" rid="pcbi.1004222.s007">S6 Fig</xref>. for details). AM can be obtained by considering unsynchronized CM receptors. In contrast, the experimentally observed sporadic bursts of nuclear translocation [<xref ref-type="bibr" rid="pcbi.1004222.ref010">10</xref>, <xref ref-type="bibr" rid="pcbi.1004222.ref023">23</xref>] and hence FM might be explained by synchronized receptors that individually operate with BM.</p>
+<p>For <italic>N</italic> unsynchronized (<italic>us</italic>) receptors, the resulting average and variance of the signaling rate are <inline-formula id="pcbi.1004222.e031"><mml:math id="M31" display="inline" overflow="scroll">
+<mml:mrow>
+<mml:msubsup>
+<mml:mrow>
+<mml:mo>〈</mml:mo><mml:mi>u</mml:mi><mml:mo stretchy="false">(</mml:mo><mml:mi>t</mml:mi><mml:mo stretchy="false">)</mml:mo><mml:mo>〉</mml:mo></mml:mrow>
+<mml:mi>N</mml:mi>
+<mml:mrow>
+<mml:mi>u</mml:mi><mml:mi>s</mml:mi></mml:mrow>
+</mml:msubsup>
+<mml:mo>=</mml:mo><mml:mi>N</mml:mi><mml:msub>
+<mml:mrow>
+<mml:mo>〈</mml:mo><mml:mi>u</mml:mi><mml:mo stretchy="false">(</mml:mo><mml:mi>t</mml:mi><mml:mo stretchy="false">)</mml:mo><mml:mo>〉</mml:mo></mml:mrow>
+<mml:mn>1</mml:mn>
+</mml:msub>
+</mml:mrow>
+</mml:math>
+</inline-formula> and <inline-formula id="pcbi.1004222.e032"><mml:math id="M32" display="inline" overflow="scroll">
+<mml:mrow>
+<mml:msubsup>
+<mml:mrow>
+<mml:mo>〈</mml:mo><mml:mi>δ</mml:mi><mml:mi>u</mml:mi><mml:mo stretchy="false">(</mml:mo><mml:mi>t</mml:mi><mml:mo stretchy="false">)</mml:mo><mml:mi>δ</mml:mi><mml:mi>u</mml:mi><mml:mo stretchy="false">(</mml:mo><mml:msup>
+<mml:mi>t</mml:mi>
+<mml:mo>′</mml:mo>
+</mml:msup>
+<mml:mo stretchy="false">)</mml:mo><mml:mo>〉</mml:mo></mml:mrow>
+<mml:mi>N</mml:mi>
+<mml:mrow>
+<mml:mi>u</mml:mi><mml:mi>s</mml:mi></mml:mrow>
+</mml:msubsup>
+<mml:mo>=</mml:mo><mml:mi>N</mml:mi><mml:msub>
+<mml:mrow>
+<mml:mo>〈</mml:mo><mml:mi>δ</mml:mi><mml:mi>u</mml:mi><mml:mo stretchy="false">(</mml:mo><mml:mi>t</mml:mi><mml:mo stretchy="false">)</mml:mo><mml:mi>δ</mml:mi><mml:mi>u</mml:mi><mml:mo stretchy="false">(</mml:mo><mml:msup>
+<mml:mi>t</mml:mi>
+<mml:mo>′</mml:mo>
+</mml:msup>
+<mml:mo stretchy="false">)</mml:mo><mml:mo>〉</mml:mo></mml:mrow>
+<mml:mn>1</mml:mn>
+</mml:msub>
+</mml:mrow>
+</mml:math>
+</inline-formula> in terms of the single-receptor quantities. Consequently, the relative variance, given by the variance divided by the average-squared, scales with the inverse of the number of receptors (<italic>N</italic>). On the other hand, for <italic>N</italic> synchronized (<italic>s</italic>) receptors, the average and variance of the signaling rate are given respectively by <inline-formula id="pcbi.1004222.e033"><mml:math id="M33" display="inline" overflow="scroll">
+<mml:mrow>
+<mml:msubsup>
+<mml:mrow>
+<mml:mo>〈</mml:mo><mml:mi>u</mml:mi><mml:mo stretchy="false">(</mml:mo><mml:mi>t</mml:mi><mml:mo stretchy="false">)</mml:mo><mml:mo>〉</mml:mo></mml:mrow>
+<mml:mi>N</mml:mi>
+<mml:mi>s</mml:mi>
+</mml:msubsup>
+<mml:mo>=</mml:mo><mml:mi>N</mml:mi><mml:msub>
+<mml:mrow>
+<mml:mo>〈</mml:mo><mml:mi>u</mml:mi><mml:mo stretchy="false">(</mml:mo><mml:mi>t</mml:mi><mml:mo stretchy="false">)</mml:mo><mml:mo>〉</mml:mo></mml:mrow>
+<mml:mn>1</mml:mn>
+</mml:msub>
+</mml:mrow>
+</mml:math>
+</inline-formula> and <inline-formula id="pcbi.1004222.e034"><mml:math id="M34" display="inline" overflow="scroll">
+<mml:mrow>
+<mml:msubsup>
+<mml:mrow>
+<mml:mo>〈</mml:mo><mml:mi>δ</mml:mi><mml:mi>u</mml:mi><mml:mo stretchy="false">(</mml:mo><mml:mi>t</mml:mi><mml:mo stretchy="false">)</mml:mo><mml:mi>δ</mml:mi><mml:mi>u</mml:mi><mml:mo stretchy="false">(</mml:mo><mml:msup>
+<mml:mi>t</mml:mi>
+<mml:mo>′</mml:mo>
+</mml:msup>
+<mml:mo stretchy="false">)</mml:mo><mml:mo>〉</mml:mo></mml:mrow>
+<mml:mi>N</mml:mi>
+<mml:mi>s</mml:mi>
+</mml:msubsup>
+<mml:mo>=</mml:mo><mml:msup>
+<mml:mi>N</mml:mi>
+<mml:mn>2</mml:mn>
+</mml:msup>
+<mml:msub>
+<mml:mrow>
+<mml:mo>〈</mml:mo><mml:mi>δ</mml:mi><mml:mi>u</mml:mi><mml:mo stretchy="false">(</mml:mo><mml:mi>t</mml:mi><mml:mo stretchy="false">)</mml:mo><mml:mi>δ</mml:mi><mml:mi>u</mml:mi><mml:mo stretchy="false">(</mml:mo><mml:msup>
+<mml:mi>t</mml:mi>
+<mml:mo>′</mml:mo>
+</mml:msup>
+<mml:mo stretchy="false">)</mml:mo><mml:mo>〉</mml:mo></mml:mrow>
+<mml:mn>1</mml:mn>
+</mml:msub>
+</mml:mrow>
+</mml:math>
+</inline-formula>. The relative variance is now independent of <italic>N</italic>. Hence, unsynchronized receptors (AM) have a reduction of noise by a factor <italic>N</italic> compared to synchronized receptors (FM).</p>
+<p>For slow dynamics, or fast dynamics with <italic>k</italic><sub>+</sub> <italic>c</italic> &gt; <italic>k</italic><sub>−</sub>, CM is generally more accurate than BM (at least for <italic>ζ</italic> &gt; 1), and with <italic>N</italic> receptors, AM is more accurate than FM by an even larger margin. In contrast, for fast dynamics with <italic>k</italic><sub>+</sub> <italic>c</italic> &lt; <italic>k</italic><sub>−</sub>, BM is more accurate than CM by at most a factor of 2 (<xref ref-type="disp-formula" rid="pcbi.1004222.e016">Eq (5)</xref>). But since AM is <italic>N</italic> times more accurate than CM, AM becomes more accurate for encoding than FM for more than two receptors. Since our results from the previous sections show that larger signaling noise leads to larger output noise, the same rule emerges for decoding.</p>
+<p>From a physical point of view, how can receptors act in a synchronized fashion? Receptors may be coupled by adaptor proteins or elastic membrane deformations, allowing them to act cooperatively [<xref ref-type="bibr" rid="pcbi.1004222.ref045">45</xref>, <xref ref-type="bibr" rid="pcbi.1004222.ref046">46</xref>]. In conclusion, while for fast dynamics (small-noise approximation) BM can be more accurate than CM up to a factor of two, two receptors/ion channels are sufficient for AM to become more accurate than FM. Since cells have thousands of receptors and ion channels, AM becomes the most accurate modulation scheme.</p>
+</sec>
+</sec>
+<sec id="sec010" sec-type="conclusions">
+<title>Discussion</title>
+<p>Cellular responses to extra-cellular stimuli involve both encoding the external stimuli by internal signals (which is normally fast) and subsequently decoding via the regulation of protein levels (which is normally much slower). The internal representation of the external signal falls into two broad categories: continuous/amplitude modulation (CM/AM), where bound receptors continually signal and the internal concentration itself encodes the external signal, and bursty/frequency modulation (BM/FM), where receptors only signal when first bound and the signal is encoded in the frequency of peaks. Here, we compared the output noise for both types of modulation in the presence of a constant and a linearly increasing (in time) external concentration. Besides considering a linear pathway, we compared two nonlinear network motifs: the incoherent feedforward loop and the integral feedback loop. These loops are ubiquitous in biological systems. For example, the incoherent feedforward loop is found in chemotactic adaptation of eukaryotes [<xref ref-type="bibr" rid="pcbi.1004222.ref040">40</xref>] and transcription networks in bacteria [<xref ref-type="bibr" rid="pcbi.1004222.ref041">41</xref>], and the integral feedback loop is found in chemotactic adaptation of bacteria [<xref ref-type="bibr" rid="pcbi.1004222.ref025">25</xref>, <xref ref-type="bibr" rid="pcbi.1004222.ref047">47</xref>] and in eukaryotic olfactory and phototransduction pathways [<xref ref-type="bibr" rid="pcbi.1004222.ref027">27</xref>].</p>
+<p>We found that, for a single receptor or ion channel, BM can be more accurate than CM for fast dynamics. This situation can occur when the average duration of the active <italic>on</italic> state is shorter than the average duration of the inactive <italic>off</italic> state (Figs <xref ref-type="fig" rid="pcbi.1004222.g005">5</xref> and <xref ref-type="fig" rid="pcbi.1004222.g006">6</xref>). In this case, BM effectively implements maximum-likelihood estimation, the most accurate mechanism of sensing [<xref ref-type="bibr" rid="pcbi.1004222.ref044">44</xref>]. If instead more time is spent in the <italic>on</italic> state, then CM is generally more accurate (except when the burst size is minimal, i.e one). The reason behind this effect, which we analytically prove within the small-noise approximation, is that CM has information about both the <italic>on</italic> and <italic>off</italic> states, whereas BM only knows when a switch from <italic>off</italic> to <italic>on</italic> occurs. As such, CM effectively implements Berg and Purcell’s classic result of estimating ligand concentration by time averaging [<xref ref-type="bibr" rid="pcbi.1004222.ref048">48</xref>] (see also <xref ref-type="sec" rid="sec010">Discussion</xref> in [<xref ref-type="bibr" rid="pcbi.1004222.ref044">44</xref>]). In addition, we found that for slow dynamics CM is always more accurate than BM, independent of whether more time is spent in the <italic>on</italic> or <italic>off</italic> states, due to increased burst sizes (<xref ref-type="fig" rid="pcbi.1004222.g005">Fig 5</xref>). Taken together our results suggest that BM should be more common in signaling pathways than in gene regulation.</p>
+<p>The generalization to multiple receptors/ion channels allows AM and FM to be compared. AM, which arises from unsynchronized CM receptors, has a reduced relative noise due to spatial averaging, while the relative noise in FM from synchronized BM receptors remains identical to the single-receptor result. (Note the observed nuclear bursts of approximately constant amplitude and duration support our FM mechanism [<xref ref-type="bibr" rid="pcbi.1004222.ref010">10</xref>, <xref ref-type="bibr" rid="pcbi.1004222.ref015">15</xref>].) As a result, AM is always more accurate than FM for more than two receptors (<xref ref-type="supplementary-material" rid="pcbi.1004222.s007">S6 Fig</xref>). Since cells have tens of thousands of receptors and ion channels, this implies that the reason that FM is sometimes observed in real systems must have a different origin. At least three possibilities present themselves. Firstly, FM can help to coordinate gene expression [<xref ref-type="bibr" rid="pcbi.1004222.ref015">15</xref>, <xref ref-type="bibr" rid="pcbi.1004222.ref019">19</xref>], which is particularly useful when hundreds of genes are controlled by a single transcription factor, such as during stress response [<xref ref-type="bibr" rid="pcbi.1004222.ref049">49</xref>–<xref ref-type="bibr" rid="pcbi.1004222.ref051">51</xref>]. Secondly, FM can enhance co-localization of proteins inside the nucleus, providing another way to improve coordination of gene expression [<xref ref-type="bibr" rid="pcbi.1004222.ref052">52</xref>]. Thirdly, as with oscillatory signals, bursts can be used to activate transcription by threshold crossing [<xref ref-type="bibr" rid="pcbi.1004222.ref032">32</xref>] while avoiding desensitization [<xref ref-type="bibr" rid="pcbi.1004222.ref028">28</xref>]. This may then push the cell to differentiate into a new state (such as under starvation to initiate competence) [<xref ref-type="bibr" rid="pcbi.1004222.ref053">53</xref>, <xref ref-type="bibr" rid="pcbi.1004222.ref054">54</xref>]. It is also worth noting that by using seemingly redundant isoforms (such as NFAT1 and NFAT4 during an immune response), AM and FM can be combined to enhance temporal information processing [<xref ref-type="bibr" rid="pcbi.1004222.ref021">21</xref>].</p>
+<p>While providing intuitive insights, it is clear that our models are highly oversimplified versions of signaling and gene regulation in actual cells. One of the main reasons for this is that we used idealized delta-functions as pulses in BM (and hence in FM). However, for example, in the calcium stress-response pathway in <italic>Saccharomyces cerevisiae</italic> (<xref ref-type="fig" rid="pcbi.1004222.g003">Fig 3A</xref>) nuclear bursts of Crz1p are on average two minutes long (<xref ref-type="fig" rid="pcbi.1004222.g001">Fig 1D</xref>, inset). Most likely cytoplasmic calcium spikes determine the nuclear bursts (Elowitz, personal communication), but since the mechanism of calcium spiking remains poorly understood, such bursts are difficult to model. A further limitation of our models is that bursts only relate to translocation, whereas additional bursts may occur further downstream during transcription [<xref ref-type="bibr" rid="pcbi.1004222.ref055">55</xref>] (e.g. due to promoter switching [<xref ref-type="bibr" rid="pcbi.1004222.ref024">24</xref>]) and translation [<xref ref-type="bibr" rid="pcbi.1004222.ref056">56</xref>]. Future models may need to include these details.</p>
+<p>Our models suggest further experimental investigation in multiple areas. Firstly, the distribution of burst duration affects factor <italic>g</italic> (<xref ref-type="disp-formula" rid="pcbi.1004222.e016">Eq (5)</xref>), so that <italic>g</italic> = 2 in equilibrium for a single-step process and potentially <italic>g</italic> &lt; 2 for an irreversible binding cycle dominated by energy dissipation [<xref ref-type="bibr" rid="pcbi.1004222.ref023">23</xref>, <xref ref-type="bibr" rid="pcbi.1004222.ref057">57</xref>]. These irreversible cycles are present in some ligand-gated ion channels, such as the cystic fibrosis transmembrane conductance regulator (CFTR) channels and N-Methyl-D-aspartate (NMDA) receptors. These exhibit peaked opening distributions, which can be interpreted as evidence of broken reversibility and energy consumption [<xref ref-type="bibr" rid="pcbi.1004222.ref058">58</xref>, <xref ref-type="bibr" rid="pcbi.1004222.ref059">59</xref>]. Such cases and their possible connection with accuracy need further investigation. In fact, most cellular processes rely heavily on energy consumption, including nuclear shuttling and chromosome remodeling, limiting the applicability of our equilibrium CM-receptor model. Secondly, coordination of gene expression during stress or cell-fate decisions might be another reason for implementing FM rather than AM. More quantitative experiments are needed to better understand this mechanism. Thirdly, closer inspection of Ca<sup>2+</sup>-independent transcription factors (as well as Ca<sup>2+</sup>-dependent co-regulated genes) are warranted in order to verify coordination of multiple genes [<xref ref-type="bibr" rid="pcbi.1004222.ref015">15</xref>]. Finally, to see if bursts help jump start new cellular programs (<italic>i.e</italic>. transition into a new “attractor”), global changes in gene regulation can be monitored.</p>
+<p>A general understanding of FM may help prevent developmental defects and human diseases. Indeed, several biomedically relevant transcription factors, such as NF-<italic>κ</italic>B, p53, NFAT and ERK, show oscillatory pulsing or random bursting [<xref ref-type="bibr" rid="pcbi.1004222.ref016">16</xref>, <xref ref-type="bibr" rid="pcbi.1004222.ref017">17</xref>, <xref ref-type="bibr" rid="pcbi.1004222.ref033">33</xref>–<xref ref-type="bibr" rid="pcbi.1004222.ref036">36</xref>, <xref ref-type="bibr" rid="pcbi.1004222.ref054">54</xref>]. In fact, the destabilization of regulatory circuits can underlie human diseases: studies suggest that the coordination of gene expression could be critical in maintaining the proper functioning of key nodes in such circuits. For example, the NFATc circuit is cooperatively destabilized by a 1.5-fold increase in the DSCR1 and DYRK1A genes, which reduce NFATc activity leading to characteristics of Down’s syndrome [<xref ref-type="bibr" rid="pcbi.1004222.ref016">16</xref>, <xref ref-type="bibr" rid="pcbi.1004222.ref060">60</xref>]. However, ERK pulses are regulated by both AM and FM with the same dose dependence, and it remains unclear how they affect cell proliferation and the relevance to cancer [<xref ref-type="bibr" rid="pcbi.1004222.ref036">36</xref>].</p>
+<p>Broadly speaking, temporal ordering (regularity or periodicity) serves at least two roles in living systems [<xref ref-type="bibr" rid="pcbi.1004222.ref061">61</xref>]: extraction of energy from the environment and handling of information. While the first role is well studied in terms of molecular motors at the single-molecule level, the second role is intellectually more difficult to understand as it requires a broader, more global understanding of cells. We believe that future work that combines single-cell experiments with ideas of collective behavior and engineering principles is most likely to be successful.</p>
+</sec>
+<sec id="sec011" sec-type="materials|methods">
+<title>Materials and Methods</title>
+<sec id="sec012">
+<title>Master-equation model for concentration sensing</title>
+<p>The master equations for continuous modulation (CM), Eqs (<xref ref-type="disp-formula" rid="pcbi.1004222.e005">1a</xref>) and (<xref ref-type="disp-formula" rid="pcbi.1004222.e006">1b</xref>), can be solved at steady state using generating functions. In particular, we derive the first three moments of the probability distribution using the general model in [<xref ref-type="bibr" rid="pcbi.1004222.ref062">62</xref>]. When the system is in the <italic>on/off</italic> state, the production rate of species <italic>x</italic> is <italic>α</italic><sub><italic>on/off</italic></sub>. The degradation rate <italic>γ</italic> is independent of the state of the system. The probability distribution of <italic>n</italic> target proteins at time <italic>t</italic> is then described by
+<disp-formula id="pcbi.1004222.e035"><alternatives><graphic id="pcbi.1004222.e035g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004222.e035"/><mml:math id="M35" display="block" overflow="scroll"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:mfrac><mml:mrow><mml:mi>d</mml:mi><mml:msub><mml:mi>p</mml:mi><mml:mi>s</mml:mi></mml:msub><mml:mrow><mml:mo>(</mml:mo><mml:mi>n</mml:mi><mml:mo>,</mml:mo><mml:mi>t</mml:mi><mml:mo>)</mml:mo></mml:mrow></mml:mrow><mml:mrow><mml:mi>d</mml:mi><mml:mi>t</mml:mi></mml:mrow></mml:mfrac><mml:mo>=</mml:mo><mml:mi>γ</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mi>n</mml:mi><mml:mo>+</mml:mo><mml:mn>1</mml:mn><mml:mo>)</mml:mo></mml:mrow><mml:msub><mml:mi>p</mml:mi><mml:mi>s</mml:mi></mml:msub><mml:mrow><mml:mo>(</mml:mo><mml:mi>n</mml:mi><mml:mo>+</mml:mo><mml:mn>1</mml:mn><mml:mo>,</mml:mo><mml:mi>t</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>+</mml:mo><mml:msub><mml:mi>α</mml:mi><mml:mi>s</mml:mi></mml:msub><mml:msub><mml:mi>p</mml:mi><mml:mi>s</mml:mi></mml:msub><mml:mrow><mml:mo>(</mml:mo><mml:mi>n</mml:mi><mml:mo>-</mml:mo><mml:mn>1</mml:mn><mml:mo>,</mml:mo><mml:mi>t</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>+</mml:mo><mml:msub><mml:mi>k</mml:mi><mml:mover accent="true"><mml:mi>s</mml:mi><mml:mo>¯</mml:mo></mml:mover></mml:msub><mml:msub><mml:mi>p</mml:mi><mml:mover accent="true"><mml:mi>s</mml:mi><mml:mo>¯</mml:mo></mml:mover></mml:msub><mml:mrow><mml:mo>(</mml:mo><mml:mi>n</mml:mi><mml:mo>,</mml:mo><mml:mi>t</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>-</mml:mo><mml:mrow><mml:mo>(</mml:mo><mml:mi>γ</mml:mi><mml:mi>n</mml:mi><mml:mo>+</mml:mo><mml:msub><mml:mi>α</mml:mi><mml:mi>s</mml:mi></mml:msub><mml:mo>+</mml:mo><mml:msub><mml:mi>k</mml:mi><mml:mi>s</mml:mi></mml:msub><mml:mo>)</mml:mo></mml:mrow><mml:msub><mml:mi>p</mml:mi><mml:mi>s</mml:mi></mml:msub><mml:mrow><mml:mo>(</mml:mo><mml:mi>n</mml:mi><mml:mo>,</mml:mo><mml:mi>t</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>,</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives><label>(15)</label></disp-formula>
+where <inline-formula id="pcbi.1004222.e036"><mml:math id="M36" display="inline" overflow="scroll"><mml:mrow><mml:mover accent="true"><mml:mi>s</mml:mi><mml:mo>‾</mml:mo></mml:mover><mml:mo>=</mml:mo><mml:mtext mathvariant="normal">off</mml:mtext><mml:mo/><mml:mo stretchy="false">(</mml:mo><mml:mtext mathvariant="normal">on</mml:mtext><mml:mo stretchy="false">)</mml:mo></mml:mrow></mml:math></inline-formula> when <italic>s</italic> = on (off). By defining the generating functions
+<disp-formula id="pcbi.1004222.e037"><alternatives><graphic id="pcbi.1004222.e037g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004222.e037"/><mml:math id="M37" display="block" overflow="scroll"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:msub><mml:mi>G</mml:mi><mml:mi>s</mml:mi></mml:msub><mml:mrow><mml:mo>(</mml:mo><mml:mi>z</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>=</mml:mo><mml:munderover><mml:mo>∑</mml:mo><mml:mrow><mml:mi>n</mml:mi><mml:mo>=</mml:mo><mml:mn>0</mml:mn></mml:mrow><mml:mi>∞</mml:mi></mml:munderover><mml:msub><mml:mi>p</mml:mi><mml:mi>s</mml:mi></mml:msub><mml:mrow><mml:mo>(</mml:mo><mml:mi>n</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:msup><mml:mi>z</mml:mi><mml:mi>n</mml:mi></mml:msup><mml:mo>,</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives><label>(16)</label></disp-formula>
+and using <xref ref-type="disp-formula" rid="pcbi.1004222.e035">Eq (15)</xref>, a solution for <italic>G</italic><sub><italic>s</italic></sub>(<italic>z</italic>) can be found, which then readily gives the moments of <italic>p</italic>(<italic>n</italic>, <italic>t</italic>). In particular, the variance and skewness are given by
+<disp-formula id="pcbi.1004222.e038"><alternatives><graphic id="pcbi.1004222.e038g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004222.e038"/><mml:math id="M38" display="block" overflow="scroll"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:mrow><mml:mo>⟨</mml:mo><mml:mi>δ</mml:mi><mml:msup><mml:mi>n</mml:mi><mml:mn>2</mml:mn></mml:msup><mml:mo>⟩</mml:mo></mml:mrow><mml:mo>=</mml:mo><mml:munder><mml:mo>∑</mml:mo><mml:mi>s</mml:mi></mml:munder><mml:mo>(</mml:mo><mml:msub><mml:mi>∂</mml:mi><mml:mi>z</mml:mi></mml:msub><mml:mi>z</mml:mi><mml:msub><mml:mi>∂</mml:mi><mml:mi>z</mml:mi></mml:msub><mml:msub><mml:mi>G</mml:mi><mml:mi>s</mml:mi></mml:msub><mml:mrow><mml:mo>(</mml:mo><mml:mi>z</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>)</mml:mo><mml:msub><mml:mo>|</mml:mo><mml:mrow><mml:mi>z</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo>-</mml:mo><mml:msup><mml:mrow><mml:mo>⟨</mml:mo><mml:mi>n</mml:mi><mml:mo>⟩</mml:mo></mml:mrow><mml:mn>2</mml:mn></mml:msup><mml:mo>,</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives><label>(17)</label></disp-formula><disp-formula id="pcbi.1004222.e039"><alternatives><graphic id="pcbi.1004222.e039g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004222.e039"/><mml:math id="M39" display="block" overflow="scroll"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:mrow><mml:mo>⟨</mml:mo><mml:msup><mml:mi>n</mml:mi><mml:mn>3</mml:mn></mml:msup><mml:mo>⟩</mml:mo></mml:mrow><mml:mo>=</mml:mo><mml:munder><mml:mo>∑</mml:mo><mml:mi>s</mml:mi></mml:munder><mml:mo>[</mml:mo><mml:msub><mml:mi>∂</mml:mi><mml:mi>z</mml:mi></mml:msub><mml:mi>z</mml:mi><mml:msub><mml:mi>∂</mml:mi><mml:mi>z</mml:mi></mml:msub><mml:mi>z</mml:mi><mml:msub><mml:mi>∂</mml:mi><mml:mi>z</mml:mi></mml:msub><mml:msub><mml:mi>G</mml:mi><mml:mi>s</mml:mi></mml:msub><mml:mrow><mml:mo>(</mml:mo><mml:mi>z</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>]</mml:mo><mml:msub><mml:mo>|</mml:mo><mml:mrow><mml:mi>z</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo>.</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives><label>(18)</label></disp-formula>
+Full details are given in <xref ref-type="supplementary-material" rid="pcbi.1004222.s001">S1 Text</xref>.</p>
+<p>In order to solve the master equation for bursty modulation (BM), Eqs (<xref ref-type="disp-formula" rid="pcbi.1004222.e007">2a</xref>) and (<xref ref-type="disp-formula" rid="pcbi.1004222.e008">2b</xref>), we use the Gillespie algorithm [<xref ref-type="bibr" rid="pcbi.1004222.ref063">63</xref>]. If the system is in the <italic>on</italic> state with <italic>n</italic> proteins at time <italic>t</italic>, it can either switch to the <italic>off</italic> state with transition rate given by <italic>k</italic><sub>−</sub>/(<italic>k</italic><sub>−</sub>+<italic>γn</italic>) or else remain in the <italic>on</italic> state and lose a protein by degradation. If instead the system is in the <italic>off</italic> state with <italic>n</italic> proteins at time <italic>t</italic>, it can either switch to the <italic>on</italic> state with switching rate <italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub>/(<italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub>+<italic>γn</italic>) and, via a burst, increase its number of proteins to <italic>n</italic> + <italic>ζ</italic>, or again remain in the same state and loose a protein by degradation. The time step between reactions, <italic>δt</italic>, is chosen from an exponential probability distribution <italic>λe</italic><sup>−<italic>λδt</italic></sup>, with <italic>λ</italic> equal to the total rate that at least one reaction occurs.</p>
+</sec>
+<sec id="sec013">
+<title>ODE models for ramp sensing</title>
+<p>The following method applies to both the incoherent feedforward and the integral feedback loop. To solve the ordinary differential Eqs (<xref ref-type="disp-formula" rid="pcbi.1004222.e021">9</xref>–<xref ref-type="disp-formula" rid="pcbi.1004222.e024">12</xref>) we linearize around stable solutions, <italic>x</italic>(<italic>t</italic>) = ⟨<italic>x</italic>(<italic>t</italic>)⟩ + <italic>δx</italic> and <italic>y</italic>(<italic>t</italic>) = ⟨<italic>y</italic>(<italic>t</italic>)⟩ + <italic>δy</italic>, and assume that small <italic>δu</italic> leads to small <italic>δx</italic> and <italic>δy</italic>. Note that when sensing a gradually changing ramp, ⟨<italic>x</italic>(<italic>t</italic>)⟩ and ⟨<italic>y</italic>(<italic>t</italic>)⟩ are not steady states. Defining <italic>X</italic> = [<italic>x</italic>(<italic>t</italic>)<italic>y</italic>(<italic>t</italic>)]<sup><italic>T</italic></sup> we can rewrite these equations as
+<disp-formula id="pcbi.1004222.e040"><alternatives><graphic id="pcbi.1004222.e040g" mimetype="image" xlink:type="simple" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1004222.e040"/><mml:math id="M40" display="block" overflow="scroll"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:mfrac><mml:mrow><mml:mi>d</mml:mi><mml:mi>X</mml:mi><mml:mo>(</mml:mo><mml:mi>t</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mrow><mml:mi>d</mml:mi><mml:mi>t</mml:mi></mml:mrow></mml:mfrac><mml:mo>+</mml:mo><mml:mi>M</mml:mi><mml:mi>X</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mi>t</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>=</mml:mo><mml:mo>[</mml:mo><mml:mtable><mml:mtr><mml:mtd><mml:mrow><mml:mi>w</mml:mi><mml:mspace width="4pt"/><mml:mi>δ</mml:mi><mml:mi>u</mml:mi></mml:mrow></mml:mtd></mml:mtr><mml:mtr><mml:mtd><mml:mrow><mml:mi>z</mml:mi><mml:mspace width="4pt"/><mml:mi>δ</mml:mi><mml:mi>u</mml:mi></mml:mrow></mml:mtd></mml:mtr></mml:mtable><mml:mo>]</mml:mo><mml:mo>,</mml:mo></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives><label>(19)</label></disp-formula>
+where the matrix <italic>M</italic> and the constants <italic>w</italic> and <italic>z</italic> are defined in <xref ref-type="supplementary-material" rid="pcbi.1004222.s001">S1 Text</xref>. Analytic solutions are only available when <italic>M</italic> is time-independent. As shown in <xref ref-type="supplementary-material" rid="pcbi.1004222.s001">S1 Text</xref>, <xref ref-type="disp-formula" rid="pcbi.1004222.e040">Eq (19)</xref> can be solved and written as an integral, which can then be evaluated with, for example, Wolfram Mathematica 8.</p>
+</sec>
+</sec>
+<sec id="sec014">
+<title>Supporting Information</title>
+<supplementary-material id="pcbi.1004222.s001" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004222.s001" mimetype="application/pdf" xlink:type="simple">
+<label>S1 Text</label>
+<caption>
+<title>Details of analytical calculations.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004222.s002" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004222.s002" mimetype="application/eps" xlink:type="simple">
+<label>S1 Fig</label>
+<caption>
+<title>First three moments of the protein distribution in concentration sensing from the master equation.</title>
+<p>Averages (A,B), variance (C,D), and skewness (E,F) as a function of the frequency of binding events, <italic>f</italic> = <italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub>/(1+<italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub>/<italic>k</italic><sub>−</sub>). (Insets) Magnification of small-noise approximation region (fast switching). Analytical results for CM (blue) and numerical results for BM (red) and intermediate modulation IM (green) as function of the frequency of binding events (logarithmic scale). Note that this figure is similar to <xref ref-type="fig" rid="pcbi.1004222.g005">Fig 5</xref> in main text with the addition of IM. Two regimes are shown: <italic>k</italic><sub>−</sub> = 10 <italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub> (<italic>α</italic> = 100<italic>s</italic><sup>−1</sup>, <italic>γ</italic> = 1<italic>s</italic><sup>−1</sup>, <italic>ζ</italic> from 1000 to 1) (left column) and <italic>k</italic><sub>−</sub> = 0.1 <italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub> (<italic>α</italic> = 10<italic>s</italic><sup>−1</sup>, <italic>γ</italic> = 1<italic>s</italic><sup>−1</sup>, <italic>ζ</italic> from 1000 to 1) (right column). Averages from CM, BM and IM are constrained to be equal, <italic>i.e</italic>. <italic>ζ</italic> (BM) <inline-formula id="pcbi.1004222.e041"><mml:math id="M41" display="inline" overflow="scroll"><mml:mrow><mml:mo>=</mml:mo><mml:mi>α</mml:mi><mml:msubsup><mml:mi>k</mml:mi><mml:mo>−</mml:mo><mml:mrow><mml:mo>−</mml:mo><mml:mn>1</mml:mn></mml:mrow></mml:msubsup></mml:mrow></mml:math></inline-formula> (CM) = <italic>α</italic>′ <italic>τ</italic><sub><italic>b</italic></sub> (IM). Variances of CM, BM and IM exhibit two different regimes for fast switching: for <italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub> &lt; <italic>k</italic><sub>−</sub> BM is the most accurate mechanism and CM the worst (inset in C) while for <italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub> &gt; <italic>k</italic><sub>−</sub> CM is generally the most accurate (except for <italic>ζ</italic> = 1) and IM the worst (inset in D). Third moments show that, for large noise, the probability distributions become asymmetric.</p>
+<p>(EPS)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004222.s003" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004222.s003" mimetype="application/eps" xlink:type="simple">
+<label>S2 Fig</label>
+<caption>
+<title>Examples of time traces of receptor activity and protein copy numbers for different regimes.</title>
+<p>(Top) Regime <italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub> &lt; <italic>k</italic><sub>−</sub> with <italic>k</italic><sub>+</sub> <italic>c</italic> = 0.1 <italic>k</italic><sub>−</sub> (<italic>α</italic> = 100<italic>s</italic><sup>−1</sup>, <italic>γ</italic> = 1<italic>s</italic><sup>−1</sup>). (Bottom) Regime <italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub> &gt; <italic>k</italic><sub>−</sub> with <italic>k</italic><sub>+</sub> <italic>c</italic> = 10 <italic>k</italic><sub>−</sub> (<italic>α</italic> = 10<italic>s</italic><sup>−1</sup>, <italic>γ</italic> = 1<italic>s</italic><sup>−1</sup>). (Left) Slow switching with <italic>ζ</italic> = 400. (Right) Fast switching with <italic>ζ</italic> = 7. Receptor activity <italic>r</italic> and protein copy numbers <italic>n</italic>(<italic>t</italic>) for CM, BM and IM are shown in black, blue, red and green, respectively.</p>
+<p>(EPS)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004222.s004" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004222.s004" mimetype="application/eps" xlink:type="simple">
+<label>S3 Fig</label>
+<caption>
+<title>Investigating accuracy based on accumulative signaling (without protein production and degradation).</title>
+<p>(A) Regime <italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub> &lt; <italic>k</italic><sub>−</sub> with <italic>k</italic><sub>+</sub> <italic>c</italic> = 0.1 <italic>k</italic><sub>−</sub> (<italic>α</italic> = 100<italic>s</italic><sup>−1</sup>, <italic>γ</italic> = 1<italic>s</italic><sup>−1</sup> and <italic>ζ</italic> = 7). (Left) ODE model. (Right) Stochastic protein production during <italic>τ</italic><sub><italic>b</italic></sub> in CM and IM. (Top) Examples of time traces. (Bottom) Histograms of number of proteins produced after 100s with standard deviation in legend based on 1000 simulations. (B) Analogous to (A) but for regime <italic>k</italic><sub>+</sub> <italic>c</italic> &gt; <italic>k</italic><sub>−</sub> with <italic>k</italic><sub>+</sub> <italic>c</italic> = 10 <italic>k</italic><sub>−</sub> (<italic>α</italic> = 100<italic>s</italic><sup>−1</sup>, <italic>γ</italic> = 1<italic>s</italic><sup>−1</sup> and <italic>ζ</italic> = 7). CM, BM and IM are shown in blue, red and green, respectively.</p>
+<p>(EPS)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004222.s005" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004222.s005" mimetype="application/eps" xlink:type="simple">
+<label>S4 Fig</label>
+<caption>
+<title>Incoherent feedforward loop: Comparison of analytical results with simulations of the stochastic differential equations.</title>
+<p>(A) Averages of signaling rate <italic>u</italic> (left), species <italic>y</italic> from Eq. (S42) (middle) and species <italic>x</italic> from (S41) (right) as a function of time. Analytic solutions Eqs. (S32), (S43) and (12) are shown for BM in red, while a (time averaged) time-trace from a stochastic simulation using the Euler method is shown in orange (CM is almost identical and hence is not shown). (B) Corresponding variances as a function of time for <italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub> &gt; <italic>k</italic><sub>−</sub> (<italic>k</italic><sub>−</sub> = 6.7 × 10<sup>5</sup> <italic>s</italic><sup>−1</sup>, <italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub> = 10<sup>6</sup> <italic>s</italic><sup>−1</sup>). Analytic results are shown in blue for CM and in red for BM; average over time (1<italic>s</italic>) from numerical simulations are shown in light blue for CM and in orange for BM. (C) Corresponding variances as a function of time for <italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub> &lt; <italic>k</italic><sub>−</sub> (<italic>k</italic><sub>−</sub> = 6.7 × 10<sup>6</sup> <italic>s</italic><sup>−1</sup>, <italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub> = 10<sup>6</sup> <italic>s</italic><sup>−1</sup>). Colors same as in (B). Remaining parameters: <italic>k</italic><sub>+</sub> <italic>c</italic><sub>1</sub> = 10<sup>4</sup> <italic>s</italic><sup>−2</sup>, <italic>k</italic><sub><italic>x</italic></sub> = 10<italic>s</italic><sup>−1</sup> and <italic>k</italic><sub><italic>y</italic></sub> = 50<italic>s</italic><sup>−1</sup>.</p>
+<p>(EPS)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004222.s006" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004222.s006" mimetype="application/eps" xlink:type="simple">
+<label>S5 Fig</label>
+<caption>
+<title>Integral feedback loop: Comparison of analytical results with simulations of the stochastic differential equations.</title>
+<p>(A) Averages of signaling rate <italic>u</italic> (left), species <italic>y</italic> from Eq. (S60) (middle) and species <italic>x</italic> from (S59) (right) as a function of time. Analytic solutions Eqs. (S32), (S66) and (S65) are shown for BM in red, while a (time averaged) time-trace from a stochastic simulation using the Euler method is shown in orange (CM is almost identical and hence is not shown). (B) Corresponding variances as a function of time for <italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub> &gt; <italic>k</italic><sub>−</sub> (<italic>k</italic><sub>−</sub> = 6.7 × 10<sup>5</sup> <italic>s</italic><sup>−1</sup>, <italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub> = 10<sup>6</sup> <italic>s</italic><sup>−1</sup>). Analytic results are shown in blue for CM and in red for BM; numerical simulations are shown in light blue for CM and in orange for BM. (C) Corresponding variances as a function of time for <italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub> &lt; <italic>k</italic><sub>−</sub> (<italic>k</italic><sub>−</sub> = 6.7 × 10<sup>6</sup> <italic>s</italic><sup>−1</sup>, <italic>k</italic><sub>+</sub> <italic>c</italic><sub>0</sub> = 10<sup>6</sup> <italic>s</italic><sup>−1</sup>). Colors same as in (B). Remaining parameters: <italic>k</italic><sub>+</sub> <italic>c</italic><sub>1</sub> = 10<sup>4</sup> <italic>s</italic><sup>−2</sup>, <italic>k</italic><sub><italic>x</italic></sub> = 10<italic>s</italic><sup>−1</sup> and <italic>k</italic><sub><italic>y</italic></sub> = 50<italic>s</italic><sup>−1</sup>.</p>
+<p>(EPS)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004222.s007" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1004222.s007" mimetype="application/pdf" xlink:type="simple">
+<label>S6 Fig</label>
+<caption>
+<title>From CM (BM) to AM (FM) for multiple receptors/ion channels.</title>
+<p>(A-D) Schematic of receptor activity in time. (A) AM emerges from <italic>N</italic> unsynchronized receptors or ion channels in CM mode. (B) <italic>N</italic> synchronized CM receptors lead to a hybrid mechanism with information encoded in the frequency of broad bursts of variable duration. (C) <italic>N</italic> unsynchronized BM receptors provide a dense series of bursts. For large <italic>N</italic>, bursts may start overlapping, leading to variable amplitudes. (D) FM emerges from <italic>N</italic> synchronized receptors in BM mode. (E) Relative variance for a system of 8 receptors with <italic>ρN</italic> synchronized and (1−<italic>ρ</italic>)<italic>N</italic> unsynchronized receptors, plotted for fast dynamics in the <italic>k</italic><sub>+</sub> <italic>c</italic> &lt; <italic>k</italic><sub>−</sub> regime (CM in blue and BM in red). Letters refer to panel labels (A-D). Dotted red line indicates uncertainty from FM for comparison. (Inset) Same for a system of two receptors only.</p>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ack>
+<p>We thank Guido Tiana for helpful discussions, and Michael Elowitz for providing details on his data.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1004222.ref001">
+<label>1</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Perkins</surname> <given-names>TJ</given-names></name>, <name name-style="western"><surname>Swain</surname> <given-names>PS</given-names></name>. <article-title>Strategies for cellular decision-making</article-title>. <source>Mol Syst Biol</source>. <year>2009</year> <month>Nov</month>;<volume>5</volume>:<fpage>326</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/msb.2009.83" xlink:type="simple">10.1038/msb.2009.83</ext-link></comment> <object-id pub-id-type="pmid">19920811</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref002">
+<label>2</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Kussell</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Leibler</surname> <given-names>S</given-names></name>. <article-title>Phenotypic diversity, population growth, and information in fluctuating environments</article-title>. <source>Science</source>. <year>2005</year> <month>Sep</month>;<volume>309</volume>(<issue>5743</issue>):<fpage>2075</fpage>–<lpage>2078</lpage>. <object-id pub-id-type="pmid">16123265</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref003">
+<label>3</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Behar</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Hoffmann</surname> <given-names>A</given-names></name>. <article-title>Understanding the temporal codes of intra-cellular signals</article-title>. <source>Curr Opin Genet Dev</source>. <year>2010</year> <month>Dec</month>;<volume>20</volume>(<issue>6</issue>):<fpage>684</fpage>–<lpage>693</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.gde.2010.09.007" xlink:type="simple">10.1016/j.gde.2010.09.007</ext-link></comment> <object-id pub-id-type="pmid">20956081</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref004">
+<label>4</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Black</surname> <given-names>JW</given-names></name>, <name name-style="western"><surname>Le</surname> <given-names>P</given-names></name>. <article-title>Operational models of pharmacological agonism</article-title>. <source>Proc R Soc Lond B Biol Sci</source>. <year>1983</year> <month>Dec</month>;<volume>220</volume>(<issue>1219</issue>):<fpage>141</fpage>–<lpage>162</lpage>. <object-id pub-id-type="pmid">6141562</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref005">
+<label>5</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Mackeigan</surname> <given-names>JP</given-names></name>, <name name-style="western"><surname>Murphy</surname> <given-names>LO</given-names></name>, <name name-style="western"><surname>Dimitri</surname> <given-names>CA</given-names></name>, <name name-style="western"><surname>Blenis</surname> <given-names>J</given-names></name>. <article-title>Graded mitogen-activated protein kinase activity precedes switch-like c-Fos induction in mammalian cells</article-title>. <source>Mol Cell Biol</source>. <year>2005</year> <month>Jun</month>;<volume>25</volume>(<issue>11</issue>):<fpage>4676</fpage>–<lpage>4682</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1128/MCB.25.11.4676-4682.2005" xlink:type="simple">10.1128/MCB.25.11.4676-4682.2005</ext-link></comment> <object-id pub-id-type="pmid">15899869</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref006">
+<label>6</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Yu</surname> <given-names>RC</given-names></name>, <name name-style="western"><surname>Pesce</surname> <given-names>CG</given-names></name>, <name name-style="western"><surname>Colman-Lerner</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Lok</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Pincus</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Serra</surname> <given-names>E</given-names></name>, <etal>et al</etal>. <article-title>Negative feedback that improves information transmission in yeast signalling</article-title>. <source>Nature</source>. <year>2008</year> <month>Dec</month>;<volume>456</volume>(<issue>7223</issue>):<fpage>755</fpage>–<lpage>761</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nature07513" xlink:type="simple">10.1038/nature07513</ext-link></comment> <object-id pub-id-type="pmid">19079053</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref007">
+<label>7</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Bosisio</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Marazzi</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Agresti</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Shimizu</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Bianchi</surname> <given-names>ME</given-names></name>, <name name-style="western"><surname>Natoli</surname> <given-names>G</given-names></name>. <article-title>A hyper-dynamic equilibrium between promoter-bound and nucleoplasmic dimers controls NF-<italic>κ</italic>B-dependent gene activity</article-title>. <source>EMBO J</source>. <year>2006</year> <month>Feb</month>;<volume>25</volume>(<issue>4</issue>):<fpage>798</fpage>–<lpage>810</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/sj.emboj.7600977" xlink:type="simple">10.1038/sj.emboj.7600977</ext-link></comment> <object-id pub-id-type="pmid">16467852</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref008">
+<label>8</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Werner</surname> <given-names>SL</given-names></name>, <name name-style="western"><surname>Kearns</surname> <given-names>JD</given-names></name>, <name name-style="western"><surname>Zadorozhnaya</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Lynch</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>O’Dea</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Boldin</surname> <given-names>MP</given-names></name>, <etal>et al</etal>. <article-title>Encoding NF-<italic>κ</italic>B temporal control in response to TNF: distinct roles for the negative regulators I<italic>κ</italic>B <italic>α</italic> and A20</article-title>. <source>Genes Dev</source>. <year>2008</year> <month>Aug</month>;<volume>22</volume>(<issue>15</issue>):<fpage>2093</fpage>–<lpage>2101</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1101/gad.1680708" xlink:type="simple">10.1101/gad.1680708</ext-link></comment> <object-id pub-id-type="pmid">18676814</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref009">
+<label>9</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Giorgetti</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Siggers</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Tiana</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Caprara</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Notarbartolo</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Corona</surname> <given-names>T</given-names></name>, <etal>et al</etal>. <article-title>Noncooperative interactions between transcription factors and clustered DNA binding sites enable graded transcriptional responses to environmental inputs</article-title>. <source>Mol Cell</source>. <year>2010</year> <month>Feb</month>;<volume>37</volume>(<issue>3</issue>):<fpage>418</fpage>–<lpage>428</lpage>. <object-id pub-id-type="pmid">20159560</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref010">
+<label>10</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Hao</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>O’Shea</surname> <given-names>EK</given-names></name>. <article-title>Signal-dependent dynamics of transcription factor translocation controls gene expression</article-title>. <source>Nat Struct Mol Biol</source>. <year>2012</year> <month>Jan</month>;<volume>19</volume>(<issue>1</issue>):<fpage>31</fpage>–<lpage>39</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref011">
+<label>11</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Paszek</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Jackson</surname> <given-names>DA</given-names></name>, <name name-style="western"><surname>White</surname> <given-names>MR</given-names></name>. <article-title>Oscillatory control of signalling molecules</article-title>. <source>Curr Opin Genet Dev</source>. <year>2010</year> <month>Dec</month>;<volume>20</volume>(<issue>6</issue>):<fpage>670</fpage>–<lpage>676</lpage>. <object-id pub-id-type="pmid">20850963</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref012">
+<label>12</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>D’Andrea</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Codazzi</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Zacchetti</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Meldolesi</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Grohovaz</surname> <given-names>F</given-names></name>. <article-title>Oscillations of cytosolic calcium in rat chroma n cells: dual modulation in frequency and amplitude</article-title>. <source>Biochem Biophys Res Commun</source>. <year>1994</year> <month>Dec</month>;<volume>205</volume>(<issue>2</issue>):<fpage>1264</fpage>–<lpage>1269</lpage>. <object-id pub-id-type="pmid">7528499</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref013">
+<label>13</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Berridge</surname> <given-names>MJ</given-names></name>. <article-title>The AM and FM of calcium signalling</article-title>. <source>Nature</source>. <year>1997</year> <month>Apr</month>;<volume>386</volume>:<fpage>759</fpage>–<lpage>760</lpage>. <object-id pub-id-type="pmid">9126727</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref014">
+<label>14</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Berridge</surname> <given-names>MJ</given-names></name>, <name name-style="western"><surname>Galione</surname> <given-names>A</given-names></name>. <article-title>Cytosolic calcium oscillators</article-title>. <source>FASEB J</source>. <year>1988</year> <month>Dec</month>;<volume>2</volume>(<issue>15</issue>):<fpage>3074</fpage>–<lpage>3082</lpage>. <object-id pub-id-type="pmid">2847949</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref015">
+<label>15</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Cai</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Dalal</surname> <given-names>CK</given-names></name>, <name name-style="western"><surname>Elowitz</surname> <given-names>MB</given-names></name>. <article-title>Frequency-modulated nuclear localization bursts coordinate gene regulation</article-title>. <source>Nature</source>. <year>2008</year> <month>Sep</month>;<volume>455</volume>(<issue>7212</issue>):<fpage>485</fpage>–<lpage>490</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nature07292" xlink:type="simple">10.1038/nature07292</ext-link></comment> <object-id pub-id-type="pmid">18818649</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref016">
+<label>16</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Crabtree</surname> <given-names>GR</given-names></name>, <name name-style="western"><surname>Graef</surname> <given-names>IA</given-names></name>. <article-title>Bursting into the nucleus</article-title>. <source>Sci Signal</source>. <year>2008</year> <month>Dec</month>;<volume>1</volume>(<issue>51</issue>):<fpage>pe54</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/scisignal.151pe54" xlink:type="simple">10.1126/scisignal.151pe54</ext-link></comment> <object-id pub-id-type="pmid">19109237</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref017">
+<label>17</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Levine</surname> <given-names>JH</given-names></name>, <name name-style="western"><surname>Lin</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Elowitz</surname> <given-names>MB</given-names></name>. <article-title>Functional roles of pulsing in genetic circuits</article-title>. <source>Science</source>. <year>2013</year> <month>Dec</month>;<volume>342</volume>(<issue>6163</issue>):<fpage>1193</fpage>–<lpage>1200</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/science.1239999" xlink:type="simple">10.1126/science.1239999</ext-link></comment> <object-id pub-id-type="pmid">24311681</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref018">
+<label>18</label>
+<mixed-citation xlink:type="simple" publication-type="book">
+<name name-style="western"><surname>Connor</surname> <given-names>FR</given-names></name>. <source>Introductory topics in electronics and telecommunication: modulation</source>. <publisher-name>The Universities Press</publisher-name>, <publisher-loc>Belfast</publisher-loc>; <year>1973</year>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref019">
+<label>19</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Eldar</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Elowitz</surname> <given-names>MB</given-names></name>. <article-title>Functional roles for noise in genetic circuits</article-title>. <source>Nature</source>. <year>2010</year> <month>Sep</month>;<volume>467</volume>(<issue>7312</issue>):<fpage>167</fpage>–<lpage>173</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nature09326" xlink:type="simple">10.1038/nature09326</ext-link></comment> <object-id pub-id-type="pmid">20829787</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref020">
+<label>20</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Locke</surname> <given-names>JC</given-names></name>, <name name-style="western"><surname>Young</surname> <given-names>JW</given-names></name>, <name name-style="western"><surname>Fontes</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Hernändez Jimënez</surname> <given-names>MJ</given-names></name>, <name name-style="western"><surname>Elowitz</surname> <given-names>MB</given-names></name>. <article-title>Stochastic pulse regulation in bacterial stress response</article-title>. <source>Science</source>. <year>2011</year> <month>Oct</month>;<volume>334</volume>(<issue>6054</issue>):<fpage>366</fpage>–<lpage>369</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/science.1208144" xlink:type="simple">10.1126/science.1208144</ext-link></comment> <object-id pub-id-type="pmid">21979936</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref021">
+<label>21</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Yissachar</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Sharar Fischler</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Cohen</surname> <given-names>AA</given-names></name>, <name name-style="western"><surname>Reich-Zeliger</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Russ</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Shifrut</surname> <given-names>E</given-names></name>, <etal>et al</etal>. <article-title>Dynamic response diversity of NFAT isoforms in individual living cells</article-title>. <source>Mol Cell</source>. <year>2013</year> <month>Jan</month>;<volume>49</volume>(<issue>2</issue>):<fpage>322</fpage>–<lpage>330</lpage>. <object-id pub-id-type="pmid">23219532</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref022">
+<label>22</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Lisman</surname> <given-names>JE</given-names></name>. <article-title>Bursts as a unit of neural information: making unreliable synapses reliable</article-title>. <source>Trends Neurosci</source>. <year>1997</year> <month>Jan</month>;<volume>20</volume>(<issue>1</issue>):<fpage>38</fpage>–<lpage>43</lpage>. <object-id pub-id-type="pmid">9004418</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref023">
+<label>23</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Mora</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Wingreen</surname> <given-names>NS</given-names></name>. <article-title>Limits of sensing temporal concentration changes by single cells</article-title>. <source>Phys Rev Lett</source>. <year>2010</year> <month>Jun</month>;<volume>104</volume>(<issue>24</issue>):<fpage>248101</fpage>–<lpage>248101</lpage>. <object-id pub-id-type="pmid">20867338</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref024">
+<label>24</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Tostevin</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>de Ronde</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>ten Wolde</surname> <given-names>PR</given-names></name>. <article-title>Reliability of frequency and amplitude decoding in gene regulation</article-title>. <source>Phys Rev Lett</source>. <year>2012</year> <month>Mar</month>;<volume>108</volume>(<issue>10</issue>):<fpage>108104</fpage>–<lpage>108104</lpage>. <object-id pub-id-type="pmid">22463459</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref025">
+<label>25</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Yi</surname> <given-names>TM</given-names></name>, <name name-style="western"><surname>Huang</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Simon</surname> <given-names>MI</given-names></name>, <name name-style="western"><surname>Doyle</surname> <given-names>J</given-names></name>. <article-title>Robust perfect adaptation in bacterial chemotaxis through integral feedback control</article-title>. <source>Proc Natl Acad Sci U S A</source>. <year>2000</year> <month>Apr</month>;<volume>97</volume>(<issue>9</issue>):<fpage>4649</fpage>–<lpage>4653</lpage>. <object-id pub-id-type="pmid">10781070</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref026">
+<label>26</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Barkai</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Leibler</surname> <given-names>S</given-names></name>. <article-title>Robustness in simple biochemical networks</article-title>. <source>Nature</source>. <year>1997</year> <month>Jun</month>;<volume>387</volume>(<issue>6636</issue>):<fpage>913</fpage>–<lpage>917</lpage>. <object-id pub-id-type="pmid">9202124</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref027">
+<label>27</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>De Palo</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Facchetti</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Mazzolini</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Menini</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Torre</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Altafini</surname> <given-names>C</given-names></name>. <article-title>Common dynamical features of sensory adaptation in photoreceptors and olfactory sensory neurons</article-title>. <source>Sci Rep</source>. <year>2013</year> <month>Feb</month>;<volume>3</volume>:<fpage>1251</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/srep01251" xlink:type="simple">10.1038/srep01251</ext-link></comment> <object-id pub-id-type="pmid">23409242</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref028">
+<label>28</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Li</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Goldbeter</surname> <given-names>A</given-names></name>. <article-title>Pulsatile signaling in intercellular communication. Periodic stimuli are more efficient than random or chaotic signals in a model based on receptor desensitization</article-title>. <source>Biophys J</source>. <year>1992</year> <month>Jan</month>;<volume>61</volume>(<issue>1</issue>):<fpage>161</fpage>–<lpage>171</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/S0006-3495(92)81824-6" xlink:type="simple">10.1016/S0006-3495(92)81824-6</ext-link></comment> <object-id pub-id-type="pmid">1311610</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref029">
+<label>29</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Rapp</surname> <given-names>PE</given-names></name>, <name name-style="western"><surname>Mees</surname> <given-names>AI</given-names></name>, <name name-style="western"><surname>Sparrow</surname> <given-names>CT</given-names></name>. <article-title>Frequency encoded biochemical regulation is more accurate than amplitude dependent control</article-title>. <source>J Theor Biol</source>. <year>1981</year> <month>Jun</month>;<volume>90</volume>(<issue>4</issue>):<fpage>531</fpage>–<lpage>544</lpage>. <object-id pub-id-type="pmid">6272030</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref030">
+<label>30</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Tyson</surname> <given-names>JJ</given-names></name>, <name name-style="western"><surname>Novak</surname> <given-names>B</given-names></name>. <source>Cell cycle: who turns the crank? Curr Biol</source>. <year>2011</year> <month>Mar</month>;<volume>21</volume>(<issue>5</issue>):<fpage>185</fpage>–<lpage>187</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref031">
+<label>31</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>McWatters</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Dunlap</surname> <given-names>JC</given-names></name>, <name name-style="western"><surname>Millar</surname> <given-names>AJ</given-names></name>. <article-title>Circadian biology: clocks for the real world</article-title>. <source>Curr Biol</source>. <year>1999</year> <month>Sep</month>;<volume>9</volume>(<issue>17</issue>):<fpage>633</fpage>–<lpage>635</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref032">
+<label>32</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Dolmetsch</surname> <given-names>RE</given-names></name>, <name name-style="western"><surname>Xu</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Lewis</surname> <given-names>RS</given-names></name>. <article-title>Calcium oscillations increase the efficiency and specificity of gene expression</article-title>. <source>Nature</source>. <year>1998</year> <month>Apr</month>;<volume>392</volume>(<issue>6679</issue>):<fpage>933</fpage>–<lpage>936</lpage>. <object-id pub-id-type="pmid">9582075</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref033">
+<label>33</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Batchelor</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Loewer</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Mock</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Lahav</surname> <given-names>G</given-names></name>. <article-title>Stimulus-dependent dynamics of p53 in single cells</article-title>. <source>Mol Syst Biol</source>. <year>2011</year> <month>May</month>;<volume>7</volume>:<fpage>488</fpage>–<lpage>488</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/msb.2011.20" xlink:type="simple">10.1038/msb.2011.20</ext-link></comment> <object-id pub-id-type="pmid">21556066</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref034">
+<label>34</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Ashall</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Horton</surname> <given-names>CA</given-names></name>, <name name-style="western"><surname>Nelson</surname> <given-names>DE</given-names></name>, <name name-style="western"><surname>Paszek</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Harper</surname> <given-names>CV</given-names></name>, <name name-style="western"><surname>Sillitoe</surname> <given-names>K</given-names></name>, <etal>et al</etal>. <article-title>Pulsatile stimulation determines timing and specificity of NF-<italic>κ</italic>B-dependent transcription</article-title>. <source>Science</source>. <year>2009</year> <month>Apr</month>;<volume>324</volume>(<issue>5924</issue>):<fpage>242</fpage>–<lpage>246</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/science.1164860" xlink:type="simple">10.1126/science.1164860</ext-link></comment> <object-id pub-id-type="pmid">19359585</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref035">
+<label>35</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Tay</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Hughey</surname> <given-names>JJ</given-names></name>, <name name-style="western"><surname>Lee</surname> <given-names>TK</given-names></name>, <name name-style="western"><surname>Lipniacki</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Quake</surname> <given-names>SR</given-names></name>, <name name-style="western"><surname>Covert</surname> <given-names>MW</given-names></name>. <article-title>Single-cell NF-<italic>κ</italic>B dynamics reveal digital activation and analogue information processing</article-title>. <source>Nature</source>. <year>2010</year> <month>Jul</month>;<volume>466</volume>(<issue>7303</issue>):<fpage>267</fpage>–<lpage>271</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nature09145" xlink:type="simple">10.1038/nature09145</ext-link></comment> <object-id pub-id-type="pmid">20581820</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref036">
+<label>36</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Albeck</surname> <given-names>JG</given-names></name>, <name name-style="western"><surname>Mills</surname> <given-names>GB</given-names></name>, <name name-style="western"><surname>Brugge</surname> <given-names>JS</given-names></name>. <article-title>Frequency-modulated pulses of ERK activity transmit quantitative proliferation signals</article-title>. <source>Mol Cell</source>. <year>2013</year> <month>Jan</month>;<volume>49</volume>(<issue>2</issue>):<fpage>249</fpage>–<lpage>261</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.molcel.2012.11.002" xlink:type="simple">10.1016/j.molcel.2012.11.002</ext-link></comment> <object-id pub-id-type="pmid">23219535</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref037">
+<label>37</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Cai</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Katoh-Kurasawa</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Muramoto</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Santhanam</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Long</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>L</given-names></name>, <etal>et al</etal>. <article-title>Nucleocytoplasmic shuttling of a GATA transcription factor functions as a development timer</article-title>. <source>Science (New York, NY)</source>. <year>2014</year> <month>Mar</month>;<volume>343</volume>(<issue>6177</issue>):<fpage>1249531</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref038">
+<label>38</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Gregor</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Fujimoto</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Masaki</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Sawai</surname> <given-names>S</given-names></name>. <article-title>The onset of collective behavior in social amoebae</article-title>. <source>Science</source>. <year>2010</year> <month>May</month>;<volume>328</volume>(<issue>5981</issue>):<fpage>1021</fpage>–<lpage>1025</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/science.1183415" xlink:type="simple">10.1126/science.1183415</ext-link></comment> <object-id pub-id-type="pmid">20413456</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref039">
+<label>39</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Goldbeter</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Gërard</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Gonze</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Leloup</surname> <given-names>JC</given-names></name>, <name name-style="western"><surname>Dupont</surname> <given-names>G</given-names></name>. <article-title>Systems biology of cellular rhythms</article-title>. <source>FEBS Lett</source>. <year>2012</year> <month>Aug</month>;<volume>586</volume>(<issue>18</issue>):<fpage>2955</fpage>–<lpage>2965</lpage>. <object-id pub-id-type="pmid">22841722</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref040">
+<label>40</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Takeda</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Shao</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Adler</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Charest</surname> <given-names>PG</given-names></name>, <name name-style="western"><surname>Loomis</surname> <given-names>WF</given-names></name>, <name name-style="western"><surname>Levine</surname> <given-names>H</given-names></name>, <etal>et al</etal>. <article-title>Incoherent feedforward control governs adaptation of activated ras in a eukaryotic chemotaxis pathway</article-title>. <source>Sci Signal</source>. <year>2012</year> <month>Jan</month>;<volume>5</volume>(<issue>205</issue>). <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/scisignal.2002413" xlink:type="simple">10.1126/scisignal.2002413</ext-link></comment> <object-id pub-id-type="pmid">22215733</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref041">
+<label>41</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Shen-Orr</surname> <given-names>SS</given-names></name>, <name name-style="western"><surname>Milo</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Mangan</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Alon</surname> <given-names>U</given-names></name>. <article-title>Network motifs in the transcriptional regulation network of <italic>Escherichia coli</italic></article-title>. <source>Nat Genet</source>. <year>2002</year> <month>May</month>;<volume>31</volume>(<issue>1</issue>):<fpage>64</fpage>–<lpage>68</lpage>. <object-id pub-id-type="pmid">11967538</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref042">
+<label>42</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Goentoro</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Shoval</surname> <given-names>O</given-names></name>, <name name-style="western"><surname>Kirschner</surname> <given-names>MW</given-names></name>, <name name-style="western"><surname>Alon</surname> <given-names>U</given-names></name>. <article-title>The incoherent feedforward loop can provide fold-change detection in gene regulation</article-title>. <source>Mol Cell</source>. <year>2009</year> <month>Dec</month>;<volume>36</volume>(<issue>5</issue>):<fpage>894</fpage>–<lpage>899</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.molcel.2009.11.018" xlink:type="simple">10.1016/j.molcel.2009.11.018</ext-link></comment> <object-id pub-id-type="pmid">20005851</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref043">
+<label>43</label>
+<mixed-citation xlink:type="simple" publication-type="book">
+<name name-style="western"><surname>Hille</surname> <given-names>B</given-names></name>. <source>Ion channels of excitable membranes</source>. <edition>3rd ed</edition>. <publisher-name>Sinauer Associates Inc</publisher-name> 2001–07; <year>2001</year>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref044">
+<label>44</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Endres</surname> <given-names>RG</given-names></name>, <name name-style="western"><surname>Wingreen</surname> <given-names>NS</given-names></name>. <article-title>Maximum likelihood and the single receptor</article-title>. <source>Phys Rev Lett</source>. <year>2009</year> <month>Oct</month>;<volume>103</volume>(<issue>15</issue>):<fpage>158101</fpage>–<lpage>158101</lpage>. <object-id pub-id-type="pmid">19905667</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref045">
+<label>45</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Endres</surname> <given-names>RG</given-names></name>. <article-title>Polar chemoreceptor clustering by coupled trimers of dimers</article-title>. <source>Biophys J</source>. <year>2009</year> <month>Jan</month>;<volume>96</volume>(<issue>2</issue>):<fpage>453</fpage>–<lpage>463</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.bpj.2008.10.021" xlink:type="simple">10.1016/j.bpj.2008.10.021</ext-link></comment> <object-id pub-id-type="pmid">19167296</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref046">
+<label>46</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Wiggins</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Phillips</surname> <given-names>R</given-names></name>. <article-title>Membrane-protein interactions in mechanosensitive channels</article-title>. <source>Biophys J</source>. <year>2005</year> <month>Feb</month>;<volume>88</volume>(<issue>2</issue>):<fpage>880</fpage>–<lpage>902</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1529/biophysj.104.047431" xlink:type="simple">10.1529/biophysj.104.047431</ext-link></comment> <object-id pub-id-type="pmid">15542561</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref047">
+<label>47</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Alon</surname> <given-names>U</given-names></name>, <name name-style="western"><surname>Surette</surname> <given-names>MG</given-names></name>, <name name-style="western"><surname>Barkai</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Leibler</surname> <given-names>S</given-names></name>. <article-title>Robustness in bacterial chemotaxis</article-title>. <source>Nature</source>. <year>1999</year> <month>Jan</month>;<volume>397</volume>(<issue>6715</issue>):<fpage>168</fpage>–<lpage>171</lpage>. <object-id pub-id-type="pmid">9923680</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref048">
+<label>48</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Berg</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Purcell</surname> <given-names>E</given-names></name>. <article-title>Physics of chemoreception</article-title>. <source>Biophysical Journal</source>. <year>1977</year> <month>Nov</month>;<volume>20</volume>(<issue>2</issue>):<fpage>193</fpage>–<lpage>219</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/S0006-3495(77)85544-6" xlink:type="simple">10.1016/S0006-3495(77)85544-6</ext-link></comment> <object-id pub-id-type="pmid">911982</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref049">
+<label>49</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Yoshimoto</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Saltsman</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Gasch</surname> <given-names>AP</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>HX</given-names></name>, <name name-style="western"><surname>Ogawa</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Botstein</surname> <given-names>D</given-names></name>, <etal>et al</etal>. <article-title>Genome-wide analysis of gene expression regulated by the calcineurin/Crz1p signaling pathway in <italic>Saccharomyces cerevisiae</italic></article-title>. <source>J Biol Chem</source>. <year>2002</year> <month>Aug</month>;<volume>277</volume>(<issue>34</issue>):<fpage>31079</fpage>–<lpage>31088</lpage>. <object-id pub-id-type="pmid">12058033</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref050">
+<label>50</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Hoffmann</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Baltimore</surname> <given-names>D</given-names></name>. <article-title>Circuitry of nuclear factor B signaling</article-title>. <source>Immunol Rev</source>. <year>2006</year> <month>Apr</month>;<volume>210</volume>:<fpage>171</fpage>–<lpage>186</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref051">
+<label>51</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Schmitt</surname> <given-names>AP</given-names></name>, <name name-style="western"><surname>McEntee</surname> <given-names>K</given-names></name>. <article-title>Msn2p, a zinc finger DNA-binding protein, is the transcriptional activator of the multistress response in Saccharomyces cerevisiae</article-title>. <source>Proc Natl Acad Sci U S A</source>. <year>1996</year> <month>Jun</month>;<volume>93</volume>(<issue>12</issue>):<fpage>5777</fpage>–<lpage>5782</lpage>. <object-id pub-id-type="pmid">8650168</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref052">
+<label>52</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Kang</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Xu</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Yao</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Lin</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Hennessy</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Fraser</surname> <given-names>P</given-names></name>, <etal>et al</etal>. <article-title>A dynamical model reveals gene co-localizations in nucleus</article-title>. <source>PLoS Comput Biol</source>. <year>2011</year> <month>Jul</month>;<volume>7</volume>(<issue>7</issue>). <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.1002094" xlink:type="simple">10.1371/journal.pcbi.1002094</ext-link></comment> <object-id pub-id-type="pmid">21760760</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref053">
+<label>53</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Ferrell</surname> <given-names>JE</given-names></name>. <article-title>Bistability, bifurcations, and Waddington’s epigenetic landscape</article-title>. <source>Curr Biol</source>. <year>2012</year> <month>Jun</month>;<volume>22</volume>(<issue>11</issue>):<fpage>458</fpage>–<lpage>466</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref054">
+<label>54</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Purvis</surname> <given-names>JE</given-names></name>, <name name-style="western"><surname>Karhohs</surname> <given-names>KW</given-names></name>, <name name-style="western"><surname>Mock</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Batchelor</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Loewer</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>G</surname> <given-names>L</given-names></name>. <article-title>p53 dynamics control cell fate</article-title>. <source>Science</source>. <year>2012</year> <month>Jun</month>;<volume>336</volume>:<fpage>1440</fpage>–<lpage>1444</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/science.1218351" xlink:type="simple">10.1126/science.1218351</ext-link></comment> <object-id pub-id-type="pmid">22700930</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref055">
+<label>55</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Muramoto</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Cannon</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Gierlinski</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Corrigan</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Barton</surname> <given-names>GJ</given-names></name>, <name name-style="western"><surname>Chubb</surname> <given-names>JR</given-names></name>. <article-title>Live imaging of nascent RNA dynamics reveals distinct types of transcriptional pulse regulation</article-title>. <source>Proc Natl Acad Sci U S A</source>. <year>2012</year> <month>May</month>;<volume>109</volume>(<issue>19</issue>):<fpage>7350</fpage>–<lpage>7355</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.1117603109" xlink:type="simple">10.1073/pnas.1117603109</ext-link></comment> <object-id pub-id-type="pmid">22529358</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref056">
+<label>56</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Thattai</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>van Oudenaarden</surname> <given-names>A</given-names></name>. <article-title>Intrinsic noise in gene regulatory networks</article-title>. <source>Proc Natl Acad Sci U S A</source>. <year>2001</year> <month>Jul</month>;<volume>98</volume>(<issue>15</issue>):<fpage>8614</fpage>–<lpage>8619</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.151588598" xlink:type="simple">10.1073/pnas.151588598</ext-link></comment> <object-id pub-id-type="pmid">11438714</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref057">
+<label>57</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Lang</surname> <given-names>AH</given-names></name>, <name name-style="western"><surname>Fisher</surname> <given-names>CK</given-names></name>, <name name-style="western"><surname>Mora</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Mehta</surname> <given-names>P</given-names></name>. <article-title>Thermodynamics of statistical inference by cells</article-title>. <source>Phys Rev Lett</source>. <year>2014</year> <month>Oct</month>;<volume>113</volume>(<issue>14</issue>):<fpage>148103</fpage>–<lpage>148103</lpage>. <object-id pub-id-type="pmid">25325665</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref058">
+<label>58</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Csanädy</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Vergani</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Gadsby</surname> <given-names>DC</given-names></name>. <article-title>Strict coupling between CFTR’s catalytic cycle and gating of its Cl- ion pore revealed by distributions of open channel burst durations</article-title>. <source>Proc Natl Acad Sci U S A</source>. <year>2010</year> <month>Jan</month>;<volume>107</volume>(<issue>3</issue>):<fpage>1241</fpage>–<lpage>1246</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.0911061107" xlink:type="simple">10.1073/pnas.0911061107</ext-link></comment> <object-id pub-id-type="pmid">19966305</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref059">
+<label>59</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Schneggenburger</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Ascher</surname> <given-names>P</given-names></name>. <article-title>Coupling of permeation and gating in an NMDA-channel pore mutant</article-title>. <source>Neuron</source>. <year>1997</year> <month>Jan</month>;<volume>18</volume>(<issue>1</issue>):<fpage>167</fpage>–<lpage>177</lpage>. <object-id pub-id-type="pmid">9010214</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref060">
+<label>60</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Arron</surname> <given-names>JR</given-names></name>, <name name-style="western"><surname>Winslow</surname> <given-names>MM</given-names></name>, <name name-style="western"><surname>Polleri</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Chang</surname> <given-names>CP</given-names></name>, <name name-style="western"><surname>Wu</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Gao</surname> <given-names>X</given-names></name>, <etal>et al</etal>. <article-title>NFAT dysregulation by increased dosage of DSCR1 and DYRK1A on chromosome 21</article-title>. <source>Nature</source>. <year>2006</year> <month>Jun</month>;<volume>441</volume>(<issue>7093</issue>):<fpage>595</fpage>–<lpage>600</lpage>. <object-id pub-id-type="pmid">16554754</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref061">
+<label>61</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Anderson</surname> <given-names>PW</given-names></name>. <article-title>More is different</article-title>. <source>Science</source>. <year>1972</year> <month>Aug</month>;<volume>177</volume>(<issue>4044</issue>):<fpage>393</fpage>–<lpage>6</lpage>. <object-id pub-id-type="pmid">17796623</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref062">
+<label>62</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Mehta</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Schwab</surname> <given-names>DJ</given-names></name>. <article-title>Energetic costs of cellular computation</article-title>. <source>Proc Natl Acad Sci U S A</source>. <year>2012</year> <month>Oct</month>;<volume>109</volume>(<issue>44</issue>):<fpage>17978</fpage>–<lpage>17982</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.1207814109" xlink:type="simple">10.1073/pnas.1207814109</ext-link></comment> <object-id pub-id-type="pmid">23045633</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004222.ref063">
+<label>63</label>
+<mixed-citation xlink:type="simple" publication-type="journal">
+<name name-style="western"><surname>Gillespie</surname> <given-names>DT</given-names></name>. <article-title>A general method for numerically simulating the stochastic time evolution of coupled chemical reactions</article-title>. <source>J Comput Phys</source>. <year>1976</year>;<volume>22</volume>(<issue>4</issue>):<fpage>403</fpage>–<lpage>434</lpage>.</mixed-citation>
+</ref>
+</ref-list>
+</back>
+</article>

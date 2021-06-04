@@ -1,0 +1,978 @@
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.1d3 20150301//EN" "http://jats.nlm.nih.gov/publishing/1.1d3/JATS-journalpublishing1.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="1.1d3" xml:lang="en">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">ploscomp</journal-id>
+<journal-title-group>
+<journal-title>PLOS Computational Biology</journal-title>
+</journal-title-group>
+<issn pub-type="ppub">1553-734X</issn>
+<issn pub-type="epub">1553-7358</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pcbi.1005513</article-id>
+<article-id pub-id-type="publisher-id">PCOMPBIOL-D-16-01454</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+<subj-group subj-group-type="Discipline-v3"><subject>Computer and information sciences</subject><subj-group><subject>Network analysis</subject><subj-group><subject>Metabolic networks</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Research and analysis methods</subject><subj-group><subject>Experimental organism systems</subject><subj-group><subject>Model organisms</subject><subj-group><subject>Saccharomyces cerevisiae</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Research and analysis methods</subject><subj-group><subject>Model organisms</subject><subj-group><subject>Saccharomyces cerevisiae</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Organisms</subject><subj-group><subject>Fungi</subject><subj-group><subject>Yeast</subject><subj-group><subject>Saccharomyces</subject><subj-group><subject>Saccharomyces cerevisiae</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Research and analysis methods</subject><subj-group><subject>Experimental organism systems</subject><subj-group><subject>Yeast and fungal models</subject><subj-group><subject>Saccharomyces cerevisiae</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Biochemistry</subject><subj-group><subject>Metabolism</subject><subj-group><subject>Metabolites</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Biochemistry</subject><subj-group><subject>Metabolism</subject><subj-group><subject>Metabolic pathways</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Biochemistry</subject><subj-group><subject>Biosynthesis</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Physical sciences</subject><subj-group><subject>Chemistry</subject><subj-group><subject>Chemical compounds</subject><subj-group><subject>Carbon dioxide</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Biochemistry</subject><subj-group><subject>Enzymology</subject><subj-group><subject>Enzyme chemistry</subject><subj-group><subject>Cofactors (biochemistry)</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Biochemistry</subject><subj-group><subject>Enzymology</subject><subj-group><subject>Enzyme chemistry</subject><subj-group><subject>Enzyme metabolism</subject></subj-group></subj-group></subj-group></subj-group></subj-group></article-categories>
+<title-group>
+<article-title><italic>lumpGEM</italic>: Systematic generation of subnetworks and elementally balanced lumped reactions for the biosynthesis of target metabolites</article-title>
+<alt-title alt-title-type="running-head">Construction of subnetworks and lumped reactions for the target metabolites</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Ataman</surname>
+<given-names>Meric</given-names>
+</name>
+<xref ref-type="aff" rid="aff001"/>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0001-6432-4694</contrib-id>
+<name name-style="western">
+<surname>Hatzimanikatis</surname>
+<given-names>Vassily</given-names>
+</name>
+<xref ref-type="corresp" rid="cor001">*</xref>
+<xref ref-type="aff" rid="aff001"/>
+</contrib>
+</contrib-group>
+<aff id="aff001"><addr-line>Laboratory of Computational Systems Biotechnology, Ecole Polytechnique Federale de Lausanne (EPFL), Lausanne, Switzerland</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Miyano</surname>
+<given-names>Satoru</given-names>
+</name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>University of Tokyo, JAPAN</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<fn fn-type="con">
+<p><list list-type="simple"><list-item>
+<p><bold>Conceptualization:</bold> MA VH.</p></list-item> <list-item>
+<p><bold>Funding acquisition:</bold> VH.</p></list-item> <list-item>
+<p><bold>Methodology:</bold> MA VH.</p></list-item> <list-item>
+<p><bold>Project administration:</bold> VH.</p></list-item> <list-item>
+<p><bold>Resources:</bold> VH.</p></list-item> <list-item>
+<p><bold>Software:</bold> MA.</p></list-item> <list-item>
+<p><bold>Supervision:</bold> VH.</p></list-item> <list-item>
+<p><bold>Writing – original draft:</bold> MA VH.</p></list-item> <list-item>
+<p><bold>Writing – review &amp; editing:</bold> MA VH.</p></list-item></list>
+</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">vassily.hatzimanikatis@epfl.ch</email></corresp>
+</author-notes>
+<pub-date pub-type="epub">
+<day>20</day>
+<month>7</month>
+<year>2017</year>
+</pub-date>
+<pub-date pub-type="collection">
+<month>7</month>
+<year>2017</year>
+</pub-date>
+<volume>13</volume>
+<issue>7</issue>
+<elocation-id>e1005513</elocation-id>
+<history>
+<date date-type="received">
+<day>7</day>
+<month>9</month>
+<year>2016</year>
+</date>
+<date date-type="accepted">
+<day>31</day>
+<month>3</month>
+<year>2017</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2017</copyright-year>
+<copyright-holder>Ataman, Hatzimanikatis</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pcbi.1005513"/>
+<related-article ext-link-type="uri" id="related001" related-article-type="companion" xlink:href="info:doi/10.1371/journal.pcbi.1005444" xlink:type="simple">
+<article-title>redGEM: Systematic reduction of genome-scale metabolic reconstructions for development of core metabolic models</article-title>
+</related-article>
+<abstract>
+<p>In the post-genomic era, Genome-scale metabolic networks (GEMs) have emerged as invaluable tools to understand metabolic capabilities of organisms. Different parts of these metabolic networks are defined as subsystems/pathways, which are sets of <italic>functional roles</italic> to implement a specific biological process or structural complex, such as glycolysis and TCA cycle. Subsystem/pathway definition is also employed to delineate the biosynthetic routes that produce biomass building blocks. In databases, such as MetaCyc and SEED, these representations are composed of linear routes from precursors to target biomass building blocks. However, this approach cannot capture the nested, complex nature of GEMs. Here we implemented an algorithm, lumpGEM, which generates biosynthetic subnetworks composed of reactions that can synthesize a target metabolite from a set of defined <italic>core</italic> precursor metabolites. lumpGEM captures balanced subnetworks, which account for the fate of all metabolites along the synthesis routes, thus encapsulating reactions from various subsystems/pathways to balance these metabolites in the metabolic network. Moreover, lumpGEM collapses these subnetworks into elementally balanced lumped reactions that specify the cost of all precursor metabolites and cofactors. It also generates alternative subnetworks and lumped reactions for the same metabolite, accounting for the flexibility of organisms. lumpGEM is applicable to any GEM and any target metabolite defined in the network. Lumped reactions generated by lumpGEM can be also used to generate properly balanced reduced core metabolic models.</p>
+</abstract>
+<abstract abstract-type="summary">
+<title>Author summary</title>
+<p>Stoichiometric models have been used in the area of metabolic engineering and systems biology for many decades. The early examples of these models include simplified <italic>ad hoc</italic> built metabolic pathways, and biomass compositions. The development of genome scale models (GEMs) brought a standard to metabolic network modeling. However, the vast amount of detailed biochemistry in GEMs makes it necessary to develop methods to manage the complexity in them. In this study, we developed lumpGEM, a tool that can systematically identify subnetworks from metabolic networks that can perform certain tasks, such as biosynthesis of a biomass building block and any other target metabolite. By generating alternative subnetworks, lumpGEM also accounts for the redundancy in metabolic networks. We applied lumpGEM on latest <italic>E</italic>. <italic>coli</italic> GEM iJO1366 and identified subnetworks/lumped reactions for every biomass building block defined in its biomass formulation. We also compared the results from lumpGEM with existing knowledge in the literature. The lumped reactions generated by lumpGEM can be used to generate consistently reduced metabolic network models.</p>
+</abstract>
+<funding-group>
+<funding-statement>The authors received no specific funding for this work.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="2"/>
+<table-count count="3"/>
+<page-count count="21"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability">
+<meta-name>Data Availability</meta-name>
+<meta-value>All relevant data are within the paper and its Supporting Information files.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>Stoichiometric models have been extensively used since 1980s [<xref ref-type="bibr" rid="pcbi.1005513.ref001">1</xref>–<xref ref-type="bibr" rid="pcbi.1005513.ref003">3</xref>] and prediction capabilities of these networks have been proven to be very useful. The size and structure of these models varied among different studies. One of the pioneering studies on <italic>E</italic>. <italic>coli</italic> through a small stoichiometric model is performed by Varma et al. [<xref ref-type="bibr" rid="pcbi.1005513.ref004">4</xref>,<xref ref-type="bibr" rid="pcbi.1005513.ref005">5</xref>] in where the authors described the model as composed of core carbon metabolism pathways namely, glycolysis, pentose phosphate pathway, TCA cycle and formation of some by-product formations accompanied by a part of the Electron Transport Chain (ETC). This stoichiometric definition is further extended by the integration of a biomass composition formulation that is provided in the classic text published by Neidhardt [<xref ref-type="bibr" rid="pcbi.1005513.ref006">6</xref>]. In this textbook, <italic>E</italic>. <italic>coli</italic> metabolism has been explained extensively, and all the components (amino acids, lipids, DNA, RNA etc.) that constitute 1gDW of cell were reported based on previous experiments [<xref ref-type="bibr" rid="pcbi.1005513.ref007">7</xref>]. Moreover, the amounts of 12 precursor metabolites from the core carbon metabolism (erythrose-4-phosphate, ribose-5-phosphate, pyruvate, alpha-ketoglutarate, phosphoenolpyruvate etc.) along with the requirement of cofactors (ATP, NADH, NADPH) and inorganic compounds (S, NH4) to synthesize these biomass building blocks (BBB) were estimated. Such representation has been used in different studies to understand the core carbon metabolism and its relation with biomass accumulation [<xref ref-type="bibr" rid="pcbi.1005513.ref008">8</xref>,<xref ref-type="bibr" rid="pcbi.1005513.ref009">9</xref>]. This information for <italic>E</italic>. <italic>coli</italic> allowed the authors to develop a model that can describe the growth requirements and limitations of the organism without including the complex biosynthesis routes for each individual biomass building block. With such a small stoichiometric representation of the core metabolism (~50 reactions), authors were able to predict many aspects of <italic>E</italic>. <italic>coli</italic> physiology. Similar metabolic models with a reduced representation of the biosynthesis of the building blocks have been used in many other studies for <italic>E</italic>. <italic>coli</italic> and other organisms [<xref ref-type="bibr" rid="pcbi.1005513.ref010">10</xref>–<xref ref-type="bibr" rid="pcbi.1005513.ref015">15</xref>].</p>
+<p>In the following years, with the development of sequencing and high-throughput technologies, the gene-protein-reaction (GPR) associations [<xref ref-type="bibr" rid="pcbi.1005513.ref016">16</xref>] have been improved and the number of sequenced genomes has sparked off [<xref ref-type="bibr" rid="pcbi.1005513.ref017">17</xref>,<xref ref-type="bibr" rid="pcbi.1005513.ref018">18</xref>]. This accumulation of knowledge eventually has led to the development of Genome scale metabolic networks (GEMs) [<xref ref-type="bibr" rid="pcbi.1005513.ref019">19</xref>,<xref ref-type="bibr" rid="pcbi.1005513.ref020">20</xref>], which encapsulate all the known biochemistry of organisms. These comprehensive representations of metabolism are accompanied by biomass formulations that account for the cell composition [<xref ref-type="bibr" rid="pcbi.1005513.ref021">21</xref>]. The contribution of each biomass building block is either determined empirically, or approximated from phylogenetically close species [<xref ref-type="bibr" rid="pcbi.1005513.ref022">22</xref>].</p>
+<p>Many metabolic models for various organisms [<xref ref-type="bibr" rid="pcbi.1005513.ref020">20</xref>,<xref ref-type="bibr" rid="pcbi.1005513.ref023">23</xref>–<xref ref-type="bibr" rid="pcbi.1005513.ref027">27</xref>] and their strains [<xref ref-type="bibr" rid="pcbi.1005513.ref028">28</xref>,<xref ref-type="bibr" rid="pcbi.1005513.ref029">29</xref>] have been constructed and they proved to be extremely useful for many different purposes ranging from strain design for biosynthesis of industrial chemicals to drug discovery [<xref ref-type="bibr" rid="pcbi.1005513.ref030">30</xref>]. Although GEMs are widely used and have provided important insight and guidance, small and yet predictive models are still widely in use in different areas, such as metabolic flux analysis (MFA) and kinetic modelling. And while the biomass formulation of Neidhardt is still in use and has proven to be valid in the last 25 years, as Pramanik et al. [<xref ref-type="bibr" rid="pcbi.1005513.ref012">12</xref>] have shown, the changes in the biomass composition have significant effects on the internal fluxes, thus should be considered very carefully. In this respect, the extended and curated biochemistry in GEMs can be used to validate and to improve the approximations made by Neidhardt, and to extend it for any organism and for every biomass building block defined in biomass compositions of GEMs and to account for alternative synthesis routes.</p>
+<p>Towards this, we developed lumpGEM, a mixed-integer linear programming algorithm that identifies all the alternative reaction subnetworks that should be used to produce a cellular metabolite or biomass building block from a defined set of metabolites. For each subnetwork, lumpGEM derives a lumped reaction that can capture the overall stoichiometry of the subnetwork, while preserving the elemental balance. The concept of identifying minimum number of reaction or enzymes to perform a certain function is not new, throughout the last two decades, different studies have been performed around this idea. Hatzimanikatis et al. developed a mixed-integer linear programming (MILP) formulation to determine the minimum number of regulatory structures to manipulate to optimize a bioprocess, along with possible alternatives [<xref ref-type="bibr" rid="pcbi.1005513.ref031">31</xref>]. In another pioneering study, Burgard et al. [<xref ref-type="bibr" rid="pcbi.1005513.ref032">32</xref>] have determined the minimum number of reactions that can sustain growth in <italic>E</italic>. <italic>coli</italic> contemporary GEM [<xref ref-type="bibr" rid="pcbi.1005513.ref019">19</xref>]. Later, the concept of finding all possible optimal solutions in metabolic networks has been introduced [<xref ref-type="bibr" rid="pcbi.1005513.ref033">33</xref>]. Elementary flux modes analysis (EFMA) has been another popular tool to analyze the metabolic networks in terms of minimal functional units [<xref ref-type="bibr" rid="pcbi.1005513.ref034">34</xref>] and used before to study nucleotide production [<xref ref-type="bibr" rid="pcbi.1005513.ref035">35</xref>]. The main limitation of EFMA is the requirement of generation of all the EFMs, which is computationally too costly to be applied to genome-scale networks. Due to this limitation, Figueiredo et al. [<xref ref-type="bibr" rid="pcbi.1005513.ref036">36</xref>] discussed the concept of <italic>K-shortest</italic> EFM, an MILP approach, and identified 10 minimal reaction sets that can produce lysine in <italic>E</italic>. <italic>coli</italic> and <italic>C</italic>.<italic>glutamicum</italic>. In lumpGEM, we follow a similar but an efficient approach compared to the previous studies and we have merged it with thermodynamics-based flux analysis (TFA) to account for bioenergetics constraints. With lumpGEM we can generate thousands of thermodynamically feasible minimal subnetworks that can produce a target metabolite from a set of selected precursor metabolites.</p>
+<p>In this study, we focused on the biosynthesis pathways of biomass building blocks of <italic>E</italic>. <italic>coli</italic> iJO1366 [<xref ref-type="bibr" rid="pcbi.1005513.ref029">29</xref>], and <italic>S</italic>. <italic>cerevisiae</italic> iMM904 [<xref ref-type="bibr" rid="pcbi.1005513.ref037">37</xref>] and with lumpGEM (<xref ref-type="fig" rid="pcbi.1005513.g001">Fig 1</xref>), we have identified known and possible other alternative synthesis routes/subnetworks for all BBBs from <italic>core</italic> carbon metabolism as defined in [<xref ref-type="bibr" rid="pcbi.1005513.ref004">4</xref>,<xref ref-type="bibr" rid="pcbi.1005513.ref005">5</xref>]. We demonstrated that lumpGEM is capable of building lumped reactions in where the contribution of each <italic>core</italic> carbon metabolite to synthesize a biomass building block is identified and properly accounted.</p>
+<fig id="pcbi.1005513.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1005513.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>Inputs and outputs for lumpGEM.</title>
+<p>By defining the <italic>core</italic> precursors (AKG: alpha-keto glutarate, oxaloacetate, …), cofactor pairs (NADH, ATP, …), inorganics (SO<sub>4</sub>, NH<sub>4</sub>), biomass building blocks (<italic>BBBs</italic>), and <italic>non-core</italic> parts of metabolism, the GEM is provided to lumpGEM. The output of lumpGEM is thermodynamically feasible subnetworks, which with the <italic>core</italic>, is capable of synthesizing <italic>BBBs</italic>. The MILP characteristic of lumpGEM allows the building of alternative subnetworks and lumped reactions for the same <italic>BBB</italic><sub><italic>j</italic></sub>, and it ranks them according to yield.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005513.g001" xlink:type="simple"/>
+</fig>
+<p>Then, we performed a comparison between the values reported by Neidhardt and those generated by lumpGEM and found that lumpGEM recovered Neidhardt tables and extended them by including alternative biosynthetic routes/lumped reactions. We also performed a comparison between <italic>E</italic>. <italic>coli</italic> and <italic>S</italic>. <italic>cerevisiae</italic> for their metabolic capabilities to produce BBBs and revealed their similarities and differences. Such studies will help us to understand the capabilities of <italic>E</italic>. <italic>coli</italic> and <italic>S</italic>. <italic>cerevisiae</italic> ‘per’ biomass building block and identify the flexibility of the organism to survive by activating different parts of the metabolism to accumulate biomass. The generality of the method makes it applicable to any GEM that has a well-defined biomass composition. In addition, lumpGEM can generate lumped reactions from any part of the metabolism for any target metabolite, either a biomass building block or a biochemical and chemical compound or sets of compounds, which makes it a versatile tool to be used for different purposes.</p>
+</sec>
+<sec id="sec002" sec-type="conclusions">
+<title>Results and discussion</title>
+<p>The genome-scale models (GEMs) can simulate the growth characteristics of organism since they include the necessary biosynthetic paths to biomass building blocks (BBBs), which make up 1 gDW of cell. However, when the GEM is optimized for maximum specific growth using Flux Balance Analysis, the contribution of <italic>M</italic><sup><italic>core</italic></sup> (the core metabolites, for definitions, see <xref ref-type="sec" rid="sec008">Material and methods</xref>) to synthesize a biomass building block is not evident from the flux distribution due to the degrees of freedom that the system has, and the alternative routes that a BBB can be synthesized. In order to overcome this limitation, lumpGEM utilizes a Mixed-Integer Linear Programming (MILP) formulation (See <xref ref-type="sec" rid="sec008">Material and methods</xref>) to reveal the contribution of <italic>M</italic><sup><italic>core</italic></sup> and <italic>R</italic><sup><italic>core</italic></sup> (core reactions) while preserving the elemental balance. MILP formulations have been often used on biochemical networks for many purposes [<xref ref-type="bibr" rid="pcbi.1005513.ref031">31</xref>,<xref ref-type="bibr" rid="pcbi.1005513.ref036">36</xref>,<xref ref-type="bibr" rid="pcbi.1005513.ref038">38</xref>,<xref ref-type="bibr" rid="pcbi.1005513.ref039">39</xref>] since they allow the control of reactions with an on/off manner. We made use of this binary decision in order to control the flux through the reactions of <italic>R</italic><sup><italic>ncGEM</italic></sup> (the reactions defined in GEM network other than <italic>R</italic><sup><italic>core</italic></sup>, (also see Postulate 1, <xref ref-type="sec" rid="sec008">Material and methods</xref>), and lumpGEM allowed us to build minimal subnetworks that can synthesize BBBs from any selected part of the metabolism in GEMs, in this specific case, the core carbon metabolism.</p>
+<p>The biomass formulation defined in <italic>E</italic>. <italic>coli</italic> IOJ1366 is very well characterized and detailed and contains 102 biomass building blocks. It is mainly composed of amino acids, lipids, nucleoside triphosphates (NTPs), deoxy-NTPs and inorganic compounds (Nickel, Zinc, Iron, etc.) along with cofactors such as NAD<sup>+</sup>/NADH, NADP<sup>+</sup>/NADPH, CoA/AcCoA, and FAD. Experimental estimates of the growth associated ATP maintenance and production of diphosphate are also included in the biomass composition.</p>
+<p>The main difference between our approach for generating synthesis routes for the BBBs and the database-based analysis is that the <italic>subnetworks</italic> that our method generates may include branches from linear synthesis pathways. The difference emerges from the mass conservation constraint that we force during our analysis. For instance, the smallest subnetwork that lumpGEM generated for the synthesis of histidine is composed of 21 reactions and the precursors are ribose-5-phosphate (R5P) and oxaloacetate. In the databases such as EcoCyc [<xref ref-type="bibr" rid="pcbi.1005513.ref040">40</xref>], the pathway for histidine synthesis is linear and composed of 10 steps, specifying ribose-5-phosphate (R5P) as the only precursor. When we analyse the 21-reaction subnetwork (<xref ref-type="fig" rid="pcbi.1005513.g002">Fig 2</xref>), we see branching points in the linear route from R5P to histidine. Due to the mass balance constraint, three metabolites, 1-(5-Phosphoribosyl)-5-amino-4-imidazolecarboxamide, L-Glutamine and diphosphate cannot be balanced in a network that is composed of <italic>core</italic> reactions and the linear pathway from ribose-5-phophate to histidine. Hence, the generated sets of reactions are not only the linear routes from precursor metabolites to biomass building blocks, but balanced subnetworks with stoichiometrically proportional branches (Postulate 3, <xref ref-type="sec" rid="sec008">Materials and methods</xref>). lumpGEM captured reactions from various subsystems that are parts of histidine subnetwork, namely alanine and aspartate metabolism, anaplerotic reactions, folate metabolism, glutamate metabolism, histidine metabolism, nucleotide salvage pathway, purine and pyrimidine biosynthesis. In addition, the lumped reaction that is generated from this subnetwork (for lumping algorithm, see <xref ref-type="sec" rid="sec008">Materials and methods</xref>) has only <italic>core</italic> metabolites, biomass building blocks and by-products on both reactants and products sides. This representation is similar to Neidhardt’s definition, since he also described the stoichiometric expenditure of <italic>core</italic> metabolites in his estimations. Similar to our analysis, the values that Neidhardt et al. reported for the synthesis of histidine are different than the linear route that is reported in databases. However, Neidhardt reported only 1 lumped reaction for each biomass building block, and they are not overall stoichiometrically balanced (<xref ref-type="supplementary-material" rid="pcbi.1005513.s005">S2 Table</xref>). lumpGEM allows us to build alternative subnetworks and corresponding lumped reactions for the same <italic>BBB</italic><sub><italic>j</italic></sub>. In this specific case, with the minimum subnetwork size <inline-formula id="pcbi.1005513.e001"><alternatives><graphic id="pcbi.1005513.e001g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005513.e001" xlink:type="simple"/><mml:math display="inline" id="M1"><mml:mrow><mml:msubsup><mml:mi>S</mml:mi><mml:mrow><mml:mi>m</mml:mi><mml:mi>i</mml:mi><mml:mi>n</mml:mi></mml:mrow><mml:mi>j</mml:mi></mml:msubsup></mml:mrow></mml:math></alternatives></inline-formula> being 21, lumpGEM generated 12 alternative subnetworks, and 3 unique lumped reactions. <italic>This signifies that the overall lumped reactions of different subnetworks can be the same</italic>. This has been observed also in a previous study that focuses on pathway generations for an industrial chemical [<xref ref-type="bibr" rid="pcbi.1005513.ref041">41</xref>].</p>
+<fig id="pcbi.1005513.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1005513.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>Synthesis of histidine from ribose-5-phosphate.</title>
+<p>The orange reactions are part of the linear synthesis route in the databases. The orange and purple metabolites are the <italic>non-core</italic> metabolites in the subnetwork. Purple reactions are balancing the non-core metabolites along the linear synthesis route. The subnetwork cannot produce any histidine from <italic>core</italic> network without including the purple reactions due to mass balance constraints. ‘non-core linear’ represents non-core metabolites along the linear synthesis pathway, ‘non-core mass balance’ represents the metabolite that appears as non-core within the purple reactions.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005513.g002" xlink:type="simple"/>
+</fig>
+<p>A comparison between lumpGEM results and Neidhardt tables for the common metabolites (ATP, NADH, NADPH, etc) indicates that they are close to each other, however the overall stoichiometry that lumpGEM reports for the biosynthesis of histidine is more detailed and includes more metabolites as co-substrates and co-products (<xref ref-type="table" rid="pcbi.1005513.t001">Table 1</xref>). The main reason for this discrepancy is that Neidhardt did not report elementally balanced lumped reactions for any of the biomass building blocks. For instance, oxaloacetate appears as a precursor to balance the <italic>non-core</italic> metabolite L-aspartate in the subnetworks that participates in adenylosuccinate synthase reaction as a co-substrate, and is not reported in Neidhardt precursors (<xref ref-type="table" rid="pcbi.1005513.t001">Table 1</xref>). Therefore, values reported by lumpGEM are more comprehensive, and account for the balancing of all metabolites in the synthesis pathways, along with the small molecules, such as inorganic metabolites and protons.</p>
+<table-wrap id="pcbi.1005513.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1005513.t001</object-id>
+<label>Table 1</label> <caption><title>Lumped reactions and statistics for amino acids.</title></caption>
+<alternatives>
+<graphic id="pcbi.1005513.t001g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005513.t001" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="center">BIOMASS BUILDING BLOCK</th>
+<th align="center">LUMPED REACTIONS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center" rowspan="3"><bold>L-ALANINE</bold></td>
+<td align="center">2:01:01</td>
+</tr>
+<tr>
+<td align="center">H + NADPH + NH4 + PYR -&gt; ALA-L + H2O + NADP</td>
+</tr>
+<tr>
+<td align="center">Neidhardt: PYR + NADPH + NH4 -&gt; ALA-L</td>
+</tr>
+<tr>
+<td align="center" rowspan="4"><bold>L-ARGININE</bold></td>
+<td align="center">13:02:02</td>
+</tr>
+<tr>
+<td align="center">ACCoA + AKG + <bold>3 ATP</bold> + CO2 + 4 NADPH + 4 NH4 + OAA -&gt; AC + <bold>3 ADP</bold> + ARG-L + CoA + FUM + <bold>H</bold> + <bold>2 H2O</bold> + 4 NADP + <bold>3 PI</bold></td>
+</tr>
+<tr>
+<td align="center">ACCoA + AKG + <bold>4 ATP</bold> + CO2 + 4 NADPH + 4 NH4 + OAA -&gt; AC + <bold>4 ADP</bold> + ARG-L + CoA + FUM + <bold>2 H</bold> + <bold>H2O</bold> + 4 NADP + <bold>4 PI</bold></td>
+</tr>
+<tr>
+<td align="center">Neidhardt: AKG + 4 ATP + 4 NADPH + 4 NH4 -&gt; NADH + ARG-L</td>
+</tr>
+<tr>
+<td align="center" rowspan="4"><bold>L-ASPARAGINE</bold></td>
+<td align="center">5:02:02</td>
+</tr>
+<tr>
+<td align="center"><bold>2 ATP</bold> + NADPH + 2 NH4 + OAA -&gt; <bold>2 ADP</bold> + ASN-L + H + NADP + <bold>2 PI</bold></td>
+</tr>
+<tr>
+<td align="center"><bold>ATP</bold> + NADPH + 2 NH4 + OAA -&gt; <bold>ADP</bold> + ASN-L + H2O + NADP + <bold>PI</bold></td>
+</tr>
+<tr>
+<td align="center">Neidhardt: 4 ATP + 2 NH4 + OAA -&gt; ASN-L</td>
+</tr>
+<tr>
+<td align="center" rowspan="3"><bold>L-ASPARTATE</bold></td>
+<td align="center">2:01:01</td>
+</tr>
+<tr>
+<td align="center">H + NADPH + NH4 + OAA -&gt; ASP-L + H2O + NADP</td>
+</tr>
+<tr>
+<td align="center">Neidhardt: NADPH + NH4 + OAA -&gt; ASP-L</td>
+</tr>
+<tr>
+<td align="center" rowspan="4"><bold>L-CYSTEINE</bold></td>
+<td align="center">15:06:02</td>
+</tr>
+<tr>
+<td align="center">3PG + ACCoA + <bold>4 ATP</bold> + NAD + 5 NADPH + NH4 + SO4 -&gt; AC + <bold>4 ADP</bold> + CoA + CYS-L + NADH + 5 NADP + <bold>5 PI</bold></td>
+</tr>
+<tr>
+<td align="center">3PG + ACCoA + <bold>3 ATP</bold> + H + NAD + 5 NADPH + NH4 + SO4 -&gt; AC + <bold>3 ADP</bold> + CoA + CYS-L + <bold>H2O</bold> + NADH + 5 NADP + <bold>4 PI</bold></td>
+</tr>
+<tr>
+<td align="center">Neidhardt: 3PG + 4 ATP + 5 NADPH + NH4 -&gt; CYS-L</td>
+</tr>
+<tr>
+<td align="center" rowspan="4"><bold>L-GLUTAMINE</bold></td>
+<td align="center">2:02:02</td>
+</tr>
+<tr>
+<td align="center">AKG + <bold>ATP</bold> + NADPH + 2 NH4 -&gt; <bold>ADP</bold> + GLN-L + <bold>H2O</bold> + NADP + <bold>PI</bold></td>
+</tr>
+<tr>
+<td align="center">AKG + <bold>2 ATP</bold> + NADPH + 2 NH4 -&gt; <bold>2 ADP</bold> + GLN-L + <bold>H</bold> + NADP + <bold>2 PI</bold></td>
+</tr>
+<tr>
+<td align="center">Neidhardt: AKG + NADPH + NH4 -&gt; GLN-L</td>
+</tr>
+<tr>
+<td align="center" rowspan="3"><bold>L-GLUTAMATE</bold></td>
+<td align="center">1:01:01</td>
+</tr>
+<tr>
+<td align="center">AKG + H + NADPH + NH4 -&gt; GLU-L + H2O + NADP</td>
+</tr>
+<tr>
+<td align="center">Neidhardt: AKG + NADPH + NH4 -&gt; GLN-L</td>
+</tr>
+<tr>
+<td align="center" rowspan="4"><bold>GLYCINE</bold></td>
+<td align="center">8:02:02</td>
+</tr>
+<tr>
+<td align="center"><bold>3PG</bold> + <bold>H2O</bold> + <bold>NAD</bold> + NH4 -&gt; <bold>FOR</bold> + GLY + <bold>3 H</bold> + <bold>NADH</bold> + <bold>PI</bold></td>
+</tr>
+<tr>
+<td align="center"><bold>2 ATP</bold> + <bold>2 H</bold> + <bold>3 NADPH</bold> + NH4 + <bold>OAA</bold> -&gt; <bold>ACALD</bold> + <bold>2 ADP</bold> + GLY + <bold>3 NADP</bold> + <bold>2 PI</bold></td>
+</tr>
+<tr>
+<td align="center">Neidhardt: 3PG + NADPH + NH4 -&gt; GLY + NAD + 1-C</td>
+</tr>
+<tr>
+<td align="center" rowspan="5"><bold>L-HISTIDINE</bold></td>
+<td align="center">21:12:03</td>
+</tr>
+<tr>
+<td align="center"><bold>5 ATP</bold> + FOR + 2 NAD + 2 NADPH + 3 NH4 + OAA + R5P -&gt; <bold>5 ADP</bold> + FUM + <bold>8 H</bold> + HIS-L + 2 NADH + 2 NADP + <bold>6 PI</bold></td>
+</tr>
+<tr>
+<td align="center"><bold>7 ATP</bold> + FOR + <bold>2 H2O</bold> + 2 NAD + 2 NADPH + 3 NH4 + OAA + R5P -&gt; <bold>7 ADP</bold> + FUM + <bold>10 H</bold> + HIS-L + 2 NADH + 2 NADP + <bold>8 PI</bold></td>
+</tr>
+<tr>
+<td align="center"><bold>9 ATP</bold> + FOR + <bold>4 H2O</bold> + 2 NAD + 2 NADPH + 3 NH4 + OAA + R5P -&gt; <bold>9 ADP</bold> + FUM + <bold>12 H</bold> + HIS-L + 2 NADH + 2 NADP + <bold>10 PI</bold></td>
+</tr>
+<tr>
+<td align="center">Neidhardt: 6 ATP + 1-C + NADPH + 3 NH4 -&gt; HIS-L + 3 NAD</td>
+</tr>
+<tr>
+<td align="center" rowspan="3"><bold>L-ISOLEUCINE</bold></td>
+<td align="center">12:01:01</td>
+</tr>
+<tr>
+<td align="center">2 ATP + 5 H + 5 NADPH + NH4 + OAA + PYR -&gt; 2 ADP + CO2 + 2 H2O + ILE-L + 5 NADP + 2 PI</td>
+</tr>
+<tr>
+<td align="center">Neidhardt: 2 ATP + 5 NADPH + OAA + PYR + NH4 -&gt; ILE-L</td>
+</tr>
+<tr>
+<td align="center" rowspan="3"><bold>L-LEUCINE</bold></td>
+<td align="center">10:01:01</td>
+</tr>
+<tr>
+<td align="center">ACCoA + 2 H + NAD + 2 NADPH + NH4 + 2 PYR -&gt; 2 CO2 + CoA + H2O + LEU-L + NADH + 2 NADP</td>
+</tr>
+<tr>
+<td align="center">Neidhardt: ACCoA + 2NADPH + NH4 + 2 PYR -&gt; LEU-L + NADH</td>
+</tr>
+<tr>
+<td align="center" rowspan="3"><bold>L-LYSINE</bold></td>
+<td align="center">11:01:01</td>
+</tr>
+<tr>
+<td align="center">ATP + 4 H + 4 NADPH + 2 NH4 + OAA + PYR + SUCCoA -&gt; ADP + CO2 + CoA + 2 H2O + LYS-L + 4 NADP + PI + SUCC</td>
+</tr>
+<tr>
+<td align="center">Neidhardt: 2 ATP + 4 NADPH + 2 NH4 + OAA + PYR -&gt; LYS-L</td>
+</tr>
+<tr>
+<td align="center" rowspan="6"><bold>L-METHIONINE</bold></td>
+<td align="center">25:06:02</td>
+</tr>
+<tr>
+<td align="center">2 3PG + ACCoA + <bold>5 ATP</bold> + <bold>2 H</bold> + NAD + 9 NADPH + 2 NH4 + OAA + SO4 + SUCCoA -&gt; AC + <bold>5 ADP</bold> + 2 CoA + GLY + <bold>H2O</bold> + MET-L + NADH + 9 NADP + <bold>7 PI</bold> + PYR + SUCC</td>
+</tr>
+<tr>
+<td align="center">2 3PG + ACCoA + <bold>4 ATP</bold> + <bold>3 H</bold> + NAD + 9 NADPH + 2 NH4 + OAA + SO4 + SUCCoA -&gt; AC + <bold>4 ADP</bold> + 2 CoA + GLY + <bold>2 H2O</bold> + MET-L + NADH + 9 NADP + <bold>6 PI</bold> + PYR + SUCC</td>
+</tr>
+<tr>
+<td align="center">Neidhardt: 7 ATP + 8 NADPH + NH4 + 1-S + 1-C -&gt; MET-L</td>
+</tr>
+<tr>
+<td align="center" rowspan="3"><bold>L-PHENYLALANINE</bold></td>
+<td align="center">11:01:01</td>
+</tr>
+<tr>
+<td align="center">ATP + E4P + 2 NADPH + NH4 + 2 PEP -&gt; ADP + CO2 + H + 2 H2O + 2 NADP + PHE-L + 4 PI</td>
+</tr>
+<tr>
+<td align="center">Neidhardt: E4P + 2 NADPH _ NH4 + 2 PEP -&gt; PHE-L</td>
+</tr>
+<tr>
+<td align="center" rowspan="3"><bold>L-PROLINE</bold></td>
+<td align="center">5:01:01</td>
+</tr>
+<tr>
+<td align="center">AKG + ATP + 2 H + 3 NADPH + NH4 -&gt; ADP + 2 H2O + 3 NADP + PI + PRO-L</td>
+</tr>
+<tr>
+<td align="center">Neidhardt: ATP + AKG + 3 NADPH + NH4 -&gt; PRO-L</td>
+</tr>
+<tr>
+<td align="center" rowspan="3"><bold>L-SERINE</bold></td>
+<td align="center">4:01:01</td>
+</tr>
+<tr>
+<td align="center">3PG + NAD + NADPH + NH4 -&gt; H + NADH + NADP + PI + SER-L</td>
+</tr>
+<tr>
+<td align="center">Neidhardt: 3PG + NADPH + NH4 -&gt; NADH + SER-L</td>
+</tr>
+<tr>
+<td align="center" rowspan="3"><bold>L-THREONINE</bold></td>
+<td align="center">7:01:01</td>
+</tr>
+<tr>
+<td align="center">2 ATP + 2 H + 3 NADPH + NH4 + OAA -&gt; 2 ADP + 3 NADP + 2 PI + THR-L</td>
+</tr>
+<tr>
+<td align="center">Neidhardt: 2 ATP + 3 NADPH + NH4 + OAA -&gt; THR-L</td>
+</tr>
+<tr>
+<td align="center" rowspan="4"><bold>L-TRYPTOPHAN</bold></td>
+<td align="center">17:02:02</td>
+</tr>
+<tr>
+<td align="center"><bold>4 ATP</bold> + E4P + NADPH + 2 NH4 + 2 PEP + R5P -&gt; <bold>4 ADP</bold> + CO2 + G3P + <bold>6 H</bold> + <bold>H2O</bold> + NADP + 7 PI + TRP-L</td>
+</tr>
+<tr>
+<td align="center"><bold>3 ATP</bold> + E4P + NADPH + 2 NH4 + 2 PEP + R5P -&gt; <bold>3 ADP</bold> + CO2 + G3P + <bold>5 H</bold> + <bold>2 H2O</bold> + NADP + 6 PI + TRP-L</td>
+</tr>
+<tr>
+<td align="center">Neidhardt: 5 ATP + E4P + 3 NADPH + 2 NH4 + 2PEP + R5P -&gt; 2 NADH + TRP-L</td>
+</tr>
+<tr>
+<td align="center" rowspan="3"><bold>L-TYROSINE</bold></td>
+<td align="center">11:01:01</td>
+</tr>
+<tr>
+<td align="center">ATP + E4P + NAD + 2 NADPH + NH4 + 2 PEP -&gt; ADP + CO2 + 2 H + H2O + NADH + 2 NADP + 4 PI + TYR-L</td>
+</tr>
+<tr>
+<td align="center">Neidhardt: ATP + E4P + 2 NADPH + 2 PEP -&gt; NADH + TYR-L</td>
+</tr>
+<tr>
+<td align="center" rowspan="3"><bold>L-VALINE</bold></td>
+<td align="center">5:01:01</td>
+</tr>
+<tr>
+<td align="center">3 H + 2 NADPH + NH4 + 2 PYR -&gt; CO2 + 2 H2O + 2 NADP + VAL-L</td>
+</tr>
+<tr>
+<td align="center">Neidhardt: 2 NADPH +NH4 + 2 PYR -&gt; VAL-L</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t001fn001"><p>The numbers (i:j:k) represent <italic>i</italic>, size of subnetworks for amino acids (2:1:1), <italic>j</italic>, the number of alternative subnetworks (2:1:1) and k, the number of unique lumped reactions (2:1:1), respectively. The rows under the lumped reactions represent the values reported by Neidhardt. In this table the size corresponds only to smallest size subnetworks (<inline-formula id="pcbi.1005513.e002"><alternatives><graphic id="pcbi.1005513.e002g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005513.e002" xlink:type="simple"/><mml:math display="inline" id="M2"><mml:mrow><mml:msubsup><mml:mi>S</mml:mi><mml:mrow><mml:mi>m</mml:mi><mml:mi>i</mml:mi><mml:mi>n</mml:mi></mml:mrow><mml:mi>j</mml:mi></mml:msubsup></mml:mrow></mml:math></alternatives></inline-formula>) for each BBB.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+<p>The differences between the alternative subnetworks may emerge from different reactions in the ‘linear’ pathway from main precursor to the biomass building blocks, or from the other <italic>non-core</italic> reactions, which are balancing the <italic>non-core</italic> metabolites in the linear route. These two sources of differences, and especially the latter, may result in an explosion in the number of subnetworks that can be generated for some of the biomass building block. For metabolites like amino acids, which are not so far from the core carbon metabolism, the number of alternative smallest subnetworks <inline-formula id="pcbi.1005513.e003"><alternatives><graphic id="pcbi.1005513.e003g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005513.e003" xlink:type="simple"/><mml:math display="inline" id="M3"><mml:mrow><mml:msubsup><mml:mi>S</mml:mi><mml:mrow><mml:mi>m</mml:mi><mml:mi>i</mml:mi><mml:mi>n</mml:mi></mml:mrow><mml:mi>j</mml:mi></mml:msubsup></mml:mrow></mml:math></alternatives></inline-formula> is relatively small (<xref ref-type="table" rid="pcbi.1005513.t001">Table 1</xref>), whereas for big molecules, such as lipids, there exists hundreds of alternative routes (<xref ref-type="supplementary-material" rid="pcbi.1005513.s004">S1 Table</xref>). The small number of alternative subnetworks for amino acids also shows that the number of <italic>non-core</italic> metabolites that appeared along the linear synthesis route is small, since the main explosion in the number of subnetworks emerges from these reactions. As an example, all 12 alternative subnetworks for histidine include the linear 10 steps route from R5P to histidine and alternative subnetworks are generated by other <italic>non-core</italic> reactions. Moreover, there is a slight correlation between the number of alternative subnetworks and the size of the subnetworks. Most of the amino acids that have more than 2 alternative subnetworks require more than 10 steps for their biosynthesis. A big molecule, Phosphatidylglycerol (dihexadecanoyl, n-c16:0) is a lipid with a <inline-formula id="pcbi.1005513.e004"><alternatives><graphic id="pcbi.1005513.e004g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005513.e004" xlink:type="simple"/><mml:math display="inline" id="M4"><mml:mrow><mml:msubsup><mml:mi>S</mml:mi><mml:mrow><mml:mi>m</mml:mi><mml:mi>i</mml:mi><mml:mi>n</mml:mi></mml:mrow><mml:mi>j</mml:mi></mml:msubsup></mml:mrow></mml:math></alternatives></inline-formula> of 40 reactions, and has 127 alternative subnetworks with 16 unique lumped reactions. In the first subnetwork generated by lumpGEM, within the 40 reactions, 34 of them are part of linear synthesis route and 6 of them are balancing <italic>non-core</italic> metabolites. However, despite the increase in the number of subnetworks, the number of unique lumped reactions remains relatively small (<xref ref-type="supplementary-material" rid="pcbi.1005513.s004">S1 Table</xref>).</p>
+<p>When we analyse the alternative lumped reactions, in some cases, we only observe a difference in the stoichiometry of the cofactors in the reactant and product side. For example, the small change between the two alternative L-arginine lumped reactions is caused from alternative reactions that are decomposing pyrophosphate. In one case, pyrophosphate is decomposed into phosphate and water by the inorganic diphosphatase enzyme and in the second subnetwork it is decomposed into ATP, phosphate and proton using ADP as co-substrate by polyphosphate kinase enzyme. Thus, the main carbon flows of the subnetworks are exactly the same, and the lumped reactions differ only in the stoichiometry of the cofactor metabolites.</p>
+<sec id="sec003">
+<title>Complex biomass components and biomass associated processes</title>
+<p>Along with the biomass building blocks such as amino acids and lipids, the biomass formulation of iJO1366 includes growth associated maintenance (GAM) and the <italic>de novo</italic> synthesis of adenylate pool metabolites. The Varma core network (<xref ref-type="supplementary-material" rid="pcbi.1005513.s002">S2 File</xref> 2) is capable of hydrolyzing the amount of ATP for GAM in the biomass (53.95mmol/gDW). However, the stoichiometric coefficients of ATP and ADP are not the same in the biomass equation, which indicates that the biomass formulation of <italic>E</italic>. <italic>coli</italic> requires synthesis of adenylate pool metabolites. In order to identify the subnetwork(s) for the synthesis of these pool metabolites, we followed the same procedure that we did for biomass building blocks, and we built a GEM with an additional reaction with the coefficients of ATP, ADP, water, phosphate and proton from GEM biomass. Then, by forcing a flux through this reaction, and by minimizing the number of <italic>non-core</italic> reactions (See <xref ref-type="sec" rid="sec008">Material and methods</xref>), we generated minimal subnetworks <italic>S</italic><sub><italic>min</italic></sub>. The resulting networks are composed of 27 reactions with 24 alternatives, which synthesize adenylate pool metabolite ADP.</p>
+<p>Along with the biomass building blocks, GAM and adenylate pool metabolites, the biomass equation of iJO1366 includes diphosphate as a by-product. By following the same procedure that we have followed for adenylate pool, we generated <italic>subnetworks</italic> that balance the diphosphate in the biomass formulation. There are 2 alternative subnetworks composed of only 1 reaction in <italic>R</italic><sup><italic>ncGEM</italic></sup> that can balance the diphosphate in biomass equation: Inorganic Diphosphatase (PPA) and Polyphosphate Kinase (PPKr). Both of these reactions are decomposing the diphosphate into phosphate and proton, the former with water, and the latter with ATP/ADP cofactor pair.</p>
+</sec>
+<sec id="sec004">
+<title>Ranking alternative lumped reactions—Yield analysis</title>
+<p>When we analysed the alternative lumped reactions for the same biomass building block, we observe different requirement of precursors, cofactors, nitrogen and sulphur sources. This behaviour is expected, and a detailed analysis could also suggest which lumped reaction is more suitable for specific studies. One of the main criteria to rank the lumped reactions is their capability to synthesize the <italic>BBB</italic> from the carbon source, specifically the yield of <italic>BBB</italic> on the carbon source. In order to calculate the yield per lumped reaction, we built a ‘mini’ core model for each of them, which is composed of <italic>M</italic><sup><italic>core</italic></sup>—<italic>R</italic><sup><italic>core</italic>,</sup> <italic>V</italic><sub><italic>BBB</italic></sub> and the lumped reactions under study. By optimizing the synthesis of the selected <italic>BBB</italic> and calculating the C-mole yield over the carbon source of interest, specifically glucose, we ranked the alternative lumped reactions for each <italic>BBB</italic>. Interestingly, different lumped reactions can produce different amounts of biomass building blocks over a wide range of yield amounts (<xref ref-type="table" rid="pcbi.1005513.t002">Table 2</xref>).</p>
+<table-wrap id="pcbi.1005513.t002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1005513.t002</object-id>
+<label>Table 2</label> <caption><title>The lumped reactions generated for deoxynucleoside triphosphate dTTP.</title></caption>
+<alternatives>
+<graphic id="pcbi.1005513.t002g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005513.t002" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="justify">BBB</th>
+<th align="center">LUMPED REACTIONS</th>
+<th align="left">YIELD</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center" rowspan="12"><bold>dTTP</bold></td>
+<td align="center">6 ATP + FOR + H + 4 NADPH + 2 NH4 + OAA + Q8 + R5P -&gt;<break/>6 ADP + DTTP + 3 H2O + 4 NADP + 4 PI + Q8H2</td>
+<td align="char" char=".">0.74</td>
+</tr>
+<tr>
+<td align="center">6 ATP + FOR + H + MQN8 + 4 NADPH + 2 NH4 + OAA + R5P -&gt;<break/>6 ADP + DTTP + 3 H2O + MQL8 + 4 NADP + 4 PI</td>
+<td align="char" char=".">0.73</td>
+</tr>
+<tr>
+<td align="center">8 ATP + FOR + 4 NADPH + 2 NH4 + OAA + Q8 + R5P -&gt;<break/>8 ADP + DTTP + H + H2O + 4 NADP + 6 PI + Q8H2</td>
+<td align="char" char=".">0.71</td>
+</tr>
+<tr>
+<td align="center">8 ATP + FOR + MQN8 + 4 NADPH + 2 NH4 + OAA + R5P -&gt;<break/>8 ADP + DTTP + H + H2O + MQL8 + 4 NADP + 6 PI</td>
+<td align="char" char=".">0.70</td>
+</tr>
+<tr>
+<td align="center">6 ATP + COA + FOR + H + 3 NADPH + 2 NH4 + OAA + PYR + Q8 + R5P -&gt;<break/>ACCOA + 6 ADP + CO2 + DTTP + 3 H2O + 3 NADP + 4 PI + Q8H2</td>
+<td align="char" char=".">0.66</td>
+</tr>
+<tr>
+<td align="center">6 ATP + COA + FOR + H + MQN8 + 3 NADPH + 2 NH4 + OAA + PYR + R5P -&gt;<break/>ACCOA + 6 ADP + CO2 + DTTP + 3 H2O + MQL8 + 3 NADP + 4 PI</td>
+<td align="char" char=".">0.66</td>
+</tr>
+<tr>
+<td align="center">8 ATP + COA + FOR + 3 NADPH + 2 NH4 + OAA + PYR + Q8 + R5P -&gt;<break/>ACCOA + 8 ADP + CO2 + DTTP + H + H2O + 3 NADP + 6 PI + Q8H2</td>
+<td align="char" char=".">0.64</td>
+</tr>
+<tr>
+<td align="center">8 ATP + COA + FOR + MQN8 + 3 NADPH + 2 NH4 + OAA + PYR + R5P -&gt;<break/>ACCOA + 8 ADP + CO2 + DTTP + H + H2O + MQL8 + 3 NADP + 6 PI</td>
+<td align="char" char=".">0.63</td>
+</tr>
+<tr>
+<td align="center">6 ATP + FOR + FUM + H + 4 NADPH + 2 NH4 + OAA + R5P -&gt;<break/>6 ADP + DTTP + 3 H2O + 4 NADP + 4 PI + SUCC</td>
+<td align="char" char=".">0.59</td>
+</tr>
+<tr>
+<td align="center">8 ATP + FOR + FUM + 4 NADPH + 2 NH4 + OAA + R5P -&gt;<break/>8 ADP + DTTP + H + H2O + 4 NADP + 6 PI + SUCC</td>
+<td align="char" char=".">0.57</td>
+</tr>
+<tr>
+<td align="center">6 ATP + COA + FOR + FUM + H + 3 NADPH + 2 NH4 + OAA + PYR + R5P -&gt;<break/>ACCOA + 6 ADP + CO2 + DTTP + 3 H2O + 3 NADP + 4 PI + SUCC</td>
+<td align="char" char=".">0.54</td>
+</tr>
+<tr>
+<td align="center">8 ATP + COA + FOR + FUM + 3 NADPH + 2 NH4 + OAA + PYR + R5P -&gt;<break/>ACCOA + 8 ADP + CO2 + DTTP + H + H2O + 3 NADP + 6 PI + SUCC</td>
+<td align="char" char=".">0.52</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t002fn001"><p>The lumped reactions are sorted based on their <italic>carbon mole dTTP synthesis</italic> / <italic>carbon-mole glucose uptake</italic> yield.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+<p>dTTP is a deoxy nucleoside triphosphates and its main precursor for all the generated subnetworks is ribose-5-phosphate (R5P) from Pentose Phosphate Pathway. Consequently, the <italic>core</italic> network can supply the same amount of carbon to all the generated subnetworks and corresponding lumped reactions. One explanation for the differences in yields (<xref ref-type="table" rid="pcbi.1005513.t002">Table 2</xref>) is the capability of the lumped reactions to direct all the carbon from R5P to dTTP. When we analyse the 4 lumped reactions with highest yield, we see that on the product side, the only compound other than inorganics and cofactor pairs like quinone/quinol, ATP/ADP-PI is dTTP. For the lumps with second highest yield, along with the pyruvate (C3) in the reactant side, we see AcCoA (C2) and CO<sub>2</sub> (C1) on the product side. In the 3<sup>rd</sup> highest yield case, fumarate (C4) replaces pyruvate on the reactant side, and succinate (C4) appears on the product side as a by-product. The lowest yield producing lumped reaction has fumarate and pyruvate on the reactant side, and has AcCoA, CO<sub>2</sub> and succinate on the product side of the equation. This signifies that the lumped reactions with lower yield are losing carbon through those <italic>core</italic> metabolites and the number of carbons in these metabolites defines the yield. However, it is not possible to generalize such a rule, since the metabolites appearing on the product side of the lumped reaction can be assimilated by the system and the capacity of the network for this re-assimilation will have a significant effect on the yield of the lumped reaction. Moreover, having a lower yield does not necessarily mean that these lumped reactions are not useful for metabolic modelling, since they can be used under sub-optimal growth conditions or under conditions when growth is not the main physiological optimality criterion or to provide flexibility under mutation. The use of these alternatives and their physiological interpretation deserves an in-depth study and lumpGEM can serve as a framework for systematic studies.</p>
+</sec>
+<sec id="sec005">
+<title>Generating a metabolic model with lumpGEM</title>
+<p>By generating subnetworks for GAM and diphosphate, lumpGEM took into account all the components of biomass formulation both on the product and reactant sides. By testing for yield, we have shown that all the generated lumped reactions are capable of producing their target <italic>BBB</italic><sub><italic>j</italic></sub>. However, to produce biomass, these lumped reactions must be able carry flux under the same quasi steady state condition, in the same model with biomass as cellular objective. This requires generating a metabolic network composed of the defined <italic>core</italic> network, lumped reactions, the transport and sink reactions defined in GEM. We used the Varma model (<xref ref-type="supplementary-material" rid="pcbi.1005513.s002">S2 File</xref> 2) as core model and the GEM iJO1366 as defined in the previous sections and introduced a new mixed-integer linear programming (MILP) formulation to have a systematic way to choose the lumped reactions. We formulated the problem as the following: We generated a model with all the lumped reactions generated by lumpGEM and calculated the theoretical maximum yield for biomass. We then fixed this yield in the model, and minimized the number of active lumped reactions and include only these lumped reactions for further analysis. This network consists of 56 cytosolic enzymatic (Varma network), 144 transport reactions, 78 lumpGEM output reactions along with 64 sinks (343 in total with biomass formulation) and 153 unique metabolites. The metabolic network is capable of producing 0.951/hr specific growth rate with 10 mmol/gDWhr glucose uptake rate. This signifies that all the lumped reactions were capable of producing corresponding <italic>BBB</italic><sub><italic>j</italic></sub> successfully under the given condition simultaneously. The specific growth rate of GEM for the same condition is 0.997/hr, which is close to the biomass accumulation of the model generated with the output of lumpGEM. This shows that lumpGEM can be used to generate networks, which are small, but comprehensive and able to mimic the GEM behaviour.</p>
+</sec>
+<sec id="sec006">
+<title>Analysis on compartmentalized models, test case on <italic>S</italic>. <italic>cerevisiae</italic></title>
+<p>lumpGEM can be applied to any GEM with a proper biomass formulation, and in order to test its applicability, we used it on a eukaryotic, compartmentalized GEM, iMM904 [<xref ref-type="bibr" rid="pcbi.1005513.ref037">37</xref>] of <italic>S</italic>. <italic>cerevisiae</italic>. This yeast is one of the mostly studied unicellular organisms along with <italic>E</italic>. <italic>coli</italic>, and has many biotechnological applications [<xref ref-type="bibr" rid="pcbi.1005513.ref042">42</xref>]; thus making it a strong candidate for modelling approaches. Applying lumpGEM on this <italic>S</italic>. <italic>cerevisiae</italic> strain revealed the contribution of different possible precursors and cofactors for each of the biomass building blocks defined in GEM, moreover it revealed alternative subnetworks and lumped reactions for the same biomass building block. This can be interpreted as building ‘Neidhardt style’ tables for <italic>S</italic>. <italic>cerevisiae</italic>.</p>
+<p>In order to define the core for <italic>S</italic>. <italic>cerevisiae</italic>, we used the Metabolic Flux analysis (MFA) model of Christen et al. [<xref ref-type="bibr" rid="pcbi.1005513.ref043">43</xref>] and mapped the reactions of this model with the iMM904 reactions. In addition, we mapped reactions of iMM904 that are in Varma network but not in MFA model and included them as <italic>core</italic> reactions for <italic>S</italic>. <italic>cerevisiae</italic> network. The generated core network is composed of (<xref ref-type="supplementary-material" rid="pcbi.1005513.s002">S2 File</xref> 2) 88 reactions and 67 unique metabolites along 2 compartments, cytoplasm and mitochondria. Following these steps, we have applied the lumpGEM algorithm to the GEM as described in Material Methods section. The main difference between <italic>E</italic>. <italic>coli</italic> and <italic>S</italic>. <italic>cerevisiae</italic> GEMs are that <italic>S</italic>. <italic>cerevisiae</italic> GEM is compartmentalized, however this does not bring any more complexity for lumpGEM since it treats the transport reactions between compartments as it treats single enzymatic reactions. These transport reactions are part of the generated subnetworks for biomass building blocks and can participate in lumped reactions. These lumped reactions can include metabolites from different compartments, if these compartments are included in the <italic>ad-hoc</italic> selected network. By the nature of the lumpGEM algorithm, the lumped reactions include only core metabolites, biomass building blocks and by-products. Since the core network has 2 compartments, mitochondria and cytosol, the resulting lumped reactions can have metabolites from these compartments. The synthesis pathways of common biomass building blocks of <italic>S</italic>. <italic>cerevisiae</italic> and <italic>E</italic>. <italic>coli</italic> such as amino acids are very similar. The sizes of the networks differ mainly from the transport reactions between the compartments. Another reason for the divergence is the non-core metabolites along the linear routes to biomass building blocks, because there are different enzymes in these two organisms that are balancing these non-core metabolites. Interestingly, different subnetworks between the two organisms do not necessarily produce different lumped reactions. When the synthesis pathway is in one compartment (mainly cytosol), the lumped reactions of <italic>E</italic>. <italic>coli</italic> and <italic>S</italic>. <italic>cerevisiae</italic> are very similar (<xref ref-type="table" rid="pcbi.1005513.t003">Table 3</xref>). L-phenylalanine, L-methionine, L-serine, L-cysteine and L-tyrosine are some examples of these similarities. Small differences for these overall reactions emerge from different cofactor usage. A similar behaviour is also observed for subnetworks including more than 1 compartment. The main difference between <italic>E</italic>. <italic>coli</italic> and <italic>S</italic>. <italic>cerevisiae</italic> overall reactions emerges from metabolites in different compartments, which are also different due to the energetics cost of transport reactions. As an example, the L-arginine biosynthesis in <italic>E</italic>. <italic>coli</italic> and <italic>S</italic>. <italic>cerevisiae</italic> is very similar, however the main difference emerges from the transport reactions between the compartments in the yeast. A smallest subnetwork for <italic>E</italic>. <italic>coli</italic> is composed of 13 reactions, and for <italic>S</italic>. <italic>cerevisiae</italic>, this number rises to 17. Two additional reactions for <italic>S</italic>. <italic>cerevisiae</italic> are the transport reactions between cytosol and mitochondria for the metabolites L-aspartate and ornithine. Another difference is the bicarbonate equilibration reaction (HCO3E) converting carbon dioxide to bicarbonate, which is the co-substrate for the carbamoyl-phosphate synthase reaction converting glutamine to carbamoyl phosphate. The reaction that produces carbamoyl phosphate in <italic>E</italic>. <italic>coli</italic> model uses carbon dioxide instead of bicarbonate as co-substrate. Moreover, it does not use L-glutamine as co-substrate. Therefore, the last difference in the subnetworks emerges from the synthesis of glutamine by <italic>S</italic>. <italic>cerevisiae</italic> through the usage of glutamate synthase (NADH2) and glutamine synthetase enzymes.</p>
+<table-wrap id="pcbi.1005513.t003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1005513.t003</object-id>
+<label>Table 3</label> <caption><title>Lumped reactions for amino acids in <italic>S</italic>. <italic>cerevisiae</italic> using the core defined in the main text and comparison with <italic>E</italic>. <italic>coli</italic> lumped reactions.</title></caption>
+<alternatives>
+<graphic id="pcbi.1005513.t003g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005513.t003" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="center">BIOMASS BUILDING BLOCK</th>
+<th align="center">LUMPED REACTIONS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center" rowspan="2"><bold>L-ALANINE</bold></td>
+<td align="center">2:1:1/2:1:1</td>
+</tr>
+<tr>
+<td align="center">H + NADPH + NH4 + PYR -&gt; ALA-L + H2O + NADP *</td>
+</tr>
+<tr>
+<td align="center" rowspan="4"><bold>L-ARGININE</bold></td>
+<td align="center">17:4:3/13:2:2</td>
+</tr>
+<tr>
+<td align="center">8 ATP + 2 CO2 + 4 H2O + 3 NADH + 4 NH4 + 3 OAA + AKG_M + ATP_M + NADPH_M -&gt; 8 ADP + ARG-L + FUM + 5 H + HCO3 + 3 NAD + 8 PI + ADP_M + 2 H_M + NADP_M + 2 OAA_M + PI_M</td>
+</tr>
+<tr>
+<td align="center">5 ATP + 2 CO2 + H2O + 3 NADPH + 4 NH4 + 3 OAA + AKG_M + ATP_M + NADPH_M -&gt; 5 ADP + ARG-L + FUM + 2 H + HCO3 + 3 NADP + 5 PI + ADP_M + 2 H_M + NADP_M + 2 OAA_M + PI_M</td>
+</tr>
+<tr>
+<td align="center">2 AKG + 5 ATP + 2 CO2 + H2O + 3 NADPH + 4 NH4 + OAA + ATP_M + DHLAM_M + NAD_M + NADPH_M -&gt; 5 ADP + ARG-L + FUM + 4 H + HCO3 + 3 NADP + 5 PI + ADP_M + AKG_M + H_M + LPAM_M + NADH_M + NADP_M + PI_M</td>
+</tr>
+<tr>
+<td align="center" rowspan="3"><bold>L-ASPARAGINE</bold></td>
+<td align="center">6:2:2/5:2:2</td>
+</tr>
+<tr>
+<td align="center">AMP + 5 ATP + 3 H2O + NADH + 2 NH4 + OAA + PPI -&gt; 6 ADP + ASN-L + 5 H + NAD + 6 PI</td>
+</tr>
+<tr>
+<td align="center">AMP + 4 ATP + 2 H2O + NADPH + 2 NH4 + OAA + PPI -&gt; 5 ADP + ASN-L + 4 H + NADP + 5 PI</td>
+</tr>
+<tr>
+<td align="center" rowspan="2"><bold>L-ASPARTATE</bold></td>
+<td align="center">3:1:1/2:1:1</td>
+</tr>
+<tr>
+<td align="center">CO2 + NADPH + NH4 + OAA -&gt; ASP-L + HCO3 + NADP</td>
+</tr>
+<tr>
+<td align="center" rowspan="3"><bold>L-CYSTEINE</bold></td>
+<td align="center">14:2:2/15:6:2</td>
+</tr>
+<tr>
+<td align="center">3PG + ACCOA + AMP + 4 ATP + NAD + 5 NADPH + NH4 + PPI + SO4 -&gt; AC + 5 ADP + COA + CYS-L + H + NADH + 5 NADP + 6 PI</td>
+</tr>
+<tr>
+<td align="center">ACCOA + AMP + 4 ATP + 2 GLX + 2 H + 6 NADPH + NH4 + 1 PPI + SER-L + SO4 + NH4_M -&gt; AC + 5 ADP + COA + CYS-L + 2 GLY + 2 H2O + 6 NADP + 5 PI</td>
+</tr>
+<tr>
+<td align="center" rowspan="2"><bold>L-GLUTAMINE</bold></td>
+<td align="center">3:1:1/2:2:2</td>
+</tr>
+<tr>
+<td align="center">AKG + ATP + CO2 + NADPH + 2 NH4 -&gt; ADP + GLN-L + H + HCO3 + NADP + PI</td>
+</tr>
+<tr>
+<td align="center" rowspan="2"><bold>L-GLUTAMATE</bold></td>
+<td align="center">2:1:1/1:1:1</td>
+</tr>
+<tr>
+<td align="center">AKG + CO2 + NADPH + NH4 -&gt; GLU-L + HCO3 + NADP</td>
+</tr>
+<tr>
+<td align="center" rowspan="2"><bold>GLYCINE</bold></td>
+<td align="center">3:1:1/8:1:1</td>
+</tr>
+<tr>
+<td align="center">GLX + H + NADPH + NH4 -&gt; GLY + H2O + NADP</td>
+</tr>
+<tr>
+<td align="center" rowspan="7"><bold>L-HISTIDINE</bold></td>
+<td align="center">25:18:6/21:12:3</td>
+</tr>
+<tr>
+<td align="center">6 ATP + GLX + 2 H2O + MLTHF + 2 NAD + 2 NADPH + 3 NH4 + OAA + R5P + NH4_M -&gt;<break/>6 ADP + FUM + GLY + 10 H + HIS-L + 2 NADH + 2 NADP + 7 PI + THF</td>
+</tr>
+<tr>
+<td align="center">6 ATP + GLX + 2 H2O + MLTHF + 3 NAD + 3 NADPH + 3 NH4 + OAA + R5P + NH4_M -&gt;<break/>6 ADP + FUM + GLY + 10 H + HIS-L + 3 NADH + 3 NADP + 7 PI + THF</td>
+</tr>
+<tr>
+<td align="center">9 ATP + GLX + 5 H2O + MLTHF + 3 NH4 + OAA + R5P + NH4_M -&gt;<break/>9 ADP + FUM + GLY + 13 H + HIS-L + 10 PI + THF</td>
+</tr>
+<tr>
+<td align="center">3PG + 6 ATP + 3 H2O + MLTHF + 4 NAD + 3 NADPH + 4 NH4 + OAA + R5P –&gt;<break/>6 ADP + FUM + 12 H + HIS-L + 4 NADH + 3 NADP + 8 PI + SER-L + THF</td>
+</tr>
+<tr>
+<td align="center">3PG + 9 ATP + 6 H2O + MLTHF + NAD + 4 NH4 + OAA + R5P –&gt;<break/>9 ADP + FUM + 15 H + HIS-L + NADH + 11 PI + SER-L + THF</td>
+</tr>
+<tr>
+<td align="center">3PG + 6 ATP + 3 H2O + MLTHF + 3 NAD + 2 NADPH + 4 NH4 + OAA + R5P –&gt;<break/>6 ADP + FUM + 12 H + HIS-L + 3 NADH + 2 NADP + 8 PI + SER-L + THF</td>
+</tr>
+<tr>
+<td align="center" rowspan="3"><bold>L-ISOLEUCINE</bold></td>
+<td align="center">15:2:2/12:1:1</td>
+</tr>
+<tr>
+<td align="center">2 ATP + CO2 + 2 H + 4 NADPH + NH4 + OAA + 2 H_M + NADPH_M + PYR_M -&gt;<break/>2 ADP + HCO3 + ILE-L + 4 NADP + 2 PI + CO2_M + H2O_M + NADP_M</td>
+</tr>
+<tr>
+<td align="center">2 ATP + CO2 + 2 H + NADH + 3 NADPH + NH4 + OAA + 2 H_M + NADPH_M + PYR_M -&gt;<break/>2 ADP + HCO3 + ILE-L + NAD + 3 NADP + 2 PI + CO2_M + H2O_M + NADP_M</td>
+</tr>
+<tr>
+<td align="center" rowspan="3"><bold>L-LEUCINE</bold></td>
+<td align="center">11:1:1/10:1:1</td>
+</tr>
+<tr>
+<td align="center">H + NAD + NADPH + NH4 + ACCOA_M + H_M + NADPH_M + 2 PYR_M -&gt;</td>
+</tr>
+<tr>
+<td align="center">CO2 + H2O + LEU-L + NADH + NADP + CO2_M + COA_M + NADP_M</td>
+</tr>
+<tr>
+<td align="center" rowspan="2"><bold>L-LYSINE</bold></td>
+<td align="center">13:2:2/11:1:1</td>
+</tr>
+<tr>
+<td align="center">AMP + 3 ATP + NAD + 4 NADPH + 2 NH4 + PPI + ACCOA_M + AKG_M + H2O_M + NAD_M -&gt; 4 ADP + LYS-L + NADH + 4 NADP + 4 PI + CO2_M + COA_M + H_M + NADH_M<break/>AMP + 3 ATP + 3 NADPH + 2 NH4 + PPI + ACCOA_M + AKG_M + H2O_M + NAD_M -&gt; 4 ADP + LYS-L + 3 NADP + 4 PI + CO2_M + COA_M + H_M + NADH_M</td>
+</tr>
+<tr>
+<td align="center" rowspan="5"><bold>L-METHIONINE</bold></td>
+<td align="center">20:4:4/25:6:2</td>
+</tr>
+<tr>
+<td align="center">3PG + ACCOA + 2 AMP + 6 ATP + H + MLTHF + NAD + 9 NADPH + 2 NH4 + OAA + 2 PPI + SO4 -&gt;<break/>AC + 8 ADP + COA + MET-L + NADH + 9 NADP + 9 PI + SER-L + THF</td>
+</tr>
+<tr>
+<td align="center">3PG + ACCOA + 2 AMP + 6 ATP + H + MLTHF + 8 NADPH + 2 NH4 + OAA + 2 PPI + SO4 -&gt;<break/>AC + 8 ADP + COA + MET-L + 8 NADP + 9 PI + SER-L + THF</td>
+</tr>
+<tr>
+<td align="center">ACCOA + 2 AMP + 6 ATP + GLX + 3 H + MLTHF + 9 NADPH + NH4 + OAA + 2 PPI + SO4 + NH4_M -&gt;<break/>AC + 8 ADP + COA + GLY + H2O + MET-L + 9 NADP + 8 PI + THF</td>
+</tr>
+<tr>
+<td align="center">ACCOA + 2 AMP + 6 ATP + GLX + 3 H + MLTHF + NADH + 8 NADPH + NH4 + OAA + 2 PPI + SO4 + NH4_M -&gt;<break/>AC + 8 ADP + COA + GLY + H2O + MET-L + NAD + 8 NADP + 8 PI + THF</td>
+</tr>
+<tr>
+<td align="center" rowspan="2"><bold>L-PHENYLALANINE</bold></td>
+<td align="center">11:1:1/11:1:1</td>
+</tr>
+<tr>
+<td align="center">ATP + E4P + 2 NADPH + NH4 + 2 PEP -&gt; ADP + CO2 + 2 H2O + H + 2 NADP + PHE-L + 4 PI</td>
+</tr>
+<tr>
+<td align="center" rowspan="3"><bold>L-PROLINE</bold></td>
+<td align="center">6:2:2/5:1:1</td>
+</tr>
+<tr>
+<td align="center">AKG + ATP + CO2 + H + NADH + 2 NADPH + NH4 -&gt; ADP + H2O + HCO3 + NAD + 2 NADP + PI + PRO-L</td>
+</tr>
+<tr>
+<td align="center">AKG + ATP + CO2 + H + 3 NADPH + NH4 -&gt; ADP + H2O + HCO3 + 3 NADP + PI + PRO-L</td>
+</tr>
+<tr>
+<td align="center" rowspan="2"><bold>L-SERINE</bold></td>
+<td align="center">4:2:2/4:1:1</td>
+</tr>
+<tr>
+<td align="center">3PG + NAD + NADPH + NH4 -&gt; H + NADH + NADP + PI + SER-L*<break/>2 GLX + 2 H + 2 NADPH + NH4 + NH4_M -&gt; 2 GLY + 2 H2O + 2 NADP</td>
+</tr>
+<tr>
+<td align="center" rowspan="3"><bold>L-THREONINE</bold></td>
+<td align="center">8:2:2/7:1:1</td>
+</tr>
+<tr>
+<td align="center">2 ATP + CO2 + H2O + H + <bold>3 NADPH</bold> + NH4 + OAA -&gt; 2 ADP + HCO3 + <bold>3 NADP</bold> + 2 PI + THR-L</td>
+</tr>
+<tr>
+<td align="center">2 ATP + CO2 + H2O + H + <bold>NADH + 2 NADPH</bold> + NH4 + OAA -&gt; 2 ADP + HCO3 + <bold>NAD</bold> + 2 NADP + 2 PI + THR-L</td>
+</tr>
+<tr>
+<td align="center" rowspan="3"><bold>L-TRYPTOPHAN</bold></td>
+<td align="center">20:4:4/17:2:2</td>
+</tr>
+<tr>
+<td align="center">3PG + 4 ATP + E4P + NAD + 2 NADPH + 2 NH4 + 2 PEP + R5P -&gt; 4 ADP + CO2 + G3P + 7 H + H2O + NADH + 2 NADP + 8 PI + PYR + TRP-L</td>
+</tr>
+<tr>
+<td align="center">3PG + 5 ATP + E4P + NADPH + 2 NH4 + 2 PEP + R5P -&gt; 5 ADP + CO2 + G3P + 8 H + NADP + 9 PI + PYR + TRP-L<break/>6 ATP + E4P + 2 GLX + 2 NADH + NADPH + 2 NH4 + 2 PEP + R5P + SER-L + NH4_M -&gt;<break/>6 ADP + CO2 + G3P + 2 GLY + 6 H + H2O + 2 NAD + NADP + 9 PI + PYR + TRP-L<break/>4 ATP + E4P + 2 GLX + 3 NADPH + 2 NH4 + 2 PEP + R5P + SER-L + NH4_M -&gt; 4 ADP + CO2 + G3P + 2 GLY + 4 H + 3 H2O + 3 NADP + 7 PI + PYR + TRP-L</td>
+</tr>
+<tr>
+<td align="center" rowspan="3"><bold>L-TYROSINE</bold></td>
+<td align="center">11:2:2/11:1:1</td>
+</tr>
+<tr>
+<td align="center">ATP + E4P + NADPH + NH4 + 2 PEP -&gt; ADP + CO2 + 2 H + H2O + NADP + 4 PI + TYR-L *</td>
+</tr>
+<tr>
+<td align="center">ATP + E4P + NAD + 2 NADPH + NH4 + 2 PEP -&gt; ADP + CO2 + 2 H + H2O + NADH + 2 NADP + 4 PI + TYR-L</td>
+</tr>
+<tr>
+<td align="center" rowspan="2"><bold>L-VALINE</bold></td>
+<td align="center">6:1:1/5:1:1</td>
+</tr>
+<tr>
+<td align="center">H + NADPH + NH4 + 2 H_M + NADPH_M + 2 PYR_M -&gt; H2O + NADP + VAL-L + CO2_M + H2O_M + NADP_M</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t003fn001"><p>The numbers (i:j:k) represent i, size of subnetworks for amino acids (2:1:1), j, the number of alternative subnetworks (2:1:1) and k, the number of unique lumped reactions (2:1:1), respectively. The first (i:j:k) belongs to <italic>S</italic>. <italic>cerevisiae</italic>, the second (i:j:k) belongs to <italic>E</italic>. <italic>coli</italic> for comparison. In this table the size corresponds only to smallest size subnetworks (<inline-formula id="pcbi.1005513.e005"><alternatives><graphic id="pcbi.1005513.e005g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005513.e005" xlink:type="simple"/><mml:math display="inline" id="M5"><mml:mrow><mml:msubsup><mml:mi>S</mml:mi><mml:mrow><mml:mi>m</mml:mi><mml:mi>i</mml:mi><mml:mi>n</mml:mi></mml:mrow><mml:mi>j</mml:mi></mml:msubsup></mml:mrow></mml:math></alternatives></inline-formula>) for each BBB. Highlighted metabolites show the differences between alternative lumped reactions. (*) Lumped reactions are common with <italic>E</italic>. <italic>coli</italic>.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+<p>As a general comparison, lumpGEM generated 2797 subnetworks and 615 unique lumped reactions for 102 biomass building blocks for <italic>E</italic>. <italic>coli</italic>, whereas it generated 155 subnetworks and 114 lumped reactions for <italic>S</italic>. <italic>cerevisiae</italic> for 44 biomass building blocks (<xref ref-type="supplementary-material" rid="pcbi.1005513.s001">S1 File</xref>). Even though the numbers seems very different, the main explosion of number of possible subnetworks for <italic>E</italic>. <italic>coli</italic> emerges from lipids, which are not common with <italic>S</italic>. <italic>cerevisiae</italic>. Moreover, <italic>E</italic>. <italic>coli</italic> GEM has a more detailed biomass building block definition compared to <italic>S</italic>. <italic>cerevisiae</italic> GEM. Thus, it is fairer to compare the common biomass building blocks between two organisms as we have shown for amino acids.</p>
+<p>We have also performed an analysis to compare <italic>E</italic>. <italic>coli</italic> and <italic>S</italic>. <italic>cerevisae</italic> for the production of a valuable industrial chemical, succinate. In this case, we did not define any core, other than the media composition, and minimized the number of active reactions to produce succinate. The analysis indicated that <italic>S</italic>. <italic>cerevisiae</italic> requires at least 33 reactions to produce succinate with a 100% carbon-mole yield over glucose, whereas <italic>E</italic>. <italic>coli</italic> needs only 25. The overall lumped reaction for <italic>E</italic>. <italic>coli</italic> do not have any metabolite other than glucose, oxygen and cytosolic proton in the reactant side, and only succinate, water and periplasmic proton on the product side. The overall lumped reaction generated for the <italic>S</italic>. <italic>cerevisiae</italic> subnetwork also includes the same metabolites, with additional production of ATP along with succinate. When we apply the same formulation to the biosynthesis of L-malate, we observe that minimal subnetwork generated for <italic>S</italic>. <italic>cerevisiae</italic> (30 reactions) are still bigger compared to <italic>E</italic>. <italic>coli</italic> (24 reactions), however this time the lumped reaction does not include any metabolite other than L-malate, glucose, water, oxygen and proton. The <italic>E</italic>. <italic>coli</italic> lumped reactions for L-malate is very similar to the succinate case. This analysis is done only for 1 <italic>S</italic><sub><italic>min</italic></sub> subnetwork for both compounds, and can be extended by generating all the minimum subnetworks, and for every common metabolite between <italic>E</italic>. <italic>coli</italic> and <italic>S</italic>. <italic>cerevisiae</italic>.</p>
+</sec>
+<sec id="sec007" sec-type="conclusions">
+<title>Conclusion</title>
+<p>The complexity of cellular metabolism necessitates the development of methods to better understand and investigate the metabolic capabilities of organisms. For this purpose, small sized metabolic models are developed and widely used to study cellular physiology, and are proven to be useful platforms for many applications. With the emergence of genome scale models (GEMs), studies on metabolism entered a new era, since GEMs encapsulate all biochemistry that occurs in an organism. However, it is still crucial to be able to focus on certain parts of the metabolism with a modular manner and to understand the capabilities of these modules. Within this scope, we developed lumpGEM, a systems biology tool that captures the minimal sized subnetworks that are capable of producing target compounds from a set of defined core metabolites. In this work, we applied lumpGEM on all biomass building blocks (BBB) of <italic>E</italic>. <italic>coli</italic> iJO1366 and <italic>S</italic>. <italic>cerevisiae</italic> iMM904 and generated different subnetworks that can participate in producing biomass. We also used lumpGEM to re-define the pathway and subsystem definitions for the biosynthesis of BBBs, and identified that many different subsystems participate for the production of a single BBB. Moreover, by lumping the generated subnetworks, lumpGEM allowed us to identify the individual contribution of core metabolites and cofactors for the synthesis of each BBB. This procedure is a very promising method for many applications, such as experimental studies like MFA [<xref ref-type="bibr" rid="pcbi.1005513.ref044">44</xref>] and <italic>in silico</italic> studies like FBA, TFA [<xref ref-type="bibr" rid="pcbi.1005513.ref045">45</xref>,<xref ref-type="bibr" rid="pcbi.1005513.ref046">46</xref>] and atom mapping analysis. The main advantage of lumpGEM is its capability of making the <italic>ad-hoc</italic> selected core models consistent with genome-scale model (GEMs) in terms of biomass requirements. Metabolic Flux Analysis (MFA) analysis can benefit from such approach, since lumpGEM identifies the expenditure of core metabolites for the biosynthesis of biomass building blocks, thus accounting correctly for the metabolic costs.</p>
+<p>lumpGEM can also be used to build synthesis pathways for any metabolite defined in the metabolic network. This makes it a versatile tool to study the characteristics of industrial chemical production strains [<xref ref-type="bibr" rid="pcbi.1005513.ref047">47</xref>], since it identifies all the enzymes, either linearly connected or nested that participate in the biosynthesis of the target compound. This approach can be used to compare the similarities and differences between the host organisms to produce a target chemical, since lumpGEM can compare the metabolic costs and capabilities of different organisms for the biosynthesis of an industrially relevant molecule. Apart from pathway and subsystems/subnetworks analysis, lumping strategy reduces the complexity of the networks significantly. By exploiting this property of lumpGEM, we built a reduced model that has an <italic>ad hoc</italic> defined core with a biomass yield very close to its parent GEM model. With a systematic approach to define the core [<xref ref-type="bibr" rid="pcbi.1005513.ref048">48</xref>], we can generate representative reduced models that are consistent with their GEM for different studies, such as kinetic modelling [<xref ref-type="bibr" rid="pcbi.1005513.ref049">49</xref>–<xref ref-type="bibr" rid="pcbi.1005513.ref051">51</xref>], in where it is crucial to base the analysis on models that do not sacrifice stoichiometric, thermodynamic and physiological constraints.</p>
+</sec>
+</sec>
+<sec id="sec008" sec-type="materials|methods">
+<title>Materials and methods</title>
+<p>The algorithm considers a core system of metabolites and reactions and identifies them in genome scale model (GEM) of the organism. Using this GEM, it decomposes the biomass composition of the organisms into individual biomass building blocks (BBB). lumpGEM source code is available in <xref ref-type="supplementary-material" rid="pcbi.1005513.s003">S3 File</xref>.</p>
+<p>In lumpGEM, we introduce and use the following definitions:</p>
+<sec id="sec009">
+<title>Preliminary definitions</title>
+<def-list>
+<def-item><term><italic>BBB</italic></term>
+<def><p>Biomass building block</p></def>
+</def-item>
+<def-item><term><italic>M<sup>core</sup></italic></term>
+<def><p>Metabolites that belong to core system</p></def>
+</def-item>
+<def-item><term><italic>R<sup>core</sup></italic></term>
+<def><p>Reactions that belong to core system, in this specific case</p></def>
+</def-item>
+<def-item><term><italic>M<sup>ncGEM</sup></italic></term>
+<def><p>Metabolites that belong to GEM that do not belong to <italic>M</italic><sup><italic>core</italic></sup></p></def>
+</def-item>
+<def-item><term><italic>R<sup>ncGEM</sup></italic></term>
+<def><p>Reactions that belong to GEM that do not belong to <italic>R</italic><sup><italic>core</italic></sup></p></def>
+</def-item>
+<def-item><term><italic>S<sup>j</sup></italic></term>
+<def><p>Subnetwork (set of reactions) that synthesizes <italic>BBB</italic><sub><italic>j</italic></sub> other than <italic>M</italic><sup><italic>core</italic></sup> <italic>R</italic><sup><italic>core</italic></sup> and composed of <italic>M</italic><sup><italic>ncGEM</italic></sup> and <italic>R</italic><sup><italic>ncGEM</italic></sup></p></def>
+</def-item>
+<def-item><term><italic>M<sup>sub</sup></italic></term>
+<def><p>Metabolites that belong to <italic>S</italic><sup><italic>j</italic></sup></p></def>
+</def-item>
+<def-item><term><italic>R<sup>sub</sup></italic></term>
+<def><p>Reactions that belong to <italic>S</italic><sup><italic>j</italic></sup></p></def>
+</def-item>
+<def-item><term><italic>z<sub>rxn</sub></italic></term>
+<def><p>Binary decision variable that controls the flux through each <italic>R</italic><sup><italic>ncGEM</italic></sup>. When decision is 0, the reaction is active</p></def>
+</def-item>
+</def-list>
+</sec>
+<sec id="sec010">
+<title>Generating subnetworks for each BBB</title>
+<list list-type="simple">
+<list-item><label>a</label><p>Decompose the biomass composition of GEM to each of its components, such as alanine, tyrosine, biotin, etc. In most available GEMs, such decomposition is available mainly in the biomass equation.</p></list-item>
+<list-item><label>b</label><p>Built a new GEM model by allowing the individual production of each <italic>BBB</italic>.</p></list-item>
+<list-item><label>c</label><p>Define <italic>M</italic><sup><italic>core</italic></sup> and <italic>R</italic><sup><italic>core</italic></sup>.</p></list-item>
+<list-item><label>d</label><p>Split all the reactions in GEM in Step a. into forward <italic>F</italic><sub><italic>rxn</italic>, <italic>i</italic></sub> and backward <italic>B</italic><sub><italic>rxn</italic>, <italic>i</italic></sub> components.</p></list-item>
+<list-item><label>e</label><p>Create binary variables <italic>z</italic><sub><italic>rxn</italic>, <italic>i</italic></sub> for each <inline-formula id="pcbi.1005513.e006"><alternatives><graphic id="pcbi.1005513.e006g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005513.e006" xlink:type="simple"/><mml:math display="inline" id="M6"><mml:mrow><mml:msubsup><mml:mi>R</mml:mi><mml:mi>i</mml:mi><mml:mrow><mml:mi>n</mml:mi><mml:mi>c</mml:mi><mml:mi>G</mml:mi><mml:mi>E</mml:mi><mml:mi>M</mml:mi></mml:mrow></mml:msubsup></mml:mrow></mml:math></alternatives></inline-formula></p></list-item>
+<list-item><label>f</label><p>Generate a constraint for each <italic>R</italic><sup><italic>GEM</italic></sup> that will control the flux through these reactions as:
+<disp-formula id="pcbi.1005513.e007">
+<alternatives>
+<graphic id="pcbi.1005513.e007g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005513.e007" xlink:type="simple"/>
+<mml:math display="block" id="M7">
+<mml:mrow><mml:msub><mml:mi>F</mml:mi><mml:mrow><mml:mi>r</mml:mi><mml:mi>x</mml:mi><mml:mi>n</mml:mi><mml:mo>,</mml:mo><mml:mo> </mml:mo><mml:mi>i</mml:mi></mml:mrow></mml:msub><mml:mo>+</mml:mo><mml:msub><mml:mi>B</mml:mi><mml:mrow><mml:mi>r</mml:mi><mml:mi>x</mml:mi><mml:mi>n</mml:mi><mml:mo>,</mml:mo><mml:mo> </mml:mo><mml:mi>i</mml:mi></mml:mrow></mml:msub><mml:mo>+</mml:mo><mml:mi>C</mml:mi><mml:mo>.</mml:mo><mml:msub><mml:mi>z</mml:mi><mml:mrow><mml:mi>r</mml:mi><mml:mi>x</mml:mi><mml:mi>n</mml:mi><mml:mo>,</mml:mo><mml:mi>i</mml:mi></mml:mrow></mml:msub><mml:mo>≤</mml:mo><mml:mi>C</mml:mi></mml:mrow>
+</mml:math>
+</alternatives>
+</disp-formula>
+where C is the number of carbon atoms that the cell uptakes from its surrounding. If the cell can uptake multiple carbon sources, and the number of carbon atoms is not definite, an arbitrary big number can substitute for <italic>C</italic>.</p></list-item>
+</list>
+<p>Postulate 1: Binary control is unbiased to reaction directionality. This means that <inline-formula id="pcbi.1005513.e008"><alternatives><graphic id="pcbi.1005513.e008g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005513.e008" xlink:type="simple"/><mml:math display="inline" id="M8"><mml:mrow><mml:msubsup><mml:mi>R</mml:mi><mml:mi>i</mml:mi><mml:mrow><mml:mi>G</mml:mi><mml:mi>E</mml:mi><mml:mi>M</mml:mi></mml:mrow></mml:msubsup></mml:mrow></mml:math></alternatives></inline-formula> that is controlled by <italic>z</italic><sub><italic>rxn</italic>, <italic>i</italic></sub> can operate in both directions if the existing constraints (mass balance and thermodynamics) allow it.</p>
+<list list-type="simple">
+<list-item><label>g</label><p>Apply thermodynamics constraints for <italic>M</italic><sup><italic>core</italic></sup> and <italic>R</italic><sup><italic>core</italic></sup> as defined in [<xref ref-type="bibr" rid="pcbi.1005513.ref046">46</xref>,<xref ref-type="bibr" rid="pcbi.1005513.ref052">52</xref>].</p></list-item>
+<list-item><label>h</label><p>Build the following MILP formulation for each <italic>BBB</italic><sub><italic>j</italic></sub>:</p>
+<p>Maximize
+<disp-formula id="pcbi.1005513.e009">
+<alternatives>
+<graphic id="pcbi.1005513.e009g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005513.e009" xlink:type="simple"/>
+<mml:math display="block" id="M9">
+<mml:mrow><mml:munderover><mml:mstyle displaystyle="true" mathsize="140%"><mml:mo>∑</mml:mo></mml:mstyle><mml:mi>i</mml:mi><mml:mrow><mml:mo>#</mml:mo><mml:mo> </mml:mo><mml:mi>o</mml:mi><mml:mi>f</mml:mi><mml:mo> </mml:mo><mml:msup><mml:mi>R</mml:mi><mml:mrow><mml:mi>n</mml:mi><mml:mi>c</mml:mi><mml:mi>G</mml:mi><mml:mi>E</mml:mi><mml:mi>M</mml:mi></mml:mrow></mml:msup></mml:mrow></mml:munderover><mml:msub><mml:mi>z</mml:mi><mml:mrow><mml:mi>r</mml:mi><mml:mi>x</mml:mi><mml:mi>n</mml:mi><mml:mo>,</mml:mo><mml:mi>i</mml:mi></mml:mrow></mml:msub></mml:mrow>
+</mml:math>
+</alternatives>
+</disp-formula>
+such that:
+<disp-formula id="pcbi.1005513.e010">
+<alternatives>
+<graphic id="pcbi.1005513.e010g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005513.e010" xlink:type="simple"/>
+<mml:math display="block" id="M10">
+<mml:mrow><mml:mi>S</mml:mi><mml:mo>.</mml:mo><mml:mi>v</mml:mi><mml:mo>=</mml:mo><mml:mn>0</mml:mn></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(1)</label>
+</disp-formula>
+<disp-formula id="pcbi.1005513.e011">
+<alternatives>
+<graphic id="pcbi.1005513.e011g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005513.e011" xlink:type="simple"/>
+<mml:math display="block" id="M11">
+<mml:mrow><mml:msub><mml:mi>v</mml:mi><mml:mrow><mml:mi>B</mml:mi><mml:mi>B</mml:mi><mml:mi>B</mml:mi><mml:mo>,</mml:mo><mml:mi>j</mml:mi></mml:mrow></mml:msub><mml:mo>≥</mml:mo><mml:msub><mml:mi>n</mml:mi><mml:mrow><mml:mi>j</mml:mi><mml:mo>,</mml:mo><mml:mo> </mml:mo><mml:mi>G</mml:mi><mml:mi>E</mml:mi><mml:mi>M</mml:mi></mml:mrow></mml:msub><mml:mo>.</mml:mo><mml:msub><mml:mi mathvariant="normal">μ</mml:mi><mml:mrow><mml:mi>m</mml:mi><mml:mi>a</mml:mi><mml:mi>x</mml:mi></mml:mrow></mml:msub></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(2)</label>
+</disp-formula>
+where,</p>
+<p><italic>v</italic><sub><italic>BBB</italic>, <italic>j</italic></sub>: The sink that is created in Step 1.a for <italic>BBB</italic><sub><italic>j</italic></sub> for its biosynthesis.</p>
+<p>μ<sub><italic>max</italic></sub>: Theoretical maximum specific growth rate for the given physiology in 1/hr units.</p>
+<p><italic>n</italic><sub><italic>j</italic>, <italic>GEM</italic></sub>: The stoichiometric coefficient for <italic>BBB</italic><sub><italic>j</italic></sub> in mmol/gDW unit as defined in original GEM.</p>
+</list-item>
+</list>
+<p>Postulate 2: Any <italic>M</italic><sup><italic>core</italic></sup> is a potential precursor for the biosynthesis of <italic>BBB</italic><sub><italic>j</italic></sub>.</p>
+<p>Postulate 3: Maximizing for the sum of <italic>z</italic><sub><italic>rxn</italic>, <italic>i</italic></sub> results in the smallest subnetwork <italic>S</italic><sup><italic>j</italic></sup> to produce <italic>BBB</italic><sub><italic>j</italic></sub> from <italic>M</italic><sup><italic>core</italic></sup>. This subnetwork is not necessarily composed of only linear pathways as reported in databases such as KEGG [<xref ref-type="bibr" rid="pcbi.1005513.ref053">53</xref>], SEED [<xref ref-type="bibr" rid="pcbi.1005513.ref054">54</xref>] or EcoCyc [<xref ref-type="bibr" rid="pcbi.1005513.ref040">40</xref>] etc. and may include branches.</p>
+<p>Postulate 4: The flux distribution for each generated subnetwork cannot guarantee an optimum flux distribution that will specify the individual stoichiometric contribution of each <italic>M</italic><sup><italic>core</italic></sup> to synthesize <italic>BBB</italic><sub><italic>j</italic></sub> due to the degrees of freedom (DOF) that the system has.</p>
+<p>Moreover, only the defined core reactions and metabolites of the GEM built in Step f for generating subnetworks is constraint with thermodynamics, and the generated subnetworks are constrained by only mass-balance.</p>
+<p>To test the thermodynamic feasibility of these subnetworks, we have built the following MILP formulation for each <italic>S</italic><sup><italic>j</italic></sup>:</p>
+<list list-type="simple">
+<list-item><label>a</label><p>Generate a model comprised of:
+<list list-type="simple">
+<list-item><label>i</label><p><italic>M</italic><sup><italic>core</italic></sup> and <italic>R</italic><sup><italic>core</italic></sup></p></list-item>
+<list-item><label>ii</label><p><italic>S</italic><sup><italic>j</italic></sup></p></list-item>
+<list-item><label>iii</label><p><italic>v</italic><sub><italic>BBB</italic></sub></p></list-item>
+</list></p></list-item>
+<list-item><label>b</label><p>Apply thermodynamic constraints on this model as described in [<xref ref-type="bibr" rid="pcbi.1005513.ref046">46</xref>,<xref ref-type="bibr" rid="pcbi.1005513.ref052">52</xref>].</p></list-item>
+<list-item><label>c</label><p>Minimize the sum of net flux in the subnetwork <italic>S</italic><sup><italic>j</italic></sup> [<xref ref-type="bibr" rid="pcbi.1005513.ref055">55</xref>–<xref ref-type="bibr" rid="pcbi.1005513.ref057">57</xref>].</p></list-item>
+</list>
+<p>Postulate 5: Minimizing the sum of net flux in <italic>S</italic><sup><italic>j</italic></sup> generates a stoichiometrically proportional flux distribution in the subnetwork <italic>S</italic><sup><italic>j</italic></sup>. This leads to the exact stoichiometric expenditure of each <italic>M</italic><sup><italic>core</italic></sup> to synthesize <italic>BBB</italic><sub><italic>j</italic></sub>.</p>
+<list list-type="simple">
+<list-item><label>d</label><p>Lump <italic>R</italic><sup><italic>sub</italic></sup> with respect to the flux distribution obtained after minimization. This is collapsing the reactions into 1 overall reaction that is stoichiometrically equivalent to the flux distribution generated above.</p></list-item>
+</list>
+</sec>
+<sec id="sec011">
+<title>Generating alternative subnetworks for each BBB<sub>j</sub></title>
+<p>To identify alternative subnetworks for <italic>BBB</italic><sub><italic>j</italic></sub>, GEM is further constrained with the following integer cuts constraint after generating each <italic>S</italic><sup><italic>j</italic></sup> with an iterative manner [<xref ref-type="bibr" rid="pcbi.1005513.ref033">33</xref>].</p>
+<disp-formula id="pcbi.1005513.e012">
+<alternatives>
+<graphic id="pcbi.1005513.e012g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005513.e012" xlink:type="simple"/>
+<mml:math display="block" id="M12">
+<mml:mrow><mml:munderover><mml:mstyle displaystyle="true" mathsize="140%"><mml:mo>∑</mml:mo></mml:mstyle><mml:mi>k</mml:mi><mml:mrow><mml:mo>#</mml:mo><mml:mo> </mml:mo><mml:mi>o</mml:mi><mml:mi>f</mml:mi><mml:mo> </mml:mo><mml:msup><mml:mi>R</mml:mi><mml:mrow><mml:mi>s</mml:mi><mml:mi>u</mml:mi><mml:mi>b</mml:mi></mml:mrow></mml:msup></mml:mrow></mml:munderover><mml:msub><mml:mi>z</mml:mi><mml:mrow><mml:msubsup><mml:mi>R</mml:mi><mml:mi>k</mml:mi><mml:mrow><mml:mi>s</mml:mi><mml:mi>u</mml:mi><mml:mi>b</mml:mi></mml:mrow></mml:msubsup></mml:mrow></mml:msub><mml:mo>&gt;</mml:mo><mml:mn>0</mml:mn></mml:mrow>
+</mml:math>
+</alternatives>
+</disp-formula>
+<p>Postulate 6: Since <inline-formula id="pcbi.1005513.e013"><alternatives><graphic id="pcbi.1005513.e013g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005513.e013" xlink:type="simple"/><mml:math display="inline" id="M13"><mml:mrow><mml:msubsup><mml:mi>R</mml:mi><mml:mi>k</mml:mi><mml:mrow><mml:mi>s</mml:mi><mml:mi>u</mml:mi><mml:mi>b</mml:mi></mml:mrow></mml:msubsup></mml:mrow></mml:math></alternatives></inline-formula> is active if only <inline-formula id="pcbi.1005513.e014"><alternatives><graphic id="pcbi.1005513.e014g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005513.e014" xlink:type="simple"/><mml:math display="inline" id="M14"><mml:mrow><mml:msub><mml:mi>z</mml:mi><mml:mrow><mml:msubsup><mml:mi>R</mml:mi><mml:mi>k</mml:mi><mml:mrow><mml:mi>s</mml:mi><mml:mi>u</mml:mi><mml:mi>b</mml:mi></mml:mrow></mml:msubsup></mml:mrow></mml:msub><mml:mo>=</mml:mo><mml:mn>0</mml:mn></mml:mrow></mml:math></alternatives></inline-formula>, the next solution will have at least 1 different reaction from the previous solution. Aftermath, the same procedure is applied for the newly generated <italic>S</italic><sup><italic>j</italic>,2</sup>.</p>
+</sec>
+</sec>
+<sec id="sec012">
+<title>Supporting information</title>
+<supplementary-material id="pcbi.1005513.s001" mimetype="application/zip" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005513.s001" xlink:type="simple">
+<label>S1 File</label>
+<caption>
+<title>The subnetworks generated for <italic>E</italic>. <italic>coli</italic> and <italic>S</italic>. <italic>cerevisiae</italic> biomass building blocks.</title>
+<p>All generated subnetworks for all the biomass building blocks of <italic>E</italic>. <italic>coli</italic> iJO1366 and <italic>S</italic>. <italic>cerevisiae</italic> iMM904.</p>
+<p>(ZIP)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1005513.s002" mimetype="application/zip" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005513.s002" xlink:type="simple">
+<label>S2 File</label>
+<caption>
+<title>The core networks generated for <italic>E</italic>. <italic>coli</italic> and <italic>S</italic>. <italic>cerevisiae</italic> GEMs.</title>
+<p>Core models for <italic>E</italic>. <italic>coli</italic> and <italic>S</italic>. <italic>cerevisiae</italic> including the defined core networks and selected lumped reactions.</p>
+<p>(ZIP)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1005513.s003" mimetype="application/zip" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005513.s003" xlink:type="simple">
+<label>S3 File</label>
+<caption>
+<title>The source code of lumpGEM compatible with COBRA toolbox.</title>
+<p>MATLAB based code of lumpGEM that generates FBA feasible subnetworks and lumped reactions.</p>
+<p>(ZIP)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1005513.s004" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005513.s004" xlink:type="simple">
+<label>S1 Table</label>
+<caption>
+<title>The statistics on the subnetworks and the lumped reactions generated for <italic>E</italic>. <italic>coli</italic> and <italic>S</italic>. <italic>cerevisiae</italic> biomass building blocks.</title>
+<p>(XLSX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1005513.s005" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005513.s005" xlink:type="simple">
+<label>S2 Table</label>
+<caption>
+<title>The core metabolite and cofactor cost estimated by Neidhardt to produce biomass building blocks for <italic>E</italic>. <italic>coli</italic>.</title>
+<p>(XLSX)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ack>
+<p>We would like to thank Dr. Georgios Fengos for constructive discussions and feedback.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1005513.ref001"><label>1</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Papoutsakis</surname> <given-names>ET</given-names></name> (<year>1984</year>) <article-title>Equations and calculations for fermentations of butyric acid bacteria</article-title>. <source>Biotechnology and bioengineering</source> <volume>26</volume>: <fpage>174</fpage>–<lpage>187</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1002/bit.260260210" xlink:type="simple">10.1002/bit.260260210</ext-link></comment> <object-id pub-id-type="pmid">18551704</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref002"><label>2</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Varma</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Boesch</surname> <given-names>BW</given-names></name>, <name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name> (<year>1993</year>) <article-title>Stoichiometric interpretation of Escherichia coli glucose catabolism under various oxygenation rates</article-title>. <source>Applied and Environmental Microbiology</source> <volume>59</volume>: <fpage>2465</fpage>–<lpage>2473</lpage>. <object-id pub-id-type="pmid">8368835</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref003"><label>3</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Vallino</surname> <given-names>JJ</given-names></name>, <name name-style="western"><surname>Stephanopoulos</surname> <given-names>G</given-names></name> (<year>1994</year>) <article-title>Carbon Flux Distributions at the Pyruvate Branch Point in Corynebacterium-Glutamicum during Lysine Overproduction</article-title>. <source>Biotechnology progress</source> <volume>10</volume>: <fpage>320</fpage>–<lpage>326</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1005513.ref004"><label>4</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Varma</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name> (<year>1993</year>) <article-title>Metabolic capabilities of Escherichia coli: I. synthesis of biosynthetic precursors and cofactors</article-title>. <source>Journal of Theoretical Biology</source> <volume>165</volume>: <fpage>477</fpage>–<lpage>502</lpage>. <object-id pub-id-type="pmid">21322280</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref005"><label>5</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Varma</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name> (<year>1993</year>) <article-title>Metabolic Capabilities of Escherichia-Coli .2. Optimal-Growth Patterns</article-title>. <source>Journal of Theoretical Biology</source> <volume>165</volume>: <fpage>503</fpage>–<lpage>522</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1005513.ref006"><label>6</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Macnab</surname> <given-names>RM</given-names></name> (<year>1990</year>) <article-title>Physiology of the Bacterial-Cell—a Molecular Approach—Neidhart, Fc, Ingraham, Jl, Schaechter, M</article-title>. <source>Nature</source> <volume>348</volume>: <fpage>401</fpage>–<lpage>401</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1005513.ref007"><label>7</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Ingraham</surname> <given-names>JL</given-names></name>, <name name-style="western"><surname>Maaløe</surname> <given-names>O</given-names></name>, <name name-style="western"><surname>Neidhardt</surname> <given-names>FC</given-names></name> (<year>1983</year>) <source>Growth of the bacterial cell</source>. <publisher-loc>Sunderland, Mass</publisher-loc>.: <publisher-name>Sinauer Associates</publisher-name>. <volume>xi</volume>, <fpage>435</fpage> p. p.</mixed-citation></ref>
+<ref id="pcbi.1005513.ref008"><label>8</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Noor</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Eden</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Milo</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Alon</surname> <given-names>U</given-names></name> (<year>2010</year>) <article-title>Central Carbon Metabolism as a Minimal Biochemical Walk between Precursors for Biomass and Energy</article-title>. <source>Molecular Cell</source> <volume>39</volume>: <fpage>809</fpage>–<lpage>820</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.molcel.2010.08.031" xlink:type="simple">10.1016/j.molcel.2010.08.031</ext-link></comment> <object-id pub-id-type="pmid">20832731</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref009"><label>9</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Sudarsan</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Dethlefsen</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Blank</surname> <given-names>LM</given-names></name>, <name name-style="western"><surname>Siemann-Herzberg</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Schmid</surname> <given-names>A</given-names></name> (<year>2014</year>) <article-title>The functional structure of central carbon metabolism in Pseudomonas putida KT2440</article-title>. <source>Appl Environ Microbiol</source> <volume>80</volume>: <fpage>5292</fpage>–<lpage>5303</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1128/AEM.01643-14" xlink:type="simple">10.1128/AEM.01643-14</ext-link></comment> <object-id pub-id-type="pmid">24951791</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref010"><label>10</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pramanik</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Keasling</surname> <given-names>JD</given-names></name> (<year>1997</year>) <article-title>Stoichiometric model of Escherichia coli metabolism: Incorporation of growth-rate dependent biomass composition and mechanistic energy requirements</article-title>. <source>Biotechnology and Bioengineering</source> <volume>56</volume>: <fpage>398</fpage>–<lpage>421</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1002/(SICI)1097-0290(19971120)56:4&lt;398::AID-BIT6&gt;3.0.CO;2-J" xlink:type="simple">10.1002/(SICI)1097-0290(19971120)56:4&lt;398::AID-BIT6&gt;3.0.CO;2-J</ext-link></comment> <object-id pub-id-type="pmid">18642243</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref011"><label>11</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Varma</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name> (<year>1994</year>) <article-title>Stoichiometric Flux Balance Models Quantitatively Predict Growth and Metabolic by-Product Secretion in Wild-Type Escherichia-Coli W3110</article-title>. <source>Applied and Environmental Microbiology</source> <volume>60</volume>: <fpage>3724</fpage>–<lpage>3731</lpage>. <object-id pub-id-type="pmid">7986045</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref012"><label>12</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pramanik</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Keasling</surname> <given-names>JD</given-names></name> (<year>1998</year>) <article-title>Effect of Escherichia coli biomass composition on central metabolic fluxes predicted by a stoichiometric model</article-title>. <source>Biotechnology and Bioengineering</source> <volume>60</volume>: <fpage>230</fpage>–<lpage>238</lpage>. <object-id pub-id-type="pmid">10099424</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref013"><label>13</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gombert</surname> <given-names>AK</given-names></name>, <name name-style="western"><surname>dos Santos</surname> <given-names>MM</given-names></name>, <name name-style="western"><surname>Christensen</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Nielsen</surname> <given-names>J</given-names></name> (<year>2001</year>) <article-title>Network identification and flux quantification in the central metabolism of Saccharomyces cerevisiae under different conditions of glucose repression</article-title>. <source>Journal of Bacteriology</source> <volume>183</volume>: <fpage>1441</fpage>–<lpage>1451</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1128/JB.183.4.1441-1451.2001" xlink:type="simple">10.1128/JB.183.4.1441-1451.2001</ext-link></comment> <object-id pub-id-type="pmid">11157958</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref014"><label>14</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Heyland</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Fu</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Blank</surname> <given-names>LM</given-names></name> (<year>2009</year>) <article-title>Correlation between TCA cycle flux and glucose uptake rate during respiro-fermentative growth of Saccharomyces cerevisiae</article-title>. <source>Microbiology-Sgm</source> <volume>155</volume>: <fpage>3827</fpage>–<lpage>3837</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1005513.ref015"><label>15</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Vanrolleghem</surname> <given-names>PA</given-names></name>, <name name-style="western"><surname>deJongGubbels</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>vanGulik</surname> <given-names>WM</given-names></name>, <name name-style="western"><surname>Pronk</surname> <given-names>JT</given-names></name>, <name name-style="western"><surname>vanDijken</surname> <given-names>JP</given-names></name>, <etal>et al</etal>. (<year>1996</year>) <article-title>Validation of a metabolic network for Saccharomyces cerevisiae using mixed substrate studies</article-title>. <source>Biotechnology Progress</source> <volume>12</volume>: <fpage>434</fpage>–<lpage>448</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1021/bp960022i" xlink:type="simple">10.1021/bp960022i</ext-link></comment> <object-id pub-id-type="pmid">8987472</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref016"><label>16</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kim</surname> <given-names>TY</given-names></name>, <name name-style="western"><surname>Sohn</surname> <given-names>SB</given-names></name>, <name name-style="western"><surname>Kim</surname> <given-names>YB</given-names></name>, <name name-style="western"><surname>Kim</surname> <given-names>WJ</given-names></name>, <name name-style="western"><surname>Lee</surname> <given-names>SY</given-names></name> (<year>2012</year>) <article-title>Recent advances in reconstruction and applications of genome-scale metabolic models</article-title>. <source>Current opinion in biotechnology</source> <volume>23</volume>: <fpage>617</fpage>–<lpage>623</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.copbio.2011.10.007" xlink:type="simple">10.1016/j.copbio.2011.10.007</ext-link></comment> <object-id pub-id-type="pmid">22054827</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref017"><label>17</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Reed</surname> <given-names>JL</given-names></name>, <name name-style="western"><surname>Famili</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Thiele</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name> (<year>2006</year>) <article-title>Towards multidimensional genome annotation</article-title>. <source>Nature Reviews Genetics</source> <volume>7</volume>: <fpage>130</fpage>–<lpage>141</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/nrg1769" xlink:type="simple">10.1038/nrg1769</ext-link></comment> <object-id pub-id-type="pmid">16418748</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref018"><label>18</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Drell</surname> <given-names>D</given-names></name> (<year>2002</year>) <article-title>The Department of Energy microbial cell project: A 180 degrees paradigm shift for biology</article-title>. <source>Omics: a journal of integrative biology</source> <volume>6</volume>: <fpage>3</fpage>–<lpage>9</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1089/15362310252780799" xlink:type="simple">10.1089/15362310252780799</ext-link></comment> <object-id pub-id-type="pmid">11881832</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref019"><label>19</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Edwards</surname> <given-names>JS</given-names></name>, <name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name> (<year>2000</year>) <article-title>The Escherichia coli MG1655 in silico metabolic genotype: Its definition, characteristics, and capabilities</article-title>. <source>Proceedings of the National Academy of Sciences of the United States of America</source> <volume>97</volume>: <fpage>5528</fpage>–<lpage>5533</lpage>. <object-id pub-id-type="pmid">10805808</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref020"><label>20</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Forster</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Famili</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Fu</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name>, <name name-style="western"><surname>Nielsen</surname> <given-names>J</given-names></name> (<year>2003</year>) <article-title>Genome-scale reconstruction of the Saccharomyces cerevisiae metabolic network</article-title>. <source>Genome Research</source> <volume>13</volume>: <fpage>244</fpage>–<lpage>253</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1101/gr.234503" xlink:type="simple">10.1101/gr.234503</ext-link></comment> <object-id pub-id-type="pmid">12566402</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref021"><label>21</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Feist</surname> <given-names>AM</given-names></name>, <name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name> (<year>2010</year>) <article-title>The biomass objective function</article-title>. <source>Current Opinion in Microbiology</source> <volume>13</volume>: <fpage>344</fpage>–<lpage>349</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.mib.2010.03.003" xlink:type="simple">10.1016/j.mib.2010.03.003</ext-link></comment> <object-id pub-id-type="pmid">20430689</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref022"><label>22</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Durot</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Bourguignon</surname> <given-names>PY</given-names></name>, <name name-style="western"><surname>Schachter</surname> <given-names>V</given-names></name> (<year>2009</year>) <article-title>Genome-scale models of bacterial metabolism: reconstruction and applications</article-title>. <source>Fems Microbiology Reviews</source> <volume>33</volume>: <fpage>164</fpage>–<lpage>190</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1111/j.1574-6976.2008.00146.x" xlink:type="simple">10.1111/j.1574-6976.2008.00146.x</ext-link></comment> <object-id pub-id-type="pmid">19067749</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref023"><label>23</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schilling</surname> <given-names>CH</given-names></name>, <name name-style="western"><surname>Covert</surname> <given-names>MW</given-names></name>, <name name-style="western"><surname>Famili</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Church</surname> <given-names>GM</given-names></name>, <name name-style="western"><surname>Edwards</surname> <given-names>JS</given-names></name>, <etal>et al</etal>. (<year>2002</year>) <article-title>Genome-scale metabolic model of Helicobacter pylori 26695</article-title>. <source>Journal of bacteriology</source> <volume>184</volume>: <fpage>4582</fpage>–<lpage>4593</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1128/JB.184.16.4582-4593.2002" xlink:type="simple">10.1128/JB.184.16.4582-4593.2002</ext-link></comment> <object-id pub-id-type="pmid">12142428</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref024"><label>24</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Tymoshenko</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Oppenheim</surname> <given-names>RD</given-names></name>, <name name-style="western"><surname>Agren</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Nielsen</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Soldati-Favre</surname> <given-names>D</given-names></name>, <etal>et al</etal>. (<year>2015</year>) <article-title>Metabolic Needs and Capabilities of Toxoplasma gondii through Combined Computational and Experimental Analysis</article-title>. <source>Plos Computational Biology</source> <volume>11</volume>: <fpage>e1004261</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1371/journal.pcbi.1004261" xlink:type="simple">10.1371/journal.pcbi.1004261</ext-link></comment> <object-id pub-id-type="pmid">26001086</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref025"><label>25</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Sigurdsson</surname> <given-names>MI</given-names></name>, <name name-style="western"><surname>Jamshidi</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Steingrimsson</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Thiele</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name> (<year>2010</year>) <article-title>A detailed genome-wide reconstruction of mouse metabolism based on human Recon 1</article-title>. <source>Bmc Systems Biology</source> <volume>4</volume>.</mixed-citation></ref>
+<ref id="pcbi.1005513.ref026"><label>26</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Duarte</surname> <given-names>NC</given-names></name>, <name name-style="western"><surname>Becker</surname> <given-names>SA</given-names></name>, <name name-style="western"><surname>Jamshidi</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Thiele</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Mo</surname> <given-names>ML</given-names></name>, <etal>et al</etal>. (<year>2007</year>) <article-title>Global reconstruction of the human metabolic network based on genomic and bibliomic data</article-title>. <source>Proceedings of the National Academy of Sciences of the United States of America</source> <volume>104</volume>: <fpage>1777</fpage>–<lpage>1782</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1073/pnas.0610772104" xlink:type="simple">10.1073/pnas.0610772104</ext-link></comment> <object-id pub-id-type="pmid">17267599</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref027"><label>27</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Simons</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Saha</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Amiour</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Kumar</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Guillard</surname> <given-names>L</given-names></name>, <etal>et al</etal>. (<year>2014</year>) <article-title>Assessing the Metabolic Impact of Nitrogen Availability Using a Compartmentalized Maize Leaf Genome-Scale Model</article-title>. <source>Plant Physiology</source> <volume>166</volume>: <fpage>1659</fpage>–<lpage>1674</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1104/pp.114.245787" xlink:type="simple">10.1104/pp.114.245787</ext-link></comment> <object-id pub-id-type="pmid">25248718</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref028"><label>28</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Feist</surname> <given-names>AM</given-names></name>, <name name-style="western"><surname>Henry</surname> <given-names>CS</given-names></name>, <name name-style="western"><surname>Reed</surname> <given-names>JL</given-names></name>, <name name-style="western"><surname>Krummenacker</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Joyce</surname> <given-names>AR</given-names></name>, <etal>et al</etal>. (<year>2007</year>) <article-title>A genome-scale metabolic reconstruction for Escherichia coli K-12 MG1655 that accounts for 1260 ORFs and thermodynamic information</article-title>. <source>Molecular Systems Biology</source> <volume>3</volume>.</mixed-citation></ref>
+<ref id="pcbi.1005513.ref029"><label>29</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Orth</surname> <given-names>JD</given-names></name>, <name name-style="western"><surname>Conrad</surname> <given-names>TM</given-names></name>, <name name-style="western"><surname>Na</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Lerman</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Nam</surname> <given-names>H</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>A comprehensive genome-scale reconstruction of Escherichia coli metabolism-2011</article-title>. <source>Molecular Systems Biology</source> <volume>7</volume>.</mixed-citation></ref>
+<ref id="pcbi.1005513.ref030"><label>30</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>McCloskey</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name>, <name name-style="western"><surname>Feist</surname> <given-names>AM</given-names></name> (<year>2013</year>) <article-title>Basic and applied uses of genome-scale metabolic network reconstructions of Escherichia coli</article-title>. <source>Molecular Systems Biology</source> <volume>9</volume>.</mixed-citation></ref>
+<ref id="pcbi.1005513.ref031"><label>31</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hatzimanikatis</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Floudas</surname> <given-names>CA</given-names></name>, <name name-style="western"><surname>Bailey</surname> <given-names>JE</given-names></name> (<year>1996</year>) <article-title>Analysis and design of metabolic reaction networks via mixed-integer linear optimization</article-title>. <source>Aiche Journal</source> <volume>42</volume>: <fpage>1277</fpage>–<lpage>1292</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1005513.ref032"><label>32</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Burgard</surname> <given-names>AP</given-names></name>, <name name-style="western"><surname>Vaidyaraman</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Maranas</surname> <given-names>CD</given-names></name> (<year>2001</year>) <article-title>Minimal reaction sets for Escherichia coli metabolism under different growth requirements and uptake environments</article-title>. <source>Biotechnol Prog</source> <volume>17</volume>: <fpage>791</fpage>–<lpage>797</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1021/bp0100880" xlink:type="simple">10.1021/bp0100880</ext-link></comment> <object-id pub-id-type="pmid">11587566</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref033"><label>33</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lee</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Phalakornkule</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Domach</surname> <given-names>MM</given-names></name>, <name name-style="western"><surname>Grossmann</surname> <given-names>IE</given-names></name> (<year>2000</year>) <article-title>Recursive MILP model for finding all the alternate optima in LP models for metabolic networks</article-title>. <source>Computers &amp; Chemical Engineering</source> <volume>24</volume>: <fpage>711</fpage>–<lpage>716</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1005513.ref034"><label>34</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Trinh</surname> <given-names>CT</given-names></name>, <name name-style="western"><surname>Thompson</surname> <given-names>RA</given-names></name> (<year>2012</year>) <article-title>Elementary mode analysis: a useful metabolic pathway analysis tool for reprograming microbial metabolic pathways</article-title>. <source>Subcell Biochem</source> <volume>64</volume>: <fpage>21</fpage>–<lpage>42</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/978-94-007-5055-5_2" xlink:type="simple">10.1007/978-94-007-5055-5_2</ext-link></comment> <object-id pub-id-type="pmid">23080244</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref035"><label>35</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schuster</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Hilgetag</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Woods</surname> <given-names>JH</given-names></name>, <name name-style="western"><surname>Fell</surname> <given-names>DA</given-names></name> (<year>2002</year>) <article-title>Reaction routes in biochemical reaction systems: Algebraic properties, validated calculation procedure and example from nucleotide metabolism</article-title>. <source>Journal of Mathematical Biology</source> <volume>45</volume>: <fpage>153</fpage>–<lpage>181</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s002850200143" xlink:type="simple">10.1007/s002850200143</ext-link></comment> <object-id pub-id-type="pmid">12181603</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref036"><label>36</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>de Figueiredo</surname> <given-names>LF</given-names></name>, <name name-style="western"><surname>Podhorski</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Rubio</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Kaleta</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Beasley</surname> <given-names>JE</given-names></name>, <etal>et al</etal>. (<year>2009</year>) <article-title>Computing the shortest elementary flux modes in genome-scale metabolic networks</article-title>. <source>Bioinformatics</source> <volume>25</volume>: <fpage>3158</fpage>–<lpage>3165</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/bioinformatics/btp564" xlink:type="simple">10.1093/bioinformatics/btp564</ext-link></comment> <object-id pub-id-type="pmid">19793869</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref037"><label>37</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mo</surname> <given-names>ML</given-names></name>, <name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name>, <name name-style="western"><surname>Herrgard</surname> <given-names>MJ</given-names></name> (<year>2009</year>) <article-title>Connecting extracellular metabolomic measurements to intracellular flux states in yeast</article-title>. <source>BMC Syst Biol</source> <volume>3</volume>: <fpage>37</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1186/1752-0509-3-37" xlink:type="simple">10.1186/1752-0509-3-37</ext-link></comment> <object-id pub-id-type="pmid">19321003</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref038"><label>38</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hatzimanikatis</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Floudas</surname> <given-names>CA</given-names></name>, <name name-style="western"><surname>Bailey</surname> <given-names>JE</given-names></name> (<year>1996</year>) <article-title>Optimization of regulatory architectures in metabolic reaction networks</article-title>. <source>Biotechnology and Bioengineering</source> <volume>52</volume>: <fpage>485</fpage>–<lpage>500</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1002/(SICI)1097-0290(19961120)52:4&lt;485::AID-BIT4&gt;3.0.CO;2-L" xlink:type="simple">10.1002/(SICI)1097-0290(19961120)52:4&lt;485::AID-BIT4&gt;3.0.CO;2-L</ext-link></comment> <object-id pub-id-type="pmid">18629921</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref039"><label>39</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Burgard</surname> <given-names>AP</given-names></name>, <name name-style="western"><surname>Maranas</surname> <given-names>CD</given-names></name> (<year>2001</year>) <article-title>Probing the performance limits of the Escherichia coli metabolic network subject to gene additions or deletions</article-title>. <source>Biotechnology and Bioengineering</source> <volume>74</volume>: <fpage>364</fpage>–<lpage>375</lpage>. <object-id pub-id-type="pmid">11427938</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref040"><label>40</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Keseler</surname> <given-names>IM</given-names></name>, <name name-style="western"><surname>Mackie</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Peralta-Gil</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Santos-Zavaleta</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Gama-Castro</surname> <given-names>S</given-names></name>, <etal>et al</etal>. (<year>2013</year>) <article-title>EcoCyc: fusing model organism databases with systems biology</article-title>. <source>Nucleic acids research</source> <volume>41</volume>: <fpage>D605</fpage>–<lpage>612</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/nar/gks1027" xlink:type="simple">10.1093/nar/gks1027</ext-link></comment> <object-id pub-id-type="pmid">23143106</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref041"><label>41</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Henry</surname> <given-names>CS</given-names></name>, <name name-style="western"><surname>Broadbelt</surname> <given-names>LJ</given-names></name>, <name name-style="western"><surname>Hatzimanikatis</surname> <given-names>V</given-names></name> (<year>2010</year>) <article-title>Discovery and Analysis of Novel Metabolic Pathways for the Biosynthesis of Industrial Chemicals: 3-Hydroxypropanoate</article-title>. <source>Biotechnology and Bioengineering</source> <volume>106</volume>: <fpage>462</fpage>–<lpage>473</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1002/bit.22673" xlink:type="simple">10.1002/bit.22673</ext-link></comment> <object-id pub-id-type="pmid">20091733</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref042"><label>42</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Borodina</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Nielsen</surname> <given-names>J</given-names></name> (<year>2014</year>) <article-title>Advances in metabolic engineering of yeast Saccharomyces cerevisiae for production of chemicals</article-title>. <source>Biotechnology journal</source> <volume>9</volume>: <fpage>609</fpage>–<lpage>620</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1002/biot.201300445" xlink:type="simple">10.1002/biot.201300445</ext-link></comment> <object-id pub-id-type="pmid">24677744</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref043"><label>43</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Christen</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Sauer</surname> <given-names>U</given-names></name> (<year>2011</year>) <article-title>Intracellular characterization of aerobic glucose metabolism in seven yeast species by 13C flux analysis and metabolomics</article-title>. <source>FEMS yeast research</source> <volume>11</volume>: <fpage>263</fpage>–<lpage>272</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1111/j.1567-1364.2010.00713.x" xlink:type="simple">10.1111/j.1567-1364.2010.00713.x</ext-link></comment> <object-id pub-id-type="pmid">21205161</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref044"><label>44</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wiechert</surname> <given-names>W</given-names></name> (<year>2001</year>) <article-title>13C metabolic flux analysis</article-title>. <source>Metab Eng</source> <volume>3</volume>: <fpage>195</fpage>–<lpage>206</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1006/mben.2001.0187" xlink:type="simple">10.1006/mben.2001.0187</ext-link></comment> <object-id pub-id-type="pmid">11461141</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref045"><label>45</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ataman</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Hatzimanikatis</surname> <given-names>V</given-names></name> (<year>2015</year>) <article-title>Heading in the right direction: thermodynamics-based network analysis and pathway engineering</article-title>. <source>Current opinion in biotechnology</source> <volume>36</volume>: <fpage>176</fpage>–<lpage>182</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.copbio.2015.08.021" xlink:type="simple">10.1016/j.copbio.2015.08.021</ext-link></comment> <object-id pub-id-type="pmid">26360871</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref046"><label>46</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Soh</surname> <given-names>KC</given-names></name>, <name name-style="western"><surname>Hatzimanikatis</surname> <given-names>V</given-names></name> (<year>2014</year>) <article-title>Constraining the flux space using thermodynamics and integration of metabolomics data</article-title>. <source>Methods in molecular biology (Clifton, NJ)</source> <volume>1191</volume>: <fpage>49</fpage>–<lpage>63</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1005513.ref047"><label>47</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hadadi</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Hatzimanikatis</surname> <given-names>V</given-names></name> (<year>2015</year>) <article-title>Design of computational retrobiosynthesis tools for the design of de novo synthetic pathways</article-title>. <source>Current opinion in chemical biology</source> <volume>28</volume>: <fpage>99</fpage>–<lpage>104</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.cbpa.2015.06.025" xlink:type="simple">10.1016/j.cbpa.2015.06.025</ext-link></comment> <object-id pub-id-type="pmid">26177079</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref048"><label>48</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ataman</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Hernandez Gardiol</surname> <given-names>DF</given-names></name>, <name name-style="western"><surname>Fengos</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Hatzimanikatis</surname> <given-names>V</given-names></name> (<year>2017</year>) <article-title>redGEM: Systematic Reduction and Analysis of Genome-scale Metabolic Reconstructions for Development of Consistent Core Metabolic Models</article-title>. <source>PLOS Computational Biology</source> <volume>13</volume>: <fpage>e1005444</fpage>.</mixed-citation></ref>
+<ref id="pcbi.1005513.ref049"><label>49</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Miskovic</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Tokic</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Fengos</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Hatzimanikatis</surname> <given-names>V</given-names></name> (<year>2015</year>) <article-title>Rites of passage: requirements and standards for building kinetic models of metabolic phenotypes</article-title>. <source>Current opinion in biotechnology</source> <volume>36</volume>: <fpage>146</fpage>–<lpage>153</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.copbio.2015.08.019" xlink:type="simple">10.1016/j.copbio.2015.08.019</ext-link></comment> <object-id pub-id-type="pmid">26342586</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref050"><label>50</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chakrabarti</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Miskovic</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Soh</surname> <given-names>KC</given-names></name>, <name name-style="western"><surname>Hatzimanikatis</surname> <given-names>V</given-names></name> (<year>2013</year>) <article-title>Towards kinetic modeling of genome-scale metabolic networks without sacrificing stoichiometric, thermodynamic and physiological constraints</article-title>. <source>Biotechnology journal</source> <volume>8</volume>: <fpage>1043</fpage>–<lpage>U1105</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1002/biot.201300091" xlink:type="simple">10.1002/biot.201300091</ext-link></comment> <object-id pub-id-type="pmid">23868566</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref051"><label>51</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Andreozzi</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Chakrabarti</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Soh</surname> <given-names>KC</given-names></name>, <name name-style="western"><surname>Burgard</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Yang</surname> <given-names>TH</given-names></name>, <etal>et al</etal>. (<year>2016</year>) <article-title>Identification of metabolic engineering targets for the enhancement of 1,4-butanediol production in recombinant E. coli using large-scale kinetic models</article-title>. <source>Metabolic engineering</source> <volume>35</volume>: <fpage>148</fpage>–<lpage>159</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.ymben.2016.01.009" xlink:type="simple">10.1016/j.ymben.2016.01.009</ext-link></comment> <object-id pub-id-type="pmid">26855240</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref052"><label>52</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Henry</surname> <given-names>CS</given-names></name>, <name name-style="western"><surname>Broadbelt</surname> <given-names>LJ</given-names></name>, <name name-style="western"><surname>Hatzimanikatis</surname> <given-names>V</given-names></name> (<year>2007</year>) <article-title>Thermodynamics-based metabolic flux analysis</article-title>. <source>Biophysical journal</source> <volume>92</volume>: <fpage>1792</fpage>–<lpage>1805</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1529/biophysj.106.093138" xlink:type="simple">10.1529/biophysj.106.093138</ext-link></comment> <object-id pub-id-type="pmid">17172310</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref053"><label>53</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ogata</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Goto</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Sato</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Fujibuchi</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Bono</surname> <given-names>H</given-names></name>, <etal>et al</etal>. (<year>1999</year>) <article-title>KEGG: Kyoto Encyclopedia of Genes and Genomes</article-title>. <source>Nucleic acids research</source> <volume>27</volume>: <fpage>29</fpage>–<lpage>34</lpage>. <object-id pub-id-type="pmid">9847135</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref054"><label>54</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Overbeek</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Begley</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Butler</surname> <given-names>RM</given-names></name>, <name name-style="western"><surname>Choudhuri</surname> <given-names>JV</given-names></name>, <name name-style="western"><surname>Chuang</surname> <given-names>HY</given-names></name>, <etal>et al</etal>. (<year>2005</year>) <article-title>The subsystems approach to genome annotation and its use in the project to annotate 1000 genomes</article-title>. <source>Nucleic acids research</source> <volume>33</volume>: <fpage>5691</fpage>–<lpage>5702</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/nar/gki866" xlink:type="simple">10.1093/nar/gki866</ext-link></comment> <object-id pub-id-type="pmid">16214803</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref055"><label>55</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schuetz</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Kuepfer</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Sauer</surname> <given-names>U</given-names></name> (<year>2007</year>) <article-title>Systematic evaluation of objective functions for predicting intracellular fluxes in Escherichia coli</article-title>. <source>Molecular systems biology</source> <volume>3</volume>: <fpage>119</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/msb4100162" xlink:type="simple">10.1038/msb4100162</ext-link></comment> <object-id pub-id-type="pmid">17625511</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref056"><label>56</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bonarius</surname> <given-names>HPJ</given-names></name>, <name name-style="western"><surname>Hatzimanikatis</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Meesters</surname> <given-names>KPH</given-names></name>, <name name-style="western"><surname>deGooijer</surname> <given-names>CD</given-names></name>, <name name-style="western"><surname>Schmid</surname> <given-names>G</given-names></name>, <etal>et al</etal>. (<year>1996</year>) <article-title>Metabolic flux analysis of hybridoma cells in different culture media using mass balances</article-title>. <source>Biotechnology and Bioengineering</source> <volume>50</volume>: <fpage>299</fpage>–<lpage>318</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1002/(SICI)1097-0290(19960505)50:3&lt;299::AID-BIT9&gt;3.0.CO;2-B" xlink:type="simple">10.1002/(SICI)1097-0290(19960505)50:3&lt;299::AID-BIT9&gt;3.0.CO;2-B</ext-link></comment> <object-id pub-id-type="pmid">18626958</object-id></mixed-citation></ref>
+<ref id="pcbi.1005513.ref057"><label>57</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Blank</surname> <given-names>LM</given-names></name>, <name name-style="western"><surname>Kuepfer</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Sauer</surname> <given-names>U</given-names></name> (<year>2005</year>) <article-title>Large-scale C-13-flux analysis reveals mechanistic principles of metabolic network robustness to null mutations in yeast</article-title>. <source>Genome Biology</source> <volume>6</volume>.</mixed-citation></ref>
+</ref-list>
+</back>
+</article>

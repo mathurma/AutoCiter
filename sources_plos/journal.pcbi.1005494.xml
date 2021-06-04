@@ -1,0 +1,548 @@
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.1d3 20150301//EN" "http://jats.nlm.nih.gov/publishing/1.1d3/JATS-journalpublishing1.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="1.1d3" xml:lang="en">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">ploscomp</journal-id>
+<journal-title-group>
+<journal-title>PLOS Computational Biology</journal-title>
+</journal-title-group>
+<issn pub-type="ppub">1553-734X</issn>
+<issn pub-type="epub">1553-7358</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pcbi.1005494</article-id>
+<article-id pub-id-type="publisher-id">PCOMPBIOL-D-16-01708</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+<subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Biochemistry</subject><subj-group><subject>Bioenergetics</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Computer and information sciences</subject><subj-group><subject>Network analysis</subject><subj-group><subject>Metabolic networks</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Biochemistry</subject><subj-group><subject>Metabolism</subject><subj-group><subject>Energy metabolism</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Physiology</subject><subj-group><subject>Physiological processes</subject><subj-group><subject>Energy metabolism</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Medicine and health sciences</subject><subj-group><subject>Physiology</subject><subj-group><subject>Physiological processes</subject><subj-group><subject>Energy metabolism</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Research and analysis methods</subject><subj-group><subject>Database and informatics methods</subject><subj-group><subject>Biological databases</subject><subj-group><subject>Genomic databases</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Computational biology</subject><subj-group><subject>Genome analysis</subject><subj-group><subject>Genomic databases</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Genetics</subject><subj-group><subject>Genomics</subject><subj-group><subject>Genome analysis</subject><subj-group><subject>Genomic databases</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Physical sciences</subject><subj-group><subject>Physics</subject><subj-group><subject>Nuclear physics</subject><subj-group><subject>Nucleons</subject><subj-group><subject>Protons</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Physical sciences</subject><subj-group><subject>Physics</subject><subj-group><subject>Thermodynamics</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Biochemistry</subject><subj-group><subject>Metabolism</subject><subj-group><subject>Metabolites</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Physical sciences</subject><subj-group><subject>Physics</subject><subj-group><subject>Thermodynamics</subject><subj-group><subject>Free energy</subject></subj-group></subj-group></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>Erroneous energy-generating cycles in published genome scale metabolic networks: Identification and removal</article-title>
+<alt-title alt-title-type="running-head">Energy-generating cycles</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0003-2218-2020</contrib-id>
+<name name-style="western">
+<surname>Fritzemeier</surname>
+<given-names>Claus Jonathan</given-names>
+</name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Hartleb</surname>
+<given-names>Daniel</given-names>
+</name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0002-5075-1799</contrib-id>
+<name name-style="western">
+<surname>Szappanos</surname>
+<given-names>Balázs</given-names>
+</name>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Papp</surname>
+<given-names>Balázs</given-names>
+</name>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0003-3940-1621</contrib-id>
+<name name-style="western">
+<surname>Lercher</surname>
+<given-names>Martin J.</given-names>
+</name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+</contrib-group>
+<aff id="aff001"><label>1</label> <addr-line>Institute for Computer Science and Cluster of Excellence on Plant Sciences, Heinrich Heine University, Düsseldorf, Germany</addr-line></aff>
+<aff id="aff002"><label>2</label> <addr-line>Synthetic and Systems Biology Unit, Institute of Biochemistry, Biological Research Centre of the Hungarian Academy of Sciences, Szeged, Hungary</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Maranas</surname>
+<given-names>Costas D.</given-names>
+</name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>The Pennsylvania State University, UNITED STATES</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<fn fn-type="con">
+<p><list list-type="simple"><list-item>
+<p><bold>Conceptualization:</bold> CJF DH BS BP MJL.</p></list-item> <list-item>
+<p><bold>Formal analysis:</bold> CJF DH BS.</p></list-item> <list-item>
+<p><bold>Funding acquisition:</bold> MJL.</p></list-item> <list-item>
+<p><bold>Investigation:</bold> CJF DH BS.</p></list-item> <list-item>
+<p><bold>Methodology:</bold> CJF DH BS.</p></list-item> <list-item>
+<p><bold>Software:</bold> CJF DH.</p></list-item> <list-item>
+<p><bold>Supervision:</bold> BP MJL.</p></list-item> <list-item>
+<p><bold>Validation:</bold> CJF DH.</p></list-item> <list-item>
+<p><bold>Visualization:</bold> CJF DH.</p></list-item> <list-item>
+<p><bold>Writing – original draft:</bold> CJF DH MJL.</p></list-item> <list-item>
+<p><bold>Writing – review &amp; editing:</bold> CJF DH BS BP MJL.</p></list-item></list>
+</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">lercher@cs.uni-duesseldorf.de</email></corresp>
+</author-notes>
+<pub-date pub-type="epub">
+<day>18</day>
+<month>4</month>
+<year>2017</year>
+</pub-date>
+<pub-date pub-type="collection">
+<month>4</month>
+<year>2017</year>
+</pub-date>
+<volume>13</volume>
+<issue>4</issue>
+<elocation-id>e1005494</elocation-id>
+<history>
+<date date-type="received">
+<day>19</day>
+<month>10</month>
+<year>2016</year>
+</date>
+<date date-type="accepted">
+<day>1</day>
+<month>4</month>
+<year>2017</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2017</copyright-year>
+<copyright-holder>Fritzemeier et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pcbi.1005494"/>
+<abstract>
+<p>Energy metabolism is central to cellular biology. Thus, genome-scale models of heterotrophic unicellular species must account appropriately for the utilization of external nutrients to synthesize energy metabolites such as ATP. However, metabolic models designed for flux-balance analysis (FBA) may contain thermodynamically impossible energy-generating cycles: without nutrient consumption, these models are still capable of charging energy metabolites (such as ADP→ATP or NADP<sup>+</sup>→NADPH). Here, we show that energy-generating cycles occur in over 85% of metabolic models without extensive manual curation, such as those contained in the ModelSEED and MetaNetX databases; in contrast, such cycles are rare in the manually curated models of the BiGG database. Energy generating cycles may represent model errors, <italic>e</italic>.<italic>g</italic>., erroneous assumptions on reaction reversibilities. Alternatively, part of the cycle may be thermodynamically feasible in one environment, while the remainder is thermodynamically feasible in another environment; as standard FBA does not account for thermodynamics, combining these into an FBA model allows erroneous energy generation. The presence of energy-generating cycles typically inflates maximal biomass production rates by 25%, and may lead to biases in evolutionary simulations. We present efficient computational methods (i) to identify energy generating cycles, using FBA, and (ii) to identify minimal sets of model changes that eliminate them, using a variant of the G<sc>lobal</sc>F<sc>it</sc> algorithm.</p>
+</abstract>
+<abstract abstract-type="summary">
+<title>Author summary</title>
+<p>Genome-scale metabolic models are routinely used to simulate the growth of unicellular organisms, and are likely to become an important tool in the medical sciences. The most popular method employed for this task is flux balance analysis (FBA), a simplified mathematical description able to describe the simultaneous activity of hundreds of biochemical reactions. Cellular functions are often dependent on the availability of sufficient energy, and thus a correct representation of energy metabolism appears crucial to metabolic modeling. However, we found that the majority of FBA models generated directly from genome sequences, as well as a minority of carefully curated models, are capable of generating energy out of thin air. These models charge energy metabolites such as ATP without any nutrient uptake. We named the corresponding sets of reactions “erroneous energy generating cycles” (EGCs) and developed a high-throughput algorithm for their identification. We found EGCs in 238 (68%) of 350 metabolic models from three different databases. We developed a second, fully automated method for EGC removal. Simulations on the corrected models typically showed growth rates that were 25% slower than in the original models, demonstrating the importance of checking metabolic model reconstructions for EGCs.</p>
+</abstract>
+<funding-group>
+<award-group id="award001">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/501100001659</institution-id>
+<institution>Deutsche Forschungsgemeinschaft</institution>
+</institution-wrap>
+</funding-source>
+<award-id>EXC 1028</award-id>
+<principal-award-recipient>
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0003-3940-1621</contrib-id>
+<name name-style="western">
+<surname>Lercher</surname>
+<given-names>Martin J.</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award002">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/501100001659</institution-id>
+<institution>Deutsche Forschungsgemeinschaft</institution>
+</institution-wrap>
+</funding-source>
+<award-id>CRC 680</award-id>
+<principal-award-recipient>
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0003-3940-1621</contrib-id>
+<name name-style="western">
+<surname>Lercher</surname>
+<given-names>Martin J.</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award003">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/501100001659</institution-id>
+<institution>Deutsche Forschungsgemeinschaft</institution>
+</institution-wrap>
+</funding-source>
+<award-id>GRK 1525</award-id>
+<principal-award-recipient>
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0003-2218-2020</contrib-id>
+<name name-style="western">
+<surname>Fritzemeier</surname>
+<given-names>Claus Jonathan</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<funding-statement>We gratefully acknowledge financial support by the DFG (<ext-link ext-link-type="uri" xlink:href="http://www.dfg.de/" xlink:type="simple">http://www.dfg.de/</ext-link>; grants EXC 1028 and CRC 680 to MJL; GRK 1525 fellowship to DH) and through an ENORM graduate school (<ext-link ext-link-type="uri" xlink:href="http://www.e-norm.hhu.de/" xlink:type="simple">http://www.e-norm.hhu.de/</ext-link>) fellowship to CJF. The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="6"/>
+<table-count count="1"/>
+<page-count count="14"/>
+</counts>
+<custom-meta-group>
+<custom-meta>
+<meta-name>PLOS Publication Stage</meta-name>
+<meta-value>vor-update-to-uncorrected-proof</meta-value>
+</custom-meta>
+<custom-meta>
+<meta-name>Publication Update</meta-name>
+<meta-value>2017-05-02</meta-value>
+</custom-meta>
+<custom-meta id="data-availability">
+<meta-name>Data Availability</meta-name>
+<meta-value>All relevant data are within the paper and its Supporting Information files.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>Constraint-based analysis, in particular flux-balance analysis (FBA), is the current state of the art in genome-scale metabolic modeling [<xref ref-type="bibr" rid="pcbi.1005494.ref001">1</xref>]. Constraint-based modeling assumes a steady state (<italic>i</italic>.<italic>e</italic>., every internal metabolite that is produced must be consumed at the same rate) and imposes lower and upper bounds on metabolic fluxes. However, constraint-based analyses typically do not explicitly consider thermodynamics. As a result, the mathematical solution of constraint-based problems is often thermodynamically infeasible [<xref ref-type="bibr" rid="pcbi.1005494.ref002">2</xref>, <xref ref-type="bibr" rid="pcbi.1005494.ref003">3</xref>]. Specifically, internal cycles (sometimes called type-III pathways [<xref ref-type="bibr" rid="pcbi.1005494.ref004">4</xref>]), which consist only of internal reactions and do not exchange metabolites with the environment, violate the second law of thermodynamics. The thermodynamic driving forces around a biochemical reaction cycle must add up to zero; hence, there cannot be a flux in a closed cycle [<xref ref-type="bibr" rid="pcbi.1005494.ref005">5</xref>–<xref ref-type="bibr" rid="pcbi.1005494.ref007">7</xref>].</p>
+<p>These thermodynamically infeasible type-III pathways [<xref ref-type="bibr" rid="pcbi.1005494.ref004">4</xref>] have to be distinguished from futile cycles (type-II pathways; <xref ref-type="fig" rid="pcbi.1005494.g001">Fig 1</xref>), which additionally consume cofactors to generate a driving force around the cycle [<xref ref-type="bibr" rid="pcbi.1005494.ref008">8</xref>, <xref ref-type="bibr" rid="pcbi.1005494.ref009">9</xref>]. Futile cycles are not an artifact of metabolic modeling, but have been experimentally observed [<xref ref-type="bibr" rid="pcbi.1005494.ref010">10</xref>]; <italic>e</italic>.<italic>g</italic>., some prokaryotes that live in very energy-rich environments need to dissipate energy by converting ATP to ADP [<xref ref-type="bibr" rid="pcbi.1005494.ref011">11</xref>].</p>
+<fig id="pcbi.1005494.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1005494.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>A futile cycle that consumes energy drawn from a cofactor pool (left) and an energy generating cycle (EGC) (right), which is thermodynamically impossible but occurs in some metabolic network models (figure extended from [<xref ref-type="bibr" rid="pcbi.1005494.ref012">12</xref>]).</title>
+<p>We can convert the type-II pathways to type-III pathways by closing the cycles in the cofactor pools (dashed arrows).</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005494.g001" xlink:type="simple"/>
+</fig>
+<p>A futile cycle running in reverse would charge energy metabolites such as ATP without an external source of energy (<xref ref-type="fig" rid="pcbi.1005494.g001">Fig 1</xref>). Accordingly, we classify type-II pathways [<xref ref-type="bibr" rid="pcbi.1005494.ref012">12</xref>] into two subgroups by taking the directionality of cofactor utilization into account: (a) futile cycles, which consume energy and are thus thermodynamically feasible, and (b) energy generating cycles (EGC), which charge energy metabolites without a source of energy.</p>
+<p>While such EGCs are thermodynamically impossible, they can—and, as we show below, do—occur in constraint-based models. Futile cycles will rarely occur in FBA solutions, as they dissipate energy and hence divert metabolic investment away from biomass production. EGCs, in contrast, can have a substantial effect on the predictions of constraint-based analyses, as they generate energy out of nothing that then supports <italic>in silico</italic> growth. A simple example illustrating a (hypothetical) EGC is shown in <xref ref-type="fig" rid="pcbi.1005494.g002">Fig 2</xref>.</p>
+<fig id="pcbi.1005494.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1005494.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>A simple (hypothetical) example of an energy generating cycle (EGC).</title>
+<p>A symporter that exports a metabolite and a proton acts together with a transporter that takes the same metabolite up without a proton. A combination of both reactions builds up a proton gradient that can then be utilized to generate energy (<italic>e</italic>.<italic>g</italic>., via an ATP synthase).</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005494.g002" xlink:type="simple"/>
+</fig>
+<p>Eliminating EGCs is crucial for the correct modeling of energy metabolism, as has been recognized earlier (see, <italic>e</italic>.<italic>g</italic>., [<xref ref-type="bibr" rid="pcbi.1005494.ref013">13</xref>–<xref ref-type="bibr" rid="pcbi.1005494.ref015">15</xref>]). While thermodynamically infeasible type-III pathways (internal cycles) can be easily removed through a simple post-processing step [<xref ref-type="bibr" rid="pcbi.1005494.ref005">5</xref>, <xref ref-type="bibr" rid="pcbi.1005494.ref016">16</xref>], the same strategy cannot be used to suppress EGCs. In principle, EGCs could be excluded from the solution space by systematically assigning sufficiently detailed thermodynamic constraints. Thermodynamics-Based Metabolic Flux Analysis (TMFA) [<xref ref-type="bibr" rid="pcbi.1005494.ref017">17</xref>], for example, searches for a set of feasible metabolite concentrations such that all reactions proceed in the direction of negative free energy change (ΔG&lt;0) or, equivalently, a ratio of product to substrate concentrations below the reaction’s equilibrium constant, <italic>K</italic><sub><italic>eq</italic></sub>. However, it can be shown mathematically that for any flux distribution without type-III pathways, there exists a distribution of metabolite concentrations such that the flux distribution is thermodynamically feasible, <italic>i</italic>.<italic>e</italic>., all fluxes proceed in the direction of negative free energy change (see the theorem in [<xref ref-type="bibr" rid="pcbi.1005494.ref016">16</xref>]). This theoretical result respects the fact that metabolite concentrations must have a single value for all reactions they participate in; Supplementary <xref ref-type="supplementary-material" rid="pcbi.1005494.s004">S1 Text</xref> shows a small example network that illustrates the inability of ll-COBRA and TMFA to reliably exclude EGCs.</p>
+<p>The simplest EGC could be established through an ATP energy dissipation reaction (ATP + H<sub>2</sub>O → ADP + Pi + H<sup>+</sup>) that is allowed to proceed in the backwards direction. An energy-generating backward flux can be achieved as long as the concentration ratio ([ATP][H<sub>2</sub>O]) / ([ADP][Pi][H<sup>+</sup>]) is smaller than the corresponding equilibrium constant <italic>K</italic><sub><italic>eq</italic></sub> = 2×10<sup>-5</sup>M<sup>-1</sup>. If we treat the concentration of H<sub>2</sub>O (55M) as constant, this cannot occur within the physiological concentration bounds assumed by Henry <italic>et al</italic>. [<xref ref-type="bibr" rid="pcbi.1005494.ref017">17</xref>], 10<sup>-5</sup>M and 0.02M, showing that TMFA’s metabolite concentration bounds avoid the utilization of at least some EGCs. Note, however, that reactions central to an EGC may have equilibrium constants compatible with the concentration bounds, especially if the total free energy change is spread over several individual reactions. Moreover, the TMFA strategy relies on the availability of equilibrium constants for all reactions central to the EGC.</p>
+<p>In contrast to TMFA, several alternative thermodynamically informed constraint-based methods only consider chemical potentials, which do not incorporate information on reaction specifics such as the equilibrium constant <italic>K</italic><sub><italic>eq</italic></sub> [<xref ref-type="bibr" rid="pcbi.1005494.ref007">7</xref>, <xref ref-type="bibr" rid="pcbi.1005494.ref012">12</xref>, <xref ref-type="bibr" rid="pcbi.1005494.ref018">18</xref>, <xref ref-type="bibr" rid="pcbi.1005494.ref019">19</xref>]. For every flux distribution free of type-III pathways, it is possible to find a distribution of chemical potentials such that all fluxes proceed in the direction of chemical potential reduction [<xref ref-type="bibr" rid="pcbi.1005494.ref016">16</xref>]. This means that potentials capable of driving energy dissipation reactions towards the high-energy metabolite can always be found. Thus, constrained-based methods designed to ensure thermodynamic feasibility based on freely variable chemical potentials do not guarantee the elimination of EGCs.</p>
+<p>The detection and removal of EGCs is currently not part of established metabolic network reconstruction pipelines [<xref ref-type="bibr" rid="pcbi.1005494.ref002">2</xref>]. In particular, automatic reconstructions algorithms [<xref ref-type="bibr" rid="pcbi.1005494.ref020">20</xref>, <xref ref-type="bibr" rid="pcbi.1005494.ref021">21</xref>] currently do not test for EGCs. Sometimes, EGCs are identified in the manual reconstruction process, and parts of the cycles are constrained to zero flux as a makeshift correction [<xref ref-type="bibr" rid="pcbi.1005494.ref013">13</xref>]. Accordingly, as we demonstrate below, the problem of erroneous free energy generation occurs in a majority of automated and a subset of manual network reconstructions.</p>
+</sec>
+<sec id="sec002">
+<title>Results and discussions</title>
+<sec id="sec003">
+<title>Erroneous energy-producing cycles occur in many published reconstructions</title>
+<p>EGCs can be identified through a variant of FBA [<xref ref-type="bibr" rid="pcbi.1005494.ref014">14</xref>]. To efficiently identify the existence of diverse EGCs, we first add a dissipation reaction to the metabolic network for each metabolite used to transmit cellular energy; <italic>e</italic>.<italic>g</italic>., for ATP, the irreversible reaction ATP + H<sub>2</sub>O → ADP + P + H<sup>+</sup> is added. These dissipation reactions close any existing energy-generating cycles, thereby converting them to type-III pathways. Fluxes through any of the dissipation reactions at steady state indicate the generation of energy through the metabolic network. Second, all uptake reactions are constrained to zero. The sum of the fluxes through the energy dissipation reactions is now maximized using FBA. For a model without EGCs, these reactions cannot carry any flux without the uptake of nutrients.</p>
+<p>We used this approach to identify the presence of EGCs for 14 different energy metabolites (ATP, CTP, GTP, UTP, ITP, NADH, NADPH, Flavin adenine dinucleotide, Flavin mononucleotide, Ubiquinol-8, Ubiquinol-8, 2-Demethylmenaquinol 8, Acetyl-CoA, L-Glutamate) and for proton exchange between periplasm and cytosol (for simplicity counted as a 15<sup>th</sup> “energy metabolite” below); see Suppl. <xref ref-type="supplementary-material" rid="pcbi.1005494.s002">S1 Table</xref> for the corresponding dissipation reactions. We did not require the energy dissipation reactions to be charge-balanced; e.g., in the reaction NADH → NAD<sup>+</sup> + H<sup>+</sup>, we omitted the molecule that acts as the acceptor of the two electrons. Adding the electron acceptor to the dissipation reaction would not dissipate the energy stored in NADH, as this energy could then potentially be re-used by internal cofactor regeneration reactions; in this case, the dissipation reaction could be active even in the absence of EGCs. FBA models do not keep track of metabolite charges, and thus the general problem posed by charge unbalanced reactions is not that they affect constraint-based simulations directly; instead, they are a sign of incorrect reaction stoichiometry, which is especially severe in the case of electron imbalances. It is important that models are mass and electron balanced [<xref ref-type="bibr" rid="pcbi.1005494.ref002">2</xref>] before conducting the EGC analysis. While EGCs induced by mass or electron unbalanced reactions may be detected by our method, they cannot be removed properly without fixing the reaction stoichiometries.</p>
+<p>We analyzed all models in three large databases of constraint-based metabolic networks: BiGG [<xref ref-type="bibr" rid="pcbi.1005494.ref022">22</xref>], ModelSeed [<xref ref-type="bibr" rid="pcbi.1005494.ref023">23</xref>], and MetanetX [<xref ref-type="bibr" rid="pcbi.1005494.ref024">24</xref>]. Overall, we found that over two thirds (68%) of tested models supported a non-zero flux through at least one of the 15 energy dissipation reactions, although this percentage differed drastically between databases (<xref ref-type="fig" rid="pcbi.1005494.g003">Fig 3</xref>).</p>
+<fig id="pcbi.1005494.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1005494.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title>The majority of metabolic network reconstructions in two of the examined databases (ModelSEED and MetaNetX) contain erroneous internal EGCs that generate energy.</title>
+<p>In contrast, most models in BiGG do not contain EGCs. Total bar size reflects the number of models contained in each database. Green: models without EGCs; purple: models with EGCs that could be corrected through G<sc>lobal</sc>F<sc>it</sc>; orange: models with EGCs that cannot be corrected through reaction removals.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005494.g003" xlink:type="simple"/>
+</fig>
+<p>The BiGG database contains high-quality manual [<xref ref-type="bibr" rid="pcbi.1005494.ref002">2</xref>] and, in the case of 54 <italic>E</italic>. <italic>coli</italic> strains, semi-automated [<xref ref-type="bibr" rid="pcbi.1005494.ref025">25</xref>] genome scale metabolic reconstructions. We found EGCs in only 3 out of the 79 BiGG models (3.8%; Suppl. <xref ref-type="supplementary-material" rid="pcbi.1005494.s003">S2 Table</xref>). The ModelSEED database is connected to a service for high-throughput reconstruction and analysis of metabolic networks. A special feature is the fully automated reconstruction of genome-scale networks from genome sequences. Due to the fully automated reconstruction, models created by this service should be considered as draft models, and manual steps for model improvement are recommended [<xref ref-type="bibr" rid="pcbi.1005494.ref023">23</xref>]. Consistent with this recommendation, we identified EGCs in 95% of ModelSEED models (185 out of 195; Suppl. <xref ref-type="supplementary-material" rid="pcbi.1005494.s003">S2 Table</xref>). Finally, MetaNetX is a Meta-Database for metabolic network models, gathering metabolic networks from different databases (including The ModelSEED and the BiGG database) and mapping them to one common namespace. This allows easy meta-analysis, manipulation, and comparison of those models [<xref ref-type="bibr" rid="pcbi.1005494.ref024">24</xref>]. Our FBA strategy found EGCs in 66% of MetaNetX models (50 out of 76; Suppl. <xref ref-type="supplementary-material" rid="pcbi.1005494.s003">S2 Table</xref>).</p>
+</sec>
+<sec id="sec004">
+<title>G<sc>lobal</sc>F<sc>it</sc> can eliminate &gt;90% of EGCs by removing reactions</title>
+<p>For each network with EGCs, we then used a slightly modified version of G<sc>lobal</sc>F<sc>it</sc> [<xref ref-type="bibr" rid="pcbi.1005494.ref026">26</xref>] to suggest a minimal number of reaction removals that eliminate all EGCs, allowing independent removals of forward and backward directions for reversible reactions. G<sc>lobal</sc>F<sc>it</sc> was originally designed to reconcile inconsistencies between FBA model predictions and measured growth/non-growth data, <italic>e</italic>.<italic>g</italic>., from gene knockouts. G<sc>lobal</sc>F<sc>it</sc> uses a bi-level optimization method to identify the minimal set of network changes needed to correctly predict all experimentally observed growth and non-growth cases (or a subset thereof) simultaneously. We slightly altered the original algorithm, now simultaneously contrasting one growth case (the network with the biomass reaction as the objective function, ensuring that the suggested modifications do not interfere with biomass production), and one non-growth case (the network with the sum of energy dissipation reactions as the objective function, ensuring that the modified network contains no EGCs; for details see <xref ref-type="sec" rid="sec007">Materials and methods</xref>). It can be argued that some types of reactions should be preferentially removed; e.g., reactions only weakly supported by genomic evidence may be removed first, and it may be more likely that one direction of a reaction labeled as reversible represents a network error than that an irreversible reaction is erroneous. While the modified G<sc>lobal</sc>F<sc>it</sc> algorithm allows such differential weighing of different reaction types, we considered all reaction removals as equally likely in the application detailed below. Moreover, reactions could be preferentially removed depending on the estimated equilibrium constant (or standard Gibb’s free energy change ΔG<sub>0</sub>).</p>
+<p>For 94% of metabolic models with EGCs (223 out of 238), G<sc>lobal</sc>F<sc>it</sc> found a set of reaction removals that eliminated all EGCs while maintaining the ability to produce biomass. In many cases, G<sc>lobal</sc>F<sc>it</sc> suggested the removal of the ATP synthase reaction. While this will indeed remove most ATP-producing cycles, it will also abolish the model’s natural ability to produce ATP through respiration. To avoid this undesired side effect, we performed a second search for reaction removals that eliminated all EGCs, this time forcing the algorithm to retain the ATP synthase reaction. This step could be adapted to the physiology of the studied organism by selecting a different reaction set to be retained. In each case, we could identify an alternative set of reaction removals; below, we only consider these alternative sets of suggested network changes. Note that G<sc>lobal</sc>F<sc>it</sc> does not actually remove the offending reactions, but constrains their fluxes to zero. This allows their reactivation in conditions where they are deemed thermodynamically feasible, although alternative measures must then be taken to avoid EGCs.</p>
+<p>Most erroneous models can be corrected by making up to five originally reversible reactions irreversible (<xref ref-type="fig" rid="pcbi.1005494.g004">Fig 4</xref>). The removal of irreversible reactions was only rarely suggested by the algorithm (<xref ref-type="fig" rid="pcbi.1005494.g004">Fig 4</xref>), while the complete removal of reversible reactions was never observed. In the remaining unsolved models, EGCs could in principle be eliminated by adding reactions to the metabolic networks. The addition of reactions not directly connected to an EGC may be needed to restore biomass production in case no solution exists that preserves viability after EGC removal. While the modified version of G<sc>lobal</sc>F<sc>it</sc> is capable of suggesting such additions, the application of this strategy would require manual revision, as it might incorrectly add new metabolic capabilities.</p>
+<fig id="pcbi.1005494.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1005494.g004</object-id>
+<label>Fig 4</label>
+<caption>
+<title>Most erroneous models can be corrected by making up to 5 originally reversible reactions irreversible.</title>
+<p>Purple: histogram of the number of irreversible reactions removed in each model to eliminate EGCs. Orange: histogram of the number of reversible reactions made irreversible to eliminate EGCs.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005494.g004" xlink:type="simple"/>
+</fig>
+<p>While bi-level mixed integer optimization algorithms such as the one used by G<sc>lobal</sc>F<sc>it</sc> typically require long computation times, G<sc>lobal</sc>F<sc>it</sc> resolved most solvable EGCs in under 10s, and all but one EGC within one minute (Supplementary <xref ref-type="supplementary-material" rid="pcbi.1005494.s001">S1 Fig</xref>). The only calculation that required over one minute was for the yeastnet 7.6 model [<xref ref-type="bibr" rid="pcbi.1005494.ref027">27</xref>], for which the CPLEX solver did not find an optimal solution within the set limit of 60 hours on 16 CPUs. The best set of changes found for this yeast model eliminated all EGCs by removing 76 reactions (or reaction directions). According to CPLEX, there is no alternative elimination of EGCs with fewer than 33 reactions; thus, this model contains at least 33 EGCs. As many EGCs include transport reactions across cellular membranes, the large number of EGCs found in this eukaryotic model (and the resulting increased computation time) may be caused by the existence of several intracellular compartments and the associated transport processes.</p>
+<p>Freely available energy may boost biomass production. Accordingly, the elimination of EGCs through the reaction removals suggested by G<sc>lobal</sc>F<sc>it</sc> resulted in biomass reductions in 92% of cases (206 out of 223), typically by more than 25% (<xref ref-type="fig" rid="pcbi.1005494.g005">Fig 5</xref>). This indicates that the <italic>in-silico</italic> biomass yield may be unrealistically high in a majority of automatically generated models.</p>
+<fig id="pcbi.1005494.g005" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1005494.g005</object-id>
+<label>Fig 5</label>
+<caption>
+<title>Removal of EGCs led to substantially reduced maximal biomass yield in most models.</title>
+<p>Histogram of the ratio between maximal biomass production rate before and after EGC removal.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005494.g005" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec005">
+<title>Examples for network corrections suggested by G<sc>lobal</sc>F<sc>it</sc></title>
+<p>One of the simplest EGCs we identified is displayed in <xref ref-type="fig" rid="pcbi.1005494.g006">Fig 6(A)</xref>. This cycle is contained in only two metabolic models from The ModelSEED database, <italic>Klebsiella pneumoniae</italic> MGH 78578 (Seed272620.3) and <italic>Flavobacterium johnsonia johnsoniae</italic> UW101 (Seed376686.6). In this EGC, a malate symporter (rxn10153) transports malate together with two protons out of the cell. The exported malate molecule is then re-imported together with a sodium ion via the malate/Na+ symporter (rxn05207). The sodium is in turn exported by a Na+/Proton antiporter (rxn05209) in exchange for the import of only one of the protons of the first reaction. Thus, the second exported proton from the first reaction is free to drive an ATP-synthase reaction, generating ATP from ADP without access to an external energy source. To eliminate this EGC, the cost of either malate or sodium transport in terms of translocated protons must be corrected. This option was not given to G<sc>lobal</sc>F<sc>it</sc>, which instead suggests to remove the export direction of the malate symporter (rxn10153).</p>
+<fig id="pcbi.1005494.g006" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1005494.g006</object-id>
+<label>Fig 6</label>
+<caption>
+<title>Examples of EGCs found in published genome-scale models.</title>
+<p>Green/red: metabolites; blue: reactions, linking substrates and products; orange: direction of the energy gradient utilized by the energy dissipation reaction. (A) The simplest identified cycle, which links a Na+/proton antiporter (exporting Na+ in exchange for a single proton) and a Malate/proton symporter (importing Malate together with two protons) via a Malate/Na+ symporter. (B) A cycle involving two antiporters and one symporter, driven by a transporter that translocates tartrate from the periplasm to the cytosol. (C) A NADH:menaquinone oxidoreductase, which translocates protons in the process of transferring electrons from NADH to Menaquinone 8, driven by a chain of four enzymes. (D) rxn00379 creates Adenosine 5'-phosphosulfate from ATP and sulfate. The equivalent sulfate adenyltransferase rxn09240 catalyzes the backward reaction, but charges a GTP in addition to the ATP.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005494.g006" xlink:type="simple"/>
+</fig>
+<p>In the manually curated model iJO1366, six reactions (SPODM, SPODMpp, SUCASPtpp, SUCFUMtpp, SUCMALtpp, and SUCTARTtpp) were inactivated in the published model to avoid unrealistic energy generating loops by constraining their flux to zero [<xref ref-type="bibr" rid="pcbi.1005494.ref013">13</xref>]. We could identify two distinct EGCs (<xref ref-type="fig" rid="pcbi.1005494.g006">Fig 6B and 6C</xref>) by reactivating these reactions in the iJO1366 model and in the 54 other <italic>E</italic>. <italic>coli</italic> models derived from this reconstruction [<xref ref-type="bibr" rid="pcbi.1005494.ref025">25</xref>]. One of these EGCs is the rather simple cycle (<xref ref-type="fig" rid="pcbi.1005494.g006">Fig 6B</xref>) based on tartrate facilitated transport (TARTRtpp), found in 45 of the 55 <italic>E</italic>. <italic>coli</italic> strain reconstructions in Ref. [<xref ref-type="bibr" rid="pcbi.1005494.ref025">25</xref>]. This reaction spontaneously imports tartrate from the periplasm into the cell, while the tartrate/succinate antiporter (TARTRt7pp) exports tartrate, but simultaneously imports succinate. The cycle continues with the succinate/aspartate antiporter and then the aspartate/proton symporter, so that eventually a proton gradient between periplasm and cytosol is established. G<sc>lobal</sc>F<sc>it</sc> suggests to remove the utilized direction of the tartrate/succinate antiporter.</p>
+<p>The other EGC found in the unconstrained <italic>E</italic>. <italic>coli</italic> models is a more complicated cycle (<xref ref-type="fig" rid="pcbi.1005494.g006">Fig 6C</xref>) that occurs in 46 of the 55 <italic>E</italic>. <italic>coli</italic> reconstructions [<xref ref-type="bibr" rid="pcbi.1005494.ref025">25</xref>], including the manually curated iJO1366 model [<xref ref-type="bibr" rid="pcbi.1005494.ref013">13</xref>]. A proton gradient across the periplasmic membrane is established by a NADH:menaquinone oxidoreductase (NADH17pp), which translocates protons in the process of transferring electrons from NADH to Menaquinone 8, driven by a chain of four enzymes, including superoxide dismutase (SPODM). In order to deactivate the cycle, G<sc>lobal</sc>F<sc>it</sc> removes the backward direction of the Malate oxidase (MOX) or the forward reaction of the Superoxide dismutase (SPODM). In this case, removal of the Malate oxidase would also be suggested by an analysis of standard free energy changes, at it is highly energetically unfavourable.</p>
+<p>The EGC shown in <xref ref-type="fig" rid="pcbi.1005494.g006">Fig 6D</xref> was found in 99 out of 195 metabolic models from the ModelSEED database [<xref ref-type="bibr" rid="pcbi.1005494.ref020">20</xref>]. rxn00379 creates Adenosine 5'-phosphosulfate from ATP and sulfate. The sulfate adenyltransferase rxn09240 catalyses the backward reaction (and has the same EC-number assigned), but charges not only an ATP, but additionally a GTP in the process. To eliminate this EGC, G<sc>lobal</sc>F<sc>it</sc> suggests removing either one of the participating reactions.</p>
+</sec>
+<sec id="sec006">
+<title>Conclusions</title>
+<p>EGCs are a major issue in FBA modeling—they are able to produce energy out of thin air, thereby severely affecting the appropriate representation of energy metabolism and of biomass yield. EGCs not only affect the accurate representation of existing metabolic systems. They will be particularly problematic in evolutionary simulations that involve the incorporation of foreign metabolic reactions from other species [<xref ref-type="bibr" rid="pcbi.1005494.ref028">28</xref>–<xref ref-type="bibr" rid="pcbi.1005494.ref030">30</xref>]. Such mixing of reactions from disparate model reconstructions may easily introduce EGCs, and may thus lead to erroneous phenotype predictions. We have recently suggested a protocol for evolutionary simulations that avoids this problem [<xref ref-type="bibr" rid="pcbi.1005494.ref031">31</xref>]. Here, we present an improved computational method for the high-throughput identification of EGCs.</p>
+<p>EGC identification is currently not a recognized step in model reconstruction, although some authors have eliminated EGCs from their manually curated models before publication. While constraint-based methods may avoid the utilization of EGCs based on thermodynamic considerations [<xref ref-type="bibr" rid="pcbi.1005494.ref017">17</xref>], such methods are computationally expensive and require careful analysis of the EGCs and the bounds on metabolite concentrations to guarantee the absence of EGCs from the resulting flux distributions. Instead, we propose to correct the metabolic model itself, and present a modified version of the previously published G<sc>lobal</sc>F<sc>it</sc> algorithm to eliminate EGCs through the removal of minimal reaction sets. The resulting model can then be used with the full suite of standard constraint- based methods.</p>
+<p>We found EGCs in the majority of automatically generated models and in a small subset of manually curated networks. Many of the identified EGCs—in particular those that occurred most frequently—involved the erroneous maintenance of proton gradients across cellular membranes. The simplest EGCs would consist of two reversible reactions that catalyze the same biochemical conversion using different amounts of energy metabolites (Figs <xref ref-type="fig" rid="pcbi.1005494.g002">2</xref> and <xref ref-type="fig" rid="pcbi.1005494.g006">6D</xref>). Such trivial EGCs are easily recognizable and are consequently rarely included in published metabolic networks; most EGCs in published models are more complex, and not easily identified by eye. We note that automatically reconstructed models often contain other types of errors as well [<xref ref-type="bibr" rid="pcbi.1005494.ref002">2</xref>]. For example, charge and mass imbalanced reactions appear to be common in automatic reconstructions and can lead to erroneous FBA predictions. Such reactions can potentially introduce EGCs, and we thus suggest to correct them as a preprocessing step.</p>
+<p>The inclusion of reaction sets that are capable of forming an EGC into a metabolic network reconstruction is not necessarily erroneous. It is conceivable that one part of the cycle is thermodynamically feasible in one condition, whereas the other part is thermodynamically feasible in another condition, while both are not thermodynamically feasible simultaneously. Accordingly, modeling algorithms that respect thermodynamic constraints do not utilize potential EGCs [<xref ref-type="bibr" rid="pcbi.1005494.ref003">3</xref>, <xref ref-type="bibr" rid="pcbi.1005494.ref006">6</xref>, <xref ref-type="bibr" rid="pcbi.1005494.ref007">7</xref>, <xref ref-type="bibr" rid="pcbi.1005494.ref017">17</xref>, <xref ref-type="bibr" rid="pcbi.1005494.ref032">32</xref>–<xref ref-type="bibr" rid="pcbi.1005494.ref034">34</xref>]. FBA, however, does not consider thermodynamics; instead, optimization of its objective function (<italic>e</italic>.<italic>g</italic>., biomass production rate) will usually lead to the exploitation of EGCs. One possible solution would be to constrain the fluxes through thermodynamically impossible sections of EGCs to zero in each simulated environment; this, however, would require a detailed understanding of environment-specific thermodynamics (or, alternatively, environment-specific gene regulation).</p>
+<p>Our algorithms are suitable to guide a manual curation of draft networks, and should be included in the standard toolbox used for metabolic network reconstruction. G<sc>lobal</sc>F<sc>it</sc> can enumerate alternative solutions to eliminate EGCs, which can then be used as a basis for expert curation. In the context of automated network reconstruction pipelines such as ModelSEED or kBase, our methods could be applied without human interaction, albeit at the risk of removing reactions that might be thermodynamically feasible in particular environments.</p>
+</sec>
+</sec>
+<sec id="sec007" sec-type="materials|methods">
+<title>Materials and methods</title>
+<sec id="sec008">
+<title>Dataset and EGC detection</title>
+<p>We started from 350 genome-scale metabolic networks (GSMs) that were downloaded from three databases: BiGG [<xref ref-type="bibr" rid="pcbi.1005494.ref022">22</xref>]–mostly manually created GSMs (accessed July 2015); ModelSeed [<xref ref-type="bibr" rid="pcbi.1005494.ref023">23</xref>]–GSMs created automatically from genome sequences (accessed July 2015); and MetaNetX [<xref ref-type="bibr" rid="pcbi.1005494.ref024">24</xref>]–a meta-database containing metabolic models from various sources (accessed January 2016). We removed networks that were unable to produce biomass in a maximally rich environment. We checked the correct direction of exchange reactions, and set the lower bound of the ATP maintenance reaction (ATPM) to zero, <italic>i</italic>.<italic>e</italic>., we did not require a non-growth-related production of ATP.</p>
+<p>To each GSM, we added 15 energy dissipation reactions (Supplementary <xref ref-type="supplementary-material" rid="pcbi.1005494.s002">S1 Table</xref>), where the namespace for metabolite names had to match the source of the network, <italic>i</italic>.<italic>e</italic>., BiGG, ModelSEED, or MetaNetX. Because not every metabolic network covers the full range of metabolites used in the energy dissipation reactions (EDR), we checked the integration of the reactions in the network, defined as the fraction of the reaction’s metabolites also present in the remainder of the model (<italic>i</italic>.<italic>e</italic>., a reaction with an integration of 1 is completely integrated, whereas reactions with an integration &lt; 1 cannot carry any flux). Because EGCs tend to run with maximal fluxes, all network reactions except the newly added ones (those in energy dissipation reactions) are restricted to fluxes in the range [–1, 1] for reversible and [0, 1] for irreversible reactions.</p>
+<p>To establish the presence of EGCs for different energy metabolites, we maximized one energy dissipation reaction flux <italic>v</italic><sub><italic>d</italic></sub> at a time while prohibiting all influx into the model:
+<disp-formula id="pcbi.1005494.e001">
+<alternatives>
+<graphic id="pcbi.1005494.e001g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005494.e001" xlink:type="simple"/>
+<mml:math display="block" id="M1">
+<mml:mrow><mml:mtext>max </mml:mtext><mml:mo stretchy="false">(</mml:mo><mml:msub><mml:mi>v</mml:mi><mml:mi>d</mml:mi></mml:msub><mml:mo stretchy="false">)</mml:mo></mml:mrow>
+</mml:math>
+</alternatives>
+</disp-formula>
+subject to:
+<disp-formula id="pcbi.1005494.e002">
+<alternatives>
+<graphic id="pcbi.1005494.e002g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005494.e002" xlink:type="simple"/>
+<mml:math display="block" id="M2">
+<mml:mrow><mml:mtable columnalign="left"><mml:mtr columnalign="left"><mml:mtd columnalign="left"><mml:mrow><mml:mi>S</mml:mi><mml:mi mathvariant="bold-italic">v</mml:mi><mml:mo>=</mml:mo><mml:mn>0</mml:mn></mml:mrow></mml:mtd></mml:mtr><mml:mtr columnalign="left"><mml:mtd columnalign="left"><mml:mrow><mml:mo>∀</mml:mo><mml:mi>i</mml:mi><mml:mo>∉</mml:mo><mml:mi>E</mml:mi><mml:mo>:</mml:mo><mml:mspace width="1em"/><mml:msubsup><mml:mi>v</mml:mi><mml:mi>i</mml:mi><mml:mrow><mml:mi>m</mml:mi><mml:mi>i</mml:mi><mml:mi>n</mml:mi></mml:mrow></mml:msubsup><mml:mo>≤</mml:mo><mml:msub><mml:mi>v</mml:mi><mml:mi>i</mml:mi></mml:msub><mml:mo>≤</mml:mo><mml:msubsup><mml:mi>v</mml:mi><mml:mi>i</mml:mi><mml:mrow><mml:mi>m</mml:mi><mml:mi>a</mml:mi><mml:mi>x</mml:mi></mml:mrow></mml:msubsup></mml:mrow></mml:mtd></mml:mtr><mml:mtr columnalign="left"><mml:mtd columnalign="left"><mml:mrow><mml:mo>∀</mml:mo><mml:mi>i</mml:mi><mml:mo>∈</mml:mo><mml:mi>E</mml:mi><mml:mo>:</mml:mo><mml:mspace width="1em"/><mml:msub><mml:mi>v</mml:mi><mml:mi>i</mml:mi></mml:msub><mml:mo>=</mml:mo><mml:mn>0</mml:mn></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:mrow></mml:math>
+</alternatives>
+</disp-formula></p>
+<p>Here, <italic>S</italic> is the stoichiometric matrix, <bold><italic>v</italic></bold> the vector of fluxes, <italic>d</italic> the index of one of the energy dissipation reactions, <bold><italic>v</italic></bold><sup><italic>min</italic></sup> and <bold><italic>v</italic></bold><sup><italic>max</italic></sup> the vector of lower and upper reaction bounds, respectively, and <italic>E</italic> is the set of indices of all exchange reactions.</p>
+<p>An optimal value <inline-formula id="pcbi.1005494.e003"><alternatives><graphic id="pcbi.1005494.e003g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005494.e003" xlink:type="simple"/><mml:math display="inline" id="M3"><mml:mrow><mml:msubsup><mml:mi>v</mml:mi><mml:mi>d</mml:mi><mml:mo>*</mml:mo></mml:msubsup></mml:mrow></mml:math></alternatives></inline-formula> for this optimization with <inline-formula id="pcbi.1005494.e004"><alternatives><graphic id="pcbi.1005494.e004g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005494.e004" xlink:type="simple"/><mml:math display="inline" id="M4"><mml:mrow><mml:msubsup><mml:mi>v</mml:mi><mml:mi>d</mml:mi><mml:mo>*</mml:mo></mml:msubsup><mml:mo>&gt;</mml:mo><mml:mo> </mml:mo><mml:mn>0</mml:mn></mml:mrow></mml:math></alternatives></inline-formula> indicates the presence of at least one cycle that is able to generate a specific type of energy metabolite (corresponding to the index <italic>d</italic>) in the network. Because 0 ≤ ∣<italic>v</italic><sub><italic>i</italic></sub>∣ ≤ 1 for all reactions other than dissipation reactions, the value of <inline-formula id="pcbi.1005494.e005"><alternatives><graphic id="pcbi.1005494.e005g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005494.e005" xlink:type="simple"/><mml:math display="inline" id="M5"><mml:mrow><mml:msubsup><mml:mi>v</mml:mi><mml:mi>d</mml:mi><mml:mo>*</mml:mo></mml:msubsup></mml:mrow></mml:math></alternatives></inline-formula> is a lower bound for the number of non-overlapping EGCs for the tested energy metabolite in the network.</p>
+</sec>
+<sec id="sec009">
+<title>The modified G<sc>lobal</sc>F<sc>it</sc> algorithm</title>
+<p>Once a GSM was identified to contain at least one EGC, G<sc>lobal</sc>F<sc>it</sc> was used to eliminate all EGCs from the network. G<sc>lobal</sc>F<sc>it</sc> was developed to find globally minimal sets of model changes that simultaneously reconcile sets of experimental growth and non-growth observations with model predictions; a detailed description of the original G<sc>lobal</sc>F<sc>it</sc> algorithm can be found in [<xref ref-type="bibr" rid="pcbi.1005494.ref026">26</xref>]. We modified G<sc>lobal</sc>F<sc>it</sc> for the efficient removal of EGCs as outlined below.</p>
+<p>In this modified version, the only allowed type of model change is the removal of unidirectional reactions, where reversible reactions are treated as two independent unidirectional reactions. We contrast a single growth with a single non-growth case. The non-growth case reflects the removal of all EGCs: with no nutrient uptake allowed, the maximal sum of fluxes through the energy dissipation reactions must be zero, max(<italic>∑</italic><sub><italic>d</italic></sub>∣<italic>v</italic><sub><italic>d</italic></sub>∣) = 0. To ensure that reaction removals do not abolish biomass production by eliminating EGCs, we set up a growth case with a minimal biomass production rate in a rich medium that allows uptake of all nutrients.</p>
+<p>Formally, we solve the following bi-level optimization problem, which is a variation of the original G<sc>lobal</sc>F<sc>it</sc> problem [<xref ref-type="bibr" rid="pcbi.1005494.ref026">26</xref>] (Variable definitions are listed in <xref ref-type="table" rid="pcbi.1005494.t001">Table 1</xref>):
+<disp-formula id="pcbi.1005494.e006">
+<alternatives>
+<graphic id="pcbi.1005494.e006g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005494.e006" xlink:type="simple"/>
+<mml:math display="block" id="M6">
+<mml:mrow><mml:msub><mml:mrow><mml:mtext>min</mml:mtext></mml:mrow><mml:mi mathvariant="bold-italic">δ</mml:mi></mml:msub><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:msub><mml:mo>∑</mml:mo><mml:mrow><mml:mi>y</mml:mi><mml:mo>∈</mml:mo><mml:mi>M</mml:mi></mml:mrow></mml:msub><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:msubsup><mml:mi>δ</mml:mi><mml:mi>y</mml:mi><mml:mrow><mml:mi>R</mml:mi><mml:mi>F</mml:mi></mml:mrow></mml:msubsup><mml:mo>+</mml:mo><mml:msubsup><mml:mi>δ</mml:mi><mml:mi>y</mml:mi><mml:mrow><mml:mi>R</mml:mi><mml:mi>B</mml:mi></mml:mrow></mml:msubsup></mml:mrow><mml:mo>)</mml:mo></mml:mrow></mml:mrow><mml:mo>)</mml:mo></mml:mrow></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(1)</label>
+</disp-formula>
+subject to:
+<disp-formula id="pcbi.1005494.e007">
+<alternatives>
+<graphic id="pcbi.1005494.e007g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005494.e007" xlink:type="simple"/>
+<mml:math display="block" id="M7">
+<mml:mrow><mml:msub><mml:mi>S</mml:mi><mml:mi>g</mml:mi></mml:msub><mml:mtext> </mml:mtext><mml:mo>×</mml:mo><mml:mtext> </mml:mtext><mml:msup><mml:mi mathvariant="bold-italic">v</mml:mi><mml:mi>g</mml:mi></mml:msup><mml:mo>=</mml:mo><mml:mtext> </mml:mtext><mml:mn>0</mml:mn></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(2)</label>
+</disp-formula>
+<disp-formula id="pcbi.1005494.e008">
+<alternatives>
+<graphic id="pcbi.1005494.e008g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005494.e008" xlink:type="simple"/>
+<mml:math display="block" id="M8">
+<mml:mrow><mml:msub><mml:mo>∀</mml:mo><mml:mrow><mml:mi>y</mml:mi><mml:mo>∈</mml:mo><mml:mi>M</mml:mi></mml:mrow></mml:msub><mml:mtext> </mml:mtext><mml:msubsup><mml:mi>v</mml:mi><mml:mi>y</mml:mi><mml:mrow><mml:mi>m</mml:mi><mml:mi>i</mml:mi><mml:mi>n</mml:mi></mml:mrow></mml:msubsup><mml:mo>×</mml:mo><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mn>1</mml:mn><mml:mo>−</mml:mo><mml:msubsup><mml:mi>δ</mml:mi><mml:mi>y</mml:mi><mml:mrow><mml:mi>R</mml:mi><mml:mi>B</mml:mi></mml:mrow></mml:msubsup></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mo>≤</mml:mo><mml:mtext> </mml:mtext><mml:msubsup><mml:mi>v</mml:mi><mml:mi>y</mml:mi><mml:mi>g</mml:mi></mml:msubsup><mml:mo>≤</mml:mo><mml:mtext> </mml:mtext><mml:msubsup><mml:mi>v</mml:mi><mml:mi>y</mml:mi><mml:mrow><mml:mi>m</mml:mi><mml:mi>a</mml:mi><mml:mi>x</mml:mi></mml:mrow></mml:msubsup><mml:mo>×</mml:mo><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mn>1</mml:mn><mml:mo>−</mml:mo><mml:msubsup><mml:mi>δ</mml:mi><mml:mi>y</mml:mi><mml:mrow><mml:mi>R</mml:mi><mml:mi>F</mml:mi></mml:mrow></mml:msubsup></mml:mrow><mml:mo>)</mml:mo></mml:mrow></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(3)</label>
+</disp-formula>
+<disp-formula id="pcbi.1005494.e009">
+<alternatives>
+<graphic id="pcbi.1005494.e009g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005494.e009" xlink:type="simple"/>
+<mml:math display="block" id="M9">
+<mml:mrow><mml:msubsup><mml:mi>v</mml:mi><mml:mrow><mml:mtext>B</mml:mtext><mml:mi>i</mml:mi><mml:mi>o</mml:mi></mml:mrow><mml:mi>g</mml:mi></mml:msubsup><mml:mo>≥</mml:mo><mml:mtext> </mml:mtext><mml:msub><mml:mi>T</mml:mi><mml:mi>g</mml:mi></mml:msub></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(4)</label>
+</disp-formula>
+<disp-formula id="pcbi.1005494.e010">
+<alternatives>
+<graphic id="pcbi.1005494.e010g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005494.e010" xlink:type="simple"/>
+<mml:math display="block" id="M10">
+<mml:mrow><mml:msub><mml:mi>S</mml:mi><mml:mrow><mml:mi>n</mml:mi><mml:mi>g</mml:mi></mml:mrow></mml:msub><mml:mtext> </mml:mtext><mml:mo>×</mml:mo><mml:mtext> </mml:mtext><mml:msup><mml:mi mathvariant="bold-italic">v</mml:mi><mml:mrow><mml:mi>n</mml:mi><mml:mi>g</mml:mi></mml:mrow></mml:msup><mml:mtext> </mml:mtext><mml:mo>=</mml:mo><mml:mtext> </mml:mtext><mml:mn>0</mml:mn></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(5)</label>
+</disp-formula>
+<disp-formula id="pcbi.1005494.e011">
+<alternatives>
+<graphic id="pcbi.1005494.e011g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005494.e011" xlink:type="simple"/>
+<mml:math display="block" id="M11">
+<mml:mrow><mml:msub><mml:mo>∀</mml:mo><mml:mrow><mml:mi>y</mml:mi><mml:mo>∈</mml:mo><mml:mi>M</mml:mi></mml:mrow></mml:msub><mml:mtext> </mml:mtext><mml:msubsup><mml:mi>v</mml:mi><mml:mi>y</mml:mi><mml:mrow><mml:mi>m</mml:mi><mml:mi>i</mml:mi><mml:mi>n</mml:mi></mml:mrow></mml:msubsup><mml:mo>×</mml:mo><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mn>1</mml:mn><mml:mo>−</mml:mo><mml:msubsup><mml:mi>δ</mml:mi><mml:mi>y</mml:mi><mml:mrow><mml:mi>R</mml:mi><mml:mi>B</mml:mi></mml:mrow></mml:msubsup></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mo>≤</mml:mo><mml:mtext> </mml:mtext><mml:msubsup><mml:mi>v</mml:mi><mml:mi>y</mml:mi><mml:mrow><mml:mi>n</mml:mi><mml:mi>g</mml:mi></mml:mrow></mml:msubsup><mml:mo>≤</mml:mo><mml:mtext> </mml:mtext><mml:msubsup><mml:mi>v</mml:mi><mml:mi>y</mml:mi><mml:mrow><mml:mi>m</mml:mi><mml:mi>a</mml:mi><mml:mi>x</mml:mi></mml:mrow></mml:msubsup><mml:mo>×</mml:mo><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mn>1</mml:mn><mml:mo>−</mml:mo><mml:msubsup><mml:mi>δ</mml:mi><mml:mi>y</mml:mi><mml:mrow><mml:mi>R</mml:mi><mml:mi>F</mml:mi></mml:mrow></mml:msubsup></mml:mrow><mml:mo>)</mml:mo></mml:mrow></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(6)</label>
+</disp-formula>
+<disp-formula id="pcbi.1005494.e012">
+<alternatives>
+<graphic id="pcbi.1005494.e012g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005494.e012" xlink:type="simple"/>
+<mml:math display="block" id="M12">
+<mml:mrow><mml:munder><mml:mrow><mml:mtext>min</mml:mtext></mml:mrow><mml:mrow><mml:msup><mml:mi mathvariant="bold-italic">v</mml:mi><mml:mrow><mml:mi>n</mml:mi><mml:mi>g</mml:mi></mml:mrow></mml:msup></mml:mrow></mml:munder><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:msup><mml:mi>c</mml:mi><mml:mi>t</mml:mi></mml:msup><mml:mo>×</mml:mo><mml:mtext> </mml:mtext><mml:msup><mml:mi mathvariant="bold-italic">v</mml:mi><mml:mrow><mml:mi>n</mml:mi><mml:mi>g</mml:mi></mml:mrow></mml:msup></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mo>=</mml:mo><mml:mn>0</mml:mn></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(7)</label>
+</disp-formula></p>
+<table-wrap id="pcbi.1005494.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1005494.t001</object-id>
+<label>Table 1</label> <caption><title>Definitions of the variables used in the system of equations that describes the modified G<sc>lobal</sc>F<sc>it</sc> algorithm.</title></caption>
+<alternatives>
+<graphic id="pcbi.1005494.t001g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005494.t001" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<tbody>
+<tr>
+<td align="justify"><italic>M</italic></td>
+<td align="justify">The set of reactions included in the original (input) network reconstruction</td>
+</tr>
+<tr>
+<td align="justify"><italic>S</italic></td>
+<td align="justify">Stoichiometric matrix of the original (input) network reconstruction</td>
+</tr>
+<tr>
+<td align="justify"><bold><italic>v</italic></bold></td>
+<td align="justify">Flux vector</td>
+</tr>
+<tr>
+<td align="justify"><italic>g</italic></td>
+<td align="justify">Growth case</td>
+</tr>
+<tr>
+<td align="justify"><italic>ng</italic></td>
+<td align="justify">Non-growth case</td>
+</tr>
+<tr>
+<td align="justify"><inline-formula id="pcbi.1005494.e013"><alternatives><graphic id="pcbi.1005494.e013g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005494.e013" xlink:type="simple"/><mml:math display="inline" id="M13"><mml:mrow><mml:msubsup><mml:mi>v</mml:mi><mml:mi>y</mml:mi><mml:mrow><mml:mi>m</mml:mi><mml:mi>i</mml:mi><mml:mi>n</mml:mi></mml:mrow></mml:msubsup></mml:mrow></mml:math></alternatives></inline-formula></td>
+<td align="justify">Lower bound of reaction <italic>y</italic></td>
+</tr>
+<tr>
+<td align="justify"><inline-formula id="pcbi.1005494.e014"><alternatives><graphic id="pcbi.1005494.e014g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005494.e014" xlink:type="simple"/><mml:math display="inline" id="M14"><mml:mrow><mml:msubsup><mml:mi>v</mml:mi><mml:mi>y</mml:mi><mml:mrow><mml:mi>m</mml:mi><mml:mi>a</mml:mi><mml:mi>x</mml:mi></mml:mrow></mml:msubsup></mml:mrow></mml:math></alternatives></inline-formula></td>
+<td align="justify">Upper bound of reaction <italic>y</italic></td>
+</tr>
+<tr>
+<td align="justify"><inline-formula id="pcbi.1005494.e015"><alternatives><graphic id="pcbi.1005494.e015g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005494.e015" xlink:type="simple"/><mml:math display="inline" id="M15"><mml:mrow><mml:msubsup><mml:mi>v</mml:mi><mml:mrow><mml:mi>B</mml:mi><mml:mi>i</mml:mi><mml:mi>o</mml:mi></mml:mrow><mml:mi>g</mml:mi></mml:msubsup></mml:mrow></mml:math></alternatives></inline-formula></td>
+<td align="justify">Biomass reaction of the growth case</td>
+</tr>
+<tr>
+<td align="justify"><italic>T</italic><sub><italic>g</italic></sub></td>
+<td align="justify">Growth threshold of the growth case</td>
+</tr>
+<tr>
+<td align="justify"><bold><italic>c</italic></bold><sup><italic>t</italic></sup></td>
+<td align="justify">Vector containing ones and zeros. All entries are zero, except for the positions of the energy dissipation reactions</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p><inline-formula id="pcbi.1005494.e016"><alternatives><graphic id="pcbi.1005494.e016g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005494.e016" xlink:type="simple"/><mml:math display="inline" id="M16"><mml:mrow><mml:msubsup><mml:mi>δ</mml:mi><mml:mi>y</mml:mi><mml:mrow><mml:mi>R</mml:mi><mml:mi>B</mml:mi></mml:mrow></mml:msubsup></mml:mrow></mml:math></alternatives></inline-formula> and <inline-formula id="pcbi.1005494.e017"><alternatives><graphic id="pcbi.1005494.e017g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005494.e017" xlink:type="simple"/><mml:math display="inline" id="M17"><mml:mrow><mml:msubsup><mml:mi>δ</mml:mi><mml:mi>y</mml:mi><mml:mrow><mml:mi>R</mml:mi><mml:mi>F</mml:mi></mml:mrow></mml:msubsup></mml:mrow></mml:math></alternatives></inline-formula> are binary variables. Setting one of these variables to 1 will constrain the corresponding flux of the growth—<xref ref-type="disp-formula" rid="pcbi.1005494.e008">Eq (3)</xref>—and non-growth case—<xref ref-type="disp-formula" rid="pcbi.1005494.e011">Eq (6)</xref>–to zero. The total number of reaction removals is minimized, where the removal of forward and backward reaction is treated separately in <xref ref-type="disp-formula" rid="pcbi.1005494.e006">Eq (1)</xref>–<italic>i.e., <inline-formula id="pcbi.1005494.e018"><alternatives><graphic id="pcbi.1005494.e018g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005494.e018" xlink:type="simple"/><mml:math display="inline" id="M18"><mml:mrow><mml:msubsup><mml:mi>δ</mml:mi><mml:mi>y</mml:mi><mml:mrow><mml:mi>R</mml:mi><mml:mi>B</mml:mi></mml:mrow></mml:msubsup></mml:mrow></mml:math></alternatives></inline-formula></italic> and <inline-formula id="pcbi.1005494.e019"><alternatives><graphic id="pcbi.1005494.e019g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1005494.e019" xlink:type="simple"/><mml:math display="inline" id="M19"><mml:mrow><mml:msubsup><mml:mi>δ</mml:mi><mml:mi>y</mml:mi><mml:mrow><mml:mi>R</mml:mi><mml:mi>F</mml:mi></mml:mrow></mml:msubsup></mml:mrow></mml:math></alternatives></inline-formula> are independent. Both the growth and the non-growth case must be in steady state, Eqs <xref ref-type="disp-formula" rid="pcbi.1005494.e007">(2)</xref> and <xref ref-type="disp-formula" rid="pcbi.1005494.e010">(5)</xref>. The biomass production of the growth case has to be greater than a predefined threshold T<sub>g</sub>, <xref ref-type="disp-formula" rid="pcbi.1005494.e009">Eq (4)</xref>. All entries in c<sup>t</sup> are 0, except for the positions of the energy dissipation reactions, which are 1. The maximal summed flux through all energy dissipation reactions must be zero, <xref ref-type="disp-formula" rid="pcbi.1005494.e012">Eq (7)</xref>. We convert this bi-level optimization problem into a single level optimization problem as described in [<xref ref-type="bibr" rid="pcbi.1005494.ref026">26</xref>].</p>
+<p>All calculations were run in GNU R with the S<sc>y</sc>B<sc>iL</sc> library [<xref ref-type="bibr" rid="pcbi.1005494.ref035">35</xref>] and a modified G<sc>lobal</sc>F<sc>it</sc> library [<xref ref-type="bibr" rid="pcbi.1005494.ref026">26</xref>] under linux. We used IBM ILOG CPLEX as the solver for the mixed integer linear optimizations. Each calculation was run on 8 CPU cores and 50GB main memory.</p>
+</sec>
+</sec>
+<sec id="sec010">
+<title>Supporting information</title>
+<supplementary-material id="pcbi.1005494.s001" mimetype="image/tiff" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005494.s001" xlink:type="simple">
+<label>S1 Fig</label>
+<caption>
+<title>Computation time.</title>
+<p>Distribution of computation (wall-clock) times for the application of G<sc>lobal</sc>F<sc>it</sc> to the metabolic models containing EGCs. While almost all computations finished in under a minute on a PC (8 CPUs, 50Gb RAM), the search for model corrections requires considerably more time for the yeast 7 metabolic network (data points off scale; the “simple” calculations were stopped after 61.27 hours and the “synthase” run needed 25.03 minutes). The red line (“simple”) is for runs allowing all reaction removals; the blue line (“synthase”) is for runs not allowing removal of the ATP synthase reaction.</p>
+<p>(TIFF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1005494.s002" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005494.s002" xlink:type="simple">
+<label>S1 Table</label>
+<caption>
+<title>Energy dissipation reactions.</title>
+<p>Energy dissipation reactions (EDRs) for each of the 15 different types of energy metabolites in the cell.</p>
+<p>(XLSX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1005494.s003" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005494.s003" xlink:type="simple">
+<label>S2 Table</label>
+<caption>
+<title>EGC occurrences in models.</title>
+<p>For each model, this table shows whether biomass production was possible at all (hasGrowth), whether energy generating cycles are present (hasEGCs), the identified types of EGCs (e.g., generates.ATP), and the reactions (or reaction directions) removed by G<sc>lobal</sc>F<sc>it</sc> for the “simple” run (all removals allowed) and with removal of the ATP synthase forbidden (“synthase”).</p>
+<p>(XLSX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1005494.s004" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pcbi.1005494.s004" xlink:type="simple">
+<label>S1 Text</label>
+<caption>
+<title>Toy model.</title>
+<p>A small example network that illustrates the inability of ll-COBRA and TMFA to reliably exclude EGCs.</p>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ack>
+<p>We are grateful for computational support through the Zentrum für Informations- und Medientechnologie (ZIM) at Heinrich Heine University Düsseldorf.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1005494.ref001"><label>1</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>O'Brien</surname> <given-names>EJ</given-names></name>, <name name-style="western"><surname>Monk</surname> <given-names>JM</given-names></name>, <name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name>. <article-title>Using Genome-scale Models to Predict Biological Capabilities</article-title>. <source>Cell</source>. <year>2015</year>;<volume>161</volume>(<issue>5</issue>):<fpage>971</fpage>–<lpage>87</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.cell.2015.05.019" xlink:type="simple">10.1016/j.cell.2015.05.019</ext-link></comment> <object-id pub-id-type="pmid">26000478</object-id></mixed-citation></ref>
+<ref id="pcbi.1005494.ref002"><label>2</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Thiele</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name>. <article-title>A protocol for generating a high-quality genome-scale metabolic reconstruction</article-title>. <source>Nat Protoc</source>. <year>2010</year>;<volume>5</volume>(<issue>1</issue>):<fpage>93</fpage>–<lpage>121</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nprot.2009.203" xlink:type="simple">10.1038/nprot.2009.203</ext-link></comment> <object-id pub-id-type="pmid">20057383</object-id></mixed-citation></ref>
+<ref id="pcbi.1005494.ref003"><label>3</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Price</surname> <given-names>ND</given-names></name>, <name name-style="western"><surname>Thiele</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name>. <article-title>Candidate states of Helicobacter pylori's genome-scale metabolic network upon application of "loop law" thermodynamic constraints</article-title>. <source>Biophys J</source>. <year>2006</year>;<volume>90</volume>(<issue>11</issue>):<fpage>3919</fpage>–<lpage>28</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1529/biophysj.105.072645" xlink:type="simple">10.1529/biophysj.105.072645</ext-link></comment> <object-id pub-id-type="pmid">16533855</object-id></mixed-citation></ref>
+<ref id="pcbi.1005494.ref004"><label>4</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schilling</surname> <given-names>CH</given-names></name>, <name name-style="western"><surname>Schuster</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name>, <name name-style="western"><surname>Heinrich</surname> <given-names>R</given-names></name>. <article-title>Metabolic pathway analysis: basic concepts and scientific applications in the post-genomic era</article-title>. <source>Biotechnol Prog</source>. <year>1999</year>;<volume>15</volume>(<issue>3</issue>):<fpage>296</fpage>–<lpage>303</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1021/bp990048k" xlink:type="simple">10.1021/bp990048k</ext-link></comment> <object-id pub-id-type="pmid">10356246</object-id></mixed-citation></ref>
+<ref id="pcbi.1005494.ref005"><label>5</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Muller</surname> <given-names>AC</given-names></name>, <name name-style="western"><surname>Bockmayr</surname> <given-names>A</given-names></name>. <article-title>Fast thermodynamically constrained flux variability analysis</article-title>. <source>Bioinformatics</source>. <year>2013</year>;<volume>29</volume>(<issue>7</issue>):<fpage>903</fpage>–<lpage>9</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/bioinformatics/btt059" xlink:type="simple">10.1093/bioinformatics/btt059</ext-link></comment> <object-id pub-id-type="pmid">23390138</object-id></mixed-citation></ref>
+<ref id="pcbi.1005494.ref006"><label>6</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schellenberger</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Lewis</surname> <given-names>NE</given-names></name>, <name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name>. <article-title>Elimination of thermodynamically infeasible loops in steady-state metabolic models</article-title>. <source>Biophys J</source>. <year>2011</year>;<volume>100</volume>(<issue>3</issue>):<fpage>544</fpage>–<lpage>53</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.bpj.2010.12.3707" xlink:type="simple">10.1016/j.bpj.2010.12.3707</ext-link></comment> <object-id pub-id-type="pmid">21281568</object-id></mixed-citation></ref>
+<ref id="pcbi.1005494.ref007"><label>7</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Beard</surname> <given-names>DA</given-names></name>, <name name-style="western"><surname>Liang</surname> <given-names>SD</given-names></name>, <name name-style="western"><surname>Qian</surname> <given-names>H</given-names></name>. <article-title>Energy balance for analysis of complex metabolic networks</article-title>. <source>Biophys J</source>. <year>2002</year>;<volume>83</volume>(<issue>1</issue>):<fpage>79</fpage>–<lpage>86</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/S0006-3495(02)75150-3" xlink:type="simple">10.1016/S0006-3495(02)75150-3</ext-link></comment> <object-id pub-id-type="pmid">12080101</object-id></mixed-citation></ref>
+<ref id="pcbi.1005494.ref008"><label>8</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wiback</surname> <given-names>SJ</given-names></name>, <name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name>. <article-title>Extreme pathway analysis of human red blood cell metabolism</article-title>. <source>Biophys J</source>. <year>2002</year>;<volume>83</volume>(<issue>2</issue>):<fpage>808</fpage>–<lpage>18</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/S0006-3495(02)75210-7" xlink:type="simple">10.1016/S0006-3495(02)75210-7</ext-link></comment> <object-id pub-id-type="pmid">12124266</object-id></mixed-citation></ref>
+<ref id="pcbi.1005494.ref009"><label>9</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Sridharan</surname> <given-names>GV</given-names></name>, <name name-style="western"><surname>Ullah</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Hassoun</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Lee</surname> <given-names>K</given-names></name>. <article-title>Discovery of substrate cycles in large scale metabolic networks using hierarchical modularity</article-title>. <source>BMC Syst Biol</source>. <year>2015</year>;<volume>9</volume>:<fpage>5</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/s12918-015-0146-2" xlink:type="simple">10.1186/s12918-015-0146-2</ext-link></comment> <object-id pub-id-type="pmid">25884368</object-id></mixed-citation></ref>
+<ref id="pcbi.1005494.ref010"><label>10</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Reidy</surname> <given-names>SP</given-names></name>, <name name-style="western"><surname>Weber</surname> <given-names>JM</given-names></name>. <article-title>Accelerated substrate cycling: a new energy-wasting role for leptin in vivo</article-title>. <source>Am J Physiol Endocrinol Metab</source>. <year>2002</year>;<volume>282</volume>(<issue>2</issue>):<fpage>E312</fpage>–<lpage>7</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1152/ajpendo.00037.2001" xlink:type="simple">10.1152/ajpendo.00037.2001</ext-link></comment> <object-id pub-id-type="pmid">11788362</object-id></mixed-citation></ref>
+<ref id="pcbi.1005494.ref011"><label>11</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Russell</surname> <given-names>JB</given-names></name>. <article-title>The energy spilling reactions of bacteria and other organisms</article-title>. <source>J Mol Microbiol Biotechnol</source>. <year>2007</year>;<volume>13</volume>(<issue>1–3</issue>):<fpage>1</fpage>–<lpage>11</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1159/000103591" xlink:type="simple">10.1159/000103591</ext-link></comment> <object-id pub-id-type="pmid">17693707</object-id></mixed-citation></ref>
+<ref id="pcbi.1005494.ref012"><label>12</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Price</surname> <given-names>ND</given-names></name>, <name name-style="western"><surname>Famili</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Beard</surname> <given-names>DA</given-names></name>, <name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name>. <article-title>Extreme pathways and Kirchhoff's second law</article-title>. <source>Biophys J</source>. <year>2002</year>;<volume>83</volume>(<issue>5</issue>):<fpage>2879</fpage>–<lpage>82</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/S0006-3495(02)75297-1" xlink:type="simple">10.1016/S0006-3495(02)75297-1</ext-link></comment> <object-id pub-id-type="pmid">12425318</object-id></mixed-citation></ref>
+<ref id="pcbi.1005494.ref013"><label>13</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Orth</surname> <given-names>JD</given-names></name>, <name name-style="western"><surname>Conrad</surname> <given-names>TM</given-names></name>, <name name-style="western"><surname>Na</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Lerman</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Nam</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Feist</surname> <given-names>AM</given-names></name>, <etal>et al</etal>. <article-title>A comprehensive genome-scale reconstruction of Escherichia coli metabolism—2011</article-title>. <source>Mol Syst Biol</source>. <year>2011</year>;<volume>7</volume>:<fpage>535</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/msb.2011.65" xlink:type="simple">10.1038/msb.2011.65</ext-link></comment> <object-id pub-id-type="pmid">21988831</object-id></mixed-citation></ref>
+<ref id="pcbi.1005494.ref014"><label>14</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Quek</surname> <given-names>LE</given-names></name>, <name name-style="western"><surname>Dietmair</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Hanscho</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Martinez</surname> <given-names>VS</given-names></name>, <name name-style="western"><surname>Borth</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Nielsen</surname> <given-names>LK</given-names></name>. <article-title>Reducing Recon 2 for steady-state flux analysis of HEK cell culture</article-title>. <source>J Biotechnol</source>. <year>2014</year>;<volume>184</volume>:<fpage>172</fpage>–<lpage>8</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.jbiotec.2014.05.021" xlink:type="simple">10.1016/j.jbiotec.2014.05.021</ext-link></comment> <object-id pub-id-type="pmid">24907410</object-id></mixed-citation></ref>
+<ref id="pcbi.1005494.ref015"><label>15</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Swainston</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Smallbone</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Hefzi</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Dobson</surname> <given-names>PD</given-names></name>, <name name-style="western"><surname>Brewer</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Hanscho</surname> <given-names>M</given-names></name>, <etal>et al</etal>. <article-title>Recon 2.2: from reconstruction to model of human metabolism</article-title>. <source>Metabolomics</source>. <year>2016</year>;<volume>12</volume>:<fpage>109</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1007/s11306-016-1051-4" xlink:type="simple">10.1007/s11306-016-1051-4</ext-link></comment> <object-id pub-id-type="pmid">27358602</object-id></mixed-citation></ref>
+<ref id="pcbi.1005494.ref016"><label>16</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Desouki</surname> <given-names>AA</given-names></name>, <name name-style="western"><surname>Jarre</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Gelius-Dietrich</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Lercher</surname> <given-names>MJ</given-names></name>. <article-title>CycleFreeFlux: efficient removal of thermodynamically infeasible loops from flux distributions</article-title>. <source>Bioinformatics</source>. <year>2015</year>;<volume>31</volume>(<issue>13</issue>):<fpage>2159</fpage>–<lpage>65</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/bioinformatics/btv096" xlink:type="simple">10.1093/bioinformatics/btv096</ext-link></comment> <object-id pub-id-type="pmid">25701569</object-id></mixed-citation></ref>
+<ref id="pcbi.1005494.ref017"><label>17</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Henry</surname> <given-names>CS</given-names></name>, <name name-style="western"><surname>Broadbelt</surname> <given-names>LJ</given-names></name>, <name name-style="western"><surname>Hatzimanikatis</surname> <given-names>V</given-names></name>. <article-title>Thermodynamics-based metabolic flux analysis</article-title>. <source>Biophysical Journal</source>. <year>2007</year>;<volume>92</volume>(<issue>5</issue>):<fpage>1792</fpage>–<lpage>805</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1529/biophysj.106.093138" xlink:type="simple">10.1529/biophysj.106.093138</ext-link></comment> <object-id pub-id-type="pmid">17172310</object-id></mixed-citation></ref>
+<ref id="pcbi.1005494.ref018"><label>18</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Beard</surname> <given-names>DA</given-names></name>, <name name-style="western"><surname>Babson</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Curtis</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Qian</surname> <given-names>H</given-names></name>. <article-title>Thermodynamic constraints for biochemical networks</article-title>. <source>J Theor Biol</source>. <year>2004</year>;<volume>228</volume>(<issue>3</issue>):<fpage>327</fpage>–<lpage>33</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.jtbi.2004.01.008" xlink:type="simple">10.1016/j.jtbi.2004.01.008</ext-link></comment> <object-id pub-id-type="pmid">15135031</object-id></mixed-citation></ref>
+<ref id="pcbi.1005494.ref019"><label>19</label><mixed-citation publication-type="other" xlink:type="simple">Nigam R, Liang S. Second Law of Thermodynamics Applied to Metabolic Networks. 2003.</mixed-citation></ref>
+<ref id="pcbi.1005494.ref020"><label>20</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Overbeek</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Olson</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Pusch</surname> <given-names>GD</given-names></name>, <name name-style="western"><surname>Olsen</surname> <given-names>GJ</given-names></name>, <name name-style="western"><surname>Davis</surname> <given-names>JJ</given-names></name>, <name name-style="western"><surname>Disz</surname> <given-names>T</given-names></name>, <etal>et al</etal>. <article-title>The SEED and the Rapid Annotation of microbial genomes using Subsystems Technology (RAST)</article-title>. <source>Nucleic Acids Res</source>. <year>2014</year>;<volume>42</volume>(<issue>Database issue</issue>):<fpage>D206</fpage>–<lpage>14</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/nar/gkt1226" xlink:type="simple">10.1093/nar/gkt1226</ext-link></comment> <object-id pub-id-type="pmid">24293654</object-id></mixed-citation></ref>
+<ref id="pcbi.1005494.ref021"><label>21</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Devoid</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Overbeek</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>DeJongh</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Vonstein</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Best</surname> <given-names>AA</given-names></name>, <name name-style="western"><surname>Henry</surname> <given-names>C</given-names></name>. <article-title>Automated genome annotation and metabolic model reconstruction in the SEED and Model SEED</article-title>. <source>Methods Mol Biol</source>. <year>2013</year>;<volume>985</volume>:<fpage>17</fpage>–<lpage>45</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1007/978-1-62703-299-5_2" xlink:type="simple">10.1007/978-1-62703-299-5_2</ext-link></comment> <object-id pub-id-type="pmid">23417797</object-id></mixed-citation></ref>
+<ref id="pcbi.1005494.ref022"><label>22</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schellenberger</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Park</surname> <given-names>JO</given-names></name>, <name name-style="western"><surname>Conrad</surname> <given-names>TM</given-names></name>, <name name-style="western"><surname>Palsson</surname> <given-names>BO</given-names></name>. <article-title>BiGG: a Biochemical Genetic and Genomic knowledgebase of large scale metabolic reconstructions</article-title>. <source>BMC Bioinformatics</source>. <year>2010</year>;<volume>11</volume>:<fpage>213</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/1471-2105-11-213" xlink:type="simple">10.1186/1471-2105-11-213</ext-link></comment> <object-id pub-id-type="pmid">20426874</object-id></mixed-citation></ref>
+<ref id="pcbi.1005494.ref023"><label>23</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Henry</surname> <given-names>CS</given-names></name>, <name name-style="western"><surname>DeJongh</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Best</surname> <given-names>AA</given-names></name>, <name name-style="western"><surname>Frybarger</surname> <given-names>PM</given-names></name>, <name name-style="western"><surname>Linsay</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Stevens</surname> <given-names>RL</given-names></name>. <article-title>High-throughput generation, optimization and analysis of genome-scale metabolic models</article-title>. <source>Nat Biotechnol</source>. <year>2010</year>;<volume>28</volume>(<issue>9</issue>):<fpage>977</fpage>–<lpage>82</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nbt.1672" xlink:type="simple">10.1038/nbt.1672</ext-link></comment> <object-id pub-id-type="pmid">20802497</object-id></mixed-citation></ref>
+<ref id="pcbi.1005494.ref024"><label>24</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ganter</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Bernard</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Moretti</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Stelling</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Pagni</surname> <given-names>M</given-names></name>. <article-title>MetaNetX.org: a website and repository for accessing, analysing and manipulating metabolic networks</article-title>. <source>Bioinformatics</source>. <year>2013</year>;<volume>29</volume>(<issue>6</issue>):<fpage>815</fpage>–<lpage>6</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/bioinformatics/btt036" xlink:type="simple">10.1093/bioinformatics/btt036</ext-link></comment> <object-id pub-id-type="pmid">23357920</object-id></mixed-citation></ref>
+<ref id="pcbi.1005494.ref025"><label>25</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Monk</surname> <given-names>JM</given-names></name>, <name name-style="western"><surname>Charusanti</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Aziz</surname> <given-names>RK</given-names></name>, <name name-style="western"><surname>Lerman</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Premyodhin</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Orth</surname> <given-names>JD</given-names></name>, <etal>et al</etal>. <article-title>Genome-scale metabolic reconstructions of multiple Escherichia coli strains highlight strain-specific adaptations to nutritional environments</article-title>. <source>Proc Natl Acad Sci U S A</source>. <year>2013</year>;<volume>110</volume>(<issue>50</issue>):<fpage>20338</fpage>–<lpage>43</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.1307797110" xlink:type="simple">10.1073/pnas.1307797110</ext-link></comment> <object-id pub-id-type="pmid">24277855</object-id></mixed-citation></ref>
+<ref id="pcbi.1005494.ref026"><label>26</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hartleb</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Jarre</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Lercher</surname> <given-names>MJ</given-names></name>. <article-title>Improved Metabolic Models for E. coli and Mycoplasma genitalium from GlobalFit, an Algorithm That Simultaneously Matches Growth and Non-Growth Data Sets</article-title>. <source>PLoS Comput Biol</source>. <year>2016</year>;<volume>12</volume>(<issue>8</issue>):<fpage>e1005036</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.1005036" xlink:type="simple">10.1371/journal.pcbi.1005036</ext-link></comment> <object-id pub-id-type="pmid">27482704</object-id></mixed-citation></ref>
+<ref id="pcbi.1005494.ref027"><label>27</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Aung</surname> <given-names>HW</given-names></name>, <name name-style="western"><surname>Henry</surname> <given-names>SA</given-names></name>, <name name-style="western"><surname>Walker</surname> <given-names>LP</given-names></name>. <article-title>Revising the Representation of Fatty Acid, Glycerolipid, and Glycerophospholipid Metabolism in the Consensus Model of Yeast Metabolism</article-title>. <source>Ind Biotechnol (New Rochelle N Y)</source>. <year>2013</year>;<volume>9</volume>(<issue>4</issue>):<fpage>215</fpage>–<lpage>28</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1005494.ref028"><label>28</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Matias Rodrigues</surname> <given-names>JF</given-names></name>, <name name-style="western"><surname>Wagner</surname> <given-names>A</given-names></name>. <article-title>Evolutionary plasticity and innovations in complex metabolic reaction networks</article-title>. <source>PLoS Comput Biol</source>. <year>2009</year>;<volume>5</volume>(<issue>12</issue>):<fpage>e1000613</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pcbi.1000613" xlink:type="simple">10.1371/journal.pcbi.1000613</ext-link></comment> <object-id pub-id-type="pmid">20019795</object-id></mixed-citation></ref>
+<ref id="pcbi.1005494.ref029"><label>29</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Barve</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Wagner</surname> <given-names>A</given-names></name>. <article-title>A latent capacity for evolutionary innovation through exaptation in metabolic systems</article-title>. <source>Nature</source>. <year>2013</year>;<volume>500</volume>(<issue>7461</issue>):<fpage>203</fpage>-+. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nature12301" xlink:type="simple">10.1038/nature12301</ext-link></comment> <object-id pub-id-type="pmid">23851393</object-id></mixed-citation></ref>
+<ref id="pcbi.1005494.ref030"><label>30</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hosseini</surname> <given-names>SR</given-names></name>, <name name-style="western"><surname>Martin</surname> <given-names>OC</given-names></name>, <name name-style="western"><surname>Wagner</surname> <given-names>A</given-names></name>. <article-title>Phenotypic innovation through recombination in genome-scale metabolic networks</article-title>. <source>Proc Biol Sci</source>. <year>2016</year>;<volume>283</volume>(<issue>1839</issue>).</mixed-citation></ref>
+<ref id="pcbi.1005494.ref031"><label>31</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Szappanos</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Fritzemeier</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Csorgo</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Lazar</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Lu</surname> <given-names>XW</given-names></name>, <name name-style="western"><surname>Fekete</surname> <given-names>G</given-names></name>, <etal>et al</etal>. <article-title>Adaptive evolution of complex innovations through stepwise metabolic niche expansion</article-title>. <source>Nat Commun</source>. <year>2016</year>;<volume>7</volume>.</mixed-citation></ref>
+<ref id="pcbi.1005494.ref032"><label>32</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kummel</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Panke</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Heinemann</surname> <given-names>M</given-names></name>. <article-title>Systematic assignment of thermodynamic constraints in metabolic network models</article-title>. <source>BMC Bioinformatics</source>. <year>2006</year>;<volume>7</volume>:<fpage>512</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/1471-2105-7-512" xlink:type="simple">10.1186/1471-2105-7-512</ext-link></comment> <object-id pub-id-type="pmid">17123434</object-id></mixed-citation></ref>
+<ref id="pcbi.1005494.ref033"><label>33</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>De Martino</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Capuani</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Mori</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>De Martino</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Marinari</surname> <given-names>E</given-names></name>. <article-title>Counting and correcting thermodynamically infeasible flux cycles in genome-scale metabolic networks</article-title>. <source>Metabolites</source>. <year>2013</year>;<volume>3</volume>(<issue>4</issue>):<fpage>946</fpage>–<lpage>66</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.3390/metabo3040946" xlink:type="simple">10.3390/metabo3040946</ext-link></comment> <object-id pub-id-type="pmid">24958259</object-id></mixed-citation></ref>
+<ref id="pcbi.1005494.ref034"><label>34</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hoppe</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Hoffmann</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Holzhutter</surname> <given-names>HG</given-names></name>. <article-title>Including metabolite concentrations into flux balance analysis: Thermodynamic realizability as a constraint on flux distributions in metabolic networks</article-title>. <source>Bmc Systems Biology</source>. <year>2007</year>;<volume>1</volume>.</mixed-citation></ref>
+<ref id="pcbi.1005494.ref035"><label>35</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gelius-Dietrich</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Desouki</surname> <given-names>AA</given-names></name>, <name name-style="western"><surname>Fritzemeier</surname> <given-names>CJ</given-names></name>, <name name-style="western"><surname>Lercher</surname> <given-names>MJ</given-names></name>. <article-title>Sybil—efficient constraint-based modelling in R</article-title>. <source>BMC Syst Biol</source>. <year>2013</year>;<volume>7</volume>:<fpage>125</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/1752-0509-7-125" xlink:type="simple">10.1186/1752-0509-7-125</ext-link></comment> <object-id pub-id-type="pmid">24224957</object-id></mixed-citation></ref>
+</ref-list>
+</back>
+</article>

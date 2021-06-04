@@ -1,0 +1,1236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="3.0" xml:lang="en">
+<front>
+<journal-meta>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id>
+<journal-id journal-id-type="pmc">ploscomp</journal-id><journal-title-group>
+<journal-title>PLoS Computational Biology</journal-title></journal-title-group>
+<issn pub-type="ppub">1553-734X</issn>
+<issn pub-type="epub">1553-7358</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, USA</publisher-loc></publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="publisher-id">PCOMPBIOL-D-13-01858</article-id>
+<article-id pub-id-type="doi">10.1371/journal.pcbi.1003500</article-id>
+<article-categories><subj-group subj-group-type="heading"><subject>Research Article</subject></subj-group><subj-group subj-group-type="Discipline-v2"><subject>Biology</subject><subj-group><subject>Computational biology</subject></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>MRFalign: Protein Homology Detection through Alignment of Markov Random Fields</article-title>
+<alt-title alt-title-type="running-head">Protein Homology Detection Using MRF-MRF Alignment</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Ma</surname><given-names>Jianzhu</given-names></name><xref ref-type="aff" rid="aff1"/></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Wang</surname><given-names>Sheng</given-names></name><xref ref-type="aff" rid="aff1"/></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Wang</surname><given-names>Zhiyong</given-names></name><xref ref-type="aff" rid="aff1"/></contrib>
+<contrib contrib-type="author" xlink:type="simple"><name name-style="western"><surname>Xu</surname><given-names>Jinbo</given-names></name><xref ref-type="aff" rid="aff1"/><xref ref-type="corresp" rid="cor1"><sup>*</sup></xref></contrib>
+</contrib-group>
+<aff id="aff1"><addr-line>Toyota Technological Institute at Chicago, Chicago, Illinois, United States of America</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple"><name name-style="western"><surname>Lengauer</surname><given-names>Thomas</given-names></name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/></contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>Max-Planck-Institut für Informatik, Germany</addr-line></aff>
+<author-notes>
+<corresp id="cor1">* E-mail: <email xlink:type="simple">j3xu@ttic.edu</email></corresp>
+<fn fn-type="conflict"><p>The authors have declared that no competing interests exist.</p></fn>
+<fn fn-type="con"><p>Conceived and designed the experiments: JM SW JX. Performed the experiments: JM SW ZW. Analyzed the data: JM SW JX. Contributed reagents/materials/analysis tools: JM SW ZW. Wrote the paper: JM JX.</p></fn>
+</author-notes>
+<pub-date pub-type="collection"><month>3</month><year>2014</year></pub-date>
+<pub-date pub-type="epub"><day>27</day><month>3</month><year>2014</year></pub-date>
+<volume>10</volume>
+<issue>3</issue>
+<elocation-id>e1003500</elocation-id>
+<history>
+<date date-type="received"><day>27</day><month>10</month><year>2013</year></date>
+<date date-type="accepted"><day>8</day><month>1</month><year>2014</year></date>
+</history>
+<permissions>
+<copyright-year>2014</copyright-year>
+<copyright-holder>Ma et al</copyright-holder><license xlink:type="simple"><license-p>This is an open-access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license></permissions><related-article id="RA1" related-article-type="companion" ext-link-type="uri" page="e1002972" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1002972"> <article-title>New Methods Section in PLOS Computational Biology</article-title></related-article><related-article id="RA2" related-article-type="companion" ext-link-type="uri" page="e1003503" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1003503"> <article-title>Modeling Mutual Exclusivity of Cancer Mutations</article-title></related-article><related-article id="RA3" related-article-type="companion" ext-link-type="uri" page="e1003501" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1003501"> <article-title>An Integrated Model of Multiple-Condition ChIP-seq Data Reveals Predeterminants of Cdx2 Binding</article-title></related-article><related-article id="RA4" related-article-type="companion" ext-link-type="uri" page="e1003502" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1003502"> <article-title>HapTree: A Novel Bayesian Framework for Single Individual Polyplotyping Using NGS Data</article-title></related-article><related-article id="RA5" related-article-type="companion" ext-link-type="uri" page="e1003515" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1003515"> <article-title>Viral Quasispecies Assembly Via Maximal Clique Enumeration</article-title></related-article>
+<abstract>
+<p>Sequence-based protein homology detection has been extensively studied and so far the most sensitive method is based upon comparison of protein sequence profiles, which are derived from multiple sequence alignment (MSA) of sequence homologs in a protein family. A sequence profile is usually represented as a position-specific scoring matrix (PSSM) or an HMM (Hidden Markov Model) and accordingly PSSM-PSSM or HMM-HMM comparison is used for homolog detection. This paper presents a new homology detection method MRFalign, consisting of three key components: 1) a Markov Random Fields (MRF) representation of a protein family; 2) a scoring function measuring similarity of two MRFs; and 3) an efficient ADMM (Alternating Direction Method of Multipliers) algorithm aligning two MRFs. Compared to HMM that can only model very short-range residue correlation, MRFs can model long-range residue interaction pattern and thus, encode information for the global 3D structure of a protein family. Consequently, MRF-MRF comparison for remote homology detection shall be much more sensitive than HMM-HMM or PSSM-PSSM comparison. Experiments confirm that MRFalign outperforms several popular HMM or PSSM-based methods in terms of both alignment accuracy and remote homology detection and that MRFalign works particularly well for mainly beta proteins. For example, tested on the benchmark SCOP40 (8353 proteins) for homology detection, PSSM-PSSM and HMM-HMM succeed on 48% and 52% of proteins, respectively, at superfamily level, and on 15% and 27% of proteins, respectively, at fold level. In contrast, MRFalign succeeds on 57.3% and 42.5% of proteins at superfamily and fold level, respectively. This study implies that long-range residue interaction patterns are very helpful for sequence-based homology detection. The software is available for download at <ext-link ext-link-type="uri" xlink:href="http://raptorx.uchicago.edu/download/" xlink:type="simple">http://raptorx.uchicago.edu/download/</ext-link>. A summary of this paper appears in the proceedings of the RECOMB 2014 conference, April 2–5.</p>
+</abstract>
+<abstract abstract-type="summary"><title>Author Summary</title>
+<p>Sequence-based protein homology detection has been extensively studied, but it remains very challenging for remote homologs with divergent sequences. So far the most sensitive methods employ HMM-HMM comparison, which models a protein family using HMM (Hidden Markov Model) and then detects homologs using HMM-HMM alignment. HMM cannot model long-range residue interaction patterns and thus, carries very little information regarding the global 3D structure of a protein family. As such, HMM comparison is not sensitive enough for distantly-related homologs. In this paper, we present an MRF-MRF comparison method for homology detection. In particular, we model a protein family using Markov Random Fields (MRF) and then detect homologs by MRF-MRF alignment. Compared to HMM, MRFs are able to model long-range residue interaction pattern and thus, contains information for the overall 3D structure of a protein family. Consequently, MRF-MRF comparison is much more sensitive than HMM-HMM comparison. To implement MRF-MRF comparison, we have developed a new scoring function to measure the similarity of two MRFs and also an efficient ADMM algorithm to optimize the scoring function. Experiments confirm that MRF-MRF comparison indeed outperforms HMM-HMM comparison in terms of both alignment accuracy and remote homology detection, especially for mainly beta proteins.</p>
+</abstract>
+<funding-group><funding-statement>This work is supported by National Institutes of Health grant R01GM089753, NSF CAREER award CCF-1149811 and Alfred P. Sloan Research Fellowship. The authors are also grateful to the University of Chicago Beagle team and TeraGrid for their support of computational resources. The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement></funding-group><counts><page-count count="12"/></counts></article-meta>
+</front>
+<body><sec id="s1">
+<title/>
+<disp-quote>
+<p>This Methods article is associated with RECOMB 2014.</p>
+</disp-quote></sec><sec id="s2">
+<title>Introduction</title>
+<p>Sequence-based protein alignment and homology detection has been extensively studied and widely applied to many biological problems such as homology modeling <xref ref-type="bibr" rid="pcbi.1003500-Forrest1">[1]</xref>–<xref ref-type="bibr" rid="pcbi.1003500-Ma1">[4]</xref>, phylogeny inference <xref ref-type="bibr" rid="pcbi.1003500-Whelan1">[5]</xref>–<xref ref-type="bibr" rid="pcbi.1003500-Gouy1">[7]</xref> and protein function prediction <xref ref-type="bibr" rid="pcbi.1003500-Sokolov1">[8]</xref>–<xref ref-type="bibr" rid="pcbi.1003500-Radivojac1">[10]</xref>. Although extensively studied, remote homology detection still remains very challenging, especially for homologs with divergent sequences. So far the most sensitive method for homology detection is based upon comparison of protein sequence profiles, which are usually derived from multiple sequence alignment (MSA) of sequence homologs in a protein family. That is, instead of aligning two primary sequences, homologs can be detected by aligning protein sequence profiles. To facilitate comparison and alignment, an MSA is usually represented as a position-specific scoring matrix (PSSM) <xref ref-type="bibr" rid="pcbi.1003500-Rychlewski1">[11]</xref> or an HMM (Hidden Markov Model) <xref ref-type="bibr" rid="pcbi.1003500-Eddy1">[12]</xref>, <xref ref-type="bibr" rid="pcbi.1003500-Sding1">[13]</xref>. HMM is more sensitive than PSSM because 1) HMM contains position-specific gap information; and 2) HMM also takes into account correlation among sequentially adjacent residues. Sequence signature libraries <xref ref-type="bibr" rid="pcbi.1003500-Bairoch1">[14]</xref> and intermediate sequence based methods <xref ref-type="bibr" rid="pcbi.1003500-Park1">[15]</xref>, <xref ref-type="bibr" rid="pcbi.1003500-Lu1">[16]</xref> are also developed to make use of evolutionary information of a protein. All these methods are sensitive to close homologs, but not good enough for remote homologs. The main issue of existing profile-based methods lies in that they make use of only position-specific amino acid mutation patterns and very short-range residue correlation, but not long-range residue interaction. However, remote homologs may have very divergent sequences and are only similar at the level of (long-range) residue interaction pattern, which is not encoded in current popular PSSM or HMM models.</p>
+<p>To significantly advance homology detection, this paper presents a Markov Random Fields (MRFs) modeling of a multiple sequence alignment (MSA). Compared to HMM, MRFs can model long-range residue interactions and thus, encodes information for the global 3D structure of a protein family. In particular, MRF is a graphical model encoding a probability distribution over the MSA by a graph and a set of preset statistical functions. A node in the MRF corresponds to one column in the MSA and one edge specifies correlation between two columns. Each node is associated with a function describing position-specific amino acid mutation pattern. Similarly, each edge is associated with a function describing correlated mutation statistics between two columns. With MRF representation, alignment of two proteins or protein families becomes that of two MRFs. To align two MRFs, a scoring function or alignment potential is needed to measure the similarity of two MRFs. We use a scoring function consists of both node alignment potential and edge alignment potential, which measure the node (i.e., amino acid) similarity and edge (i.e., interaction pattern) similarity, respectively.</p>
+<p>It is computationally challenging to optimize a scoring function containing edge alignment potential. To deal with this, we formulate the MRF-MRF alignment problem as an integer programming problem and then develop an ADMM (Alternative Direction Method of Multipliers) algorithm to solve it efficiently to a suboptimal solution. ADMM divides the MRF alignment problem into two tractable sub-problems and then iteratively solve them until they reach consistent solutions.</p>
+<p>Experiments show that our MRF-MRF alignment method, denoted as MRFalign, can generate more accurate alignments and is also much more sensitive than others in detecting remote homologs. MRFalign works particularly well on mainly-beta proteins.</p>
+<sec id="s2a">
+<title>Related work</title>
+<p>Cowen has developed a program SMURFLite for fold recognition based upon the MRF representation of a protein family <xref ref-type="bibr" rid="pcbi.1003500-Daniels1">[17]</xref>. Nevertheless, our MRFalign method is significantly different from SMURFLite in a couple of aspects: 1) SMURLite builds an MRF based upon multiple structure alignment instead of multiple sequence alignment (MSA). As such, it cannot apply to sequence-based homology detection in the absence of native structures. In contrast, our method builds MRFs purely based upon MSA and thus, applies to sequence-based protein alignment and homology detection; and 2) SMURLite can only align a single primary sequence to an MRF, while our method aligns two MRFs to yield higher sensitivity. This difference requires us to develop totally new methods to build MRFs from MSA, measure similarity of two MRFs, and optimize the MRF-MRF alignment potential.</p>
+<p>Quite a few PSSM-based profile comparison methods for homology detection have been developed, including <xref ref-type="bibr" rid="pcbi.1003500-Rychlewski1">[11]</xref>, <xref ref-type="bibr" rid="pcbi.1003500-Pietrokovski1">[18]</xref>–<xref ref-type="bibr" rid="pcbi.1003500-Sadreyev1">[23]</xref>. Some studies such as <xref ref-type="bibr" rid="pcbi.1003500-Edgar1">[20]</xref> also combine phylogeny information with PSSM-based profile comparison. Homology detection can also be done without aligning proteins. For example, we can represent a protein sequence or profile as a feature vector and then search for homologs by comparing feature vectors. Early methods such as <xref ref-type="bibr" rid="pcbi.1003500-Brenner1">[24]</xref> usually conduct straightforward comparison of feature vectors, but are not very sensitive <xref ref-type="bibr" rid="pcbi.1003500-Park2">[25]</xref>. Improvement in these alignment-free methods results from the application of discriminative learning approaches such as SVM–Fisher <xref ref-type="bibr" rid="pcbi.1003500-Jaakkola1">[26]</xref>, SVM-pairwise <xref ref-type="bibr" rid="pcbi.1003500-Liao1">[27]</xref>, SVM with the spectrum kernel <xref ref-type="bibr" rid="pcbi.1003500-Leslie1">[28]</xref> and SVM with the mismatch kernel <xref ref-type="bibr" rid="pcbi.1003500-Leslie2">[29]</xref>. These SVM-based methods are reported to outperform the simple feature comparison methods. Comparing to alignment-based homology detection, alignment-free methods are usually faster but less sensitive.</p>
+</sec></sec><sec id="s3">
+<title>Results</title>
+<sec id="s3a">
+<title>Training and validation data</title>
+<p>To train the node alignment potential, we constructed the training and validation data from SCOP70. The sequence identity of all the training and validation protein pairs is uniformly distributed between 20% and 70%. Further, two proteins in any pair are similar at superfamily or fold level. In total we use a set of 1400 protein pairs as the training and validation data, which covers 458 SCOP folds <xref ref-type="bibr" rid="pcbi.1003500-Murzin1">[30]</xref>. Five-fold cross validation is used to choose the hyper-parameter in our machine learning model. In particular, every time we choose 1000 out of the 1400 protein pairs as the training data and the remaining 400 pairs as the validation data such that there is no fold-level redundancy between the training and validation data. A training or validation protein has less than 400 residues and contains less than 10% of residues without 3D coordinates. The reference alignment for a protein pair is generated by a structure alignment tool DeepAlign <xref ref-type="bibr" rid="pcbi.1003500-Wang1">[31]</xref>. Each reference alignment has fewer than 50 gap positions in the middle and the number of terminal gaps is less than 20% of the alignment length.</p>
+</sec><sec id="s3b">
+<title>Test data</title>
+<p>The data used to test alignment accuracy has no fold-level overlap with the training and validation data. In particular, we use the following three datasets to test the alignment accuracy, which are subsets of the test data used in <xref ref-type="bibr" rid="pcbi.1003500-Ma1">[4]</xref> to benchmark protein modeling methods.<list list-type="order"><list-item>
+<p>Set3.6K: a set of 3617 non-redundant protein pairs. Two proteins in a pair share &lt;40% sequence identity and have small length difference. By “non-redundant” we mean that in any two protein pairs, there are at least two proteins (one from each pair) sharing less than 25% sequence identity.</p>
+</list-item><list-item>
+<p>Set2.6K: a set of 2633 non-redundant protein pairs. Two proteins in a pair share &lt;25% sequence identity and have length difference larger than 30%. This set is mainly used to test the performance of one method in handling with domain boundary.</p>
+</list-item><list-item>
+<p>Set60K: a very large set of 60929 protein pairs, in most of which two proteins share less than 40% sequence identity. Meanwhile, 846, 40902, and 19181 pairs are similar at the SCOP family, superfamily and fold level, respectively, and 151, 2691 and 2218 pairs consist of only all-beta proteins, respectively.</p>
+</list-item></list>We use the following benchmarks to test remote homology detection success rate.</p>
+<list list-type="order"><list-item>
+<p>SCOP20, SCOP40 and SCOP80, which are used by Söding group to study context-specific mutation score <xref ref-type="bibr" rid="pcbi.1003500-Angermller1">[32]</xref>. They are constructed by filtering the SCOP database with a maximum sequence identity of 20%, 40% and 80%, respectively. In total they have 4884, 7088, and 9867 proteins, respectively, and 1281, 1806, and 2734 beta proteins, respectively.</p>
+</list-item></list>
+<p>We run PSI-BLAST with 5 iterations to detect sequence homologs and generate MSAs for the first three datasets. The MSA files for the three SCOP benchmarks are downloaded from the HHpred website (<ext-link ext-link-type="uri" xlink:href="ftp://toolkit.genzentrum.lmu.de/pub/" xlink:type="simple">ftp://toolkit.genzentrum.lmu.de/pub/</ext-link>). Pseudocounts are used in building sequence profiles. Real secondary structure information is not used since this paper focuses on sequence-based homology detection.</p>
+</sec><sec id="s3c">
+<title>Programs to compare</title>
+<p>To evaluate alignment accuracy, we compare our method, denoted as MRFalign, with sequence-HMM alignment method HMMER <xref ref-type="bibr" rid="pcbi.1003500-Eddy1">[12]</xref> and HMM-HMM alignment method HHalign <xref ref-type="bibr" rid="pcbi.1003500-Sding1">[13]</xref>. HHMER is run with a default E-value threshold (10.0). HHalign is run with the option “-mact 0.1”. To evaluate the performance of homology detection, we compare MRFalign, with FFAS <xref ref-type="bibr" rid="pcbi.1003500-Rychlewski1">[11]</xref> (PSSM-PSSM comparison), hmmscan (sequence-HMM comparison) and HHsearch and HHblits <xref ref-type="bibr" rid="pcbi.1003500-Remmert1">[33]</xref> (HMM-HMM comparison). HHsearch and hmmscan use HHalign and HMMER, respectively, for protein alignment.</p>
+</sec><sec id="s3d">
+<title>Evaluation criteria</title>
+<p>Three performance metrics are used including reference-dependent alignment precision, alignment recall and homology detection success rate. Alignment precision is defined as the fraction of aligned positions that are correctly aligned. Alignment recall is the fraction of alignable residues that are correctly aligned. Reference alignments are used to judge if one residue is correctly aligned or alignable. To reduce bias, we use three very different structure alignment tools to generate reference alignments, including TM-align <xref ref-type="bibr" rid="pcbi.1003500-Zhang1">[34]</xref>, Matt <xref ref-type="bibr" rid="pcbi.1003500-Menke1">[35]</xref>, and DeepAlign <xref ref-type="bibr" rid="pcbi.1003500-Wang1">[31]</xref>.</p>
+</sec><sec id="s3e">
+<title>Reference-dependent alignment recall</title>
+<p>As shown in <xref ref-type="table" rid="pcbi-1003500-t001">Tables 1</xref> and <xref ref-type="table" rid="pcbi-1003500-t002">2</xref>, our method MRFalign exceeds all the others regardless of the reference alignments on both dataset Set3.6K and Set2.6K. MRFalign outperforms HHalign by ∼10% on both datasets, and HHMER by ∼23% and ∼24%, respectively. If 4-position off the exact match is allowed in calculating alignment recall, MRFalign outperforms HHalign by ∼11% on both datasets, and HHMER by ∼25% and ∼33%, respectively.</p>
+<table-wrap id="pcbi-1003500-t001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003500.t001</object-id><label>Table 1</label><caption>
+<title>Reference-dependent alignment recall on Set3.6K.</title>
+</caption><alternatives><graphic id="pcbi-1003500-t001-1" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003500.t001" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td colspan="2" align="left" rowspan="1">TMalign</td>
+<td colspan="2" align="left" rowspan="1">Matt</td>
+<td colspan="2" align="left" rowspan="1">DeepAlign</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Exact match</td>
+<td align="left" rowspan="1" colspan="1">4-offset</td>
+<td align="left" rowspan="1" colspan="1">Exact match</td>
+<td align="left" rowspan="1" colspan="1">4-offset</td>
+<td align="left" rowspan="1" colspan="1">Exact match</td>
+<td align="left" rowspan="1" colspan="1">4-offset</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">HMMER</td>
+<td align="left" rowspan="1" colspan="1">22.9%</td>
+<td align="left" rowspan="1" colspan="1">26.5%</td>
+<td align="left" rowspan="1" colspan="1">24.1%</td>
+<td align="left" rowspan="1" colspan="1">27.4%</td>
+<td align="left" rowspan="1" colspan="1">25.5%</td>
+<td align="left" rowspan="1" colspan="1">28.1%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">HHalign</td>
+<td align="left" rowspan="1" colspan="1">36.3%</td>
+<td align="left" rowspan="1" colspan="1">39.1%</td>
+<td align="left" rowspan="1" colspan="1">37.0%</td>
+<td align="left" rowspan="1" colspan="1">42.1%</td>
+<td align="left" rowspan="1" colspan="1">38.4%</td>
+<td align="left" rowspan="1" colspan="1">42.8%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">MRFalign</td>
+<td align="left" rowspan="1" colspan="1"><bold>47.4%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>51.0%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>47.5%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>52.6%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>49.2%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>53.5%</bold></td>
+</tr>
+</tbody>
+</table>
+</alternatives><table-wrap-foot><fn id="nt101"><label/><p>Three structure alignment tools (TMalign, Matt and DeepAlign) are used to generate reference alignments. “4-offset” means that 4-position off the exact match is allowed. The bold indicates the best results.</p></fn></table-wrap-foot></table-wrap><table-wrap id="pcbi-1003500-t002" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003500.t002</object-id><label>Table 2</label><caption>
+<title>Reference-dependent alignment recall on Set2.6K.</title>
+</caption><alternatives><graphic id="pcbi-1003500-t002-2" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003500.t002" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td colspan="2" align="left" rowspan="1">TMalign</td>
+<td colspan="2" align="left" rowspan="1">Matt</td>
+<td colspan="2" align="left" rowspan="1">DeepAlign</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Exact match</td>
+<td align="left" rowspan="1" colspan="1">4-offset</td>
+<td align="left" rowspan="1" colspan="1">Exact match</td>
+<td align="left" rowspan="1" colspan="1">4-offset</td>
+<td align="left" rowspan="1" colspan="1">Exact match</td>
+<td align="left" rowspan="1" colspan="1">4-offset</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">HMMER</td>
+<td align="left" rowspan="1" colspan="1">36.5%</td>
+<td align="left" rowspan="1" colspan="1">42.6%</td>
+<td align="left" rowspan="1" colspan="1">38.6%</td>
+<td align="left" rowspan="1" colspan="1">44.0%</td>
+<td align="left" rowspan="1" colspan="1">40.4%</td>
+<td align="left" rowspan="1" colspan="1">45.0%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">HHalign</td>
+<td align="left" rowspan="1" colspan="1">62.5%</td>
+<td align="left" rowspan="1" colspan="1">66.1%</td>
+<td align="left" rowspan="1" colspan="1">63.2%</td>
+<td align="left" rowspan="1" colspan="1">66.2%</td>
+<td align="left" rowspan="1" colspan="1">64.0%</td>
+<td align="left" rowspan="1" colspan="1">66.7%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">MRFalign</td>
+<td align="left" rowspan="1" colspan="1"><bold>72.8%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>76.2%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>73.5%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>76.7%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>74.2%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>77.8%</bold></td>
+</tr>
+</tbody>
+</table>
+</alternatives><table-wrap-foot><fn id="nt102"><label/><p>See <xref ref-type="table" rid="pcbi-1003500-t001">Table 1</xref> for explanation.</p></fn></table-wrap-foot></table-wrap>
+<p>On the very large set Set60K, as shown in <xref ref-type="table" rid="pcbi-1003500-t003">Table 3</xref>, our method outperforms the other two in each SCOP classification regardless of the reference alignments used. MRFalign is only slightly better than HHalign at the family level, which is not surprising since it is easy to align two closely-related proteins. At the superfamily level, our method outperforms HHalign and HMMER by ∼6% and ∼18%, respectively. At the fold level, our method outperforms HHalign and HHMER by ∼7% and ∼14%, respectively.</p>
+<table-wrap id="pcbi-1003500-t003" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003500.t003</object-id><label>Table 3</label><caption>
+<title>Reference-dependent alignment recall (exact match) on the large benchmark Set60K.</title>
+</caption><alternatives><graphic id="pcbi-1003500-t003-3" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003500.t003" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td colspan="3" align="left" rowspan="1">TMalign</td>
+<td colspan="3" align="left" rowspan="1">Matt</td>
+<td colspan="3" align="left" rowspan="1">DeepAlign</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">HMMER</td>
+<td align="left" rowspan="1" colspan="1">HHalign</td>
+<td align="left" rowspan="1" colspan="1">MRFalign</td>
+<td align="left" rowspan="1" colspan="1">HMMER</td>
+<td align="left" rowspan="1" colspan="1">HHalign</td>
+<td align="left" rowspan="1" colspan="1">MRFalign</td>
+<td align="left" rowspan="1" colspan="1">HMMER</td>
+<td align="left" rowspan="1" colspan="1">HHalign</td>
+<td align="left" rowspan="1" colspan="1">MRFalign</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">Family</td>
+<td align="left" rowspan="1" colspan="1">57.4%</td>
+<td align="left" rowspan="1" colspan="1">69.2%</td>
+<td align="left" rowspan="1" colspan="1"><bold>71.0%</bold></td>
+<td align="left" rowspan="1" colspan="1">59.1%</td>
+<td align="left" rowspan="1" colspan="1">70.5%</td>
+<td align="left" rowspan="1" colspan="1"><bold>74.5%</bold></td>
+<td align="left" rowspan="1" colspan="1">63.2%</td>
+<td align="left" rowspan="1" colspan="1">72.6%</td>
+<td align="left" rowspan="1" colspan="1"><bold>75.5%</bold></td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Superfamily</td>
+<td align="left" rowspan="1" colspan="1">31.2%</td>
+<td align="left" rowspan="1" colspan="1">42.0%</td>
+<td align="left" rowspan="1" colspan="1"><bold>48.1%</bold></td>
+<td align="left" rowspan="1" colspan="1">32.3%</td>
+<td align="left" rowspan="1" colspan="1">42.4%</td>
+<td align="left" rowspan="1" colspan="1"><bold>51.7%</bold></td>
+<td align="left" rowspan="1" colspan="1">32.8%</td>
+<td align="left" rowspan="1" colspan="1">49.4%</td>
+<td align="left" rowspan="1" colspan="1"><bold>55.6%</bold></td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Fold</td>
+<td align="left" rowspan="1" colspan="1">1.3%</td>
+<td align="left" rowspan="1" colspan="1">7.0%</td>
+<td align="left" rowspan="1" colspan="1"><bold>14.2%</bold></td>
+<td align="left" rowspan="1" colspan="1">1.6%</td>
+<td align="left" rowspan="1" colspan="1">8.0%</td>
+<td align="left" rowspan="1" colspan="1"><bold>15.5%</bold></td>
+<td align="left" rowspan="1" colspan="1">2.0%</td>
+<td align="left" rowspan="1" colspan="1">8.7%</td>
+<td align="left" rowspan="1" colspan="1"><bold>18.4%</bold></td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Family (beta)</td>
+<td align="left" rowspan="1" colspan="1">60.9%</td>
+<td align="left" rowspan="1" colspan="1">69.9%</td>
+<td align="left" rowspan="1" colspan="1"><bold>73.1%</bold></td>
+<td align="left" rowspan="1" colspan="1">64.0%</td>
+<td align="left" rowspan="1" colspan="1">75.1%</td>
+<td align="left" rowspan="1" colspan="1"><bold>78.4%</bold></td>
+<td align="left" rowspan="1" colspan="1">68.4%</td>
+<td align="left" rowspan="1" colspan="1">79.0%</td>
+<td align="left" rowspan="1" colspan="1"><bold>82.9%</bold></td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Superfamily (beta)</td>
+<td align="left" rowspan="1" colspan="1">35.0%</td>
+<td align="left" rowspan="1" colspan="1">47.2%</td>
+<td align="left" rowspan="1" colspan="1"><bold>52.1%</bold></td>
+<td align="left" rowspan="1" colspan="1">37.0%</td>
+<td align="left" rowspan="1" colspan="1">50.2%</td>
+<td align="left" rowspan="1" colspan="1"><bold>55.8%</bold></td>
+<td align="left" rowspan="1" colspan="1">39.1%</td>
+<td align="left" rowspan="1" colspan="1">52.9%</td>
+<td align="left" rowspan="1" colspan="1"><bold>60.7%</bold></td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Fold (beta)</td>
+<td align="left" rowspan="1" colspan="1">2.5%</td>
+<td align="left" rowspan="1" colspan="1">8.3%</td>
+<td align="left" rowspan="1" colspan="1"><bold>17.3%</bold></td>
+<td align="left" rowspan="1" colspan="1">3.0%</td>
+<td align="left" rowspan="1" colspan="1">9.1%</td>
+<td align="left" rowspan="1" colspan="1"><bold>17.1%</bold></td>
+<td align="left" rowspan="1" colspan="1">4.0%</td>
+<td align="left" rowspan="1" colspan="1">10.1%</td>
+<td align="left" rowspan="1" colspan="1"><bold>21.8%</bold></td>
+</tr>
+</tbody>
+</table>
+</alternatives><table-wrap-foot><fn id="nt103"><label/><p>The protein pairs are divided into 3 groups based upon the SCOP classification. The bold indicates the best results.</p></fn></table-wrap-foot></table-wrap><sec id="s3e1">
+<title>Alignment recall for beta proteins</title>
+<p>Our method outperforms HHalign and HMMER by ∼3% and ∼12%, respectively, at the family level; ∼7% and ∼19%, respectively, at the superfamily level; and ∼10% and ∼16%, respectively, at the fold level, regardless of reference alignments.</p>
+</sec></sec><sec id="s3f">
+<title>Reference-dependent alignment precision</title>
+<p>As shown in <xref ref-type="table" rid="pcbi-1003500-t004">Tables 4</xref> and <xref ref-type="table" rid="pcbi-1003500-t005">5</xref>, our method MRFalign exceeds all the others regardless of the reference alignments on both data sets Set3.6K and Set2.6K. MRFalign outperforms HHalign by ∼8% and ∼5%, respectively, and HMMER by ∼15% and ∼13%, respectively. If 4-position off the exact match is allowed in calculating alignment precision, MRFalign outperforms HHalign by ∼8% and ∼9%, and HMMER by ∼14% and ∼18% on Set3.6K and Set2.6K, respectively.</p>
+<table-wrap id="pcbi-1003500-t004" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003500.t004</object-id><label>Table 4</label><caption>
+<title>Reference-dependent alignment precision on Se3.6K.</title>
+</caption><alternatives><graphic id="pcbi-1003500-t004-4" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003500.t004" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td colspan="2" align="left" rowspan="1">TMalign</td>
+<td colspan="2" align="left" rowspan="1">Matt</td>
+<td colspan="2" align="left" rowspan="1">DeepAlign</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Exact match</td>
+<td align="left" rowspan="1" colspan="1">4-offset</td>
+<td align="left" rowspan="1" colspan="1">Exact match</td>
+<td align="left" rowspan="1" colspan="1">4-offset</td>
+<td align="left" rowspan="1" colspan="1">Exact match</td>
+<td align="left" rowspan="1" colspan="1">4-offset</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">HMMER</td>
+<td align="left" rowspan="1" colspan="1">29.3%</td>
+<td align="left" rowspan="1" colspan="1">34.1%</td>
+<td align="left" rowspan="1" colspan="1">29.6%</td>
+<td align="left" rowspan="1" colspan="1">34.7%</td>
+<td align="left" rowspan="1" colspan="1">31.5%</td>
+<td align="left" rowspan="1" colspan="1">35.6%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">HHalign</td>
+<td align="left" rowspan="1" colspan="1">35.9%</td>
+<td align="left" rowspan="1" colspan="1">39.4%</td>
+<td align="left" rowspan="1" colspan="1">36.2%</td>
+<td align="left" rowspan="1" colspan="1">39.4%</td>
+<td align="left" rowspan="1" colspan="1">37.2%</td>
+<td align="left" rowspan="1" colspan="1">41.7%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">MRFalign</td>
+<td align="left" rowspan="1" colspan="1"><bold>43.2%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>47.4%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>44.1%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>48.5%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>46.1%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>50.4%</bold></td>
+</tr>
+</tbody>
+</table>
+</alternatives><table-wrap-foot><fn id="nt104"><label/><p>Three structure alignment tools (TMalign, Matt and DeepAlign) are used to generate reference alignments. “4-offset” means that 4-position off the exact match is allowed. The bold indicates the best results.</p></fn></table-wrap-foot></table-wrap><table-wrap id="pcbi-1003500-t005" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003500.t005</object-id><label>Table 5</label><caption>
+<title>Reference-dependent alignment precision on Set2.6K.</title>
+</caption><alternatives><graphic id="pcbi-1003500-t005-5" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003500.t005" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td colspan="2" align="left" rowspan="1">TMalign</td>
+<td colspan="2" align="left" rowspan="1">Matt</td>
+<td colspan="2" align="left" rowspan="1">DeepAlign</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Exact match</td>
+<td align="left" rowspan="1" colspan="1">4-offset</td>
+<td align="left" rowspan="1" colspan="1">Exact match</td>
+<td align="left" rowspan="1" colspan="1">4-offset</td>
+<td align="left" rowspan="1" colspan="1">Exact match</td>
+<td align="left" rowspan="1" colspan="1">4-offset</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">HMMER</td>
+<td align="left" rowspan="1" colspan="1">48.0%</td>
+<td align="left" rowspan="1" colspan="1">50.1%</td>
+<td align="left" rowspan="1" colspan="1">48.2%</td>
+<td align="left" rowspan="1" colspan="1">50.3%</td>
+<td align="left" rowspan="1" colspan="1">51.4%</td>
+<td align="left" rowspan="1" colspan="1">54.8%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">HHalign</td>
+<td align="left" rowspan="1" colspan="1">57.1%</td>
+<td align="left" rowspan="1" colspan="1">59.9%</td>
+<td align="left" rowspan="1" colspan="1">57.3%</td>
+<td align="left" rowspan="1" colspan="1">60.0%</td>
+<td align="left" rowspan="1" colspan="1">58.3%</td>
+<td align="left" rowspan="1" colspan="1">61.4%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">MRFalign</td>
+<td align="left" rowspan="1" colspan="1"><bold>62.5%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>69.1%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>62.7%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>69.6%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>63.2%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>70.0%</bold></td>
+</tr>
+</tbody>
+</table>
+</alternatives><table-wrap-foot><fn id="nt105"><label/><p>See <xref ref-type="table" rid="pcbi-1003500-t004">Table 4</xref> for explanation.</p></fn></table-wrap-foot></table-wrap>
+<p>On the very large set Set60K, as shown in <xref ref-type="table" rid="pcbi-1003500-t006">Table 6</xref>, our method outperforms the other two in each SCOP classification regardless of the reference alignments used. At the family level, our method outperforms HHalign and HMMER by ∼3% and ∼4%, respectively. At the superfamily level, our method outperforms HHalign and HMMER by ∼4% and ∼5%, respectively. At the fold level, our method outperforms HHalign and HHMER by ∼5% and ∼8%, respectively.</p>
+<table-wrap id="pcbi-1003500-t006" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003500.t006</object-id><label>Table 6</label><caption>
+<title>Reference-dependent alignment precision (exact match) on the large benchmark Set60K.</title>
+</caption><alternatives><graphic id="pcbi-1003500-t006-6" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003500.t006" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td colspan="3" align="left" rowspan="1">TMalign</td>
+<td colspan="3" align="left" rowspan="1">Matt</td>
+<td colspan="3" align="left" rowspan="1">DeepAlign</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">HMMER</td>
+<td align="left" rowspan="1" colspan="1">HHalign</td>
+<td align="left" rowspan="1" colspan="1">MRFalign</td>
+<td align="left" rowspan="1" colspan="1">HMMER</td>
+<td align="left" rowspan="1" colspan="1">HHalign</td>
+<td align="left" rowspan="1" colspan="1">MRFalign</td>
+<td align="left" rowspan="1" colspan="1">HMMER</td>
+<td align="left" rowspan="1" colspan="1">HHalign</td>
+<td align="left" rowspan="1" colspan="1">MRFalign</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">Family</td>
+<td align="left" rowspan="1" colspan="1">63.1%</td>
+<td align="left" rowspan="1" colspan="1">63.9%</td>
+<td align="left" rowspan="1" colspan="1"><bold>67.3%</bold></td>
+<td align="left" rowspan="1" colspan="1">64.3%</td>
+<td align="left" rowspan="1" colspan="1">65.4%</td>
+<td align="left" rowspan="1" colspan="1"><bold>68.0%</bold></td>
+<td align="left" rowspan="1" colspan="1">68.4%</td>
+<td align="left" rowspan="1" colspan="1">69.2%</td>
+<td align="left" rowspan="1" colspan="1"><bold>71.4%</bold></td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Superfamily</td>
+<td align="left" rowspan="1" colspan="1">38.7%</td>
+<td align="left" rowspan="1" colspan="1">39.5%</td>
+<td align="left" rowspan="1" colspan="1"><bold>42.8%</bold></td>
+<td align="left" rowspan="1" colspan="1">40.5%</td>
+<td align="left" rowspan="1" colspan="1">41.3%</td>
+<td align="left" rowspan="1" colspan="1"><bold>44.9%</bold></td>
+<td align="left" rowspan="1" colspan="1">43.2%</td>
+<td align="left" rowspan="1" colspan="1">44.3%</td>
+<td align="left" rowspan="1" colspan="1"><bold>48.7%</bold></td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Fold</td>
+<td align="left" rowspan="1" colspan="1">4.2%</td>
+<td align="left" rowspan="1" colspan="1">7.4%</td>
+<td align="left" rowspan="1" colspan="1"><bold>11.5%</bold></td>
+<td align="left" rowspan="1" colspan="1">4.7%</td>
+<td align="left" rowspan="1" colspan="1">8.0%</td>
+<td align="left" rowspan="1" colspan="1"><bold>12.3%</bold></td>
+<td align="left" rowspan="1" colspan="1">5.4%</td>
+<td align="left" rowspan="1" colspan="1">8.2%</td>
+<td align="left" rowspan="1" colspan="1"><bold>14.5%</bold></td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Family (beta)</td>
+<td align="left" rowspan="1" colspan="1">66.4%</td>
+<td align="left" rowspan="1" colspan="1">65.8%</td>
+<td align="left" rowspan="1" colspan="1"><bold>69.5%</bold></td>
+<td align="left" rowspan="1" colspan="1">67.4%</td>
+<td align="left" rowspan="1" colspan="1">68.1%</td>
+<td align="left" rowspan="1" colspan="1"><bold>72.3%</bold></td>
+<td align="left" rowspan="1" colspan="1">70.8%</td>
+<td align="left" rowspan="1" colspan="1">72.4%</td>
+<td align="left" rowspan="1" colspan="1"><bold>77.9%</bold></td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Superfamily (beta)</td>
+<td align="left" rowspan="1" colspan="1">44.2%</td>
+<td align="left" rowspan="1" colspan="1">44.9%</td>
+<td align="left" rowspan="1" colspan="1"><bold>48.8%</bold></td>
+<td align="left" rowspan="1" colspan="1">45.4%</td>
+<td align="left" rowspan="1" colspan="1">46.2%</td>
+<td align="left" rowspan="1" colspan="1"><bold>49.4%</bold></td>
+<td align="left" rowspan="1" colspan="1">46.6%</td>
+<td align="left" rowspan="1" colspan="1">48.4%</td>
+<td align="left" rowspan="1" colspan="1"><bold>53.7%</bold></td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Fold (beta)</td>
+<td align="left" rowspan="1" colspan="1">6.1%</td>
+<td align="left" rowspan="1" colspan="1">9.3%</td>
+<td align="left" rowspan="1" colspan="1"><bold>14.1%</bold></td>
+<td align="left" rowspan="1" colspan="1">6.7%</td>
+<td align="left" rowspan="1" colspan="1">9.2%</td>
+<td align="left" rowspan="1" colspan="1"><bold>14.5%</bold></td>
+<td align="left" rowspan="1" colspan="1">7.9%</td>
+<td align="left" rowspan="1" colspan="1">8.6%</td>
+<td align="left" rowspan="1" colspan="1"><bold>17.8%</bold></td>
+</tr>
+</tbody>
+</table>
+</alternatives><table-wrap-foot><fn id="nt106"><label/><p>The protein pairs are divided into 3 groups based upon the SCOP classification. The bold indicates the best results.</p></fn></table-wrap-foot></table-wrap></sec><sec id="s3g">
+<title>Homology detection success rate</title>
+<p>To evaluate homology detection rate, we employ three benchmarks SCOP20, SCOP40 and SCOP80 introduced in <xref ref-type="bibr" rid="pcbi.1003500-Angermller1">[32]</xref>. For each protein sequence in one benchmark, we treat it as a query, align it to all the other proteins in the same benchmark and then examine if those with the best alignment scores are similar to the query or not. We also conducted homology detection experiments using hmmscan, FFAS, HHsearch and HHblits with default options. The success rate is measured at the superfamily and fold levels, respectively. When evaluating the success rate at the superfamily (fold) level, we exclude those proteins similar to the query at least at the family (superfamily) level. For each query protein, we examine the top 1-, 5- and 10-ranked proteins, respectively.</p>
+<p>As shown in <xref ref-type="table" rid="pcbi-1003500-t007">Table 7</xref>, tested on SCOP20, SCOP40 and SCOP80 at the superfamily level, our method MRFalign succeeds on ∼6%, ∼4% and ∼4% more query proteins than HHsearch, respectively, when only the first-ranked proteins are considered. As shown in <xref ref-type="table" rid="pcbi-1003500-t008">Table 8</xref>, at the fold level, MRFalign succeeds on ∼11%, ∼11% and ∼12% more proteins than HHsearch, respectively, when only the first-ranked proteins are evaluated. At the superfamily level, SCOP20 is more challenging than the other two benchmarks because it contains fewer proteins similar at this level. Nevertheless, at the fold level, SCOP80 is slightly more challenging than the other two benchmarks maybe because it contains many more irrelevant proteins and thus, the chance of ranking false positives at top is higher.</p>
+<table-wrap id="pcbi-1003500-t007" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003500.t007</object-id><label>Table 7</label><caption>
+<title>Homology detection performance at the superfamily level.</title>
+</caption><alternatives><graphic id="pcbi-1003500-t007-7" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003500.t007" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td colspan="3" align="left" rowspan="1">Scop20</td>
+<td colspan="3" align="left" rowspan="1">Scop40</td>
+<td colspan="3" align="left" rowspan="1">Scop80</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Top1</td>
+<td align="left" rowspan="1" colspan="1">Top5</td>
+<td align="left" rowspan="1" colspan="1">Top10</td>
+<td align="left" rowspan="1" colspan="1">Top1</td>
+<td align="left" rowspan="1" colspan="1">Top5</td>
+<td align="left" rowspan="1" colspan="1">Top10</td>
+<td align="left" rowspan="1" colspan="1">Top1</td>
+<td align="left" rowspan="1" colspan="1">Top5</td>
+<td align="left" rowspan="1" colspan="1">Top10</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">hmmscan</td>
+<td align="left" rowspan="1" colspan="1">35.2%</td>
+<td align="left" rowspan="1" colspan="1">36.5%</td>
+<td align="left" rowspan="1" colspan="1">36.5%</td>
+<td align="left" rowspan="1" colspan="1">40.2%</td>
+<td align="left" rowspan="1" colspan="1">41.7%</td>
+<td align="left" rowspan="1" colspan="1">41.8%</td>
+<td align="left" rowspan="1" colspan="1">43.9%</td>
+<td align="left" rowspan="1" colspan="1">45.2%</td>
+<td align="left" rowspan="1" colspan="1">45.3%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">FFAS</td>
+<td align="left" rowspan="1" colspan="1">48.6%</td>
+<td align="left" rowspan="1" colspan="1">54.4%</td>
+<td align="left" rowspan="1" colspan="1">55.6%</td>
+<td align="left" rowspan="1" colspan="1">52.1%</td>
+<td align="left" rowspan="1" colspan="1">56.3%</td>
+<td align="left" rowspan="1" colspan="1">57.1%</td>
+<td align="left" rowspan="1" colspan="1">49.8%</td>
+<td align="left" rowspan="1" colspan="1">53.0%</td>
+<td align="left" rowspan="1" colspan="1">53.7%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">HHsearch</td>
+<td align="left" rowspan="1" colspan="1">51.6%</td>
+<td align="left" rowspan="1" colspan="1">57.3%</td>
+<td align="left" rowspan="1" colspan="1">59.2%</td>
+<td align="left" rowspan="1" colspan="1">55.8%</td>
+<td align="left" rowspan="1" colspan="1">60.8%</td>
+<td align="left" rowspan="1" colspan="1">62.4%</td>
+<td align="left" rowspan="1" colspan="1">56.1%</td>
+<td align="left" rowspan="1" colspan="1">60.1%</td>
+<td align="left" rowspan="1" colspan="1">61.8%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">HHblits</td>
+<td align="left" rowspan="1" colspan="1">51.9%</td>
+<td align="left" rowspan="1" colspan="1">56.3%</td>
+<td align="left" rowspan="1" colspan="1">57.5%</td>
+<td align="left" rowspan="1" colspan="1">56.0%</td>
+<td align="left" rowspan="1" colspan="1">59.8%</td>
+<td align="left" rowspan="1" colspan="1">60.9%</td>
+<td align="left" rowspan="1" colspan="1">59.2%</td>
+<td align="left" rowspan="1" colspan="1">62.5%</td>
+<td align="left" rowspan="1" colspan="1">63.3%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">MRFalign</td>
+<td align="left" rowspan="1" colspan="1"><bold>58.2%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>61.7%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>63.4%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>59.3%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>63.6%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>65.8%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>60.4%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>64.7%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>66.1%</bold></td>
+</tr>
+</tbody>
+</table>
+</alternatives></table-wrap><table-wrap id="pcbi-1003500-t008" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003500.t008</object-id><label>Table 8</label><caption>
+<title>Homology detection performance at the fold level.</title>
+</caption><alternatives><graphic id="pcbi-1003500-t008-8" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003500.t008" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td colspan="3" align="left" rowspan="1">Scop20</td>
+<td colspan="3" align="left" rowspan="1">Scop40</td>
+<td colspan="3" align="left" rowspan="1">Scop80</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Top1</td>
+<td align="left" rowspan="1" colspan="1">Top5</td>
+<td align="left" rowspan="1" colspan="1">Top10</td>
+<td align="left" rowspan="1" colspan="1">Top1</td>
+<td align="left" rowspan="1" colspan="1">Top5</td>
+<td align="left" rowspan="1" colspan="1">Top10</td>
+<td align="left" rowspan="1" colspan="1">Top1</td>
+<td align="left" rowspan="1" colspan="1">Top5</td>
+<td align="left" rowspan="1" colspan="1">Top10</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">hmmscan</td>
+<td align="left" rowspan="1" colspan="1">5.2%</td>
+<td align="left" rowspan="1" colspan="1">6.1%</td>
+<td align="left" rowspan="1" colspan="1">6.1%</td>
+<td align="left" rowspan="1" colspan="1">6.2%</td>
+<td align="left" rowspan="1" colspan="1">6.9%</td>
+<td align="left" rowspan="1" colspan="1">6.9%</td>
+<td align="left" rowspan="1" colspan="1">5.9%</td>
+<td align="left" rowspan="1" colspan="1">6.5%</td>
+<td align="left" rowspan="1" colspan="1">6.6%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">FFAS</td>
+<td align="left" rowspan="1" colspan="1">13.1%</td>
+<td align="left" rowspan="1" colspan="1">18.7%</td>
+<td align="left" rowspan="1" colspan="1">20.0%</td>
+<td align="left" rowspan="1" colspan="1">10.4%</td>
+<td align="left" rowspan="1" colspan="1">14.5%</td>
+<td align="left" rowspan="1" colspan="1">15.4%</td>
+<td align="left" rowspan="1" colspan="1">9.1%</td>
+<td align="left" rowspan="1" colspan="1">11.9%</td>
+<td align="left" rowspan="1" colspan="1">12.6%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">HHsearch</td>
+<td align="left" rowspan="1" colspan="1">16.3%</td>
+<td align="left" rowspan="1" colspan="1">24.7%</td>
+<td align="left" rowspan="1" colspan="1">28.6%</td>
+<td align="left" rowspan="1" colspan="1">17.6%</td>
+<td align="left" rowspan="1" colspan="1">25.3%</td>
+<td align="left" rowspan="1" colspan="1">29.1%</td>
+<td align="left" rowspan="1" colspan="1">15.4%</td>
+<td align="left" rowspan="1" colspan="1">21.9%</td>
+<td align="left" rowspan="1" colspan="1">25.0%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">HHblits</td>
+<td align="left" rowspan="1" colspan="1">17.4%</td>
+<td align="left" rowspan="1" colspan="1">25.2%</td>
+<td align="left" rowspan="1" colspan="1">27.2%</td>
+<td align="left" rowspan="1" colspan="1">19.1%</td>
+<td align="left" rowspan="1" colspan="1">26.0%</td>
+<td align="left" rowspan="1" colspan="1">28.2%</td>
+<td align="left" rowspan="1" colspan="1">18.4%</td>
+<td align="left" rowspan="1" colspan="1">25.0%</td>
+<td align="left" rowspan="1" colspan="1">27.0%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">MRFalign</td>
+<td align="left" rowspan="1" colspan="1"><bold>27.2%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>36.8%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>41.2%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>28.3%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>37.9%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>42.4%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>27.0%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>38.1%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>41.6%</bold></td>
+</tr>
+</tbody>
+</table>
+</alternatives></table-wrap>
+<p>Similar to alignment accuracy, our method for homology detection also has a larger advantage on the beta proteins. In particular, as shown in <xref ref-type="table" rid="pcbi-1003500-t009">Table 9</xref>, tested on SCOP20, SCOP40 and SCOP80 at the superfamily level, MRFalign succeeds on ∼7%, ∼5% and ∼7% more proteins than HHsearch, respectively, when only the first-ranked proteins are evaluated. As shown in <xref ref-type="table" rid="pcbi-1003500-t010">Table 10</xref>, at the fold level, MRFalign succeeds on ∼13%, ∼16% and ∼17% more proteins than HHsearch, respectively, when only the first-ranked proteins are evaluated. Note that in this experiment, only the query proteins are mainly-beta proteins, the subject proteins can be of any types. If we restrict the subject proteins to only beta proteins, the success rate increases further due to the reduction of false positives.</p>
+<table-wrap id="pcbi-1003500-t009" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003500.t009</object-id><label>Table 9</label><caption>
+<title>Homology detection performance for mainly beta proteins at the superfamily level.</title>
+</caption><alternatives><graphic id="pcbi-1003500-t009-9" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003500.t009" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td colspan="3" align="left" rowspan="1">Scop20</td>
+<td colspan="3" align="left" rowspan="1">Scop40</td>
+<td colspan="3" align="left" rowspan="1">Scop80</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Top1</td>
+<td align="left" rowspan="1" colspan="1">Top5</td>
+<td align="left" rowspan="1" colspan="1">Top10</td>
+<td align="left" rowspan="1" colspan="1">Top1</td>
+<td align="left" rowspan="1" colspan="1">Top5</td>
+<td align="left" rowspan="1" colspan="1">Top10</td>
+<td align="left" rowspan="1" colspan="1">Top1</td>
+<td align="left" rowspan="1" colspan="1">Top5</td>
+<td align="left" rowspan="1" colspan="1">Top10</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">hmmscan</td>
+<td align="left" rowspan="1" colspan="1">29.1%</td>
+<td align="left" rowspan="1" colspan="1">29.4%</td>
+<td align="left" rowspan="1" colspan="1">29.4%</td>
+<td align="left" rowspan="1" colspan="1">34.7%</td>
+<td align="left" rowspan="1" colspan="1">35.1%</td>
+<td align="left" rowspan="1" colspan="1">35.1%</td>
+<td align="left" rowspan="1" colspan="1">43.7%</td>
+<td align="left" rowspan="1" colspan="1">44.0%</td>
+<td align="left" rowspan="1" colspan="1">44.1%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">FFAS</td>
+<td align="left" rowspan="1" colspan="1">43.6%</td>
+<td align="left" rowspan="1" colspan="1">49.9%</td>
+<td align="left" rowspan="1" colspan="1">51.9%</td>
+<td align="left" rowspan="1" colspan="1">48.2%</td>
+<td align="left" rowspan="1" colspan="1">52.4%</td>
+<td align="left" rowspan="1" colspan="1">53.5%</td>
+<td align="left" rowspan="1" colspan="1">43.7%</td>
+<td align="left" rowspan="1" colspan="1">46.3%</td>
+<td align="left" rowspan="1" colspan="1">47.2%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">HHsearch</td>
+<td align="left" rowspan="1" colspan="1">48.2%</td>
+<td align="left" rowspan="1" colspan="1">54.6%</td>
+<td align="left" rowspan="1" colspan="1">56.9%</td>
+<td align="left" rowspan="1" colspan="1">52.0%</td>
+<td align="left" rowspan="1" colspan="1">56.9%</td>
+<td align="left" rowspan="1" colspan="1">59.1%</td>
+<td align="left" rowspan="1" colspan="1">47.7%</td>
+<td align="left" rowspan="1" colspan="1">51.8%</td>
+<td align="left" rowspan="1" colspan="1">53.7%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">HHblits</td>
+<td align="left" rowspan="1" colspan="1">47.5%</td>
+<td align="left" rowspan="1" colspan="1">52.1%</td>
+<td align="left" rowspan="1" colspan="1">53.7%</td>
+<td align="left" rowspan="1" colspan="1">51.4%</td>
+<td align="left" rowspan="1" colspan="1">54.8%</td>
+<td align="left" rowspan="1" colspan="1">56.6%</td>
+<td align="left" rowspan="1" colspan="1">52.9%</td>
+<td align="left" rowspan="1" colspan="1">54.6%</td>
+<td align="left" rowspan="1" colspan="1">57.8%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">MRFalign</td>
+<td align="left" rowspan="1" colspan="1"><bold>55.4%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>61.7%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>65.9%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>57.3%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>63.5%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>66.8%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>54.2%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>59.7%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>64.2%</bold></td>
+</tr>
+</tbody>
+</table>
+</alternatives></table-wrap><table-wrap id="pcbi-1003500-t010" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003500.t010</object-id><label>Table 10</label><caption>
+<title>Homology detection performance for mainly beta proteins at the fold level.</title>
+</caption><alternatives><graphic id="pcbi-1003500-t010-10" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003500.t010" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td colspan="3" align="left" rowspan="1">Scop20</td>
+<td colspan="3" align="left" rowspan="1">Scop40</td>
+<td colspan="3" align="left" rowspan="1">Scop80</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Top1</td>
+<td align="left" rowspan="1" colspan="1">Top5</td>
+<td align="left" rowspan="1" colspan="1">Top10</td>
+<td align="left" rowspan="1" colspan="1">Top1</td>
+<td align="left" rowspan="1" colspan="1">Top5</td>
+<td align="left" rowspan="1" colspan="1">Top10</td>
+<td align="left" rowspan="1" colspan="1">Top1</td>
+<td align="left" rowspan="1" colspan="1">Top5</td>
+<td align="left" rowspan="1" colspan="1">Top10</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">hmmscan</td>
+<td align="left" rowspan="1" colspan="1">6.9%</td>
+<td align="left" rowspan="1" colspan="1">7.6%</td>
+<td align="left" rowspan="1" colspan="1">7.6%</td>
+<td align="left" rowspan="1" colspan="1">8.0%</td>
+<td align="left" rowspan="1" colspan="1">8.6%</td>
+<td align="left" rowspan="1" colspan="1">8.6%</td>
+<td align="left" rowspan="1" colspan="1">7.0%</td>
+<td align="left" rowspan="1" colspan="1">7.4%</td>
+<td align="left" rowspan="1" colspan="1">7.4%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">FFAS</td>
+<td align="left" rowspan="1" colspan="1">22.7%</td>
+<td align="left" rowspan="1" colspan="1">30.1%</td>
+<td align="left" rowspan="1" colspan="1">31.8%</td>
+<td align="left" rowspan="1" colspan="1">15.2%</td>
+<td align="left" rowspan="1" colspan="1">20.4%</td>
+<td align="left" rowspan="1" colspan="1">21.7%</td>
+<td align="left" rowspan="1" colspan="1">11.8%</td>
+<td align="left" rowspan="1" colspan="1">15.3%</td>
+<td align="left" rowspan="1" colspan="1">16.1%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">HHsearch</td>
+<td align="left" rowspan="1" colspan="1">24.4%</td>
+<td align="left" rowspan="1" colspan="1">34.7%</td>
+<td align="left" rowspan="1" colspan="1">38.8%</td>
+<td align="left" rowspan="1" colspan="1">26.8%</td>
+<td align="left" rowspan="1" colspan="1">37.7%</td>
+<td align="left" rowspan="1" colspan="1">41.6%</td>
+<td align="left" rowspan="1" colspan="1">19.1%</td>
+<td align="left" rowspan="1" colspan="1">26.8%</td>
+<td align="left" rowspan="1" colspan="1">29.5%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">HHblits</td>
+<td align="left" rowspan="1" colspan="1">24.1%</td>
+<td align="left" rowspan="1" colspan="1">33.3%</td>
+<td align="left" rowspan="1" colspan="1">34.8%</td>
+<td align="left" rowspan="1" colspan="1">26.9%</td>
+<td align="left" rowspan="1" colspan="1">35.3%</td>
+<td align="left" rowspan="1" colspan="1">37.1%</td>
+<td align="left" rowspan="1" colspan="1">24.7%</td>
+<td align="left" rowspan="1" colspan="1">34.1%</td>
+<td align="left" rowspan="1" colspan="1">35.5%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">MRFalign</td>
+<td align="left" rowspan="1" colspan="1"><bold>37.4%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>55.0%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>61.4%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>42.5%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>51.1%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>54.6%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>36.4%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>48.0%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>55.9%</bold></td>
+</tr>
+</tbody>
+</table>
+</alternatives></table-wrap></sec><sec id="s3h">
+<title>Contribution of edge alignment potential and mutual information</title>
+<p>To evaluate the contribution of our edge alignment potential, we calculate the alignment recall improvement resulting from using edge alignment potential on two benchmarks Set3.6K and Set2.6K. As shown in <xref ref-type="table" rid="pcbi-1003500-t011">Table 11</xref>, our edge alignment potential can improve alignment recall by 3.4% and 3.7%, respectively. When mutual information is used, we can further improve alignment recall by 1.1% and 1.9% on these two sets, respectively. Mutual information is mainly useful for proteins with many sequence homologs since it is close to 0 when there are few sequence homologs. As shown in <xref ref-type="table" rid="pcbi-1003500-t011">Table 11</xref>, if only those proteins with at least 256 non-redundant sequence homologs are considered, the improvement resulting from mutual information is ∼3%.</p>
+<table-wrap id="pcbi-1003500-t011" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003500.t011</object-id><label>Table 11</label><caption>
+<title>Contribution of edge alignment potential and mutual information, measured by alignment recall improvement on two benchmarks Set3.6K and Set2.6K.</title>
+</caption><alternatives><graphic id="pcbi-1003500-t011-11" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003500.t011" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td colspan="5" align="left" rowspan="1">Alignment recall for the whole test sets</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td colspan="2" align="left" rowspan="1">Set3.6K</td>
+<td colspan="2" align="left" rowspan="1">Set2.6K</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Exact Match</td>
+<td align="left" rowspan="1" colspan="1">4-position offset</td>
+<td align="left" rowspan="1" colspan="1">Exact Match</td>
+<td align="left" rowspan="1" colspan="1">4-position offset</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">Only with node potential</td>
+<td align="left" rowspan="1" colspan="1">44.7%</td>
+<td align="left" rowspan="1" colspan="1">48.6%</td>
+<td align="left" rowspan="1" colspan="1">68.6%</td>
+<td align="left" rowspan="1" colspan="1">71.8%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Node + edge potential, no MI</td>
+<td align="left" rowspan="1" colspan="1">48.1%</td>
+<td align="left" rowspan="1" colspan="1">52.2%</td>
+<td align="left" rowspan="1" colspan="1">72.3%</td>
+<td align="left" rowspan="1" colspan="1">75.2%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Node + edge potential with MI</td>
+<td align="left" rowspan="1" colspan="1">49.2%</td>
+<td align="left" rowspan="1" colspan="1">53.5%</td>
+<td align="left" rowspan="1" colspan="1">74.2%</td>
+<td align="left" rowspan="1" colspan="1">77.8%</td>
+</tr>
+</tbody>
+</table>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td colspan="5" align="left" rowspan="1">Alignment recall on proteins with at least 256 non-redundant sequence homologs</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td colspan="2" align="left" rowspan="1">391 pairs in Set3.6K</td>
+<td colspan="2" align="left" rowspan="1">509 pairs in Set2.6K</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">Only with node potential</td>
+<td align="left" rowspan="1" colspan="1">59.5%</td>
+<td align="left" rowspan="1" colspan="1">63.4%</td>
+<td align="left" rowspan="1" colspan="1">71.3%</td>
+<td align="left" rowspan="1" colspan="1">75.8%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Node + edge potential, no MI</td>
+<td align="left" rowspan="1" colspan="1">62.1%</td>
+<td align="left" rowspan="1" colspan="1">66.7%</td>
+<td align="left" rowspan="1" colspan="1">73.5%</td>
+<td align="left" rowspan="1" colspan="1">78.1%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Node + edge potential with MI</td>
+<td align="left" rowspan="1" colspan="1">65.2%</td>
+<td align="left" rowspan="1" colspan="1">69.8%</td>
+<td align="left" rowspan="1" colspan="1">76.6%</td>
+<td align="left" rowspan="1" colspan="1">81.0%</td>
+</tr>
+</tbody>
+</table>
+</alternatives><table-wrap-foot><fn id="nt107"><label/><p>The structure alignments generated by DeepAlign are used as reference alignments.</p></fn></table-wrap-foot></table-wrap></sec><sec id="s3i">
+<title>Running time</title>
+<p><xref ref-type="fig" rid="pcbi-1003500-g001">Figure 1</xref> shows the running time of MRFalign with respect to protein length. As a control, we also show the running time of the Viterbi algorithm, which is used by our ADMM algorithm to generate alignment at each iteration. As shown in this figure, MRFalign is no more than 10 times slower than the Viterbi algorithm. To speed up homology detection, we first use the Viterbi algorithm to perform an initial search without considering edge alignment potential and keep only top 200 proteins, which are then subject to realignment and rerank by our MRFalign method. Therefore, although MRFalign may be very slow compared to the Viterbi algorithm, empirically we can do homology search only slightly slower than the Viterbi algorithm.</p>
+<fig id="pcbi-1003500-g001" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003500.g001</object-id><label>Figure 1</label><caption>
+<title>Running time of the Viterbi algorithm and our ADMM algorithm.</title>
+<p>The X-axis is the geometric mean of the two protein lengths in a protein pair. The Y-axis is the running time in seconds.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003500.g001" position="float" xlink:type="simple"/></fig></sec><sec id="s3j">
+<title>Is our MRFalign method overtrained?</title>
+<p>We conducted two experiments to show that our MRFalign is not overtrained. In the first experiment, we used 36 CASP10 hard targets as the test data. Our training set was built before CASP10 started, so there is no redundancy between the CASP10 hard targets and our training data. Using MRFalign and HHpred, respectively, we search each of these 36 test targets against PDB25 to find the best match. Since PDB25 does not contain proteins very similar to many of the test targets, we built a 3D model using MODELLER from the alignment between a test target and its best match and then measure the quality of the model. As shown in <xref ref-type="fig" rid="pcbi-1003500-g002">Figure 2</xref>, MRFalign can yield much better 3D models than HHsearch for most of the targets. This implies that our method can generalize well to the test data not similar to the training data.</p>
+<fig id="pcbi-1003500-g002" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003500.g002</object-id><label>Figure 2</label><caption>
+<title>The model quality, measured by TM-score, of our method and HHpred for the 36 CASP10 hard targets.</title>
+<p>One point represents two models generated by our method (x-axis) and HHpred (y-axis).</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003500.g002" position="float" xlink:type="simple"/></fig>
+<p>In the second experiment, we divide the proteins in SCOP40 into three subsets according their similarity with all the training data. We measure the similarity of one test protein with all the training data by its best BLAST E-value. We used two values 1e-2 and 1e-35 as the E-value cutoff so that the three subsets have roughly the same size. As shown in <xref ref-type="table" rid="pcbi-1003500-t012">Table 12</xref>, the advantage of our method in remote homology detection over HHpred is roughly same across the three subsets. Since HHpred is an unsupervised algorithm, this implies that the performance of our method is not correlated to the test-training similarity. Therefore, it is unlikely that our method is overfit by the training data.</p>
+<table-wrap id="pcbi-1003500-t012" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003500.t012</object-id><label>Table 12</label><caption>
+<title>Fold recognition rate of our method on SCOP40, with respect to the similarity (measured by E-value) between the test data and the training data.</title>
+</caption><alternatives><graphic id="pcbi-1003500-t012-12" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003500.t012" xlink:type="simple"/>
+<table><colgroup span="1"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/></colgroup>
+<thead>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td colspan="3" align="left" rowspan="1">E-value&lt;1e-35</td>
+<td colspan="3" align="left" rowspan="1">1e-35&lt;E-value&lt;1e-2</td>
+<td colspan="3" align="left" rowspan="1">E-value&gt;1e-2</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">Top1</td>
+<td align="left" rowspan="1" colspan="1">Top5</td>
+<td align="left" rowspan="1" colspan="1">Top10</td>
+<td align="left" rowspan="1" colspan="1">Top1</td>
+<td align="left" rowspan="1" colspan="1">Top5</td>
+<td align="left" rowspan="1" colspan="1">Top10</td>
+<td align="left" rowspan="1" colspan="1">Top1</td>
+<td align="left" rowspan="1" colspan="1">Top5</td>
+<td align="left" rowspan="1" colspan="1">Top10</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">hmmscan</td>
+<td align="left" rowspan="1" colspan="1">5.0%</td>
+<td align="left" rowspan="1" colspan="1">5.6%</td>
+<td align="left" rowspan="1" colspan="1">5.6%</td>
+<td align="left" rowspan="1" colspan="1">7.3%</td>
+<td align="left" rowspan="1" colspan="1">7.9%</td>
+<td align="left" rowspan="1" colspan="1">7.9%</td>
+<td align="left" rowspan="1" colspan="1">6.4%</td>
+<td align="left" rowspan="1" colspan="1">7.3%</td>
+<td align="left" rowspan="1" colspan="1">7.4%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1">10.3%</td>
+<td align="left" rowspan="1" colspan="1">14.5%</td>
+<td align="left" rowspan="1" colspan="1">15.8%</td>
+<td align="left" rowspan="1" colspan="1">9.7%</td>
+<td align="left" rowspan="1" colspan="1">12.9%</td>
+<td align="left" rowspan="1" colspan="1">13.5%</td>
+<td align="left" rowspan="1" colspan="1">11.6%</td>
+<td align="left" rowspan="1" colspan="1">16.5%</td>
+<td align="left" rowspan="1" colspan="1">17.5%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">HHsearch</td>
+<td align="left" rowspan="1" colspan="1">16.0%</td>
+<td align="left" rowspan="1" colspan="1">23.2%</td>
+<td align="left" rowspan="1" colspan="1">26.5%</td>
+<td align="left" rowspan="1" colspan="1">18.5%</td>
+<td align="left" rowspan="1" colspan="1">26.2%</td>
+<td align="left" rowspan="1" colspan="1">30.3%</td>
+<td align="left" rowspan="1" colspan="1">18.9%</td>
+<td align="left" rowspan="1" colspan="1">27.2%</td>
+<td align="left" rowspan="1" colspan="1">31.7%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">HHblits</td>
+<td align="left" rowspan="1" colspan="1">16.9%</td>
+<td align="left" rowspan="1" colspan="1">23.1%</td>
+<td align="left" rowspan="1" colspan="1">25.5%</td>
+<td align="left" rowspan="1" colspan="1">20.8%</td>
+<td align="left" rowspan="1" colspan="1">27.4%</td>
+<td align="left" rowspan="1" colspan="1">28.9%</td>
+<td align="left" rowspan="1" colspan="1">20.2%</td>
+<td align="left" rowspan="1" colspan="1">28.3%</td>
+<td align="left" rowspan="1" colspan="1">31.1%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">MRFalign</td>
+<td align="left" rowspan="1" colspan="1"><bold>25.5%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>35.9%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>39.4%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>29.7%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>39.5%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>43.3%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>29.4%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>39.0%</bold></td>
+<td align="left" rowspan="1" colspan="1"><bold>43.6%</bold></td>
+</tr>
+</tbody>
+</table>
+</alternatives></table-wrap></sec></sec><sec id="s4">
+<title>Discussion</title>
+<p>This paper has presented a new method for sequence-based protein homology detection that compares two protein sequences or families through alignment of two Markov Random Fields (MRFs), which model the multiple sequence alignment (MSA) of a protein family using an undirected general graph in a probabilistic way. The MRF representation is better than the extensively-used PSSM and HMM representations in that the former can capture long-range residue interaction pattern, which reflects the overall 3D structure of a protein family. As such, MRF comparison is much more sensitive than HMM comparison in detecting remote homologs. This is validated by our large-scale experimental tests showing that MRF-MRF comparison can greatly improve alignment accuracy and remote homology detection over currently popular sequence-HMM, PSSM-PSSM, and HMM-HMM comparison methods. Our method also has a larger advantage over the others on mainly-beta proteins.</p>
+<p>We build our MRF model of a protein family based upon multiple sequence alignment (MSA) in the absence of native structures. The accuracy of the MRF model depends on the accuracy of an MSA. Currently we rely on the MSA generated by PSI-BLAST. In the future, we may explore better alignment methods for MSA building or even utilize solved structures of one or two protein sequences to improve MSA. The accuracy of the MRF model parameter usually increases with respect to the number of non-redundant sequence homologs in the MSA. Along with more and more protein sequences are generated by a variety of sequencing projects, we shall be able to build accurate MRFs for more and more protein families and thus, detect their homologous relationship more accurately.</p>
+<p>An accurate scoring function is essential to MRF-MRF comparison. Many different methods can be used to measure node and edge similarity of two MRFs, just like many different scoring functions can be used to measure the similarity of two PSSMs or HMMs. This paper presents only one of them. In the future we may explore more possibilities. It is computationally intractable to find the best alignment between two MRFs when edge similarity is taken into consideration. This paper presents an ADMM algorithm that can efficiently solve the MRF-MRF alignment problem to suboptimal. However, this algorithm currently is about 10 times slower than the Viterbi algorithm for PSSM-PSSM alignment. Further tuning of this ADMM algorithm is needed for very large-scale homology detection.</p>
+</sec><sec id="s5" sec-type="methods">
+<title>Methods</title>
+<sec id="s5a">
+<title>Modeling Multiple Sequence Alignment (MSA) using Markov Random Fields (MRF)</title>
+<p>Given a protein primary sequence, we run PSI-BLAST <xref ref-type="bibr" rid="pcbi.1003500-Altschul1">[36]</xref> with 5 iterations and E-value cutoff 0.001 to find its sequence homologs. PSI-BLAST also generates an MSA of the sequence homologs. Let <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e001" xlink:type="simple"/></inline-formula> be a finite discrete random variable representing the amino acid at column <italic>i</italic> in the MSA, taking values from 1 to 21, corresponding to 20 amino acids and gap. Then we can use a multivariate random variable <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e002" xlink:type="simple"/></inline-formula>, where <italic>N</italic> is the number of columns, to model the MSA. We use an MRF to define the probability distribution of <italic>X</italic>. MRF is an undirected graph that can be used to model a set of correlated random variables. As shown in <xref ref-type="fig" rid="pcbi-1003500-g003">Fig. 3</xref>, an MRF node represents one column in the MSA and an edge represents the correlation between two columns <italic>i</italic> and <italic>k</italic> when <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e003" xlink:type="simple"/></inline-formula>. We ignore very short-range correlation (i.e., <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e004" xlink:type="simple"/></inline-formula>) since it is not very informative. The MRF consists of two types of functions: <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e005" xlink:type="simple"/></inline-formula> and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e006" xlink:type="simple"/></inline-formula>, where <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e007" xlink:type="simple"/></inline-formula> is an amino acid preference function for node <italic>i</italic> and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e008" xlink:type="simple"/></inline-formula> is a pairwise amino acid preference function for edge (<italic>i</italic>, <italic>k</italic>) that reflects interaction between two nodes. Then, the probability of observing a particular protein sequence <italic>X</italic> can be calculated as follows.<disp-formula id="pcbi.1003500.e009"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003500.e009" xlink:type="simple"/><label>(1)</label></disp-formula>where <italic>Z</italic> is the normalization factor.</p>
+<fig id="pcbi-1003500-g003" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003500.g003</object-id><label>Figure 3</label><caption>
+<title>Model a multiple sequence alignment (left) by a Markov Random Fields (right).</title>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003500.g003" position="float" xlink:type="simple"/></fig>
+<p>We use two kinds of information in MRFs for their alignment. One is the occurring probability of 20 amino acids and gap at each node (i.e., each column in MSA), which can also be interpreted as the marginal probability at each node. The other is the correlation between two nodes, which can be interpreted as interaction strength of two MSA columns and calculated by several different ways. For example, we can use a contact prediction program such as PSICOV <xref ref-type="bibr" rid="pcbi.1003500-Jones1">[37]</xref> and PhyCMAP <xref ref-type="bibr" rid="pcbi.1003500-Wang2">[38]</xref> for this purpose. PSICOV assumes that <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e010" xlink:type="simple"/></inline-formula> is a Gaussian distribution function and calculates the correlation between two columns by inverse covariance matrix. PhyCMAP takes sequence information (including mutual information) as input and predicts the probability of two residues forming a contact, which can be used to indicate the interaction strength of two columns. However, it takes time to run these programs, in current implementation we calculate the mutual information (MI) and its power series of two columns as interaction strength. That is, we use MI, MI<sup>2</sup>, …, MI<sup>11</sup> to quantify all the pairwise interaction strength where MI is the mutual information matrix. The MI power series are much more informative than the MI alone, as tested in our contact prediction program PhyCMAP.</p>
+</sec><sec id="s5b">
+<title>Scoring function for the alignment of two Markov Random Fields (MRFs)</title>
+<p>Our scoring function for MRF-MRF alignment is a linear combination of node alignment potential and edge alignment potential with equal weight. Let <italic>T</italic> and <italic>S</italic> denote two MRFs for the two proteins under consideration. There are three possible alignment states <italic>M</italic>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e011" xlink:type="simple"/></inline-formula> and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e012" xlink:type="simple"/></inline-formula> where <italic>M</italic> represents two nodes being aligned, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e013" xlink:type="simple"/></inline-formula> denotes an insertion in <italic>T</italic> (i.e., one node in <italic>T</italic> is not aligned), and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e014" xlink:type="simple"/></inline-formula> denotes an insertion in <italic>S</italic> (i.e., one node in <italic>S</italic> is not aligned). As shown in <xref ref-type="fig" rid="pcbi-1003500-g004">Fig. 4</xref>, each alignment can be represented as a path in an alignment matrix, in which each vertex can be exactly determined by its position in the matrix and its state. For example, the first vertex in the path can be written as (0, 0, dummy), the 2<sup>nd</sup> vertex as <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e015" xlink:type="simple"/></inline-formula> and the 3<sup>rd</sup> vertex as <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e016" xlink:type="simple"/></inline-formula>. Therefore, we can write an alignment as a set of triples, each of which has a form like <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e017" xlink:type="simple"/></inline-formula> where <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e018" xlink:type="simple"/></inline-formula> represents the position and <italic>u</italic> the state.</p>
+<fig id="pcbi-1003500-g004" position="float"><object-id pub-id-type="doi">10.1371/journal.pcbi.1003500.g004</object-id><label>Figure 4</label><caption>
+<title>Representation of protein alignment.</title>
+<p>(A) Represented as a sequence of states. (B) Each alignment is a path in the alignment matrix.</p>
+</caption><graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1003500.g004" position="float" xlink:type="simple"/></fig><sec id="s5b1">
+<title>Node alignment potential</title>
+<p>Given an alignment path, its node alignment potential is the accumulative potential of all the vertices in the path. We use a Conditional Neural Fields (CNF) <xref ref-type="bibr" rid="pcbi.1003500-Peng1">[39]</xref> method, which is very similar to what is described in the protein threading paper <xref ref-type="bibr" rid="pcbi.1003500-Ma2">[40]</xref>, to estimate the occurring probability of an alignment and then derive node alignment potential from this CNF. Briefly speaking, we estimate the occurring probability of an alignment <italic>A</italic> between <italic>T</italic> and <italic>S</italic> as follows.<disp-formula id="pcbi.1003500.e019"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003500.e019" xlink:type="simple"/><label>(2)</label></disp-formula>where <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e020" xlink:type="simple"/></inline-formula> is a normalization factor summarizing all the possible alignments between <italic>T</italic> and <italic>S</italic>, and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e021" xlink:type="simple"/></inline-formula> is a neural network with one hidden layer that calculates the log-likelihood of a vertex <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e022" xlink:type="simple"/></inline-formula> in the alignment path, where <italic>i</italic> is a node in <italic>T</italic>, <italic>j</italic> a node in <italic>S</italic>, and <italic>u</italic> a state. When <italic>u</italic> is a match state, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e023" xlink:type="simple"/></inline-formula> takes as input the sequence profile context of two nodes <italic>i</italic> and <italic>j</italic>, denoted as <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e024" xlink:type="simple"/></inline-formula> and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e025" xlink:type="simple"/></inline-formula>, respectively, and yields the log-likelihood of these two nodes being matched. When <italic>u</italic> is an insertion state, it takes as input at the sequence profile context of one node and yields the log-likelihood of this node being an insertion. The sequence profile context of node <italic>i</italic> is a <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e026" xlink:type="simple"/></inline-formula> matrix where <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e027" xlink:type="simple"/></inline-formula>, consisting of the marginal probability of 20 amino acids and gap at <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e028" xlink:type="simple"/></inline-formula> nodes indexed by <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e029" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e030" xlink:type="simple"/></inline-formula> In case that one column does not exist (when <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e031" xlink:type="simple"/></inline-formula> or <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e032" xlink:type="simple"/></inline-formula>), zero is used. We train the parameters in <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e033" xlink:type="simple"/></inline-formula> by maximizing the occurring probability of a set of reference alignments, which are generated by a structure alignment tool DeepAlign <xref ref-type="bibr" rid="pcbi.1003500-Wang1">[31]</xref>. That is, we optimize the model parameters so that the structure alignment of one training protein pair has the largest probability among all possible alignments. A <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e034" xlink:type="simple"/></inline-formula>-norm regularization factor, which is determined by 5-fold cross validation, is used to restrict the search space of model parameters to avoid over-fitting. See the paper <xref ref-type="bibr" rid="pcbi.1003500-Ma2">[40]</xref> for more technical details.</p>
+<p>Let <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e035" xlink:type="simple"/></inline-formula> denote the potential of a vertex <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e036" xlink:type="simple"/></inline-formula> in the alignment path. We calculate <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e037" xlink:type="simple"/></inline-formula> from <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e038" xlink:type="simple"/></inline-formula> as follows.<disp-formula id="pcbi.1003500.e039"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003500.e039" xlink:type="simple"/><label>(3)</label></disp-formula>where <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e040" xlink:type="simple"/></inline-formula> is the expected value of <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e041" xlink:type="simple"/></inline-formula>. It is used to offset the effect of the background, which is the log-likelihood yielded by <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e042" xlink:type="simple"/></inline-formula> for any randomly-chosen node pairs (or nodes). Once <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e043" xlink:type="simple"/></inline-formula> is determined, we can approximate its expected value by sampling. That is, we sample ten thousands of node pairs (or nodes) from the training data, feed their sequence information into <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e044" xlink:type="simple"/></inline-formula> and then calculate the average output of <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e045" xlink:type="simple"/></inline-formula> as its expected value.</p>
+</sec><sec id="s5b2">
+<title>Edge alignment potential</title>
+<p>It calculates the similarity of two edges, one from each MRF, based upon the interaction strength of two ends in one edge. We can derive interaction strength from the parameters of the MRF model, but it is hard to validate if this interaction strength (or mutual information) is accurate or not even in the presence of native structures since we cannot directly measure interaction strength in a protein. Here we use inter-residue Euclidean distance, which can be measured more easily, to reflect interaction strength of two residues. Later in this section we will describe how to derive the distance probability distribution from the information (e.g., interaction strength) encoded in MRFs. Let <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e046" xlink:type="simple"/></inline-formula> denote the Euclidean distance between two residues at <italic>i</italic> and <italic>k</italic> and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e047" xlink:type="simple"/></inline-formula> is defined similarly. Note that <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e048" xlink:type="simple"/></inline-formula> and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e049" xlink:type="simple"/></inline-formula> are unknown since this paper studies sequence-based homology detection in the absence of native structures. Let <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e050" xlink:type="simple"/></inline-formula> denote the alignment potential between edge <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e051" xlink:type="simple"/></inline-formula> in <italic>T</italic> and edge <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e052" xlink:type="simple"/></inline-formula> in <italic>S</italic>. We calculate <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e053" xlink:type="simple"/></inline-formula> as follows.<disp-formula id="pcbi.1003500.e054"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003500.e054" xlink:type="simple"/><label>(4)</label></disp-formula>where <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e055" xlink:type="simple"/></inline-formula> is the probability of two nodes <italic>i</italic> and <italic>k</italic> in <italic>T</italic> interacting at distance <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e056" xlink:type="simple"/></inline-formula>; <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e057" xlink:type="simple"/></inline-formula> is the probability of two nodes <italic>j</italic> and <italic>l</italic> in <italic>S</italic> interacting at distance <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e058" xlink:type="simple"/></inline-formula>; <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e059" xlink:type="simple"/></inline-formula> is the probability of one distance <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e060" xlink:type="simple"/></inline-formula> being aligned to another distance <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e061" xlink:type="simple"/></inline-formula> in reference alignments; and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e062" xlink:type="simple"/></inline-formula> is the background probability of observing <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e063" xlink:type="simple"/></inline-formula>(<inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e064" xlink:type="simple"/></inline-formula>) in a protein structure.</p>
+<p>Now we explain how to calculate each term in <xref ref-type="disp-formula" rid="pcbi.1003500.e054">Eq. (4)</xref>. <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e065" xlink:type="simple"/></inline-formula> can be calculated by simple counting on a set of non-redundant protein structures, e.g., PDB25. Similar to <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e066" xlink:type="simple"/></inline-formula>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e067" xlink:type="simple"/></inline-formula> can also be calculated by simple counting on a set of non-redundant reference alignments. That is, we randomly choose a set of protein pairs such that two proteins in each pair are similar at least at the fold level. Then we generate their reference alignment (i.e., structure alignments) using a structure alignment tool DeepAlign <xref ref-type="bibr" rid="pcbi.1003500-Wang1">[31]</xref> and finally do simple counting to estimate <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e068" xlink:type="simple"/></inline-formula>. In order to use simple counting, we discretize inter-residue distance into 12 intervals: &lt;4 Å, 4–5 Å, 5–6 Å, …, 14–15 Å, and &gt;15 Å.</p>
+<p>In <xref ref-type="disp-formula" rid="pcbi.1003500.e054">Eq. (4)</xref>, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e069" xlink:type="simple"/></inline-formula> is the probability of two nodes <italic>i</italic> and <italic>k</italic> interacting at distance <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e070" xlink:type="simple"/></inline-formula>, conditioned on information derived from the MRF. <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e071" xlink:type="simple"/></inline-formula> is defined similarly. Meanwhile, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e072" xlink:type="simple"/></inline-formula> and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e073" xlink:type="simple"/></inline-formula> are the sequence profile contexts of two nodes <italic>i</italic> and <italic>k</italic>, respectively, and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e074" xlink:type="simple"/></inline-formula> represents the mutual information and its power series (or interaction strength) between these two nodes. The sequence profile context of node <italic>i</italic> is a <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e075" xlink:type="simple"/></inline-formula> matrix where <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e076" xlink:type="simple"/></inline-formula>, consisting of the occurring probability of 20 amino acids and gap at <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e077" xlink:type="simple"/></inline-formula> nodes indexed by <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e078" xlink:type="simple"/></inline-formula>. In case that one column does not exist (when <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e079" xlink:type="simple"/></inline-formula> or <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e080" xlink:type="simple"/></inline-formula>), zero is used. We predict <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e081" xlink:type="simple"/></inline-formula> using a probabilistic neural network (PNN) implemented in our context-specific distance-dependent statistical potential package EPAD <xref ref-type="bibr" rid="pcbi.1003500-Zhao1">[41]</xref>. EPAD takes as input sequence contexts and mutual information and then yields inter-residue distance probability distribution. Compared to contact information, here we use interaction at a given distance to obtain a higher-resolution description of the residue interaction pattern. Therefore, our scoring function contains more information and thus, may yield better alignment accuracy and homology detection rate.</p>
+</sec></sec><sec id="s5c">
+<title>Aligning two MRFs by ADMM (Alternating Direction Method of Multipliers)</title>
+<p>As mentioned before, an alignment can be represented as a path in the alignment matrix, which encodes an exponential number of paths. We can use a set of <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e082" xlink:type="simple"/></inline-formula> binary variables <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e083" xlink:type="simple"/></inline-formula> to indicate which path is chosen, where <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e084" xlink:type="simple"/></inline-formula> and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e085" xlink:type="simple"/></inline-formula> are the lengths of the two MSAs, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e086" xlink:type="simple"/></inline-formula> is an entry in the alignment matrix and <italic>u</italic> is the associated state. <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e087" xlink:type="simple"/></inline-formula> is equal to 1 if the alignment path passes <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e088" xlink:type="simple"/></inline-formula> with state <italic>u</italic>. Therefore, the problem of finding the best alignment between two MRFs can be formulated as the following quadratic optimization problem.<disp-formula id="pcbi.1003500.e089"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003500.e089" xlink:type="simple"/><label>(P1)</label></disp-formula>where <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e090" xlink:type="simple"/></inline-formula> and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e091" xlink:type="simple"/></inline-formula> are node and edge alignment potentials as described in previous section. Meanwhile, <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e092" xlink:type="simple"/></inline-formula> is equal to 0 if either <italic>u</italic> or <italic>v</italic> is not a match state. <italic>L</italic> is the alignment length and <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e093" xlink:type="simple"/></inline-formula> is used to make the accumulative node and edge potential have similar scale. Note that <italic>L</italic> is unknown and we will describe how to determine it later in this section. Finally, the solution of P1 shall be subject to the constraint that all those <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e094" xlink:type="simple"/></inline-formula> with value 1 shall form a valid alignment path. This constraint shall also be enforced to all the optimization problems described in this section.</p>
+<p>It is computationally intractable to find the optimal solution of P1. Below we present an ADMM (Alternating Direction Method of Multipliers) method that can efficiently solve this problem to suboptimal. See <xref ref-type="bibr" rid="pcbi.1003500-Hestenes1">[42]</xref> for a tutorial of the ADMM method. To use ADMM, we rewrite P1 as follows by making a copy of <italic>z</italic> to <italic>y</italic>, but without changing the solution space.<disp-formula id="pcbi.1003500.e095"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003500.e095" xlink:type="simple"/><label>(P2)</label></disp-formula>Problem P2 can be augmented by adding a term to penalize the difference between <italic>z</italic> and <italic>y</italic>.<disp-formula id="pcbi.1003500.e096"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003500.e096" xlink:type="simple"/><label>(P3)</label></disp-formula>P3 is equivalent to P2 and P1, but converges faster due to the penalty term. Here <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e097" xlink:type="simple"/></inline-formula> is a hyper-parameter influencing the convergence rate of the algorithm. Some heuristics algorithms were proposed for choosing <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e098" xlink:type="simple"/></inline-formula> at each iteration, such as <xref ref-type="bibr" rid="pcbi.1003500-Wahlberg1">[43]</xref>, <xref ref-type="bibr" rid="pcbi.1003500-Boyd1">[44]</xref>. Empirically, setting <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e099" xlink:type="simple"/></inline-formula> to a constant ( = 0.5) enables our algorithm to converge within 10 iterations for most protein pairs.</p>
+<p>Adding the constraint <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e100" xlink:type="simple"/></inline-formula> using a Lagrange multiplier <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e101" xlink:type="simple"/></inline-formula> to Eq. (7), we have the following Lagrangian dual problem:<disp-formula id="pcbi.1003500.e102"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003500.e102" xlink:type="simple"/><label>(P4)</label></disp-formula>It is easy to prove that P3 is upper bounded by P4. Now we will solve P4 and use its solution to approximate P3 and thus, P1.</p>
+<p>Since both <italic>z</italic> and <italic>y</italic> are binary variables, the last term in (P4) can be expanded as follows.<disp-formula id="pcbi.1003500.e103"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003500.e103" xlink:type="simple"/><label>(5)</label></disp-formula>For a fixed <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e104" xlink:type="simple"/></inline-formula>, we can split P4 into the following two sub-problems.<disp-formula id="pcbi.1003500.e105"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003500.e105" xlink:type="simple"/><label>(SP1)</label></disp-formula>where <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e106" xlink:type="simple"/></inline-formula><disp-formula id="pcbi.1003500.e107"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003500.e107" xlink:type="simple"/><label>(SP2)</label></disp-formula>where <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e108" xlink:type="simple"/></inline-formula></p>
+<p>The sub-problem SP1 optimizes the objective function with respect to <italic>y</italic> while fixing <italic>z</italic>, and the sub-problem SP2 optimizes the objective function with respect to <italic>z</italic> while fixing <italic>y</italic>. SP1 and SP2 do not contain any quadratic term, so they can be efficiently solved using the classical dynamic programming algorithm for sequence or HMM-HMM alignment.</p>
+<p>In summary, we solve P4 using the following procedure.<list list-type="order"><list-item>
+<p>Initialize <italic>z</italic> by aligning the two MRFs without the edge alignment potential, which can be done by dynamic programming. Accordingly, initialize <italic>L</italic> as the length of the initial alignment.</p>
+</list-item><list-item>
+<p>Solve (SP1) first and then (SP2) using dynamic programming, each generating a feasible alignment.</p>
+</list-item><list-item>
+<p>If the algorithm converges, i.e., the difference between <italic>z</italic> and <italic>y</italic> is very small or zero, stop here. Otherwise, we update the alignment length <italic>L</italic> as the length of the alignment just generated and the Lagrange multiplier <inline-formula><inline-graphic xlink:href="info:doi/10.1371/journal.pcbi.1003500.e109" xlink:type="simple"/></inline-formula> using subgradient descent as in <xref ref-type="disp-formula" rid="pcbi.1003500.e110">Eq. (6)</xref>, and then go back to Step 2).<disp-formula id="pcbi.1003500.e110"><graphic position="anchor" xlink:href="info:doi/10.1371/journal.pcbi.1003500.e110" xlink:type="simple"/><label>(6)</label></disp-formula></p>
+</list-item></list>Due to the quadratic penalty term in P3 this ADMM algorithm usually converges much faster and also yields better solutions than without this term. Empirically, it converges within 10 iterations for most protein pairs. See <xref ref-type="bibr" rid="pcbi.1003500-Hestenes1">[42]</xref> for the convergence proof of a general ADMM algorithm.</p>
+<p>A summary of this paper appears in the proceedings of the RECOMB 2014 conference, April 2–5 <xref ref-type="bibr" rid="pcbi.1003500-Ma3">[45]</xref>.</p></sec></sec></body>
+<back><ref-list>
+<title>References</title>
+<ref id="pcbi.1003500-Forrest1"><label>1</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Forrest</surname><given-names>LR</given-names></name>, <name name-style="western"><surname>Tang</surname><given-names>CL</given-names></name>, <name name-style="western"><surname>Honig</surname><given-names>B</given-names></name> (<year>2006</year>) <article-title>On the accuracy of homology modeling and sequence alignment methods applied to membrane proteins</article-title>. <source>Biophysical journal</source> <volume>91</volume>: <fpage>508</fpage>–<lpage>517</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Schwede1"><label>2</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schwede</surname><given-names>T</given-names></name>, <name name-style="western"><surname>Kopp</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Guex</surname><given-names>N</given-names></name>, <name name-style="western"><surname>Peitsch</surname><given-names>MC</given-names></name> (<year>2003</year>) <article-title>SWISS-MODEL: an automated protein homology-modeling server</article-title>. <source>Nucleic acids research</source> <volume>31</volume>: <fpage>3381</fpage>–<lpage>3385</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Karplus1"><label>3</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Karplus</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Barrett</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Hughey</surname><given-names>R</given-names></name> (<year>1998</year>) <article-title>Hidden Markov models for detecting remote protein homologies</article-title>. <source>Bioinformatics</source> <volume>14</volume>: <fpage>846</fpage>–<lpage>856</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Ma1"><label>4</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ma</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Wang</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Zhao</surname><given-names>F</given-names></name>, <name name-style="western"><surname>Xu</surname><given-names>J</given-names></name> (<year>2013</year>) <article-title>Protein threading using context-specific alignment potential</article-title>. <source>Bioinformatics</source> <volume>29</volume>: <fpage>i257</fpage>–<lpage>i265</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Whelan1"><label>5</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Whelan</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Goldman</surname><given-names>N</given-names></name> (<year>2001</year>) <article-title>A general empirical model of protein evolution derived from multiple protein families using a maximum-likelihood approach</article-title>. <source>Molecular biology and evolution</source> <volume>18</volume>: <fpage>691</fpage>–<lpage>699</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Feng1"><label>6</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Feng</surname><given-names>D-F</given-names></name>, <name name-style="western"><surname>Doolittle</surname><given-names>RF</given-names></name> (<year>1987</year>) <article-title>Progressive sequence alignment as a prerequisitetto correct phylogenetic trees</article-title>. <source>Journal of molecular evolution</source> <volume>25</volume>: <fpage>351</fpage>–<lpage>360</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Gouy1"><label>7</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gouy</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Guindon</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Gascuel</surname><given-names>O</given-names></name> (<year>2010</year>) <article-title>SeaView version 4: a multiplatform graphical user interface for sequence alignment and phylogenetic tree building</article-title>. <source>Molecular biology and evolution</source> <volume>27</volume>: <fpage>221</fpage>–<lpage>224</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Sokolov1"><label>8</label>
+<mixed-citation publication-type="book" xlink:type="simple">Sokolov A, Ben-Hur A. Multi-view prediction of protein function; 2011. ACM. pp. 135–142.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Engelhardt1"><label>9</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Engelhardt</surname><given-names>BE</given-names></name>, <name name-style="western"><surname>Jordan</surname><given-names>MI</given-names></name>, <name name-style="western"><surname>Muratore</surname><given-names>KE</given-names></name>, <name name-style="western"><surname>Brenner</surname><given-names>SE</given-names></name> (<year>2005</year>) <article-title>Protein molecular function prediction by Bayesian phylogenomics</article-title>. <source>PLoS computational biology</source> <volume>1</volume>: <fpage>e45</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Radivojac1"><label>10</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Radivojac</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Clark</surname><given-names>WT</given-names></name>, <name name-style="western"><surname>Oron</surname><given-names>TR</given-names></name>, <name name-style="western"><surname>Schnoes</surname><given-names>AM</given-names></name>, <name name-style="western"><surname>Wittkop</surname><given-names>T</given-names></name>, <etal>et al</etal>. (<year>2013</year>) <article-title>A large-scale evaluation of computational protein function prediction</article-title>. <source>Nature methods</source> <volume>10</volume>: <fpage>221</fpage>–<lpage>7</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Rychlewski1"><label>11</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rychlewski</surname><given-names>L</given-names></name>, <name name-style="western"><surname>Li</surname><given-names>W</given-names></name>, <name name-style="western"><surname>Jaroszewski</surname><given-names>L</given-names></name>, <name name-style="western"><surname>Godzik</surname><given-names>A</given-names></name> (<year>2000</year>) <article-title>Comparison of sequence profiles. Strategies for structural predictions using sequence information</article-title>. <source>Protein Science</source> <volume>9</volume>: <fpage>232</fpage>–<lpage>241</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Eddy1"><label>12</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Eddy</surname><given-names>SR</given-names></name> (<year>2011</year>) <article-title>Accelerated profile HMM searches</article-title>. <source>PLoS computational biology</source> <volume>7</volume>: <fpage>e1002195</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Sding1"><label>13</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Söding</surname><given-names>J</given-names></name> (<year>2005</year>) <article-title>Protein homology detection by HMM–HMM comparison</article-title>. <source>Bioinformatics</source> <volume>21</volume>: <fpage>951</fpage>–<lpage>960</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Bairoch1"><label>14</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bairoch</surname><given-names>A</given-names></name> (<year>1991</year>) <article-title>PROSITE: a dictionary of sites and patterns in proteins</article-title>. <source>Nucleic Acids Research</source> <volume>19</volume>: <fpage>2241</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Park1"><label>15</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Park</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Teichmann</surname><given-names>SA</given-names></name>, <name name-style="western"><surname>Hubbard</surname><given-names>T</given-names></name>, <name name-style="western"><surname>Chothia</surname><given-names>C</given-names></name> (<year>1997</year>) <article-title>Intermediate sequences increase the detection of homology between sequences</article-title>. <source>Journal of molecular biology</source> <volume>273</volume>: <fpage>349</fpage>–<lpage>354</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Lu1"><label>16</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lu</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Sze</surname><given-names>S-H</given-names></name> (<year>2008</year>) <article-title>Multiple sequence alignment based on profile alignment of intermediate sequences</article-title>. <source>journal of Computational Biology</source> <volume>15</volume>: <fpage>767</fpage>–<lpage>777</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Daniels1"><label>17</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Daniels</surname><given-names>NM</given-names></name>, <name name-style="western"><surname>Hosur</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Berger</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Cowen</surname><given-names>LJ</given-names></name> (<year>2012</year>) <article-title>SMURFLite: combining simplified Markov random fields with simulated evolution improves remote homology detection for beta-structural proteins into the twilight zone</article-title>. <source>Bioinformatics</source> <volume>28</volume>: <fpage>1216</fpage>–<lpage>1222</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Pietrokovski1"><label>18</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pietrokovski</surname><given-names>S</given-names></name> (<year>1996</year>) <article-title>Searching databases of conserved sequence regions by aligning protein multiple-alignments</article-title>. <source>Nucleic Acids Research</source> <volume>24</volume>: <fpage>3836</fpage>–<lpage>3845</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Lyngso1"><label>19</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lyngso</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Pedersen</surname><given-names>CN</given-names></name>, <name name-style="western"><surname>Nielsen</surname><given-names>H</given-names></name> (<year>1999</year>) <article-title>Metrics and similarity measures for hidden Markov models</article-title>. <source>Proc Int Conf Intell Syst Mol Biol</source> <fpage>178</fpage>–<lpage>86</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Edgar1"><label>20</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Edgar</surname><given-names>RC</given-names></name>, <name name-style="western"><surname>Sjölander</surname><given-names>K</given-names></name> (<year>2003</year>) <article-title>SATCHMO: sequence alignment and tree construction using hidden Markov models</article-title>. <source>Bioinformatics</source> <volume>19</volume>: <fpage>1404</fpage>–<lpage>1411</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Yona1"><label>21</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yona</surname><given-names>G</given-names></name>, <name name-style="western"><surname>Levitt</surname><given-names>M</given-names></name> (<year>2002</year>) <article-title>Within the twilight zone: a sensitive profile-profile comparison tool based on information theory</article-title>. <source>Journal of molecular biology</source> <volume>315</volume>: <fpage>1257</fpage>–<lpage>1275</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-vonhsen1"><label>22</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>von Öhsen</surname><given-names>N</given-names></name>, <name name-style="western"><surname>Sommer</surname><given-names>I</given-names></name>, <name name-style="western"><surname>Zimmer</surname><given-names>R</given-names></name> (<year>2003</year>) <article-title>Profile-profile alignments: a powerful tool for protein structure prediction</article-title>. <source>Pac Symp Biocomput</source> <fpage>252</fpage>–<lpage>63</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Sadreyev1"><label>23</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Sadreyev</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Grishin</surname><given-names>N</given-names></name> (<year>2003</year>) <article-title>COMPASS: a tool for comparison of multiple protein alignments with assessment of statistical significance</article-title>. <source>Journal of molecular biology</source> <volume>326</volume>: <fpage>317</fpage>–<lpage>336</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Brenner1"><label>24</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Brenner</surname><given-names>SE</given-names></name>, <name name-style="western"><surname>Koehl</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Levitt</surname><given-names>M</given-names></name> (<year>2000</year>) <article-title>The ASTRAL compendium for protein structure and sequence analysis</article-title>. <source>Nucleic Acids Research</source> <volume>28</volume>: <fpage>254</fpage>–<lpage>256</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Park2"><label>25</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Park</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Karplus</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Barrett</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Hughey</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Haussler</surname><given-names>D</given-names></name>, <etal>et al</etal>. (<year>1998</year>) <article-title>Sequence comparisons using multiple sequences detect three times as many remote homologues as pairwise methods</article-title>. <source>Journal of molecular biology</source> <volume>284</volume>: <fpage>1201</fpage>–<lpage>1210</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Jaakkola1"><label>26</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jaakkola</surname><given-names>T</given-names></name>, <name name-style="western"><surname>Diekhans</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Haussler</surname><given-names>D</given-names></name> (<year>1999</year>) <article-title>Using the Fisher kernel method to detect remote protein homologies</article-title>. <source>Proc Int Conf Intell Syst Mol Biol</source> <fpage>149</fpage>–<lpage>58</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Liao1"><label>27</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Liao</surname><given-names>L</given-names></name>, <name name-style="western"><surname>Noble</surname><given-names>WS</given-names></name> (<year>2003</year>) <article-title>Combining pairwise sequence similarity and support vector machines for detecting remote protein evolutionary and structural relationships</article-title>. <source>Journal of computational biology</source> <volume>10</volume>: <fpage>857</fpage>–<lpage>868</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Leslie1"><label>28</label>
+<mixed-citation publication-type="book" xlink:type="simple">Leslie CS, Eskin E, Noble WS (2002) The spectrum kernel: A string kernel for SVM protein classification. World Scientific. pp. 566–575.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Leslie2"><label>29</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Leslie</surname><given-names>CS</given-names></name>, <name name-style="western"><surname>Eskin</surname><given-names>E</given-names></name>, <name name-style="western"><surname>Cohen</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Weston</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Noble</surname><given-names>WS</given-names></name> (<year>2004</year>) <article-title>Mismatch string kernels for discriminative protein classification</article-title>. <source>Bioinformatics</source> <volume>20</volume>: <fpage>467</fpage>–<lpage>476</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Murzin1"><label>30</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Murzin</surname><given-names>AG</given-names></name>, <name name-style="western"><surname>Brenner</surname><given-names>SE</given-names></name>, <name name-style="western"><surname>Hubbard</surname><given-names>T</given-names></name>, <name name-style="western"><surname>Chothia</surname><given-names>C</given-names></name> (<year>1995</year>) <article-title>SCOP: a structural classification of proteins database for the investigation of sequences and structures</article-title>. <source>Journal of molecular biology</source> <volume>247</volume>: <fpage>536</fpage>–<lpage>540</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Wang1"><label>31</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wang</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Ma</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Peng</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Xu</surname><given-names>J</given-names></name> (<year>2013</year>) <article-title>Protein structure alignment beyond spatial proximity</article-title>. <source>Scientific reports</source> <volume>3</volume>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Angermller1"><label>32</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Angermüller</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Biegert</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Söding</surname><given-names>J</given-names></name> (<year>2012</year>) <article-title>Discriminative modelling of context-specific amino acid substitution probabilities</article-title>. <source>Bioinformatics</source> <volume>28</volume>: <fpage>3240</fpage>–<lpage>3247</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Remmert1"><label>33</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Remmert</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Biegert</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Hauser</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Söding</surname><given-names>J</given-names></name> (<year>2011</year>) <article-title>HHblits: lightning-fast iterative protein sequence searching by HMM-HMM alignment</article-title>. <source>Nature methods</source> <volume>9</volume>: <fpage>173</fpage>–<lpage>175</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Zhang1"><label>34</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zhang</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Skolnick</surname><given-names>J</given-names></name> (<year>2005</year>) <article-title>TM-align: a protein structure alignment algorithm based on the TM-score</article-title>. <source>Nucleic acids research</source> <volume>33</volume>: <fpage>2302</fpage>–<lpage>2309</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Menke1"><label>35</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Menke</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Berger</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Cowen</surname><given-names>L</given-names></name> (<year>2008</year>) <article-title>Matt: local flexibility aids protein multiple structure alignment</article-title>. <source>PLoS computational biology</source> <volume>4</volume>: <fpage>e10</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Altschul1"><label>36</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Altschul</surname><given-names>SF</given-names></name>, <name name-style="western"><surname>Madden</surname><given-names>TL</given-names></name>, <name name-style="western"><surname>Schäffer</surname><given-names>AA</given-names></name>, <name name-style="western"><surname>Zhang</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Zhang</surname><given-names>Z</given-names></name>, <etal>et al</etal>. (<year>1997</year>) <article-title>Gapped BLAST and PSI-BLAST: a new generation of protein database search programs</article-title>. <source>Nucleic acids research</source> <volume>25</volume>: <fpage>3389</fpage>–<lpage>3402</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Jones1"><label>37</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jones</surname><given-names>DT</given-names></name>, <name name-style="western"><surname>Buchan</surname><given-names>DW</given-names></name>, <name name-style="western"><surname>Cozzetto</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Pontil</surname><given-names>M</given-names></name> (<year>2012</year>) <article-title>PSICOV: precise structural contact prediction using sparse inverse covariance estimation on large multiple sequence alignments</article-title>. <source>Bioinformatics</source> <volume>28</volume>: <fpage>184</fpage>–<lpage>190</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Wang2"><label>38</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wang</surname><given-names>Z</given-names></name>, <name name-style="western"><surname>Xu</surname><given-names>J</given-names></name> (<year>2013</year>) <article-title>Predicting protein contact map using evolutionary and physical constraints by integer programming</article-title>. <source>Bioinformatics</source> <volume>29</volume>: <fpage>i266</fpage>–<lpage>i273</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Peng1"><label>39</label>
+<mixed-citation publication-type="other" xlink:type="simple">Peng J, Bo L, Xu J (2009) Conditional neural fields. pp. 1419–1427.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Ma2"><label>40</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ma</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Peng</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Wang</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Xu</surname><given-names>J</given-names></name> (<year>2012</year>) <article-title>A conditional neural fields model for protein threading</article-title>. <source>Bioinformatics</source> <volume>28</volume>: <fpage>i59</fpage>–<lpage>i66</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Zhao1"><label>41</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zhao</surname><given-names>F</given-names></name>, <name name-style="western"><surname>Xu</surname><given-names>J</given-names></name> (<year>2012</year>) <article-title>A Position-Specific Distance-Dependent Statistical Potential for Protein Structure and Functional Study</article-title>. <source>Structure</source> <volume>20</volume>: <fpage>1118</fpage>–<lpage>1126</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Hestenes1"><label>42</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hestenes</surname><given-names>MR</given-names></name> (<year>1969</year>) <article-title>Multiplier and gradient methods</article-title>. <source>Journal of optimization theory and applications</source> <volume>4</volume>: <fpage>303</fpage>–<lpage>320</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Wahlberg1"><label>43</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wahlberg</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Boyd</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Annergren</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Wang</surname><given-names>Y</given-names></name> (<year>2012</year>) <article-title>An ADMM algorithm for a class of total variation regularized estimation problems</article-title>. <source>arXiv preprint arXiv</source> <fpage>12031828</fpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Boyd1"><label>44</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Boyd</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Parikh</surname><given-names>N</given-names></name>, <name name-style="western"><surname>Chu</surname><given-names>E</given-names></name>, <name name-style="western"><surname>Peleato</surname><given-names>B</given-names></name>, <name name-style="western"><surname>Eckstein</surname><given-names>J</given-names></name> (<year>2011</year>) <article-title>Distributed optimization and statistical learning via the alternating direction method of multipliers</article-title>. <source>Foundations and Trends® in Machine Learning</source> <volume>3</volume>: <fpage>1</fpage>–<lpage>122</lpage>.</mixed-citation>
+</ref>
+<ref id="pcbi.1003500-Ma3"><label>45</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ma</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Wang</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Wang</surname><given-names>Z</given-names></name>, <name name-style="western"><surname>Xu</surname><given-names>J</given-names></name> (<year>2014</year>) <article-title>MRFalign: Protein Homology Detection through Alignment of Markov Random Fields</article-title>. <source>In: Research in Computational Molecular Biology, Springer.</source> pp <fpage>173</fpage>–<lpage>174</lpage>.</mixed-citation>
+</ref>
+</ref-list></back>
+</article>

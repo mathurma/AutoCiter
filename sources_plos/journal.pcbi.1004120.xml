@@ -1,0 +1,878 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="3.0" xml:lang="en">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">ploscomp</journal-id>
+<journal-title-group>
+<journal-title>PLOS Computational Biology</journal-title>
+</journal-title-group>
+<issn pub-type="ppub">1553-734X</issn>
+<issn pub-type="epub">1553-7358</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pcbi.1004120</article-id>
+<article-id pub-id-type="publisher-id">PCOMPBIOL-D-14-01562</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+</article-categories>
+<title-group>
+<article-title>A DIseAse MOdule Detection (DIAMOnD) Algorithm Derived from a Systematic Analysis of Connectivity Patterns of Disease Proteins in the Human Interactome</article-title>
+<alt-title alt-title-type="running-head">DIAMOnD and Disease Modules within the Human Interactome</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" equal-contrib="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Ghiassian</surname>
+<given-names>Susan Dina</given-names>
+</name>
+<xref rid="aff001" ref-type="aff"><sup>1</sup></xref>
+<xref rid="aff002" ref-type="aff"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" equal-contrib="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Menche</surname>
+<given-names>Jörg</given-names>
+</name>
+<xref rid="aff001" ref-type="aff"><sup>1</sup></xref>
+<xref rid="aff002" ref-type="aff"><sup>2</sup></xref>
+<xref rid="aff003" ref-type="aff"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Barabási</surname>
+<given-names>Albert-László</given-names>
+</name>
+<xref rid="aff001" ref-type="aff"><sup>1</sup></xref>
+<xref rid="aff002" ref-type="aff"><sup>2</sup></xref>
+<xref rid="aff003" ref-type="aff"><sup>3</sup></xref>
+<xref rid="aff004" ref-type="aff"><sup>4</sup></xref>
+<xref rid="cor001" ref-type="corresp">*</xref>
+</contrib>
+</contrib-group>
+<aff id="aff001"><label>1</label> <addr-line>Center for Complex Networks Research and Department of Physics, Northeastern University, Boston, Massachusetts, United States of America</addr-line></aff>
+<aff id="aff002"><label>2</label> <addr-line>Center for Cancer Systems Biology (CCSB) and Department of Cancer Biology, Dana-Farber Cancer Institute, Boston, Massachusetts, United States of America</addr-line></aff>
+<aff id="aff003"><label>3</label> <addr-line>Center for Network Science, Central European University, Budapest, Hungary</addr-line></aff>
+<aff id="aff004"><label>4</label> <addr-line>Channing Division of Network Medicine, Department of Medicine, Brigham and Women’s Hospital, Harvard Medical School, Boston, Massachusetts, United States of America</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Rzhetsky</surname>
+<given-names>Andrey</given-names>
+</name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>University of Chicago, UNITED STATES</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>A patent application has been filed for the DIAMOnD algorithm (Patent Application No.:US61/881,042). ALB and JM are co-founder of DZZOM, a startup that uses network concepts to explore human disease. The company has no external funding yet.</p>
+</fn>
+<fn fn-type="con" id="contrib001">
+<p>Conceived and designed the experiments: SDG JM ALB. Performed the experiments: SDG. Analyzed the data: SDG JM. Contributed reagents/materials/analysis tools: SDG JM. Wrote the paper: SDG JM ALB.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">barabasi@gmail.com</email></corresp>
+</author-notes>
+<pub-date pub-type="epub">
+<day>8</day>
+<month>4</month>
+<year>2015</year>
+</pub-date>
+<pub-date pub-type="collection">
+<month>4</month>
+<year>2015</year>
+</pub-date>
+<volume>11</volume>
+<issue>4</issue>
+<elocation-id>e1004120</elocation-id>
+<history>
+<date date-type="received">
+<day>25</day>
+<month>8</month>
+<year>2014</year>
+</date>
+<date date-type="accepted">
+<day>9</day>
+<month>1</month>
+<year>2015</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2015</copyright-year>
+<copyright-holder>Ghiassian et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pcbi.1004120" xlink:type="simple"/>
+<abstract>
+<p>The observation that disease associated proteins often interact with each other has fueled the development of network-based approaches to elucidate the molecular mechanisms of human disease. Such approaches build on the assumption that protein interaction networks can be viewed as maps in which diseases can be identified with localized perturbation within a certain neighborhood. The identification of these neighborhoods, or <italic>disease modules</italic>, is therefore a prerequisite of a detailed investigation of a particular pathophenotype. While numerous heuristic methods exist that successfully pinpoint disease associated modules, the basic underlying connectivity patterns remain largely unexplored. In this work we aim to fill this gap by analyzing the network properties of a comprehensive corpus of 70 complex diseases. We find that disease associated proteins do not reside within locally dense communities and instead identify <italic>connectivity significance</italic> as the most predictive quantity. This quantity inspires the design of a novel Disease Module Detection (DIAMOnD) algorithm to identify the full disease module around a set of known disease proteins. We study the performance of the algorithm using well-controlled synthetic data and systematically validate the identified neighborhoods for a large corpus of diseases.</p>
+</abstract>
+<abstract abstract-type="summary">
+<title>Author Summary</title>
+<p>Diseases are rarely the result of an abnormality in a single gene, but involve a whole cascade of interactions between several cellular processes. To disentangle these complex interactions it is necessary to study genotype-phenotype relationships in the context of protein-protein interaction networks. Our analysis of 70 diseases shows that disease proteins are not randomly scattered within these networks, but agglomerate in specific regions, suggesting the existence of specific <italic>disease modules</italic> for each disease. The identification of these modules is the first step towards elucidating the biological mechanisms of a disease or for a targeted search of drug targets. We present a systematic analysis of the connectivity patterns of disease proteins and determine the most predictive topological property for their identification. This allows us to rationally design a reliable and efficient Disease Module Detection algorithm (DIAMOnD).</p>
+</abstract>
+<funding-group>
+<funding-statement>This work was funded by National Institutes of Health (NIH) Award #1U01HL108630-01. MAPGen (<ext-link ext-link-type="uri" xlink:href="http://www.mapgenprogram.org/" xlink:type="simple">http://www.mapgenprogram.org/</ext-link>) and NIH, Centers of Excellence of Genomic Science (CEGS), NIH CEGS 1P50HG004233 (<ext-link ext-link-type="uri" xlink:href="http://www.genome.gov/10001771" xlink:type="simple">http://www.genome.gov/10001771</ext-link>). The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="6"/>
+<table-count count="1"/>
+<page-count count="21"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability" xlink:type="simple">
+<meta-name>Data Availability</meta-name>
+<meta-value>Data and source code for the DIAMOnD algorithm are within the Supporting Information files and can also be downloaded from <ext-link ext-link-type="uri" xlink:href="https://github.com/barabasilab/DIAMOnD" xlink:type="simple">https://github.com/barabasilab/DIAMOnD</ext-link>. An interactive web-based version of the DIAMOnD algorithm is available at <ext-link ext-link-type="uri" xlink:href="http://diamond.barabasilab.com/" xlink:type="simple">http://diamond.barabasilab.com/</ext-link>.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>In the recent years, there is increasing evidence that proteins associated with a particular disease have distinct interactions within the <italic>Human Interactome</italic>, representing the cellular network of all physical molecular interactions [<xref rid="pcbi.1004120.ref001" ref-type="bibr">1</xref>–<xref rid="pcbi.1004120.ref007" ref-type="bibr">7</xref>]. The pathobiological properties of a disease and its clinical manifestations can be linked to perturbations within these disease neighborhoods, or <italic>disease modules</italic> [<xref rid="pcbi.1004120.ref008" ref-type="bibr">8</xref>]. With recent advances in genome-wide disease gene association [<xref rid="pcbi.1004120.ref009" ref-type="bibr">9</xref>] and high-throughput Interactome mapping [<xref rid="pcbi.1004120.ref010" ref-type="bibr">10</xref>] we can already pinpoint the approximate location for some disease modules (<xref rid="pcbi.1004120.g001" ref-type="fig">Fig. 1A</xref>). For many diseases, however, a considerable fraction of their disease associations remain unknown [<xref rid="pcbi.1004120.ref011" ref-type="bibr">11</xref>]. In this paper, we propose a network-based methodology to uncover the disease module associated with a particular phenotype. The algorithm is based on a systematic analysis of the network properties of known disease proteins across 70 diseases, revealing that instead of connection <italic>density</italic> the connectivity <italic>significance</italic> is the most predictive quantity characterizing their interaction patterns. This quantity allows us to systematically explore the local network neighborhood around a given set of known disease proteins, helping us identifying promising new disease protein candidates.</p>
+<fig id="pcbi.1004120.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004120.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>Topological properties of disease proteins within the Interactome.</title>
+<p>(A) Proteins associated with the same phenotype tend to localize in specific neighborhoods of the Interactome, indicating the approximate location of the corresponding <italic>disease modules</italic>. Topological network communities are highly interconnected groups of nodes. (B) Distribution of the fraction of disease proteins within the largest connected component (LCC) for 70 diseases. Only 10%-30% of the disease proteins are part of the LCC. (C) LCC size of proteins associated with <italic>lysosomal storage disease</italic> compared to random expectation. Out of 45 disease proteins, 24 (53%) are part of the LCC (<italic>z</italic>-score = 23.42, empirical <italic>p</italic>-value &lt; 10<sup>–6</sup>). (D) Significance of the LCC sizes as measured by the <italic>z</italic>-score for all 70 considered diseases. The whiskers indicate the minimum, 25<sup>th</sup>, 50<sup>th</sup>, 75<sup>th</sup> percentile and maximum across all diseases. Overall, 70% of the diseases show significant clustering (<italic>z</italic>-score&gt;1.6). (E) LCC z-score distribution in noisy networks in which a fraction <italic>f</italic> of all links is randomized by either link removal or rewiring. (F) We applied three representative community detection algorithms to explore the extent to which <italic>topological</italic> modules correspond to <italic>disease</italic> modules. Only 1%-5% of the communities detected by the different methods are significantly enriched with disease proteins, none of which includes a significant fraction of all disease proteins. (G) Comparison of the distribution of the local modularity <italic>R</italic> for disease proteins and proteins randomly selected from the Interactome. (H) Distribution of the connectivity significance of disease proteins and randomly selected proteins. (I) Connectivity significance of disease proteins as a function of the fraction <italic>f</italic> of links removed from the network. The red bars denote the mean and the standard deviation as measured across 70 diseases, yellow bars show random expectation obtained from the same number of randomly distributed genes. (J) Local modularity of disease proteins and randomly selected proteins when a fraction <italic>f</italic> of the links is removed from the network. (K) Illustration of the local modularity <italic>R</italic>.</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004120.g001" position="float" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec002" sec-type="results">
+<title>Results</title>
+<sec id="sec003">
+<title>Interaction patterns of disease proteins within the Interactome</title>
+<p>We started by compiling a comprehensive list of experimentally documented molecular interactions in human cells as described in [<xref rid="pcbi.1004120.ref012" ref-type="bibr">12</xref>] (see <xref rid="sec012" ref-type="sec">Methods</xref>). We also curated a list of 70 well-characterized complex diseases (<xref rid="pcbi.1004120.t001" ref-type="table">Table 1</xref>) and their known associated proteins from OMIM [<xref rid="pcbi.1004120.ref013" ref-type="bibr">13</xref>] and GWAS [<xref rid="pcbi.1004120.ref009" ref-type="bibr">9</xref>] (see <xref rid="sec012" ref-type="sec">Methods</xref>). In total, we obtained 141,296 interactions between 13,460 proteins, 1,531 of which are associated with one or more diseases. Examining the subgraphs consisting of proteins associated with the same disease, we found that the largest connected component (LCC) typically contains only 10%-30% of the disease proteins (<xref rid="pcbi.1004120.g001" ref-type="fig">Fig. 1B</xref>). This surprisingly low fraction has been shown to be a direct consequence of the incompleteness of currently available interactome maps [<xref rid="pcbi.1004120.ref012" ref-type="bibr">12</xref>]. Yet, despite this apparent scattering, the observed agglomeration is typically still higher than expected for randomly distributed proteins (<xref rid="pcbi.1004120.g001" ref-type="fig">Fig. 1C</xref>). The LCCs of 49 (out of 70) diseases are significantly larger (<italic>z</italic>-score &gt; 1.6) than random expectation (<xref rid="pcbi.1004120.g001" ref-type="fig">Fig. 1D</xref>, <xref rid="pcbi.1004120.t001" ref-type="table">Table 1</xref>). To explore the possible influence of noise in the underlying Interactome on the observed clustering we repeated the analysis on perturbed networks with varying degrees of noise and incompleteness (see <xref rid="sec012" ref-type="sec">Methods</xref>). <xref rid="pcbi.1004120.g001" ref-type="fig">Fig. 1E</xref> shows that ∼50% of all diseases exhibit significant LCCs even after removing or randomizing up to 90% of the links in the network, indicating that the finding that disease proteins tend to reside in specific network neighborhood is remarkably robust.</p>
+<table-wrap id="pcbi.1004120.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004120.t001</object-id>
+<label>Table 1</label> <caption><title>List of the 70 considered diseases.</title></caption>
+<alternatives>
+<graphic id="pcbi.1004120.t001g" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004120.t001" xlink:type="simple"/>
+<table>
+<colgroup span="1">
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" rowspan="1" colspan="1">Disease</th>
+<th align="left" rowspan="1" colspan="1">#genes (LCC)</th>
+<th align="left" rowspan="1" colspan="1"><italic>z</italic>-score</th>
+<th align="left" rowspan="1" colspan="1"><italic>p</italic>-value</th>
+<th align="left" rowspan="1" colspan="1">Disease</th>
+<th align="left" rowspan="1" colspan="1">#genes (LCC)</th>
+<th align="left" rowspan="1" colspan="1"><italic>z</italic>-score</th>
+<th align="left" rowspan="1" colspan="1"><italic>p</italic>-value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">adrenal gland diseases</td>
+<td align="left" rowspan="1" colspan="1">18 (5)</td>
+<td align="left" rowspan="1" colspan="1">8.13</td>
+<td align="left" rowspan="1" colspan="1">3.09e-4</td>
+<td align="left" rowspan="1" colspan="1">glomerulonephritis</td>
+<td align="left" rowspan="1" colspan="1">18 (3)</td>
+<td align="left" rowspan="1" colspan="1">3.83</td>
+<td align="left" rowspan="1" colspan="1">0.02</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">alzheimer disease</td>
+<td align="left" rowspan="1" colspan="1">29 (6)</td>
+<td align="left" rowspan="1" colspan="1">6.55</td>
+<td align="left" rowspan="1" colspan="1">8.13e-4</td>
+<td align="left" rowspan="1" colspan="1">gout</td>
+<td align="left" rowspan="1" colspan="1">13 (1)</td>
+<td align="left" rowspan="1" colspan="1">-0.33</td>
+<td align="left" rowspan="1" colspan="1">1.0</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Amino acid metabolism inborn errors</td>
+<td align="left" rowspan="1" colspan="1">52 (13)</td>
+<td align="left" rowspan="1" colspan="1">10.27</td>
+<td align="left" rowspan="1" colspan="1">2.5e-5</td>
+<td align="left" rowspan="1" colspan="1">graves disease</td>
+<td align="left" rowspan="1" colspan="1">13 (2)</td>
+<td align="left" rowspan="1" colspan="1">2.57</td>
+<td align="left" rowspan="1" colspan="1">0.11</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">amyotrophic lateral sclerosis</td>
+<td align="left" rowspan="1" colspan="1">21 (2)</td>
+<td align="left" rowspan="1" colspan="1">1.33</td>
+<td align="left" rowspan="1" colspan="1">0.25</td>
+<td align="left" rowspan="1" colspan="1">head and neck neoplasms</td>
+<td align="left" rowspan="1" colspan="1">35 (4)</td>
+<td align="left" rowspan="1" colspan="1">2.94</td>
+<td align="left" rowspan="1" colspan="1">0.03</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">anemia aplastic</td>
+<td align="left" rowspan="1" colspan="1">21 (9)</td>
+<td align="left" rowspan="1" colspan="1">14.49</td>
+<td align="left" rowspan="1" colspan="1">2.12e-4</td>
+<td align="left" rowspan="1" colspan="1">hypothalamic diseases</td>
+<td align="left" rowspan="1" colspan="1">23 (2)</td>
+<td align="left" rowspan="1" colspan="1">1.15</td>
+<td align="left" rowspan="1" colspan="1">0.29</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">anemia hemolytic</td>
+<td align="left" rowspan="1" colspan="1">29 (7)</td>
+<td align="left" rowspan="1" colspan="1">8</td>
+<td align="left" rowspan="1" colspan="1">2.12e-4</td>
+<td align="left" rowspan="1" colspan="1">leukemia b-cell</td>
+<td align="left" rowspan="1" colspan="1">17 (2)</td>
+<td align="left" rowspan="1" colspan="1">1.82</td>
+<td align="left" rowspan="1" colspan="1">0.18</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">aneurysm</td>
+<td align="left" rowspan="1" colspan="1">15 (4)</td>
+<td align="left" rowspan="1" colspan="1">7.22</td>
+<td align="left" rowspan="1" colspan="1">1.15e-3</td>
+<td align="left" rowspan="1" colspan="1">leukemia myeloid</td>
+<td align="left" rowspan="1" colspan="1">43 (17)</td>
+<td align="left" rowspan="1" colspan="1">16.67</td>
+<td align="left" rowspan="1" colspan="1">0.0</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">arrhythmias cardiac</td>
+<td align="left" rowspan="1" colspan="1">30 (5)</td>
+<td align="left" rowspan="1" colspan="1">4.91</td>
+<td align="left" rowspan="1" colspan="1">3.87e-3</td>
+<td align="left" rowspan="1" colspan="1">lipid metabolism disorders</td>
+<td align="left" rowspan="1" colspan="1">50 (4)</td>
+<td align="left" rowspan="1" colspan="1">11.62</td>
+<td align="left" rowspan="1" colspan="1">2e-6</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">arthritis rheumatoid</td>
+<td align="left" rowspan="1" colspan="1">42 (9)</td>
+<td align="left" rowspan="1" colspan="1">7.95</td>
+<td align="left" rowspan="1" colspan="1">2.53e-4</td>
+<td align="left" rowspan="1" colspan="1">liver cirrhosis</td>
+<td align="left" rowspan="1" colspan="1">24 (2)</td>
+<td align="left" rowspan="1" colspan="1">1.07</td>
+<td align="left" rowspan="1" colspan="1">0.32</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">asthma</td>
+<td align="left" rowspan="1" colspan="1">37 (3)</td>
+<td align="left" rowspan="1" colspan="1">1.53</td>
+<td align="left" rowspan="1" colspan="1">0.12</td>
+<td align="left" rowspan="1" colspan="1">liver cirrhosis biliary</td>
+<td align="left" rowspan="1" colspan="1">23 (2)</td>
+<td align="left" rowspan="1" colspan="1">1.15</td>
+<td align="left" rowspan="1" colspan="1">0.29</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">arterial occlusive diseases</td>
+<td align="left" rowspan="1" colspan="1">44 (4)</td>
+<td align="left" rowspan="1" colspan="1">2.19</td>
+<td align="left" rowspan="1" colspan="1">0.06</td>
+<td align="left" rowspan="1" colspan="1">Lung diseases obstructive</td>
+<td align="left" rowspan="1" colspan="1">40 (4)</td>
+<td align="left" rowspan="1" colspan="1">2.49</td>
+<td align="left" rowspan="1" colspan="1">0.04</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">arteriosclerosis</td>
+<td align="left" rowspan="1" colspan="1">38 (4)</td>
+<td align="left" rowspan="1" colspan="1">2.66</td>
+<td align="left" rowspan="1" colspan="1">0.03</td>
+<td align="left" rowspan="1" colspan="1">lupus erythematosus</td>
+<td align="left" rowspan="1" colspan="1">75 (7)</td>
+<td align="left" rowspan="1" colspan="1">1.26</td>
+<td align="left" rowspan="1" colspan="1">0.13</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">basal ganglia diseases</td>
+<td align="left" rowspan="1" colspan="1">45 (8)</td>
+<td align="left" rowspan="1" colspan="1">6.39</td>
+<td align="left" rowspan="1" colspan="1">1.13e-3</td>
+<td align="left" rowspan="1" colspan="1">lymphoma</td>
+<td align="left" rowspan="1" colspan="1">24 (2)</td>
+<td align="left" rowspan="1" colspan="1">1.07</td>
+<td align="left" rowspan="1" colspan="1">0.32</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">behcet syndrome</td>
+<td align="left" rowspan="1" colspan="1">13 (2)</td>
+<td align="left" rowspan="1" colspan="1">2.57</td>
+<td align="left" rowspan="1" colspan="1">0.11</td>
+<td align="left" rowspan="1" colspan="1">lysosomal sorage diseases</td>
+<td align="left" rowspan="1" colspan="1">45 (24)</td>
+<td align="left" rowspan="1" colspan="1">23.42</td>
+<td align="left" rowspan="1" colspan="1">0.0</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">bile duct diseases</td>
+<td align="left" rowspan="1" colspan="1">31 (2)</td>
+<td align="left" rowspan="1" colspan="1">0.6</td>
+<td align="left" rowspan="1" colspan="1">0.46</td>
+<td align="left" rowspan="1" colspan="1">mascular degeneration</td>
+<td align="left" rowspan="1" colspan="1">44 (8)</td>
+<td align="left" rowspan="1" colspan="1">6.53</td>
+<td align="left" rowspan="1" colspan="1">9.36e-4</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">blood coagulation disorders</td>
+<td align="left" rowspan="1" colspan="1">40 (25)</td>
+<td align="left" rowspan="1" colspan="1">26.91</td>
+<td align="left" rowspan="1" colspan="1">0.0</td>
+<td align="left" rowspan="1" colspan="1">metabolic syndrome x</td>
+<td align="left" rowspan="1" colspan="1">14 (3)</td>
+<td align="left" rowspan="1" colspan="1">5.06</td>
+<td align="left" rowspan="1" colspan="1">8.52e-3</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">blood platelet disorders</td>
+<td align="left" rowspan="1" colspan="1">26 (7)</td>
+<td align="left" rowspan="1" colspan="1">8.82</td>
+<td align="left" rowspan="1" colspan="1">1.03e-4</td>
+<td align="left" rowspan="1" colspan="1">motor neuron disease</td>
+<td align="left" rowspan="1" colspan="1">31 (2)</td>
+<td align="left" rowspan="1" colspan="1">0.6</td>
+<td align="left" rowspan="1" colspan="1">0.46</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">breast neoplasms</td>
+<td align="left" rowspan="1" colspan="1">40 (18)</td>
+<td align="left" rowspan="1" colspan="1">18.74</td>
+<td align="left" rowspan="1" colspan="1">0.0</td>
+<td align="left" rowspan="1" colspan="1">multiple sclerosis</td>
+<td align="left" rowspan="1" colspan="1">69 (11)</td>
+<td align="left" rowspan="1" colspan="1">5.87</td>
+<td align="left" rowspan="1" colspan="1">1.89e-3</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">carbohydrate metabolism inborn errors</td>
+<td align="left" rowspan="1" colspan="1">77 (11)</td>
+<td align="left" rowspan="1" colspan="1">4.94</td>
+<td align="left" rowspan="1" colspan="1">4.31e-3</td>
+<td align="left" rowspan="1" colspan="1">muscular sydtrophies</td>
+<td align="left" rowspan="1" colspan="1">36 (12)</td>
+<td align="left" rowspan="1" colspan="1">12.86</td>
+<td align="left" rowspan="1" colspan="1">2e-6</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">carcinoma renal cell</td>
+<td align="left" rowspan="1" colspan="1">18 (3)</td>
+<td align="left" rowspan="1" colspan="1">3.84</td>
+<td align="left" rowspan="1" colspan="1">0.02</td>
+<td align="left" rowspan="1" colspan="1">mycobacterium infections</td>
+<td align="left" rowspan="1" colspan="1">22 (4)</td>
+<td align="left" rowspan="1" colspan="1">4.86</td>
+<td align="left" rowspan="1" colspan="1">4.91e-3</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">cardiomyopathies</td>
+<td align="left" rowspan="1" colspan="1">50 (12)</td>
+<td align="left" rowspan="1" colspan="1">9.65</td>
+<td align="left" rowspan="1" colspan="1">6.6e-5</td>
+<td align="left" rowspan="1" colspan="1">myeloproliferative disorders</td>
+<td align="left" rowspan="1" colspan="1">19 (6)</td>
+<td align="left" rowspan="1" colspan="1">9.76</td>
+<td align="left" rowspan="1" colspan="1">6.1e-5</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">cardiomyopathy hypertrophic</td>
+<td align="left" rowspan="1" colspan="1">22 (4)</td>
+<td align="left" rowspan="1" colspan="1">1.86</td>
+<td align="left" rowspan="1" colspan="1">4.96e-3</td>
+<td align="left" rowspan="1" colspan="1">metabolic and nutritional diseases</td>
+<td align="left" rowspan="1" colspan="1">599 (270)</td>
+<td align="left" rowspan="1" colspan="1">4.04</td>
+<td align="left" rowspan="1" colspan="1">2e-6</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">celiac disease</td>
+<td align="left" rowspan="1" colspan="1">36 (2)</td>
+<td align="left" rowspan="1" colspan="1">0.34</td>
+<td align="left" rowspan="1" colspan="1">0.56</td>
+<td align="left" rowspan="1" colspan="1">peroxisomal disorders</td>
+<td align="left" rowspan="1" colspan="1">20 (17)</td>
+<td align="left" rowspan="1" colspan="1">30.86</td>
+<td align="left" rowspan="1" colspan="1">0.0</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">cerebellar ataxia</td>
+<td align="left" rowspan="1" colspan="1">30 (2)</td>
+<td align="left" rowspan="1" colspan="1">0.66</td>
+<td align="left" rowspan="1" colspan="1">0.44</td>
+<td align="left" rowspan="1" colspan="1">psoriasis</td>
+<td align="left" rowspan="1" colspan="1">54 (5)</td>
+<td align="left" rowspan="1" colspan="1">2.47</td>
+<td align="left" rowspan="1" colspan="1">0.04</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">cerebrovascular disorders</td>
+<td align="left" rowspan="1" colspan="1">47 (4)</td>
+<td align="left" rowspan="1" colspan="1">1.98</td>
+<td align="left" rowspan="1" colspan="1">0.07</td>
+<td align="left" rowspan="1" colspan="1">purine-pyrimidine metabolism inborn errors</td>
+<td align="left" rowspan="1" colspan="1">16 (2)</td>
+<td align="left" rowspan="1" colspan="1">1.98</td>
+<td align="left" rowspan="1" colspan="1">0.16</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">charcot-marie-tooth disease</td>
+<td align="left" rowspan="1" colspan="1">27 (5)</td>
+<td align="left" rowspan="1" colspan="1">5.46</td>
+<td align="left" rowspan="1" colspan="1">2.32e-3</td>
+<td align="left" rowspan="1" colspan="1">renal tubular transport inborn errors</td>
+<td align="left" rowspan="1" colspan="1">34 (3)</td>
+<td align="left" rowspan="1" colspan="1">1.74</td>
+<td align="left" rowspan="1" colspan="1">0.10</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">colitis ulcerative</td>
+<td align="left" rowspan="1" colspan="1">56 (4)</td>
+<td align="left" rowspan="1" colspan="1">1.44</td>
+<td align="left" rowspan="1" colspan="1">0.12</td>
+<td align="left" rowspan="1" colspan="1">sarcoma</td>
+<td align="left" rowspan="1" colspan="1">25 (7)</td>
+<td align="left" rowspan="1" colspan="1">9.13</td>
+<td align="left" rowspan="1" colspan="1">8.4e-5</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">colorectal neoplasms</td>
+<td align="left" rowspan="1" colspan="1">42 (16)</td>
+<td align="left" rowspan="1" colspan="1">15.83</td>
+<td align="left" rowspan="1" colspan="1">0.0</td>
+<td align="left" rowspan="1" colspan="1">spastic paraplegia hereditary</td>
+<td align="left" rowspan="1" colspan="1">20 (1)</td>
+<td align="left" rowspan="1" colspan="1">-0.51</td>
+<td align="left" rowspan="1" colspan="1">1.0</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">coronary artery disease</td>
+<td align="left" rowspan="1" colspan="1">31 (2)</td>
+<td align="left" rowspan="1" colspan="1">0.6</td>
+<td align="left" rowspan="1" colspan="1">0.46</td>
+<td align="left" rowspan="1" colspan="1">spinocerebellar ataxias</td>
+<td align="left" rowspan="1" colspan="1">28 (2)</td>
+<td align="left" rowspan="1" colspan="1">0.78</td>
+<td align="left" rowspan="1" colspan="1">0.40</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">crohn disease</td>
+<td align="left" rowspan="1" colspan="1">72 (10)</td>
+<td align="left" rowspan="1" colspan="1">4.82</td>
+<td align="left" rowspan="1" colspan="1">4.91e-3</td>
+<td align="left" rowspan="1" colspan="1">spinocerebellar degenerations</td>
+<td align="left" rowspan="1" colspan="1">30 (2)</td>
+<td align="left" rowspan="1" colspan="1">0.65</td>
+<td align="left" rowspan="1" colspan="1">0.44</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">death sudden</td>
+<td align="left" rowspan="1" colspan="1">19 (1)</td>
+<td align="left" rowspan="1" colspan="1">-0.49</td>
+<td align="left" rowspan="1" colspan="1">1.0</td>
+<td align="left" rowspan="1" colspan="1">spondylarthropathies</td>
+<td align="left" rowspan="1" colspan="1">18 (4)</td>
+<td align="left" rowspan="1" colspan="1">5.99</td>
+<td align="left" rowspan="1" colspan="1">2.26e-3</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">diabetes mellitus type 2</td>
+<td align="left" rowspan="1" colspan="1">73 (9)</td>
+<td align="left" rowspan="1" colspan="1">4.03</td>
+<td align="left" rowspan="1" colspan="1">9.83e-3</td>
+<td align="left" rowspan="1" colspan="1">taupathies</td>
+<td align="left" rowspan="1" colspan="1">35 (9)</td>
+<td align="left" rowspan="1" colspan="1">9.32</td>
+<td align="left" rowspan="1" colspan="1">5.6e-5</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">dwarfism</td>
+<td align="left" rowspan="1" colspan="1">26 (3)</td>
+<td align="left" rowspan="1" colspan="1">2.5</td>
+<td align="left" rowspan="1" colspan="1">0.05</td>
+<td align="left" rowspan="1" colspan="1">uveal diseases</td>
+<td align="left" rowspan="1" colspan="1">17 (3)</td>
+<td align="left" rowspan="1" colspan="1">4.07</td>
+<td align="left" rowspan="1" colspan="1">0.01</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">esophageal diseases</td>
+<td align="left" rowspan="1" colspan="1">24 (3)</td>
+<td align="left" rowspan="1" colspan="1">2.76</td>
+<td align="left" rowspan="1" colspan="1">0.04</td>
+<td align="left" rowspan="1" colspan="1">varicose veins</td>
+<td align="left" rowspan="1" colspan="1">20 (1)</td>
+<td align="left" rowspan="1" colspan="1">-0.51</td>
+<td align="left" rowspan="1" colspan="1">1.0</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">exophthalmos</td>
+<td align="left" rowspan="1" colspan="1">13 (2)</td>
+<td align="left" rowspan="1" colspan="1">1.58</td>
+<td align="left" rowspan="1" colspan="1">0.11</td>
+<td align="left" rowspan="1" colspan="1">vasculitis</td>
+<td align="left" rowspan="1" colspan="1">15 (2)</td>
+<td align="left" rowspan="1" colspan="1">2.16</td>
+<td align="left" rowspan="1" colspan="1">0.14</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t001fn001"><p>List of the 70 diseases considered in this study, together with their respective number of associated genes and the size of their largest connected component (LCC) on the Interactome, as well as its significance compared to randomly selected genes as given by the <italic>z</italic>-score and the empirical <italic>p</italic>-value obtained from 10<sup>6</sup> simulations.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+<p>From a network science perspective, the task of identifying these disease neighborhoods can be considered a <italic>community detection</italic> problem. Numerous algorithms [<xref rid="pcbi.1004120.ref014" ref-type="bibr">14</xref>–<xref rid="pcbi.1004120.ref023" ref-type="bibr">23</xref>] define a community as a locally dense subgraph in a network (<xref rid="pcbi.1004120.g001" ref-type="fig">Fig. 1A</xref>). In order to evaluate the extent to which such topological community detection algorithms can be used to predict disease modules, we chose three representative, methodologically distinct algorithms that have been successfully applied to identify communities of functionally related proteins (<italic>functional</italic> modules) in protein interaction networks: <italic>(i)</italic> A link community algorithm [<xref rid="pcbi.1004120.ref014" ref-type="bibr">14</xref>], which is based on link-similarities and can also capture hierarchical communities, <italic>(ii)</italic> the Louvain method, which maximizes a global modularity function [<xref rid="pcbi.1004120.ref021" ref-type="bibr">21</xref>], and <italic>(iii)</italic> the Markov Cluster Algorithm (MCL), which detects dense regions based on random flow [<xref rid="pcbi.1004120.ref024" ref-type="bibr">24</xref>]. Each of these methods identifies a large number of communities within the Interactome (Figs. <xref rid="pcbi.1004120.g001" ref-type="fig">1F</xref> &amp; <xref rid="pcbi.1004120.s001" ref-type="supplementary-material">S1A-C</xref>). In order to evaluate whether some of these communities may be candidates for specific disease modules, we determined their enrichment with known disease proteins. We found that only between ∼1%-5% of the communities detected by the different methods are significantly enriched (<italic>p</italic>-value &lt; 0.05, Fisher’s exact test) with any set of disease proteins (<xref rid="pcbi.1004120.g001" ref-type="fig">Fig. 1F</xref>). Conversely, only 15% of the diseases have any significantly enriched community. As these significantly enriched communities cover only ∼15%-38% of all proteins associated with the respective disease, we were unable to assign for any of these diseases a single connected disease module (<xref rid="pcbi.1004120.s001" ref-type="supplementary-material">S1 Fig.</xref> D-F).</p>
+<p>These results suggest that while topological communities may often represent meaningful <italic>functional modules [<xref rid="pcbi.1004120.ref025" ref-type="bibr">25</xref>],</italic> they are not able to capture <italic>disease modules</italic>. One possible reason for this may be that disease proteins do not constitute particularly dense subgraphs. To further quantify this, we consider the modularity parameter <italic>R</italic> [<xref rid="pcbi.1004120.ref023" ref-type="bibr">23</xref>], a key measure used in community detection, where <italic>R</italic> = 1 corresponds to perfect modularity and <italic>R</italic>∼0 to randomly assigned communities (see <xref rid="sec012" ref-type="sec">Materials &amp; Methods</xref> and <xref rid="pcbi.1004120.g001" ref-type="fig">Fig. 1K</xref>). If we consider the known disease associated proteins as communities, we find that <italic>R</italic>&lt;0.01 for 97% of the diseases, with no disease exceeding <italic>R</italic>&gt;0.07 (<xref rid="pcbi.1004120.g001" ref-type="fig">Fig. 1G</xref>). While these values are still significantly different from random expectation <italic>R</italic>∼0, the communities resulting from optimizing <italic>R</italic> are unlikely to represent meaningful disease modules.</p>
+<p>Yet, disease proteins <italic>do</italic> exhibit distinct and predictive connectivity patterns that can be captured and exploited if we evaluate the <italic>significance</italic> of their connections instead of their density. Consider a network of <italic>N</italic> proteins containing a relatively small number (<italic>s</italic><sub><italic>0</italic></sub>) of seed proteins associated with a particular disease. For randomly scattered seed proteins, the probability that a protein with a total of <italic>k</italic> links has exactly <italic>k</italic><sub><italic>s</italic></sub> links to seed proteins is given by the hypergeometric distribution:
+<disp-formula id="pcbi.1004120.e001">
+<alternatives>
+<graphic id="pcbi.1004120.e001g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004120.e001" xlink:type="simple"/>
+<mml:math display="block" id="M1" overflow="scroll">
+<mml:mrow><mml:mi>p</mml:mi><mml:mo stretchy="false">(</mml:mo><mml:mi>k</mml:mi><mml:mo>,</mml:mo><mml:msub><mml:mi>k</mml:mi><mml:mi>s</mml:mi></mml:msub><mml:mo stretchy="false">)</mml:mo><mml:mo>=</mml:mo><mml:mfrac><mml:mrow><mml:mrow><mml:mo>(</mml:mo><mml:mtable><mml:mtr><mml:mtd><mml:msub><mml:mi>s</mml:mi><mml:mn>0</mml:mn></mml:msub></mml:mtd></mml:mtr><mml:mtr><mml:mtd><mml:msub><mml:mi>k</mml:mi><mml:mi>s</mml:mi></mml:msub></mml:mtd></mml:mtr></mml:mtable><mml:mo>)</mml:mo></mml:mrow><mml:mrow><mml:mo>(</mml:mo><mml:mtable><mml:mtr><mml:mtd><mml:mi>N</mml:mi><mml:mo>−</mml:mo><mml:msub><mml:mi>s</mml:mi><mml:mn>0</mml:mn></mml:msub></mml:mtd></mml:mtr><mml:mtr><mml:mtd><mml:mi>k</mml:mi><mml:mo>−</mml:mo><mml:msub><mml:mi>k</mml:mi><mml:mi>s</mml:mi></mml:msub></mml:mtd></mml:mtr></mml:mtable><mml:mo>)</mml:mo></mml:mrow></mml:mrow><mml:mrow><mml:mrow><mml:mo>(</mml:mo><mml:mtable><mml:mtr><mml:mtd><mml:mi>N</mml:mi></mml:mtd></mml:mtr><mml:mtr><mml:mtd><mml:mi>k</mml:mi></mml:mtd></mml:mtr></mml:mtable><mml:mo>)</mml:mo></mml:mrow></mml:mrow></mml:mfrac></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(1)</label>
+</disp-formula>
+To evaluate whether a certain protein has more connections to seed proteins than expected under this null hypothesis, we calculate the <italic>connectivity p</italic>-value, i.e. the cumulative probability for the observed or any higher number of connections:
+<disp-formula id="pcbi.1004120.e002">
+<alternatives>
+<graphic id="pcbi.1004120.e002g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004120.e002" xlink:type="simple"/>
+<mml:math display="block" id="M2" overflow="scroll">
+<mml:mrow><mml:mi>p</mml:mi><mml:mo>−</mml:mo><mml:mtext>value</mml:mtext><mml:mo stretchy="false">(</mml:mo><mml:mi>k</mml:mi><mml:mo>,</mml:mo><mml:msub><mml:mi>k</mml:mi><mml:mi>s</mml:mi></mml:msub><mml:mo stretchy="false">)</mml:mo><mml:mo>=</mml:mo><mml:mstyle displaystyle="true"><mml:munderover><mml:mo>∑</mml:mo><mml:mrow><mml:msub><mml:mi>k</mml:mi><mml:mi>i</mml:mi></mml:msub><mml:mo>=</mml:mo><mml:msub><mml:mi>k</mml:mi><mml:mi>s</mml:mi></mml:msub></mml:mrow><mml:mi>k</mml:mi></mml:munderover><mml:mi>p</mml:mi></mml:mstyle><mml:mo stretchy="false">(</mml:mo><mml:mi>k</mml:mi><mml:mo>,</mml:mo><mml:msub><mml:mi>k</mml:mi><mml:mi>i</mml:mi></mml:msub><mml:mo stretchy="false">)</mml:mo></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(2)</label>
+</disp-formula>
+The use of the <italic>significance</italic> of the number of connections instead of their absolute number reduces the spurious detection of high-degree proteins. <xref rid="pcbi.1004120.g001" ref-type="fig">Fig. 1H</xref> shows that the connectivity <italic>p</italic>-values within the sets of known disease proteins are very significantly (<italic>p</italic>-value &lt; 10<sup>–241</sup>, Kolmogorov-Smirnov test) shifted towards smaller values when compared to the distributions expected for randomly scattered proteins. For example, the randomization procedure never yields connectivity significance values smaller than 10<sup>–5</sup>, while 60% of the disease proteins have a connectivity significance smaller than this value, some as small as 10<sup>–23</sup>.</p>
+<p>Taken together, these results show that disease proteins exhibit distinct interaction patterns among each other that suggest the existence of specific disease modules within the Interactome. Yet, these modules apparently do not coincide with topological communities of densely interconnected proteins. In principle, this discrepancy could be either a mere consequence of incomplete Interactome and gene-disease association data [<xref rid="pcbi.1004120.ref005" ref-type="bibr">5</xref>,<xref rid="pcbi.1004120.ref010" ref-type="bibr">10</xref>,<xref rid="pcbi.1004120.ref026" ref-type="bibr">26</xref>], or reflect an inherent fundamental difference between disease and topological modules. To investigate this question, we compared the behavior of the two relevant measures, local modularity and connectivity significance, for different levels of completeness of the underlying network. <xref rid="pcbi.1004120.g001" ref-type="fig">Fig. 1I</xref> shows that the connectivity significance of disease genes slowly drops as more and more links are removed. Conversely, this trend indicates that the predictive power of the connectivity significance should continuously increase as the Interactome becomes more and more complete. For the local modularity measure, however, we see a very different behavior. <xref rid="pcbi.1004120.g001" ref-type="fig">Fig. 1J</xref> shows that the modularity remains roughly constant as the network completeness decreases or even slightly increases, similar to the behavior observed for random expectation. The reason for this somewhat unintuitive behavior is that random removal affects links between disease proteins to the same extent as links to other proteins, thereby leaving their relative relationship, on average, unchanged (<xref rid="pcbi.1004120.g001" ref-type="fig">Fig. 1K</xref>). We therefore expect that with increasing network completeness, the local modularity among disease proteins will not significantly increase. These results suggest that topological communities are not able to significantly capture disease proteins, regardless of the level of network completeness. Connectivity significance, on the other hand, captures the interaction patterns between disease proteins more and more distinctively as the network approaches the complete network.</p>
+</sec>
+<sec id="sec004">
+<title>The DIAMOnD algorithm</title>
+<p>Building on the observation that the connectivity significance is highly distinctive for <italic>known</italic> disease proteins, we propose the following algorithm to infer yet <italic>unknown</italic> disease proteins (<xref rid="pcbi.1004120.g002" ref-type="fig">Fig. 2A</xref>), and hence to identify the respective disease module:
+<list list-type="roman-lower">
+<list-item><p>The connectivity significance (2) is determined for all proteins connected to any of the <italic>s</italic><sub>0</sub> seed proteins.</p></list-item>
+<list-item><p>The proteins are ranked according to their respective <italic>p</italic>-values.</p></list-item>
+<list-item><p>The protein with the highest rank (i.e. lowest <italic>p</italic>-value) is added to the set of seed nodes, increasing their number from <italic>s</italic><sub><italic>0</italic></sub> →<italic>s</italic><sub><italic>1</italic></sub> = <italic>s</italic><sub><italic>0</italic></sub>+1.</p></list-item>
+<list-item><p>Steps <italic>(i)-(iii)</italic> are repeated with the expanded set of seed proteins, pulling in one protein at a time into the growing disease module.</p></list-item>
+</list></p>
+<fig id="pcbi.1004120.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004120.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>The DIAMOnD algorithm.</title>
+<p>(A) At each step of the iterative algorithm, the <italic>connectivity significance</italic> of all immediate neighbors of disease proteins is calculated. Next, the most significantly connected node (lowest <italic>p</italic>-value) is integrated into the module, thus expanding the module by one node per iteration step. (B) Subgraph of the Interactome highlighting the seed proteins for <italic>macular degeneration</italic> and the first 50 corresponding DIAMOnD proteins. In the beginning, two separate clusters grow independently until they merge at iteration step 50. Note that DIAMOnD also proposes proteins that do not have direct connections to seed proteins, e.g. at iteration steps 12 and 15. The squares mark seed proteins whose removal leads to large differences in the resulting DIAMOnD modules. The three leftmost squares, for example, enable the identification of a protein at iteration step 23, which in turn triggers the inclusion of the cluster of proteins depicted underneath, which would be absent otherwise.</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004120.g002" position="float" xlink:type="simple"/>
+</fig>
+<p>The procedure (i)-(iv) can be continued until the module spans across the entire network. The order in which the proteins are being pulled into the module reflects their topological relevance to the disease, resulting in a ranking of all proteins. <xref rid="pcbi.1004120.g002" ref-type="fig">Fig. 2B</xref> shows a subgraph of the Interactome highlighting the seed proteins associated with macular degeneration and the first 50 DIAMOnD genes.</p>
+<p>Calculating tens to hundreds of <italic>p</italic>-values at each iteration is computationally expensive; therefore we have implemented an efficient calculation to reduce the execution time (see <xref rid="sec012" ref-type="sec">Materials &amp; Methods</xref>). Furthermore, as detailed below, the algorithm can be easily adapted to incorporate additional features, in particular weighted links and/or protein associations.</p>
+</sec>
+<sec id="sec005">
+<title>Synthetic modules</title>
+<p>In order to systematically evaluate the performance of DIAMOnD we first used a well-controlled test scenario by constructing synthetic modules of proteins within the Interactome. We analyzed the extent to which DIAMOnD can recover the full module if we remove the disease association from a certain fraction of proteins, thus obtaining a seed cluster that is no longer fully connected. There are many different possibilities to construct a connected set of nodes in a network, generally leading to modules with different topological properties. We implemented two different methods:
+<list list-type="roman-lower">
+<list-item><p><italic>Shell-modules</italic>: We randomly selected one node from the network and add all its first and second neighbors to the module (<xref rid="pcbi.1004120.s002" ref-type="supplementary-material">S2 Fig.</xref> A). Depending on the particular starting node, the constructed module may vary in size (<xref rid="pcbi.1004120.s002" ref-type="supplementary-material">S2 Fig.</xref> B). Most diseases in our curated corpus have between 50 and 150 currently identified disease proteins. Assuming that these represent only 30%-50% of all associated proteins, we chose 200 as the putative size of complete disease modules within the Interactome.</p></list-item>
+<list-item><p>C<italic>onnectivity significance modules</italic>: We started from a randomly selected node and iteratively add the most significantly connected node to the module until its size reaches 200 nodes. This process produces modules with topological properties similar to those observed for real diseases.</p></list-item>
+</list></p>
+</sec>
+<sec id="sec006">
+<title>Estimating the recovery rate</title>
+<p>For each initially connected synthetic module, we randomly removed a certain fraction (25%, 50% and 75%) of the nodes and use the remaining nodes as seed proteins for DIAMOnD. <xref rid="pcbi.1004120.g003" ref-type="fig">Fig. 3A and 3B</xref> show the fraction of recaptured initial seed nodes (recall) as a function of the number of iterations of the algorithm for 50% of the module removed. As expected, the highest rate of true positives is achieved in early iterations, so the highest ranked proteins are most likely to be part of the original full module.</p>
+<fig id="pcbi.1004120.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004120.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title>Performance evaluation of DIAMOnD.</title>
+<p>We use two different methods to construct synthetic modules (<italic>shells</italic> and <italic>connectivity</italic> modules). (A, B) Recovery rate of the DIAMOnD algorithm when removing 50% of seed nodes from <italic>shells</italic> (A) and <italic>connectivity</italic> synthetic modules (B), respectively. The recovery rate in synthetic modules is roughly independent of the module incompleteness. (C, D) Recovery rate when 25%, 50% and 75% of the nodes are removed from <italic>shells</italic> and <italic>connectivity</italic> modules. (E, F) Recovery rate when 10%, 20% and 30% of the nodes are removed from the disease proteins of <italic>lysosomal storage diseases</italic> and <italic>lipid metabolism disorders</italic>. (G) Robustness of the DIAMOnD algorithm towards small variations in the starting seed proteins (<italic>N</italic>-1 analysis). While most nodes influence the outcome very little, there are a few nodes whose removal results in a large deviation from the original outcome. This deviation may either persist across iterations (red data points) or disappear after a few iterations (green). (H) Crucial nodes are characterized by a 3–4 times higher degree. (I) DIAMOnD robustness towards random link removal from the Interactome. We identified the DIAMOnD proteins for 70 diseases in the original Interactome as well as in perturbed networks with varying fractions <italic>f</italic> of randomly removed links. Data points and bars represent the median and median absolute deviation of the overlap (number of common proteins) between original and randomized DIAMOnD sets across 70 diseases as a function of the iteration step. (J) Same as (I), but for perturbed networks in which varying fractions <italic>f</italic> of all links have been randomly rewired.</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004120.g003" position="float" xlink:type="simple"/>
+</fig>
+<p>In both <italic>shell</italic> and <italic>connectivity</italic> modules, we find that the total recall of the removed nodes is relatively insensitive to the incompleteness of the seed set, i.e. the fraction of removed seed nodes (<xref rid="pcbi.1004120.g003" ref-type="fig">Fig. 3C,D</xref>). The observation that a similar number of proteins can be recalled from a 25% subset of the full module and from a 75% subset can be used to address a critical limitation of prioritization methods that only provide a ranking of all proteins, yet offer no objective criterion for the total number of biologically relevant proteins. Indeed, estimating the true positive rate is inherently difficult as the true set of proteins is by definition unknown. However, since the recall of DIAMOnD does not depend on the unknown total number of disease proteins, we can estimate it by further pruning a given incomplete set of known disease proteins. We tested this procedure on our set of 70 diseases by removing 10%, 20% and 30% of the respective known disease proteins, see <xref rid="pcbi.1004120.g003" ref-type="fig">Fig. 3E,F</xref> for two examples, <italic>blood coagulation</italic> and <italic>lipid metabolism disorders</italic>, respectively. Generally, the recall is found to be higher when disease associations are preferably removed from proteins that are part of the original LCC.</p>
+</sec>
+<sec id="sec007">
+<title>Analyzing the sensitivity towards perturbations</title>
+<p>Both the network data and the disease associations are inherently noisy and expected to contain a considerable number of false positives. The similar recall from different levels of seed protein incompleteness suggests, however, that collectively the seed proteins and their interactions provide sufficient predictive power to yield robust predictions. In order to evaluate how sensitive the DIAMOnD outcome is with respect to variations in the set of seed genes, we performed an <italic>N</italic>-1 analysis: We modified the initial seed protein set by removing one of the <italic>s</italic><sub><italic>0</italic></sub> proteins at a time, resulting in <italic>s</italic><sub><italic>0</italic></sub> different DIAMOnD sets. Comparing the resulting sets of DIAMOnD proteins to the original predictions obtained from the full seed set, we find that the methodology is very robust, yielding overlaps close to 100% in most cases. Individually, most seed proteins can be removed without considerably changing the resulting DIAMOnD proteins. There are, however, typically a small number of nodes whose removal results in a drastic change of the final outcome (Figs. <xref rid="pcbi.1004120.g002" ref-type="fig">2B</xref> and <xref rid="pcbi.1004120.g003" ref-type="fig">3G</xref>). The deviation caused by a specific node removal may occur in the initial iterations and disappear over the long run (<xref rid="pcbi.1004120.g003" ref-type="fig">Fig. 3G</xref>, green data points) or persist across all iterations (red data points). These latter nodes are therefore more important for the integrity of the seed set. <xref rid="pcbi.1004120.g003" ref-type="fig">Fig. 3H</xref> shows the degree of the nodes that cause deviations of different persistence (see <xref rid="sec012" ref-type="sec">Materials &amp; Methods</xref>). Crucial nodes with high persistence are characterized by a high degree (generally several fold increase compared to both average degree of the network, &lt;<italic>k</italic>&gt; = 20.7, and average degree of the disease proteins, &lt;<italic>k</italic><sub>disease</sub>&gt; = 28.9). Interestingly, we further observe that crucial nodes whose removal will be most destructive are generally not part of the largest connected component of the initial seed set. Instead, the <italic>disease modules</italic> are robust towards removing disease proteins from the LCC, as these proteins will be recovered early on due to their significant connectivity.</p>
+<p>Similar results are obtained when noise is introduced in the underlying network (see <xref rid="sec012" ref-type="sec">Materials &amp; Methods</xref> for details). <xref rid="pcbi.1004120.g003" ref-type="fig">Fig. 3I and 3J</xref> show that, regardless of the method we choose to add the noisiness to the network, small variations ∼1% of all links in the Interactome have almost no effect on the obtained DIAMOnD genes. Up to 5% of the Interactome can be completely randomized, while still retrieving more than 70% of the original set of DIAMOnD genes for more than half of all diseases.</p>
+</sec>
+<sec id="sec008">
+<title>Validating disease modules</title>
+<p>Next we explore the performance of DIAMOnD on 70 real diseases. Since the full set of disease proteins is, by definition, unknown, we cannot assess the performance directly in terms of true positives/negatives. We therefore use publicly available gene annotation data, GeneOntology [<xref rid="pcbi.1004120.ref027" ref-type="bibr">27</xref>] and biological pathways from MSigDB [<xref rid="pcbi.1004120.ref028" ref-type="bibr">28</xref>] to validate the DIAMOnD disease modules: For each disease we determine a reference set of all significantly enriched GO-terms and pathways within the set of seed proteins. We then compare the respective annotations of each DIAMOnD gene to this reference set, assuming that proteins with annotations similar to the ones of the seed genes are more likely to be disease associated as well [<xref rid="pcbi.1004120.ref001" ref-type="bibr">1</xref>,<xref rid="pcbi.1004120.ref029" ref-type="bibr">29</xref>–<xref rid="pcbi.1004120.ref032" ref-type="bibr">32</xref>] (see <xref rid="sec012" ref-type="sec">Materials &amp; Methods</xref> for details). <xref rid="pcbi.1004120.g004" ref-type="fig">Fig. 4A,B</xref> offers examples for the validation according to pathway similarity for <italic>lysosomal storage diseases</italic>. The first ∼200 DIAMOnD genes are found to participate in important seed pathways at a rate similar to the one within the seed proteins themselves and significantly higher than random expectation. In total, 58 out of 70 disease modules can be validated by either GO terms or pathways, 46 by both. <xref rid="pcbi.1004120.g004" ref-type="fig">Fig. 4D,E</xref> summarizes the validation of the disease modules for all 70 diseases. The majority of the detected modules perform several times better than random expectation, in particular in the first 50–100 iterations.</p>
+<fig id="pcbi.1004120.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004120.g004</object-id>
+<label>Fig 4</label>
+<caption>
+<title>Biological evaluation of DIAMOnD.</title>
+<p>(A) Validation of the DIAMOnD genes based on GeneOntology terms (see <xref rid="sec012" ref-type="sec">Materials &amp; Methods</xref>). (B) The significance of the similarity between DIAMOnD genes and seed genes suggests a cutoff of ∼200 DIAMOnD genes. (C) Network representation of the <italic>lysosomal storage diseases</italic> module. (D,E) Summary of the validation for all 70 disease modules based on GeneOntology (D) and biological pathways (E). (F) Fraction of seed proteins that are contained in the LCC of the DIAMOnD module for varying iteration steps. The distributions show the values obtained from 70 diseases. By introducing DIAMOnD proteins, previously disconnected seed proteins become part of the LCC.</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004120.g004" position="float" xlink:type="simple"/>
+</fig>
+<p>Depending on the specific application, the main interest of applying DIAMOnD could lie either in selecting a small number of most promising disease protein candidates, or in obtaining a larger set of proteins to explore the molecular disease mechanisms in a broader context. For the former case, DIAMOnD directly offers a ranked list of candidates. The latter approach, however, requires an additional criterion to define the boundary of the disease module, i.e. a threshold for the total number of proteins to be considered. This threshold can be chosen by using either <italic>(i)</italic> topological or <italic>(ii)</italic> biological properties of the agglomerated proteins.</p>
+<p><italic>(i)</italic> The connectivity <italic>p</italic>-values cannot be used directly to define a topological threshold. The reason is that the module grows at each iteration step, i.e. the number of seed genes <italic>s</italic> on which the <italic>p</italic>-value in Eqs. <xref rid="pcbi.1004120.e001" ref-type="disp-formula">(1)</xref> and <xref rid="pcbi.1004120.e002" ref-type="disp-formula">(2)</xref> is based, also increases. Since larger sets can produce smaller <italic>p</italic>-values, the absolute significance values obtained at different iteration steps cannot be compared to each other. However, our analysis suggests and alternative approach to define a topological threshold: As discussed above, the recall of the DIAMOnD algorithm does not depend sensitively on the initial level of completeness (<xref rid="pcbi.1004120.g003" ref-type="fig">Fig. 3C-F</xref>). Hence, the true positive rate can be estimated by removing varying fractions of seed proteins. For <italic>lysosomal storage disorders</italic>, for example we find an estimated recall of ∼50% at iteration 40 (<xref rid="pcbi.1004120.g003" ref-type="fig">Fig. 3E</xref>). After 40 iterations, the recall saturates and reaches a plateau, indicating that thereafter only few DIAMOnD proteins are expected to be truly disease associated. This saturation point may therefore be used as a threshold for the total number of DIAMOnD genes to consider.</p>
+<p><italic>(ii)</italic> A biological criterion for the threshold can be obtained from the validation according to <xref rid="pcbi.1004120.g004" ref-type="fig">Fig. 4A,B</xref>. The number of DIAMOnD proteins with direct biological evidence reaches a plateau at ∼200 iteration steps, suggesting this as the maximal number that should be considered. A more stringent criterion is to use the significance of the enrichment (see <xref rid="sec012" ref-type="sec">Materials &amp; Methods</xref>). The enrichment is typically strongest within the highest ranked DIAMOnD proteins and decreases with increasing iteration steps. For <italic>lysosomal storage diseases</italic>, for example, we find that the first 200 DIAMOnD proteins are similarly significantly enriched as the seed proteins (<xref rid="pcbi.1004120.g004" ref-type="fig">Fig. 4B</xref>). The largest connected component of the seed proteins aloneconsists of 24 (out of 45) proteins. When 200 DIAMOnD proteins are added, the largest connected component of the resulting module integrates 11 additional, previously disconnected seed proteins, resulting in a module consisting of 234 proteins (<xref rid="pcbi.1004120.g004" ref-type="fig">Fig. 4C</xref>). <xref rid="pcbi.1004120.g004" ref-type="fig">Fig. 4F</xref> shows the distribution of the fraction of integrated seed proteins across 70 diseases for several iterations. We find that with increasing number of DIAMOnD genes more and more disconnected seed proteins are integrated into the module, thus allowing for an integrated analysis of their molecular mechanism.</p>
+</sec>
+<sec id="sec009">
+<title>Comparison with existing methods</title>
+<p>In recent years, a number of disease protein prioritization methods [<xref rid="pcbi.1004120.ref024" ref-type="bibr">24</xref>,<xref rid="pcbi.1004120.ref029" ref-type="bibr">29</xref>,<xref rid="pcbi.1004120.ref033" ref-type="bibr">33</xref>–<xref rid="pcbi.1004120.ref036" ref-type="bibr">36</xref>] have been developed that can in principle be used to identify disease modules. To evaluate the relative performance of DIAMOnD, we implemented a random walk based algorithm (RW) [<xref rid="pcbi.1004120.ref035" ref-type="bibr">35</xref>] that was shown to outperform other methods and may therefore serve as a reference [<xref rid="pcbi.1004120.ref029" ref-type="bibr">29</xref>].</p>
+<p><xref rid="pcbi.1004120.g005" ref-type="fig">Fig. 5A,B</xref> summarizes the results of the comparison between DIAMOnD and RW on the synthetic modules. As we removed the attribute from half of the module nodes (about 100 nodes), iteration step 100 is a reasonable point of comparison. For both types of synthetic modules we find that DIAMOnD has a higher recovery in the top 100 predictions, whereas RW captures more true hits in its late predictions. In most cases DIAMOnD is able to identify removed nodes in the early iterations until the recovery rate saturates (<xref rid="pcbi.1004120.g005" ref-type="fig">Fig. 5A</xref>). A higher initial slope corresponds to higher precision, i.e. a higher ratio of true positives TP/(TP+FP). DIAMOnD shows higher precision and sensitivity (recall) in the initial iterations whereas RW performs better at later iterations once DIAMOnD saturated. In the context of disease protein identification, a high quality detection of fewer proteins with few false positives is generally more desirable than low quality detection of hundreds of proteins.</p>
+<fig id="pcbi.1004120.g005" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004120.g005</object-id>
+<label>Fig 5</label>
+<caption>
+<title>Comparison between DIAMOnD and Random Walk (RW).</title>
+<p>(A,B) Average recovery rates of DIAMOnD and the reference RW algorithm when removing 50% (100 nodes) of 100 generated <italic>shells</italic> (A) and <italic>connectivity</italic> (B) modules. (C) Comparison of the biological evidence for proteins identified by DIAMOnD and RW for <italic>lysosomal storage diseases</italic>. (D) Overlap between identified proteins and immediate neighbors of seed proteins. In contrast to RW, DIAMOnD includes a considerable number of proteins without first-order interactions to seed genes. (E) Comparison of the performance of DIAMOnD and RW across 70 diseases with respect to non-specific disease data. (F) Degree distributions of the identified proteins. DIAMonD proteins are characterized by the absence of hubs.</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004120.g005" position="float" xlink:type="simple"/>
+</fig>
+<p>We also compared the predictions of DIAMOnD and RW for each of the 70 real disease modules, as illustrated in <xref rid="pcbi.1004120.g005" ref-type="fig">Fig. 5C</xref> for <italic>lysosomal storage</italic> diseases. In general, DIAMOnD offers several conceptual and practical advantages compared to previous methods: (a) Many methods like RW preferentially select proteins from the immediate neighborhood of the seed proteins. Surprisingly, we find that a considerable fraction of the DIAMOnD proteins do not directly interact with seed genes (Figs. <xref rid="pcbi.1004120.g002" ref-type="fig">2B</xref> and <xref rid="pcbi.1004120.g005" ref-type="fig">5D</xref>). DIAMOnD thereby offers disease-relevant candidates beyond first-order protein interactions. (b) Physically interacting proteins often share functional annotations and pathways [<xref rid="pcbi.1004120.ref010" ref-type="bibr">10</xref>,<xref rid="pcbi.1004120.ref025" ref-type="bibr">25</xref>]. As a consequence, methods like RW are expected to perform well on generic validation data. In our comprehensive analysis across 70 diseases we are limited to such generic validation data and hence observe a comparable performance when GO term similarity is used as reference. Yet, we find that when we use pathways DIAMOnD outperforms RW (<xref rid="pcbi.1004120.g005" ref-type="fig">Fig. 5E</xref>). Furthermore, a more focused study on a single disease that used a variety of disease-specific data, e.g. from GWAS, microarray experiments and comorbidity analysis, has experimentally confirmed the specific disease-relevance of the DIAMOnD genes and significant outperformance of DIAMOnD over RW [<xref rid="pcbi.1004120.ref037" ref-type="bibr">37</xref>]. (c) By design, DIAMOnD avoids the selection of spurious high degree nodes. Consequently, the resulting modules are generally characterized by the absence of hubs. RW proteins, in contrast, have 2–3 times higher average degree (<xref rid="pcbi.1004120.g005" ref-type="fig">Fig. 5F</xref>). (d) The recall rate of the DIAMOnD algorithm is roughly independent of the level of incompleteness in the seed genes. It therefore allows us to estimate the number of biologically relevant predictions (<xref rid="pcbi.1004120.g003" ref-type="fig">Fig. 3C-F</xref>). In contrast, methodologies like RW solely provide a ranking, without predicting the total number of the most probable candidates. (e) DIAMOnD shows a significantly higher recall in the early iterations compared to RW, thereby providing higher confidence candidates early on. (e) As we discuss below, the DIAMOnD algorithm can be fine-tuned for specific applications, for example by giving varying weights to the initial seed genes.</p>
+</sec>
+<sec id="sec010">
+<title>Extending the basic DIAMOnD algorithm</title>
+<p>The DIAMOnD methodology can be easily extended to incorporate weighted links or nodes. In the iteration process introduced above, the seed proteins are treated the same way as the predicted proteins agglomerated into the module at later iteration steps. We can, however, give higher weights to the seed proteins compared to those that are only predicted. This can be achieved by introducing an additional weight α&gt; 1 for the seed proteins and α = 1 for all other proteins. By considering links to nodes with higher weights to be α times stronger, the direct neighbors of seed proteins have a higher chance of being identified. Technically, this is implemented by artificially increasing the number of seed genes, for example by duplicating their number in the case of α = 2, while maintaining their original interactions (<xref rid="pcbi.1004120.g006" ref-type="fig">Fig. 6A</xref>). The generalized form of <xref rid="pcbi.1004120.e001" ref-type="disp-formula">Equation (1)</xref> then becomes:
+<disp-formula id="pcbi.1004120.e003">
+<alternatives>
+<graphic id="pcbi.1004120.e003g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004120.e003" xlink:type="simple"/>
+<mml:math display="block" id="M3" overflow="scroll">
+<mml:mrow><mml:mi>p</mml:mi><mml:mo stretchy="false">(</mml:mo><mml:mi>k</mml:mi><mml:mo>,</mml:mo><mml:msub><mml:mi>k</mml:mi><mml:mi>s</mml:mi></mml:msub><mml:mo>,</mml:mo><mml:msub><mml:mi>k</mml:mi><mml:mrow><mml:msub><mml:mi>s</mml:mi><mml:mn>0</mml:mn></mml:msub></mml:mrow></mml:msub><mml:mo stretchy="false">)</mml:mo><mml:mo>=</mml:mo><mml:mfrac><mml:mrow><mml:mrow><mml:mo>(</mml:mo><mml:mtable><mml:mtr><mml:mtd><mml:mi>s</mml:mi><mml:mo>+</mml:mo><mml:mo stretchy="false">(</mml:mo><mml:mi>α</mml:mi><mml:mo>−</mml:mo><mml:mn>1</mml:mn><mml:mo stretchy="false">)</mml:mo><mml:msub><mml:mtext>s</mml:mtext><mml:mn>0</mml:mn></mml:msub></mml:mtd></mml:mtr><mml:mtr><mml:mtd><mml:msub><mml:mi>k</mml:mi><mml:mi>s</mml:mi></mml:msub><mml:mo>+</mml:mo><mml:mo stretchy="false">(</mml:mo><mml:mi>α</mml:mi><mml:mo>−</mml:mo><mml:mn>1</mml:mn><mml:mo stretchy="false">)</mml:mo><mml:msub><mml:mi>k</mml:mi><mml:mrow><mml:msub><mml:mi>s</mml:mi><mml:mn>0</mml:mn></mml:msub></mml:mrow></mml:msub></mml:mtd></mml:mtr></mml:mtable><mml:mo>)</mml:mo></mml:mrow><mml:mrow><mml:mo>(</mml:mo><mml:mtable><mml:mtr><mml:mtd><mml:mi>N</mml:mi><mml:mo>−</mml:mo><mml:mi>s</mml:mi></mml:mtd></mml:mtr><mml:mtr><mml:mtd><mml:mi>k</mml:mi><mml:mo>−</mml:mo><mml:msub><mml:mi>k</mml:mi><mml:mi>s</mml:mi></mml:msub></mml:mtd></mml:mtr></mml:mtable><mml:mo>)</mml:mo></mml:mrow></mml:mrow><mml:mrow><mml:mrow><mml:mo>(</mml:mo><mml:mtable><mml:mtr><mml:mtd><mml:mi>N</mml:mi><mml:mo>+</mml:mo><mml:mo stretchy="false">(</mml:mo><mml:mi>α</mml:mi><mml:mo>−</mml:mo><mml:mn>1</mml:mn><mml:mo stretchy="false">)</mml:mo><mml:msub><mml:mi>k</mml:mi><mml:mi>s</mml:mi></mml:msub></mml:mtd></mml:mtr><mml:mtr><mml:mtd><mml:mi>k</mml:mi><mml:mo>+</mml:mo><mml:mo stretchy="false">(</mml:mo><mml:mi>α</mml:mi><mml:mo>−</mml:mo><mml:mn>1</mml:mn><mml:mo stretchy="false">)</mml:mo><mml:msub><mml:mi>k</mml:mi><mml:mi>s</mml:mi></mml:msub><mml:msub><mml:mrow/><mml:mrow><mml:msub><mml:mrow/><mml:mn>0</mml:mn></mml:msub></mml:mrow></mml:msub></mml:mtd></mml:mtr></mml:mtable><mml:mo>)</mml:mo></mml:mrow></mml:mrow></mml:mfrac></mml:mrow></mml:math></alternatives>
+<label>(3)</label>
+</disp-formula>
+By tuning α and comparing the different resulting DIAMOnD sets we can optimize their biological relevance. In synthetic modules, the recovery rate could thereby be increased 2 to 3 times in comparison to the original version of the algorithm for which the recovered fraction saturates (<xref rid="pcbi.1004120.g006" ref-type="fig">Fig. 6B,C</xref>). On the set of 70 diseases, the optimal values for α vary considerably (see <xref rid="pcbi.1004120.g006" ref-type="fig">Fig. 6D and 6E</xref> for the examples of <italic>lysosomal storage diseases and ulcerative colitis</italic>). Based on the pathway validations, we find that α ≈ 10 performs best for many diseases (<xref rid="pcbi.1004120.g006" ref-type="fig">Fig. 6F</xref>). As noted above, however, the validation according to pathways is biased towards immediate neighbors of the seed genes and we therefore expect that optimal values of α will depend on the specific application and the validation data that are used. We also observed that introducing α allows for the construction of larger modules by helping avoid plateaus in the identification of relevant proteins (<xref rid="pcbi.1004120.g006" ref-type="fig">Fig. 6B-E</xref>).</p>
+<fig id="pcbi.1004120.g006" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004120.g006</object-id>
+<label>Fig 6</label>
+<caption>
+<title>Extending the DIAMOnD algorithm.</title>
+<p>(A) Illustration of how the algorithm can be modified to give the initial seed proteins a higher weight α = 2 by (virtually) doubling the seed proteins while keeping their interactions. Tuning α results in different sets of detected proteins. (B,C) Comparing the performance for varying values of α in synthetic shells (B) and connectivity significance (C) modules, respectively. The best results are obtained for α = 3. (C) The performance may also saturate for α larger than a certain value. For a given disease α can be tuned to optimize the results. Performance of DIAMOnD with respect to different values of α is shown for ulcerative colitis (D) and nutritional and metabolic diseases (E). These plots suggest that at α = 2 the number of true positives is maximal. (F) Overall, α ∼10 results in the best performance of DIAMOnD across 70 diseases. The individual values may vary considerably, however, suggesting an individual optimization for best results.</p>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004120.g006" position="float" xlink:type="simple"/>
+</fig>
+</sec>
+</sec>
+<sec id="sec011" sec-type="conclusions">
+<title>Discussion</title>
+<p>The hypothesis that disease associated proteins tend to interact with each other in the human Interactome underlies all network-based prioritization methods. Yet, for most diseases we found that only a relatively small fraction of known seed proteins in fact interact with each other. As a consequence, diseases cannot be associated with topologically dense network communities. Instead of the interaction <italic>density</italic>, we identified the interaction <italic>significance</italic> as the key quantity to characterize the connection patterns among disease proteins. While in principle this could be a consequence of our currently still very limited knowledge of disease associated proteins and their interactions, our results suggest that there is in fact a fundamental difference between disease modules and topological modules. Biologically, it is indeed plausible that disease modules do not necessarily coincide with densely interconnected topological modules. Highly interconnected proteins often represent functional units to perform a certain cellular task. Diseases, on the other hand, are likely to be the result of perturbations among several functional modules and therefore expected to span across functional modules/topological communities.</p>
+<p>Our analysis of the connection patterns of known disease proteins further allowed us to design a predictive and robust algorithm to uncover unknown disease associations and construct a comprehensive disease module. For both synthetic test modules and real disease modules the recall of DIAMonD generally does not depend on the level of completeness in the initial set of seed proteins, but is rather a property of the module itself. This can be used to estimate the expected true positive rate in the predictions and is particularly convenient for predicting new disease associations, where the total number of proteins involved in a disease is not known. While the outcome of DIAMOnD does not depend sensitively on the exact set of seed proteins, there typically are a few crucial seed proteins whose omission leads to drastically different and presumably random results. These crucial proteins are characterized by their high degree. Their topological importance suggests also particularly important roles for the pathobiological mechanisms of the disease. Overall, the final disease modules typically consist of one large component that contains all DIAMOnD genes and 30%-60% of the initially disconnected seed proteins, the rest remaining disconnected. The integration of the several initially disconnected seed clusters into a broader disease module and the elucidation of the network paths that interconnect them is crucial for a holistic understanding of the pathobiology and molecular mechanisms underlying complex diseases. Whether the remaining disconnected seed proteins could be integrated if the Interactome data was more complete, or whether their disease associations are spurious remains an open question.</p>
+</sec>
+<sec id="sec012" sec-type="materials|methods">
+<title>Materials and Methods</title>
+<sec id="sec013">
+<title>Interactome construction</title>
+<p>We only consider direct physical protein interactions with reported experimental evidence. For this, we consolidated several data sources as described in [<xref rid="pcbi.1004120.ref012" ref-type="bibr">12</xref>]:
+<list list-type="roman-lower">
+<list-item><p>Regulatory interactions: We used the TRANSFAC [<xref rid="pcbi.1004120.ref038" ref-type="bibr">38</xref>] database that lists regulatory interactions derived from the presence of a transcription factor binding site in the promoter region of a certain gene. The resulting network consists of 774 transcription factors and genes connected via 1,335 interactions.</p></list-item>
+<list-item><p>Binary interactions: We combine several yeast-two-hybrid high-throughput datasets [<xref rid="pcbi.1004120.ref010" ref-type="bibr">10</xref>,<xref rid="pcbi.1004120.ref039" ref-type="bibr">39</xref>–<xref rid="pcbi.1004120.ref042" ref-type="bibr">42</xref>] with binary interactions from IntAct [<xref rid="pcbi.1004120.ref043" ref-type="bibr">43</xref>] and MINT [<xref rid="pcbi.1004120.ref044" ref-type="bibr">44</xref>] databases. The sum of these data sources yields 28,653 interactions between 8,120 proteins.</p></list-item>
+<list-item><p>Literature curated interactions: These interactions, typically obtained by low throughput experiments, are manually curated from the literature. We use IntAct, MINT, BioGRID [<xref rid="pcbi.1004120.ref045" ref-type="bibr">45</xref>] and HPRD [<xref rid="pcbi.1004120.ref046" ref-type="bibr">46</xref>], resulting in 88,349 interactions between 11,798 proteins.</p></list-item>
+<list-item><p>Metabolic enzyme-coupled interactions: Two enzymes are assumed to be coupled if they share adjacent reactions in the KEGG and BIGG databases. In total, we use 5,325 such metabolic links between 921 enzymes from [<xref rid="pcbi.1004120.ref047" ref-type="bibr">47</xref>].</p></list-item>
+<list-item><p>Protein complexes: Protein complexes are single molecular units that integrate multiple gene products. The CORUM database [<xref rid="pcbi.1004120.ref048" ref-type="bibr">48</xref>] is a collection of mammalian complexes derived from a variety of experimental tools, from co-immunoprecipitation to co-sedimentation and ion exchange chromatography. In total, CORUM yields 2,837 complexes with 2,069 proteins connected by 31,276 links.</p></list-item>
+<list-item><p>Kinase network (kinase-substrate pairs): Protein kinases are important regulators in different biological processes, such as signal transduction. PhosphositePlus [<xref rid="pcbi.1004120.ref049" ref-type="bibr">49</xref>] provides a network of peptides that can be bound by kinases, yielding in total 6,066 interactions between 1,843 kinases and substrates.</p></list-item>
+<list-item><p>Signaling interactions: The dataset from [<xref rid="pcbi.1004120.ref050" ref-type="bibr">50</xref>] provides 32,706 interactions between 6,339 proteins that integrate several sources, both high-throughput and literature curation, into a directed network in which cellular signals are transmitted by proteins-protein interactions. Note that we do not take the direction of these interactions into account.</p></list-item>
+</list></p>
+<p>The union of all interactions from <italic>(i)-(vii)</italic> yields a network of 13,460 proteins that are interconnected by 141,296 physical interactions.</p>
+</sec>
+<sec id="sec014">
+<title>Disease-gene associations</title>
+<p>The corpus of 70 diseases was manually chosen by a medical expert, with the additional criteria of at least 20 associated genes reported in the literature. The gene-disease associations were retrieved from OMIM (Online Mendelian Inheritance in Man; <ext-link ext-link-type="uri" xlink:href="http://www.ncbi.nlm.nih.gov/omim" xlink:type="simple">http://www.ncbi.nlm.nih.gov/omim</ext-link>) [<xref rid="pcbi.1004120.ref051" ref-type="bibr">51</xref>] and GWAS (Genome-Wide Association Studies. The OMIM associations we use also include associations from UniProtKB/Swiss-Prot and have been compiled by [<xref rid="pcbi.1004120.ref013" ref-type="bibr">13</xref>]. The disease-gene associations from GWAS are obtained from the PheGenI database (Phenotype-Genotype Integrator; <ext-link ext-link-type="uri" xlink:href="http://www.ncbi.nlm.nih.gov/gap/PheGenI" xlink:type="simple">http://www.ncbi.nlm.nih.gov/gap/PheGenI</ext-link>) [<xref rid="pcbi.1004120.ref009" ref-type="bibr">9</xref>] that integrates various NCBI genomic databases. We use a genome-wide significance cutoff of <italic>p</italic>-value ≤ 5 · 10<sup>–8</sup>.</p>
+</sec>
+<sec id="sec015">
+<title>Local modularity <italic>R</italic></title>
+<p>To quantify the extent to which disease proteins correspond to topological communities, we use the <italic>local modularity R</italic> [<xref rid="pcbi.1004120.ref023" ref-type="bibr">23</xref>]. The community character of a set of nodes <italic>C</italic> is determined by the “sharpness” of its boundary, i.e by how well it is separated from the rest of the network. The boundary <italic>B</italic> consists of all nodes in <italic>C</italic> that have connections to nodes outside the community (<xref rid="pcbi.1004120.g001" ref-type="fig">Fig. 1K</xref>). The local modularity <italic>R</italic> is then defined as the number of links attached to nodes in <italic>B</italic> that do not leave the community, normalized by their total number of links. This can be written as
+<disp-formula id="pcbi.1004120.e004">
+<alternatives>
+<graphic id="pcbi.1004120.e004g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004120.e004" xlink:type="simple"/>
+<mml:math display="block" id="M4" overflow="scroll">
+<mml:mrow><mml:mi>R</mml:mi><mml:mo>=</mml:mo><mml:mfrac><mml:mrow><mml:mstyle displaystyle="true"><mml:munder><mml:mo>∑</mml:mo><mml:mrow><mml:mi>i</mml:mi><mml:mi>j</mml:mi></mml:mrow></mml:munder><mml:mrow><mml:msub><mml:mi>B</mml:mi><mml:mrow><mml:mi>i</mml:mi><mml:mi>j</mml:mi></mml:mrow></mml:msub></mml:mrow></mml:mstyle><mml:mi>δ</mml:mi><mml:mo stretchy="false">(</mml:mo><mml:mi>i</mml:mi><mml:mo>,</mml:mo><mml:mi>j</mml:mi><mml:mo stretchy="false">)</mml:mo></mml:mrow><mml:mrow><mml:mstyle displaystyle="true"><mml:munder><mml:mo>∑</mml:mo><mml:mrow><mml:mi>i</mml:mi><mml:mi>j</mml:mi></mml:mrow></mml:munder><mml:mrow><mml:msub><mml:mi>B</mml:mi><mml:mrow><mml:mi>i</mml:mi><mml:mi>j</mml:mi></mml:mrow></mml:msub></mml:mrow></mml:mstyle></mml:mrow></mml:mfrac></mml:mrow>
+</mml:math>
+</alternatives>
+</disp-formula>
+where <italic>B</italic><sub><italic>ij</italic></sub> is the adjacency matrix of the boundary nodes and <italic>δ</italic>(<italic>i,j</italic>) = 1 if both nodes <italic>i</italic> and <italic>j</italic> are in <italic>C</italic>, otherwise <italic>δ</italic>(<italic>i,j</italic>) = 0.</p>
+<p>The comparison with random control was done by selecting for each disease the same number of proteins at random from the Interactome (100 times). We then used a Kolmogorov-Smirnoff test to estimate the significance of the difference between the distribution of disease proteins and the respective distribution obtained in the randomization.</p>
+</sec>
+<sec id="sec016">
+<title>Topological community detection methods</title>
+<p>We use three well-established, methodologically distinct algorithms:
+<list list-type="roman-lower">
+<list-item><p>A link community algorithm from [<xref rid="pcbi.1004120.ref014" ref-type="bibr">14</xref>], which provides a hierarchical clustering of all links in the network. We use the default cut-off at the optimal partition density.</p></list-item>
+<list-item><p>The parameter-free Louvain method [<xref rid="pcbi.1004120.ref021" ref-type="bibr">21</xref>], which maximizes the global modularity of the network.</p></list-item>
+<list-item><p>The Markov Cluster Algorithm (MCL) [<xref rid="pcbi.1004120.ref024" ref-type="bibr">24</xref>], which is based on random flow. We use the default settings (inflation parameter <italic>r</italic> = 2) of version mcl-12–068.</p></list-item>
+</list></p>
+</sec>
+<sec id="sec017">
+<title>Random walk based disease gene prioritization</title>
+<p>We implemented a method from [<xref rid="pcbi.1004120.ref035" ref-type="bibr">35</xref>] that prioritizes candidate genes based on network diffusion. The seed genes serve as starting points for a random walker that wanders from node to node along the links of the network. At every time step of the iterative algorithm, the walker moves to a randomly selected neighbor of its current position. After every move the walker is reset to a randomly chosen seed gene with a given probability <italic>r</italic> (we use <italic>r</italic> = 0.4). After a sufficient number of iterations the frequency with which the nodes in the network are visited converges and can be used to rank the corresponding genes. Genes that are visited more often are considered to be closer to the seed genes and therefore more relevant to the disease than those who are visited less often.</p>
+</sec>
+<sec id="sec018">
+<title>Network randomization</title>
+<p>We use two models to construct ensembles of randomized networks with varying degrees of noise and incompleteness compared to the original Interactome:
+<list list-type="roman-lower">
+<list-item><p>To investigate the effects of network incompleteness we construct <italic>pruned networks</italic> by removing a fraction of randomly selected links from the Interactome.</p></list-item>
+<list-item><p>To explore the impact of noise in the Interactome we use <italic>partially rewired networks</italic> in which a fraction of randomly selected links are split and then randomly reconnected. This procedure corresponds to the configuration model [<xref rid="pcbi.1004120.ref052" ref-type="bibr">52</xref>,<xref rid="pcbi.1004120.ref053" ref-type="bibr">53</xref>] and does not alter the degrees of the nodes, i.e. only the specific interaction partners of the nodes are randomized, not their overall number. Note that the original network is perturbed considerably even at small fractions of rewired links as both existing links are removed and simultaneously new ones are established.</p></list-item>
+</list></p>
+</sec>
+<sec id="sec019">
+<title>DIAMOnD implementation</title>
+<p>The number of times we need to calculate the computationally relatively expensive <italic>p</italic>-values can be considerably reduced by noticing that two proteins with the same values of either <italic>k</italic><sub><italic>s</italic></sub> or <italic>k</italic> can be ranked directly according to their value in the respective other parameter, see Eqs. <xref rid="pcbi.1004120.e001" ref-type="disp-formula">(1)</xref> and <xref rid="pcbi.1004120.e002" ref-type="disp-formula">(2)</xref>: If two proteins have the same degree <italic>k</italic>, the one with higher <italic>k</italic><sub><italic>s</italic></sub> will result in less terms in the sum in <xref rid="pcbi.1004120.e002" ref-type="disp-formula">Eq. (2)</xref> and consequently a lower <italic>p</italic>-value. Similarly, between two proteins with the same number of connections to seeds <italic>k</italic><sub><italic>s</italic></sub>, the one with lower <italic>k</italic> will result in lower <italic>p</italic>-value. This results in the following procedure: At each iteration step, we first classify the nodes based on their k<sub>s</sub> and rank the node with lowest <italic>k</italic> highest within that class. Next, we classify the top ranks of each class by their degree <italic>k</italic> and choose the ones with highest <italic>k</italic><sub><italic>s</italic>.</sub> Finally, we calculate the exact <italic>p</italic>-value for the remaining nodes. This procedure guarantees that the number of candidate nodes will reduce to at most <italic>s</italic> nodes per iteration, as <italic>k</italic><sub><italic>s</italic></sub> cannot exceed <italic>s</italic> (note that <italic>s</italic><sub><italic>i</italic></sub> → <italic>s</italic><sub><italic>i</italic></sub>+1 at each iteration). In the worst-case scenario, and without further reducing the candidate nodes by their degree <italic>k</italic>, we are left with <italic>s</italic> nodes for which we need to calculate <italic>p</italic>-values. Assuming we need to identify <italic>N</italic> nodes from the network, the time complexity of the algorithm is of the order <italic>s</italic>+(<italic>s</italic>+1)+…+(<italic>N-1</italic>)+<italic>N</italic> ∼ <inline-formula id="pcbi.1004120.e005"><alternatives><graphic id="pcbi.1004120.e005g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004120.e005" xlink:type="simple"/><mml:math display="inline" id="M5" overflow="scroll"><mml:mrow><mml:mfrac><mml:mrow><mml:mi>N</mml:mi><mml:mo stretchy="false">(</mml:mo><mml:mi>N</mml:mi><mml:mo>−</mml:mo><mml:mn>1</mml:mn><mml:mo stretchy="false">)</mml:mo></mml:mrow><mml:mn>2</mml:mn></mml:mfrac><mml:mo>=</mml:mo><mml:mi>O</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:msup><mml:mi>N</mml:mi><mml:mn>2</mml:mn></mml:msup><mml:mo>)</mml:mo></mml:mrow></mml:mrow></mml:math></alternatives></inline-formula>. This compares favorably with other well established algorithms such as the random walk based method, whose complexity is between <italic>O</italic>(<italic>N</italic>log<italic>N</italic>) and <italic>O</italic>(<italic>N</italic><sup><italic>3</italic></sup>) [<xref rid="pcbi.1004120.ref054" ref-type="bibr">54</xref>,<xref rid="pcbi.1004120.ref055" ref-type="bibr">55</xref>].</p>
+</sec>
+<sec id="sec020">
+<title>Topological validation, <italic>N-1</italic> analysis and persistence</title>
+<p>We quantify the extent to which the removal of a seed node affects the outcome by two parameters: <italic>(i)</italic> the deviation from the original outcome and <italic>(ii)</italic> the persistence of that deviation for many iterations:
+<disp-formula id="pcbi.1004120.e006">
+<alternatives>
+<graphic id="pcbi.1004120.e006g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004120.e006" xlink:type="simple"/>
+<mml:math display="block" id="M6" overflow="scroll">
+<mml:mrow><mml:mtext>deviation=</mml:mtext><mml:mrow><mml:mtext>1−overlap</mml:mtext></mml:mrow></mml:mrow>
+</mml:math>
+</alternatives>
+</disp-formula>
+where the <italic>overlap</italic> is measured by the number of proteins that are in common between the original DIAMOnD outcome and the DIAMOnD outcome after the removal of seed genes. The <italic>persistence</italic> of a deviation is measured as
+<disp-formula id="pcbi.1004120.e007">
+<alternatives>
+<graphic id="pcbi.1004120.e007g" position="anchor" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004120.e007" xlink:type="simple"/>
+<mml:math display="block" id="M7" overflow="scroll">
+<mml:mrow><mml:mtext>Persistence=</mml:mtext><mml:mfrac><mml:mrow><mml:mtext>Total number of iteration steps where the deviation persists</mml:mtext></mml:mrow><mml:mrow><mml:mtext>Total number of iterations</mml:mtext></mml:mrow></mml:mfrac></mml:mrow>
+</mml:math>
+</alternatives>
+</disp-formula></p>
+<p>High persistence indicates that the removal of a node results in a deviation that holds across all iterations. However, typically we find that the perturbations introduced by removing a single seed node are compensated after a few iterations.</p>
+</sec>
+<sec id="sec021">
+<title>Gene annotations</title>
+<p>We use Gene Ontology (GO) for all genes are extracted from [<ext-link ext-link-type="uri" xlink:href="http://www.geneontology.org/" xlink:type="simple">http://www.geneontology.org/</ext-link>, downloaded Nov. 2011]. We only use high confidence annotations associated with the evidence codes EXP, IDA, IMP, IGI, IEP, ISS, ISA, ISM or ISO. In particular, we do not use annotations inferred from physical interactions (evidence code IPI) in order to avoid circularity. To obtain a complete set of GO terms from the reported most specific term for each gene, all annotations are propagated upwards on the full tree.</p>
+<p>The pathway annotations are extracted from the Molecular Signatures Database (MSigDB) published by the Broad Institute, Version 3.1 [<xref rid="pcbi.1004120.ref056" ref-type="bibr">56</xref>]. MSigDB integrates several different pathway databases; we use the ones from KEGG, Biocarta and Reactome.</p>
+</sec>
+<sec id="sec022">
+<title>Biological validation analysis</title>
+<p>To validate the potential disease relevance of the predicted candidate genes (from either DIAMOnD or RW), we compare their biological characteristics to the ones of the initial seed genes using the following workflow:
+<list list-type="roman-lower">
+<list-item><p>First we identify the set of GO terms (pathways) that are significantly enriched within the given set of seed genes using Fisher’s exact test (Bonferroni corrected <italic>p</italic>-value&lt;0.5).</p></list-item>
+<list-item><p>For each candidate gene we then check whether it is annotated with any of these significant terms. Genes with common annotations are considered as true positives.</p></list-item>
+<list-item><p>We compare the performance of DIAMOnD genes to seed genes as well as to random expectation for the same number of genes drawn randomly from network. The performance is based on the number of candidate genes that are considered true positives. To quantify the statistical significance of a given number of true positives at a given iteration step we use a sliding window approach: At each iteration step <italic>i</italic>, we consider the same number of candidate genes as there are seed genes for the respective disease. If there are 100 seed genes, for example, we use the genes in the interval [i-100/2, i+100/2] and count the number true positives among these genes. The statistical significance of an observed number is then determined using Fisher’s exact test. Matching the number of candidate genes with the number of seed genes allows us to compensate for the dependence of <italic>p</italic>-values on the underlying set size, thereby enabling us to directly compare DIAMOnD sets at different iteration steps, as well as DIAMOnD genes and seed genes.</p></list-item>
+</list></p>
+</sec>
+</sec>
+<sec id="sec023">
+<title>Supporting Information</title>
+<supplementary-material id="pcbi.1004120.s001" xlink:href="info:doi/10.1371/journal.pcbi.1004120.s001" mimetype="application/eps" position="float" xlink:type="simple">
+<label>S1 Fig</label>
+<caption>
+<title>Size distribution of the topological communities in the Interactome as identified by (A) link clustering, (B) the Louvin method and (C) the MCL method.</title>
+<p>(D-F) Number of community-disease pairs with significant overlap vs. their <italic>Jaccard</italic> similarity <italic>J</italic> for the three methods. No identified topological community coincides (<italic>J</italic> = 1) with a full set of disease genes.</p>
+<p>(EPS)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004120.s002" xlink:href="info:doi/10.1371/journal.pcbi.1004120.s002" mimetype="application/eps" position="float" xlink:type="simple">
+<label>S2 Fig</label>
+<caption>
+<title>Properties of the synthetic <italic>Shell</italic> modules.</title>
+<p>(A) Illustration of the construction process: An initial node is selected at random and all first and second neighbors are added to the module. The exact topological properties of the resulting modules depend on the initial node. Panel (B) shows how the synthetic module size varies with the degree of the initial node.</p>
+<p>(EPS)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004120.s003" xlink:href="info:doi/10.1371/journal.pcbi.1004120.s003" mimetype="text/tab-separated-values" position="float" xlink:type="simple">
+<label>S1 Data</label>
+<caption>
+<title>Annotated Interactome data.</title>
+<p>(TSV)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004120.s004" xlink:href="info:doi/10.1371/journal.pcbi.1004120.s004" mimetype="text/tab-separated-values" position="float" xlink:type="simple">
+<label>S2 Data</label>
+<caption>
+<title>Disease gene association data for 70 diseases.</title>
+<p>(TSV)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004120.s005" xlink:href="info:doi/10.1371/journal.pcbi.1004120.s005" mimetype="application/x-python" position="float" xlink:type="simple">
+<label>S1 Code</label>
+<caption>
+<title>A python implementation of the DIAMOnD algorithm.</title>
+<p>(PY)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ack>
+<p>The authors would like to thank J. Loscalzo for expert selection of phenotypes, A. Sharma, J. Bagrow, E. Guney, A. Karma, D. Chasman, R. Movassaghi Jorshari, M. Saltolini, M. Kitsak and S. Rabello for helpful discussions and suggestions, and J. De Nicolo for website design.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1004120.ref001"><label>1</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Goh</surname> <given-names>KI</given-names></name>, <name name-style="western"><surname>Cusick</surname> <given-names>ME</given-names></name>, <name name-style="western"><surname>Valle</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Childs</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Vidal</surname> <given-names>M</given-names></name>, <etal>et al</etal>. (<year>2007</year>) <article-title>The human disease network</article-title>. <source>Proceedings of the National Academy of Sciences of the United States of America</source> <volume>104</volume>: <fpage>8685</fpage>–<lpage>8690</lpage>. <object-id pub-id-type="pmid">17502601</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref002"><label>2</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pawson</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Linding</surname> <given-names>R</given-names></name> (<year>2008</year>) <article-title>Network medicine</article-title>. <source>FEBS letters</source> <volume>582</volume>: <fpage>1266</fpage>–<lpage>1270</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.febslet.2008.02.011" xlink:type="simple">10.1016/j.febslet.2008.02.011</ext-link></comment> <object-id pub-id-type="pmid">18282479</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref003"><label>3</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schadt</surname> <given-names>EE</given-names></name> (<year>2009</year>) <article-title>Molecular networks as sensors and drivers of common human diseases</article-title>. <source>Nature</source> <volume>461</volume>: <fpage>218</fpage>–<lpage>223</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nature08454" xlink:type="simple">10.1038/nature08454</ext-link></comment> <object-id pub-id-type="pmid">19741703</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref004"><label>4</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zanzoni</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Soler-Lopez</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Aloy</surname> <given-names>P</given-names></name> (<year>2009</year>) <article-title>A network medicine approach to human disease</article-title>. <source>FEBS letters</source> <volume>583</volume>: <fpage>1759</fpage>–<lpage>1765</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.febslet.2009.03.001" xlink:type="simple">10.1016/j.febslet.2009.03.001</ext-link></comment> <object-id pub-id-type="pmid">19269289</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref005"><label>5</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Barabasi</surname> <given-names>AL</given-names></name>, <name name-style="western"><surname>Gulbahce</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Loscalzo</surname> <given-names>J</given-names></name> (<year>2011</year>) <article-title>Network medicine: a network-based approach to human disease</article-title>. <source>Nature reviews Genetics</source> <volume>12</volume>: <fpage>56</fpage>–<lpage>68</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nrg2918" xlink:type="simple">10.1038/nrg2918</ext-link></comment> <object-id pub-id-type="pmid">21164525</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref006"><label>6</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Buchanan</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Caldarelli</surname> <given-names>GDLR</given-names></name>, <name name-style="western"><surname>P</surname></name> (<year>2010</year>) <chapter-title>Networks in cell biology</chapter-title>: <publisher-name>Cambrdige University Press</publisher-name>.</mixed-citation></ref>
+<ref id="pcbi.1004120.ref007"><label>7</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Feldman</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Rzhetsky</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Vitkup</surname> <given-names>D</given-names></name> (<year>2008</year>) <article-title>Network properties of genes harboring inherited disease mutations</article-title>. <source>Proceedings of the National Academy of Sciences of the United States of America</source> <volume>105</volume>: <fpage>4323</fpage>–<lpage>4328</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.0701722105" xlink:type="simple">10.1073/pnas.0701722105</ext-link></comment> <object-id pub-id-type="pmid">18326631</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref008"><label>8</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>del Sol</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Balling</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Hood</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Galas</surname> <given-names>D</given-names></name> (<year>2010</year>) <article-title>Diseases as network perturbations</article-title>. <source>Current opinion in biotechnology</source> <volume>21</volume>: <fpage>566</fpage>–<lpage>571</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.copbio.2010.07.010" xlink:type="simple">10.1016/j.copbio.2010.07.010</ext-link></comment> <object-id pub-id-type="pmid">20709523</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref009"><label>9</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ramos</surname> <given-names>EM</given-names></name>, <name name-style="western"><surname>Hoffman</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Junkins</surname> <given-names>HA</given-names></name>, <name name-style="western"><surname>Maglott</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Phan</surname> <given-names>L</given-names></name>, <etal>et al</etal>. (<year>2014</year>) <article-title>Phenotype-Genotype Integrator (PheGenI): synthesizing genome-wide association study (GWAS) data with existing genomic resources. European journal of human genetics</article-title>: <source>EJHG</source> <volume>22</volume>: <fpage>144</fpage>–<lpage>147</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/ejhg.2013.96" xlink:type="simple">10.1038/ejhg.2013.96</ext-link></comment> <object-id pub-id-type="pmid">23695286</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref010"><label>10</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Venkatesan</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Rual</surname> <given-names>JF</given-names></name>, <name name-style="western"><surname>Vazquez</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Stelzl</surname> <given-names>U</given-names></name>, <name name-style="western"><surname>Lemmens</surname> <given-names>I</given-names></name>, <etal>et al</etal>. (<year>2009</year>) <article-title>An empirical framework for binary interactome mapping</article-title>. <source>Nature methods</source> <volume>6</volume>: <fpage>83</fpage>–<lpage>90</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nmeth.1280" xlink:type="simple">10.1038/nmeth.1280</ext-link></comment> <object-id pub-id-type="pmid">19060904</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref011"><label>11</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Driel</surname> <given-names>HGBaMAv</given-names></name> (<year>2004</year>) <article-title>From syndrome families to functional genomics</article-title>. <source>Nature Reviews Genetics</source> <volume>5</volume>.</mixed-citation></ref>
+<ref id="pcbi.1004120.ref012"><label>12</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Menche</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Sharma</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Kitsak</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Ghiassian</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Vidal</surname> <given-names>M</given-names></name>, <etal>et al</etal>. (<year>2015</year>) <article-title>Uncovering disease-disease relationships through the incomplete human interactome</article-title>. <source>Science</source> <volume>347</volume>, no. <issue>6224</issue>: <fpage>1257601</fpage> <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/science.1257601" xlink:type="simple">10.1126/science.1257601</ext-link></comment> <object-id pub-id-type="pmid">25700523</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref013"><label>13</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mottaz</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Yip</surname> <given-names>YL</given-names></name>, <name name-style="western"><surname>Ruch</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Veuthey</surname> <given-names>AL</given-names></name> (<year>2008</year>) <article-title>Mapping proteins to disease terminologies: from UniProt to MeSH</article-title>. <source>BMC bioinformatics</source> <volume>9</volume> <supplement>Suppl 5</supplement>: <fpage>S3</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/1471-2105-9-S5-S3" xlink:type="simple">10.1186/1471-2105-9-S5-S3</ext-link></comment> <object-id pub-id-type="pmid">18460185</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref014"><label>14</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ahn</surname> <given-names>YY</given-names></name>, <name name-style="western"><surname>Bagrow</surname> <given-names>JP</given-names></name>, <name name-style="western"><surname>Lehmann</surname> <given-names>S</given-names></name> (<year>2010</year>) <article-title>Link communities reveal multiscale complexity in networks</article-title>. <source>Nature</source> <volume>466</volume>: <fpage>761</fpage>–<lpage>764</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nature09182" xlink:type="simple">10.1038/nature09182</ext-link></comment> <object-id pub-id-type="pmid">20562860</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref015"><label>15</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Clauset</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Newman</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Moore</surname> <given-names>C</given-names></name> (<year>2004</year>) <article-title>Finding community structure in very large networks</article-title>. <source>Physical Review E</source> <volume>70</volume>.</mixed-citation></ref>
+<ref id="pcbi.1004120.ref016"><label>16</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fortunato</surname> <given-names>S</given-names></name> (<year>2010</year>) <article-title>Community detection in graphs</article-title>. <source>Physics Reports</source> <volume>486</volume>: <fpage>75</fpage>–<lpage>174</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004120.ref017"><label>17</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Girvan</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Newman</surname> <given-names>ME</given-names></name> (<year>2002</year>) <article-title>Community structure in social and biological networks</article-title>. <source>Proceedings of the National Academy of Sciences of the United States of America</source> <volume>99</volume>: <fpage>7821</fpage>–<lpage>7826</lpage>. <object-id pub-id-type="pmid">12060727</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref018"><label>18</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lancichinetti</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Fortunato</surname> <given-names>S</given-names></name> (<year>2009</year>) <article-title>Community detection algorithms: A comparative analysis</article-title>. <source>Physical Review E</source> <volume>80</volume>.</mixed-citation></ref>
+<ref id="pcbi.1004120.ref019"><label>19</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Newman</surname> <given-names>M</given-names></name> (<year>2004</year>) <article-title>Fast algorithm for detecting community structure in networks</article-title>. <source>Physical Review E</source> <volume>69</volume>.</mixed-citation></ref>
+<ref id="pcbi.1004120.ref020"><label>20</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Newman</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Girvan</surname> <given-names>M</given-names></name> (<year>2004</year>) <article-title>Finding and evaluating community structure in networks</article-title>. <source>Physical Review E</source> <volume>69</volume>.</mixed-citation></ref>
+<ref id="pcbi.1004120.ref021"><label>21</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Blondel</surname> <given-names>VD</given-names></name>, <name name-style="western"><surname>Guillaume</surname> <given-names>J-L</given-names></name>, <name name-style="western"><surname>Lambiotte</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Lefebvre</surname> <given-names>E</given-names></name> (<year>2008</year>) <article-title>Fast unfolding of communities in large networks</article-title>. <source>Journal of Statistical Mechanics: Theory and Experiment</source> <volume>2008</volume>: <fpage>P10008</fpage>. <object-id pub-id-type="pmid">19002269</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref022"><label>22</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bagrow</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Bollt</surname> <given-names>E</given-names></name> (<year>2005</year>) <article-title>Local method for detecting communities</article-title>. <source>Physical Review E</source> <volume>72</volume>.</mixed-citation></ref>
+<ref id="pcbi.1004120.ref023"><label>23</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Clauset</surname> <given-names>A</given-names></name> (<year>2005</year>) <article-title>Finding local community structure in networks</article-title>. <source>Physical Review E</source> <volume>72</volume>.</mixed-citation></ref>
+<ref id="pcbi.1004120.ref024"><label>24</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Van Dongen</surname> <given-names>S</given-names></name> (<year>2008</year>) <article-title>Graph Clustering Via a Discrete Uncoupling Process</article-title>. <source>SIAM Journal on Matrix Analysis and Applications</source> <volume>30</volume>: <fpage>121</fpage>–<lpage>141</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004120.ref025"><label>25</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Sharan</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Ulitsky</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Shamir</surname> <given-names>R</given-names></name> (<year>2007</year>) <article-title>Network-based prediction of protein function</article-title>. <source>Molecular systems biology</source> <volume>3</volume>: <fpage>88</fpage>. <object-id pub-id-type="pmid">17353930</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref026"><label>26</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hart</surname> <given-names>GT</given-names></name>, <name name-style="western"><surname>Ramani</surname> <given-names>AK</given-names></name>, <name name-style="western"><surname>Marcotte</surname> <given-names>EM</given-names></name> (<year>2006</year>) <article-title>How complete are current yeast and human protein-interaction networks?</article-title> <source>Genome biology</source> <volume>7</volume>: <fpage>120</fpage>. <object-id pub-id-type="pmid">17147767</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref027"><label>27</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ashburner</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Ball</surname> <given-names>CA</given-names></name>, <name name-style="western"><surname>Blake</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Botstein</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Butler</surname> <given-names>H</given-names></name>, <etal>et al</etal>. (<year>2000</year>) <article-title>Gene Ontology: tool for the unification of biology</article-title>. <source>Nature Genetics</source> <volume>25</volume>: <fpage>25</fpage>–<lpage>29</lpage>. <object-id pub-id-type="pmid">10802651</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref028"><label>28</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kanehisa</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Goto</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Kawashima</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Okuno</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Hattori</surname> <given-names>M</given-names></name> (<year>2004</year>) <article-title>The KEGG resource for deciphering the genome</article-title>. <source>Nucleic acids research</source> <volume>32</volume>: <fpage>D277</fpage>–<lpage>280</lpage>. <object-id pub-id-type="pmid">14681412</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref029"><label>29</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Navlakha</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Kingsford</surname> <given-names>C</given-names></name> (<year>2010</year>) <article-title>The power of protein interaction networks for associating genes with diseases</article-title>. <source>Bioinformatics</source> <volume>26</volume>: <fpage>1057</fpage>–<lpage>1063</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/bioinformatics/btq076" xlink:type="simple">10.1093/bioinformatics/btq076</ext-link></comment> <object-id pub-id-type="pmid">20185403</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref030"><label>30</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Su</surname> <given-names>AI</given-names></name>, <name name-style="western"><surname>Wiltshire</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Batalov</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Lapp</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Ching</surname> <given-names>KA</given-names></name>, <etal>et al</etal>. (<year>2004</year>) <article-title>A gene atlas of the mouse and human protein-encoding transcriptomes</article-title>. <source>Proceedings of the National Academy of Sciences of the United States of America</source> <volume>101</volume>: <fpage>6062</fpage>–<lpage>6067</lpage>. <object-id pub-id-type="pmid">15075390</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref031"><label>31</label><mixed-citation publication-type="other" xlink:type="simple">B. GTK, J. Z, S. M, L. K, N. CK (2006) Analysis of the human protein interactome and comparision with yeast, worm and fly interaction datasets. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/1747" xlink:type="simple">10.1038/1747</ext-link></comment></mixed-citation></ref>
+<ref id="pcbi.1004120.ref032"><label>32</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Xu</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>Y</given-names></name> (<year>2006</year>) <article-title>Discovering disease-genes by topological features in human protein-protein interaction network</article-title>. <source>Bioinformatics</source> <volume>22</volume>: <fpage>2800</fpage>–<lpage>2805</lpage>. <object-id pub-id-type="pmid">16954137</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref033"><label>33</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Oti</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Snel</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Huynen</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Brunner</surname> <given-names>HG</given-names></name> (<year>2006</year>) <article-title>Predicting disease genes using protein-protein interactions</article-title>. <source>Journal of medical genetics</source> <volume>43</volume>: <fpage>691</fpage>–<lpage>698</lpage>. <object-id pub-id-type="pmid">16611749</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref034"><label>34</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lage</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Mollgard</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Greenway</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Wakimoto</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Gorham</surname> <given-names>JM</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>Dissecting spatio-temporal protein networks driving human heart development and related disorders</article-title>. <source>Molecular systems biology</source> <volume>6</volume>: <fpage>381</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/msb.2010.36" xlink:type="simple">10.1038/msb.2010.36</ext-link></comment> <object-id pub-id-type="pmid">20571530</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref035"><label>35</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kohler</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Bauer</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Horn</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Robinson</surname> <given-names>PN</given-names></name> (<year>2008</year>) <article-title>Walking the interactome for prioritization of candidate disease genes</article-title>. <source>American journal of human genetics</source> <volume>82</volume>: <fpage>949</fpage>–<lpage>958</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.ajhg.2008.02.013" xlink:type="simple">10.1016/j.ajhg.2008.02.013</ext-link></comment> <object-id pub-id-type="pmid">18371930</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref036"><label>36</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Guney</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Oliva</surname> <given-names>B</given-names></name> (<year>2012</year>) <article-title>Exploiting protein-protein interaction networks for genome-wide disease-gene prioritization</article-title>. <source>PloS one</source> <volume>7</volume>: <fpage>e43557</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pone.0043557" xlink:type="simple">10.1371/journal.pone.0043557</ext-link></comment> <object-id pub-id-type="pmid">23028459</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref037"><label>37</label><mixed-citation publication-type="other" xlink:type="simple">Sharma A, Menche J, Huang C, Ort T, Zhou X, et al. (2015) A disease module in the interactome explains disease heterogeneity, drug response and captures novel pathways and genes for Asthma. Hum. Mol. Genet. first published online January 12, 2015, <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/hmg/ddv001" xlink:type="simple">10.1093/hmg/ddv001</ext-link></comment></mixed-citation></ref>
+<ref id="pcbi.1004120.ref038"><label>38</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Matys</surname> <given-names>V</given-names></name> (<year>2003</year>) <article-title>TRANSFAC(R): transcriptional regulation, from patterns to profiles</article-title>. <source>Nucleic acids research</source> <volume>31</volume>: <fpage>374</fpage>–<lpage>378</lpage>. <object-id pub-id-type="pmid">12520026</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref039"><label>39</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rual</surname> <given-names>JF</given-names></name>, <name name-style="western"><surname>Venkatesan</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Hao</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Hirozane-Kishikawa</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Dricot</surname> <given-names>A</given-names></name>, <etal>et al</etal>. (<year>2005</year>) <article-title>Towards a proteome-scale map of the human protein-protein interaction network</article-title>. <source>Nature</source> <volume>437</volume>: <fpage>1173</fpage>–<lpage>1178</lpage>. <object-id pub-id-type="pmid">16189514</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref040"><label>40</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Stelzl</surname> <given-names>U</given-names></name>, <name name-style="western"><surname>Worm</surname> <given-names>U</given-names></name>, <name name-style="western"><surname>Lalowski</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Haenig</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Brembeck</surname> <given-names>FH</given-names></name>, <etal>et al</etal>. (<year>2005</year>) <article-title>A human protein-protein interaction network: a resource for annotating the proteome</article-title>. <source>Cell</source> <volume>122</volume>: <fpage>957</fpage>–<lpage>968</lpage>. <object-id pub-id-type="pmid">16169070</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref041"><label>41</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yu</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Tardivo</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Tam</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Weiner</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Gebreab</surname> <given-names>F</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>Next-generation sequencing to generate interactome datasets</article-title>. <source>Nature methods</source> <volume>8</volume>: <fpage>478</fpage>–<lpage>480</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nmeth.1597" xlink:type="simple">10.1038/nmeth.1597</ext-link></comment> <object-id pub-id-type="pmid">21516116</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref042"><label>42</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rolland</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Ta</surname> <given-names>An M</given-names></name>, <name name-style="western"><surname>Charloteaux</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Pevzner</surname> <given-names>SJ</given-names></name>, <name name-style="western"><surname>Zhong</surname> <given-names>Q</given-names></name>, <etal>et al</etal>. (<year>2014</year>) <article-title>A proteome-scale map of the human interactome network</article-title>. <source>Cell</source> <volume>159</volume>: <fpage>1212</fpage>–<lpage>1226</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.cell.2014.10.050" xlink:type="simple">10.1016/j.cell.2014.10.050</ext-link></comment> <object-id pub-id-type="pmid">25416956</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref043"><label>43</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Aranda</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Achuthan</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Alam-Faruque</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Armean</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Bridge</surname> <given-names>A</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>The IntAct molecular interaction database in 2010</article-title>. <source>Nucleic acids research</source> <volume>38</volume>: <fpage>D525</fpage>–<lpage>531</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/nar/gkp878" xlink:type="simple">10.1093/nar/gkp878</ext-link></comment> <object-id pub-id-type="pmid">19850723</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref044"><label>44</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ceol</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Chatr</surname> <given-names>Aryamontri A</given-names></name>, <name name-style="western"><surname>Licata</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Peluso</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Briganti</surname> <given-names>L</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>MINT, the molecular interaction database: 2009 update</article-title>. <source>Nucleic acids research</source> <volume>38</volume>: <fpage>D532</fpage>–<lpage>539</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/nar/gkp983" xlink:type="simple">10.1093/nar/gkp983</ext-link></comment> <object-id pub-id-type="pmid">19897547</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref045"><label>45</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Stark</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Breitkreutz</surname> <given-names>BJ</given-names></name>, <name name-style="western"><surname>Chatr-Aryamontri</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Boucher</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Oughtred</surname> <given-names>R</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>The BioGRID Interaction Database: 2011 update</article-title>. <source>Nucleic acids research</source> <volume>39</volume>: <fpage>D698</fpage>–<lpage>704</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/nar/gkq1116" xlink:type="simple">10.1093/nar/gkq1116</ext-link></comment> <object-id pub-id-type="pmid">21071413</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref046"><label>46</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Keshava</surname> <given-names>Prasad TS</given-names></name>, <name name-style="western"><surname>Goel</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Kandasamy</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Keerthikumar</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Kumar</surname> <given-names>S</given-names></name>, <etal>et al</etal>. (<year>2009</year>) <article-title>Human Protein Reference Database—2009 update</article-title>. <source>Nucleic acids research</source> <volume>37</volume>: <fpage>D767</fpage>–<lpage>772</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/nar/gkn892" xlink:type="simple">10.1093/nar/gkn892</ext-link></comment> <object-id pub-id-type="pmid">18988627</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref047"><label>47</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lee</surname> <given-names>DS</given-names></name>, <name name-style="western"><surname>Park</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Kay</surname> <given-names>KA</given-names></name>, <name name-style="western"><surname>Christakis</surname> <given-names>NA</given-names></name>, <name name-style="western"><surname>Oltvai</surname> <given-names>ZN</given-names></name>, <etal>et al</etal>. (<year>2008</year>) <article-title>The implications of human metabolic network topology for disease comorbidity</article-title>. <source>Proceedings of the National Academy of Sciences of the United States of America</source> <volume>105</volume>: <fpage>9880</fpage>–<lpage>9885</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.0802208105" xlink:type="simple">10.1073/pnas.0802208105</ext-link></comment> <object-id pub-id-type="pmid">18599447</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref048"><label>48</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ruepp</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Waegele</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Lechner</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Brauner</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Dunger-Kaltenbach</surname> <given-names>I</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>CORUM: the comprehensive resource of mammalian protein complexes—2009</article-title>. <source>Nucleic acids research</source> <volume>38</volume>: <fpage>D497</fpage>–<lpage>501</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/nar/gkp914" xlink:type="simple">10.1093/nar/gkp914</ext-link></comment> <object-id pub-id-type="pmid">19884131</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref049"><label>49</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hornbeck</surname> <given-names>PV</given-names></name>, <name name-style="western"><surname>Kornhauser</surname> <given-names>JM</given-names></name>, <name name-style="western"><surname>Tkachev</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Skrzypek</surname> <given-names>E</given-names></name>, <etal>et al</etal>. (<year>2012</year>) <article-title>PhosphoSitePlus: a comprehensive resource for investigating the structure and function of experimentally determined post-translational modifications in man and mouse</article-title>. <source>Nucleic acids research</source> <volume>40</volume>: <fpage>D261</fpage>–<lpage>270</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/nar/gkr1122" xlink:type="simple">10.1093/nar/gkr1122</ext-link></comment> <object-id pub-id-type="pmid">22135298</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref050"><label>50</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Vinayagam</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Stelzl</surname> <given-names>U</given-names></name>, <name name-style="western"><surname>Foulle</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Plassmann</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Zenkner</surname> <given-names>M</given-names></name>, <etal>et al</etal>. (<year>2011</year>) <article-title>A directed protein interaction network for investigating intracellular signal transduction</article-title>. <source>Science signaling</source> <volume>4</volume>: <fpage>rs8</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/scisignal.2001699" xlink:type="simple">10.1126/scisignal.2001699</ext-link></comment> <object-id pub-id-type="pmid">21900206</object-id></mixed-citation></ref>
+<ref id="pcbi.1004120.ref051"><label>51</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hamosh</surname> <given-names>Ada</given-names></name> <name name-style="western"><surname>AFS</surname></name>, <name name-style="western"><surname>Amerger</surname> <given-names>Joanna</given-names></name>, <name name-style="western"><surname>Bocchini</surname> <given-names>Carol</given-names></name>, <name name-style="western"><surname>Valle</surname> <given-names>David</given-names></name> and <name name-style="western"><surname>McKusick</surname> <given-names>Victor A.</given-names></name> (<year>2002</year>) <article-title>a knowledgebase of human genes and genetic disorders</article-title>. <source>Nucleic Acids Researcg</source> <volume>30</volume>.</mixed-citation></ref>
+<ref id="pcbi.1004120.ref052"><label>52</label><mixed-citation publication-type="other" xlink:type="simple">Newman MEJ (2003) The Structure and Function of Complex Networks; REVIEW S, editor.</mixed-citation></ref>
+<ref id="pcbi.1004120.ref053"><label>53</label><mixed-citation publication-type="journal" xlink:type="simple"><collab xlink:type="simple">Canfield EABaER</collab> (<year>1978</year>) <article-title>The asymptotic number of labeled graphs with given degree sequences</article-title>. <source>Combinatorial Theory</source> <volume>24</volume>: <fpage>296</fpage>–<lpage>307</lpage>.</mixed-citation></ref>
+<ref id="pcbi.1004120.ref054"><label>54</label><mixed-citation publication-type="other" xlink:type="simple">Feige U (1995) A tight lower bound on the cover time for random walks on graphs. Random Structures and Algorithms pp. 433–438.</mixed-citation></ref>
+<ref id="pcbi.1004120.ref055"><label>55</label><mixed-citation publication-type="other" xlink:type="simple">Feige U (1995) A tight upper bound on the cover time for random walks on graphs. Random Structures and Algorithms pp. 51–54.</mixed-citation></ref>
+<ref id="pcbi.1004120.ref056"><label>56</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Subramanian</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Tamayo</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Mootha</surname> <given-names>VK</given-names></name>, <name name-style="western"><surname>Mukherjee</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Ebert</surname> <given-names>BL</given-names></name>, <etal>et al</etal>. (<year>2005</year>) <article-title>Gene set enrichment analysis: a knowledge-based approach for interpreting genome-wide expression profiles</article-title>. <source>Proceedings of the National Academy of Sciences of the United States of America</source> <volume>102</volume>: <fpage>15545</fpage>–<lpage>15550</lpage>. <object-id pub-id-type="pmid">16199517</object-id></mixed-citation></ref>
+</ref-list>
+</back>
+</article>

@@ -1,0 +1,2425 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="3.0" xml:lang="en">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS Comput Biol</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">ploscomp</journal-id>
+<journal-title-group>
+<journal-title>PLOS Computational Biology</journal-title>
+</journal-title-group>
+<issn pub-type="ppub">1553-734X</issn>
+<issn pub-type="epub">1553-7358</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="publisher-id">PCOMPBIOL-D-14-01517</article-id>
+<article-id pub-id-type="doi">10.1371/journal.pcbi.1004041</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+</article-categories>
+<title-group>
+<article-title>ClonalFrameML: Efficient Inference of Recombination in Whole Bacterial Genomes</article-title>
+<alt-title alt-title-type="running-head">Inference of Recombination in Bacterial Genomes</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Didelot</surname>
+<given-names>Xavier</given-names>
+</name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Wilson</surname>
+<given-names>Daniel J.</given-names>
+</name>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+</contrib-group>
+<aff id="aff001"><label>1</label> <addr-line>Department of Infectious Disease Epidemiology, Imperial College, London, United Kingdom</addr-line></aff>
+<aff id="aff002"><label>2</label> <addr-line>Nuffield Department of Medicine, University of Oxford, John Radcliffe Hospital, Oxford, United Kingdom</addr-line></aff>
+<aff id="aff003"><label>3</label> <addr-line>Wellcome Trust Centre for Human Genetics, Oxford, United Kingdom</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Prlic</surname>
+<given-names>Andreas</given-names>
+</name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1">
+<addr-line>UCSD, United States of America</addr-line>
+</aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001"><p>The authors have declared that no competing interests exist.</p></fn>
+<fn fn-type="con" id="contrib001"><p>Conceived and designed the experiments: XD DJW. Performed the experiments: XD DJW. Analyzed the data: XD DJW. Contributed reagents/materials/analysis tools: XD DJW. Wrote the paper: XD DJW.</p></fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">x.didelot@imperial.ac.uk</email> (XD); <email xlink:type="simple">daniel.wilson@ndm.ox.ac.uk</email> (DJW)</corresp>
+</author-notes>
+<pub-date pub-type="collection">
+<month>2</month>
+<year>2015</year>
+</pub-date>
+<pub-date pub-type="epub">
+<day>12</day>
+<month>2</month>
+<year>2015</year>
+</pub-date>
+<volume>11</volume>
+<issue>2</issue>
+<elocation-id>e1004041</elocation-id>
+<history>
+<date date-type="received">
+<day>19</day>
+<month>8</month>
+<year>2014</year>
+</date>
+<date date-type="accepted">
+<day>16</day>
+<month>11</month>
+<year>2014</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2015</copyright-year>
+<copyright-holder>Didelot, Wilson</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pcbi.1004041" xlink:type="simple"/>
+<abstract>
+<p>Recombination is an important evolutionary force in bacteria, but it remains challenging to reconstruct the imports that occurred in the ancestry of a genomic sample. Here we present ClonalFrameML, which uses maximum likelihood inference to simultaneously detect recombination in bacterial genomes and account for it in phylogenetic reconstruction. ClonalFrameML can analyse hundreds of genomes in a matter of hours, and we demonstrate its usefulness on simulated and real datasets. We find evidence for recombination hotspots associated with mobile elements in <italic>Clostridium difficile</italic> ST6 and a previously undescribed 310kb chromosomal replacement in <italic>Staphylococcus aureus</italic> ST582. ClonalFrameML is freely available at <ext-link ext-link-type="uri" xlink:href="http://clonalframeml.googlecode.com/" xlink:type="simple">http://clonalframeml.googlecode.com/</ext-link>.</p>
+</abstract>
+<funding-group>
+<funding-statement>XD is funded by the National Institute for Health Research through Health Protection Research Unit funding. DJW is a Sir Henry Dale Fellow, jointly funded by the Wellcome Trust and the Royal Society (Grant 101237/Z/13/Z). This study was supported by the Oxford NIHR Biomedical Research Centre and the UKCRC Modernising Medical Microbiology Consortium, the latter funded under the UKCRC Translational Infection Research Initiative supported by the Medical Research Council, the Biotechnology and Biological Sciences Research Council and the National Institute for Health Research on behalf of the UK Department of Health (Grant G0800778) and the Wellcome Trust (Grant 087646/Z/08/Z). The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="5"/>
+<table-count count="0"/>
+<page-count count="18"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability" xlink:type="simple">
+<meta-name>Data Availability</meta-name>
+<meta-value>All data files are available from the author’s website <ext-link ext-link-type="uri" xlink:href="http://www.danielwilson.me.uk/files/cfml.tgz" xlink:type="simple">http://www.danielwilson.me.uk/files/cfml.tgz</ext-link></meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec sec-type="intro" id="sec001">
+<title>Introduction</title>
+<p>Following recent developments in sequencing technologies, both the time and cost required to sequence whole bacterial genomes have dropped to levels where it is now being applied in clinical and public health microbiology [<xref ref-type="bibr" rid="pcbi.1004041.ref001">1</xref>,<xref ref-type="bibr" rid="pcbi.1004041.ref002">2</xref>]. On its own, the genome of a single bacterial isolate can indicate many clinically important features such as the species and strain [<xref ref-type="bibr" rid="pcbi.1004041.ref003">3</xref>,<xref ref-type="bibr" rid="pcbi.1004041.ref004">4</xref>], the level of virulence [<xref ref-type="bibr" rid="pcbi.1004041.ref005">5</xref>,<xref ref-type="bibr" rid="pcbi.1004041.ref006">6</xref>] and antimicrobial resistance properties [<xref ref-type="bibr" rid="pcbi.1004041.ref007">7</xref>,<xref ref-type="bibr" rid="pcbi.1004041.ref008">8</xref>]. Comparisons of multiple bacterial genomes can be used to investigate within-host diversity and evolution [<xref ref-type="bibr" rid="pcbi.1004041.ref009">9</xref>,<xref ref-type="bibr" rid="pcbi.1004041.ref010">10</xref>], to delineate and reconstruct local outbreaks [<xref ref-type="bibr" rid="pcbi.1004041.ref011">11</xref>–<xref ref-type="bibr" rid="pcbi.1004041.ref013">13</xref>], or to describe the global population structure and epidemiology [<xref ref-type="bibr" rid="pcbi.1004041.ref014">14</xref>,<xref ref-type="bibr" rid="pcbi.1004041.ref015">15</xref>]. Such comparisons typically involve the construction of a phylogenetic tree to reflect the relationships between genomes. One of the most popular approaches to do this is the maximum likelihood (ML) method, as implemented for example in PhyML [<xref ref-type="bibr" rid="pcbi.1004041.ref016">16</xref>], RAxML [<xref ref-type="bibr" rid="pcbi.1004041.ref017">17</xref>] and FastTree [<xref ref-type="bibr" rid="pcbi.1004041.ref018">18</xref>]. Bayesian methods such as BEAST [<xref ref-type="bibr" rid="pcbi.1004041.ref019">19</xref>] or MrBayes [<xref ref-type="bibr" rid="pcbi.1004041.ref020">20</xref>] are also frequently used, but less often than other methods because Bayesian methods tend to be more computationally expensive for applications to large genomic sets.</p>
+<p>Phylogenetic reconstruction by any method is problematic because bacteria occasionally undergo homologous recombination, whereby a fragment of the recipient’s genome is replaced by that of the donor [<xref ref-type="bibr" rid="pcbi.1004041.ref021">21</xref>]. There are three different mechanisms that can lead to homologous recombination in bacteria: transduction where a virus transmits DNA from the donor to the recipient, transformation where donor DNA in the environment is free to be taken up by the recipient, and conjugation where donor and recipient come into direct contact [<xref ref-type="bibr" rid="pcbi.1004041.ref022">22</xref>]. The frequency of recombination varies from species to species [<xref ref-type="bibr" rid="pcbi.1004041.ref023">23</xref>], and sometimes also from one lineage to another within a single species, for example in <italic>Clostridium difficile</italic> [<xref ref-type="bibr" rid="pcbi.1004041.ref024">24</xref>] and <italic>Streptococcus pneumoniae</italic> [<xref ref-type="bibr" rid="pcbi.1004041.ref025">25</xref>]. Even in <italic>Staphylococcus aureus</italic> which is often described as a clonal species, some branches of the ML phylogeny contain significant evidence for recombination [<xref ref-type="bibr" rid="pcbi.1004041.ref026">26</xref>]. Ignoring recombination altogether when reconstructing a bacterial phylogeny is likely to be misleading about the true clonal relationships between isolates [<xref ref-type="bibr" rid="pcbi.1004041.ref027">27</xref>–<xref ref-type="bibr" rid="pcbi.1004041.ref029">29</xref>]. For example, the signal of temporal evolution was only detectable in <italic>S. pneumoniae</italic> once recombined regions had been excluded prior to phylogenetic reconstruction [<xref ref-type="bibr" rid="pcbi.1004041.ref030">30</xref>]. To correctly infer phylogenetic relationships it is therefore necessary to detect and account for recombination, but doing so also allows the study of recombination which is an interesting and important evolutionary phenomenon in its own right. For example, recombination played a key role in host adaptation of <italic>Salmonella enterica</italic> [<xref ref-type="bibr" rid="pcbi.1004041.ref031">31</xref>] and <italic>Campylobacter jejuni</italic> [<xref ref-type="bibr" rid="pcbi.1004041.ref032">32</xref>,<xref ref-type="bibr" rid="pcbi.1004041.ref033">33</xref>], in the evolution of <italic>C. difficile</italic> cell surface [<xref ref-type="bibr" rid="pcbi.1004041.ref034">34</xref>] and pathogenicity [<xref ref-type="bibr" rid="pcbi.1004041.ref006">6</xref>], in <italic>Helicobacter pylori</italic> within-host diversification [<xref ref-type="bibr" rid="pcbi.1004041.ref035">35</xref>,<xref ref-type="bibr" rid="pcbi.1004041.ref036">36</xref>] and global population structure [<xref ref-type="bibr" rid="pcbi.1004041.ref037">37</xref>,<xref ref-type="bibr" rid="pcbi.1004041.ref038">38</xref>], and in <italic>S. pneumoniae</italic> evolution and vaccine escape [<xref ref-type="bibr" rid="pcbi.1004041.ref025">25</xref>,<xref ref-type="bibr" rid="pcbi.1004041.ref039">39</xref>,<xref ref-type="bibr" rid="pcbi.1004041.ref040">40</xref>].</p>
+<p>In the absence of recombination, all genomic positions would be in the clonal frame and a phylogenetic reconstruction would therefore reflect the clonal genealogy [<xref ref-type="bibr" rid="pcbi.1004041.ref041">41</xref>–<xref ref-type="bibr" rid="pcbi.1004041.ref043">43</xref>]. The ClonalFrame software [<xref ref-type="bibr" rid="pcbi.1004041.ref044">44</xref>] attempts to reconstruct this tree of clonal relationships between isolates by detecting the location of recombined regions on each branch. However, ClonalFrame was developed almost ten years ago primarily for application to multi-locus sequence typing data [<xref ref-type="bibr" rid="pcbi.1004041.ref045">45</xref>], and it is not able to deal with the large amounts of whole genome sequencing data currently being generated. For that reason, we developed a completely new implementation called ClonalFrameML which allows ML inference to be performed under the ClonalFrame model for hundreds of whole genomes in a matter of hours.</p>
+<sec sec-type="materials|methods" id="sec001a">
+<title>Design and Implementation</title>
+<p><bold>The ClonalFrame model of recombination</bold>. To consider the effect of recombination on phylogenetic reconstruction, it is useful to distinguish two types of events, namely imports from a source within the population under study, and imports from an external source. The former is especially relevant if the sampled genomes cover a whole species or several species, in which case recombination typically originates from within the same species, does not introduce new polymorphism but does result in homoplasy and genetic incompatibility [<xref ref-type="bibr" rid="pcbi.1004041.ref046">46</xref>]. On the other hand, if recombination comes from an external source, then the recombined segments contain a high number of substitutions which are not seen elsewhere in the dataset [<xref ref-type="bibr" rid="pcbi.1004041.ref046">46</xref>]. This is especially relevant if the genomes under study are all from a single lineage (for example a single sequence type according to multi-locus sequence typing [<xref ref-type="bibr" rid="pcbi.1004041.ref045">45</xref>]), with frequent imports from other lineages. In this case, recombination with other members of the same lineage might also occur but would have little effect (typically none) compared to imports from other lineages because of the low diversity within the lineage.</p>
+<p>A simple model of recombination from external sources has previously been proposed and Bayesian inference under this model is implemented in ClonalFrame [<xref ref-type="bibr" rid="pcbi.1004041.ref044">44</xref>]. In this model, genomic evolution occurs on the branches of the clonal genealogy via point mutation and recombination respectively at rates <italic>θ</italic>/2 and <italic>R</italic>/2 per site per coalescent unit of time (which is equal to the effective population size <italic>N<sub>e</sub></italic> times the duration <italic>g</italic> of a generation). Note that other models use a different parameterisation involving the scaled rate of occurrence of either initiation or termination of recombination, <italic>ρ</italic> = 2<italic>R</italic> [<xref ref-type="bibr" rid="pcbi.1004041.ref047">47</xref>–<xref ref-type="bibr" rid="pcbi.1004041.ref049">49</xref>]. Recombination is assumed to affect segments of length exponentially distributed with mean <italic>δ</italic> in which each site is substituted with probability <italic>ν</italic>, irrespective of whether recombination involved transduction, transformation or conjugation.</p>
+<p><bold>Overview of the ClonalFrameML algorithm</bold>. Here we describe a new algorithm for inference under the ClonalFrame model, ClonalFrameML, which proceeds in the following steps:
+<list list-type="order">
+<list-item><p>An ML tree is constructed using standard software such as PhyML [<xref ref-type="bibr" rid="pcbi.1004041.ref016">16</xref>] or RAxML [<xref ref-type="bibr" rid="pcbi.1004041.ref017">17</xref>] and taken to be the initial clonal genealogy.</p></list-item>
+<list-item><p>The ancestral sequences at internal nodes of the clonal genealogy, and any missing base calls in the observed sequences, are reconstructed by ML using a previously described algorithm [<xref ref-type="bibr" rid="pcbi.1004041.ref050">50</xref>].</p></list-item>
+<list-item><p>A Baum-Welch Expectation-Maximisation (EM) algorithm is used to obtain ML estimates of the recombination parameters and the branch lengths of the clonal genealogy.</p></list-item>
+<list-item><p>The ML importation status is inferred at every site using a Viterbi algorithm.</p></list-item>
+<list-item><p>Uncertainty in the parameters is quantified using a bootstrapping method.</p></list-item>
+</list></p>
+<p><bold>Description of the ClonalFrame model as a hidden Markov model</bold>. We assume the parameters <italic>R</italic>/<italic>θ, δ</italic> and <italic>ν</italic> are the same for all branches, and that the length of branch <italic>i</italic>, in terms of the expected number of mutations, is <italic>M<sub>i</sub></italic>. Unlike ClonalFrame, which assumes a coalescent prior on the genealogy, the use of an ML tree makes no such assumption. We have found that the topology of the clonal genealogy can be estimated extremely well by ML from whole genome data [<xref ref-type="bibr" rid="pcbi.1004041.ref051">51</xref>]. Since we use an ML tree, we measure the lengths of branches and the recombination rate in units of expected numbers of mutations, whereas the ClonalFrame method measures them in units of <italic>N<sub>e</sub>g</italic> generations. For efficient computation, the ClonalFrame model can be thought of as a hidden Markov model (HMM, see, e.g. [<xref ref-type="bibr" rid="pcbi.1004041.ref052">52</xref>]) when the ancestral and descendant genomes for each branch of the clonal genealogy have been observed or reconstructed. The hidden state of the HMM records whether each nucleotide was subject to recombination or not on the branch connecting the two genomes. Nucleotides unaffected by recombination are said to be <italic>unimported</italic> (<italic>U</italic>) and nucleotides subject to recombination are said to be <italic>imported</italic> (<italic>I</italic>) [<xref ref-type="bibr" rid="pcbi.1004041.ref044">44</xref>]. Based on the ClonalFrame model, we define the following transition probability matrix for the hidden variable between sites, <italic>H<sub>j</sub></italic> and <italic>H<sub>k</sub></italic> distance <italic>d<sub>jk</sub></italic> apart:
+<disp-formula id="pcbi.1004041.e001">
+<alternatives>
+<graphic id="pcbi.1004041.e001g" mimetype="image" position="anchor" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004041.e001"/>
+<mml:math display="block" id="M1" overflow="scroll">
+<mml:mrow>
+<mml:mi mathvariant="normal">Pr</mml:mi><mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:msub>
+<mml:mi>H</mml:mi>
+<mml:mi>k</mml:mi>
+</mml:msub>
+<mml:mo>|</mml:mo><mml:msub>
+<mml:mi>H</mml:mi>
+<mml:mi>j</mml:mi>
+</mml:msub>
+</mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow><mml:mo>=</mml:mo>
+<mml:mfenced open="{" close="">
+<mml:mtable>
+<mml:mtr>
+<mml:mtd>
+<mml:mrow>
+<mml:msup>
+<mml:mi mathvariant="normal">e</mml:mi>
+<mml:mrow>
+<mml:mo>−</mml:mo><mml:msub>
+<mml:mi>d</mml:mi>
+<mml:mrow>
+<mml:mi>j</mml:mi><mml:mi>k</mml:mi></mml:mrow>
+</mml:msub>
+<mml:mi>M</mml:mi><mml:mfrac>
+<mml:mi>R</mml:mi>
+<mml:mi>θ</mml:mi>
+</mml:mfrac>
+</mml:mrow>
+</mml:msup>
+</mml:mrow>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow/>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow>
+<mml:msub>
+<mml:mi>H</mml:mi>
+<mml:mi>j</mml:mi>
+</mml:msub>
+<mml:mo>=</mml:mo><mml:mi>U</mml:mi><mml:mspace width="0.25em"/><mml:mi mathvariant="normal">and</mml:mi><mml:mspace width="0.25em"/><mml:msub>
+<mml:mi>H</mml:mi>
+<mml:mi>k</mml:mi>
+</mml:msub>
+<mml:mo>=</mml:mo><mml:mi>U</mml:mi></mml:mrow>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow/>
+</mml:mtd>
+</mml:mtr>
+<mml:mtr>
+<mml:mtd>
+<mml:mrow>
+<mml:mn>1</mml:mn><mml:mo>−</mml:mo><mml:msup>
+<mml:mi mathvariant="normal">e</mml:mi>
+<mml:mrow>
+<mml:mo>−</mml:mo><mml:msub>
+<mml:mi>d</mml:mi>
+<mml:mrow>
+<mml:mi>j</mml:mi><mml:mi>k</mml:mi></mml:mrow>
+</mml:msub>
+<mml:mi>M</mml:mi><mml:mfrac>
+<mml:mi>R</mml:mi>
+<mml:mi>θ</mml:mi>
+</mml:mfrac>
+</mml:mrow>
+</mml:msup>
+</mml:mrow>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow/>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow>
+<mml:msub>
+<mml:mi>H</mml:mi>
+<mml:mi>j</mml:mi>
+</mml:msub>
+<mml:mo>=</mml:mo><mml:mi>U</mml:mi><mml:mspace width="0.25em"/><mml:mi mathvariant="normal">and</mml:mi><mml:mspace width="0.25em"/><mml:msub>
+<mml:mi>H</mml:mi>
+<mml:mi>k</mml:mi>
+</mml:msub>
+<mml:mo>=</mml:mo><mml:mi>I</mml:mi></mml:mrow>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow/>
+</mml:mtd>
+</mml:mtr>
+<mml:mtr>
+<mml:mtd>
+<mml:mrow>
+<mml:mn>1</mml:mn><mml:mo>−</mml:mo><mml:msup>
+<mml:mi mathvariant="normal">e</mml:mi>
+<mml:mrow>
+<mml:mo>−</mml:mo><mml:msub>
+<mml:mi>d</mml:mi>
+<mml:mrow>
+<mml:mi>j</mml:mi><mml:mi>k</mml:mi></mml:mrow>
+</mml:msub>
+<mml:mo>/</mml:mo><mml:mi>δ</mml:mi></mml:mrow>
+</mml:msup>
+</mml:mrow>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow/>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow>
+<mml:msub>
+<mml:mi>H</mml:mi>
+<mml:mi>j</mml:mi>
+</mml:msub>
+<mml:mo>=</mml:mo><mml:mi>I</mml:mi><mml:mspace width="0.25em"/><mml:mi mathvariant="normal">and</mml:mi><mml:mspace width="0.25em"/><mml:msub>
+<mml:mi>H</mml:mi>
+<mml:mi>k</mml:mi>
+</mml:msub>
+<mml:mo>=</mml:mo><mml:mi>U</mml:mi></mml:mrow>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow/>
+</mml:mtd>
+</mml:mtr>
+<mml:mtr>
+<mml:mtd>
+<mml:mrow>
+<mml:msup>
+<mml:mi mathvariant="normal">e</mml:mi>
+<mml:mrow>
+<mml:mo>−</mml:mo><mml:msub>
+<mml:mi>d</mml:mi>
+<mml:mrow>
+<mml:mi>j</mml:mi><mml:mi>k</mml:mi></mml:mrow>
+</mml:msub>
+<mml:mo>/</mml:mo><mml:mi>δ</mml:mi></mml:mrow>
+</mml:msup>
+</mml:mrow>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow/>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow>
+<mml:msub>
+<mml:mi>H</mml:mi>
+<mml:mi>j</mml:mi>
+</mml:msub>
+<mml:mo>=</mml:mo><mml:mi>I</mml:mi><mml:mspace width="0.25em"/><mml:mi mathvariant="normal">and</mml:mi><mml:mspace width="0.25em"/><mml:msub>
+<mml:mi>H</mml:mi>
+<mml:mi>k</mml:mi>
+</mml:msub>
+<mml:mo>=</mml:mo><mml:mi>I</mml:mi></mml:mrow>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow/>
+</mml:mtd>
+</mml:mtr>
+</mml:mtable>
+</mml:mfenced>
+</mml:mrow>
+</mml:math>
+</alternatives>
+</disp-formula></p>
+<p>Again following the ClonalFrame model, we define the following emission probabilities for the data at nucleotide <italic>j</italic>, which define the likelihood for the ancestral and descendant sequences conditional on the underlying hidden variable:
+<disp-formula id="pcbi.1004041.e002">
+<alternatives>
+<graphic id="pcbi.1004041.e002g" mimetype="image" position="anchor" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004041.e002"/>
+<mml:math display="block" id="M2" overflow="scroll">
+<mml:mrow>
+<mml:mi mathvariant="normal">Pr</mml:mi><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:msub>
+<mml:mi>A</mml:mi>
+<mml:mi>j</mml:mi>
+</mml:msub>
+<mml:mo>,</mml:mo><mml:msub>
+<mml:mi>D</mml:mi>
+<mml:mi>j</mml:mi>
+</mml:msub>
+<mml:mo>|</mml:mo><mml:msub>
+<mml:mi>H</mml:mi>
+<mml:mi>j</mml:mi>
+</mml:msub>
+</mml:mrow>
+<mml:mo>)</mml:mo><mml:mo>=</mml:mo>
+<mml:mfenced open="{" close="">
+<mml:mrow>
+<mml:mtable>
+<mml:mtr>
+<mml:mtd>
+<mml:mrow>
+<mml:msubsup>
+<mml:mi>p</mml:mi>
+<mml:mrow>
+<mml:msub>
+<mml:mi>A</mml:mi>
+<mml:mi>j</mml:mi>
+</mml:msub>
+<mml:msub>
+<mml:mi>D</mml:mi>
+<mml:mi>j</mml:mi>
+</mml:msub>
+</mml:mrow>
+<mml:mrow>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mi>M</mml:mi>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow>
+</mml:msubsup>
+</mml:mrow>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow>
+<mml:msub>
+<mml:mi>H</mml:mi>
+<mml:mi>j</mml:mi>
+</mml:msub>
+<mml:mo>=</mml:mo><mml:mi>U</mml:mi></mml:mrow>
+</mml:mtd>
+</mml:mtr>
+<mml:mtr>
+<mml:mtd>
+<mml:mrow>
+<mml:msubsup>
+<mml:mi>p</mml:mi>
+<mml:mrow>
+<mml:msub>
+<mml:mi>A</mml:mi>
+<mml:mi>j</mml:mi>
+</mml:msub>
+<mml:msub>
+<mml:mi>D</mml:mi>
+<mml:mi>j</mml:mi>
+</mml:msub>
+</mml:mrow>
+<mml:mrow>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mi>ν</mml:mi>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow>
+</mml:msubsup>
+</mml:mrow>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow>
+<mml:msub>
+<mml:mi>H</mml:mi>
+<mml:mi>j</mml:mi>
+</mml:msub>
+<mml:mo>=</mml:mo><mml:mi>I</mml:mi></mml:mrow>
+</mml:mtd>
+</mml:mtr>
+</mml:mtable> </mml:mrow>
+</mml:mfenced>
+<mml:mo>.</mml:mo>
+</mml:mrow>
+</mml:math>
+</alternatives>
+</disp-formula></p>
+<p>Here <italic>A<sub>j</sub></italic> and <italic>D<sub>j</sub></italic> are the nucleotides of the ancestral and descendant sequences and <inline-formula id="pcbi.1004041.e003">
+<alternatives>
+<graphic id="pcbi.1004041.e003g" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004041.e003" position="anchor" xlink:type="simple"/>
+<mml:math display="inline" id="M3" overflow="scroll">
+<mml:mrow>
+<mml:msubsup>
+<mml:mi>p</mml:mi>
+<mml:mrow>
+<mml:mi>j</mml:mi><mml:mi>k</mml:mi></mml:mrow>
+<mml:mrow>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mi>t</mml:mi>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow>
+</mml:msubsup>
+</mml:mrow>
+</mml:math>
+</alternatives>
+</inline-formula> is the transition probability from nucleotide <italic>j</italic> to <italic>k</italic> in time <italic>t</italic> under the HKY85 model [<xref ref-type="bibr" rid="pcbi.1004041.ref053">53</xref>].</p>
+<p><bold>ML inference under the ClonalFrame model</bold></p>
+<p>In the EM algorithm that follows, we approximate the transition and emission probabilities to obtain analytic results for the parameter updates. We employ a Poisson approximation to the transition probabilities that, in effect, assumes no more than a single transition between adjacent sites:
+<disp-formula id="pcbi.1004041.e004">
+<alternatives>
+<graphic id="pcbi.1004041.e004g" mimetype="image" position="anchor" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004041.e004"/>
+<mml:math display="block" id="M4" overflow="scroll">
+<mml:mrow>
+<mml:mi mathvariant="normal">Pr</mml:mi><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:msub>
+<mml:mi>H</mml:mi>
+<mml:mi>k</mml:mi>
+</mml:msub>
+<mml:mo>|</mml:mo><mml:msub>
+<mml:mi>H</mml:mi>
+<mml:mi>j</mml:mi>
+</mml:msub>
+</mml:mrow>
+<mml:mo>)</mml:mo><mml:mo>≈</mml:mo>
+<mml:mfenced open="{" close="">
+<mml:mrow>
+<mml:mtable>
+<mml:mtr>
+<mml:mtd>
+<mml:mrow>
+<mml:msup>
+<mml:mi mathvariant="normal">e</mml:mi>
+<mml:mrow>
+<mml:mo>−</mml:mo><mml:msub>
+<mml:mi>d</mml:mi>
+<mml:mrow>
+<mml:mi>j</mml:mi><mml:mi>k</mml:mi></mml:mrow>
+</mml:msub>
+<mml:mi>M</mml:mi>
+<mml:mfrac>
+<mml:mi>R</mml:mi>
+<mml:mi>θ</mml:mi>
+</mml:mfrac>
+</mml:mrow>
+</mml:msup>
+</mml:mrow>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow/>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow>
+<mml:msub>
+<mml:mi>H</mml:mi>
+<mml:mi>j</mml:mi>
+</mml:msub>
+<mml:mo>=</mml:mo><mml:mi>U</mml:mi><mml:mspace width="0.25em"/><mml:mi mathvariant="normal">and</mml:mi><mml:mspace width="0.25em"/><mml:msub>
+<mml:mi>H</mml:mi>
+<mml:mi>k</mml:mi>
+</mml:msub>
+<mml:mo>=</mml:mo><mml:mi>U</mml:mi></mml:mrow>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow/>
+</mml:mtd>
+</mml:mtr>
+<mml:mtr>
+<mml:mtd>
+<mml:mrow>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:msub>
+<mml:mi>d</mml:mi>
+<mml:mrow>
+<mml:mi>j</mml:mi><mml:mi>k</mml:mi></mml:mrow>
+</mml:msub>
+<mml:mi>M</mml:mi>
+<mml:mfrac>
+<mml:mi>R</mml:mi>
+<mml:mi>θ</mml:mi>
+</mml:mfrac>
+</mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow><mml:msup>
+<mml:mi mathvariant="normal">e</mml:mi>
+<mml:mrow>
+<mml:mo>−</mml:mo><mml:msub>
+<mml:mi>d</mml:mi>
+<mml:mrow>
+<mml:mi>j</mml:mi><mml:mi>k</mml:mi></mml:mrow>
+</mml:msub>
+<mml:mi>M</mml:mi>
+<mml:mfrac>
+<mml:mi>R</mml:mi>
+<mml:mi>θ</mml:mi>
+</mml:mfrac>
+</mml:mrow>
+</mml:msup>
+</mml:mrow>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow/>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow>
+<mml:msub>
+<mml:mi>H</mml:mi>
+<mml:mi>j</mml:mi>
+</mml:msub>
+<mml:mo>=</mml:mo><mml:mi>U</mml:mi><mml:mspace width="0.25em"/><mml:mi mathvariant="normal">and</mml:mi><mml:mspace width="0.25em"/><mml:msub>
+<mml:mi>H</mml:mi>
+<mml:mi>k</mml:mi>
+</mml:msub>
+<mml:mo>=</mml:mo><mml:mi>I</mml:mi></mml:mrow>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow/>
+</mml:mtd>
+</mml:mtr>
+<mml:mtr>
+<mml:mtd>
+<mml:mrow>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:mrow><mml:mrow>
+<mml:msub>
+<mml:mi>d</mml:mi>
+<mml:mrow>
+<mml:mi>j</mml:mi><mml:mi>k</mml:mi></mml:mrow>
+</mml:msub>
+</mml:mrow><mml:mo>/</mml:mo><mml:mi>δ</mml:mi></mml:mrow>
+</mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow><mml:msup>
+<mml:mi mathvariant="normal">e</mml:mi>
+<mml:mrow>
+<mml:mo>−</mml:mo><mml:mrow><mml:mrow>
+<mml:msub>
+<mml:mi>d</mml:mi>
+<mml:mrow>
+<mml:mi>j</mml:mi><mml:mi>k</mml:mi></mml:mrow>
+</mml:msub>
+</mml:mrow><mml:mo>/</mml:mo><mml:mi>δ</mml:mi></mml:mrow>
+</mml:mrow>
+</mml:msup>
+</mml:mrow>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow/>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow>
+<mml:msub>
+<mml:mi>H</mml:mi>
+<mml:mi>j</mml:mi>
+</mml:msub>
+<mml:mo>=</mml:mo><mml:mi>I</mml:mi><mml:mspace width="0.25em"/><mml:mi mathvariant="normal">and</mml:mi><mml:mspace width="0.25em"/><mml:msub>
+<mml:mi>H</mml:mi>
+<mml:mi>k</mml:mi>
+</mml:msub>
+<mml:mo>=</mml:mo><mml:mi>U</mml:mi></mml:mrow>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow/>
+</mml:mtd>
+</mml:mtr>
+<mml:mtr>
+<mml:mtd>
+<mml:mrow>
+<mml:msup>
+<mml:mi mathvariant="normal">e</mml:mi>
+<mml:mrow>
+<mml:mo>−</mml:mo><mml:mrow><mml:mrow>
+<mml:msub>
+<mml:mi>d</mml:mi>
+<mml:mrow>
+<mml:mi>j</mml:mi><mml:mi>k</mml:mi></mml:mrow>
+</mml:msub>
+</mml:mrow><mml:mo>/</mml:mo><mml:mi>δ</mml:mi></mml:mrow>
+</mml:mrow>
+</mml:msup>
+</mml:mrow>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow/>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow>
+<mml:msub>
+<mml:mi>H</mml:mi>
+<mml:mi>j</mml:mi>
+</mml:msub>
+<mml:mo>=</mml:mo><mml:mi>I</mml:mi><mml:mspace width="0.25em"/><mml:mi mathvariant="normal">and</mml:mi><mml:mspace width="0.25em"/><mml:msub>
+<mml:mi>H</mml:mi>
+<mml:mi>k</mml:mi>
+</mml:msub>
+<mml:mo>=</mml:mo><mml:mi>I</mml:mi></mml:mrow>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow/>
+</mml:mtd>
+</mml:mtr>
+</mml:mtable></mml:mrow> 
+</mml:mfenced>
+</mml:mrow>
+</mml:math>
+</alternatives>
+</disp-formula></p>
+<p>We summarize the sixteen possible combinations of ancestral and descendant nucleotides by a single observation <italic>O<sub>j</sub></italic> that records whether they are the same (<italic>S</italic>) or different (<italic>D</italic>), and employing a Poisson approximation that, in effect, assumes no more than a single substitution along the branch, then:
+<disp-formula id="pcbi.1004041.e005">
+<alternatives>
+<graphic id="pcbi.1004041.e005g" mimetype="image" position="anchor" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004041.e005"/>
+<mml:math display="block" id="M5" overflow="scroll">
+<mml:mrow>
+<mml:mi mathvariant="normal">Pr</mml:mi><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:msub>
+<mml:mi>A</mml:mi>
+<mml:mi>j</mml:mi>
+</mml:msub>
+<mml:mo>,</mml:mo><mml:msub>
+<mml:mi>D</mml:mi>
+<mml:mi>j</mml:mi>
+</mml:msub>
+<mml:mo>|</mml:mo><mml:msub>
+<mml:mi>H</mml:mi>
+<mml:mi>j</mml:mi>
+</mml:msub>
+</mml:mrow>
+<mml:mo>)</mml:mo><mml:mo>≈</mml:mo>
+<mml:mfenced open="{" close="">
+<mml:mrow>
+<mml:mtable>
+<mml:mtr>
+<mml:mtd>
+<mml:mrow>
+<mml:msup>
+<mml:mi mathvariant="normal">e</mml:mi>
+<mml:mrow>
+<mml:mo>−</mml:mo><mml:mi>M</mml:mi></mml:mrow>
+</mml:msup>
+</mml:mrow>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow/>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow>
+<mml:msub>
+<mml:mi>O</mml:mi>
+<mml:mi>j</mml:mi>
+</mml:msub>
+<mml:mo>=</mml:mo><mml:mi>S</mml:mi><mml:mspace width="0.25em"/><mml:mi mathvariant="normal">and</mml:mi><mml:mspace width="0.25em"/><mml:msub>
+<mml:mi>H</mml:mi>
+<mml:mi>j</mml:mi>
+</mml:msub>
+<mml:mo>=</mml:mo><mml:mi>U</mml:mi></mml:mrow>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow/>
+</mml:mtd>
+</mml:mtr>
+<mml:mtr>
+<mml:mtd>
+<mml:mrow>
+<mml:mi>M</mml:mi>
+<mml:mspace width="0.25em"/>
+<mml:msup>
+<mml:mi mathvariant="normal">e</mml:mi>
+<mml:mrow>
+<mml:mo>−</mml:mo><mml:mi>M</mml:mi>
+</mml:mrow>
+</mml:msup>
+</mml:mrow>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow/>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow>
+<mml:msub>
+<mml:mi>O</mml:mi>
+<mml:mi>j</mml:mi>
+</mml:msub>
+<mml:mo>=</mml:mo><mml:mi>D</mml:mi><mml:mspace width="0.25em"/><mml:mi mathvariant="normal">and</mml:mi><mml:mspace width="0.25em"/><mml:msub>
+<mml:mi>H</mml:mi>
+<mml:mi>j</mml:mi>
+</mml:msub>
+<mml:mo>=</mml:mo><mml:mi>U</mml:mi></mml:mrow>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow/>
+</mml:mtd>
+</mml:mtr>
+<mml:mtr>
+<mml:mtd>
+<mml:mrow>
+<mml:msup>
+<mml:mi mathvariant="normal">e</mml:mi>
+<mml:mrow>
+<mml:mo>−</mml:mo><mml:mi>ν</mml:mi></mml:mrow>
+</mml:msup>
+</mml:mrow>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow/>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow>
+<mml:msub>
+<mml:mi>O</mml:mi>
+<mml:mi>j</mml:mi>
+</mml:msub>
+<mml:mo>=</mml:mo><mml:mi>S</mml:mi><mml:mspace width="0.25em"/><mml:mi mathvariant="normal">and</mml:mi><mml:mspace width="0.25em"/><mml:msub>
+<mml:mi>H</mml:mi>
+<mml:mi>j</mml:mi>
+</mml:msub>
+<mml:mo>=</mml:mo><mml:mi>I</mml:mi></mml:mrow>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow/>
+</mml:mtd>
+</mml:mtr>
+<mml:mtr>
+<mml:mtd>
+<mml:mrow>
+<mml:mi>ν</mml:mi><mml:mspace width="0.25em"/><mml:msup>
+<mml:mi mathvariant="normal">e</mml:mi>
+<mml:mrow>
+<mml:mo>−</mml:mo><mml:mi>ν</mml:mi></mml:mrow>
+</mml:msup>
+</mml:mrow>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow/>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow>
+<mml:msub>
+<mml:mi>O</mml:mi>
+<mml:mi>j</mml:mi>
+</mml:msub>
+<mml:mo>=</mml:mo><mml:mi>D</mml:mi><mml:mspace width="0.25em"/><mml:mi mathvariant="normal">and</mml:mi><mml:mspace width="0.25em"/><mml:msub>
+<mml:mi>H</mml:mi>
+<mml:mi>j</mml:mi>
+</mml:msub>
+<mml:mo>=</mml:mo><mml:mi>I</mml:mi></mml:mrow>
+</mml:mtd>
+<mml:mtd>
+<mml:mrow/>
+</mml:mtd>
+</mml:mtr>
+</mml:mtable></mml:mrow> 
+</mml:mfenced>
+</mml:mrow>
+</mml:math>
+</alternatives>
+</disp-formula></p>
+<p>We use a Baum-Welch EM algorithm to estimate the model parameters. Given initial parameters <inline-formula id="pcbi.1004041.e006">
+<alternatives>
+<graphic id="pcbi.1004041.e006g" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004041.e006" position="anchor" xlink:type="simple"/>
+<mml:math display="inline" id="M6" overflow="scroll">
+<mml:mrow>
+<mml:mi>Θ</mml:mi><mml:mo>=</mml:mo><mml:mo>{</mml:mo> <mml:mrow>
+<mml:mfrac>
+<mml:mi>R</mml:mi>
+<mml:mi>θ</mml:mi>
+</mml:mfrac>
+<mml:mo>,</mml:mo><mml:mi>δ</mml:mi><mml:mo>,</mml:mo><mml:mi>ν</mml:mi><mml:mo>,</mml:mo><mml:msub>
+<mml:mi>M</mml:mi>
+<mml:mrow>
+<mml:mn>1</mml:mn><mml:mo>…</mml:mo><mml:mi>B</mml:mi></mml:mrow>
+</mml:msub>
+</mml:mrow> <mml:mo>}</mml:mo></mml:mrow>
+</mml:math>
+</alternatives>
+</inline-formula> comprising the recombination parameters and the <italic>B</italic> branch lengths, we use the forward-backward algorithm to calculate the expected number of transitions, <italic>T<sub>ijk</sub></italic> between the hidden states <italic>j</italic> and <italic>k</italic> for sites less than 1kb apart, and the expected number of observations, <italic>E<sub>ijk</sub></italic>, of state <italic>k</italic> given hidden state <italic>j</italic> on branch <italic>i</italic>. The 1kb restriction helps ensure the validity of the Poisson approximation. We then update the parameters as follows
+<disp-formula id="pcbi.1004041.e007">
+<alternatives>
+<graphic id="pcbi.1004041.e007g" mimetype="image" position="anchor" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004041.e007"/>
+<mml:math display="block" id="M7" overflow="scroll">
+<mml:mrow>
+<mml:msub>
+<mml:msup>
+<mml:mi>M</mml:mi>
+<mml:mo>′</mml:mo>
+</mml:msup>
+<mml:mi>i</mml:mi>
+</mml:msub>
+<mml:mo>=</mml:mo><mml:mfrac>
+<mml:mrow>
+<mml:msub>
+<mml:mi>α</mml:mi>
+<mml:mi>M</mml:mi>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:msub>
+<mml:mi>E</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>U</mml:mi><mml:mi>D</mml:mi></mml:mrow>
+</mml:msub>
+</mml:mrow>
+<mml:mrow>
+<mml:msub>
+<mml:mi>β</mml:mi>
+<mml:mi>M</mml:mi>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:msub>
+<mml:mi>E</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>U</mml:mi><mml:mi>S</mml:mi></mml:mrow>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:msub>
+<mml:mi>E</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>U</mml:mi><mml:mi>D</mml:mi></mml:mrow>
+</mml:msub>
+</mml:mrow>
+</mml:mfrac>
+</mml:mrow>
+</mml:math>
+</alternatives>
+</disp-formula>,
+<disp-formula id="pcbi.1004041.e008">
+<alternatives>
+<graphic id="pcbi.1004041.e008g" mimetype="image" position="anchor" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004041.e008"/>
+<mml:math display="block" id="M8" overflow="scroll">
+<mml:mrow>
+<mml:msup>
+<mml:mi>ν</mml:mi>
+<mml:mo>′</mml:mo>
+</mml:msup>
+<mml:mo>=</mml:mo><mml:mfrac>
+<mml:mrow>
+<mml:msub>
+<mml:mi>α</mml:mi>
+<mml:mi>ν</mml:mi>
+</mml:msub>
+<mml:mo>+</mml:mo>
+<mml:msubsup>
+<mml:mo>∑</mml:mo>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow>
+<mml:mi>B</mml:mi>
+</mml:msubsup>
+<mml:mrow>
+<mml:msub>
+<mml:mi>E</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>I</mml:mi><mml:mi>D</mml:mi></mml:mrow>
+</mml:msub>
+</mml:mrow>
+</mml:mrow>
+<mml:mrow>
+<mml:msub>
+<mml:mi>β</mml:mi>
+<mml:mi>ν</mml:mi>
+</mml:msub>
+<mml:mo>+</mml:mo>
+<mml:msubsup>
+<mml:mo>∑</mml:mo>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow>
+<mml:mi>B</mml:mi>
+</mml:msubsup>
+<mml:mrow>
+<mml:msub>
+<mml:mi>E</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>I</mml:mi><mml:mi>S</mml:mi></mml:mrow>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:msub>
+<mml:mi>E</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>I</mml:mi><mml:mi>D</mml:mi></mml:mrow>
+</mml:msub>
+</mml:mrow>
+</mml:mrow>
+</mml:mfrac>
+</mml:mrow>
+</mml:math>
+</alternatives>
+</disp-formula>,
+<disp-formula id="pcbi.1004041.e009">
+<alternatives>
+<graphic id="pcbi.1004041.e009g" mimetype="image" position="anchor" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004041.e009"/>
+<mml:math display="block" id="M9" overflow="scroll">
+<mml:mrow>
+<mml:mfrac>
+<mml:mn>1</mml:mn>
+<mml:msup>
+<mml:mi>δ</mml:mi>
+<mml:mo>′</mml:mo>
+</mml:msup>
+</mml:mfrac>
+<mml:mo>=</mml:mo>
+<mml:mfrac>
+<mml:mrow>
+<mml:msub>
+<mml:mi>α</mml:mi>
+<mml:mi>δ</mml:mi>
+</mml:msub>
+<mml:mo>+</mml:mo>
+<mml:msubsup>
+<mml:mo>∑</mml:mo>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow>
+<mml:mi>B</mml:mi>
+</mml:msubsup>
+
+<mml:msub>
+<mml:mi>T</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>I</mml:mi><mml:mi>U</mml:mi></mml:mrow>
+</mml:msub>
+
+</mml:mrow>
+<mml:mrow>
+<mml:msub>
+<mml:mi>β</mml:mi>
+<mml:mi>δ</mml:mi>
+</mml:msub>
+<mml:mo>+</mml:mo>
+<mml:mover accent="true">
+<mml:mi>d</mml:mi>
+<mml:mo>¯</mml:mo>
+</mml:mover>
+<mml:msubsup>
+<mml:mo>∑</mml:mo>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow>
+<mml:mi>B</mml:mi>
+</mml:msubsup>
+<mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:msub>
+<mml:mi>T</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>I</mml:mi><mml:mi>U</mml:mi></mml:mrow>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:msub>
+<mml:mi>T</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>I</mml:mi><mml:mi>I</mml:mi></mml:mrow>
+</mml:msub>
+</mml:mrow>
+<mml:mo>)</mml:mo>
+</mml:mrow>
+</mml:mfrac>
+</mml:mrow>
+</mml:math>
+</alternatives>
+</disp-formula>,
+<disp-formula id="pcbi.1004041.e010">
+<alternatives>
+<graphic id="pcbi.1004041.e010g" mimetype="image" position="anchor" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004041.e010"/>
+<mml:math display="block" id="M10" overflow="scroll">
+<mml:mrow>
+<mml:msup>
+<mml:mrow>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:mfrac>
+<mml:mi>R</mml:mi>
+<mml:mi>θ</mml:mi>
+</mml:mfrac>
+</mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow>
+<mml:mo>′</mml:mo>
+</mml:msup>
+<mml:mo>=</mml:mo><mml:mfrac>
+<mml:mrow>
+<mml:msub>
+<mml:mi>α</mml:mi>
+<mml:mrow>
+<mml:mfrac>
+<mml:mi>R</mml:mi>
+<mml:mi>θ</mml:mi>
+</mml:mfrac>
+</mml:mrow>
+</mml:msub>
+<mml:mo>+</mml:mo>
+<mml:msubsup>
+<mml:mo>∑</mml:mo>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow>
+<mml:mi>B</mml:mi>
+</mml:msubsup>
+<mml:mrow>
+<mml:msub>
+<mml:mi>T</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>U</mml:mi><mml:mi>I</mml:mi></mml:mrow>
+</mml:msub>
+</mml:mrow>
+</mml:mrow>
+<mml:mrow>
+<mml:msub>
+<mml:mi>β</mml:mi>
+<mml:mrow>
+<mml:mfrac>
+<mml:mi>R</mml:mi>
+<mml:mi>θ</mml:mi>
+</mml:mfrac>
+</mml:mrow>
+</mml:msub>
+<mml:mo>+</mml:mo>
+<mml:mover accent="true">
+<mml:mi>d</mml:mi>
+<mml:mo>¯</mml:mo>
+</mml:mover>
+<mml:msubsup>
+<mml:mo>∑</mml:mo>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow>
+<mml:mi>B</mml:mi>
+</mml:msubsup>
+<mml:mrow>
+<mml:msub>
+<mml:mi>M</mml:mi>
+<mml:mi>i</mml:mi>
+</mml:msub>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:msub>
+<mml:mi>T</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>U</mml:mi><mml:mi>U</mml:mi></mml:mrow>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:msub>
+<mml:mi>T</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>U</mml:mi><mml:mi>I</mml:mi></mml:mrow>
+</mml:msub>
+</mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow>
+</mml:mrow>
+</mml:mfrac>
+</mml:mrow>
+</mml:math>
+</alternatives>
+</disp-formula>,
+where <italic>α</italic> and <italic>β</italic> represent prior information in the form of pseudocounts for the various parameters and <inline-formula id="pcbi.1004041.e011">
+<alternatives>
+<graphic id="pcbi.1004041.e011g" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004041.e011" position="anchor" xlink:type="simple"/>
+<mml:math display="inline" id="M11" overflow="scroll">
+<mml:mover accent="true">
+<mml:mi>d</mml:mi>
+<mml:mo stretchy="false">‒</mml:mo>
+</mml:mover>
+</mml:math>
+</alternatives>
+</inline-formula> is the mean distance between adjacent called sites less than 1kb apart. The prior information conveyed by the pseudocounts is analogous to a gamma prior distribution with shape and rate parameters <italic>α</italic> and <italic>β</italic>. In the analyses presented in this paper we set the prior means, <italic>α</italic>/<italic>β</italic>, equal to <italic>M</italic> = 10<sup>−4</sup>, ν = 10<sup>−1</sup> 1/δ = 10<sup>−3</sup>, and <italic>R/θ</italic> = 10<sup>−1</sup>, and the prior standard deviations, <inline-formula id="pcbi.1004041.e012">
+<alternatives>
+<graphic id="pcbi.1004041.e012g" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004041.e012" position="anchor" xlink:type="simple"/>
+<mml:math display="inline" id="M12" overflow="scroll">
+<mml:mrow>
+<mml:msqrt>
+<mml:mi>α</mml:mi>
+</mml:msqrt>
+<mml:mo>/</mml:mo><mml:mi>β</mml:mi></mml:mrow>
+</mml:math>
+</alternatives>
+</inline-formula>, equal to the prior means, representing prior uncertainty over roughly three orders of magnitude.</p>
+<p><bold>Quantifying the uncertainty in the parameters</bold>. To obtain a measure of uncertainty in the parameter estimates, we perform a parametric bootstrap where we simulate the number of transitions <italic>T<sub>ijk</sub></italic> and emissions <italic>E<sub>ijk</sub></italic> of each sort based on the ML parameter estimates using a posterior decoding algorithm [<xref ref-type="bibr" rid="pcbi.1004041.ref052">52</xref>]. The parameters are then drawn from gamma distributions with shape and rate parameters given by the numerators and denominators respectively in the above equations. This computationally efficient but somewhat heuristic procedure accounts for uncertainty in <italic>T<sub>ijk</sub></italic> and <italic>E<sub>ijk</sub></italic>, and for uncertainty in the parameters given <italic>T<sub>ijk</sub></italic> and <italic>E<sub>ijk</sub></italic>, but not in the tree topology or ancestral state reconstruction, so it will underestimate the true uncertainty in the parameter estimates.</p>
+<p><bold>Extended model with separate recombination parameters for each branch</bold>. To allow detection of heterogeneity in the recombination process on different branches of the tree, we implemented an EM algorithm that estimates parameters for each branch, using a hyperprior in the form of pseudocounts to help obtain sensible values for uninformative branches. Formally, we defined the per-branch recombination parameters to be related to the mean recombination parameters through a branch-specific factor as follows:
+<disp-formula id="pcbi.1004041.e013">
+<alternatives>
+<graphic id="pcbi.1004041.e013g" mimetype="image" position="anchor" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004041.e013"/>
+<mml:math display="block" id="M13" overflow="scroll">
+<mml:mrow>
+<mml:msub>
+<mml:mi>λ</mml:mi>
+<mml:mi>i</mml:mi>
+</mml:msub>
+<mml:mo>=</mml:mo><mml:mover accent="true">
+<mml:mi>λ</mml:mi>
+<mml:mo>¯</mml:mo>
+</mml:mover>
+<mml:msubsup>
+<mml:mi>w</mml:mi>
+<mml:mi>i</mml:mi>
+<mml:mrow>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mi>λ</mml:mi>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow>
+</mml:msubsup>
+</mml:mrow>
+</mml:math>
+</alternatives>
+</disp-formula>
+where <italic>λ</italic> represents one of the parameters, <inline-formula id="pcbi.1004041.e014">
+<alternatives>
+<graphic id="pcbi.1004041.e014g" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004041.e014" position="anchor" xlink:type="simple"/>
+<mml:math display="inline" id="M14" overflow="scroll">
+<mml:mover accent="true">
+<mml:mi>λ</mml:mi>
+<mml:mo>¯</mml:mo>
+</mml:mover>
+</mml:math>
+</alternatives>
+</inline-formula> is the mean of that parameter and <italic>w<sub>i</sub></italic> is the branch-specific factor. This leads to the following EM updates. First, the mean branch length parameter is iteratively updated until the following equation converges:
+<disp-formula id="pcbi.1004041.e015">
+<alternatives>
+<graphic id="pcbi.1004041.e015g" mimetype="image" position="anchor" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004041.e015"/>
+<mml:math display="block" id="M15" overflow="scroll">
+<mml:mrow>
+<mml:msup>
+<mml:mover accent="true">
+<mml:mi>M</mml:mi>
+<mml:mo>¯</mml:mo>
+</mml:mover>
+<mml:mo>′</mml:mo>
+</mml:msup>
+<mml:mo>=</mml:mo><mml:mfrac>
+<mml:mrow>
+<mml:msub>
+<mml:mi>α</mml:mi>
+<mml:mi>M</mml:mi>
+</mml:msub>
+<mml:mo>+</mml:mo>
+<mml:msubsup>
+<mml:mo>∑</mml:mo>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow>
+<mml:mi>B</mml:mi>
+</mml:msubsup>
+<mml:mrow>
+<mml:msub>
+<mml:mi>E</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>U</mml:mi><mml:mi>D</mml:mi></mml:mrow>
+</mml:msub>
+</mml:mrow>
+</mml:mrow>
+<mml:mrow>
+<mml:msub>
+<mml:mi>β</mml:mi>
+<mml:mi>M</mml:mi>
+</mml:msub>
+<mml:mo>+</mml:mo>
+<mml:msubsup>
+<mml:mo>∑</mml:mo>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow>
+<mml:mi>B</mml:mi>
+</mml:msubsup>
+<mml:mrow>
+<mml:mrow><mml:mrow>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:msub>
+<mml:mi>α</mml:mi>
+<mml:mi>w</mml:mi>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:msub>
+<mml:mi>E</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>U</mml:mi><mml:mi>D</mml:mi></mml:mrow>
+</mml:msub>
+</mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow><mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:msub>
+<mml:mi>E</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>U</mml:mi><mml:mi>S</mml:mi></mml:mrow>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:msub>
+<mml:mi>E</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>U</mml:mi><mml:mi>D</mml:mi></mml:mrow>
+</mml:msub>
+</mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow><mml:mo>/</mml:mo><mml:mrow>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:msub>
+<mml:mi>β</mml:mi>
+<mml:mi>w</mml:mi>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:mover accent="true">
+<mml:mi>M</mml:mi>
+<mml:mo>¯</mml:mo>
+</mml:mover>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:msub>
+<mml:mi>E</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>U</mml:mi><mml:mi>S</mml:mi></mml:mrow>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:msub>
+<mml:mi>E</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>U</mml:mi><mml:mi>D</mml:mi></mml:mrow>
+</mml:msub>
+</mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow></mml:mrow>
+</mml:mrow>
+</mml:mrow>
+</mml:mfrac>
+</mml:mrow>
+</mml:math>
+</alternatives>
+</disp-formula></p>
+<p>Then the individual branch length factors are updated as follows:
+<disp-formula id="pcbi.1004041.e016">
+<alternatives>
+<graphic id="pcbi.1004041.e016g" mimetype="image" position="anchor" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004041.e016"/>
+<mml:math display="block" id="M16" overflow="scroll">
+<mml:mrow>
+<mml:msubsup>
+<mml:msup>
+<mml:mi>w</mml:mi>
+<mml:mo>′</mml:mo>
+</mml:msup>
+<mml:mi>i</mml:mi>
+<mml:mrow>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mi>M</mml:mi>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow>
+</mml:msubsup>
+<mml:mo>=</mml:mo><mml:mrow><mml:mrow>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:msub>
+<mml:mi>α</mml:mi>
+<mml:mi>w</mml:mi>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:msub>
+<mml:mi>E</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>U</mml:mi><mml:mi>D</mml:mi></mml:mrow>
+</mml:msub>
+</mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow><mml:mo>/</mml:mo><mml:mrow>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:msub>
+<mml:mi>β</mml:mi>
+<mml:mi>w</mml:mi>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:msup>
+<mml:mover accent="true">
+<mml:mi>M</mml:mi>
+<mml:mo>¯</mml:mo>
+</mml:mover>
+<mml:mo>′</mml:mo>
+</mml:msup>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:msub>
+<mml:mi>E</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>U</mml:mi><mml:mi>S</mml:mi></mml:mrow>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:msub>
+<mml:mi>E</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>U</mml:mi><mml:mi>D</mml:mi></mml:mrow>
+</mml:msub>
+</mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow></mml:mrow>
+</mml:mrow>
+</mml:math>
+</alternatives>
+</disp-formula></p>
+<p>The updating equations are similar for the other parameters:
+<disp-formula id="pcbi.1004041.e017">
+<alternatives>
+<graphic id="pcbi.1004041.e017g" mimetype="image" position="anchor" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004041.e017"/>
+<mml:math display="block" id="M17" overflow="scroll">
+<mml:mrow>
+<mml:msup>
+<mml:mover accent="true">
+<mml:mi>ν</mml:mi>
+<mml:mo>¯</mml:mo>
+</mml:mover>
+<mml:mo>′</mml:mo>
+</mml:msup>
+<mml:mo>=</mml:mo><mml:mfrac>
+<mml:mrow>
+<mml:msub>
+<mml:mi>α</mml:mi>
+<mml:mi>ν</mml:mi>
+</mml:msub>
+<mml:mo>+</mml:mo>
+<mml:msubsup>
+<mml:mo>∑</mml:mo>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow>
+<mml:mi>B</mml:mi>
+</mml:msubsup>
+<mml:mrow>
+<mml:msub>
+<mml:mi>E</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>I</mml:mi><mml:mi>D</mml:mi></mml:mrow>
+</mml:msub>
+</mml:mrow>
+</mml:mrow>
+<mml:mrow>
+<mml:msub>
+<mml:mi>β</mml:mi>
+<mml:mi>ν</mml:mi>
+</mml:msub>
+<mml:mo>+</mml:mo>
+<mml:msubsup>
+<mml:mo>∑</mml:mo>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow>
+<mml:mi>B</mml:mi>
+</mml:msubsup>
+<mml:mrow>
+<mml:mrow><mml:mrow>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:msub>
+<mml:mi>α</mml:mi>
+<mml:mi>w</mml:mi>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:msub>
+<mml:mi>E</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>I</mml:mi><mml:mi>D</mml:mi></mml:mrow>
+</mml:msub>
+</mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow><mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:msub>
+<mml:mi>E</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>I</mml:mi><mml:mi>S</mml:mi></mml:mrow>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:msub>
+<mml:mi>E</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>I</mml:mi><mml:mi>D</mml:mi></mml:mrow>
+</mml:msub>
+</mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow><mml:mo>/</mml:mo><mml:mrow>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:msub>
+<mml:mi>β</mml:mi>
+<mml:mi>w</mml:mi>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:mover accent="true">
+<mml:mi>ν</mml:mi>
+<mml:mo>¯</mml:mo>
+</mml:mover>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:msub>
+<mml:mi>E</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>I</mml:mi><mml:mi>S</mml:mi></mml:mrow>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:msub>
+<mml:mi>E</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>I</mml:mi><mml:mi>D</mml:mi></mml:mrow>
+</mml:msub>
+</mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow></mml:mrow>
+</mml:mrow>
+</mml:mrow>
+</mml:mfrac>
+</mml:mrow>
+</mml:math>
+</alternatives>
+</disp-formula>,
+<disp-formula id="pcbi.1004041.e018">
+<alternatives>
+<graphic id="pcbi.1004041.e018g" mimetype="image" position="anchor" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004041.e018"/>
+<mml:math display="block" id="M18" overflow="scroll">
+<mml:mrow>
+<mml:msubsup>
+<mml:msup>
+<mml:mi>w</mml:mi>
+<mml:mo>′</mml:mo>
+</mml:msup>
+<mml:mi>i</mml:mi>
+<mml:mrow>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mi>ν</mml:mi>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow>
+</mml:msubsup>
+<mml:mo>=</mml:mo><mml:mrow><mml:mrow>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:msub>
+<mml:mi>α</mml:mi>
+<mml:mi>w</mml:mi>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:msub>
+<mml:mi>E</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>I</mml:mi><mml:mi>D</mml:mi></mml:mrow>
+</mml:msub>
+</mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow><mml:mo>/</mml:mo><mml:mrow>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:msub>
+<mml:mi>β</mml:mi>
+<mml:mi>w</mml:mi>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:msup>
+<mml:mover accent="true">
+<mml:mi>ν</mml:mi>
+<mml:mo>¯</mml:mo>
+</mml:mover>
+<mml:mo>′</mml:mo>
+</mml:msup>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:msub>
+<mml:mi>E</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>I</mml:mi><mml:mi>S</mml:mi></mml:mrow>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:msub>
+<mml:mi>E</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>I</mml:mi><mml:mi>D</mml:mi></mml:mrow>
+</mml:msub>
+</mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow></mml:mrow>
+</mml:mrow>
+</mml:math>
+</alternatives>
+</disp-formula>,
+<disp-formula id="pcbi.1004041.e019">
+<alternatives>
+<graphic id="pcbi.1004041.e019g" mimetype="image" position="anchor" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004041.e019"/>
+<mml:math display="block" id="M19" overflow="scroll">
+<mml:mrow>
+<mml:mfrac>
+<mml:mn>1</mml:mn>
+<mml:msup>
+<mml:mover accent="true">
+<mml:mi>δ</mml:mi>
+<mml:mo>¯</mml:mo>
+</mml:mover>
+<mml:mo>′</mml:mo>
+</mml:msup>
+</mml:mfrac>
+<mml:mo>=</mml:mo><mml:mfrac>
+<mml:mrow>
+<mml:msub>
+<mml:mi>α</mml:mi>
+<mml:mi>δ</mml:mi>
+</mml:msub>
+<mml:mo>+</mml:mo>
+<mml:msubsup>
+<mml:mo>∑</mml:mo>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow>
+<mml:mi>B</mml:mi>
+</mml:msubsup>
+<mml:mrow>
+<mml:msub>
+<mml:mi>T</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>I</mml:mi><mml:mi>U</mml:mi></mml:mrow>
+</mml:msub>
+</mml:mrow>
+</mml:mrow>
+<mml:mrow>
+<mml:msub>
+<mml:mi>β</mml:mi>
+<mml:mi>δ</mml:mi>
+</mml:msub>
+<mml:mo>+</mml:mo>
+<mml:msubsup>
+<mml:mo>∑</mml:mo>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow>
+<mml:mi>B</mml:mi>
+</mml:msubsup>
+<mml:mrow>
+<mml:mrow><mml:mrow>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:msub>
+<mml:mi>α</mml:mi>
+<mml:mi>w</mml:mi>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:msub>
+<mml:mi>T</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>I</mml:mi><mml:mi>U</mml:mi></mml:mrow>
+</mml:msub>
+</mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow><mml:mover accent="true">
+<mml:mi>d</mml:mi>
+<mml:mo>¯</mml:mo>
+</mml:mover>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:msub>
+<mml:mi>T</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>I</mml:mi><mml:mi>U</mml:mi></mml:mrow>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:msub>
+<mml:mi>T</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>I</mml:mi><mml:mi>I</mml:mi></mml:mrow>
+</mml:msub>
+</mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow><mml:mo>/</mml:mo><mml:mrow>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:msub>
+<mml:mi>β</mml:mi>
+<mml:mi>w</mml:mi>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:mrow><mml:mrow>
+<mml:mover accent="true">
+<mml:mi>d</mml:mi>
+<mml:mo>¯</mml:mo>
+</mml:mover>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:msub>
+<mml:mi>T</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>I</mml:mi><mml:mi>U</mml:mi></mml:mrow>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:msub>
+<mml:mi>T</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>I</mml:mi><mml:mi>I</mml:mi></mml:mrow>
+</mml:msub>
+</mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow><mml:mo>/</mml:mo><mml:mover accent="true">
+<mml:mi>δ</mml:mi>
+<mml:mo>¯</mml:mo>
+</mml:mover>
+</mml:mrow>
+</mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow></mml:mrow>
+</mml:mrow>
+</mml:mrow>
+</mml:mfrac>
+</mml:mrow>
+</mml:math>
+</alternatives>
+</disp-formula>,
+<disp-formula id="pcbi.1004041.e020">
+<alternatives>
+<graphic id="pcbi.1004041.e020g" mimetype="image" position="anchor" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004041.e020"/>
+<mml:math display="block" id="M20" overflow="scroll">
+<mml:mrow>
+<mml:msubsup>
+<mml:msup>
+<mml:mi>w</mml:mi>
+<mml:mo>′</mml:mo>
+</mml:msup>
+<mml:mi>i</mml:mi>
+<mml:mrow>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mi>δ</mml:mi>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow>
+</mml:msubsup>
+<mml:mo>=</mml:mo><mml:mrow><mml:mrow>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:msub>
+<mml:mi>α</mml:mi>
+<mml:mi>w</mml:mi>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:msub>
+<mml:mi>T</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>I</mml:mi><mml:mi>U</mml:mi></mml:mrow>
+</mml:msub>
+</mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow><mml:mo>/</mml:mo><mml:mrow>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:msub>
+<mml:mi>β</mml:mi>
+<mml:mi>w</mml:mi>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:mrow><mml:mrow>
+<mml:mover accent="true">
+<mml:mi>d</mml:mi>
+<mml:mo>¯</mml:mo>
+</mml:mover>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:msub>
+<mml:mi>T</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>I</mml:mi><mml:mi>U</mml:mi></mml:mrow>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:msub>
+<mml:mi>T</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>I</mml:mi><mml:mi>I</mml:mi></mml:mrow>
+</mml:msub>
+</mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow><mml:mo>/</mml:mo><mml:msup>
+<mml:mover accent="true">
+<mml:mi>δ</mml:mi>
+<mml:mo>¯</mml:mo>
+</mml:mover>
+<mml:mo>′</mml:mo>
+</mml:msup>
+</mml:mrow>
+</mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow></mml:mrow>
+</mml:mrow>
+</mml:math>
+</alternatives>
+</disp-formula>,
+<disp-formula id="pcbi.1004041.e021">
+<alternatives>
+<graphic id="pcbi.1004041.e021g" mimetype="image" position="anchor" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004041.e021"/>
+<mml:math display="block" id="M21" overflow="scroll">
+<mml:mrow>
+<mml:msup>
+<mml:mrow>
+<mml:mover accent="true">
+<mml:mrow>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:mfrac>
+<mml:mi>R</mml:mi>
+<mml:mi>θ</mml:mi>
+</mml:mfrac>
+</mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow>
+<mml:mo>¯</mml:mo>
+</mml:mover>
+</mml:mrow>
+<mml:mo>′</mml:mo>
+</mml:msup>
+<mml:mo>=</mml:mo><mml:mfrac>
+<mml:mrow>
+<mml:msub>
+<mml:mi>α</mml:mi>
+<mml:mrow>
+<mml:mfrac>
+<mml:mi>R</mml:mi>
+<mml:mi>θ</mml:mi>
+</mml:mfrac>
+</mml:mrow>
+</mml:msub>
+<mml:mo>+</mml:mo>
+<mml:msubsup>
+<mml:mo>∑</mml:mo>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow>
+<mml:mi>B</mml:mi>
+</mml:msubsup>
+<mml:mrow>
+<mml:msub>
+<mml:mi>T</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>U</mml:mi><mml:mi>I</mml:mi></mml:mrow>
+</mml:msub>
+</mml:mrow>
+</mml:mrow>
+<mml:mrow>
+<mml:msub>
+<mml:mi>β</mml:mi>
+<mml:mrow>
+<mml:mfrac>
+<mml:mi>R</mml:mi>
+<mml:mi>θ</mml:mi>
+</mml:mfrac>
+</mml:mrow>
+</mml:msub>
+<mml:mo>+</mml:mo>
+<mml:msubsup>
+<mml:mo>∑</mml:mo>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow>
+<mml:mi>B</mml:mi>
+</mml:msubsup>
+<mml:mrow>
+<mml:mrow><mml:mrow>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:msub>
+<mml:mi>α</mml:mi>
+<mml:mi>w</mml:mi>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:msub>
+<mml:mi>T</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>U</mml:mi><mml:mi>U</mml:mi></mml:mrow>
+</mml:msub>
+</mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow><mml:msub>
+<mml:mi>M</mml:mi>
+<mml:mi>i</mml:mi>
+</mml:msub>
+<mml:mover accent="true">
+<mml:mi>d</mml:mi>
+<mml:mo>¯</mml:mo>
+</mml:mover>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:msub>
+<mml:mi>T</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>U</mml:mi><mml:mi>U</mml:mi></mml:mrow>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:msub>
+<mml:mi>T</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>U</mml:mi><mml:mi>I</mml:mi></mml:mrow>
+</mml:msub>
+</mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow><mml:mo>/</mml:mo><mml:mrow>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:msub>
+<mml:mi>β</mml:mi>
+<mml:mi>w</mml:mi>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:mover accent="true">
+<mml:mrow>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:mfrac>
+<mml:mi>R</mml:mi>
+<mml:mi>θ</mml:mi>
+</mml:mfrac>
+</mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow>
+<mml:mo stretchy="true">¯</mml:mo>
+</mml:mover>
+<mml:msub>
+<mml:mi>M</mml:mi>
+<mml:mi>i</mml:mi>
+</mml:msub>
+<mml:mover accent="true">
+<mml:mi>d</mml:mi>
+<mml:mo>¯</mml:mo>
+</mml:mover>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:msub>
+<mml:mi>T</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>U</mml:mi><mml:mi>U</mml:mi></mml:mrow>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:msub>
+<mml:mi>T</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>U</mml:mi><mml:mi>I</mml:mi></mml:mrow>
+</mml:msub>
+</mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow></mml:mrow>
+</mml:mrow>
+</mml:mrow>
+</mml:mfrac>
+</mml:mrow>
+</mml:math>
+</alternatives>
+</disp-formula>,
+<disp-formula id="pcbi.1004041.e022">
+<alternatives>
+<graphic id="pcbi.1004041.e022g" mimetype="image" position="anchor" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004041.e022"/>
+<mml:math display="block" id="M22" overflow="scroll">
+<mml:mrow>
+<mml:msubsup>
+<mml:msup>
+<mml:mi>w</mml:mi>
+<mml:mo>′</mml:mo>
+</mml:msup>
+<mml:mi>i</mml:mi>
+<mml:mrow>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:mfrac>
+<mml:mi>R</mml:mi>
+<mml:mi>θ</mml:mi>
+</mml:mfrac>
+</mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow>
+</mml:msubsup>
+<mml:mo>=</mml:mo><mml:mrow><mml:mrow>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:msub>
+<mml:mi>α</mml:mi>
+<mml:mi>w</mml:mi>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:msub>
+<mml:mi>T</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>U</mml:mi><mml:mi>U</mml:mi></mml:mrow>
+</mml:msub>
+</mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow><mml:mo>/</mml:mo><mml:mrow>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:msub>
+<mml:mi>β</mml:mi>
+<mml:mi>w</mml:mi>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:msup>
+<mml:mrow>
+<mml:mover accent="true">
+<mml:mrow>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:mfrac>
+<mml:mi>R</mml:mi>
+<mml:mi>θ</mml:mi>
+</mml:mfrac>
+</mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow>
+<mml:mo>¯</mml:mo>
+</mml:mover>
+</mml:mrow>
+<mml:mo>′</mml:mo>
+</mml:msup>
+<mml:msub>
+<mml:mi>M</mml:mi>
+<mml:mi>i</mml:mi>
+</mml:msub>
+<mml:mover accent="true">
+<mml:mi>d</mml:mi>
+<mml:mo>¯</mml:mo>
+</mml:mover>
+<mml:mrow><mml:mo>(</mml:mo>
+<mml:mrow>
+<mml:msub>
+<mml:mi>T</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>U</mml:mi><mml:mi>U</mml:mi></mml:mrow>
+</mml:msub>
+<mml:mo>+</mml:mo><mml:msub>
+<mml:mi>T</mml:mi>
+<mml:mrow>
+<mml:mi>i</mml:mi><mml:mi>U</mml:mi><mml:mi>I</mml:mi></mml:mrow>
+</mml:msub>
+</mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow>
+<mml:mo>)</mml:mo></mml:mrow></mml:mrow></mml:mrow>
+</mml:mrow>
+</mml:math>
+</alternatives>
+</disp-formula>.</p>
+<p>To ensure <inline-formula id="pcbi.1004041.e023">
+<alternatives>
+<graphic id="pcbi.1004041.e023g" mimetype="image" xlink:href="info:doi/10.1371/journal.pcbi.1004041.e023" position="anchor" xlink:type="simple"/>
+<mml:math display="inline" id="M23" overflow="scroll">
+<mml:mover accent="true">
+<mml:mi>λ</mml:mi>
+<mml:mo>¯</mml:mo>
+</mml:mover>
+</mml:math>
+</alternatives>
+</inline-formula> was the mean of parameter <italic>λ</italic> across branches we set <italic>α<sub>w</sub></italic> = <italic>β<sub>w</sub></italic> and we chose an absolute value of 100 to prevent poorly identified parameters from deviating far from the mean.</p>
+</sec>
+</sec>
+<sec sec-type="results" id="sec002">
+<title>Results</title>
+<sec id="sec002a">
+<title>Example application to a simulated dataset</title>
+<p>To illustrate the working of ClonalFrameML, we simulated under the ClonalFrame model [<xref ref-type="bibr" rid="pcbi.1004041.ref044">44</xref>] a dataset made of 50 genomes of 1Mb each. The clonal genealogy was taken from the coalescent model [<xref ref-type="bibr" rid="pcbi.1004041.ref054">54</xref>] with a scaled mutation rate of <italic>θ</italic> = 10<sup>−3</sup> per site (<xref ref-type="fig" rid="pcbi.1004041.g001">Fig. 1A</xref>). The ratio of recombination and mutation rates, the mean length of imports and the average distance of the imports were equal to <italic>R</italic>/<italic>θ</italic> = 0.0626, <italic>δ</italic> = 554.95 bp and <italic>ν</italic> = 0.0374, respectively. The first step of our inference procedure is to compute an ML phylogeny, and here PhyML [<xref ref-type="bibr" rid="pcbi.1004041.ref016">16</xref>] took approximately one minute on a standard desktop computer to produce the ML tree (<xref ref-type="fig" rid="pcbi.1004041.g001">Fig. 1B</xref>). This tree has the same topology as the true clonal genealogy (<xref ref-type="fig" rid="pcbi.1004041.g001">Fig. 1A</xref>). This is because in the ClonalFrame model, recombination has an external origin so that the substitutions imported on a given branch are shared by the genomes that descend from that branch. Recombination is therefore informative about the tree topology in exactly the same way as mutation, which is why the tree topology reconstructed by the ML phylogeny is correct even when no attempt is made to account for recombination.</p>
+<fig id="pcbi.1004041.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004041.g001</object-id>
+<label>Figure 1</label>
+<caption>
+<title>An example application of ClonalFrameML to a simulated dataset.</title>
+<p>(A) The clonal genealogy produced by simulation. (B) Maximum-likelihood reconstructed phylogeny. (C) ClonalFrameML reconstructed phylogeny. (D) Representation of recombination events along the genome for each branch of the genealogy in (A). True events are shown in blue and events detected by ClonalFrameML are shown in red. Three branches of interest and their associated recombination events are highlighted by red boxes.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004041.g001"/>
+</fig>
+<p>The scale of branch lengths in the reconstructed phylogeny (<xref ref-type="fig" rid="pcbi.1004041.g001">Fig. 1B</xref>) was 2.1 times greater than in the true tree (<xref ref-type="fig" rid="pcbi.1004041.g001">Fig. 1A</xref>), because the latter accounts only for the substitutions introduced by mutation whereas the former also includes the differences imported by recombination. The relative effect of recombination and mutation [<xref ref-type="bibr" rid="pcbi.1004041.ref055">55</xref>] was equal to <italic>r</italic>/<italic>m</italic> = (<italic>R</italic>/<italic>θ</italic>) × <italic>δ</italic> × <italic>ν</italic> = 1.3 so that recombination introduced a similar number of substitutions as did mutation, which explains the difference in the reconstructed scale. Apart from this important difference in the scale, the relative lengths of branches in the reconstructed phylogeny were approximately consistent with the correct genealogy. This is because the substitutions introduced by recombination accumulate in the genomes in a clock-like manner, as do mutations. The most noticeable difference concerned some of the shortest terminal branches in the true clonal genealogy, which had lengths several times longer in the reconstructed phylogeny (see examples of this marked by red boxes in <xref ref-type="fig" rid="pcbi.1004041.g001">Fig. 1B</xref>). The overestimation of these terminal branch lengths could have important consequences, for example it could mislead one into excluding the possibility of direct transmission between two infected individuals in a genomic epidemiology study [<xref ref-type="bibr" rid="pcbi.1004041.ref011">11</xref>,<xref ref-type="bibr" rid="pcbi.1004041.ref056">56</xref>–<xref ref-type="bibr" rid="pcbi.1004041.ref058">58</xref>].</p>
+<p>ClonalFrameML was then applied to this simulated dataset using the ML phylogeny (<xref ref-type="fig" rid="pcbi.1004041.g001">Fig. 1B</xref>) as tree input, which took approximately 15 minutes to run on a standard desktop computer. The parameter estimates and 95% confidence intervals were as follows: <italic>R</italic>/<italic>θ</italic> = 0.061 [0.053–0.067], <italic>δ</italic> = 511.59bp [456.96–575.77] and <italic>ν</italic> = 0.0386 [0.0373–0.0397]. These three intervals included the correct values used when simulating the data. ClonalFrameML also estimates a phylogeny with corrected branch lengths (<xref ref-type="fig" rid="pcbi.1004041.g001">Fig. 1C</xref>). Unlike the ML tree (<xref ref-type="fig" rid="pcbi.1004041.g001">Fig. 1B</xref>), the scale of the branch lengths in the ClonalFrameML tree is the same as in the true phylogeny (<xref ref-type="fig" rid="pcbi.1004041.g001">Fig. 1A</xref>). Where short terminal branch lengths had been overestimated by the ML tree in the example data, these were corrected by ClonalFrameML (red boxes in <xref ref-type="fig" rid="pcbi.1004041.g001">Fig. 1C</xref>). One way to assess and compare the correctness of phylogenetic reconstructions is through a distance measure between trees known as the branch score [<xref ref-type="bibr" rid="pcbi.1004041.ref059">59</xref>]. Between the true tree (<xref ref-type="fig" rid="pcbi.1004041.g001">Fig. 1A</xref>) and the ML reconstruction (<xref ref-type="fig" rid="pcbi.1004041.g001">Fig. 1B</xref>), the branch score was equal to 1.29×10<sup>−3</sup> whereas between the true tree (<xref ref-type="fig" rid="pcbi.1004041.g001">Fig. 1A</xref>) and the ClonalFrameML reconstruction (<xref ref-type="fig" rid="pcbi.1004041.g001">Fig. 1C</xref>), the branch score was lower, equal to 7.88×10<sup>−5</sup>. This large improvement is partly, but not exclusively, due to the difference in scales between the trees. All three trees were rescaled to have a sum of branch lengths equal to one, and the two branch scores were then equal to 0.053 and 0.019, respectively. The true and inferred recombination events were compared for all branches of the clonal genealogy (<xref ref-type="fig" rid="pcbi.1004041.g001">Fig. 1D</xref>). All the exemplar terminal branches that were too long in the ML phylogeny corresponded to recombination events that have been accurately detected by ClonalFrameML (red boxes in <xref ref-type="fig" rid="pcbi.1004041.g001">Fig. 1</xref>). There were 248 real recombination events throughout the tree, and 213 (86%) of them were correctly detected. The 35 events that were not detected tended to be short and to contain relatively few substitutions. All the detected recombination events corresponded to genuine events.</p>
+<p>The original Monte-Carlo Markov Chain (MCMC) algorithm implemented in the ClonalFrame software [<xref ref-type="bibr" rid="pcbi.1004041.ref044">44</xref>] was applied to the same simulated dataset for comparison with ClonalFrameML. Each iteration of the MCMC took about 7.5 seconds. ClonalFrame was run for 20,000 iterations which took about 42 hours—more than a hundred times the time it took to run ClonalFrameML. The first half of the iterations were discarded as MCMC burn-in, and the second half were recorded every ten iterations to produce a sample of size 1000 from the posterior. Assessing MCMC convergence and mixing properties is always challenging, and the generally recommended method is to compare separate runs. Four separate runs were performed and found to yield comparable samples of the parameters (<xref ref-type="supplementary-material" rid="pcbi.1004041.s001">S1 Fig.</xref>). The four runs were combined to produce the following parameter estimates and 95% credibility intervals: <italic>R</italic>/<italic>θ</italic> = 0.056 [0.049–0.064], <italic>δ</italic> = 529.62 [464.47–603.50] and <italic>ν</italic> = 0.0386 [0.0375–0.0398]. These estimates are in good agreement with both the correct values and the estimates from ClonalFrameML. The intervals of uncertainty, often seen as one of the great advantages of fully Bayesian methods, are also similar to the ones estimated using ClonalFrameML thus suggesting that our bootstrapping method is appropriate.</p>
+</sec>
+<sec id="sec002b">
+<title>Evaluation of performance</title>
+<p>The simulation and inference steps described above were repeated one hundred times to study the performance of ClonalFrameML under various conditions. Each simulation used different parameter values drawn uniformly on a log<sub>10</sub> scale for <italic>R</italic>/<italic>θ</italic> between 0.01 and 10, for <italic>δ</italic> between 100 and 10,000bp and for <italic>ν</italic> between 0.01 and 0.1. The average running time of ClonalFrameML was 15 minutes on a standard desktop computer, with all runs taking less than an hour.</p>
+<p>The true and inferred values were compared for the parameters <italic>R</italic>/<italic>θ, δ</italic> and <italic>ν</italic> in each simulation (<xref ref-type="fig" rid="pcbi.1004041.g002">Fig. 2</xref>). The key determinant for how well the algorithm performs is the compound parameter <italic>δR</italic> (<xref ref-type="fig" rid="pcbi.1004041.g002">Fig. 2</xref>). When this parameter is below one, the inferred values are well aligned with the correct values, and the 95% confidence intervals contain the correct values in 82%, 85% and 74% of the simulations for <italic>R</italic>/<italic>θ, δ</italic> and <italic>ν</italic>, respectively. When <italic>δR</italic> is greater than one, the estimates of <italic>δ</italic> and <italic>ν</italic> remain in good alignment with the correct values, but the relative rate of recombination <italic>R</italic>/<italic>θ</italic> is sometimes underestimated. The compound parameter <italic>δR</italic> represents the rate at which a given site is affected by recombination on a branch of the clonal genealogy measured in coalescent units of time. When <italic>δR</italic> is greater than one, there is a significant chance that recombination happened more than once at any genomic position for the longer branches of the phylogeny, but this is not accounted for in the ClonalFrame model which considers that each position is either imported or not. For example, one of the simulations used <italic>δ</italic> = 958bp and <italic>R</italic> = 0.002 and the values inferred by ClonalFrameML were <italic>δ</italic> = 866bp and <italic>R</italic> = 0.0006, so that <italic>R</italic> was underestimated by a factor of three. In spite of this, the location of inferred recombined regions was correct but saturated for some of the long branches (<xref ref-type="supplementary-material" rid="pcbi.1004041.s002">S2 Fig.</xref>). Because of this saturation effect, <italic>r</italic>/<italic>m</italic> was correctly estimated as long as the correct value was below 100, but was often underestimated beyond that (<xref ref-type="fig" rid="pcbi.1004041.g002">Fig. 2</xref>). ClonalFrameML may therefore underestimate the recombination rate in situations where there has been so much recombination that it happened several times over for some branches. A good indication of this is provided by the presence of branches on which the whole genome has been found to be recombinant (<xref ref-type="supplementary-material" rid="pcbi.1004041.s002">S2 Fig.</xref>). This is a limitation of the original ClonalFrame model [<xref ref-type="bibr" rid="pcbi.1004041.ref044">44</xref>] rather than of the ML implementation presented here, but this has not been found to be a significant problem in practice, even in application to the highly recombinant <italic>Helicobacter pylori</italic> [<xref ref-type="bibr" rid="pcbi.1004041.ref060">60</xref>]. However, in such promiscuous species the signal of clonal inheritance is rapidly lost so that models of pure admixture may be more appropriate, such as the Structure and FineStructure models where linkage disequilibrium is caused only by linkage along the genome [<xref ref-type="bibr" rid="pcbi.1004041.ref037">37</xref>,<xref ref-type="bibr" rid="pcbi.1004041.ref038">38</xref>].</p>
+<fig id="pcbi.1004041.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004041.g002</object-id>
+<label>Figure 2</label>
+<caption>
+<title>Comparison of correct parameter values with estimates from ClonalFrameML for a hundred datasets simulated under the ClonalFrame model.</title>
+<p>Dots represent the point estimates and bars the 95% confidence intervals. Colours represent the correct value of the compound parameter <italic>δR</italic> ranging from 10<sup>−3</sup> (black) to 10<sup>2</sup> (red).</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004041.g002"/>
+</fig>
+<p>The branch score [<xref ref-type="bibr" rid="pcbi.1004041.ref059">59</xref>] was calculated to compare both the ML trees and the ClonalFrameML trees against the correct tree used in each simulation where <italic>δR</italic> was below one. We found that the ClonalFrameML trees were closer to the true trees than the uncorrected ML trees in all remaining simulations. The average branch score between the true and uncorrected ML trees was 7.47×10<sup>−3</sup> whereas it was 9.72×10<sup>−5</sup> between the true and ClonalFrameML trees (for full comparative results see <xref ref-type="supplementary-material" rid="pcbi.1004041.s003">S3 Fig.</xref>). A large part of this improvement is due to the fact that the overall scale of the ClonalFrameML tree is more accurate than that of the ML tree, as noted earlier. We repeated the comparison after normalizing all trees to have a sum of branch lengths equal to one. The average branch score between the true and ML trees was then 4.81×10<sup>−2</sup> compared with 1.68×10<sup>−2</sup> between the true and ClonalFrameML trees. There was therefore a clear improvement in the estimated branch lengths beyond the correction in scale.</p>
+</sec>
+<sec id="sec002c">
+<title>Application to simulated data with intra-population recombination</title>
+<p>The ClonalFrame model considers that recombination events have an external source, so that they introduce substitution at a relatively high rate denoted <italic>ν</italic> [<xref ref-type="bibr" rid="pcbi.1004041.ref044">44</xref>]. If the dataset contained genomes covering the diversity of a whole bacterial species, there might be a few recombination events coming from other closely related species, but most events will have donors from the species under study, so that the main source of recombination is not external. This situation is best modelled by the coalescent with gene conversion [<xref ref-type="bibr" rid="pcbi.1004041.ref061">61</xref>], but drawing inference under the resulting ancestral recombination graph is a notoriously complex statistical problem [<xref ref-type="bibr" rid="pcbi.1004041.ref046">46</xref>,<xref ref-type="bibr" rid="pcbi.1004041.ref062">62</xref>,<xref ref-type="bibr" rid="pcbi.1004041.ref063">63</xref>]. Instead, here we consider the application of the ClonalFrame model of external recombination to analyse data simulated with within-population recombination.</p>
+<p>Simulation of sequence data under the coalescent with gene conversion is implemented in the software SimMLST [<xref ref-type="bibr" rid="pcbi.1004041.ref064">64</xref>], which was used to simulate a hundred different datasets, each consisting of 50 genomes of length 1Mb. Each simulation used a mutation rate of <italic>θ</italic> = 10<sup>−3</sup> per site, a ratio of recombination to mutation rate <italic>R</italic>/<italic>θ</italic> sampled between 0.01 and 1, and an average length of recombined fragment <italic>δ</italic> sampled between 100 and 10,000bp, with these two samples being taken uniformly on a log<sub>10</sub> scale.</p>
+<p>The correct and inferred values of the two parameters <italic>R</italic>/<italic>θ</italic> and <italic>δ</italic> were compared for each simulation (<xref ref-type="fig" rid="pcbi.1004041.g003">Fig. 3</xref>). The estimates of <italic>δ</italic> were unbiased and strongly reflected the correct values used in simulation. The relative recombination rate <italic>R</italic>/<italic>θ</italic> was also correlated with the correct values, but almost always underestimated. This bias was especially important when the recombination tract length <italic>δ</italic> was short, which typically resulted in an underestimation of <italic>R</italic>/<italic>θ</italic> by an order of magnitude. For longer values of <italic>δ</italic> on the other hand, the bias was smaller. In datasets where the bias was important, a good indication of this was provided by large confidence intervals around both estimates of <italic>R</italic>/<italic>θ</italic> and <italic>δ</italic> (<xref ref-type="fig" rid="pcbi.1004041.g003">Fig. 3</xref>). These performance characteristics fit with our expectations given the differences between the models used for simulation and inference. Since the simulated recombination events come from within the population of interest, they introduce fewer substitutions than if they had come from an external source, which makes them more difficult to detect. When these events are relatively short, they are likely to introduce very little polymorphism if any, so that a large fraction of them becomes impossible to detect. In these conditions, there is much uncertainty about the relative rate of recombination <italic>R</italic>/<italic>θ</italic>. When the events are longer they are easier to detect, but a fraction of them will still be impossible to detect, for example if their donor was a close relative of the recipient, leading to underestimation of <italic>R</italic>/<italic>θ</italic>.</p>
+<fig id="pcbi.1004041.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004041.g003</object-id>
+<label>Figure 3</label>
+<caption>
+<title>Comparison of correct parameter values with estimates from ClonalFrameML for a hundred datasets simulated under the coalescent with gene conversion model of intra-population recombination.</title>
+<p>Dots represent the point estimates and bars the 95% confidence intervals. Colours represent the correct value of the parameter δ ranging from 10<sup>2</sup> (black) to 10<sup>4</sup> (red).</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004041.g003"/>
+</fig>
+</sec>
+<sec id="sec002d">
+<title>Application to <italic>Clostridium difficile</italic> ST6</title>
+<p>Detection of transmission relies on the identification of closely related bacteria. Recombination events have the potential to mask recent transmission by inflating the genomic divergence between closely related bacteria. In previous work the genomes of bacteria sampled from all cases of <italic>Clostridium difficile</italic> infection reported in Oxfordshire between 2007 and 2011 were sequenced to investigate the importance of transmission within hospitals [<xref ref-type="bibr" rid="pcbi.1004041.ref024">24</xref>,<xref ref-type="bibr" rid="pcbi.1004041.ref065">65</xref>]. To investigate the ability of ClonalFrameML to detect recombination in a transmission setting, we analysed 86 of these genomes sharing the same multi-locus sequence type, ST6. As previously described [<xref ref-type="bibr" rid="pcbi.1004041.ref024">24</xref>,<xref ref-type="bibr" rid="pcbi.1004041.ref065">65</xref>], these genomes were mapped to the complete sequence of reference genome CD630 [<xref ref-type="bibr" rid="pcbi.1004041.ref066">66</xref>]. However, ClonalFrameML can be equally well applied to a whole-genome alignment obtained from a de novo assembly approach. In a gene-by-gene approach, for example [<xref ref-type="bibr" rid="pcbi.1004041.ref067">67</xref>], one can scaffold local alignments using a reference genome to obtain a whole-genome alignment. ClonalFrameML took approximately 2 hours to run on our dataset. The average length of recombined fragments was estimated to be <italic>δ</italic> = 591bp [528–691] and the average divergence between donor and recipient was <italic>ν</italic> = 0.032 [0.031–0.033]. The ratio of rates of recombination and mutation was <italic>R</italic>/<italic>θ</italic> = 0.30 [0.25–0.35], whereas the ratio of effects of recombination and mutation was <italic>r/m</italic> = 5.67 [4.62–7.18]. This indicated that recombination happened three times less often than mutation, but because each recombination event introduced on average <italic>δν</italic> = 19 substitutions, recombination overall caused six times more substitutions than mutation, confirming the importance of recombination even in these closely related bacteria.</p>
+<p>ClonalFrameML identified 167 recombination events on all branches of the clonal genealogy (<xref ref-type="fig" rid="pcbi.1004041.g004">Fig. 4</xref>). Three regions appeared to be possible hotspots of recombination, since we found multiple imports on several branches (up to seven) which would not be expected to happen by chance if events were uniformly distributed along the genome for each branch. The first hotspot spanned from 314kb to 315kb in CD630 and corresponded to the annotated <italic>fliI</italic> gene [<xref ref-type="bibr" rid="pcbi.1004041.ref066">66</xref>]. This gene been described as one of only two integration sites for prophage ΦCD27 [<xref ref-type="bibr" rid="pcbi.1004041.ref068">68</xref>]. The second hotspot, from position 600kb to 602kb, corresponded to the <italic>tetM</italic> gene which encodes a conjugative transposon tetracycline resistance protein [<xref ref-type="bibr" rid="pcbi.1004041.ref069">69</xref>]. The third hotspot, from position 1,307kb to 1313kb, contained several conjugal transfer proteins [<xref ref-type="bibr" rid="pcbi.1004041.ref066">66</xref>]. Recombination hotspots in <italic>C. difficile</italic> seem therefore to be caused by the presence of genomic mobile elements, as previously reported for example in <italic>S. pneumoniae</italic> [<xref ref-type="bibr" rid="pcbi.1004041.ref030">30</xref>] and <italic>S. aureus</italic> [<xref ref-type="bibr" rid="pcbi.1004041.ref026">26</xref>].</p>
+<fig id="pcbi.1004041.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004041.g004</object-id>
+<label>Figure 4</label>
+<caption>
+<title>Application of ClonalFrameML to 86 genomes of <italic>C. difficile</italic> ST6.</title>
+<p>For any branch of the genealogy and any position along the genome, inferred recombination is marked in blue.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004041.g004"/>
+</fig>
+<p>Based on a measure of the within-host mutation rate, it was previously estimated that the divergence between two <italic>C. difficile</italic> genomes sampled from the donor and recipient of a direct transmission event would be at most two single nucleotide polymorphisms (SNPs) [<xref ref-type="bibr" rid="pcbi.1004041.ref065">65</xref>]. We compared the distance between all pairs of genomes in the ML tree and in the corrected ClonalFrameML tree (<xref ref-type="supplementary-material" rid="pcbi.1004041.s004">S4 Fig.</xref>). Amongst the 86 genomes of ST6, there were 12 pairs for which the distance was greater than 2 SNPs in the ML tree and lower than 2 SNPs once recombination had been accounted for in the ClonalFrameML tree (<xref ref-type="supplementary-material" rid="pcbi.1004041.s004">S4 Fig.</xref>), suggesting that they may represent cases of direct transmission. This result illustrates the importance of accounting for recombination when performing genomic epidemiology investigations.</p>
+</sec>
+<sec id="sec002e">
+<title>Application to <italic>Staphylococcus aureus</italic></title>
+<p>Recombination is an important force in bacterial evolution and has played a role in shaping the population structure of many species [<xref ref-type="bibr" rid="pcbi.1004041.ref022">22</xref>,<xref ref-type="bibr" rid="pcbi.1004041.ref070">70</xref>], including those such as <italic>Staphylococcus aureus</italic> that have otherwise been characterized as evolving clonally [<xref ref-type="bibr" rid="pcbi.1004041.ref026">26</xref>]. Although there is limited signal of recombination within closely related lineages [<xref ref-type="bibr" rid="pcbi.1004041.ref015">15</xref>,<xref ref-type="bibr" rid="pcbi.1004041.ref071">71</xref>–<xref ref-type="bibr" rid="pcbi.1004041.ref075">75</xref>], analysis of species-wide diversity reveals evidence of widespread homoplasy in the genome [<xref ref-type="bibr" rid="pcbi.1004041.ref026">26</xref>]. Further, recombination has been shown to have played an important role in the emergence of certain lineages, notably the hospital-associated ST 34 and the globally distributed MRSA ST 239 [<xref ref-type="bibr" rid="pcbi.1004041.ref076">76</xref>,<xref ref-type="bibr" rid="pcbi.1004041.ref077">77</xref>]. STs 34 and 239 are hybrids resulting from large chromosomal replacement events. ST 34 is thought to have evolved from an ST 30 lineage via the introduction of a 244kb region from an ST 10 donor lineage [<xref ref-type="bibr" rid="pcbi.1004041.ref076">76</xref>]. ST 239 appears to have arisen from the integration of a 635kb region from an ST 30 donor into an ST 8 background [<xref ref-type="bibr" rid="pcbi.1004041.ref077">77</xref>]. In both hybrid lineages, the chromosomal replacements span the origin-of-replication.</p>
+<p>We applied ClonalFrameML to investigate 110 <italic>S. aureus</italic> carriage and reference genomes that represent species-wide diversity [<xref ref-type="bibr" rid="pcbi.1004041.ref026">26</xref>] using an extension to the standard ClonalFrame model that allows different recombination parameters to be inferred on different branches of the clonal genealogy. The mean parameters were estimated to be <italic>R</italic>/<italic>θ</italic> = 0.215, <italic>δ</italic> = 183bp and <italic>ν</italic> = 7.20×10<sup>−3</sup>, but substantial variation was detected between the branches of the tree (<xref ref-type="fig" rid="pcbi.1004041.g005">Fig. 5</xref>). In particular, large importations of 231kb and 555kb were detected, corresponding to the chromosomal replacements spanning the origin-of-replication in STs 34 and 239 respectively. Note that the positions and lengths of recombination events reported here are measured relative to the MRSA252 reference genome. Additionally, we found a new chromosomal replacement event of 310kb associated with ST 582, a close relative of ST 15. Unlike the previously described events, this large chromosomal replacement spans 845–1155kb, a region approximately 1Mb from the origin-of-replication. The nature and origin of this novel chromosomal replacement requires further investigation.</p>
+<fig id="pcbi.1004041.g005" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pcbi.1004041.g005</object-id>
+<label>Figure 5</label>
+<caption>
+<title>ClonalFrameML analysis of recombination in <italic>S. aureus</italic> based on 110 genomes representing carriage and reference isolates mapped to MRSA252.</title>
+<p>Reconstructed substitutions (white vertical bars) are shown for each branch of the ML tree. Grey areas represent non-core regions of the MRSA252 genome. Dark blue horizontal bars indicate recombination events detected by the analysis.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004041.g005"/>
+</fig>
+<p>The ClonalFrameML analysis of recombination in <italic>S. aureus</italic> reveals a curious property of the method that we expect applies to phylogenetic methods in general. The effect is visible most clearly in the three large chromosomal replacement events ancestral to STs 34, 239 and 582. In each case, the large recombination event, marked by a dark blue horizontal line, is mirrored on the branch leading to the sister clade. This mirroring can be explained by substitution events that occurred on the branch immediately ancestral to the two sister clades. When recombination introduces DNA from a relative that does not possess these derived substitutions, then it becomes more parsimonious to attribute the mirrored substitutions to the sister clade rather than have them arise on the parent branch only to immediately revert them in the branch that receives the recombination event (<xref ref-type="supplementary-material" rid="pcbi.1004041.s005">S5 Fig.</xref>). This effect is likely to contribute to the well-recognized distortion of branch lengths leading to spurious inference of demography, selection and molecular clocks when phylogenetic methods are applied to recombining populations [<xref ref-type="bibr" rid="pcbi.1004041.ref027">27</xref>,<xref ref-type="bibr" rid="pcbi.1004041.ref028">28</xref>,<xref ref-type="bibr" rid="pcbi.1004041.ref078">78</xref>,<xref ref-type="bibr" rid="pcbi.1004041.ref079">79</xref>].</p>
+</sec>
+<sec sec-type="conclusions" id="sec002f">
+<title>Conclusion</title>
+<p>The advent of rapid, inexpensive whole genome sequencing is revealing more than ever the importance of recombination to bacteria. Accounting for recombination in phylogenetic analyses remains a fundamental yet challenging problem, and one that has become more difficult, not easier, with the volume of information provided by hundreds or thousands of bacterial whole genomes. We have introduced a new maximum likelihood method, ClonalFrameML, that implements the model underlying the popular Bayesian ClonalFrame approach in a computationally efficient manner, and we have demonstrated its ability to estimate recombination parameters and detect importation events in the context of understanding short-term transmission dynamics and long-term bacterial evolution.</p>
+</sec>
+<sec id="sec002g">
+<title>Availability and Future Directions</title>
+<p>ClonalFrameML is freely available from <ext-link ext-link-type="uri" xlink:href="http://clonalframeml.googlecode.com/" xlink:type="simple">http://clonalframeml.googlecode.com/</ext-link>. Further work is planned to improve the front end, and to provide compatibility with the input files of the ClonalFrame software.</p>
+</sec>
+</sec>
+<sec id="sec003">
+<title>Supporting Information</title>
+<supplementary-material id="pcbi.1004041.s001" mimetype="application/pdf" position="float" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004041.s001">
+<label>S1 Fig</label>
+<caption>
+<title>Comparison of four runs of ClonalFrame on the first simulated dataset.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004041.s002" mimetype="application/pdf" position="float" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004041.s002">
+<label>S2 Fig</label>
+<caption>
+<title>Example application of ClonalFrameML to a simulated dataset resulting in an underestimation of the recombination rate.</title>
+<p>True recombination events are shown in blue and events detected by ClonalFrameML are shown in red.</p>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004041.s003" mimetype="application/pdf" position="float" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004041.s003">
+<label>S3 Fig</label>
+<caption>
+<title>Comparison of branch scores for a hundred datasets simulated under the ClonalFrame model.</title>
+<p>The x-axis shows the branch score between true and ML tree, whereas the y-axis shows the branch score between true and ClonalFrameML tree. In the right panel all trees have been normalized to have a sum of branch lengths equal to one.</p>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004041.s004" mimetype="application/pdf" position="float" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004041.s004">
+<label>S4 Fig</label>
+<caption>
+<title>Comparison of the distances between pairs of genomes in the maximum likelihood tree and in the ClonalFrameML tree for the <italic>C. difficile</italic> application.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004041.s005" mimetype="application/pdf" position="float" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004041.s005">
+<label>S5 Fig</label>
+<caption>
+<title>Recombination causes homoplasy and mirroring in phylogenetic trees.</title>
+<p>The branches of a simplified tree representing <italic>S. aureus</italic> STs 15, 582, and 20 together with an outgroup representing all other lineages are labelled A-E. A recombination event from ST 20 to ST 582 is labelled R. Below, patterns of genetic diversity are represented for mutations arising on branches A-E in the absence of recombination (clonal sites). Recombined sites show the effect of the recombination event R on patterns of diversity. Mutation events occurring on branch D are imported into lineage A, leading to homoplasy. Mutation events that occurred on branch B are displaced by the recombination event, leading to a spurious pattern resembling mutation on branch E, which we refer to as mirroring.</p>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004041.s006" mimetype="application/pdf" position="float" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004041.s006">
+<label>S1 Text</label>
+<caption>
+<title>Instructions for installing the software and analysing the example dataset.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pcbi.1004041.s007" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:type="simple" xlink:href="info:doi/10.1371/journal.pcbi.1004041.s007">
+<label>S1 Table</label>
+<caption>
+<title>Table of mathematical notation.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ref-list>
+<title>References</title>
+<ref id="pcbi.1004041.ref001">
+<label>1</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Didelot</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Bowden</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Wilson</surname> <given-names>DJ</given-names></name>, <name name-style="western"><surname>Peto</surname> <given-names>TEA</given-names></name>, <name name-style="western"><surname>Crook</surname> <given-names>DW</given-names></name> (<year>2012</year>) <article-title>Transforming clinical microbiology with bacterial genome sequencing</article-title>. <source>Nat Rev Genet</source> <volume>13</volume>: <fpage>601</fpage>–<lpage>612</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nrg3226" xlink:type="simple">10.1038/nrg3226</ext-link></comment> <object-id pub-id-type="pmid">22868263</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref002">
+<label>2</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Köser</surname> <given-names>CU</given-names></name>, <name name-style="western"><surname>Ellington</surname> <given-names>MJ</given-names></name>, <name name-style="western"><surname>Cartwright</surname> <given-names>EJP</given-names></name>, <name name-style="western"><surname>Gillespie</surname> <given-names>SH</given-names></name>, <name name-style="western"><surname>Brown</surname> <given-names>NM</given-names></name>, <etal>et al.</etal> (<year>2012</year>) <article-title>Routine Use of Microbial Whole Genome Sequencing in Diagnostic and Public Health Microbiology</article-title>. <source>PLoS Pathog</source> <volume>8</volume>: <fpage>e1002824</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.ppat.1002824" xlink:type="simple">10.1371/journal.ppat.1002824</ext-link></comment> <object-id pub-id-type="pmid">22876174</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref003">
+<label>3</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jolley</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Bliss</surname> <given-names>CM</given-names></name>, <name name-style="western"><surname>Bennett</surname> <given-names>JS</given-names></name>, <name name-style="western"><surname>Bratcher</surname> <given-names>HB</given-names></name>, <name name-style="western"><surname>Brehony</surname> <given-names>CM</given-names></name>, <etal>et al.</etal> (<year>2012</year>) <article-title>Ribosomal Multi-Locus Sequence Typing: universal characterisation of bacteria from domain to strain</article-title>. <source>Microbiology</source> <volume>158</volume>: <fpage>1005</fpage>–<lpage>1015</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1099/mic.0.055459-0" xlink:type="simple">10.1099/mic.0.055459-0</ext-link></comment> <object-id pub-id-type="pmid">22282518</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref004">
+<label>4</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Larsen</surname> <given-names>M V</given-names></name>, <name name-style="western"><surname>Cosentino</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Rasmussen</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Friis</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Hasman</surname> <given-names>H</given-names></name>, <etal>et al.</etal> (<year>2012</year>) <article-title>Multilocus Sequence Typing of Total Genome Sequenced Bacteria</article-title>. <source>J Clin Microbiol</source>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1128/JCM.06094-11" xlink:type="simple">10.1128/JCM.06094-11</ext-link></comment> <object-id pub-id-type="pmid">22238442</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref005">
+<label>5</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Laabei</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Recker</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Rudkin</surname> <given-names>JK</given-names></name>, <name name-style="western"><surname>Aldeljawi</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Gulay</surname> <given-names>Z</given-names></name>, <etal>et al.</etal> (<year>2014</year>) <article-title>Predicting the virulence of MRSA from its genome sequence</article-title>. <source>Genome Res</source> <volume>24</volume>: <fpage>839</fpage>–<lpage>849</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1101/gr.165415.113" xlink:type="simple">10.1101/gr.165415.113</ext-link></comment> <object-id pub-id-type="pmid">24717264</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref006">
+<label>6</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Dingle</surname> <given-names>KE</given-names></name>, <name name-style="western"><surname>Elliott</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Robinson</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Griffiths</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Eyre</surname> <given-names>DW</given-names></name>, <etal>et al.</etal> (<year>2014</year>) <article-title>Evolutionary History of the <italic>Clostridium difficile</italic> Pathogenicity Locus</article-title>. <source>Genome Biol Evol</source> <volume>6</volume>: <fpage>36</fpage>–<lpage>52</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/gbe/evt204" xlink:type="simple">10.1093/gbe/evt204</ext-link></comment> <object-id pub-id-type="pmid">24336451</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref007">
+<label>7</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Stoesser</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Batty</surname> <given-names>EM</given-names></name>, <name name-style="western"><surname>Eyre</surname> <given-names>DW</given-names></name>, <name name-style="western"><surname>Morgan</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Wyllie</surname> <given-names>DH</given-names></name>, <etal>et al.</etal> (<year>2013</year>) <article-title>Predicting antimicrobial susceptibilities for <italic>Escherichia coli</italic> and <italic>Klebsiella pneumoniae</italic> isolates using whole genomic sequence data</article-title>. <source>J Antimicrob Chemother</source> <volume>68</volume>: <fpage>2234</fpage>–<lpage>2244</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/jac/dkt180" xlink:type="simple">10.1093/jac/dkt180</ext-link></comment> <object-id pub-id-type="pmid">23722448</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref008">
+<label>8</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gordon</surname> <given-names>NC</given-names></name>, <name name-style="western"><surname>Price</surname> <given-names>JR</given-names></name>, <name name-style="western"><surname>Cole</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Everitt</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Morgan</surname> <given-names>M</given-names></name>, <etal>et al.</etal> (<year>2014</year>) <article-title>Prediction of <italic>Staphylococcus aureus</italic> antimicrobial resistance by whole-genome sequencing</article-title>. <source>J Clin Microbiol</source> <volume>52</volume>: <fpage>1182</fpage>–<lpage>1191</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1128/JCM.03117-13" xlink:type="simple">10.1128/JCM.03117-13</ext-link></comment> <object-id pub-id-type="pmid">24501024</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref009">
+<label>9</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Young</surname> <given-names>BC</given-names></name>, <name name-style="western"><surname>Golubchik</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Batty</surname> <given-names>EM</given-names></name>, <name name-style="western"><surname>Fung</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Larner-Svensson</surname> <given-names>H</given-names></name>, <etal>et al.</etal> (<year>2012</year>) <article-title>Evolutionary dynamics of <italic>Staphylococcus aureus</italic> during progression from carriage to disease</article-title>. <source>Proc Natl Acad Sci USA</source> <volume>109</volume>: <fpage>4550</fpage>–<lpage>4555</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.1113219109" xlink:type="simple">10.1073/pnas.1113219109</ext-link></comment> <object-id pub-id-type="pmid">22393007</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref010">
+<label>10</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Golubchik</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Batty</surname> <given-names>EM</given-names></name>, <name name-style="western"><surname>Miller</surname> <given-names>RR</given-names></name>, <name name-style="western"><surname>Farr</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Young</surname> <given-names>BC</given-names></name>, <etal>et al.</etal> (<year>2013</year>) <article-title>Within-Host Evolution of <italic>Staphylococcus aureus</italic> during Asymptomatic Carriage</article-title>. <source>PLoS One</source> <volume>8</volume>: <fpage>e61319</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pone.0061319" xlink:type="simple">10.1371/journal.pone.0061319</ext-link></comment> <object-id pub-id-type="pmid">23658690</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref011">
+<label>11</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Walker</surname> <given-names>TM</given-names></name>, <name name-style="western"><surname>Ip</surname> <given-names>CLC</given-names></name>, <name name-style="western"><surname>Harrell</surname> <given-names>RH</given-names></name>, <name name-style="western"><surname>Evans</surname> <given-names>JT</given-names></name>, <name name-style="western"><surname>Kapatai</surname> <given-names>G</given-names></name>, <etal>et al.</etal> (<year>2013</year>) <article-title>Whole-genome sequencing to delineate <italic>Mycobacterium tuberculosis</italic> outbreaks: a retrospective observational study</article-title>. <source>Lancet Infect Dis</source> <volume>13</volume>: <fpage>137</fpage>–<lpage>146</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/S1473-3099(12)70277-3" xlink:type="simple">10.1016/S1473-3099(12)70277-3</ext-link></comment> <object-id pub-id-type="pmid">23158499</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref012">
+<label>12</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Walker</surname> <given-names>TM</given-names></name>, <name name-style="western"><surname>Lalor</surname> <given-names>MK</given-names></name>, <name name-style="western"><surname>Broda</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Ortega</surname> <given-names>LS</given-names></name>, <name name-style="western"><surname>Morgan</surname> <given-names>M</given-names></name>, <etal>et al.</etal> (<year>2014</year>) <article-title>Assessment of <italic>Mycobacterium tuberculosis</italic> transmission in Oxfordshire, UK, 2007–12, with whole pathogen genome sequences: an observational study</article-title>. <source>Lancet Respir Med</source> <volume>2</volume>: <fpage>285</fpage>–<lpage>292</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/S2213-2600(14)70027-X" xlink:type="simple">10.1016/S2213-2600(14)70027-X</ext-link></comment> <object-id pub-id-type="pmid">24717625</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref013">
+<label>13</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Eyre</surname> <given-names>DW</given-names></name>, <name name-style="western"><surname>Golubchik</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Gordon</surname> <given-names>NC</given-names></name>, <name name-style="western"><surname>Bowden</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Piazza</surname> <given-names>P</given-names></name>, <etal>et al.</etal> (<year>2012</year>) <article-title>A pilot study of rapid benchtop sequencing of <italic>Staphylococcus aureus</italic> and <italic>Clostridium difficile</italic> for outbreak detection and surveillance</article-title>. <source>BMJ Open</source> <volume>2</volume>: <fpage>e001124</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1136/bmjopen-2012-001124" xlink:type="simple">10.1136/bmjopen-2012-001124</ext-link></comment> <object-id pub-id-type="pmid">22674929</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref014">
+<label>14</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mutreja</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Kim</surname> <given-names>DW</given-names></name>, <name name-style="western"><surname>Thomson</surname> <given-names>NR</given-names></name>, <name name-style="western"><surname>Connor</surname> <given-names>TR</given-names></name>, <name name-style="western"><surname>Lee</surname> <given-names>JH</given-names></name>, <etal>et al.</etal> (<year>2011</year>) <article-title>Evidence for several waves of global transmission in the seventh cholera pandemic</article-title>. <source>Nature</source> <volume>477</volume>: <fpage>462</fpage>–<lpage>465</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nature10392" xlink:type="simple">10.1038/nature10392</ext-link></comment> <object-id pub-id-type="pmid">21866102</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref015">
+<label>15</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Holden</surname> <given-names>MTG</given-names></name>, <name name-style="western"><surname>Hsu</surname> <given-names>L-Y</given-names></name>, <name name-style="western"><surname>Kurt</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Weinert</surname> <given-names>LA</given-names></name>, <name name-style="western"><surname>Mather</surname> <given-names>AE</given-names></name>, <etal>et al.</etal> (<year>2013</year>) <article-title>A genomic portrait of the emergence, evolution and global spread of a methicillin resistant <italic>Staphylococcus aureus</italic> pandemic</article-title>. <source>Genome Res</source> <volume>23</volume>: <fpage>653</fpage>–<lpage>664</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1101/gr.147710.112" xlink:type="simple">10.1101/gr.147710.112</ext-link></comment> <object-id pub-id-type="pmid">23299977</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref016">
+<label>16</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Guindon</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Dufayard</surname> <given-names>J-F</given-names></name>, <name name-style="western"><surname>Lefort</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Anisimova</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Hordijk</surname> <given-names>W</given-names></name>, <etal>et al.</etal> (<year>2010</year>) <article-title>New algorithms and methods to estimate maximum-likelihood phylogenies: assessing the performance of PhyML 3.0</article-title>. <source>Syst Biol</source> <volume>59</volume>: <fpage>307</fpage>–<lpage>321</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/sysbio/syq010" xlink:type="simple">10.1093/sysbio/syq010</ext-link></comment> <object-id pub-id-type="pmid">20525638</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref017">
+<label>17</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Stamatakis</surname> <given-names>A</given-names></name> (<year>2006</year>) <article-title>RAxML-VI-HPC: maximum likelihood-based phylogenetic analyses with thousands of taxa and mixed models</article-title>. <source>Bioinformatics</source> <volume>22</volume>: <fpage>2688</fpage>–<lpage>2690</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/bioinformatics/btl446" xlink:type="simple">10.1093/bioinformatics/btl446</ext-link></comment> <object-id pub-id-type="pmid">16928733</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref018">
+<label>18</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Price</surname> <given-names>MN</given-names></name>, <name name-style="western"><surname>Dehal</surname> <given-names>PS</given-names></name>, <name name-style="western"><surname>Arkin</surname> <given-names>AP</given-names></name> (<year>2010</year>) <article-title>FastTree 2—approximately maximum-likelihood trees for large alignments</article-title>. <source>PLoS One</source> <volume>5</volume>: <fpage>e9490</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pone.0009490" xlink:type="simple">10.1371/journal.pone.0009490</ext-link></comment> <object-id pub-id-type="pmid">20224823</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref019">
+<label>19</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Drummond</surname> <given-names>AJ</given-names></name>, <name name-style="western"><surname>Rambaut</surname> <given-names>A</given-names></name> (<year>2007</year>) <article-title>BEAST : Bayesian evolutionary analysis by sampling trees</article-title>. <source>BMC Evol Biol</source> <volume>7</volume>: <fpage>214</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/1471-2148-7-214" xlink:type="simple">10.1186/1471-2148-7-214</ext-link></comment> <object-id pub-id-type="pmid">17996036</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref020">
+<label>20</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ronquist</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Teslenko</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>van der Mark</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Ayres</surname> <given-names>DL</given-names></name>, <name name-style="western"><surname>Darling</surname> <given-names>A</given-names></name>, <etal>et al.</etal> (<year>2012</year>) <article-title>MrBayes 3.2: efficient Bayesian phylogenetic inference and model choice across a large model space</article-title>. <source>Syst Biol</source> <volume>61</volume>: <fpage>539</fpage>–<lpage>542</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/sysbio/sys029" xlink:type="simple">10.1093/sysbio/sys029</ext-link></comment> <object-id pub-id-type="pmid">22357727</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref021">
+<label>21</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Didelot</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Maiden</surname> <given-names>MCJ</given-names></name> (<year>2010</year>) <article-title>Impact of recombination on bacterial evolution</article-title>. <source>Trends Microbiol</source> <volume>18</volume>: <fpage>315</fpage>–<lpage>322</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.tim.2010.04.002" xlink:type="simple">10.1016/j.tim.2010.04.002</ext-link></comment> <object-id pub-id-type="pmid">20452218</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref022">
+<label>22</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ochman</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Lawrence</surname> <given-names>JG</given-names></name>, <name name-style="western"><surname>Groisman</surname> <given-names>EA</given-names></name> (<year>2000</year>) <article-title>Lateral gene transfer and the nature of bacterial innovation</article-title>. <source>Nature</source> <volume>405</volume>: <fpage>299</fpage>–<lpage>304</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/35012500" xlink:type="simple">10.1038/35012500</ext-link></comment> <object-id pub-id-type="pmid">10830951</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref023">
+<label>23</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Vos</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Didelot</surname> <given-names>X</given-names></name> (<year>2009</year>) <article-title>A comparison of homologous recombination rates in bacteria and archaea</article-title>. <source>ISME J</source> <volume>3</volume>: <fpage>199</fpage>–<lpage>208</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/ismej.2008.93" xlink:type="simple">10.1038/ismej.2008.93</ext-link></comment> <object-id pub-id-type="pmid">18830278</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref024">
+<label>24</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Didelot</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Eyre</surname> <given-names>DW</given-names></name>, <name name-style="western"><surname>Cule</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Ip</surname> <given-names>CLC</given-names></name>, <name name-style="western"><surname>Ansari</surname> <given-names>MA</given-names></name>, <etal>et al.</etal> (<year>2012</year>) <article-title>Microevolutionary analysis of <italic>Clostridium difficile</italic> genomes to investigate transmission</article-title>. <source>Genome Biol</source> <volume>13</volume>: <fpage>R118</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/gb-2012-13-12-r118" xlink:type="simple">10.1186/gb-2012-13-12-r118</ext-link></comment> <object-id pub-id-type="pmid">23259504</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref025">
+<label>25</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chewapreecha</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Harris</surname> <given-names>SR</given-names></name>, <name name-style="western"><surname>Croucher</surname> <given-names>NJ</given-names></name>, <name name-style="western"><surname>Turner</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Marttinen</surname> <given-names>P</given-names></name>, <etal>et al.</etal> (<year>2014</year>) <article-title>Dense genomic sampling identifies highways of pneumococcal recombination</article-title>. <source>Nat Genet</source> <volume>46</volume>: <fpage>305</fpage>–<lpage>309</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/ng.2895" xlink:type="simple">10.1038/ng.2895</ext-link></comment> <object-id pub-id-type="pmid">24509479</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref026">
+<label>26</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Everitt</surname> <given-names>RG</given-names></name>, <name name-style="western"><surname>Didelot</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Batty</surname> <given-names>EM</given-names></name>, <name name-style="western"><surname>Miller</surname> <given-names>RR</given-names></name>, <name name-style="western"><surname>Knox</surname> <given-names>K</given-names></name>, <etal>et al.</etal> (<year>2014</year>) <article-title>Mobile elements drive recombination hotspots in the core genome of <italic>Staphylococcus aureus</italic></article-title>. <source>Nat Commun</source> <volume>5</volume>: <fpage>3956</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/ncomms4956" xlink:type="simple">10.1038/ncomms4956</ext-link></comment> <object-id pub-id-type="pmid">24853639</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref027">
+<label>27</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schierup</surname> <given-names>MH</given-names></name>, <name name-style="western"><surname>Hein</surname> <given-names>J</given-names></name> (<year>2000</year>) <article-title>Consequences of recombination on traditional phylogenetic analysis</article-title>. <source>Genetics</source> <volume>156</volume>: <fpage>879</fpage>–<lpage>891</lpage>. <object-id pub-id-type="pmid">11014833</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref028">
+<label>28</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schierup</surname> <given-names>MH</given-names></name>, <name name-style="western"><surname>Hein</surname> <given-names>J</given-names></name> (<year>2000</year>) <article-title>Recombination and the Molecular Clock</article-title>. <source>Mol Biol Evol</source> <volume>17</volume>: <fpage>1578</fpage>–<lpage>1579</lpage>. <object-id pub-id-type="pmid">11018163</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref029">
+<label>29</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Posada</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Crandall</surname> <given-names>K</given-names></name> (<year>2002</year>) <article-title>The effect of recombination on the accuracy of phylogeny estimation</article-title>. <source>J Mol Evol</source> <volume>54</volume>: <fpage>396</fpage>–<lpage>402</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1007/s00239" xlink:type="simple">10.1007/s00239</ext-link></comment> <object-id pub-id-type="pmid">11847565</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref030">
+<label>30</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Croucher</surname> <given-names>NJ</given-names></name>, <name name-style="western"><surname>Harris</surname> <given-names>SRR</given-names></name>, <name name-style="western"><surname>Fraser</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Quail</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Burton</surname> <given-names>J</given-names></name>, <etal>et al.</etal> (<year>2011</year>) <article-title>Rapid pneumococcal evolution in response to clinical interventions</article-title>. <source>Science</source> <volume>331</volume>: <fpage>430</fpage>–<lpage>434</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/science.1198545" xlink:type="simple">10.1126/science.1198545</ext-link></comment> <object-id pub-id-type="pmid">21273480</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref031">
+<label>31</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Didelot</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Achtman</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Parkhill</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Thomson</surname> <given-names>NR</given-names></name>, <name name-style="western"><surname>Falush</surname> <given-names>D</given-names></name> (<year>2007</year>) <article-title>A bimodal pattern of relatedness between the <italic>Salmonella</italic> Paratyphi A and Typhi genomes: Convergence or divergence by homologous recombination?</article-title> <source>Genome Res</source> <volume>17</volume>: <fpage>61</fpage>–<lpage>68</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1101/gr.5512906.1" xlink:type="simple">10.1101/gr.5512906.1</ext-link></comment> <object-id pub-id-type="pmid">17090663</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref032">
+<label>32</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Sheppard</surname> <given-names>SK</given-names></name>, <name name-style="western"><surname>Mccarthy</surname> <given-names>ND</given-names></name>, <name name-style="western"><surname>Falush</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Maiden</surname> <given-names>MCJ</given-names></name> (<year>2009</year>) <article-title>Convergence of <italic>Campylobacter</italic> Species : Implications for Bacterial Evolution</article-title>. <source>Science</source> <volume>320</volume>: <fpage>237</fpage>–<lpage>239</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/science.1155532" xlink:type="simple">10.1126/science.1155532</ext-link></comment> <object-id pub-id-type="pmid">18403712</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref033">
+<label>33</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Sheppard</surname> <given-names>SK</given-names></name>, <name name-style="western"><surname>Didelot</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Jolley</surname> <given-names>KA</given-names></name>, <name name-style="western"><surname>Darling</surname> <given-names>AE</given-names></name>, <name name-style="western"><surname>Pascoe</surname> <given-names>B</given-names></name>, <etal>et al.</etal> (<year>2013</year>) <article-title>Progressive genome-wide introgression in agricultural <italic>Campylobacter coli</italic></article-title>. <source>Mol Ecol</source> <volume>22</volume>: <fpage>1051</fpage>–<lpage>1064</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1111/mec.12162" xlink:type="simple">10.1111/mec.12162</ext-link></comment> <object-id pub-id-type="pmid">23279096</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref034">
+<label>34</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Dingle</surname> <given-names>KE</given-names></name>, <name name-style="western"><surname>Didelot</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Ansari</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Eyre</surname> <given-names>DW</given-names></name>, <name name-style="western"><surname>Vaughan</surname> <given-names>A</given-names></name>, <etal>et al.</etal> (<year>2013</year>) <article-title>Recombinational switching of the <italic>Clostridium difficile</italic> S-layer and a novel glycosylation gene cluster revealed by large scale whole genome sequencing</article-title>. <source>J Infect Dis</source> <volume>207</volume>: <fpage>675</fpage>–<lpage>686</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/infdis/jis734" xlink:type="simple">10.1093/infdis/jis734</ext-link></comment> <object-id pub-id-type="pmid">23204167</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref035">
+<label>35</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kennemann</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Didelot</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Aebischer</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Kuhn</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Drescher</surname> <given-names>B</given-names></name>, <etal>et al.</etal> (<year>2011</year>) <article-title><italic>Helicobacter pylori</italic> genome evolution during human infection</article-title>. <source>Proc Natl Acad Sci USA</source> <volume>108</volume>: <fpage>5033</fpage>–<lpage>5038</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.1018444108" xlink:type="simple">10.1073/pnas.1018444108</ext-link></comment> <object-id pub-id-type="pmid">21383187</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref036">
+<label>36</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Didelot</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Nell</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Yang</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Woltemate</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>van der Merwe</surname> <given-names>S</given-names></name>, <etal>et al.</etal> (<year>2013</year>) <article-title>Genomic evolution and transmission of <italic>Helicobacter pylori</italic> in two South African families</article-title>. <source>Proc Natl Acad Sci USA</source> <volume>110</volume>: <fpage>13880</fpage>–<lpage>13885</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1073/pnas.1304681110" xlink:type="simple">10.1073/pnas.1304681110</ext-link></comment> <object-id pub-id-type="pmid">23898187</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref037">
+<label>37</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yahara</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Furuta</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Oshima</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Yoshida</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Azuma</surname> <given-names>T</given-names></name>, <etal>et al.</etal> (<year>2013</year>) <article-title>Chromosome Painting In Silico in a Bacterial Species Reveals Fine Population Structure</article-title>. <source>Mol Biol Evol</source> <volume>30</volume>: <fpage>1454</fpage>–<lpage>1464</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/molbev/mst055" xlink:type="simple">10.1093/molbev/mst055</ext-link></comment> <object-id pub-id-type="pmid">23505045</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref038">
+<label>38</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Falush</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Wirth</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Linz</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Pritchard</surname> <given-names>JK</given-names></name>, <name name-style="western"><surname>Stephens</surname> <given-names>M</given-names></name>, <etal>et al.</etal> (<year>2003</year>) <article-title>Traces of human migrations in <italic>Helicobacter pylori</italic> populations</article-title>. <source>Science</source> <volume>299</volume>: <fpage>1582</fpage>–<lpage>1585</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/science.1080857" xlink:type="simple">10.1126/science.1080857</ext-link></comment> <object-id pub-id-type="pmid">12624269</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref039">
+<label>39</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Croucher</surname> <given-names>NJ</given-names></name>, <name name-style="western"><surname>Finkelstein</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Pelton</surname> <given-names>SI</given-names></name>, <name name-style="western"><surname>Mitchell</surname> <given-names>PK</given-names></name>, <name name-style="western"><surname>Lee</surname> <given-names>GM</given-names></name>, <etal>et al.</etal> (<year>2013</year>) <article-title>Population genomics of post-vaccine changes in pneumococcal epidemiology</article-title>. <source>Nat Genet</source> <volume>45</volume>: <fpage>656</fpage>–<lpage>663</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/ng.2625" xlink:type="simple">10.1038/ng.2625</ext-link></comment> <object-id pub-id-type="pmid">23644493</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref040">
+<label>40</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Golubchik</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Brueggemann</surname> <given-names>AB</given-names></name>, <name name-style="western"><surname>Street</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Gertz</surname> <given-names>RE</given-names></name>, <name name-style="western"><surname>Spencer</surname> <given-names>C</given-names></name>, <etal>et al.</etal> (<year>2012</year>) <article-title>Pneumococcal genome sequencing tracks a vaccine escape variant formed through a multi-fragment recombination event</article-title>. <source>Nat Genet</source> <volume>44</volume>: <fpage>352</fpage>–<lpage>355</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/ng.1072" xlink:type="simple">10.1038/ng.1072</ext-link></comment> <object-id pub-id-type="pmid">22286217</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref041">
+<label>41</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Milkman</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Bridges</surname> <given-names>MM</given-names></name> (<year>1990</year>) <article-title>Molecular Evolution of the <italic>Escherichia coli</italic> Chromosome. III. Clonal Frames</article-title>. <source>Genetics</source> <volume>126</volume>: <fpage>505</fpage>–<lpage>517</lpage>. <object-id pub-id-type="pmid">1979037</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref042">
+<label>42</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Guttman</surname> <given-names>DS</given-names></name> (<year>1997</year>) <article-title>Recombination and clonality in natural populations of <italic>Escherichia coli</italic></article-title>. <source>Trends Ecol Evol</source> <volume>12</volume>: <fpage>16</fpage>–<lpage>22</lpage>. <object-id pub-id-type="pmid">21237956</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref043">
+<label>43</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Didelot</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Urwin</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Maiden</surname> <given-names>MCJ</given-names></name>, <name name-style="western"><surname>Falush</surname> <given-names>D</given-names></name> (<year>2009</year>) <article-title>Genealogical typing of <italic>Neisseria meningitidis</italic></article-title>. <source>Microbiology</source> <volume>155</volume>: <fpage>3176</fpage>–<lpage>3186</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1099/mic.0.031534-0" xlink:type="simple">10.1099/mic.0.031534-0</ext-link></comment> <object-id pub-id-type="pmid">19643763</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref044">
+<label>44</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Didelot</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Falush</surname> <given-names>D</given-names></name> (<year>2007</year>) <article-title>Inference of bacterial microevolution using multilocus sequence data</article-title>. <source>Genetics</source> <volume>175</volume>: <fpage>1251</fpage>–<lpage>1266</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1534/genetics.106.063305" xlink:type="simple">10.1534/genetics.106.063305</ext-link></comment> <object-id pub-id-type="pmid">17151252</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref045">
+<label>45</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Maiden</surname> <given-names>MC</given-names></name>, <name name-style="western"><surname>Bygraves</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Feil</surname> <given-names>EJ</given-names></name>, <name name-style="western"><surname>Morelli</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Russell</surname> <given-names>JE</given-names></name>, <etal>et al.</etal> (<year>1998</year>) <article-title>Multilocus sequence typing: a portable approach to the identification of clones within populations of pathogenic microorganisms</article-title>. <source>Proc Natl Acad Sci USA</source> <volume>95</volume>: <fpage>3140</fpage>–<lpage>3145</lpage>. <object-id pub-id-type="pmid">9501229</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref046">
+<label>46</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ansari</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Didelot</surname> <given-names>X</given-names></name> (<year>2014</year>) <article-title>Inference of the Properties of the Recombination Process from Whole Bacterial Genomes</article-title>. <source>Genetics</source> <volume>196</volume>: <fpage>253</fpage>–<lpage>265</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1534/genetics.113.157172" xlink:type="simple">10.1534/genetics.113.157172</ext-link></comment> <object-id pub-id-type="pmid">24172133</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref047">
+<label>47</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>McVean</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Awadalla</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Fearnhead</surname> <given-names>P</given-names></name> (<year>2002</year>) <article-title>A coalescent-based method for detecting and estimating recombination from gene sequences</article-title>. <source>Genetics</source> <volume>160</volume>: <fpage>1231</fpage>. <object-id pub-id-type="pmid">11901136</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref048">
+<label>48</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jolley</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Wilson</surname> <given-names>DJ</given-names></name>, <name name-style="western"><surname>Kriz</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>McVean</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Maiden</surname> <given-names>M</given-names></name> (<year>2005</year>) <article-title>The influence of mutation, recombination, population history, and selection on patterns of genetic diversity in <italic>Neisseria meningitidis</italic></article-title>. <source>Mol Biol Evol</source> <volume>22</volume>: <fpage>562</fpage>–<lpage>569</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/molbev/msi041" xlink:type="simple">10.1093/molbev/msi041</ext-link></comment> <object-id pub-id-type="pmid">15537808</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref049">
+<label>49</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wilson</surname> <given-names>DJ</given-names></name>, <name name-style="western"><surname>Gabriel</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Leatherbarrow</surname> <given-names>AJH</given-names></name>, <name name-style="western"><surname>Cheesbrough</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Gee</surname> <given-names>S</given-names></name>, <etal>et al.</etal> (<year>2009</year>) <article-title>Rapid evolution and the importance of recombination to the gastroenteric pathogen <italic>Campylobacter jejuni</italic></article-title>. <source>Mol Biol Evol</source> <volume>26</volume>: <fpage>385</fpage>–<lpage>397</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/molbev/msn264" xlink:type="simple">10.1093/molbev/msn264</ext-link></comment> <object-id pub-id-type="pmid">19008526</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref050">
+<label>50</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pupko</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Pe’er</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Shamir</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Graur</surname> <given-names>D</given-names></name> (<year>2000</year>) <article-title>A fast algorithm for joint reconstruction of ancestral amino acid sequences</article-title>. <source>Mol Biol Evol</source> <volume>17</volume>: <fpage>890</fpage>–<lpage>896</lpage>. <object-id pub-id-type="pmid">10833195</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref051">
+<label>51</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hedge</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Wilson</surname> <given-names>DJ</given-names></name>. (<year>2014</year>). <article-title>Bacterial phylogenetic reconstruction from whole genomes is robust to recombination but demographic inference is not</article-title>. <source>mBio</source> <volume>5</volume>(<issue>6</issue>): <fpage>e02158-14</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1128/mBio.02158-14" xlink:type="simple"/>10.1128/mBio.02158-14</comment> <object-id pub-id-type="pmid">25425237</object-id></mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref052">
+<label>52</label>
+<mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Durbin</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Eddy</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Krogh</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Mitchison</surname> <given-names>G</given-names></name> (<year>1998</year>) <article-title>Biological Sequence Analysis: Probabilistic Models of Proteins and Nucleic Acids</article-title>. <publisher-loc>Cambridge</publisher-loc>: <publisher-name>Cambridge University Press</publisher-name>.</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref053">
+<label>53</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hasegawa</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Kishino</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Yano</surname> <given-names>T</given-names></name> (<year>1985</year>) <article-title>Dating of the human-ape splitting by a molecular clock of mitochondrial DNA</article-title>. <source>J Mol Evol</source> <volume>22</volume>: <fpage>160</fpage>–<lpage>174</lpage>. <object-id pub-id-type="pmid">3934395</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref054">
+<label>54</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kingman</surname> <given-names>JFC</given-names></name> (<year>1982</year>) <article-title>The coalescent</article-title>. <source>Stoch Process their Appl</source> <volume>13</volume>: <fpage>235</fpage>–<lpage>248</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/0304-4149(82)90011-4" xlink:type="simple">10.1016/0304-4149(82)90011-4</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref055">
+<label>55</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Guttman</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Dykhuizen</surname> <given-names>D</given-names></name> (<year>1994</year>) <article-title>Clonal Divergence in <italic>Escherichia coli</italic> as a Result of Recombination, Not Mutation</article-title>. <source>Science</source> <volume>266</volume>: <fpage>1380</fpage>–<lpage>1383</lpage>. <object-id pub-id-type="pmid">7973728</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref056">
+<label>56</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Grad</surname> <given-names>YH</given-names></name>, <name name-style="western"><surname>Kirkcaldy</surname> <given-names>RD</given-names></name>, <name name-style="western"><surname>Trees</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Dordel</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Harris</surname> <given-names>SR</given-names></name>, <etal>et al.</etal> (<year>2014</year>) <article-title>Genomic epidemiology of <italic>Neisseria gonorrhoeae</italic> with reduced susceptibility to cefixime in the USA: a retrospective observational study</article-title>. <source>Lancet Infect Dis</source> <volume>14</volume>: <fpage>220</fpage>–<lpage>226</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/S1473-3099(13)70693-5" xlink:type="simple">10.1016/S1473-3099(13)70693-5</ext-link></comment> <object-id pub-id-type="pmid">24462211</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref057">
+<label>57</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Didelot</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Gardy</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Colijn</surname> <given-names>C</given-names></name> (<year>2014</year>) <article-title>Bayesian inference of infectious disease transmission from whole genome sequence data</article-title>. <source>Mol Biol Evol</source> <volume>31</volume>: <fpage>1869</fpage>–<lpage>1879</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/molbev/msu121" xlink:type="simple">10.1093/molbev/msu121</ext-link></comment> <object-id pub-id-type="pmid">24714079</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref058">
+<label>58</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Harris</surname> <given-names>SR</given-names></name>, <name name-style="western"><surname>Cartwright</surname> <given-names>EJP</given-names></name>, <name name-style="western"><surname>Török</surname> <given-names>ME</given-names></name>, <name name-style="western"><surname>Holden</surname> <given-names>MTG</given-names></name>, <name name-style="western"><surname>Brown</surname> <given-names>NM</given-names></name>, <etal>et al.</etal> (<year>2013</year>) <article-title>Whole-genome sequencing for analysis of an outbreak of meticillin-resistant <italic>Staphylococcus aureus</italic>: a descriptive study</article-title>. <source>Lancet Infect Dis</source> <volume>13</volume>: <fpage>130</fpage>–<lpage>136</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/S1473-3099(12)70268-2" xlink:type="simple">10.1016/S1473-3099(12)70268-2</ext-link></comment> <object-id pub-id-type="pmid">23158674</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref059">
+<label>59</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kuhner</surname> <given-names>MK</given-names></name>, <name name-style="western"><surname>Felsenstein</surname> <given-names>J</given-names></name> (<year>1994</year>) <article-title>A simulation comparison of phylogeny algorithms under equal and unequal evolutionary rates</article-title>. <source>Mol Biol Evol</source> <volume>11</volume>: <fpage>459</fpage>–<lpage>468</lpage>. <object-id pub-id-type="pmid">8015439</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref060">
+<label>60</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Moodley</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Linz</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Yamaoka</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Windsor</surname> <given-names>HM</given-names></name>, <name name-style="western"><surname>Breurec</surname> <given-names>S</given-names></name>, <etal>et al.</etal> (<year>2009</year>) <article-title>The peopling of the Pacific from a bacterial perspective</article-title>. <source>Science</source> <volume>323</volume>: <fpage>527</fpage>–<lpage>530</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/science.1166083" xlink:type="simple">10.1126/science.1166083</ext-link></comment> <object-id pub-id-type="pmid">19164753</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref061">
+<label>61</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wiuf</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Hein</surname> <given-names>J</given-names></name> (<year>2000</year>) <article-title>The coalescent with gene conversion</article-title>. <source>Genetics</source> <volume>155</volume>: <fpage>451</fpage>–<lpage>462</lpage>. <object-id pub-id-type="pmid">10790416</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref062">
+<label>62</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>McVean</surname> <given-names>GAT</given-names></name>, <name name-style="western"><surname>Cardin</surname> <given-names>NJ</given-names></name> (<year>2005</year>) <article-title>Approximating the coalescent with recombination</article-title>. <source>Philos Trans R Soc Lond B Biol Sci</source> <volume>360</volume>: <fpage>1387</fpage>–<lpage>1393</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1098/rstb.2005.1673" xlink:type="simple">10.1098/rstb.2005.1673</ext-link></comment> <object-id pub-id-type="pmid">16048782</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref063">
+<label>63</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Didelot</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Lawson</surname> <given-names>DJ</given-names></name>, <name name-style="western"><surname>Darling</surname> <given-names>AE</given-names></name>, <name name-style="western"><surname>Falush</surname> <given-names>D</given-names></name> (<year>2010</year>) <article-title>Inference of homologous recombination in bacteria using whole-genome sequences</article-title>. <source>Genetics</source> <volume>186</volume>: <fpage>1435</fpage>–<lpage>1449</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1534/genetics.110.120121" xlink:type="simple">10.1534/genetics.110.120121</ext-link></comment> <object-id pub-id-type="pmid">20923983</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref064">
+<label>64</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Didelot</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Lawson</surname> <given-names>DJ</given-names></name>, <name name-style="western"><surname>Falush</surname> <given-names>D</given-names></name> (<year>2009</year>) <article-title>SimMLST: simulation of multi-locus sequence typing data under a neutral model</article-title>. <source>Bioinformatics</source> <volume>25</volume>: <fpage>1442</fpage>–<lpage>1444</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/bioinformatics/btp145" xlink:type="simple">10.1093/bioinformatics/btp145</ext-link></comment> <object-id pub-id-type="pmid">19286834</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref065">
+<label>65</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Eyre</surname> <given-names>DW</given-names></name>, <name name-style="western"><surname>Cule</surname> <given-names>ML</given-names></name>, <name name-style="western"><surname>Wilson</surname> <given-names>DJ</given-names></name>, <name name-style="western"><surname>Griffiths</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Vaughan</surname> <given-names>A</given-names></name>, <etal>et al.</etal> (<year>2013</year>) <article-title>Diverse Sources of <italic>C. difficile</italic> Infection Identified on Whole-Genome Sequencing</article-title>. <source>N Engl J Med</source> <volume>369</volume>: <fpage>1195</fpage>–<lpage>1205</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1056/NEJMoa1216064" xlink:type="simple">10.1056/NEJMoa1216064</ext-link></comment> <object-id pub-id-type="pmid">24066741</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref066">
+<label>66</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Sebaihia</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Wren</surname> <given-names>BW</given-names></name>, <name name-style="western"><surname>Mullany</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Fairweather</surname> <given-names>NF</given-names></name>, <name name-style="western"><surname>Minton</surname> <given-names>N</given-names></name>, <etal>et al.</etal> (<year>2006</year>) <article-title>The multidrug-resistant human pathogen <italic>Clostridium difficile</italic> has a highly mobile, mosaic genome</article-title>. <source>Nat Genet</source> <volume>38</volume>: <fpage>779</fpage>–<lpage>786</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/ng1830" xlink:type="simple">10.1038/ng1830</ext-link></comment> <object-id pub-id-type="pmid">16804543</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref067">
+<label>67</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Maiden</surname> <given-names>MCJ</given-names></name>, <name name-style="western"><surname>Jansen van Rensburg</surname> <given-names>MJ</given-names></name>, <name name-style="western"><surname>Bray</surname> <given-names>JE</given-names></name>, <name name-style="western"><surname>Earle</surname> <given-names>SG</given-names></name>, <name name-style="western"><surname>Ford</surname> <given-names>SA</given-names></name>, <etal>et al.</etal> (<year>2013</year>) <article-title>MLST revisited: the gene-by-gene approach to bacterial genomics</article-title>. <source>Nat Rev Microbiol</source> <volume>11</volume>: <fpage>728</fpage>–<lpage>736</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1038/nrmicro3093" xlink:type="simple">10.1038/nrmicro3093</ext-link></comment> <object-id pub-id-type="pmid">23979428</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref068">
+<label>68</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Williams</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Meader</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Mayer</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Narbad</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Roberts</surname> <given-names>AP</given-names></name>, <etal>et al.</etal> (<year>2013</year>) <article-title>Determination of the attP and attB sites of phage CD27 from <italic>Clostridium difficile</italic> NCTC 12727</article-title>. <source>J Med Microbiol</source> <volume>62</volume>: <fpage>1439</fpage>–<lpage>1443</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1099/jmm.0.058651-0" xlink:type="simple">10.1099/jmm.0.058651-0</ext-link></comment> <object-id pub-id-type="pmid">23699063</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref069">
+<label>69</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ternan</surname> <given-names>NG</given-names></name>, <name name-style="western"><surname>Jain</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Srivastava</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>McMullan</surname> <given-names>G</given-names></name> (<year>2012</year>) <article-title>Comparative transcriptional analysis of clinically relevant heat stress response in <italic>Clostridium difficile</italic> strain 630</article-title>. <source>PLoS One</source> <volume>7</volume>: <fpage>e42410</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pone.0042410" xlink:type="simple">10.1371/journal.pone.0042410</ext-link></comment> <object-id pub-id-type="pmid">22860125</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref070">
+<label>70</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fraser</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Hanage</surname> <given-names>WP</given-names></name>, <name name-style="western"><surname>Spratt</surname> <given-names>BG</given-names></name> (<year>2007</year>) <article-title>Recombination and the nature of bacterial speciation</article-title>. <source>Science</source> <volume>315</volume>: <fpage>476</fpage>–<lpage>480</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/science.1127573" xlink:type="simple">10.1126/science.1127573</ext-link></comment> <object-id pub-id-type="pmid">17255503</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref071">
+<label>71</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Harris</surname> <given-names>SRR</given-names></name>, <name name-style="western"><surname>Feil</surname> <given-names>EJ</given-names></name>, <name name-style="western"><surname>Holden</surname> <given-names>MT</given-names></name>, <name name-style="western"><surname>Quail</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Nickerson</surname> <given-names>EK</given-names></name>, <etal>et al.</etal> (<year>2010</year>) <article-title>Evolution of MRSA During Hospital Transmission and Intercontinental Spread</article-title>. <source>Science</source> <volume>327</volume>: <fpage>469</fpage>–<lpage>474</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1126/science.1182395" xlink:type="simple">10.1126/science.1182395</ext-link></comment> <object-id pub-id-type="pmid">20093474</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref072">
+<label>72</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Castillo-Ramírez</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Corander</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Marttinen</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Aldeljawi</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Hanage</surname> <given-names>WP</given-names></name>, <etal>et al.</etal> (<year>2012</year>) <article-title>Phylogeographic variation in recombination rates within a global clone of methicillin-resistant <italic>Staphylococcus aureus</italic></article-title>. <source>Genome Biol</source> <volume>13</volume>: <fpage>R126</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/gb-2012-13-12-r126" xlink:type="simple">10.1186/gb-2012-13-12-r126</ext-link></comment> <object-id pub-id-type="pmid">23270620</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref073">
+<label>73</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Strommenger</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Bartels</surname> <given-names>MD</given-names></name>, <name name-style="western"><surname>Kurt</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Layer</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Rohde</surname> <given-names>SM</given-names></name>, <etal>et al.</etal> (<year>2014</year>) <article-title>Evolution of methicillin-resistant <italic>Staphylococcus aureus</italic> towards increasing resistance</article-title>. <source>J Antimicrob Chemother</source> <volume>69</volume>: <fpage>616</fpage>–<lpage>622</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/jac/dkt413" xlink:type="simple">10.1093/jac/dkt413</ext-link></comment> <object-id pub-id-type="pmid">24150844</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref074">
+<label>74</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kurt</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Rasigade</surname> <given-names>J-P</given-names></name>, <name name-style="western"><surname>Laurent</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Goering</surname> <given-names>R V</given-names></name>, <name name-style="western"><surname>Žemličková</surname> <given-names>H</given-names></name>, <etal>et al.</etal> (<year>2013</year>) <article-title>Subpopulations of <italic>Staphylococcus aureus</italic> clonal complex 121 are associated with distinct clinical entities</article-title>. <source>PLoS One</source> <volume>8</volume>: <fpage>e58155</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pone.0058155" xlink:type="simple">10.1371/journal.pone.0058155</ext-link></comment> <object-id pub-id-type="pmid">23505464</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref075">
+<label>75</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Miller</surname> <given-names>RM</given-names></name>, <name name-style="western"><surname>Price</surname> <given-names>JR</given-names></name>, <name name-style="western"><surname>Batty</surname> <given-names>EM</given-names></name>, <name name-style="western"><surname>Didelot</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Wyllie</surname> <given-names>D</given-names></name>, <etal>et al.</etal> (<year>2014</year>) <article-title>Healthcare-associated outbreak of meticillin-resistant <italic>Staphylococcus aureus</italic> bacteraemia: role of a cryptic variant of an epidemic clone</article-title>. <source>J Hosp Infect</source> <volume>86</volume>: <fpage>83</fpage>–<lpage>89</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.jhin.2013.11.007" xlink:type="simple">10.1016/j.jhin.2013.11.007</ext-link></comment> <object-id pub-id-type="pmid">24433924</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref076">
+<label>76</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Robinson</surname> <given-names>DA</given-names></name>, <name name-style="western"><surname>Enright</surname> <given-names>MC</given-names></name> (<year>2004</year>) <article-title>Evolution of <italic>Staphylococcus aureus</italic> by large chromosomal replacements</article-title>. <source>J Bacteriol</source> <volume>186</volume>: <fpage>1060</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1128/JB.186.4.1060" xlink:type="simple">10.1128/JB.186.4.1060</ext-link></comment> <object-id pub-id-type="pmid">14762000</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref077">
+<label>77</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Holden</surname> <given-names>MTG</given-names></name>, <name name-style="western"><surname>Lindsay</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Corton</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Quail</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Cockfield</surname> <given-names>JD</given-names></name>, <etal>et al.</etal> (<year>2010</year>) <article-title>Genome sequence of a recently emerged, highly transmissible, multi-antibiotic- and antiseptic-resistant variant of methicillin-resistant <italic>Staphylococcus aureus</italic>, sequence type 239 (TW)</article-title>. <source>J Bacteriol</source> <volume>192</volume>: <fpage>888</fpage>–<lpage>892</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1128/JB.01255-09" xlink:type="simple">10.1128/JB.01255-09</ext-link></comment> <object-id pub-id-type="pmid">19948800</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref078">
+<label>78</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Anisimova</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Nielsen</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Yang</surname> <given-names>Z</given-names></name> (<year>2003</year>) <article-title>Effect of recombination on the accuracy of the likelihood method for detecting positive selection at amino acid sites</article-title>. <source>Genetics</source> <volume>164</volume>: <fpage>1229</fpage>–<lpage>1236</lpage>. <object-id pub-id-type="pmid">12871927</object-id>
+</mixed-citation>
+</ref>
+<ref id="pcbi.1004041.ref079">
+<label>79</label>
+<mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bruen</surname> <given-names>TC</given-names></name>, <name name-style="western"><surname>Philippe</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Bryant</surname> <given-names>D</given-names></name> (<year>2006</year>) <article-title>A simple and robust statistical test for detecting the presence of recombination</article-title>. <source>Genetics</source> <volume>172</volume>: <fpage>2665</fpage>–<lpage>2681</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1534/genetics.105.048975" xlink:type="simple">10.1534/genetics.105.048975</ext-link></comment> <object-id pub-id-type="pmid">16489234</object-id>
+</mixed-citation>
+</ref>
+</ref-list>
+</back>
+</article>
