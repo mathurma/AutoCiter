@@ -1,18 +1,18 @@
 import spacy
 from gensim.models import Word2Vec
+from gensim.models import KeyedVectors
 from gensim.models.word2vec import LineSentence
 
 
 nlp = spacy.load("en_core_web_sm")
 
 
-
-def train_word2vec(input_file, output_file, skipgram, loss, size, epochs):
+def get_keyedvec(input_file, output_file, skipgram, loss, size, epochs):
     """
-    train_word2vec(args**) -> Takes the input file,
+    get_keyedvec(args**) -> Takes the input file,
     the output file and the model hyperparameters as
-    arguments and trains the model accordingly.
-    The model is saved at the output location.
+    arguments and trains a word2vec model accordingly.
+    The model's Keyed Vectors are saved at the output location.
 
     Arguments
     ---------
@@ -25,14 +25,12 @@ def train_word2vec(input_file, output_file, skipgram, loss, size, epochs):
     """
     sentence = LineSentence(input_file)
 
-    # for colab:
-    #   vector_size   -> size
-    #   epochs        -> iter
     model = Word2Vec(sentence, sg=skipgram, hs=loss,
-                     vector_size=size, alpha=0.05, window=5,
-                     min_count=1, workers=4, epochs=epochs)
+                     size=size, alpha=0.05, window=5,
+                     min_count=1, workers=4, iter=epochs)
+    keyedvec = model.wv
 
-    model.save(output_file)
+    keyedvec.save(output_file)
 
 
 def get_sents(text: str, nlp_model):
@@ -49,14 +47,12 @@ def lines_to_file(output_file: str, sentences: list):
     f.close()
 
 
-# test train_word2vec
+# test get_keyedvec
 aircon = open('Aircon.sents')
-train_word2vec(aircon, 'Aircon.w2v', 0, 0, 100, 2)
-aircon_w2v = Word2Vec.load("Aircon.w2v")
-aircon_kv = aircon_w2v.wv
+get_keyedvec(aircon, 'Aircon.kv', 0, 0, 100, 2)
+aircon_kv = KeyedVectors.load("Aircon.kv")
 
 print(aircon_kv.similarity('I', 'am'))
-print(aircon_kv.vocab)
 
 # test get_sents
 text = """                               AIR CONDITIONING
