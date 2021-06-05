@@ -1,4 +1,7 @@
 import spacy
+import gensim
+import smart_open
+from gensim.models import Doc2Vec
 from gensim.models import Word2Vec
 from gensim.models import KeyedVectors
 from gensim.models.word2vec import LineSentence
@@ -23,15 +26,32 @@ def get_keyedvec(input_file, output_file, skipgram, loss, size, epochs):
     size : Embedding size (100 ~ 300)
     epochs : Number of epochs
     """
-    sentence = LineSentence(input_file)
+    sentences = LineSentence(open(input_file))
+    model = Word2Vec(sentences, sg=skipgram, hs=loss,
+                     vector_size=size, alpha=0.05, window=5,
+                     min_count=1, workers=4, epochs=epochs)
 
-    model = Word2Vec(sentence, sg=skipgram, hs=loss,
-                     size=size, alpha=0.05, window=5,
-                     min_count=1, workers=4, iter=epochs)
     keyedvec = model.wv
-
     keyedvec.save(output_file)
 
+
+def get_doc2vec(input_file, output_file, skipgram, loss, size, epochs):
+    paragraphs = list(read_corpus(input_file))
+    model = Doc2Vec(paragraphs, vector_size=size, min_count=1, epochs=epochs)
+
+    model.save(output_file)
+
+
+def read_corpus(fname, tokens_only=False):
+  # The file we’re reading is a corpus. Each line of the file is a document (paragraph).
+  with smart_open.open(fname, encoding="iso-8859-1") as f:
+    for i, line in enumerate(f):
+      tokens = gensim.utils.simple_preprocess(line) # lowercases, tokenizes
+      if tokens_only:
+        yield tokens
+      else:
+        # For training data, add tags
+        yield gensim.models.doc2vec.TaggedDocument(tokens, [i])
 
 def get_sents(text: str, nlp_model):
     sentences = []
@@ -47,9 +67,16 @@ def lines_to_file(output_file: str, sentences: list):
     f.close()
 
 
+def get_similar(model, paragraph, num_sim):
+  tokens = gensim.utils.simple_preprocess(paragraph)
+  inferred_vector = model.infer_vector(tokens)
+  similar = model.docvecs.most_similar([inferred_vector], topn=num_sim) #get the most similar
+  return similar
+
 # test get_keyedvec
-aircon = open('Aircon.sents')
-get_keyedvec(aircon, 'Aircon.kv', 0, 0, 100, 2)
+train_file = 'Aircon.sents'
+
+get_keyedvec(train_file, 'Aircon.kv', 0, 0, 100, 2) # lower all the text
 aircon_kv = KeyedVectors.load("Aircon.kv")
 
 print(aircon_kv.similarity('I', 'am'))
@@ -70,3 +97,12 @@ print(sents)
 lines_to_file('Aircon.sents', sents)
 f = open("Aircon.sents", "r")
 print(f.read())
+
+# test get_doc2vec
+train_file = 'Aircon.txt'
+
+get_doc2vec(train_file, 'Aircon.d2v', 0, 0, 50, 40)
+aircon_d2v = Doc2Vec.load("Aircon.d2v")
+
+similar = get_similar(aircon_d2v, "I was shaking my head", 1)
+print(similar)
